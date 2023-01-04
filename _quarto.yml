@@ -1,0 +1,77 @@
+project:
+  type: website
+
+execute:
+  freeze: auto
+  
+website:
+  title: "tidymodels"
+  navbar:
+    left:
+      - href: content/start/index.qmd
+        text: "Get Started"
+      - href: content/learn/index.qmd
+        text: "Learn"        
+        
+  sidebar:
+    - id: get-started
+      title: "Get Started"
+      style: "docked"
+      collapse-level: 2
+      align: left
+      contents:
+        - text: "Model"
+          href: content/start/models/build_a_model.qmd
+        - text: "Preprocess"
+          href: content/start/recipes/preprocess_your_data_with_recipes.qmd
+        - text: "Evaluate"
+          href: content/start/resampling/evaluate_your_model_with_resampling.qmd
+        - text: "Tune"
+          href: content/start/tuning/tune_model_parameters.qmd
+        - text: "Case Study"
+          href: content/start/case-study/a_predictive_modeling_case_study.qmd
+    - id: learn
+      collapse-level: 1
+      contents:
+        - text: "Learn"
+          href: content/learn/index.qmd
+        - section: "Perform Statistical Analyses"
+          contents:
+            - content/learn/statistics/bootstrap/bootstrap_resampling_and_tidy_regression_models.qmd
+            - content/learn/statistics/infer/hypothesis_testing_using_resampling_and_tidy_data.qmd
+            - content/learn/statistics/k-means/k-means_clustering_with_tidy_data_principles.qmd
+            - content/learn/statistics/tidy-analysis/correlation_and_regression_fundamentals_with_tidy_data_principles.qmd        
+            - content/learn/statistics/xtabs/statistical_analysis_of_contingency_tables.qmd        
+        - section: "Create Robust Models"
+          contents:
+            - content/learn/models/coefficients/working_with_model_coefficients.qmd
+            - content/learn/models/parsnip-nnet/classification_models_using_a_neural_network.qmd
+            - content/learn/models/parsnip-ranger-glmnet/regression_models_two_ways.qmd
+            - content/learn/models/pls/multivariate_analysis_using_partial_least_squares.qmd        
+            - content/learn/models/sub-sampling/subsampling_for_class_imbalances.qmd        
+            - content/learn/models/time-series/modeling_time_series_with_tidy_resampling.qmd        
+        - section: "Develop custom modeling tools"
+          contents:
+            - content/learn/develop/broom/create_your_own_broom_tidier_methods.qmd
+            - content/learn/develop/metrics/custom_performance_metrics.qmd
+            - content/learn/develop/models/how_to_build_a_parsnip_model.qmd
+            - content/learn/develop/parameters/how_to_create_a_tuning_parameter_function.qmd        
+            - content/learn/develop/recipes/create_your_own_recipe_step_function.qmd    
+        - section: "Tune, compare, and work with your models"
+          contents:
+            - content/learn/work/bayes-opt/iterative_bayesian_optimization_of_a_classification_model.qmd
+            - content/learn/work/case-weights/creating_case_weights_based_on_time.qmd
+            - content/learn/work/nested-resampling/nested_resampling.qmd
+            - content/learn/work/tune-svm/model_tuning_via_grid_search.qmd        
+            - content/learn/work/tune-text/tuning_text_models.qmd    
+
+
+
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+

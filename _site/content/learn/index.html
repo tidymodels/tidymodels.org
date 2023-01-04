@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Learn how to go farther with tidymodels in your modeling and machine learning projects.">
+
+<title>tidymodels - Learn</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">tidymodels</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../content/start/index.html">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../content/learn/index.html" aria-current="page">
+ <span class="menu-text">Learn</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Learn</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/index.html" class="sidebar-item-text sidebar-link active">Learn</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Perform Statistical Analyses</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/statistics/bootstrap/bootstrap_resampling_and_tidy_regression_models.html" class="sidebar-item-text sidebar-link">Bootstrap resampling and tidy regression models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/statistics/infer/hypothesis_testing_using_resampling_and_tidy_data.html" class="sidebar-item-text sidebar-link">Hypothesis testing using resampling and tidy data</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/statistics/k-means/k-means_clustering_with_tidy_data_principles.html" class="sidebar-item-text sidebar-link">K-means clustering with tidy data principles</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/statistics/tidy-analysis/correlation_and_regression_fundamentals_with_tidy_data_principles.html" class="sidebar-item-text sidebar-link">Correlation and regression fundamentals with tidy data principles</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/statistics/xtabs/statistical_analysis_of_contingency_tables.html" class="sidebar-item-text sidebar-link">Statistical analysis of contingency tables</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Create Robust Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/models/coefficients/working_with_model_coefficients.html" class="sidebar-item-text sidebar-link">Working with model coefficients</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/models/parsnip-nnet/classification_models_using_a_neural_network.html" class="sidebar-item-text sidebar-link">Classification models using a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/models/parsnip-ranger-glmnet/regression_models_two_ways.html" class="sidebar-item-text sidebar-link">Regression models two ways</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/models/pls/multivariate_analysis_using_partial_least_squares.html" class="sidebar-item-text sidebar-link">Multivariate analysis using partial least squares</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/models/sub-sampling/subsampling_for_class_imbalances.html" class="sidebar-item-text sidebar-link">Subsampling for class imbalances</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/models/time-series/modeling_time_series_with_tidy_resampling.html" class="sidebar-item-text sidebar-link">Modeling time series with tidy resampling</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Develop custom modeling tools</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/develop/broom/create_your_own_broom_tidier_methods.html" class="sidebar-item-text sidebar-link">Create your own broom tidier methods</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/develop/metrics/custom_performance_metrics.html" class="sidebar-item-text sidebar-link">Custom performance metrics</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/develop/models/how_to_build_a_parsnip_model.html" class="sidebar-item-text sidebar-link">How to build a parsnip model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/develop/parameters/how_to_create_a_tuning_parameter_function.html" class="sidebar-item-text sidebar-link">How to create a tuning parameter function</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/develop/recipes/create_your_own_recipe_step_function.html" class="sidebar-item-text sidebar-link">Create your own recipe step function</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Tune, compare, and work with your models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/work/bayes-opt/iterative_bayesian_optimization_of_a_classification_model.html" class="sidebar-item-text sidebar-link">Iterative Bayesian optimization of a classification model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/work/case-weights/creating_case_weights_based_on_time.html" class="sidebar-item-text sidebar-link">Creating case weights based on time</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/work/nested-resampling/nested_resampling.html" class="sidebar-item-text sidebar-link">Nested resampling</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/work/tune-svm/model_tuning_via_grid_search.html" class="sidebar-item-text sidebar-link">Model tuning via grid search</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/learn/work/tune-text/tuning_text_models.html" class="sidebar-item-text sidebar-link">Tuning text models</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#perform-statistical-analyses" id="toc-perform-statistical-analyses" class="nav-link active" data-scroll-target="#perform-statistical-analyses">Perform Statistical Analyses</a></li>
+  <li><a href="#create-robust-models" id="toc-create-robust-models" class="nav-link" data-scroll-target="#create-robust-models">Create Robust Models</a></li>
+  <li><a href="#tune-compare-and-work-with-your-models" id="toc-tune-compare-and-work-with-your-models" class="nav-link" data-scroll-target="#tune-compare-and-work-with-your-models">Tune, Compare, and Work with Your Models</a></li>
+  <li><a href="#create-custom-modeling-tools" id="toc-create-custom-modeling-tools" class="nav-link" data-scroll-target="#create-custom-modeling-tools">Create Custom Modeling Tools</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Learn</h1>
+</div>
+
+<div>
+  <div class="description">
+    Learn how to go farther with tidymodels in your modeling and machine learning projects.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>After you know <a href="../../start/">what you need to get started</a> with tidymodels, you can learn more and go further. Find articles here to help you solve specific problems using the tidymodels framework. Articles are organized into four categories:</p>
+<section id="perform-statistical-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="perform-statistical-analyses">Perform Statistical Analyses</h2>
+<ul>
+<li><a href="statistics/tidy-analysis/correlation_and_regression_fundamentals_with_tidy_data_principles.html">Correlation and regression fundamentals with tidy data principles</a>: Analyze the results of correlation tests and simple regression models for many data sets at once</li>
+<li><a href="statistics/k-means/k-means_clustering_with_tidy_data_principles.html">K-means clustering with tidy data principles</a>: Summarize clustering characteristics and estimate the best number of clusters for a data set.</li>
+<li><a href="statistics/bootstrap/bootstrap_resampling_and_tidy_regression_models.html">Bootstrap resampling and tidy regression models</a>: Apply bootstrap resampling to estimate uncertainty in model parameters.</li>
+<li><a href="statistics/infer/hypothesis_testing_using_resampling_and_tidy_data.html">Hypothesis testing using resampling and tidy data</a>: Perform common hypothesis tests for statistical inference using flexible functions.</li>
+<li><a href="statistics/xtabs/statistical_analysis_of_contingency_tables.html">Statistical analysis of contingency tables</a>: Use tests of independence and goodness of fit to analyze tables of counts.</li>
+</ul>
+</section>
+<section id="create-robust-models" class="level2">
+<h2 class="anchored" data-anchor-id="create-robust-models">Create Robust Models</h2>
+<ul>
+<li><a href="models/parsnip-ranger-glmnet/regression_models_two_ways.html">Regression models two ways</a>: Create and train different kinds of regression models with different computational engines.</li>
+<li><a href="models/parsnip-nnet/classification_models_using_a_neural_network.html">Classification models using a neural network</a>: Train a classification model and evaluate its performance.</li>
+<li><a href="models/sub-sampling/subsampling_for_class_imbalances.html">Subsampling for class imbalances</a>: Improve model performance in imbalanced data sets through undersampling or oversampling.</li>
+<li><a href="models/time-series/modeling_time_series_with_tidy_resampling.html">Modeling time series with tidy resampling</a>: Calculate performance estimates for time series forecasts using resampling.</li>
+<li><a href="models/coefficients/working_with_model_coefficients.html">Working with model coefficients</a>: Create models that use coefficients, extract them from fitted models, and visualize them.</li>
+</ul>
+</section>
+<section id="tune-compare-and-work-with-your-models" class="level2">
+<h2 class="anchored" data-anchor-id="tune-compare-and-work-with-your-models">Tune, Compare, and Work with Your Models</h2>
+<ul>
+<li><a href="work/tune-svm/model_tuning_via_grid_search.html">Model tuning via grid search</a>: Choose hyperparameters for a model by training on a grid of many possible parameter values.</li>
+<li><a href="work/nested-resampling/nested_resampling.html">Nested resampling</a>: Estimate the best hyperparameters for a model using nested resampling.</li>
+<li><a href="work/bayes-opt/iterative_bayesian_optimization_of_a_classification_model.html">Iterative Bayesian optimization of a classification model</a>: Identify the best hyperparameters for a model using Bayesian optimization of iterative search.</li>
+<li><a href="work/tune-text/tuning_text_models.html">Tuning text models</a>: Prepare text data for predictive modeling and tune with both grid and iterative search.</li>
+<li><a href="work/case-weights/creating_case_weights_based_on_time.html">Creating case weights based on time</a>: Create models that use coefficients, extract them from fitted models, and visualize them.</li>
+</ul>
+</section>
+<section id="create-custom-modeling-tools" class="level2">
+<h2 class="anchored" data-anchor-id="create-custom-modeling-tools">Create Custom Modeling Tools</h2>
+<ul>
+<li><a href="develop/recipes/create_your_own_recipe_step_function.html">Create your own recipe step function</a>: Write a new recipe step for data preprocessing.</li>
+<li><a href="develop/models/how_to_build_a_parsnip_model.html">How to build a parsnip model</a>: Create a parsnip model function from an existing model implementation.</li>
+<li><a href="develop/metrics/custom_performance_metrics.html">Custom performance metrics</a>: Create a new performance metric and integrate it with yardstick functions.</li>
+<li><a href="develop/parameters/how_to_create_a_tuning_parameter_function.html">How to create a tuning parameter function</a>: Build functions to use in tuning both quantitative and qualitative parameters.</li>
+<li><a href="develop/broom/create_your_own_broom_tidier_methods.html">Create your own broom tidier methods</a>: Write <code>tidy()</code>, <code>glance()</code>, and <code>augment()</code> methods for new model objects.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

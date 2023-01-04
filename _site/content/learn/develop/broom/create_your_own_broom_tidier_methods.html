@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Write tidy(), glance(), and augment() methods for new model objects.">
+
+<title>tidymodels - Create your own broom tidier methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../../index.html">
+    <span class="navbar-title">tidymodels</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/start/index.html">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
+ <span class="menu-text">Learn</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Create your own broom tidier methods</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/index.html" class="sidebar-item-text sidebar-link">Learn</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Perform Statistical Analyses</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/statistics/bootstrap/bootstrap_resampling_and_tidy_regression_models.html" class="sidebar-item-text sidebar-link">Bootstrap resampling and tidy regression models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/statistics/infer/hypothesis_testing_using_resampling_and_tidy_data.html" class="sidebar-item-text sidebar-link">Hypothesis testing using resampling and tidy data</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/statistics/k-means/k-means_clustering_with_tidy_data_principles.html" class="sidebar-item-text sidebar-link">K-means clustering with tidy data principles</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/statistics/tidy-analysis/correlation_and_regression_fundamentals_with_tidy_data_principles.html" class="sidebar-item-text sidebar-link">Correlation and regression fundamentals with tidy data principles</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/statistics/xtabs/statistical_analysis_of_contingency_tables.html" class="sidebar-item-text sidebar-link">Statistical analysis of contingency tables</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Create Robust Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/models/coefficients/working_with_model_coefficients.html" class="sidebar-item-text sidebar-link">Working with model coefficients</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/models/parsnip-nnet/classification_models_using_a_neural_network.html" class="sidebar-item-text sidebar-link">Classification models using a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/models/parsnip-ranger-glmnet/regression_models_two_ways.html" class="sidebar-item-text sidebar-link">Regression models two ways</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/models/pls/multivariate_analysis_using_partial_least_squares.html" class="sidebar-item-text sidebar-link">Multivariate analysis using partial least squares</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/models/sub-sampling/subsampling_for_class_imbalances.html" class="sidebar-item-text sidebar-link">Subsampling for class imbalances</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/models/time-series/modeling_time_series_with_tidy_resampling.html" class="sidebar-item-text sidebar-link">Modeling time series with tidy resampling</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Develop custom modeling tools</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/develop/broom/create_your_own_broom_tidier_methods.html" class="sidebar-item-text sidebar-link active">Create your own broom tidier methods</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/develop/metrics/custom_performance_metrics.html" class="sidebar-item-text sidebar-link">Custom performance metrics</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/develop/models/how_to_build_a_parsnip_model.html" class="sidebar-item-text sidebar-link">How to build a parsnip model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/develop/parameters/how_to_create_a_tuning_parameter_function.html" class="sidebar-item-text sidebar-link">How to create a tuning parameter function</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/develop/recipes/create_your_own_recipe_step_function.html" class="sidebar-item-text sidebar-link">Create your own recipe step function</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Tune, compare, and work with your models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/work/bayes-opt/iterative_bayesian_optimization_of_a_classification_model.html" class="sidebar-item-text sidebar-link">Iterative Bayesian optimization of a classification model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/work/case-weights/creating_case_weights_based_on_time.html" class="sidebar-item-text sidebar-link">Creating case weights based on time</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/work/nested-resampling/nested_resampling.html" class="sidebar-item-text sidebar-link">Nested resampling</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/work/tune-svm/model_tuning_via_grid_search.html" class="sidebar-item-text sidebar-link">Model tuning via grid search</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../content/learn/work/tune-text/tuning_text_models.html" class="sidebar-item-text sidebar-link">Tuning text models</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#re-export-the-tidier-generics" id="toc-re-export-the-tidier-generics" class="nav-link" data-scroll-target="#re-export-the-tidier-generics">Re-export the tidier generics</a></li>
+  <li><a href="#implement-tidying-methods" id="toc-implement-tidying-methods" class="nav-link" data-scroll-target="#implement-tidying-methods">Implement tidying methods</a>
+  <ul class="collapse">
+  <li><a href="#implementing-the-tidy-method" id="toc-implementing-the-tidy-method" class="nav-link" data-scroll-target="#implementing-the-tidy-method">Implementing the <code>tidy()</code> method</a></li>
+  <li><a href="#implementing-the-glance-method" id="toc-implementing-the-glance-method" class="nav-link" data-scroll-target="#implementing-the-glance-method">Implementing the <code>glance()</code> method</a></li>
+  <li><a href="#implementing-the-augment-method" id="toc-implementing-the-augment-method" class="nav-link" data-scroll-target="#implementing-the-augment-method">Implementing the <code>augment()</code> method</a></li>
+  </ul></li>
+  <li><a href="#document-the-new-methods" id="toc-document-the-new-methods" class="nav-link" data-scroll-target="#document-the-new-methods">Document the new methods</a></li>
+  <li><a href="#glossary" id="toc-glossary" class="nav-link" data-scroll-target="#glossary">Glossaries: argument and column names</a></li>
+  <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Create your own broom tidier methods</h1>
+</div>
+
+<div>
+  <div class="description">
+    <p>Write tidy(), glance(), and augment() methods for new model objects.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>To use code in this article, you will need to install the following packages: generics, tidymodels, tidyverse, and usethis.</p>
+<p>The broom package provides tools to summarize key information about models in tidy <code>tibble()</code>s. The package provides three verbs, or “tidiers,” to help make model objects easier to work with:</p>
+<ul>
+<li><code>tidy()</code> summarizes information about model components</li>
+<li><code>glance()</code> reports information about the entire model</li>
+<li><code>augment()</code> adds information about observations to a dataset</li>
+</ul>
+<p>Each of the three verbs above are <em>generic</em>, in that they do not define a procedure to tidy a given model object, but instead redirect to the relevant <em>method</em> implemented to tidy a specific type of model object. The broom package provides methods for model objects from over 100 modeling packages along with nearly all of the model objects in the stats package that comes with base R. However, for maintainability purposes, the broom package authors now ask that requests for new methods be first directed to the parent package (i.e.&nbsp;the package that supplies the model object) rather than to broom. New methods will generally only be integrated into broom in the case that the requester has already asked the maintainers of the model-owning package to implement tidier methods in the parent package.</p>
+<p>We’d like to make implementing external tidier methods as painless as possible. The general process for doing so is:</p>
+<ul>
+<li>re-export the tidier generics</li>
+<li>implement tidying methods</li>
+<li>document the new methods</li>
+</ul>
+<p>In this article, we’ll walk through each of the above steps in detail, giving examples and pointing out helpful functions when possible.</p>
+</section>
+<section id="re-export-the-tidier-generics" class="level2">
+<h2 class="anchored" data-anchor-id="re-export-the-tidier-generics">Re-export the tidier generics</h2>
+<p>The first step is to re-export the generic functions for <code>tidy()</code>, <code>glance()</code>, and/or <code>augment()</code>. You could do so from <code>broom</code> itself, but we’ve provided an alternative, much lighter dependency called <code>generics</code>.</p>
+<p>First you’ll need to add the <a href="https://github.com/r-lib/generics">generics</a> package to <code>Imports</code>. We recommend using the <a href="https://github.com/r-lib/usethis">usethis</a> package for this:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_package</span>(<span class="st">"generics"</span>, <span class="st">"Imports"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, you’ll need to re-export the appropriate tidying methods. If you plan to implement a <code>glance()</code> method, for example, you can re-export the <code>glance()</code> generic by adding the following somewhere inside the <code>/R</code> folder of your package:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' @importFrom generics glance</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>generics<span class="sc">::</span>glance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Oftentimes it doesn’t make sense to define one or more of these methods for a particular model. In this case, only implement the methods that do make sense.</p>
+<p>{{% warning %}} Please do not define <code>tidy()</code>, <code>glance()</code>, or <code>augment()</code> generics in your package. This will result in namespace conflicts whenever your package is used along other packages that also export tidying methods. {{%/ warning %}}</p>
+</section>
+<section id="implement-tidying-methods" class="level2">
+<h2 class="anchored" data-anchor-id="implement-tidying-methods">Implement tidying methods</h2>
+<p>You’ll now need to implement specific tidying methods for each of the generics you’ve re-exported in the above step. For each of <code>tidy()</code>, <code>glance()</code>, and <code>augment()</code>, we’ll walk through the big picture, an example, and helpful resources.</p>
+<p>In this article, we’ll use the base R dataset <code>trees</code>, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R <code>lm()</code> function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in the trees dataset</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(trees)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># take a look!</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(trees)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'data.frame':    31 obs. of  3 variables:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the timber volume as a function of girth and height</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>trees_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Volume <span class="sc">~</span> Girth <span class="sc">+</span> Height, <span class="at">data =</span> trees)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a look at the <code>summary()</code> of our <code>trees_model</code> fit.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = Volume ~ Girth + Height, data = trees)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -6.4065 -2.6493 -0.2876  2.2003  8.4847 </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -57.9877     8.6382  -6.713 2.75e-07 ***</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Girth         4.7082     0.2643  17.816  &lt; 2e-16 ***</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Height        0.3393     0.1302   2.607   0.0145 *  </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 3.882 on 28 degrees of freedom</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.948,  Adjusted R-squared:  0.9442 </span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:   255 on 2 and 28 DF,  p-value: &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This output gives some summary statistics on the residuals (which would be described more fully in an <code>augment()</code> output), model coefficients (which, in this case, make up the <code>tidy()</code> output), and some model-level summarizations such as RSE, <span class="math inline">\(R^2\)</span>, etc. (which make up the <code>glance()</code> output.)</p>
+<section id="implementing-the-tidy-method" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-the-tidy-method">Implementing the <code>tidy()</code> method</h3>
+<p>The <code>tidy(x, ...)</code> method will return a tibble where each row contains information about a component of the model. The <code>x</code> input is a model object, and the dots (<code>...</code>) are an optional argument to supply additional information to any calls inside your method. New <code>tidy()</code> methods can take additional arguments, but <em>must</em> include the <code>x</code> and <code>...</code> arguments to be compatible with the generic function. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.) Examples of model components include regression coefficients (for regression models), clusters (for classification/clustering models), etc. These <code>tidy()</code> methods are useful for inspecting model details and creating custom model visualizations.</p>
+<p>Returning to the example of our linear model on timber volume, we’d like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its <code>summary()</code>, you might notice that you can extract the regression coefficients as follows:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)<span class="sc">$</span>coefficients</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error   t value     Pr(&gt;|t|)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -57.9876589  8.6382259 -6.712913 2.749507e-07</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Girth         4.7081605  0.2642646 17.816084 8.223304e-17</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Height        0.3392512  0.1301512  2.606594 1.449097e-02</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This object contains the model coefficients as a table, where the information giving which coefficient is being described in each row is given in the row names. Converting to a tibble where the row names are contained in a column, you might write:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trees_model_tidy <span class="ot">&lt;-</span> <span class="fu">summary</span>(trees_model)<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"term"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>trees_model_tidy</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   term        Estimate `Std. Error` `t value` `Pr(&gt;|t|)`</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 (Intercept)  -58.0          8.64      -6.71   2.75e- 7</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Girth          4.71         0.264     17.8    8.22e-17</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Height         0.339        0.130      2.61   1.45e- 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The broom package standardizes common column names used to describe coefficients. In this case, the column names are:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(trees_model_tidy) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"estimate"</span>, <span class="st">"std.error"</span>, <span class="st">"statistic"</span>, <span class="st">"p.value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A glossary giving the currently acceptable column names outputted by <code>tidy()</code> methods can be found <a href="#glossary">at the end of this article</a>. As a rule of thumb, column names resulting from <code>tidy()</code> methods should be all lowercase and contain only alphanumerics or periods (though there are plenty of exceptions).</p>
+<p>Finally, it is common for <code>tidy()</code> methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the <code>confint()</code> function can be used to calculate confidence intervals from a model object resulting from <code>lm()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(trees_model)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    2.5 %      97.5 %</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -75.68226247 -40.2930554</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Girth         4.16683899   5.2494820</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Height        0.07264863   0.6058538</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With these considerations in mind, a reasonable <code>tidy()</code> method for <code>lm()</code> might look something like:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tidy.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">conf.int =</span> <span class="cn">FALSE</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>, ...) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">summary</span>(x)<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"term"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">estimate =</span> Estimate,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">std.error =</span> <span class="st">`</span><span class="at">Std. Error</span><span class="st">`</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">statistic =</span> <span class="st">`</span><span class="at">t value</span><span class="st">`</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">p.value =</span> <span class="st">`</span><span class="at">Pr(&gt;|t|)</span><span class="st">`</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (conf.int) {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(x, <span class="at">level =</span> conf.level)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(result, ci, <span class="at">by =</span> <span class="st">"term"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  result</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>{{% note %}} If you’re interested, the actual <code>tidy.lm()</code> source can be found <a href="https://github.com/tidymodels/broom/blob/master/R/stats-lm-tidiers.R">here</a>! It’s not too different from the version above except for some argument checking and additional columns. {{%/ note %}}</p>
+<p>With this method exported, then, if a user calls <code>tidy(fit)</code>, where <code>fit</code> is an output from <code>lm()</code>, the <code>tidy()</code> generic would “redirect” the call to the <code>tidy.lm()</code> function above.</p>
+<p>Some things to keep in mind while writing your <code>tidy()</code> method:</p>
+<ul>
+<li>Sometimes a model will have several different types of components. For example, in mixed models, there is different information associated with fixed effects and random effects. Since this information doesn’t have the same interpretation, it doesn’t make sense to summarize the fixed and random effects in the same table. In cases like this you should add an argument that allows the user to specify which type of information they want. For example, you might implement an interface along the lines of:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">mixed_model</span>(...)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model, <span class="at">effects =</span> <span class="st">"fixed"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model, <span class="at">effects =</span> <span class="st">"random"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>How are missing values encoded in the model object and its <code>summary()</code>? Ensure that rows are included even when the associated model component is missing or rank deficient.</li>
+<li>Are there other measures specific to each component that could reasonably be expected to be included in their summarizations? Some common arguments to <code>tidy()</code> methods include:
+<ul>
+<li><code>conf.int</code>: A logical indicating whether or not to calculate confidence/credible intervals. This should default to <code>FALSE</code>.</li>
+<li><code>conf.level</code>: The confidence level to use for the interval when <code>conf.int = TRUE</code>. Typically defaults to <code>.95</code>.</li>
+<li><code>exponentiate</code>: A logical indicating whether or not model terms should be presented on an exponential scale (typical for logistic regression).</li>
+</ul></li>
+</ul>
+</section>
+<section id="implementing-the-glance-method" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-the-glance-method">Implementing the <code>glance()</code> method</h3>
+<p><code>glance()</code> returns a one-row tibble providing model-level summarizations (e.g.&nbsp;goodness of fit measures and related statistics). This is useful to check for model misspecification and to compare many models. Again, the <code>x</code> input is a model object, and the <code>...</code> is an optional argument to supply additional information to any calls inside your method. New <code>glance()</code> methods can also take additional arguments and <em>must</em> include the <code>x</code> and <code>...</code> arguments. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.)</p>
+<p>Returning to the <code>trees_model</code> example, we could pull out the <span class="math inline">\(R^2\)</span> value with the following code:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)<span class="sc">$</span>r.squared</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.94795</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Similarly, for the adjusted <span class="math inline">\(R^2\)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)<span class="sc">$</span>adj.r.squared</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9442322</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a <code>tibble()</code> element-by-element by subsetting the <code>summary()</code> object repeatedly. The <code>with()</code> function, however, can help make this process a bit less tedious by evaluating expressions inside of the <code>summary(trees_model)</code> environment. To grab those those same two model elements from above using <code>with()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">summary</span>(trees_model),</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>     tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">r.squared =</span> r.squared,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">adj.r.squared =</span> adj.r.squared))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   r.squared adj.r.squared</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0.948         0.944</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A reasonable <code>glance()</code> method for <code>lm()</code>, then, might look something like:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>glance.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(x),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">r.squared =</span> r.squared,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">adj.r.squared =</span> adj.r.squared,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">sigma =</span> sigma,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">statistic =</span> fstatistic[<span class="st">"value"</span>],</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">p.value =</span> <span class="fu">pf</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        fstatistic[<span class="st">"value"</span>],</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        fstatistic[<span class="st">"numdf"</span>],</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        fstatistic[<span class="st">"dendf"</span>],</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower.tail =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">df =</span> fstatistic[<span class="st">"numdf"</span>],</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> <span class="fu">as.numeric</span>(stats<span class="sc">::</span><span class="fu">logLik</span>(x)),</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">AIC =</span> stats<span class="sc">::</span><span class="fu">AIC</span>(x),</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">BIC =</span> stats<span class="sc">::</span><span class="fu">BIC</span>(x),</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">deviance =</span> stats<span class="sc">::</span><span class="fu">deviance</span>(x),</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">df.residual =</span> <span class="fu">df.residual</span>(x),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">nobs =</span> stats<span class="sc">::</span><span class="fu">nobs</span>(x)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>{{% note %}} This is the actual definition of <code>glance.lm()</code> provided by broom! {{%/ note %}}</p>
+<p>Some things to keep in mind while writing <code>glance()</code> methods: * Output should not include the name of the modeling function or any arguments given to the modeling function. * In some cases, you may wish to provide model-level diagnostics not returned by the original object. For example, the above <code>glance.lm()</code> calculates <code>AIC</code> and <code>BIC</code> from the model fit. If these are easy to compute, feel free to add them. However, tidier methods are generally not an appropriate place to implement complex or time consuming calculations. * The <code>glance</code> method should always return the same columns in the same order when given an object of a given model class. If a summary metric (such as <code>AIC</code>) is not defined in certain circumstances, use <code>NA</code>.</p>
+</section>
+<section id="implementing-the-augment-method" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-the-augment-method">Implementing the <code>augment()</code> method</h3>
+<p><code>augment()</code> methods add columns to a dataset containing information such as fitted values, residuals or cluster assignments. All columns added to a dataset have a <code>.</code> prefix to prevent existing columns from being overwritten. (Currently acceptable column names are given in <a href="#glossary">the glossary</a>.) The <code>x</code> and <code>...</code> arguments share their meaning with the two functions described above. <code>augment</code> methods also optionally accept a <code>data</code> argument that is a <code>data.frame</code> (or <code>tibble</code>) to add observation-level information to, returning a <code>tibble</code> object with the same number of rows as <code>data</code>. Many <code>augment()</code> methods also accept a <code>newdata</code> argument, following the same conventions as the <code>data</code> argument, except with the underlying assumption that the model has not “seen” the data yet. As a result, <code>newdata</code> arguments need not contain the response columns in <code>data</code>. Only one of <code>data</code> or <code>newdata</code> should be supplied. A full glossary of acceptable arguments to <code>augment()</code> methods can be found at <a href="#glossary">the end of this article</a>.</p>
+<p>If a <code>data</code> argument is not specified, <code>augment()</code> should try to reconstruct the original data as much as possible from the model object. This may not always be possible, and often it will not be possible to recover columns not used by the model.</p>
+<p>With this is mind, we can look back to our <code>trees_model</code> example. For one, the <code>model</code> element inside of the <code>trees_model</code> object will allow us to recover the original data:</p>
+<div class="cell" data-layout-align="center" data-rows.print="5">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>trees_model<span class="sc">$</span>model</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Volume Girth Height</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    10.3   8.3     70</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    10.3   8.6     65</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    10.2   8.8     63</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    16.4  10.5     72</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    18.8  10.7     81</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    19.7  10.8     83</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    15.6  11.0     66</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    18.2  11.0     75</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9    22.6  11.1     80</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10   19.9  11.2     75</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11   24.2  11.3     79</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12   21.0  11.4     76</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13   21.4  11.4     76</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14   21.3  11.7     69</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15   19.1  12.0     75</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16   22.2  12.9     74</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17   33.8  12.9     85</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18   27.4  13.3     86</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19   25.7  13.7     71</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 20   24.9  13.8     64</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 21   34.5  14.0     78</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 22   31.7  14.2     80</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 23   36.3  14.5     74</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 24   38.3  16.0     72</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 25   42.6  16.3     77</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 26   55.4  17.3     81</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 27   55.7  17.5     82</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 28   58.3  17.9     80</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 29   51.5  18.0     80</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 30   51.0  18.0     80</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 31   77.0  20.6     87</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Similarly, the fitted values and residuals can be accessed with the following code:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trees_model<span class="sc">$</span>fitted.values)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         1         2         3         4         5         6 </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4.837660  4.553852  4.816981 15.874115 19.869008 21.018327</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trees_model<span class="sc">$</span>residuals)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          1          2          3          4          5          6 </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5.4623403  5.7461484  5.3830187  0.5258848 -1.0690084 -1.3183270</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As with <code>glance()</code> methods, it’s fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>se.fit <span class="ot">&lt;-</span> <span class="fu">predict</span>(trees_model, <span class="at">newdata =</span> trees, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>se.fit <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(se.fit)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.3211285 1.4893775 1.6325024 0.9444212 1.3484251 1.5319772</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Thus, a reasonable <code>augment()</code> method for <code>lm</code> might look something like this:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>augment.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">data =</span> x<span class="sc">$</span>model, <span class="at">newdata =</span> <span class="cn">NULL</span>, ...) {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(newdata)) {</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(tibble<span class="sc">::</span><span class="fu">as_tibble</span>(data),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                     tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">.fitted =</span> x<span class="sc">$</span>fitted.values,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">.se.fit =</span> <span class="fu">predict</span>(x, </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                                                      <span class="at">newdata =</span> data, </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                                                      <span class="at">se.fit =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>se.fit,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">.resid =</span>  x<span class="sc">$</span>residuals))</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(x, <span class="at">newdata =</span> newdata, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(tibble<span class="sc">::</span><span class="fu">as_tibble</span>(newdata),</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                     tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">.fitted =</span> predictions<span class="sc">$</span>fit,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">.se.fit =</span> predictions<span class="sc">$</span>se.fit))</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Some other things to keep in mind while writing <code>augment()</code> methods: * The <code>newdata</code> argument should default to <code>NULL</code>. Users should only ever specify one of <code>data</code> or <code>newdata</code>. Providing both <code>data</code> and <code>newdata</code> should result in an error. The <code>newdata</code> argument should accept both <code>data.frame</code>s and <code>tibble</code>s. * Data given to the <code>data</code> argument must have both the original predictors and the original response. Data given to the <code>newdata</code> argument only needs to have the original predictors. This is important because there may be important information associated with training data that is not associated with test data. This means that the <code>original_data</code> object in <code>augment(model, data = original_data)</code> should provide <code>.fitted</code> and <code>.resid</code> columns (in most cases), whereas <code>test_data</code> in <code>augment(model, data = test_data)</code> only needs a <code>.fitted</code> column, even if the response is present in <code>test_data</code>. * If the <code>data</code> or <code>newdata</code> is specified as a <code>data.frame</code> with rownames, <code>augment</code> should return them in a column called <code>.rownames</code>. * For observations where no fitted values or summaries are available (where there’s missing data, for example), return <code>NA</code>. * <em>The <code>augment()</code> method should always return as many rows as were in <code>data</code> or <code>newdata</code></em>, depending on which is supplied</p>
+<p>{{% note %}} The recommended interface and functionality for <code>augment()</code> methods may change soon. {{%/ note %}}</p>
+</section>
+</section>
+<section id="document-the-new-methods" class="level2">
+<h2 class="anchored" data-anchor-id="document-the-new-methods">Document the new methods</h2>
+<p>The only remaining step is to integrate the new methods into the parent package! To do so, just drop the methods into a <code>.R</code> file inside of the <code>/R</code> folder and document them using roxygen2. If you’re unfamiliar with the process of documenting objects, you can read more about it <a href="http://r-pkgs.had.co.nz/man.html">here</a>. Here’s an example of how our <code>tidy.lm()</code> method might be documented:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Tidy a(n) lm object</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param x A `lm` object.</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param conf.int Logical indicating whether or not to include </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#'   a confidence interval in the tidied output. Defaults to FALSE.</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param conf.level The confidence level to use for the confidence </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#'   interval if conf.int = TRUE. Must be strictly greater than 0 </span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#'   and less than 1. Defaults to 0.95, which corresponds to a </span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#'   95 percent confidence interval.</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param ... Unused, included for generic consistency only.</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return A tidy [tibble::tibble()] summarizing component-level</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#'   information about the model</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#' # load the trees dataset</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#' data(trees)</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#' </span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#' # fit a linear model on timber volume</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#' trees_model &lt;- lm(Volume ~ Girth + Height, data = trees)</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#' # summarize model coefficients in a tidy tibble!</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co">#' tidy(trees_model)</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>tidy.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">conf.int =</span> <span class="cn">FALSE</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>, ...) {</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ... the rest of the function definition goes here!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once you’ve documented each of your new methods and executed <code>devtools::document()</code>, you’re done! Congrats on implementing your own broom tidier methods for a new model object!</p>
+</section>
+<section id="glossary" class="level2">
+<h2 class="anchored" data-anchor-id="glossary">Glossaries: argument and column names</h2>
+<p>Tidier methods have a standardized set of acceptable argument and output column names. The currently acceptable argument names by tidier method are:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Method </th>
+   <th style="text-align:left;"> Argument </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> alpha </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> boot_se </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> by_class </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> col.names </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> component </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> conf.int </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> conf.level </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> conf.method </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> conf.type </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> diagonal </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> droppars </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> effects </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> ess </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> estimate.method </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> exponentiate </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> fe </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> include_studies </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> instruments </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> intervals </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> matrix </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> measure </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> na.rm </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> object </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> p.values </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> par_type </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> parameters </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> parametric </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> pars </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> prob </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> region </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> return_zeros </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> rhat </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> robust </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> scales </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> se.type </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> strata </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> test </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> trim </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> upper </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> deviance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> diagnostics </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> looic </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> mcmc </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> test </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> x </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> data </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> interval </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> newdata </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> se_fit </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> type.predict </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> type.residuals </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> weights </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>The currently acceptable column names by tidier method are:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Method </th>
+   <th style="text-align:left;"> Column </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> acf </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> adj.p.value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> alternative </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> at.value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> at.variable </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> atmean </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> autocorrelation </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> bias </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> ci.width </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> class </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> cluster </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> coef.type </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> column1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> column2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> comp </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> comparison </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> component </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> conf.high </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> conf.low </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> contrast </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> cumulative </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> cutoff </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> delta </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> den.df </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> denominator </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> dev.ratio </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> df </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> distance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> estimate </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> estimate1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> estimate2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> event </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> exp </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> expected </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> fpr </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> freq </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> GCV </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> group </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> group1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> group2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> index </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> item1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> item2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> kendall_score </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> lag </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> lambda </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> letters </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> lhs </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> logLik </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> mcmc.error </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> mean </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> meansq </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> method </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> n </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> N </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> n.censor </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> n.event </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> n.risk </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> null.value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> num.df </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> nzero </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> obs </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> op </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> outcome </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> p </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> p.value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> p.value.Sargan </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> p.value.weakinst </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> p.value.Wu.Hausman </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> parameter </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> PC </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> percent </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> power </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> proportion </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> pyears </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> response </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> rhs </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> robust.se </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> row </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> scale </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> sd </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> series </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> sig.level </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> size </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> spec </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> state </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> statistic </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> statistic.Sargan </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> statistic.weakinst </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> statistic.Wu.Hausman </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> std_estimate </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> std.all </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> std.dev </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> std.error </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> std.lv </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> std.nox </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> step </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> strata </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> stratum </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> study </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> sumsq </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> tau </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> term </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> time </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> tpr </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> type </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> uniqueness </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> var_kendall_score </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> variable </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> variance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> withinss </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> y.level </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> y.value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> tidy </td>
+   <td style="text-align:left;"> z </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> adj.r.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> agfi </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> AIC </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> AICc </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> alpha </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> alternative </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> autocorrelation </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> avg.silhouette.width </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> betweenss </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> BIC </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> cfi </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> chi.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> chisq </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> cochran.qe </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> cochran.qm </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> conf.high </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> conf.low </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> converged </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> convergence </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> crit </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> cv.crit </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> den.df </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> deviance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> df </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> df.null </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> df.residual </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> dw.original </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> dw.transformed </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> edf </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> estimator </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> events </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> finTol </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> function.count </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> G </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> g.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> gamma </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> gradient.count </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> H </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> h.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> hypvol </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> i.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> independence </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> isConv </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> iter </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> iterations </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> kHKB </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> kLW </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> lag.order </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> lambda </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> lambda.1se </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> lambda.min </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> lambdaGCV </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> logLik </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> max.cluster.size </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> max.hazard </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> max.time </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> maxit </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> MCMC.burnin </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> MCMC.interval </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> MCMC.samplesize </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> measure </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> median </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> method </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> min.hazard </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> min.time </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> missing_method </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> model </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> n </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> n.clusters </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> n.factors </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> n.max </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> n.start </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> nevent </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> nexcluded </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> ngroups </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> nobs </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> norig </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> npar </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> npasses </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> null.deviance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> nulldev </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> num.df </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> number.interaction </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> offtable </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.cochran.qe </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.cochran.qm </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.original </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.Sargan </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.transformed </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.weak.instr </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> p.value.Wu.Hausman </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> parameter </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> pen.crit </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> power </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> power.reached </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> pseudo.r.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> r.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> records </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> residual.deviance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rho </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rho2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rho20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rmean </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rmean.std.error </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rmsea </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rmsea.conf.high </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> rscore </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> score </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> sigma </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> sigma2_j </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> spar </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> srmr </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> statistic </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> statistic.Sargan </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> statistic.weak.instr </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> statistic.Wu.Hausman </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> tau </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> tau.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> tau.squared.se </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> theta </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> timepoints </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> tli </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> tot.withinss </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> total </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> total.variance </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> totss </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> value </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> glance </td>
+   <td style="text-align:left;"> within.r.squared </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .class </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .cluster </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .cochran.qe.loo </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .col.prop </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .conf.high </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .conf.low </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .cooksd </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .cov.ratio </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .cred.high </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .cred.low </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .dffits </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .expected </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .fitted </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .fitted_j_0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .fitted_j_1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .hat </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .lower </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .moderator </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .moderator.level </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .observed </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .probability </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .prop </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .remainder </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .resid </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .resid_j_0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .resid_j_1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .row.prop </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .rownames </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .se.fit </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .seasadj </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .seasonal </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .sigma </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .std.resid </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .tau </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .tau.squared.loo </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .trend </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .uncertainty </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .upper </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> augment </td>
+   <td style="text-align:left;"> .weight </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>The <a href="https://github.com/alexpghayes/modeltests">alexpghayes/modeltests</a> package provides unit testing infrastructure to check your new tidier methods. Please file an issue there to request new arguments/columns to be added to the glossaries!</p>
+</section>
+<section id="session-information" class="level2">
+<h2 class="anchored" data-anchor-id="session-information">Session information</h2>
+<div class="cell" data-layout-align="center">
+<pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
+#&gt;  setting  value
+#&gt;  version  R version 4.2.0 (2022-04-22)
+#&gt;  os       macOS Big Sur/Monterey 10.16
+#&gt;  system   x86_64, darwin17.0
+#&gt;  ui       X11
+#&gt;  language (EN)
+#&gt;  collate  en_US.UTF-8
+#&gt;  ctype    en_US.UTF-8
+#&gt;  tz       America/New_York
+#&gt;  date     2023-01-03
+#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt; 
+#&gt; ─ Packages ─────────────────────────────────────────────────────────
+#&gt;  package    * version    date (UTC) lib source
+#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
+#&gt;  generics   * 0.1.3      2022-07-05 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
+#&gt;  infer      * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
+#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.3.9000 2022-12-12 [1] local
+#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1.9000 2022-12-13 [1] local
+#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
+#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
+#&gt;  tidyverse  * 1.3.1      2022-06-24 [1] Github (tidyverse/tidyverse@9060a1d)
+#&gt;  tune       * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
+#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt; 
+#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
+#&gt; 
+#&gt; ────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
