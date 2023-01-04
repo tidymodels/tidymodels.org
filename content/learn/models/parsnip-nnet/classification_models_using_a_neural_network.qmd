@@ -20,7 +20,7 @@ source(here::here("common.R"))
 #| label: "load"
 #| include: false
 library(tidymodels)
-pkgs <- c("tidymodels", "brulee")
+pkgs <- c("tidymodels", "brulee", "AppliedPredictiveModeling")
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
@@ -28,7 +28,7 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 
 ## Introduction
 
-`r article_req_pkgs(pkgs)` You will also need the python keras library installed (see `?keras::install_keras()`).
+`r article_req_pkgs(pkgs)` You will also need the python torch library installed (see `?torch::install_torch()`).
 
 We can create classification models with the tidymodels package [parsnip](https://parsnip.tidymodels.org/) to predict categorical quantities or class labels. Here, let's fit a single classification model using a neural network and evaluate using a validation set. While the [tune](https://tune.tidymodels.org/) package has functionality to also do this, the parsnip package is the center of attention in this article so that we can better understand its usage. 
 
@@ -40,9 +40,12 @@ Let's fit a model to a small, two predictor classification data set. The data ar
 
 ```{r}
 #| label: "biv--split"
-data(bivariate)
-nrow(bivariate_train)
-nrow(bivariate_val)
+library(AppliedPredictiveModeling)
+
+set.seed(321)
+cls_train <- quadBoundaryFunc(2000) %>% select(A = X1, B = X2, class)
+cls_val   <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
+cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
 ```
 
 A plot of the data shows two right-skewed predictors: 
@@ -51,8 +54,9 @@ A plot of the data shows two right-skewed predictors:
 #| label: "biv-plot"
 #| fig-width:  6
 #| fig-height:  6.1
-ggplot(bivariate_train, aes(x = A, y = B, col = Class)) + 
-  geom_point(alpha = .2)
+ggplot(cls_train, aes(x = A, y = B, col = class)) + 
+  geom_point(alpha = 1 / 4, cex = 3) + 
+  coord_fixed()
 ```
 
 Let's use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the `step_BoxCox()` function) and on a common scale (using `step_normalize()`). We can use [recipes](https://recipes.tidymodels.org/) to do so:
@@ -60,31 +64,28 @@ Let's use a single hidden layer neural network to predict the outcome. To do thi
 ```{r}
 #| label: "biv--proc"
 biv_rec <- 
-  recipe(Class ~ ., data = bivariate_train) %>%
-  step_BoxCox(all_predictors())%>%
-  step_normalize(all_predictors()) %>%
-  prep(training = bivariate_train, retain = TRUE)
-
-# We will bake(new_data = NULL) to get the processed training set back
-
-# For validation:
-val_normalized <- bake(biv_rec, new_data = bivariate_val, all_predictors())
-# For testing when we arrive at a final model: 
-test_normalized <- bake(biv_rec, new_data = bivariate_test, all_predictors())
+  recipe(class ~ ., data = cls_train) %>%
+  step_normalize(all_predictors())
 ```
 
-We can use the keras package to fit a model with 5 hidden units and a 10% dropout rate, to regularize the model:
+This recipe is not directly executed; the steps will be estimated when the model is fit. 
+
+We can use the brulee package to fit a model with 5 hidden units and a 10% dropout rate, to regularize the model:
 
 ```{r}
-#| label: "biv--nnet"
-set.seed(57974)
-nnet_fit <-
-  mlp(epochs = 100, hidden_units = 5, dropout = 0.1) %>%
-  set_mode("classification") %>% 
-  set_engine("brulee") %>%
-  fit(Class ~ ., data = bake(biv_rec, new_data = NULL))
+#| label: "biv-nnet"
+nnet_spec <- 
+  mlp(epochs = 1000, hidden_units = 10, penalty = 0.01, learn_rate = 0.1) %>% 
+  set_engine("brulee", validation = 0) %>% 
+  set_mode("classification")
 
-nnet_fit
+nnet_wflow <- 
+  biv_rec %>% 
+  workflow(nnet_spec)
+
+set.seed(987)
+nnet_fit <- fit(nnet_wflow, cls_train)
+nnet_fit %>% extract_fit_engine()
 ```
 
 ## Model performance
@@ -94,42 +95,43 @@ In parsnip, the `predict()` function can be used to characterize performance on 
 ```{r}
 #| label: "biv--perf"
 val_results <- 
-  bivariate_val %>%
+  cls_val %>%
   bind_cols(
-    predict(nnet_fit, new_data = val_normalized),
-    predict(nnet_fit, new_data = val_normalized, type = "prob")
+    predict(nnet_fit, new_data = cls_val),
+    predict(nnet_fit, new_data = cls_val, type = "prob")
   )
 val_results %>% slice(1:5)
 
-val_results %>% roc_auc(truth = Class, .pred_One)
+val_results %>% roc_auc(truth = class, .pred_Class1)
 
-val_results %>% accuracy(truth = Class, .pred_class)
+val_results %>% accuracy(truth = class, .pred_class)
 
-val_results %>% conf_mat(truth = Class, .pred_class)
+val_results %>% conf_mat(truth = class, .pred_class)
 ```
 
-Let's also create a grid to get a visual sense of the class boundary for the validation set.
+Let's also create a grid to get a visual sense of the class boundary for the test set.
 
 ```{r}
 #| label: "biv-boundary"
 #| fig-width:  6
 #| fig-height:  6.1
-a_rng <- range(bivariate_train$A)
-b_rng <- range(bivariate_train$B)
+a_rng <- range(cls_train$A)
+b_rng <- range(cls_train$B)
 x_grid <-
   expand.grid(A = seq(a_rng[1], a_rng[2], length.out = 100),
               B = seq(b_rng[1], b_rng[2], length.out = 100))
-x_grid_trans <- bake(biv_rec, x_grid)
+
 
 # Make predictions using the transformed predictors but 
 # attach them to the predictors in the original units: 
 x_grid <- 
   x_grid %>% 
-  bind_cols(predict(nnet_fit, x_grid_trans, type = "prob"))
+  bind_cols(predict(nnet_fit, x_grid, type = "prob"))
 
 ggplot(x_grid, aes(x = A, y = B)) + 
-  geom_contour(aes(z = .pred_One), breaks = .5, col = "black") + 
-  geom_point(data = bivariate_val, aes(col = Class), alpha = 0.3)
+  geom_point(data = cls_test, aes(col = class), alpha = 1 / 2, cex = 3) +
+  geom_contour(aes(z = .pred_Class1), breaks = .5, col = "black", linewidth = 1) + 
+  coord_fixed()
 ```
 
 

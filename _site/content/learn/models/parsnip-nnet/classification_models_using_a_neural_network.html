@@ -152,6 +152,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/help/index.html">
+ <span class="menu-text">Help</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/contribute/index.html">
+ <span class="menu-text">Contribute</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/author/index.html">
+ <span class="menu-text">About</span></a>
+  </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
@@ -368,23 +380,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>To use code in this article, you will need to install the following packages: brulee and tidymodels. You will also need the python keras library installed (see <code>?keras::install_keras()</code>).</p>
+<p>To use code in this article, you will need to install the following packages: AppliedPredictiveModeling, brulee, and tidymodels. You will also need the python torch library installed (see <code>?torch::install_torch()</code>).</p>
 <p>We can create classification models with the tidymodels package <a href="https://parsnip.tidymodels.org/">parsnip</a> to predict categorical quantities or class labels. Here, let’s fit a single classification model using a neural network and evaluate using a validation set. While the <a href="https://tune.tidymodels.org/">tune</a> package has functionality to also do this, the parsnip package is the center of attention in this article so that we can better understand its usage.</p>
 </section>
 <section id="fitting-a-neural-network" class="level2">
 <h2 class="anchored" data-anchor-id="fitting-a-neural-network">Fitting a neural network</h2>
 <p>Let’s fit a model to a small, two predictor classification data set. The data are in the modeldata package (part of tidymodels) and have been split into training, validation, and test data sets. In this analysis, the test set is left untouched; this article tries to emulate a good data usage methodology where the test set would only be evaluated once at the end after a variety of models have been considered.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(bivariate)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(bivariate_train)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1009</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(bivariate_val)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 300</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="cache/biv--split_a52be8694e1630c82c8a997715818d2f">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AppliedPredictiveModeling)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>cls_train <span class="ot">&lt;-</span> <span class="fu">quadBoundaryFunc</span>(<span class="dv">2000</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">A =</span> X1, <span class="at">B =</span> X2, class)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cls_val   <span class="ot">&lt;-</span> <span class="fu">quadBoundaryFunc</span>( <span class="dv">500</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">A =</span> X1, <span class="at">B =</span> X2, class)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>cls_test  <span class="ot">&lt;-</span> <span class="fu">quadBoundaryFunc</span>( <span class="dv">500</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">A =</span> X1, <span class="at">B =</span> X2, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A plot of the data shows two right-skewed predictors:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bivariate_train, <span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> B, <span class="at">col =</span> Class)) <span class="sc">+</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="cache/biv-plot_01f6128bd0ca79ee6725e5aa44a43ca8">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cls_train, <span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> B, <span class="at">col =</span> class)) <span class="sc">+</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">4</span>, <span class="at">cex =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -394,101 +408,94 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>Let’s use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the <code>step_BoxCox()</code> function) and on a common scale (using <code>step_normalize()</code>). We can use <a href="https://recipes.tidymodels.org/">recipes</a> to do so:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="cache/biv--proc_ffa29913458a770549c19a00ec0100e9">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>biv_rec <span class="ot">&lt;-</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> bivariate_train) <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_BoxCox</span>(<span class="fu">all_predictors</span>())<span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">training =</span> bivariate_train, <span class="at">retain =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># We will bake(new_data = NULL) to get the processed training set back</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># For validation:</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>val_normalized <span class="ot">&lt;-</span> <span class="fu">bake</span>(biv_rec, <span class="at">new_data =</span> bivariate_val, <span class="fu">all_predictors</span>())</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># For testing when we arrive at a final model: </span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>test_normalized <span class="ot">&lt;-</span> <span class="fu">bake</span>(biv_rec, <span class="at">new_data =</span> bivariate_test, <span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cls_train) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can use the keras package to fit a model with 5 hidden units and a 10% dropout rate, to regularize the model:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">57974</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nnet_fit <span class="ot">&lt;-</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mlp</span>(<span class="at">epochs =</span> <span class="dv">100</span>, <span class="at">hidden_units =</span> <span class="dv">5</span>, <span class="at">dropout =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"brulee"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> <span class="fu">bake</span>(biv_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nnet_fit</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parsnip model object</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multilayer perceptron</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; relu activation</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 hidden units,  27 model parameters</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1,009 samples, 2 features, 2 classes </span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class weights One=1, Two=1 </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; weight decay: 0.001 </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dropout proportion: 0.1 </span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; batch size: 909 </span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; learn rate: 0.01 </span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; validation loss after 23 epochs: 0.704</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This recipe is not directly executed; the steps will be estimated when the model is fit.</p>
+<p>We can use the brulee package to fit a model with 5 hidden units and a 10% dropout rate, to regularize the model:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/biv-nnet_bb4c7ebfa6b8b8a735ac07f1e5db3d0c">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nnet_spec <span class="ot">&lt;-</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mlp</span>(<span class="at">epochs =</span> <span class="dv">1000</span>, <span class="at">hidden_units =</span> <span class="dv">10</span>, <span class="at">penalty =</span> <span class="fl">0.01</span>, <span class="at">learn_rate =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"brulee"</span>, <span class="at">validation =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>nnet_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  biv_rec <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>(nnet_spec)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>nnet_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(nnet_wflow, cls_train)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>nnet_fit <span class="sc">%&gt;%</span> <span class="fu">extract_fit_engine</span>()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multilayer perceptron</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; relu activation</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 hidden units,  52 model parameters</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2,000 samples, 2 features, 2 classes </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class weights Class1=1, Class2=1 </span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; weight decay: 0.01 </span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dropout proportion: 0 </span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; batch size: 2000 </span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; learn rate: 0.1 </span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; training set loss after 1000 epochs: 0.375</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="model-performance" class="level2">
 <h2 class="anchored" data-anchor-id="model-performance">Model performance</h2>
 <p>In parsnip, the <code>predict()</code> function can be used to characterize performance on the validation set. Since parsnip always produces tibble outputs, these can just be column bound to the original data:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="cache/biv--perf_790f24a48a151216e707b8de11042b11">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>val_results <span class="ot">&lt;-</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  bivariate_val <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  cls_val <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(nnet_fit, <span class="at">new_data =</span> val_normalized),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(nnet_fit, <span class="at">new_data =</span> val_normalized, <span class="at">type =</span> <span class="st">"prob"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(nnet_fit, <span class="at">new_data =</span> cls_val),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(nnet_fit, <span class="at">new_data =</span> cls_val, <span class="at">type =</span> <span class="st">"prob"</span>)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 6</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       A     B Class .pred_class .pred_One .pred_Two</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 1061.  74.5 One   Two             0.451     0.549</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1241.  83.4 One   Two             0.481     0.519</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  939.  71.9 One   Two             0.431     0.569</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  813.  77.1 One   Two             0.418     0.582</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 1706.  92.8 Two   Two             0.494     0.506</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">roc_auc</span>(<span class="at">truth =</span> Class, .pred_One)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric .estimator .estimate</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 roc_auc binary         0.448</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">accuracy</span>(<span class="at">truth =</span> Class, .pred_class)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 accuracy binary         0.327</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">conf_mat</span>(<span class="at">truth =</span> Class, .pred_class)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Truth</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Prediction One Two</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        One   0   0</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        Two 202  98</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           A           B  class .pred_class .pred_Class1 .pred_Class2</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7632082 -0.04012164 Class2      Class2    0.0625551   0.93744493</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.9823745 -0.16911637 Class2      Class2    0.0572130   0.94278705</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 1.0558147  0.52817699 Class2      Class2    0.1036827   0.89631736</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 1.2424507  1.10902951 Class2      Class2    0.3496681   0.65033191</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 1.5889815  2.71047720 Class1      Class1    0.9795171   0.02048289</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">roc_auc</span>(<span class="at">truth =</span> class, .pred_Class1)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric .estimator .estimate</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 roc_auc binary         0.957</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">accuracy</span>(<span class="at">truth =</span> class, .pred_class)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 accuracy binary          0.91</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>val_results <span class="sc">%&gt;%</span> <span class="fu">conf_mat</span>(<span class="at">truth =</span> class, .pred_class)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Truth</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Prediction Class1 Class2</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Class1    175     18</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Class2     27    280</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let’s also create a grid to get a visual sense of the class boundary for the validation set.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a_rng <span class="ot">&lt;-</span> <span class="fu">range</span>(bivariate_train<span class="sc">$</span>A)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b_rng <span class="ot">&lt;-</span> <span class="fu">range</span>(bivariate_train<span class="sc">$</span>B)</span>
+<p>Let’s also create a grid to get a visual sense of the class boundary for the test set.</p>
+<div class="cell" data-layout-align="center" data-hash="cache/biv-boundary_649fab72ec1b36da93d0add4a6fbd0b8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a_rng <span class="ot">&lt;-</span> <span class="fu">range</span>(cls_train<span class="sc">$</span>A)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b_rng <span class="ot">&lt;-</span> <span class="fu">range</span>(cls_train<span class="sc">$</span>B)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand.grid</span>(<span class="at">A =</span> <span class="fu">seq</span>(a_rng[<span class="dv">1</span>], a_rng[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">100</span>),</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">B =</span> <span class="fu">seq</span>(b_rng[<span class="dv">1</span>], b_rng[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">100</span>))</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>x_grid_trans <span class="ot">&lt;-</span> <span class="fu">bake</span>(biv_rec, x_grid)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions using the transformed predictors but </span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># attach them to the predictors in the original units: </span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span> </span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  x_grid <span class="sc">%&gt;%</span> </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(nnet_fit, x_grid_trans, <span class="at">type =</span> <span class="st">"prob"</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(nnet_fit, x_grid, <span class="at">type =</span> <span class="st">"prob"</span>))</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x_grid, <span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> B)) <span class="sc">+</span> </span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="fu">aes</span>(<span class="at">z =</span> .pred_One), <span class="at">breaks =</span> .<span class="dv">5</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> bivariate_val, <span class="fu">aes</span>(<span class="at">col =</span> Class), <span class="at">alpha =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> cls_test, <span class="fu">aes</span>(<span class="at">col =</span> class), <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="fu">aes</span>(<span class="at">z =</span> .pred_Class1), <span class="at">breaks =</span> .<span class="dv">5</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -500,7 +507,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="session-information" class="level2">
 <h2 class="anchored" data-anchor-id="session-information">Session information</h2>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.2.0 (2022-04-22)
@@ -515,23 +522,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  brulee       0.2.0      2022-09-19 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3.9000 2022-12-12 [1] local
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1.9000 2022-12-13 [1] local
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  package                   * version    date (UTC) lib source
+#&gt;  AppliedPredictiveModeling * 1.1-7      2018-05-22 [1] CRAN (R 4.2.0)
+#&gt;  broom                     * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
+#&gt;  brulee                      0.2.0      2022-09-19 [1] CRAN (R 4.2.0)
+#&gt;  dials                     * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
+#&gt;  dplyr                     * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2                   * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
+#&gt;  infer                     * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
+#&gt;  parsnip                   * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
+#&gt;  purrr                     * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
+#&gt;  recipes                   * 1.0.3.9000 2022-12-12 [1] local
+#&gt;  rlang                       1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
+#&gt;  rsample                   * 1.1.1.9000 2022-12-13 [1] local
+#&gt;  tibble                    * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
+#&gt;  tidymodels                * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
+#&gt;  tune                      * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
+#&gt;  workflows                 * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
+#&gt;  yardstick                 * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
 #&gt; 
 #&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
 #&gt; 
