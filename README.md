@@ -2,7 +2,7 @@
 
 To do: 
 
-- [ ] decide on `index.qmd` or `a_name_that_is_helpful.qmd`
+- [x] decide on `index.qmd` or `a_name_that_is_helpful.qmd` (former to preserve links from previous versions)
 - [ ] `find`
 - [ ] `author`/`about`
 - [x] `contribute`
@@ -10,3 +10,4 @@ To do:
 - [ ] `packages`
 - [ ] styling
 - [ ] decide on navigation (sidebar?)
+- [ ] setup tags/categories for packages and topics
