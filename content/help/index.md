@@ -23,7 +23,7 @@ Now that you've made a reprex, you need to share it in an appropriate forum. Her
   more likely to get a useful answer. Make sure to [tag your question](https://stackoverflow.com/help/tagging) with `r`
   and `tidymodels` so that the right people are more likely to see it.
   
-* [__Twitter__][twitter-rstats]. It's hard to share your reprex only on twitter, because 280 characters are rarely enough and screenshots don't help others play with your code. However, twitter is a great place to share a link to your reprex that's hosted elsewhere! The [#rstats twitter][twitter-rstats] community is extremely friendly and active, and is a great crowd to be a part of. Make sure you tag your tweet with `#rstats` and `#tidymodels`.
+* [__Twitter__][twitter-rstats] and [__Mastodon__](https://fosstodon.org/tags/tidymodels). These sites are great places to share a link to your reprex that's hosted elsewhere! The [#rstats twitter][twitter-rstats] and [#rstats fosstodon](https://fosstodon.org/tags/tidymodels) communities are extremely friendly and active, and have great crowds to be a part of. Make sure you tag your tweet with `#rstats` and `#tidymodels`.
 
 * If you think you've found a __bug__, please follow the instructions for filing an issue on 
   [contributing to tidymodels](/contribute/).
