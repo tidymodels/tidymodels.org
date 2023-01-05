@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Find model types, engines, and arguments to fit and predict in the tidymodels framework.">
+
+<title>tidymodels - Search parsnip models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="../../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="../../../site_libs/datatables-binding-0.26/datatables.js"></script>
+<script src="../../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../../site_libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="../../../site_libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="../../../site_libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet">
+<script src="../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="../../../site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet">
+<script src="../../../site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="../../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">tidymodels</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/start/index.html" rel="" target="">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/learn/index.html" rel="" target="">
+ <span class="menu-text">Learn</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/help/index.html" rel="" target="">
+ <span class="menu-text">Help</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/contribute/index.html" rel="" target="">
+ <span class="menu-text">Contribute</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/author/index.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/find/index.html" rel="" target="">
+ <span class="menu-text">Function Reference</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#models" id="toc-models" class="nav-link active" data-scroll-target="#models">Explore models</a></li>
+  <li><a href="#model-args" id="toc-model-args" class="nav-link" data-scroll-target="#model-args">Explore model arguments</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Search parsnip models</h1>
+</div>
+
+<div>
+  <div class="description">
+    <p>Find model types, engines, and arguments to fit and predict in the tidymodels framework.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>To learn about the parsnip package, see <a href="../../../start/models/"><em>Get Started: Build a Model</em></a>. Use the tables below to find <a href="#models">model types and engines</a> and to explore <a href="#model-args">model arguments</a>.</p>
+<section id="models" class="level2">
+<h2 class="anchored" data-anchor-id="models">Explore models</h2>
+<div class="cell-output-display">
+
+<div id="htmlwidget-fa2bc601c2660015e49d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fa2bc601c2660015e49d">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;modeltime&quot;,&quot;parsnip&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;classification&quot;,&quot;classification, regression&quot;,&quot;regression&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["ADAM Regression Models","\"Boosted\" ARIMA Regression Models","ARIMA Regression Models","Automatic Machine Learning","Ensembles of MARS models","Ensembles of neural networks","Ensembles of decision trees","Bayesian additive regression trees (BART)","Boosted trees","C5.0 rule-based classification models","Cubist rule-based regression models","Decision trees","Flexible discriminant analysis","Linear discriminant analysis","Quadratic discriminant analysis","Regularized discriminant analysis","Exponential Smoothing State Space Models","Generalized additive models (GAMs)","Linear regression","Logistic regression","Multivariate adaptive regression splines (MARS)","Single layer neural network","Multinomial regression","Naive Bayes models","NAIVE Forecast Models","K-nearest neighbors","NNETAR Regression Models","Null model","Partial least squares (PLS)","Poisson regression models","Boosted PROPHET Time Series Models","PROPHET Time Series Models","Proportional hazards regression","Random forest","RuleFit models","Multiple Seasonality Regression Models (TBATS, STLM)","Parametric survival regression","Parametric survival regression","Linear support vector machines","Polynomial support vector machines","Radial basis function support vector machines","Temporal Hierarchical Forecasting (THIEF) Models","Window Forecast Models"],["<a href='https://business-science.github.io/modeltime/reference/adam_reg.html'  target='_blank'><tt>adam_reg<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/arima_boost.html'  target='_blank'><tt>arima_boost<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/arima_reg.html'  target='_blank'><tt>arima_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/auto_ml.html'  target='_blank'><tt>auto_ml<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/bag_mars.html'  target='_blank'><tt>bag_mars<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/bag_mlp.html'  target='_blank'><tt>bag_mlp<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/bag_tree.html'  target='_blank'><tt>bag_tree<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/bart.html'  target='_blank'><tt>bart<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/boost_tree.html'  target='_blank'><tt>boost_tree<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/C5_rules.html'  target='_blank'><tt>C5_rules<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/cubist_rules.html'  target='_blank'><tt>cubist_rules<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/decision_tree.html'  target='_blank'><tt>decision_tree<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/discrim_flexible.html'  target='_blank'><tt>discrim_flexible<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/discrim_linear.html'  target='_blank'><tt>discrim_linear<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/discrim_quad.html'  target='_blank'><tt>discrim_quad<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/discrim_regularized.html'  target='_blank'><tt>discrim_regularized<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/exp_smoothing.html'  target='_blank'><tt>exp_smoothing<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/gen_additive_mod.html'  target='_blank'><tt>gen_additive_mod<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/linear_reg.html'  target='_blank'><tt>linear_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/logistic_reg.html'  target='_blank'><tt>logistic_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/mars.html'  target='_blank'><tt>mars<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/mlp.html'  target='_blank'><tt>mlp<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/multinom_reg.html'  target='_blank'><tt>multinom_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/naive_Bayes.html'  target='_blank'><tt>naive_Bayes<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/naive_reg.html'  target='_blank'><tt>naive_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/nearest_neighbor.html'  target='_blank'><tt>nearest_neighbor<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/nnetar_reg.html'  target='_blank'><tt>nnetar_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/null_model.html'  target='_blank'><tt>null_model<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/pls.html'  target='_blank'><tt>pls<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/poisson_reg.html'  target='_blank'><tt>poisson_reg<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/prophet_boost.html'  target='_blank'><tt>prophet_boost<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/prophet_reg.html'  target='_blank'><tt>prophet_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/proportional_hazards.html'  target='_blank'><tt>proportional_hazards<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/rand_forest.html'  target='_blank'><tt>rand_forest<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/rule_fit.html'  target='_blank'><tt>rule_fit<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/seasonal_reg.html'  target='_blank'><tt>seasonal_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/surv_reg.html'  target='_blank'><tt>surv_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/survival_reg.html'  target='_blank'><tt>survival_reg<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/svm_linear.html'  target='_blank'><tt>svm_linear<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/svm_poly.html'  target='_blank'><tt>svm_poly<\/tt><\/a>","<a href='https://parsnip.tidymodels.org/reference/svm_rbf.html'  target='_blank'><tt>svm_rbf<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/temporal_hierarchy.html'  target='_blank'><tt>temporal_hierarchy<\/tt><\/a>","<a href='https://business-science.github.io/modeltime/reference/window_reg.html'  target='_blank'><tt>window_reg<\/tt><\/a>"],["modeltime","modeltime","modeltime","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","modeltime","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","parsnip","modeltime","parsnip","modeltime","parsnip","parsnip","parsnip","modeltime","modeltime","parsnip","parsnip","parsnip","modeltime","parsnip","parsnip","parsnip","parsnip","parsnip","modeltime","modeltime"],["regression","regression","regression",null,"classification, regression","classification, regression","classification, regression","classification, regression","classification, regression","classification","regression","classification, regression","classification","classification","classification","classification","regression","classification, regression","regression","classification","classification, regression","classification, regression","classification","classification","regression","classification, regression","regression","classification, regression","classification, regression","regression","regression","regression",null,"classification, regression","classification, regression","regression","regression",null,"classification, regression","classification, regression","classification, regression","regression","regression"],["<tt>adam<\/tt>, <tt>auto_adam<\/tt>","<tt>arima_xgboost<\/tt>, <tt>auto_arima_xgboost<\/tt>","<tt>arima<\/tt>, <tt>auto_arima<\/tt>",null,"<tt>earth<\/tt>","<tt>nnet<\/tt>","<tt>C5.0<\/tt>, <tt>rpart<\/tt>","<tt>dbarts<\/tt>","<tt>C5.0<\/tt>, <tt>spark<\/tt>, <tt>xgboost<\/tt>","<tt>C5.0<\/tt>","<tt>Cubist<\/tt>","<tt>C5.0<\/tt>, <tt>rpart<\/tt>, <tt>spark<\/tt>","<tt>earth<\/tt>","<tt>MASS<\/tt>, <tt>mda<\/tt>, <tt>sda<\/tt>, <tt>sparsediscrim<\/tt>","<tt>MASS<\/tt>, <tt>sparsediscrim<\/tt>","<tt>klaR<\/tt>","<tt>croston<\/tt>, <tt>ets<\/tt>, <tt>smooth_es<\/tt>, <tt>theta<\/tt>","<tt>mgcv<\/tt>","<tt>brulee<\/tt>, <tt>glm<\/tt>, <tt>glmnet<\/tt>, <tt>keras<\/tt>, <tt>lm<\/tt>, <tt>spark<\/tt>, <tt>stan<\/tt>","<tt>brulee<\/tt>, <tt>glm<\/tt>, <tt>glmnet<\/tt>, <tt>keras<\/tt>, <tt>LiblineaR<\/tt>, <tt>spark<\/tt>, <tt>stan<\/tt>","<tt>earth<\/tt>","<tt>brulee<\/tt>, <tt>keras<\/tt>, <tt>nnet<\/tt>","<tt>brulee<\/tt>, <tt>glmnet<\/tt>, <tt>keras<\/tt>, <tt>nnet<\/tt>, <tt>spark<\/tt>","<tt>klaR<\/tt>, <tt>naivebayes<\/tt>","<tt>naive<\/tt>, <tt>snaive<\/tt>","<tt>kknn<\/tt>","<tt>nnetar<\/tt>","<tt>parsnip<\/tt>","<tt>mixOmics<\/tt>","<tt>glm<\/tt>, <tt>glmnet<\/tt>, <tt>hurdle<\/tt>, <tt>stan<\/tt>, <tt>zeroinfl<\/tt>","<tt>prophet_xgboost<\/tt>","<tt>prophet<\/tt>",null,"<tt>randomForest<\/tt>, <tt>ranger<\/tt>, <tt>spark<\/tt>","<tt>xrf<\/tt>","<tt>stlm_arima<\/tt>, <tt>stlm_ets<\/tt>, <tt>tbats<\/tt>","<tt>flexsurv<\/tt>, <tt>survival<\/tt>",null,"<tt>kernlab<\/tt>, <tt>LiblineaR<\/tt>","<tt>kernlab<\/tt>","<tt>kernlab<\/tt>, <tt>liquidSVM<\/tt>","<tt>thief<\/tt>","<tt>window_function<\/tt>"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>title<\/th>\n      <th>model type<\/th>\n      <th>package<\/th>\n      <th>mode<\/th>\n      <th>engine<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p><br></p>
+<p>Models can be added by the user too. The article <a href="../../../learn/develop/models/">How to build a parsnip model</a> walks you through the steps.</p>
+</section>
+<section id="model-args" class="level2">
+<h2 class="anchored" data-anchor-id="model-args">Explore model arguments</h2>
+<p>The parsnip package provides consistent interface for working with similar models across different engines. This means that parsnip adopts standardized parameter names as arguments, and those names may be different from those used by the individual engines. The searchable table below provides a mapping between the parsnip and the engine arguments:</p>
+<p><br></p>
+<div class="cell-output-display">
+
+<div id="htmlwidget-f52ba51213213cdac620" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f52ba51213213cdac620">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","adam_reg","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","bag_mars","bag_mars","bag_mars","bag_mlp","bag_mlp","bag_mlp","bag_tree","bag_tree","bag_tree","bag_tree","bag_tree","bag_tree","bart","bart","bart","bart","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","boost_tree","C5_rules","C5_rules","cubist_rules","cubist_rules","cubist_rules","decision_tree","decision_tree","decision_tree","decision_tree","decision_tree","decision_tree","discrim_flexible","discrim_flexible","discrim_flexible","discrim_linear","discrim_linear","discrim_quad","discrim_regularized","discrim_regularized","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","gen_additive_mod","gen_additive_mod","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","linear_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","logistic_reg","mars","mars","mars","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","mlp","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","multinom_reg","naive_Bayes","naive_Bayes","naive_Bayes","naive_Bayes","naive_reg","naive_reg","naive_reg","naive_reg","nearest_neighbor","nearest_neighbor","nearest_neighbor","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","pls","pls","poisson_reg","poisson_reg","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","rand_forest","rand_forest","rand_forest","rand_forest","rand_forest","rand_forest","rand_forest","rand_forest","rand_forest","rule_fit","rule_fit","rule_fit","rule_fit","rule_fit","rule_fit","rule_fit","rule_fit","rule_fit","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","surv_reg","surv_reg","svm_linear","svm_linear","svm_linear","svm_linear","svm_poly","svm_poly","svm_poly","svm_poly","svm_rbf","svm_rbf","svm_rbf","svm_rbf","svm_rbf","temporal_hierarchy","temporal_hierarchy","temporal_hierarchy","window_reg","window_reg"],["adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_adam","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima","arima","arima","arima","arima","arima","arima","auto_arima","auto_arima","auto_arima","auto_arima","auto_arima","auto_arima","auto_arima","earth","earth","earth","nnet","nnet","nnet","rpart","rpart","rpart","rpart","C5.0","C5.0","dbarts","dbarts","dbarts","dbarts","xgboost","xgboost","xgboost","xgboost","xgboost","xgboost","xgboost","xgboost","C5.0","C5.0","C5.0","spark","spark","spark","spark","spark","spark","spark","C5.0","C5.0","Cubist","Cubist","Cubist","rpart","rpart","rpart","C5.0","spark","spark","earth","earth","earth","mda","sparsediscrim","sparsediscrim","klaR","klaR","ets","ets","ets","ets","ets","ets","ets","ets","croston","smooth_es","smooth_es","smooth_es","smooth_es","smooth_es","smooth_es","smooth_es","smooth_es","mgcv","mgcv","glmnet","glmnet","spark","spark","keras","brulee","brulee","brulee","brulee","brulee","brulee","glmnet","glmnet","LiblineaR","LiblineaR","spark","spark","keras","brulee","brulee","brulee","brulee","brulee","brulee","earth","earth","earth","keras","keras","keras","keras","keras","nnet","nnet","nnet","brulee","brulee","brulee","brulee","brulee","brulee","brulee","brulee","brulee","glmnet","glmnet","spark","spark","keras","nnet","brulee","brulee","brulee","brulee","brulee","brulee","klaR","klaR","naivebayes","naivebayes","naive","naive","snaive","snaive","kknn","kknn","kknn","nnetar","nnetar","nnetar","nnetar","nnetar","nnetar","nnetar","mixOmics","mixOmics","glmnet","glmnet","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","ranger","ranger","ranger","randomForest","randomForest","randomForest","spark","spark","spark","xrf","xrf","xrf","xrf","xrf","xrf","xrf","xrf","xrf","tbats","tbats","tbats","stlm_ets","stlm_ets","stlm_ets","stlm_arima","stlm_arima","stlm_arima","flexsurv","survival","LiblineaR","LiblineaR","kernlab","kernlab","kernlab","kernlab","kernlab","kernlab","kernlab","kernlab","kernlab","liquidSVM","liquidSVM","thief","thief","thief","window_function","window_function"],["ets_model","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","use_constant","regressors_treatment","outliers_treatment","outliers_ci","probability_model","distribution","loss","information_criteria","seasonal_period","select_order","ets_model","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","use_constant","regressors_treatment","outliers_treatment","outliers_ci","probability_model","distribution","loss","information_criteria","seasonal_period","select_order","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","stop_iter","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","stop_iter","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","prod_degree","prune_method","num_terms","hidden_units","penalty","epochs","class_cost","tree_depth","min_n","cost_complexity","class_cost","min_n","trees","prior_terminal_node_coef","prior_terminal_node_expo","prior_outcome_range","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","stop_iter","trees","min_n","sample_size","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","trees","min_n","committees","neighbors","max_rules","tree_depth","min_n","cost_complexity","min_n","tree_depth","min_n","num_terms","prod_degree","prune_method","penalty","regularization_method","regularization_method","frac_common_cov","frac_identity","seasonal_period","error","trend","season","damping","smooth_level","smooth_trend","smooth_seasonal","smooth_level","seasonal_period","error","trend","season","damping","smooth_level","smooth_trend","smooth_seasonal","select_features","adjust_deg_free","penalty","mixture","penalty","mixture","penalty","penalty","mixture","epochs","learn_rate","momentum","stop_iter","penalty","mixture","penalty","mixture","penalty","mixture","penalty","penalty","mixture","epochs","learn_rate","momentum","stop_iter","num_terms","prod_degree","prune_method","hidden_units","penalty","dropout","epochs","activation","hidden_units","penalty","epochs","hidden_units","penalty","mixture","epochs","dropout","learn_rate","momentum","stop_iter","activation","penalty","mixture","penalty","mixture","penalty","penalty","penalty","mixture","epochs","learn_rate","momentum","stop_iter","smoothness","Laplace","smoothness","Laplace","id","seasonal_period","id","seasonal_period","neighbors","weight_func","dist_power","seasonal_period","non_seasonal_ar","seasonal_ar","hidden_units","num_networks","epochs","penalty","predictor_prop","num_comp","penalty","mixture","growth","changepoint_num","changepoint_range","seasonality_yearly","seasonality_weekly","seasonality_daily","season","prior_scale_changepoints","prior_scale_seasonality","prior_scale_holidays","logistic_cap","logistic_floor","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","stop_iter","growth","changepoint_num","changepoint_range","seasonality_yearly","seasonality_weekly","seasonality_daily","season","prior_scale_changepoints","prior_scale_seasonality","prior_scale_holidays","logistic_cap","logistic_floor","mtry","trees","min_n","mtry","trees","min_n","mtry","trees","min_n","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","penalty","stop_iter","seasonal_period_1","seasonal_period_2","seasonal_period_3","seasonal_period_1","seasonal_period_2","seasonal_period_3","seasonal_period_1","seasonal_period_2","seasonal_period_3","dist","dist","cost","margin","cost","margin","cost","degree","scale_factor","margin","cost","rbf_sigma","margin","cost","rbf_sigma","seasonal_period","combination_method","use_model","id","window_size"],["model","p","d","q","P","D","Q","constant","regressors","outliers","level","occurrence","distribution","loss","ic","period","select_order","model","p","d","q","P","D","Q","constant","regressors","outliers","level","occurrence","distribution","loss","ic","period","select_order","period","max.p","max.d","max.q","max.P","max.D","max.Q","max_depth","nrounds","eta","colsample_bynode","min_child_weight","gamma","subsample","early_stop","period","p","d","q","P","D","Q","max_depth","nrounds","eta","colsample_bynode","min_child_weight","gamma","subsample","early_stop","period","p","d","q","P","D","Q","period","max.p","max.d","max.q","max.P","max.D","max.Q","degree","pmethod","nprune","size","decay","maxit","cost","maxdepth","minsplit","cp","cost","minCases","ntree","base","power","k","max_depth","nrounds","eta","colsample_bynode","min_child_weight","gamma","subsample","early_stop","trials","minCases","sample","max_depth","max_iter","step_size","feature_subset_strategy","min_instances_per_node","min_info_gain","subsampling_rate","trials","minCases","committees","neighbors","max_rules","maxdepth","minsplit","cp","minCases","max_depth","min_instances_per_node","nprune","degree","pmethod","lambda","method","method","lambda","gamma","period","error","trend","season","damping","alpha","beta","gamma","alpha","period","error","trend","season","damping","alpha","beta","gamma","select","gamma","lambda","alpha","reg_param","elastic_net_param","penalty","penalty","mixture","epochs","learn_rate","momentum","stop_iter","lambda","alpha","cost","type","reg_param","elastic_net_param","penalty","penalty","mixture","epochs","learn_rate","momentum","stop_iter","nprune","degree","pmethod","hidden_units","penalty","dropout","epochs","activation","size","decay","maxit","hidden_units","penalty","mixture","epochs","dropout","learn_rate","momentum","stop_iter","activation","lambda","alpha","reg_param","elastic_net_param","penalty","decay","penalty","mixture","epochs","learn_rate","momentum","stop_iter","adjust","fL","adjust","laplace","id","seasonal_period","id","seasonal_period","ks","kernel","distance","period","p","P","size","repeats","maxit","decay","predictor_prop","ncomp","lambda","alpha","growth","n.changepoints","changepoint.range","yearly.seasonality","weekly.seasonality","daily.seasonality","seasonality.mode","changepoint.prior.scale","seasonality.prior.scale","holidays.prior.scale","logistic_cap","logistic_floor","max_depth","nrounds","eta","colsample_bynode","min_child_weight","gamma","subsample","early_stop","growth","n.changepoints","changepoint.range","yearly.seasonality","weekly.seasonality","daily.seasonality","seasonality.mode","changepoint.prior.scale","seasonality.prior.scale","holidays.prior.scale","logistic_cap","logistic_floor","mtry","num.trees","min.node.size","mtry","ntree","nodesize","feature_subset_strategy","num_trees","min_instances_per_node","max_depth","nrounds","eta","colsample_bynode","min_child_weight","gamma","subsample","lambda","early_stop","period_1","period_2","period_3","period_1","period_2","period_3","period_1","period_2","period_3","dist","dist","C","svr_eps","C","epsilon","C","degree","scale","epsilon","C","sigma","epsilon","lambdas","gammas","period","comb","usemodel","id","window_size"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>model type<\/th>\n      <th>engine<\/th>\n      <th>parsnip<\/th>\n      <th>original<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
