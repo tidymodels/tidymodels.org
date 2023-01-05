@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -145,23 +145,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/start/index.html">
+    <a class="nav-link" href="../../../../content/start/index.html" rel="" target="">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
+    <a class="nav-link active" href="../../../../content/learn/index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/help/index.html">
+    <a class="nav-link" href="../../../../content/help/index.html" rel="" target="">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.html">
+    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html">
+    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -428,11 +428,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Remove predictors with a single distinct value.</p></li>
 <li><p>Center and scale all predictors.</p></li>
 </ul>
-<p>{{% note %}} We will end up with two kinds of features:</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We will end up with two kinds of features:</p>
 <ul>
 <li>dummy/indicator variables for the count-based features like number of digits or punctuation characters</li>
-<li>hash features for the tokens like “salsa” or “delicious”. {{%/ note %}}</li>
+<li>hash features for the tokens like “salsa” or “delicious”.</li>
 </ul>
+</div>
+</div>
 <p>Some of these preprocessing steps (such as stemming) may or may not be good ideas but a full discussion of their effects is beyond the scope of this article. In this preprocessing approach, the main tuning parameter is the number of hashing features to use.</p>
 <p>Before we start building our preprocessing recipe, we need some helper objects. For example, for the Yeo-Johnson transformation, we need to know the set of count-based text features:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/feat-list_a3cc8d87ca8582b63d4b5e0ea7d50a40">
@@ -482,7 +494,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% warning %}} Note that, when objects from the global environment are used, they are injected into the step objects via <code>!!</code>. For some parallel processing technologies, these objects may not be found by the worker processes. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that, when objects from the global environment are used, they are injected into the step objects via <code>!!</code>. For some parallel processing technologies, these objects may not be found by the worker processes.</p>
+</div>
+</div>
 <p>The preprocessing recipe is long and complex (often typical for working with text data) but the model we’ll use is more straightforward. Let’s stick with a regularized logistic regression model:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/lr_0247cf0e53ca56c2bf301c584128f50b">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lr_mod <span class="ot">&lt;-</span></span>
@@ -579,19 +603,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    splits             id     .metrics           .notes           .extracts</span></span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;           &lt;list&gt;   </span></span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 &lt;split [3600/400]&gt; Fold01 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;split [3600/400]&gt; Fold02 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;split [3600/400]&gt; Fold03 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;split [3600/400]&gt; Fold04 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;split [3600/400]&gt; Fold05 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;split [3600/400]&gt; Fold06 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;split [3600/400]&gt; Fold07 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;split [3600/400]&gt; Fold02 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;split [3600/400]&gt; Fold03 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;split [3600/400]&gt; Fold04 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;split [3600/400]&gt; Fold05 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;split [3600/400]&gt; Fold06 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;split [3600/400]&gt; Fold07 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; There were issues with some computations:</span></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Warning(s) x10: `extract_model()` was deprecated in tune 0.1.6. ℹ Please use `ext...</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Warning(s) x1: `extract_model()` was deprecated in tune 0.1.6. ℹ Please use `ext...</span></span>
 <span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Run `show_notes(.Last.tune.result)` for more information.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -690,28 +714,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">objective =</span> <span class="fu">exp_improve</span>(trade_off_decay),</span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">control_bayes</span>(<span class="at">verbose_iter =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; as(&lt;dgTMatrix&gt;, "dgCMatrix") is deprecated since Matrix 1.5-0; do as(., "CsparseMatrix") instead</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Optimizing roc_auc using the expected improvement with variable trade-off</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; values.</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ! No improvement for 10 iterations; returning current results.</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>five_star_search</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Tuning results</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # 10-fold cross-validation </span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 290 × 5</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    splits             id     .metrics         .notes           .iter</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;           &lt;list&gt;           &lt;int&gt;</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 &lt;split [3600/400]&gt; Fold01 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;split [3600/400]&gt; Fold02 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;split [3600/400]&gt; Fold03 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;split [3600/400]&gt; Fold04 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;split [3600/400]&gt; Fold05 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;split [3600/400]&gt; Fold06 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;split [3600/400]&gt; Fold07 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 280 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Optimizing roc_auc using the expected improvement with variable trade-off</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; values.</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ! No improvement for 10 iterations; returning current results.</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>five_star_search</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Tuning results</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # 10-fold cross-validation </span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 290 × 5</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    splits             id     .metrics         .notes           .iter</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;           &lt;list&gt;           &lt;int&gt;</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 &lt;split [3600/400]&gt; Fold01 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;split [3600/400]&gt; Fold02 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;split [3600/400]&gt; Fold03 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;split [3600/400]&gt; Fold04 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;split [3600/400]&gt; Fold05 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;split [3600/400]&gt; Fold06 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;split [3600/400]&gt; Fold07 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 280 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These results show some improvement over the initial set. One issue is that so many settings are sub-optimal (as shown in the plot above for grid search) so there are poor results periodically. There are regions where the penalty parameter becomes too large and all of the predictors are removed from the model. These regions are also dependent on the number of terms. There is a fairly narrow ridge (sorry, pun intended!) where good performance can be achieved. Using more iterations would probably result in the search finding better results. Let’s look at a plot of model performance versus the search iterations:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/iter-plot_d5313073f7a96fe8c51a5b2dafd0d3e7">
@@ -724,7 +747,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>{{% note %}} What would we do if we knew about the grid search results and wanted to try directed, iterative search? We would restrict the range for the number of hash features to be larger (especially with more data). We might also restrict the penalty and mixture parameters to have a lower upper bound. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What would we do if we knew about the grid search results and wanted to try directed, iterative search? We would restrict the range for the number of hash features to be larger (especially with more data). We might also restrict the penalty and mixture parameters to have a lower upper bound.</p>
+</div>
+</div>
 </section>
 <section id="extracted-results" class="level2">
 <h2 class="anchored" data-anchor-id="extracted-results">Extracted results</h2>
@@ -847,14 +882,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Big Sur/Monterey 10.16
-#&gt;  system   x86_64, darwin17.0
+#&gt;  os       macOS Monterey 12.6.1
+#&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/New_York
-#&gt;  date     2023-01-03
+#&gt;  date     2023-01-05
 #&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
@@ -863,22 +898,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;  dials        * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
 #&gt;  dplyr        * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
 #&gt;  ggplot2      * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer        * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
+#&gt;  infer        * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
 #&gt;  parsnip      * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr        * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
-#&gt;  recipes      * 1.0.3.9000 2022-12-12 [1] local
+#&gt;  purrr        * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
+#&gt;  recipes      * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
 #&gt;  rlang          1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample      * 1.1.1.9000 2022-12-13 [1] local
+#&gt;  rsample      * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
 #&gt;  stopwords    * 2.3        2021-10-28 [1] CRAN (R 4.2.0)
 #&gt;  textfeatures * 0.3.3      2019-09-03 [1] CRAN (R 4.2.0)
 #&gt;  textrecipes  * 1.0.1      2022-10-06 [1] CRAN (R 4.2.0)
 #&gt;  tibble       * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
 #&gt;  tidymodels   * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune         * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
+#&gt;  tune         * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
 #&gt;  workflows    * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick    * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  yardstick    * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
+#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

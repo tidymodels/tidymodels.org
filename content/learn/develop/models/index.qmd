@@ -156,7 +156,9 @@ discrim_mixture <-
 
 This is pretty simple since the data are not exposed to this function. 
 
-{{% warning %}} We strongly suggest favoring `rlang::abort()` and `rlang::warn()` over `stop()` and `warning()`. The former return better traceback results and have safer defaults for handling call objects. {{%/ warning %}}
+::: {.callout-warning}
+ We strongly suggest favoring `rlang::abort()` and `rlang::warn()` over `stop()` and `warning()`. The former return better traceback results and have safer defaults for handling call objects. 
+:::
 
 ### Step 3. Add a fit module
 
@@ -416,7 +418,9 @@ This function is then executed when your package is loaded:
 
 For an example package that uses parsnip definitions, take a look at the [discrim](https://github.com/tidymodels/discrim) package.
 
-{{% warning %}} To use a new model and/or engine in the broader tidymodels infrastructure, we recommend your model definition declarations (e.g. `set_new_model()` and similar) reside in a package. If these definitions are in a script only, the new model may not work with the tune package, for example for parallel processing. {{%/ warning %}}
+::: {.callout-warning}
+ To use a new model and/or engine in the broader tidymodels infrastructure, we recommend your model definition declarations (e.g. `set_new_model()` and similar) reside in a package. If these definitions are in a script only, the new model may not work with the tune package, for example for parallel processing. 
+:::
 
 It is also important for parallel processing support to **list the home package as a dependency**. If the `discrim_mixture()` function lived in a package called `mixedup`, include the line:
 
@@ -549,10 +553,12 @@ set_encoding(
 )
 ```
 
-{{% note %}} There are three options for `predictor_indicators`: 
+::: {.callout-note}
+There are three options for `predictor_indicators`: 
 - "none" (do not expand factor predictors)
 - "traditional" (apply the standard `model.matrix()` encoding)
-- "one_hot" (create the complete set including the baseline level for all factors)  {{%/ note %}}
+- "one_hot" (create the complete set including the baseline level for all factors)  
+:::
 
 To learn more about encoding categorical predictors, check out [this blog post](https://www.tidyverse.org/blog/2020/07/parsnip-0-1-2/#predictor-encoding-consistency).
 
