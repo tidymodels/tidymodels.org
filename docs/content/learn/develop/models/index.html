@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -145,23 +145,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/start/index.html">
+    <a class="nav-link" href="../../../../content/start/index.html" rel="" target="">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
+    <a class="nav-link active" href="../../../../content/learn/index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/help/index.html">
+    <a class="nav-link" href="../../../../content/help/index.html" rel="" target="">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.html">
+    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html">
+    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -520,7 +520,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is pretty simple since the data are not exposed to this function.</p>
-<p>{{% warning %}} We strongly suggest favoring <code>rlang::abort()</code> and <code>rlang::warn()</code> over <code>stop()</code> and <code>warning()</code>. The former return better traceback results and have safer defaults for handling call objects. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We strongly suggest favoring <code>rlang::abort()</code> and <code>rlang::warn()</code> over <code>stop()</code> and <code>warning()</code>. The former return better traceback results and have safer defaults for handling call objects.</p>
+</div>
+</div>
 </section>
 <section id="step-3.-add-a-fit-module" class="level3">
 <h3 class="anchored" data-anchor-id="step-3.-add-a-fit-module">Step 3. Add a fit module</h3>
@@ -839,7 +851,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For an example package that uses parsnip definitions, take a look at the <a href="https://github.com/tidymodels/discrim">discrim</a> package.</p>
-<p>{{% warning %}} To use a new model and/or engine in the broader tidymodels infrastructure, we recommend your model definition declarations (e.g.&nbsp;<code>set_new_model()</code> and similar) reside in a package. If these definitions are in a script only, the new model may not work with the tune package, for example for parallel processing. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To use a new model and/or engine in the broader tidymodels infrastructure, we recommend your model definition declarations (e.g.&nbsp;<code>set_new_model()</code> and similar) reside in a package. If these definitions are in a script only, the new model may not work with the tune package, for example for parallel processing.</p>
+</div>
+</div>
 <p>It is also important for parallel processing support to <strong>list the home package as a dependency</strong>. If the <code>discrim_mixture()</code> function lived in a package called <code>mixedup</code>, include the line:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_dependency</span>(<span class="st">"discrim_mixture"</span>, <span class="at">eng =</span> <span class="st">"mda"</span>, <span class="at">pkg =</span> <span class="st">"mixedup"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Parallel processing requires this explicit dependency setting. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux will load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a parsnip model is not loaded in the worker processes, the model will not have an entry in parsnip’s internal database (and produce an error).</p>
@@ -942,7 +966,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% note %}} There are three options for <code>predictor_indicators</code>: - “none” (do not expand factor predictors) - “traditional” (apply the standard <code>model.matrix()</code> encoding) - “one_hot” (create the complete set including the baseline level for all factors) {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are three options for <code>predictor_indicators</code>: - “none” (do not expand factor predictors) - “traditional” (apply the standard <code>model.matrix()</code> encoding) - “one_hot” (create the complete set including the baseline level for all factors)</p>
+</div>
+</div>
 <p>To learn more about encoding categorical predictors, check out <a href="https://www.tidyverse.org/blog/2020/07/parsnip-0-1-2/#predictor-encoding-consistency">this blog post</a>.</p>
 <p><strong>What is the <code>defaults</code> slot and why do I need it?</strong></p>
 <p>You might want to set defaults that can be overridden by the user. For example, for logistic regression with <code>glm</code>, it make sense to default <code>family = binomial</code>. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:</p>
@@ -999,14 +1035,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Big Sur/Monterey 10.16
-#&gt;  system   x86_64, darwin17.0
+#&gt;  os       macOS Monterey 12.6.1
+#&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/New_York
-#&gt;  date     2023-01-04
+#&gt;  date     2023-01-05
 #&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
@@ -1015,21 +1051,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
 #&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
 #&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
+#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
 #&gt;  mda        * 0.5-3      2022-05-05 [1] CRAN (R 4.2.0)
-#&gt;  modeldata  * 1.0.1.9000 2023-01-04 [1] local
+#&gt;  modeldata  * 1.0.1      2022-09-06 [1] CRAN (R 4.2.0)
 #&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3.9000 2022-12-12 [1] local
+#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
 #&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1.9000 2022-12-13 [1] local
+#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
 #&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
 #&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
+#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
 #&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
+#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
