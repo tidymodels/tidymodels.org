@@ -523,7 +523,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is pretty simple since the data are not exposed to this function.</p>
-<p>{{% warning %}} We strongly suggest favoring <code>rlang::abort()</code> and <code>rlang::warn()</code> over <code>stop()</code> and <code>warning()</code>. The former return better traceback results and have safer defaults for handling call objects. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We strongly suggest favoring <code>rlang::abort()</code> and <code>rlang::warn()</code> over <code>stop()</code> and <code>warning()</code>. The former return better traceback results and have safer defaults for handling call objects.</p>
+</div>
+</div>
 </section>
 <section id="step-3.-add-a-fit-module" class="level3">
 <h3 class="anchored" data-anchor-id="step-3.-add-a-fit-module">Step 3. Add a fit module</h3>
@@ -842,7 +854,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For an example package that uses parsnip definitions, take a look at the <a href="https://github.com/tidymodels/discrim">discrim</a> package.</p>
-<p>{{% warning %}} To use a new model and/or engine in the broader tidymodels infrastructure, we recommend your model definition declarations (e.g.&nbsp;<code>set_new_model()</code> and similar) reside in a package. If these definitions are in a script only, the new model may not work with the tune package, for example for parallel processing. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To use a new model and/or engine in the broader tidymodels infrastructure, we recommend your model definition declarations (e.g.&nbsp;<code>set_new_model()</code> and similar) reside in a package. If these definitions are in a script only, the new model may not work with the tune package, for example for parallel processing.</p>
+</div>
+</div>
 <p>It is also important for parallel processing support to <strong>list the home package as a dependency</strong>. If the <code>discrim_mixture()</code> function lived in a package called <code>mixedup</code>, include the line:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_dependency</span>(<span class="st">"discrim_mixture"</span>, <span class="at">eng =</span> <span class="st">"mda"</span>, <span class="at">pkg =</span> <span class="st">"mixedup"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Parallel processing requires this explicit dependency setting. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux will load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a parsnip model is not loaded in the worker processes, the model will not have an entry in parsnip’s internal database (and produce an error).</p>
@@ -945,7 +969,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% note %}} There are three options for <code>predictor_indicators</code>: - “none” (do not expand factor predictors) - “traditional” (apply the standard <code>model.matrix()</code> encoding) - “one_hot” (create the complete set including the baseline level for all factors) {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are three options for <code>predictor_indicators</code>: - “none” (do not expand factor predictors) - “traditional” (apply the standard <code>model.matrix()</code> encoding) - “one_hot” (create the complete set including the baseline level for all factors)</p>
+</div>
+</div>
 <p>To learn more about encoding categorical predictors, check out <a href="https://www.tidyverse.org/blog/2020/07/parsnip-0-1-2/#predictor-encoding-consistency">this blog post</a>.</p>
 <p><strong>What is the <code>defaults</code> slot and why do I need it?</strong></p>
 <p>You might want to set defaults that can be overridden by the user. For example, for logistic regression with <code>glm</code>, it make sense to default <code>family = binomial</code>. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:</p>

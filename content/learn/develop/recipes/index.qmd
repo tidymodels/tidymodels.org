@@ -184,7 +184,9 @@ You can define other arguments as well.
 
 The first thing that you might want to do in the `prep()` function is to translate the specification listed in the `terms` argument to column names in the current data. There is a function called `recipes_eval_select()` that can be used to obtain this. 
 
-{{% warning %}} The `recipes_eval_select()` function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps. {{%/ warning %}}
+::: {.callout-warning}
+ The `recipes_eval_select()` function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps. 
+:::
 
 ```{r}
 #| label: "prep_1"
@@ -291,7 +293,9 @@ bake.step_percentile <- function(object, new_data, ...) {
 }
 ```
 
-{{% note %}} You need to import `recipes::prep()` and `recipes::bake()` to create your own step function in a package. {{%/ note %}}
+::: {.callout-note}
+You need to import `recipes::prep()` and `recipes::bake()` to create your own step function in a package. 
+:::
 
 ## Run the example
 

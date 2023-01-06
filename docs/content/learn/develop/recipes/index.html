@@ -527,7 +527,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>You can define other arguments as well.</p>
 <p>The first thing that you might want to do in the <code>prep()</code> function is to translate the specification listed in the <code>terms</code> argument to column names in the current data. There is a function called <code>recipes_eval_select()</code> that can be used to obtain this.</p>
-<p>{{% warning %}} The <code>recipes_eval_select()</code> function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>recipes_eval_select()</code> function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps.</p>
+</div>
+</div>
 <div class="cell" data-layout-align="center" data-hash="cache/prep_1_e9cc5b4aa66319e4eca05dbda8b4cc2c">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentile <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  col_names <span class="ot">&lt;-</span> <span class="fu">recipes_eval_select</span>(x<span class="sc">$</span>terms, training, info) </span>
@@ -615,7 +627,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">as_tibble</span>(new_data)</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% note %}} You need to import <code>recipes::prep()</code> and <code>recipes::bake()</code> to create your own step function in a package. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You need to import <code>recipes::prep()</code> and <code>recipes::bake()</code> to create your own step function in a package.</p>
+</div>
+</div>
 </section>
 <section id="run-the-example" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-example">Run the example</h2>

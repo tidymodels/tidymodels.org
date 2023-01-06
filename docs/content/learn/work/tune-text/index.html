@@ -432,11 +432,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Remove predictors with a single distinct value.</p></li>
 <li><p>Center and scale all predictors.</p></li>
 </ul>
-<p>{{% note %}} We will end up with two kinds of features:</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We will end up with two kinds of features:</p>
 <ul>
 <li>dummy/indicator variables for the count-based features like number of digits or punctuation characters</li>
-<li>hash features for the tokens like “salsa” or “delicious”. {{%/ note %}}</li>
+<li>hash features for the tokens like “salsa” or “delicious”.</li>
 </ul>
+</div>
+</div>
 <p>Some of these preprocessing steps (such as stemming) may or may not be good ideas but a full discussion of their effects is beyond the scope of this article. In this preprocessing approach, the main tuning parameter is the number of hashing features to use.</p>
 <p>Before we start building our preprocessing recipe, we need some helper objects. For example, for the Yeo-Johnson transformation, we need to know the set of count-based text features:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/feat-list_a3cc8d87ca8582b63d4b5e0ea7d50a40">
@@ -486,7 +498,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% warning %}} Note that, when objects from the global environment are used, they are injected into the step objects via <code>!!</code>. For some parallel processing technologies, these objects may not be found by the worker processes. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that, when objects from the global environment are used, they are injected into the step objects via <code>!!</code>. For some parallel processing technologies, these objects may not be found by the worker processes.</p>
+</div>
+</div>
 <p>The preprocessing recipe is long and complex (often typical for working with text data) but the model we’ll use is more straightforward. Let’s stick with a regularized logistic regression model:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/lr_0247cf0e53ca56c2bf301c584128f50b">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lr_mod <span class="ot">&lt;-</span></span>
@@ -727,7 +751,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>{{% note %}} What would we do if we knew about the grid search results and wanted to try directed, iterative search? We would restrict the range for the number of hash features to be larger (especially with more data). We might also restrict the penalty and mixture parameters to have a lower upper bound. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What would we do if we knew about the grid search results and wanted to try directed, iterative search? We would restrict the range for the number of hash features to be larger (especially with more data). We might also restrict the penalty and mixture parameters to have a lower upper bound.</p>
+</div>
+</div>
 </section>
 <section id="extracted-results" class="level2">
 <h2 class="anchored" data-anchor-id="extracted-results">Extracted results</h2>

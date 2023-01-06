@@ -57,7 +57,9 @@ Chicago <- Chicago %>% select(ridership, Clark_Lake, Austin, Harlem)
 
 Let's start by fitting only a single parsnip model object. We'll create a model specification using `linear_reg()`. 
 
-{{% note %}} The default engine is `"lm"` so no call to `set_engine()` is required. {{%/ note %}}
+::: {.callout-note}
+The default engine is `"lm"` so no call to `set_engine()` is required. 
+:::
 
 The `fit()` function estimates the model coefficients, given a formula and data set. 
 
@@ -92,7 +94,9 @@ bt <- bootstraps(Chicago, times = 5)
 
 With resampling, we fit the same model to the different simulated versions of the data set produced by resampling. The tidymodels function [`fit_resamples()`](https://www.tmwr.org/resampling.html#resampling-performance) is the recommended approach for doing so. 
 
-{{% warning %}} The `fit_resamples()` function does not automatically save the model objects for each resample since these can be quite large and its main purpose is estimating performance. However, we can pass a function to `fit_resamples()` that _can_ save the model object or any other aspect of the fit. {{%/ warning %}}
+::: {.callout-warning}
+ The `fit_resamples()` function does not automatically save the model objects for each resample since these can be quite large and its main purpose is estimating performance. However, we can pass a function to `fit_resamples()` that _can_ save the model object or any other aspect of the fit. 
+:::
 
 This function takes a single argument that represents the fitted [workflow object](https://www.tmwr.org/workflows.html) (even if you don't give `fit_resamples()` a workflow).
 
@@ -201,7 +205,9 @@ glmnet_spec <-
 
 has a penalty that is 95% lasso and 5% weight decay. The total amount of these two penalties is 0.1 (which is fairly high). 
 
-{{% note %}} Models with regularization require that predictors are all on the same scale. The ridership at our three stations are very different, but glmnet [automatically centers and scales the data](https://parsnip.tidymodels.org/reference/details_linear_reg_glmnet.html). You can use recipes to [center and scale your data yourself](https://recipes.tidymodels.org/reference/step_normalize.html). {{%/ note %}}
+::: {.callout-note}
+Models with regularization require that predictors are all on the same scale. The ridership at our three stations are very different, but glmnet [automatically centers and scales the data](https://parsnip.tidymodels.org/reference/details_linear_reg_glmnet.html). You can use recipes to [center and scale your data yourself](https://recipes.tidymodels.org/reference/step_normalize.html). 
+:::
 
 Let's combine the model specification with a formula in a model `workflow()` and then fit the model to the data:
 
