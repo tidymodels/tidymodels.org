@@ -1,61 +1,26 @@
 ---
 title: "Search all of tidymodels"
-disable_jquery: true
 ---
 
-```{r}
-#| label: startup
-#| include: false
-#| cache: false
-knitr::opts_chunk$set(
-  message = FALSE,
-  digits = 3,
-  collapse = TRUE,
-  comment = "#>"
-  )
-options(digits = 3)
 
+Here are all the functions available across all of the tidymodels packages. Click on the link in the topic column to find the relevant reference documentation.
+
+```{r}
+#| include: false
+
+library(tidymodels)
 library(DT)
-library(tibble)
-library(dplyr)
-source(here::here("pkgdown_urls.R"))
+tidymodels_prefer()
+load("tidymodels_functions.RData")
 ```
-
-
-Here are all the functions available across all of the [tidymodels packages](/packages/). Click on the link in the **topic** column to find the relevant reference documentation.
-
-<br>
-
-```{r}
-#| label: table-compute
-#| include: false
-pkgs <- c("baguette", "broom", "butcher", "corrr", "dials", "discrim", 
-          "embed", "hardhat", "infer", "modeldata", "modeldb", "parsnip", "plsmod",
-          "poissonreg", "probably", "recipes", "rsample", "spatialsample", 
-          "textrecipes", "tidyclust", "tidyposterior", "tidypredict", "yardstick", 
-          "workflows")
-pkgs <- tibble(pkg = pkgs, 
-               base_url = paste0("https://", pkg, ".tidymodels.org/")) 
-
-pkg_urls <- get_pkgdown_urls(pkgs) %>% 
-  select(title, topic, package) %>% 
-  filter(!grepl("Deprecated", title))
-```
-
 
 ```{r}
 #| label: table-display
 #| echo: false
-pkg_urls %>% 
-  mutate(package = as.factor(package)) %>% 
-  arrange(tolower(title)) %>% 
+tidymodels_functions %>% 
   datatable(rownames = FALSE,
             class = 'cell-border stripe',
             filter = 'top',
             escape = FALSE,
-            options = list(pageLength = 5))
+            options = list(pageLength = 25))
 ```
-
-
-
-
