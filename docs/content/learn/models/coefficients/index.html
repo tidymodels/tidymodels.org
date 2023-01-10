@@ -158,7 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
@@ -366,6 +366,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block">Working with model coefficients</h1>
   <div class="quarto-categories">
     <div class="quarto-category">model fitting</div>
+    <div class="quarto-category">tidying results</div>
+    <div class="quarto-category">linear regression</div>
+    <div class="quarto-category">model tuning</div>
   </div>
   </div>
 
@@ -410,19 +413,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="a-single-model" class="level3">
 <h3 class="anchored" data-anchor-id="a-single-model">A single model</h3>
 <p>Let’s start by fitting only a single parsnip model object. We’ll create a model specification using <code>linear_reg()</code>.</p>
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The default engine is <code>"lm"</code> so no call to <code>set_engine()</code> is required.</p>
-</div>
-</div>
+<p>{{% note %}} The default engine is <code>"lm"</code> so no call to <code>set_engine()</code> is required. {{%/ note %}}</p>
 <p>The <code>fit()</code> function estimates the model coefficients, given a formula and data set.</p>
 <div class="cell" data-layout-align="center" data-hash="cache/lm-single_01a332c8b03f35833c62f041f177e350">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>()</span>
@@ -460,19 +451,7 @@ Note
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>bt <span class="ot">&lt;-</span> <span class="fu">bootstraps</span>(Chicago, <span class="at">times =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With resampling, we fit the same model to the different simulated versions of the data set produced by resampling. The tidymodels function <a href="https://www.tmwr.org/resampling.html#resampling-performance"><code>fit_resamples()</code></a> is the recommended approach for doing so.</p>
-<div class="callout-warning callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The <code>fit_resamples()</code> function does not automatically save the model objects for each resample since these can be quite large and its main purpose is estimating performance. However, we can pass a function to <code>fit_resamples()</code> that <em>can</em> save the model object or any other aspect of the fit.</p>
-</div>
-</div>
+<p>{{% warning %}} The <code>fit_resamples()</code> function does not automatically save the model objects for each resample since these can be quite large and its main purpose is estimating performance. However, we can pass a function to <code>fit_resamples()</code> that <em>can</em> save the model object or any other aspect of the fit. {{%/ warning %}}</p>
 <p>This function takes a single argument that represents the fitted <a href="https://www.tmwr.org/workflows.html">workflow object</a> (even if you don’t give <code>fit_resamples()</code> a workflow).</p>
 <p>From this, we can extract the model fit. There are two “levels” of model objects that are available:</p>
 <ul>
@@ -611,19 +590,7 @@ Warning
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>has a penalty that is 95% lasso and 5% weight decay. The total amount of these two penalties is 0.1 (which is fairly high).</p>
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Models with regularization require that predictors are all on the same scale. The ridership at our three stations are very different, but glmnet <a href="https://parsnip.tidymodels.org/reference/details_linear_reg_glmnet.html">automatically centers and scales the data</a>. You can use recipes to <a href="https://recipes.tidymodels.org/reference/step_normalize.html">center and scale your data yourself</a>.</p>
-</div>
-</div>
+<p>{{% note %}} Models with regularization require that predictors are all on the same scale. The ridership at our three stations are very different, but glmnet <a href="https://parsnip.tidymodels.org/reference/details_linear_reg_glmnet.html">automatically centers and scales the data</a>. You can use recipes to <a href="https://recipes.tidymodels.org/reference/step_normalize.html">center and scale your data yourself</a>. {{%/ note %}}</p>
 <p>Let’s combine the model specification with a formula in a model <code>workflow()</code> and then fit the model to the data:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/glmnet-wflow_28ae9506b04e31712317af13c32fc492">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>glmnet_wflow <span class="ot">&lt;-</span> </span>

@@ -1,12 +1,15 @@
+
+print(here::here())
+
 knitr::opts_chunk$set(
   digits = 3,
   comment = "#>",
-  dev = 'svglite', 
+  dev = 'svglite',
   dev.args = list(bg = "transparent"),
   fig.path = "figs/",
   fig.align = "center",
   collapse = TRUE,
-  cache = TRUE, 
+  cache = TRUE,
   cache.path = "cache/"
 )
 options(width = 80, cli.width = 70)
@@ -17,7 +20,7 @@ article_req_pkgs <- function(x, what = "To use code in this article, ") {
   paste0(
     what,
     " you will need to install the following packages: ",
-    x, "." 
+    x, "."
   )
 }
 small_session <- function(pkgs = NULL) {
@@ -29,8 +32,8 @@ small_session <- function(pkgs = NULL) {
   library(dplyr)
   sinfo <- sessioninfo::session_info()
   cls <- class(sinfo$packages)
-  sinfo$packages <- 
-    sinfo$packages %>% 
+  sinfo$packages <-
+    sinfo$packages %>%
     dplyr::filter(package %in% pkgs)
   class(sinfo$packages) <- cls
   sinfo
