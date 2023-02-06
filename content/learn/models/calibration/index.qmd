@@ -1,0 +1,195 @@
+---
+title: "Calibrating Classification Models"
+categories:
+  - calibration
+type: learn-subsection
+weight: 3
+description: | 
+  Ensure that your classification predictions are consistent with the eata
+---
+
+```{r}
+#| label: "setup"
+#| include: false
+#| message: false
+#| warning: false
+source(here::here("common.R"))
+```
+
+```{r}
+#| label: "load"
+#| include: false
+#| message: false
+#| warning: false
+library(tidymodels)
+library(probably)
+
+pkgs <- c("tidymodels", "probably", "ranger")
+
+theme_set(theme_bw() + theme(legend.position = "top"))
+```
+
+
+## Introduction
+
+`r article_req_pkgs(pkgs)`
+
+What is well calibrated?   
+
+## 
+
+```{r}
+#| label: churn-mport
+library(tidymodels)
+library(probably)
+
+data(mlc_churn, package = "modeldata")
+```
+
+```{r}
+#| label: churn-split
+set.seed(7333)
+churn_split <- initial_split(mlc_churn)
+
+churn_train <- training(churn_split)
+churn_test <- testing(churn_split)
+churn_rs <- vfold_cv(churn_train)
+```
+
+```{r}
+#| label: ranger
+
+rf_spec <- rand_forest(trees = 1000) %>% set_mode("classification")
+
+mtrs <- metric_set(brier_class, roc_auc, accuracy)
+ctrl <- control_resamples(save_pred = TRUE)
+
+set.seed(57)
+rf_res <- 
+  rf_spec %>% 
+  fit_resamples(churn ~ ., resamples = churn_rs, metrics = mtrs, control = ctrl)
+```
+
+## Assessing calibration
+
+plots and metric set
+
+```{r}
+cal_plot_breaks(rf_res)
+```
+
+can also us for tune objects
+
+```{r}
+#| eval: false
+
+rf_pred_holdout <- 
+  rf_res %>% 
+  collect_predictions()
+
+rf_pred_holdout %>% 
+  cal_plot_breaks(truth = churn, estimate = .pred_yes)
+```
+
+
+
+```{r}
+cal_plot_logistic(rf_res)
+```
+
+
+```{r}
+cal_plot_logistic(rf_res, smooth = FALSE)
+```
+
+
+## Straitening the curve
+
+```{r}
+rf_res %>% 
+  cal_estimate_logistic()
+```
+
+can also use with tune objecs
+
+
+```{r}
+rf_res %>% 
+  cal_estimate_logistic() %>% 
+  cal_apply(rf_pred_holdout, object = .) %>% 
+  cal_plot_breaks(truth = churn, estimate = .pred_yes)
+```
+
+```{r}
+rf_res %>% 
+  cal_estimate_isotonic() %>% 
+  cal_apply(rf_pred_holdout, object = .) %>% 
+  cal_plot_breaks(truth = churn, estimate = .pred_yes)
+```
+
+```{r}
+rf_res %>% 
+  cal_estimate_beta(times = 50) %>% 
+  cal_apply(rf_pred_holdout, object = .) %>% 
+  cal_plot_windowed(truth = churn, estimate = .pred_yes)
+```
+
+```{r}
+
+format_res <- function(object, method, level = 0.90, ...) {
+  require(rlang)
+  
+  fn <- paste0("cal_validate_", method)
+  cl <- call2(.fn = fn, .data = expr(object), summarize = FALSE, ...)
+  results <- eval_tidy(cl)
+
+  res_uncal <- bind_rows(results$stats_before) %>% rename(original = .estimate)
+  res_cal <- bind_rows(results$stats_after) %>% rename(calibrated = .estimate)
+  results <- 
+    bind_cols(res_uncal, res_cal %>% select(calibrated)) %>% 
+    mutate(
+      improvement = ifelse(direction == "minimize", original - calibrated, calibrated - original)
+    ) %>% 
+    nest(data = improvement, .by = c(.metric, direction)) %>% 
+    mutate(
+      stats = map(data, ~ tidy(t.test(.x$improvement, alternative = "greater", conf.level = level)))
+    ) %>% 
+    unnest(stats) %>% 
+    select(-statistic, -parameter, -method, -alternative, -direction) %>% 
+    mutate(
+      conf.high = NA_real_,
+      method = method
+    ) %>% 
+    rename(improvement = estimate)
+  results
+}
+
+cls_met <- metric_set(brier_class, roc_auc, mn_log_loss)
+
+all_res <- 
+  bind_rows(
+  format_res(rf_res, "logistic", metrics = cls_met), 
+  format_res(rf_res, "beta", metrics = cls_met),
+  format_res(rf_res, "isotonic", metrics = cls_met), 
+  format_res(rf_res, "isotonic_boot", metrics = cls_met)
+)
+
+all_res %>% 
+  mutate(method = reorder(method, improvement)) %>% 
+  ggplot(aes(x = improvement, y = method)) +
+  geom_point() +
+  geom_errorbar(aes(xmin = conf.low, xmax = improvement), width = 0.25) +
+  geom_vline(xintercept = 0, col = "red", lty = 2) +
+  facet_wrap(~ .metric, scale = "free_x") +
+  labs(y = NULL)
+```
+
+
+## Session information
+
+```{r}
+#| label: "si"
+#| echo: false
+small_session(pkgs)
+```
+
