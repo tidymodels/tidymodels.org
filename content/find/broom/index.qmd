@@ -1,11 +1,14 @@
 ---
-title: Search parsnip models
-weight: 2
+subtitle: Broom
+title: Search broom methods
+weight: 3
 description: | 
-  Find model types, engines, and arguments to fit and predict in the tidymodels framework.
+  Find `tidy()`, `augment()`, and `glance()` methods for different objects.
 ---
 
-To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [model types and engines](#models).
+Here are all the broom functions available across CRAN packages. Click on the link in the topic column to find more information.
+
+
 
 ```{r}
 #| include: false
@@ -13,13 +16,13 @@ To learn about the parsnip package, see [*Get Started: Build a Model*](/start/mo
 library(tidymodels)
 library(DT)
 tidymodels_prefer()
-load("parsnip_models.RData")
+load("broom_functions.RData")
 ```
 
 ```{r}
 #| label: table-display
 #| echo: false
-parsnip_models %>% 
+broom_functions %>% 
   datatable(rownames = FALSE,
             class = 'cell-border stripe',
             filter = 'top',
