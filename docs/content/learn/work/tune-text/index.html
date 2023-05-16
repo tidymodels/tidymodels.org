@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.56">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -145,24 +145,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/start/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/start/index.html">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../../../content/learn/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/help/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/help/index.html">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
+    <a class="nav-link" href="../../../../content/contribute/index.html">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/author/index.html">
  <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/find/index.html">
+ <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -415,7 +419,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 B002GWH5OY "This is delicious coffee which compares favorably with muc… great</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 B003R0MFYY "Don't let these little tiny cans fool you.  They pack a lo… great</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 B001EO5ZXI "One of the nicest, smoothest cup of chai I've made. Nice m… great</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 3,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 3,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Our modeling goal is to create modeling features from the text of the reviews to predict whether the review was five-star or not.</p>
 </section>
@@ -571,7 +575,7 @@ Warning
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8   0.001    0.5       1024</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9   0.001    0.5       4096</span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10   0.001    0.75       256</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that, for each resample, the (computationally expensive) text preprocessing recipe is only prepped 6 times. This increases the efficiency of the analysis by avoiding redundant work.</p>
 <p>Let’s save information on the number of predictors by penalty value for each glmnet model. This can help us understand how many features were used across the penalty values. Use an extraction function to do this:</p>
@@ -607,19 +611,19 @@ Warning
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    splits             id     .metrics           .notes           .extracts</span></span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;           &lt;list&gt;   </span></span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 &lt;split [3600/400]&gt; Fold01 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;split [3600/400]&gt; Fold02 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;split [3600/400]&gt; Fold03 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;split [3600/400]&gt; Fold04 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;split [3600/400]&gt; Fold05 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;split [3600/400]&gt; Fold06 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;split [3600/400]&gt; Fold07 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [300 × 7]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;split [3600/400]&gt; Fold02 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;split [3600/400]&gt; Fold03 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;split [3600/400]&gt; Fold04 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;split [3600/400]&gt; Fold05 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;split [3600/400]&gt; Fold06 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;split [3600/400]&gt; Fold07 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [300 × 7]&gt; &lt;tibble [1 × 3]&gt; &lt;tibble&gt; </span></span>
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; There were issues with some computations:</span></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Warning(s) x1: `extract_model()` was deprecated in tune 0.1.6. ℹ Please use `ext...</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Warning(s) x10: `extract_model()` was deprecated in tune 0.1.6. ℹ Please use `ext...</span></span>
 <span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Run `show_notes(.Last.tune.result)` for more information.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -642,7 +646,7 @@ Warning
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 0.00886    1         4096 roc_auc binary     0.806    10 0.00783 Preprocesso…</span></span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 1          0.01      4096 roc_auc binary     0.806    10 0.00801 Preprocesso…</span></span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 0.0546     0.25      4096 roc_auc binary     0.805    10 0.00783 Preprocesso…</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The best results have a fairly high penalty value and focus on the ridge penalty (i.e.&nbsp;no feature selection via the lasso’s L1 penalty). The best solutions also use the largest number of hashing features.</p>
 <p>What is the relationship between performance and the tuning parameters?</p>
@@ -738,7 +742,7 @@ Warning
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [3600/400]&gt; Fold08 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [3600/400]&gt; Fold09 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [3600/400]&gt; Fold10 &lt;tibble [5 × 7]&gt; &lt;tibble [0 × 3]&gt;     0</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 280 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 280 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These results show some improvement over the initial set. One issue is that so many settings are sub-optimal (as shown in the plot above for grid search) so there are poor results periodically. There are regions where the penalty parameter becomes too large and all of the predictors are removed from the model. These regions are also dependent on the number of terms. There is a fairly narrow ridge (sorry, pun intended!) where good performance can be achieved. Using more iterations would probably result in the search finding better results. Let’s look at a plot of model performance versus the search iterations:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/iter-plot_d5313073f7a96fe8c51a5b2dafd0d3e7">
@@ -792,7 +796,7 @@ Note
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       256       1    0.01 &lt;tibble [100 × 2]&gt; Preprocessor1_Model008</span></span>
 <span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       256       1    0.01 &lt;tibble [100 × 2]&gt; Preprocessor1_Model009</span></span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       256       1    0.01 &lt;tibble [100 × 2]&gt; Preprocessor1_Model010</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>More nested tibbles! Let’s <code>unnest()</code> the <code>five_star_glmnet$.extracts</code> column:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/unnest_e4298bf23fcc5af43fa8ca89245bd802">
@@ -815,7 +819,7 @@ Note
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Fold01       256       1    0.01 &lt;tibble [100 × 2]&gt; Preprocessor1_Model008</span></span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Fold01       256       1    0.01 &lt;tibble [100 × 2]&gt; Preprocessor1_Model009</span></span>
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Fold01       256       1    0.01 &lt;tibble [100 × 2]&gt; Preprocessor1_Model010</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 2,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 2,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>One thing to realize here is that <code>tune_grid()</code> <a href="https://tune.tidymodels.org/articles/extras/optimizations.html">may not fit all of the models</a> that are evaluated. In this case, for each value of <code>mixture</code> and <code>num_terms</code>, the model is fit over <em>all</em> penalty values (this is a feature of this particular model and is not generally true for other engines). To select the best parameter set, we can exclude the <code>penalty</code> column in <code>extracted</code>:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/select-best_0a942b1c95c1973b89862c3a300c6449">
@@ -839,7 +843,7 @@ Note
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Fold01      4096    0.01 &lt;tibble [100 × 2]&gt; Preprocessor3_Model008 Preproces…</span></span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Fold01      4096    0.01 &lt;tibble [100 × 2]&gt; Preprocessor3_Model009 Preproces…</span></span>
 <span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Fold01      4096    0.01 &lt;tibble [100 × 2]&gt; Preprocessor3_Model010 Preproces…</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 190 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 190 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can get at the results that we want using another <code>unnest()</code>:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/final-unnest_cd0a261a2e4163a0dd61251c39d73aba">
@@ -860,7 +864,7 @@ Note
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Fold01      4096    0.01    6.21        6 Preprocessor3_Model001 Preprocesso…</span></span>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Fold01      4096    0.01    5.93        7 Preprocessor3_Model001 Preprocesso…</span></span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Fold01      4096    0.01    5.66        7 Preprocessor3_Model001 Preprocesso…</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 19,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 19,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s look at a plot of these results (per resample):</p>
 <div class="cell" data-layout-align="center" data-hash="cache/var-plot_616d52ac7a85c22f87e414b707232dcb">
@@ -885,39 +889,40 @@ Note
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-16
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package      * version    date (UTC) lib source
-#&gt;  broom        * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials        * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr        * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2      * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer        * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  parsnip      * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr        * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  recipes      * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang          1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
+#&gt;  broom        * 1.0.4      2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials        * 1.2.0      2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr        * 1.1.2      2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2      * 3.4.2      2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer        * 1.0.4      2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  parsnip      * 1.1.0      2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr        * 1.0.1      2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes      * 1.0.6      2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang          1.1.1      2023-04-28 [1] CRAN (R 4.2.0)
 #&gt;  rsample      * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  stopwords    * 2.3        2021-10-28 [1] CRAN (R 4.2.0)
-#&gt;  textfeatures * 0.3.3      2019-09-03 [1] CRAN (R 4.2.0)
-#&gt;  textrecipes  * 1.0.1      2022-10-06 [1] CRAN (R 4.2.0)
-#&gt;  tibble       * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels   * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune         * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows    * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick    * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  stopwords    * 2.3        2021-10-28 [2] CRAN (R 4.2.0)
+#&gt;  textfeatures * 0.3.3      2019-09-03 [2] CRAN (R 4.2.0)
+#&gt;  textrecipes  * 1.0.3.9000 2023-04-27 [1] local
+#&gt;  tibble       * 3.2.1      2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels   * 1.1.0      2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune         * 1.1.1      2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows    * 1.1.3      2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick    * 1.2.0      2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

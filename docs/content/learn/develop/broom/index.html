@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.56">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -123,8 +123,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
-<script src="../../../../site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="../../../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="../../../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="../../../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="../../../../site_libs/datatables-binding-0.27/datatables.js"></script>
+<script src="../../../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../../../site_libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="../../../../site_libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="../../../../site_libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="../../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet">
+<script src="../../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="../../../../site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet">
+<script src="../../../../site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="../../../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
@@ -149,24 +160,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/start/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/start/index.html">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../../../content/learn/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/help/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/help/index.html">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
+    <a class="nav-link" href="../../../../content/contribute/index.html">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/author/index.html">
  <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/find/index.html">
+ <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -354,7 +369,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#implementing-the-augment-method" id="toc-implementing-the-augment-method" class="nav-link" data-scroll-target="#implementing-the-augment-method">Implementing the <code>augment()</code> method</a></li>
   </ul></li>
   <li><a href="#document-the-new-methods" id="toc-document-the-new-methods" class="nav-link" data-scroll-target="#document-the-new-methods">Document the new methods</a></li>
-  <li><a href="#glossary" id="toc-glossary" class="nav-link" data-scroll-target="#glossary">Glossaries: argument and column names</a></li>
+  <li><a href="#glossaries" id="toc-glossaries" class="nav-link" data-scroll-target="#glossaries">Glossaries</a>
+  <ul class="collapse">
+  <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#column-names" id="toc-column-names" class="nav-link" data-scroll-target="#column-names">Column Names</a></li>
+  </ul></li>
   <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
   </ul>
 </nav>
@@ -419,7 +438,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>generics<span class="sc">::</span>glance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Oftentimes it doesn’t make sense to define one or more of these methods for a particular model. In this case, only implement the methods that do make sense.</p>
-<p>{{% warning %}} Please do not define <code>tidy()</code>, <code>glance()</code>, or <code>augment()</code> generics in your package. This will result in namespace conflicts whenever your package is used along other packages that also export tidying methods. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Please do not define <code>tidy()</code>, <code>glance()</code>, or <code>augment()</code> generics in your package. This will result in namespace conflicts whenever your package is used along other packages that also export tidying methods.</p>
+</div>
+</div>
 </section>
 <section id="implement-tidying-methods" class="level2">
 <h2 class="anchored" data-anchor-id="implement-tidying-methods">Implement tidying methods</h2>
@@ -519,7 +550,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  result</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% note %}} If you’re interested, the actual <code>tidy.lm()</code> source can be found <a href="https://github.com/tidymodels/broom/blob/master/R/stats-lm-tidiers.R">here</a>! It’s not too different from the version above except for some argument checking and additional columns. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’re interested, the actual <code>tidy.lm()</code> source can be found <a href="https://github.com/tidymodels/broom/blob/master/R/stats-lm-tidiers.R">here</a>! It’s not too different from the version above except for some argument checking and additional columns.</p>
+</div>
+</div>
 <p>With this method exported, then, if a user calls <code>tidy(fit)</code>, where <code>fit</code> is an output from <code>lm()</code>, the <code>tidy()</code> generic would “redirect” the call to the <code>tidy.lm()</code> function above.</p>
 <p>Some things to keep in mind while writing your <code>tidy()</code> method:</p>
 <ul>
@@ -590,7 +633,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>{{% note %}} This is the actual definition of <code>glance.lm()</code> provided by broom! {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is the actual definition of <code>glance.lm()</code> provided by broom!</p>
+</div>
+</div>
 <p>Some things to keep in mind while writing <code>glance()</code> methods: * Output should not include the name of the modeling function or any arguments given to the modeling function. * In some cases, you may wish to provide model-level diagnostics not returned by the original object. For example, the above <code>glance.lm()</code> calculates <code>AIC</code> and <code>BIC</code> from the model fit. If these are easy to compute, feel free to add them. However, tidier methods are generally not an appropriate place to implement complex or time consuming calculations. * The <code>glance</code> method should always return the same columns in the same order when given an object of a given model class. If a summary metric (such as <code>AIC</code>) is not defined in certain circumstances, use <code>NA</code>.</p>
 </section>
 <section id="implementing-the-augment-method" class="level3">
@@ -669,7 +724,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Some other things to keep in mind while writing <code>augment()</code> methods: * The <code>newdata</code> argument should default to <code>NULL</code>. Users should only ever specify one of <code>data</code> or <code>newdata</code>. Providing both <code>data</code> and <code>newdata</code> should result in an error. The <code>newdata</code> argument should accept both <code>data.frame</code>s and <code>tibble</code>s. * Data given to the <code>data</code> argument must have both the original predictors and the original response. Data given to the <code>newdata</code> argument only needs to have the original predictors. This is important because there may be important information associated with training data that is not associated with test data. This means that the <code>original_data</code> object in <code>augment(model, data = original_data)</code> should provide <code>.fitted</code> and <code>.resid</code> columns (in most cases), whereas <code>test_data</code> in <code>augment(model, data = test_data)</code> only needs a <code>.fitted</code> column, even if the response is present in <code>test_data</code>. * If the <code>data</code> or <code>newdata</code> is specified as a <code>data.frame</code> with rownames, <code>augment</code> should return them in a column called <code>.rownames</code>. * For observations where no fitted values or summaries are available (where there’s missing data, for example), return <code>NA</code>. * <em>The <code>augment()</code> method should always return as many rows as were in <code>data</code> or <code>newdata</code></em>, depending on which is supplied</p>
-<p>{{% note %}} The recommended interface and functionality for <code>augment()</code> methods may change soon. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The recommended interface and functionality for <code>augment()</code> methods may change soon.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="document-the-new-methods" class="level2">
@@ -706,1421 +773,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Once you’ve documented each of your new methods and executed <code>devtools::document()</code>, you’re done! Congrats on implementing your own broom tidier methods for a new model object!</p>
 </section>
-<section id="glossary" class="level2">
-<h2 class="anchored" data-anchor-id="glossary">Glossaries: argument and column names</h2>
+<section id="glossaries" class="level2">
+<h2 class="anchored" data-anchor-id="glossaries">Glossaries</h2>
+<section id="arguments" class="level3">
+<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <p>Tidier methods have a standardized set of acceptable argument and output column names. The currently acceptable argument names by tidier method are:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-23_191fc5f90912e8439f073559d7e6a0ee">
+<div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-23_d64cbb8b19e213d52d5c8c97634481a4">
 <div class="cell-output-display">
 
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> Method </th>
-   <th style="text-align:left;"> Argument </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> alpha </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> boot_se </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> by_class </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> col.names </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> component </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> conf.int </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> conf.level </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> conf.method </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> conf.type </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> diagonal </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> droppars </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> effects </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> ess </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> estimate.method </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> exponentiate </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> fe </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> include_studies </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> instruments </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> intervals </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> matrix </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> measure </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> na.rm </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> object </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> p.values </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> par_type </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> parameters </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> parametric </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> pars </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> prob </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> region </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> return_zeros </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> rhat </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> robust </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> scales </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> se.type </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> strata </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> test </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> trim </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> upper </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> deviance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> diagnostics </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> looic </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> mcmc </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> test </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> x </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> data </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> interval </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> newdata </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> se_fit </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> type.predict </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> type.residuals </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> weights </td>
-  </tr>
-</tbody>
-</table>
-
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1b274794702ad9cc189f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1b274794702ad9cc189f">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment"],["alpha","boot_se","by_class","col.names","component","conf.int","conf.level","conf.method","conf.type","diagonal","droppars","effects","ess","estimate.method","exponentiate","fe","include_studies","instruments","intervals","matrix","measure","na.rm","object","p.values","par_type","parameters","parametric","pars","prob","region","return_zeros","rhat","robust","scales","se.type","strata","test","trim","upper","deviance","diagnostics","looic","mcmc","test","x","data","interval","newdata","se_fit","type.predict","type.residuals","weights"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Argument<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
+</section>
+<section id="column-names" class="level3">
+<h3 class="anchored" data-anchor-id="column-names">Column Names</h3>
 <p>The currently acceptable column names by tidier method are:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-24_309fe2261998ff7ffa3c30088d25f967">
+<div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-24_53d73b4cb01f15e416ba42c248920e7d">
 <div class="cell-output-display">
 
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> Method </th>
-   <th style="text-align:left;"> Column </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> acf </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> adj.p.value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> alternative </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> at.value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> at.variable </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> atmean </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> autocorrelation </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> bias </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> ci.width </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> class </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> cluster </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> coef.type </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> column1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> column2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> comp </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> comparison </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> component </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> conf.high </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> conf.low </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> contrast </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> cumulative </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> cutoff </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> delta </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> den.df </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> denominator </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> dev.ratio </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> df </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> distance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> estimate </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> estimate1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> estimate2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> event </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> exp </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> expected </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> fpr </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> freq </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> GCV </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> group </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> group1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> group2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> index </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> item1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> item2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> kendall_score </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> lag </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> lambda </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> letters </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> lhs </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> logLik </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> mcmc.error </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> mean </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> meansq </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> method </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> n </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> N </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> n.censor </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> n.event </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> n.risk </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> null.value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> num.df </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> nzero </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> obs </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> op </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> outcome </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> p </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> p.value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> p.value.Sargan </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> p.value.weakinst </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> p.value.Wu.Hausman </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> parameter </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> PC </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> percent </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> power </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> proportion </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> pyears </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> response </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> rhs </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> robust.se </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> row </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> scale </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> sd </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> series </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> sig.level </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> size </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> spec </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> state </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> statistic </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> statistic.Sargan </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> statistic.weakinst </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> statistic.Wu.Hausman </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> std_estimate </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> std.all </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> std.dev </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> std.error </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> std.lv </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> std.nox </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> step </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> strata </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> stratum </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> study </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> sumsq </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> tau </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> term </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> time </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> tpr </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> type </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> uniqueness </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> var_kendall_score </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> variable </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> variance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> withinss </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> y.level </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> y.value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> tidy </td>
-   <td style="text-align:left;"> z </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> adj.r.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> agfi </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> AIC </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> AICc </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> alpha </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> alternative </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> autocorrelation </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> avg.silhouette.width </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> betweenss </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> BIC </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> cfi </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> chi.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> chisq </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> cochran.qe </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> cochran.qm </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> conf.high </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> conf.low </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> converged </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> convergence </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> crit </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> cv.crit </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> den.df </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> deviance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> df </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> df.null </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> df.residual </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> dw.original </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> dw.transformed </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> edf </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> estimator </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> events </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> finTol </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> function.count </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> G </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> g.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> gamma </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> gradient.count </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> H </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> h.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> hypvol </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> i.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> independence </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> isConv </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> iter </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> iterations </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> kHKB </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> kLW </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> lag.order </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> lambda </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> lambda.1se </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> lambda.min </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> lambdaGCV </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> logLik </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> max.cluster.size </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> max.hazard </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> max.time </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> maxit </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> MCMC.burnin </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> MCMC.interval </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> MCMC.samplesize </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> measure </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> median </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> method </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> min.hazard </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> min.time </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> missing_method </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> model </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> n </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> n.clusters </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> n.factors </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> n.max </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> n.start </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> nevent </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> nexcluded </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> ngroups </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> nobs </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> norig </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> npar </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> npasses </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> null.deviance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> nulldev </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> num.df </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> number.interaction </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> offtable </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.cochran.qe </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.cochran.qm </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.original </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.Sargan </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.transformed </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.weak.instr </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> p.value.Wu.Hausman </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> parameter </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> pen.crit </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> power </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> power.reached </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> pseudo.r.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> r.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> records </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> residual.deviance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rho </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rho2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rho20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rmean </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rmean.std.error </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rmsea </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rmsea.conf.high </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> rscore </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> score </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> sigma </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> sigma2_j </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> spar </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> srmr </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> statistic </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> statistic.Sargan </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> statistic.weak.instr </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> statistic.Wu.Hausman </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> tau </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> tau.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> tau.squared.se </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> theta </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> timepoints </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> tli </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> tot.withinss </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> total </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> total.variance </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> totss </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> value </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> glance </td>
-   <td style="text-align:left;"> within.r.squared </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .class </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .cluster </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .cochran.qe.loo </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .col.prop </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .conf.high </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .conf.low </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .cooksd </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .cov.ratio </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .cred.high </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .cred.low </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .dffits </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .expected </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .fitted </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .fitted_j_0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .fitted_j_1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .hat </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .lower </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .moderator </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .moderator.level </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .observed </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .probability </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .prop </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .remainder </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .resid </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .resid_j_0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .resid_j_1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .row.prop </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .rownames </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .se.fit </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .seasadj </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .seasonal </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .sigma </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .std.resid </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .tau </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .tau.squared.loo </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .trend </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .uncertainty </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .upper </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> augment </td>
-   <td style="text-align:left;"> .weight </td>
-  </tr>
-</tbody>
-</table>
-
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bfb25cb6a4dafc678bf3" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-bfb25cb6a4dafc678bf3">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment"],["acf","adj.p.value","alternative","at.value","at.variable","atmean","autocorrelation","bias","ci.width","class","cluster","coef.type","column1","column2","comp","comparison","component","conf.high","conf.low","contrast","cumulative","cutoff","delta","den.df","denominator","dev.ratio","df","distance","estimate","estimate1","estimate2","event","exp","expected","fpr","freq","GCV","group","group1","group2","index","item1","item2","kendall_score","lag","lambda","letters","lhs","logLik","mcmc.error","mean","meansq","method","n","N","n.censor","n.event","n.risk","null.value","num.df","nzero","obs","op","outcome","p","p.value","p.value.Sargan","p.value.weakinst","p.value.Wu.Hausman","parameter","PC","percent","power","proportion","pyears","response","rhs","robust.se","row","scale","sd","series","sig.level","size","spec","state","statistic","statistic.Sargan","statistic.weakinst","statistic.Wu.Hausman","std_estimate","std.all","std.dev","std.error","std.lv","std.nox","step","strata","stratum","study","sumsq","tau","term","time","tpr","type","uniqueness","value","var_kendall_score","variable","variance","withinss","y.level","y.value","z","adj.r.squared","agfi","AIC","AICc","alpha","alternative","autocorrelation","avg.silhouette.width","betweenss","BIC","cfi","chi.squared","chisq","cochran.qe","cochran.qm","conf.high","conf.low","converged","convergence","crit","cv.crit","den.df","deviance","df","df.null","df.residual","dw.original","dw.transformed","edf","estimator","events","finTol","function.count","G","g.squared","gamma","gradient.count","H","h.squared","hypvol","i.squared","independence","isConv","iter","iterations","kHKB","kLW","lag.order","lambda","lambda.1se","lambda.min","lambdaGCV","logLik","max.cluster.size","max.hazard","max.time","maxit","MCMC.burnin","MCMC.interval","MCMC.samplesize","measure","median","method","min.hazard","min.time","missing_method","model","n","n.clusters","n.factors","n.max","n.start","nevent","nexcluded","ngroups","nobs","norig","npar","npasses","null.deviance","nulldev","num.df","number.interaction","offtable","p.value","p.value.cochran.qe","p.value.cochran.qm","p.value.original","p.value.Sargan","p.value.transformed","p.value.weak.instr","p.value.Wu.Hausman","parameter","pen.crit","power","power.reached","pseudo.r.squared","r.squared","records","residual.deviance","rho","rho2","rho20","rmean","rmean.std.error","rmsea","rmsea.conf.high","rscore","score","sigma","sigma2_j","spar","srmr","statistic","statistic.Sargan","statistic.weak.instr","statistic.Wu.Hausman","tau","tau.squared","tau.squared.se","theta","timepoints","tli","tot.withinss","total","total.variance","totss","value","within.r.squared",".class",".cluster",".cochran.qe.loo",".col.prop",".conf.high",".conf.low",".cooksd",".cov.ratio",".cred.high",".cred.low",".dffits",".expected",".fitted",".fitted_j_0",".fitted_j_1",".hat",".lower",".moderator",".moderator.level",".observed",".probability",".prop",".remainder",".resid",".resid_j_0",".resid_j_1",".row.prop",".rownames",".se.fit",".seasadj",".seasonal",".sigma",".std.resid",".tau",".tau.squared.loo",".trend",".uncertainty",".upper",".weight"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Column<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>The <a href="https://github.com/alexpghayes/modeltests">alexpghayes/modeltests</a> package provides unit testing infrastructure to check your new tidier methods. Please file an issue there to request new arguments/columns to be added to the glossaries!</p>
+</section>
 </section>
 <section id="session-information" class="level2">
 <h2 class="anchored" data-anchor-id="session-information">Session information</h2>
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-16
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  generics   * 0.1.3      2022-07-05 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tidyverse  * 1.3.2      2022-07-18 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  package    * version date (UTC) lib source
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  generics   * 0.1.3   2022-07-05 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tidyverse  * 2.0.0   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

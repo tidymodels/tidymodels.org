@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.56">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -146,24 +146,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/start/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/start/index.html">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../../../content/learn/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/help/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/help/index.html">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
+    <a class="nav-link" href="../../../../content/contribute/index.html">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/author/index.html">
  <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/find/index.html">
+ <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -413,7 +417,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="a-single-model" class="level3">
 <h3 class="anchored" data-anchor-id="a-single-model">A single model</h3>
 <p>Let’s start by fitting only a single parsnip model object. We’ll create a model specification using <code>linear_reg()</code>.</p>
-<p>{{% note %}} The default engine is <code>"lm"</code> so no call to <code>set_engine()</code> is required. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The default engine is <code>"lm"</code> so no call to <code>set_engine()</code> is required.</p>
+</div>
+</div>
 <p>The <code>fit()</code> function estimates the model coefficients, given a formula and data set.</p>
 <div class="cell" data-layout-align="center" data-hash="cache/lm-single_01a332c8b03f35833c62f041f177e350">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>()</span>
@@ -451,7 +467,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>bt <span class="ot">&lt;-</span> <span class="fu">bootstraps</span>(Chicago, <span class="at">times =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With resampling, we fit the same model to the different simulated versions of the data set produced by resampling. The tidymodels function <a href="https://www.tmwr.org/resampling.html#resampling-performance"><code>fit_resamples()</code></a> is the recommended approach for doing so.</p>
-<p>{{% warning %}} The <code>fit_resamples()</code> function does not automatically save the model objects for each resample since these can be quite large and its main purpose is estimating performance. However, we can pass a function to <code>fit_resamples()</code> that <em>can</em> save the model object or any other aspect of the fit. {{%/ warning %}}</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>fit_resamples()</code> function does not automatically save the model objects for each resample since these can be quite large and its main purpose is estimating performance. However, we can pass a function to <code>fit_resamples()</code> that <em>can</em> save the model object or any other aspect of the fit.</p>
+</div>
+</div>
 <p>This function takes a single argument that represents the fitted <a href="https://www.tmwr.org/workflows.html">workflow object</a> (even if you don’t give <code>fit_resamples()</code> a workflow).</p>
 <p>From this, we can extract the model fit. There are two “levels” of model objects that are available:</p>
 <ul>
@@ -560,9 +588,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>) <span class="sc">+</span> </span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Coefficient"</span>, <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Please use `linewidth` instead.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -590,7 +616,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>has a penalty that is 95% lasso and 5% weight decay. The total amount of these two penalties is 0.1 (which is fairly high).</p>
-<p>{{% note %}} Models with regularization require that predictors are all on the same scale. The ridership at our three stations are very different, but glmnet <a href="https://parsnip.tidymodels.org/reference/details_linear_reg_glmnet.html">automatically centers and scales the data</a>. You can use recipes to <a href="https://recipes.tidymodels.org/reference/step_normalize.html">center and scale your data yourself</a>. {{%/ note %}}</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Models with regularization require that predictors are all on the same scale. The ridership at our three stations are very different, but glmnet <a href="https://parsnip.tidymodels.org/reference/details_linear_reg_glmnet.html">automatically centers and scales the data</a>. You can use recipes to <a href="https://recipes.tidymodels.org/reference/step_normalize.html">center and scale your data yourself</a>.</p>
+</div>
+</div>
 <p>Let’s combine the model specification with a formula in a model <code>workflow()</code> and then fit the model to the data:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/glmnet-wflow_28ae9506b04e31712317af13c32fc492">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>glmnet_wflow <span class="ot">&lt;-</span> </span>
@@ -687,7 +725,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Clark_Lake     9   0.454     2.90     0.596</span></span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Clark_Lake    10   0.491     2.64     0.627</span></span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Clark_Lake    11   0.526     2.41     0.653</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 89 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 89 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This works well but, it turns out that our penalty value (0.1) is not in the list produced by the model! The underlying package has functions that use interpolation to produce coefficients for this specific value, but the <code>tidy()</code> method for glmnet objects does not use it.</p>
 </section>
@@ -836,7 +874,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Bootstrap1 0.00464     0.1 Clark_Lake    0.828</span></span>
 <span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Bootstrap1 0.00215     0.1 Clark_Lake    0.834</span></span>
 <span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Bootstrap1 0.001       0.1 Clark_Lake    0.837</span></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we have the coefficients. Let’s look at how they behave as more regularization is used:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/glmnet-plot_447f6477762ae31ebd27ef7db9ebff5e">
@@ -871,37 +909,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-16
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  glmnet     * 4.1-6      2022-11-27 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  package    * version date (UTC) lib source
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  glmnet     * 4.1-7   2023-03-23 [1] CRAN (R 4.2.0)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
