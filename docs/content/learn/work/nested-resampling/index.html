@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -163,6 +163,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li class="nav-item">
     <a class="nav-link" href="../../../../content/author/index.html">
  <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/find/index.html">
+ <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -355,7 +359,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title">
 <h1 class="title d-none d-lg-block">Nested resampling</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">tuning</div>
+    <div class="quarto-category">nested resampling</div>
+    <div class="quarto-category">SVMs</div>
   </div>
   </div>
 
@@ -592,7 +597,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results<span class="sc">$</span>RMSE)</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.673   2.095   2.651   2.689   3.258   4.297</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.574   2.095   2.668   2.694   3.258   4.350</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The estimated RMSE for the model tuning process is 2.69.</p>
 <p>What is the RMSE estimate for the non-nested procedure when only the outer resampling method is used? For each cost value in the tuning grid, 50 SVM models are fit and their RMSE values are averaged. The table of cost values and mean RMSE estimates is used to determine the best cost value. The associated RMSE is the biased estimate.</p>
@@ -650,14 +655,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Big Sur/Monterey 10.16
-#&gt;  system   x86_64, darwin17.0
+#&gt;  os       macOS Monterey 12.6.1
+#&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/New_York
-#&gt;  date     2023-01-04
+#&gt;  date     2023-01-05
 #&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
@@ -667,22 +672,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
 #&gt;  furrr      * 0.3.1      2022-08-15 [1] CRAN (R 4.2.0)
 #&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
+#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
 #&gt;  kernlab    * 0.9-31     2022-06-09 [1] CRAN (R 4.2.0)
 #&gt;  mlbench    * 2.1-3      2021-01-29 [1] CRAN (R 4.2.0)
 #&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3.9000 2022-12-12 [1] local
+#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
 #&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1.9000 2022-12-13 [1] local
+#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
 #&gt;  scales     * 1.2.1      2022-08-20 [1] CRAN (R 4.2.0)
 #&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
 #&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
+#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
 #&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
+#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

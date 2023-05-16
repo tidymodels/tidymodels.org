@@ -1,7 +1,7 @@
 ---
 title: "Create your own recipe step function"
-tags: [recipes]
-categories: []
+categories:
+  - developer tools
 type: learn-subsection
 weight: 1
 description: | 
@@ -303,6 +303,7 @@ Let's use the example data to make sure that it works:
 
 ```{r}
 #| label: "example"
+#| eval: false
 rec_obj <- 
   recipe(HHV ~ ., data = biomass_tr) %>%
   step_percentile(ends_with("gen")) %>%
@@ -320,6 +321,7 @@ The plot below shows how the original hydrogen percentiles line up with the esti
 
 ```{r}
 #| label: "cdf_plot"
+#| eval: false
 hydrogen_values <- 
   bake(rec_obj, biomass_te, hydrogen) %>% 
   bind_cols(biomass_te %>% select(original = hydrogen))
@@ -360,6 +362,7 @@ If you don't add a print method for `step_percentile`, it will still print but i
 
 ```{r}
 #| label: "print-method"
+#| eval: false
 print.step_percentile <-
   function(x, width = max(20, options()$width - 35), ...) {
     cat("Percentile transformation on ", sep = "")
@@ -424,6 +427,7 @@ When the recipe has been prepped, those data are in the list `ref_dist`. A small
 
 ```{r}
 #| label: "tidy-calcs"
+#| eval: false
 format_pctl <- function(x) {
   tibble::tibble(
     value = unname(x),
@@ -441,6 +445,7 @@ The tidy method could return these values for each selected column. Before `prep
 
 ```{r}
 #| label: "tidy"
+#| eval: false
 tidy.step_percentile <- function(x, ...) {
   if (is_trained(x)) {
     res <- map_dfr(x$ref_dist, format_pctl, .id = "term")
@@ -468,6 +473,7 @@ The tune package can be used to find reasonable values of step arguments by mode
 
 ```{r}
 #| label: "poly-args"
+#| eval: false
 args(step_poly)
 ```
 
@@ -493,6 +499,7 @@ For example, for a nearest-neighbors `neighbors` parameter, this value is just:
 
 ```{r}
 #| label: "mtry"
+#| eval: false
 info <- list(pkg = "dials", fun = "neighbors")
 
 # FYI: how it is used under-the-hood: 

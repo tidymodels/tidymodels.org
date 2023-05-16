@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.56">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -147,24 +147,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../content/start/index.html" rel="" target="">
+    <a class="nav-link" href="../../../content/start/index.html">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../content/learn/index.html" rel="" target="">
+    <a class="nav-link" href="../../../content/learn/index.html">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../content/help/index.html" rel="" target="">
+    <a class="nav-link" href="../../../content/help/index.html">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../content/contribute/index.html" rel="" target="">
+    <a class="nav-link" href="../../../content/contribute/index.html">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../content/author/index.html" rel="" target="">
+    <a class="nav-link" href="../../../content/author/index.html">
  <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/find/index.html">
+ <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -239,6 +243,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block">Preprocess your data with recipes</h1>
   <div class="quarto-categories">
     <div class="quarto-category">pre-processing</div>
+    <div class="quarto-category">recipes</div>
+    <div class="quarto-category">parsnip</div>
+    <div class="quarto-category">workflows</div>
+    <div class="quarto-category">yardstick</div>
+    <div class="quarto-category">broom</div>
   </div>
   </div>
 
@@ -580,7 +589,7 @@ UA: 57489, B6: 53715, EV: 50868, DL: 47465
 <p>What do each of these steps do?</p>
 <ul>
 <li><p>With <a href="https://recipes.tidymodels.org/reference/step_date.html"><code>step_date()</code></a>, we created two new factor columns with the appropriate day of the week and the month.</p></li>
-<li><p>With <a href="https://recipes.tidymodels.org/reference/step_holiday.html"><code>step_holiday()</code></a>, we created a binary variable indicating whether the current date is a holiday or not. The argument value of <code>timeDate::listHolidays("US")</code> uses the <a href="https://cran.r-project.org/web/packages/timeDate/index.html">timeDate package</a> to list the 17 standard US holidays.</p></li>
+<li><p>With <a href="https://recipes.tidymodels.org/reference/step_holiday.html"><code>step_holiday()</code></a>, we created a binary variable indicating whether the current date is a holiday or not. The argument value of <code>timeDate::listHolidays("US")</code> uses the <a href="https://cran.r-project.org/web/packages/timeDate/index.html">timeDate package</a> to list the 18 standard US holidays.</p></li>
 <li><p>With <code>keep_original_cols = FALSE</code>, we remove the original <code>date</code> variable since we no longer want it in the model. Many recipe steps that create new variables have this argument.</p></li>
 </ul>
 <p>Next, we’ll turn our attention to the variable types of our predictors. Because we plan to train a logistic regression model, we know that predictors will ultimately need to be numeric, as opposed to nominal data like strings and factor variables. In other words, there may be a difference in how we store our data (in factors inside a data frame), and how the underlying equations require them (a purely numeric matrix).</p>
@@ -706,20 +715,20 @@ UA: 57489, B6: 53715, EV: 50868, DL: 47465
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>flights_fit <span class="sc">%&gt;%</span> </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fit_parsnip</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>()</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 157 × 5</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 158 × 5</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    term                         estimate std.error statistic  p.value</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 (Intercept)                   7.28    2.73           2.67 7.64e- 3</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 (Intercept)                   7.26    2.73           2.66 7.75e- 3</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 dep_time                     -0.00166 0.0000141   -118.   0       </span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 air_time                     -0.0440  0.000563     -78.2  0       </span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 distance                      0.00507 0.00150        3.38 7.32e- 4</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 date_USChristmasDay           1.33    0.177          7.49 6.93e-14</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 date_USColumbusDay            0.724   0.170          4.25 2.13e- 5</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 date_USCPulaskisBirthday      0.807   0.139          5.80 6.57e- 9</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 date_USDecorationMemorialDay  0.585   0.117          4.98 6.32e- 7</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 date_USElectionDay            0.948   0.190          4.98 6.25e- 7</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 date_USGoodFriday             1.25    0.167          7.45 9.40e-14</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 147 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 distance                      0.00508 0.00150        3.38 7.13e- 4</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 date_USChristmasDay           1.35    0.178          7.59 3.32e-14</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 date_USColumbusDay            0.721   0.170          4.23 2.33e- 5</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 date_USCPulaskisBirthday      0.804   0.139          5.78 7.38e- 9</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 date_USDecorationMemorialDay  0.582   0.117          4.96 7.22e- 7</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 date_USElectionDay            0.945   0.190          4.97 6.73e- 7</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 date_USGoodFriday             1.24    0.167          7.44 1.04e-13</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 148 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="predict-workflow" class="level2">
@@ -804,14 +813,14 @@ UA: 57489, B6: 53715, EV: 50868, DL: 47465
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Big Sur/Monterey 10.16
-#&gt;  system   x86_64, darwin17.0
+#&gt;  os       macOS Monterey 12.6.1
+#&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/New_York
-#&gt;  date     2023-01-04
+#&gt;  date     2023-01-05
 #&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
@@ -820,21 +829,21 @@ UA: 57489, B6: 53715, EV: 50868, DL: 47465
 #&gt;  dials        * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
 #&gt;  dplyr        * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
 #&gt;  ggplot2      * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer        * 1.0.3      2022-08-22 [1] CRAN (R 4.2.0)
+#&gt;  infer        * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
 #&gt;  nycflights13 * 1.0.2      2021-04-12 [1] CRAN (R 4.2.0)
 #&gt;  parsnip      * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr        * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
-#&gt;  recipes      * 1.0.3.9000 2022-12-12 [1] local
+#&gt;  purrr        * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
+#&gt;  recipes      * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
 #&gt;  rlang          1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample      * 1.1.1.9000 2022-12-13 [1] local
+#&gt;  rsample      * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
 #&gt;  skimr        * 2.1.5      2022-12-23 [1] CRAN (R 4.2.0)
 #&gt;  tibble       * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
 #&gt;  tidymodels   * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune         * 1.0.1.9001 2022-12-05 [1] Github (tidymodels/tune@e23abdf)
+#&gt;  tune         * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
 #&gt;  workflows    * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick    * 1.1.0.9000 2022-11-30 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  yardstick    * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
+#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

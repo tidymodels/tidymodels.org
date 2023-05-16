@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.56">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -145,24 +145,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/start/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/start/index.html">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../../../content/learn/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="../../../../content/learn/index.html" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/help/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/help/index.html">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/contribute/index.qmd" rel="" target="">
+    <a class="nav-link" href="../../../../content/contribute/index.html">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/author/index.html">
  <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../content/find/index.html">
+ <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -366,7 +370,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title d-none d-lg-block">Create your own recipe step function</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">developer tools</div>
+  </div>
+  </div>
 
 <div>
   <div class="description">
@@ -641,31 +648,21 @@ Note
 <section id="run-the-example" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-example">Run the example</h2>
 <p>Let’s use the example data to make sure that it works:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/example_772256fc0ca7141fc3d35b1fd93e88a9">
+<div class="cell" data-layout-align="center" data-hash="cache/example_d3f9751b8b4c8df7fa734a80bdffd799">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rec_obj <span class="ot">&lt;-</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(HHV <span class="sc">~</span> ., <span class="at">data =</span> biomass_tr) <span class="sc">%&gt;%</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_percentile</span>(<span class="fu">ends_with</span>(<span class="st">"gen"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">training =</span> biomass_tr)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>biomass_te <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">"gen"</span>)) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   hydrogen oxygen nitrogen</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     5.67  47.20     0.30</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     5.50  48.06     2.85</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(rec_obj, biomass_te <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="fu">ends_with</span>(<span class="st">"gen"</span>))</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   hydrogen oxygen nitrogen</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0.45  0.903    0.21 </span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     0.38  0.922    0.928</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking to get approximate result: </span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(biomass_tr<span class="sc">$</span>hydrogen <span class="sc">&lt;=</span> biomass_te<span class="sc">$</span>hydrogen[<span class="dv">1</span>])</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.4517544</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(biomass_tr<span class="sc">$</span>oxygen   <span class="sc">&lt;=</span> biomass_te<span class="sc">$</span>oxygen[<span class="dv">1</span>])</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9013158</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(rec_obj, biomass_te <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="fu">ends_with</span>(<span class="st">"gen"</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking to get approximate result: </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(biomass_tr<span class="sc">$</span>hydrogen <span class="sc">&lt;=</span> biomass_te<span class="sc">$</span>hydrogen[<span class="dv">1</span>])</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(biomass_tr<span class="sc">$</span>oxygen   <span class="sc">&lt;=</span> biomass_te<span class="sc">$</span>oxygen[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The plot below shows how the original hydrogen percentiles line up with the estimated values:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/cdf_plot_159799b7fd72828fadd4d606fa204f3e">
+<div class="cell" data-layout-align="center" data-hash="cache/cdf_plot_7fa4a8e3206391cb29364184e76efaf8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>hydrogen_values <span class="ot">&lt;-</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(rec_obj, biomass_te, hydrogen) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(biomass_te <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">original =</span> hydrogen))</span>
@@ -679,13 +676,6 @@ Note
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> original, <span class="at">y =</span> hydrogen), </span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">cex =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"New Hydrogen Values"</span>, <span class="at">y =</span> <span class="st">"Percentile Based on Training Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/cdf_plot-1.svg" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>These line up very nicely!</p>
 </section>
@@ -709,7 +699,7 @@ Note
 <section id="a-print-method" class="level3">
 <h3 class="anchored" data-anchor-id="a-print-method">A print method</h3>
 <p>If you don’t add a print method for <code>step_percentile</code>, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called <code>printer()</code> that should be useful in most cases. We are using it here for the custom print method for <code>step_percentile</code>. It requires the original terms specification and the column names this specification is evaluated to by <code>prep()</code>. For the former, our step object is structured so that the list object <code>ref_dist</code> has the names of the selected variables:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/print-method_3703e6bb929a5780983729502421e4b4">
+<div class="cell" data-layout-align="center" data-hash="cache/print-method_d4ebd3848eef1bd46e28cfb4c415ba1d">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>print.step_percentile <span class="ot">&lt;-</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x, <span class="at">width =</span> <span class="fu">max</span>(<span class="dv">20</span>, <span class="fu">options</span>()<span class="sc">$</span>width <span class="sc">-</span> <span class="dv">35</span>), ...) {</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Percentile transformation on "</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
@@ -729,33 +719,9 @@ Note
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Results before `prep()`:</span></span>
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(HHV <span class="sc">~</span> ., <span class="at">data =</span> biomass_tr) <span class="sc">%&gt;%</span></span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_percentile</span>(<span class="fu">ends_with</span>(<span class="st">"gen"</span>))</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Recipe</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Inputs:</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       role #variables</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    outcome          1</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  predictor          7</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Operations:</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Percentile transformation on ends_with("gen")</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Results after `prep()`: </span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>rec_obj</span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Recipe</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Inputs:</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       role #variables</span></span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    outcome          1</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  predictor          7</span></span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Training data contained 456 data points and no missing data.</span></span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Operations:</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Percentile transformation on hydrogen, oxygen, nitrogen [trained]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Results after `prep()`: </span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>rec_obj</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="methods-for-declaring-required-packages" class="level3">
@@ -782,7 +748,7 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <h3 class="anchored" data-anchor-id="a-tidy-method">A tidy method</h3>
 <p>The <code>broom::tidy()</code> method is a means to return information about the step in a usable format. For our step, it would be helpful to know the reference values.</p>
 <p>When the recipe has been prepped, those data are in the list <code>ref_dist</code>. A small function can be used to reformat that data into a tibble. It is customary to return the main values as <code>value</code>:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/tidy-calcs_4ea442a4112fcdb07bcd881ce7e823bf">
+<div class="cell" data-layout-align="center" data-hash="cache/tidy-calcs_729f85bdabca51988e5c753558835e58">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>format_pctl <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">value =</span> <span class="fu">unname</span>(x),</span>
@@ -793,25 +759,10 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For example: </span></span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>pctl_step_object <span class="ot">&lt;-</span> rec_obj<span class="sc">$</span>steps[[<span class="dv">1</span>]]</span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>pctl_step_object</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Percentile transformation on hydrogen, oxygen, nitrogen [trained]</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">format_pctl</span>(pctl_step_object<span class="sc">$</span>ref_dist[[<span class="st">"hydrogen"</span>]])</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 87 × 2</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    value percentile</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 0.03           0</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 0.934          1</span></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 1.60           2</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2.07           3</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2.45           4</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2.74           5</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 3.15           6</span></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 3.49           7</span></span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 3.71           8</span></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 3.99           9</span></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 77 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">format_pctl</span>(pctl_step_object<span class="sc">$</span>ref_dist[[<span class="st">"hydrogen"</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The tidy method could return these values for each selected column. Before <code>prep()</code>, missing values can be used as placeholders.</p>
-<div class="cell" data-layout-align="center" data-hash="cache/tidy_034d8d1109dc6a42f7f14bec91cfc669">
+<div class="cell" data-layout-align="center" data-hash="cache/tidy_6651875bdb0348cb7beed42d9960198c">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tidy.step_percentile <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is_trained</span>(x)) {</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(x<span class="sc">$</span>ref_dist, format_pctl, <span class="at">.id =</span> <span class="st">"term"</span>)</span>
@@ -830,31 +781,14 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  res</span>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(rec_obj, <span class="at">number =</span> <span class="dv">1</span>)</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 274 × 4</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    term     value percentile id              </span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;           </span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 hydrogen 0.03           0 percentile_HcwF5</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 hydrogen 0.934          1 percentile_HcwF5</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 hydrogen 1.60           2 percentile_HcwF5</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 hydrogen 2.07           3 percentile_HcwF5</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 hydrogen 2.45           4 percentile_HcwF5</span></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 hydrogen 2.74           5 percentile_HcwF5</span></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 hydrogen 3.15           6 percentile_HcwF5</span></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 hydrogen 3.49           7 percentile_HcwF5</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 hydrogen 3.71           8 percentile_HcwF5</span></span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 hydrogen 3.99           9 percentile_HcwF5</span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 264 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(rec_obj, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="methods-for-tuning-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="methods-for-tuning-parameters">Methods for tuning parameters</h3>
 <p>The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn’t really have any tunable parameters, so we will demonstrate using <code>step_poly()</code>, which returns a polynomial expansion of selected columns. Its function definition has the arguments:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/poly-args_aeebdb3dac81ee70eba24e6ae9ec6448">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(step_poly)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; function (recipe, ..., role = "predictor", trained = FALSE, objects = NULL, </span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     degree = 2, options = list(), skip = FALSE, id = rand_id("poly")) </span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="cache/poly-args_7c1ac91efd9c85d357f850499f13a78c">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(step_poly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The argument <code>degree</code> is tunable.</p>
 <p>To work with tune it is <em>helpful</em> (but not required) to use an S3 method called <code>tunable()</code> to define which arguments should be tuned and how values of those arguments should be generated.</p>
@@ -868,14 +802,12 @@ a clean R session then run: install.packages("some_package")</code></pre>
 </ul>
 <p>The main piece of information that requires some detail is <code>call_info</code>. This is a list column in the tibble. Each element of the list is a list that describes the package and function that can be used to create a dials parameter object.</p>
 <p>For example, for a nearest-neighbors <code>neighbors</code> parameter, this value is just:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/mtry_3c03e505855845f8e5bb7a077fd5b825">
+<div class="cell" data-layout-align="center" data-hash="cache/mtry_29d760ef7533e5f40bc9232a20172a80">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">pkg =</span> <span class="st">"dials"</span>, <span class="at">fun =</span> <span class="st">"neighbors"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># FYI: how it is used under-the-hood: </span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>new_param_call <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">call2</span>(<span class="at">.fn =</span> info<span class="sc">$</span>fun, <span class="at">.ns =</span> info<span class="sc">$</span>pkg)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>rlang<span class="sc">::</span><span class="fu">eval_tidy</span>(new_param_call)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Nearest Neighbors (quantitative)</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 10]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>rlang<span class="sc">::</span><span class="fu">eval_tidy</span>(new_param_call)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For <code>step_poly()</code>, a dials object is needed that returns an integer that is the number of new columns to create. It turns out that there are a few different types of tuning parameters related to degree:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">lsf.str</span>(<span class="st">"package:dials"</span>, <span class="at">pattern =</span> <span class="st">"degree"</span>)</span>
@@ -903,37 +835,38 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-16
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  modeldata  * 1.0.1      2022-09-06 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  package    * version date (UTC) lib source
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  modeldata  * 1.1.0   2023-01-25 [1] CRAN (R 4.2.0)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
