@@ -173,6 +173,7 @@ tidymodels_functions <-
     .progress = TRUE
   ) %>% 
   sort_out_urls() %>% 
+  filter(grepl("^\\.", functions)) %>%
   select(-functions)
 
 save(
