@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,14 +18,13 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
@@ -71,9 +70,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-author','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -91,6 +90,7 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
@@ -107,199 +107,228 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">tidymodels</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../content/start/index.html">
+    <a class="nav-link" href="../../content/start/index.html" rel="" target="">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../content/learn/index.html" aria-current="page">
+    <a class="nav-link active" href="../../content/learn/index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/help/index.html">
+    <a class="nav-link" href="../../content/help/index.html" rel="" target="">
  <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/contribute/index.html">
+    <a class="nav-link" href="../../content/contribute/index.html" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/author/index.html">
+    <a class="nav-link" href="../../content/author/index.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/find/index.html">
+    <a class="nav-link" href="../../content/find/index.html" rel="" target="">
  <span class="menu-text">Function Reference</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Learn</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/learn/index.html">Learn</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/index.html" class="sidebar-item-text sidebar-link active">Learn</a>
+  <a href="../../content/learn/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Learn</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Perform Statistical Analyses</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Perform Statistical Analyses</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/statistics/bootstrap/index.html" class="sidebar-item-text sidebar-link">Bootstrap resampling and tidy regression models</a>
+  <a href="../../content/learn/statistics/bootstrap/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bootstrap resampling and tidy regression models</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/statistics/infer/index.html" class="sidebar-item-text sidebar-link">Hypothesis testing using resampling and tidy data</a>
+  <a href="../../content/learn/statistics/infer/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypothesis testing using resampling and tidy data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
-  content/learn/statistics/k-means/k-index.qmd
+ <span class="menu-text">content/learn/statistics/k-means/k-index.qmd</span>
   </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/statistics/tidy-analysis/index.html" class="sidebar-item-text sidebar-link">Correlation and regression fundamentals with tidy data principles</a>
+  <a href="../../content/learn/statistics/tidy-analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Correlation and regression fundamentals with tidy data principles</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/statistics/xtabs/index.html" class="sidebar-item-text sidebar-link">Statistical analysis of contingency tables</a>
+  <a href="../../content/learn/statistics/xtabs/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical analysis of contingency tables</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Create Robust Models</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Create Robust Models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/models/coefficients/index.html" class="sidebar-item-text sidebar-link">Working with model coefficients</a>
+  <a href="../../content/learn/models/coefficients/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with model coefficients</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/models/parsnip-nnet/index.html" class="sidebar-item-text sidebar-link">Classification models using a neural network</a>
+  <a href="../../content/learn/models/parsnip-nnet/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classification models using a neural network</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/models/parsnip-ranger-glmnet/index.html" class="sidebar-item-text sidebar-link">Regression models two ways</a>
+  <a href="../../content/learn/models/parsnip-ranger-glmnet/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regression models two ways</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/models/pls/index.html" class="sidebar-item-text sidebar-link">Multivariate analysis using partial least squares</a>
+  <a href="../../content/learn/models/pls/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multivariate analysis using partial least squares</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/models/sub-sampling/index.html" class="sidebar-item-text sidebar-link">Subsampling for class imbalances</a>
+  <a href="../../content/learn/models/sub-sampling/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Subsampling for class imbalances</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/models/time-series/index.html" class="sidebar-item-text sidebar-link">Modeling time series with tidy resampling</a>
+  <a href="../../content/learn/models/time-series/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling time series with tidy resampling</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Develop custom modeling tools</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Develop custom modeling tools</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/develop/broom/index.html" class="sidebar-item-text sidebar-link">Create your own broom tidier methods</a>
+  <a href="../../content/learn/develop/broom/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create your own broom tidier methods</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/develop/metrics/index.html" class="sidebar-item-text sidebar-link">Custom performance metrics</a>
+  <a href="../../content/learn/develop/metrics/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Custom performance metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/develop/models/index.html" class="sidebar-item-text sidebar-link">How to build a parsnip model</a>
+  <a href="../../content/learn/develop/models/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How to build a parsnip model</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/develop/parameters/index.html" class="sidebar-item-text sidebar-link">How to create a tuning parameter function</a>
+  <a href="../../content/learn/develop/parameters/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How to create a tuning parameter function</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/develop/recipes/index.html" class="sidebar-item-text sidebar-link">Create your own recipe step function</a>
+  <a href="../../content/learn/develop/recipes/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create your own recipe step function</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Tune, compare, and work with your models</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Tune, compare, and work with your models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/work/bayes-opt/index.html" class="sidebar-item-text sidebar-link">Iterative Bayesian optimization of a classification model</a>
+  <a href="../../content/learn/work/bayes-opt/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Bayesian optimization of a classification model</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/work/case-weights/index.html" class="sidebar-item-text sidebar-link">Creating case weights based on time</a>
+  <a href="../../content/learn/work/case-weights/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating case weights based on time</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/work/nested-resampling/index.html" class="sidebar-item-text sidebar-link">Nested resampling</a>
+  <a href="../../content/learn/work/nested-resampling/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Nested resampling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/work/tune-svm/index.html" class="sidebar-item-text sidebar-link">Model tuning via grid search</a>
+  <a href="../../content/learn/work/tune-svm/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model tuning via grid search</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/learn/work/tune-text/index.html" class="sidebar-item-text sidebar-link">Tuning text models</a>
+  <a href="../../content/learn/work/tune-text/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tuning text models</span></a>
   </div>
 </li>
       </ul>
@@ -307,6 +336,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
@@ -316,7 +346,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Learn</h1>
+<h1 class="title">Learn</h1>
 </div>
 
 <div>
@@ -343,9 +373,10 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-articles-links">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="statistical analysis,bootstraping,tidying results,confidence intervals" data-listing-file-modified-sort="1684268055095" data-listing-reading-time-sort="3.57">
+<div class="g-col-1" data-index="0" data-categories="statistical analysis,bootstraping,tidying results,confidence intervals" data-listing-file-modified-sort="1684268055095" data-listing-reading-time-sort="4">
 <a href="../../content/learn/statistics/bootstrap/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="statistics/bootstrap/figs/unnamed-chunk-3-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Bootstrap resampling and tidy regression models
@@ -376,9 +407,10 @@ confidence intervals
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="model fitting,torch,neural networks" data-listing-file-modified-sort="1684268055093" data-listing-reading-time-sort="2.99">
+<div class="g-col-1" data-index="1" data-categories="model fitting,torch,neural networks" data-listing-file-modified-sort="1684268055093" data-listing-reading-time-sort="3">
 <a href="../../content/learn/models/parsnip-nnet/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="models/parsnip-nnet/figs/biv-plot-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Classification models using a neural network
@@ -406,9 +438,10 @@ neural networks
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="statistical analysis,correlation,tidying results" data-listing-file-modified-sort="1684268055096" data-listing-reading-time-sort="4.46">
+<div class="g-col-1" data-index="2" data-categories="statistical analysis,correlation,tidying results" data-listing-file-modified-sort="1684268055096" data-listing-reading-time-sort="5">
 <a href="../../content/learn/statistics/tidy-analysis/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="statistics/tidy-analysis/figs/unnamed-chunk-4-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Correlation and regression fundamentals with tidy data principles
@@ -436,9 +469,10 @@ tidying results
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="developer tools" data-listing-file-modified-sort="1684268055091" data-listing-reading-time-sort="15.755">
+<div class="g-col-1" data-index="3" data-categories="developer tools" data-listing-file-modified-sort="1684268055091" data-listing-reading-time-sort="16">
 <a href="../../content/learn/develop/broom/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Create your own broom tidier methods
@@ -460,9 +494,10 @@ developer tools
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="developer tools" data-listing-file-modified-sort="1684268055092" data-listing-reading-time-sort="16.955">
+<div class="g-col-1" data-index="4" data-categories="developer tools" data-listing-file-modified-sort="1684268055092" data-listing-reading-time-sort="17">
 <a href="../../content/learn/develop/recipes/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="develop/recipes/figs/carbon_dist-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Create your own recipe step function
@@ -484,9 +519,10 @@ developer tools
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="model fitting,case weights,time series" data-listing-file-modified-sort="1684268055097" data-listing-reading-time-sort="4.545">
+<div class="g-col-1" data-index="5" data-categories="model fitting,case weights,time series" data-listing-file-modified-sort="1684268055097" data-listing-reading-time-sort="5">
 <a href="../../content/learn/work/case-weights/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="work/case-weights/figs/unnamed-chunk-5-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Creating case weights based on time
@@ -514,9 +550,10 @@ time series
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="developer tools" data-listing-file-modified-sort="1684268055091" data-listing-reading-time-sort="15.545">
+<div class="g-col-1" data-index="6" data-categories="developer tools" data-listing-file-modified-sort="1684268055091" data-listing-reading-time-sort="16">
 <a href="../../content/learn/develop/metrics/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Custom performance metrics
@@ -538,9 +575,10 @@ developer tools
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="7" data-categories="developer tools" data-listing-file-modified-sort="1684268055091" data-listing-reading-time-sort="21.97">
+<div class="g-col-1" data-index="7" data-categories="developer tools" data-listing-file-modified-sort="1684268055091" data-listing-reading-time-sort="22">
 <a href="../../content/learn/develop/models/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 How to build a parsnip model
@@ -562,9 +600,10 @@ developer tools
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="8" data-categories="developer tools" data-listing-file-modified-sort="1684268055092" data-listing-reading-time-sort="6.22">
+<div class="g-col-1" data-index="8" data-categories="developer tools" data-listing-file-modified-sort="1684268055092" data-listing-reading-time-sort="7">
 <a href="../../content/learn/develop/parameters/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 How to create a tuning parameter function
@@ -586,9 +625,10 @@ developer tools
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="9" data-categories="statistical analysis,hypothesis testing,bootstraping" data-listing-file-modified-sort="1684268055095" data-listing-reading-time-sort="11.495">
+<div class="g-col-1" data-index="9" data-categories="statistical analysis,hypothesis testing,bootstraping" data-listing-file-modified-sort="1684268055095" data-listing-reading-time-sort="12">
 <a href="../../content/learn/statistics/infer/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="statistics/infer/figs/visualize-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Hypothesis testing using resampling and tidy data
@@ -616,9 +656,10 @@ bootstraping
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="10" data-categories="model tuning,Bayesian optimization,SVMs" data-listing-file-modified-sort="1684268055097" data-listing-reading-time-sort="4.905">
+<div class="g-col-1" data-index="10" data-categories="model tuning,Bayesian optimization,SVMs" data-listing-file-modified-sort="1684268055097" data-listing-reading-time-sort="5">
 <a href="../../content/learn/work/bayes-opt/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="work/bayes-opt/figs/bo-plot-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Iterative Bayesian optimization of a classification model
@@ -646,9 +687,10 @@ SVMs
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="11" data-categories="statistical analysis,clustering,tidying results" data-listing-file-modified-sort="1684268055095" data-listing-reading-time-sort="4.295">
+<div class="g-col-1" data-index="11" data-categories="statistical analysis,clustering,tidying results" data-listing-file-modified-sort="1684268055095" data-listing-reading-time-sort="5">
 <a href="../../content/learn/statistics/k-means/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="statistics/k-means/figs/unnamed-chunk-3-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 K-means clustering with tidy data principles
@@ -676,9 +718,10 @@ tidying results
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="12" data-categories="model tuning,SVMs" data-listing-file-modified-sort="1684268055098" data-listing-reading-time-sort="4.48">
+<div class="g-col-1" data-index="12" data-categories="model tuning,SVMs" data-listing-file-modified-sort="1684268055098" data-listing-reading-time-sort="5">
 <a href="../../content/learn/work/tune-svm/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="work/tune-svm/figs/augment-preds-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Model tuning via grid search
@@ -703,9 +746,10 @@ SVMs
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="13" data-categories="model fitting,time series" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="4.23">
+<div class="g-col-1" data-index="13" data-categories="model fitting,time series" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="5">
 <a href="../../content/learn/models/time-series/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="models/time-series/figs/plot-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Modeling time series with tidy resampling
@@ -730,9 +774,10 @@ time series
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="14" data-categories="pre-processing,multivariate analysis,partial least squares" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="6.685">
+<div class="g-col-1" data-index="14" data-categories="pre-processing,multivariate analysis,partial least squares" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="7">
 <a href="../../content/learn/models/pls/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="models/pls/figs/plot-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Multivariate analysis using partial least squares
@@ -760,9 +805,10 @@ partial least squares
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="15" data-categories="nested resampling,SVMs" data-listing-file-modified-sort="1684268055097" data-listing-reading-time-sort="8.655">
+<div class="g-col-1" data-index="15" data-categories="nested resampling,SVMs" data-listing-file-modified-sort="1684268055097" data-listing-reading-time-sort="9">
 <a href="../../content/learn/work/nested-resampling/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="work/nested-resampling/img/resampling.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Nested resampling
@@ -787,9 +833,10 @@ SVMs
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="16" data-categories="model fitting,random forests,linear regression" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="6.205">
+<div class="g-col-1" data-index="16" data-categories="model fitting,random forests,linear regression" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="7">
 <a href="../../content/learn/models/parsnip-ranger-glmnet/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="models/parsnip-ranger-glmnet/figs/glmn-pred-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Regression models two ways
@@ -817,9 +864,10 @@ linear regression
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="17" data-categories="statistical analysis,analysis of tables,hypothesis testing" data-listing-file-modified-sort="1684268055096" data-listing-reading-time-sort="7.27">
+<div class="g-col-1" data-index="17" data-categories="statistical analysis,analysis of tables,hypothesis testing" data-listing-file-modified-sort="1684268055096" data-listing-reading-time-sort="8">
 <a href="../../content/learn/statistics/xtabs/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="statistics/xtabs/figs/plot-indep-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Statistical analysis of contingency tables
@@ -847,9 +895,10 @@ hypothesis testing
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="18" data-categories="model fitting,pre-processing,class imbalances,discriminant analysis" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="4.845">
+<div class="g-col-1" data-index="18" data-categories="model fitting,pre-processing,class imbalances,discriminant analysis" data-listing-file-modified-sort="1684268055094" data-listing-reading-time-sort="5">
 <a href="../../content/learn/models/sub-sampling/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="models/sub-sampling/figs/merge-metrics-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Subsampling for class imbalances
@@ -880,9 +929,10 @@ discriminant analysis
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="19" data-categories="model tuning,text analysis,logistic regression,Bayesian optimization,extracting results" data-listing-file-modified-sort="1684268055098" data-listing-reading-time-sort="10.96">
+<div class="g-col-1" data-index="19" data-categories="model tuning,text analysis,logistic regression,Bayesian optimization,extracting results" data-listing-file-modified-sort="1684268055098" data-listing-reading-time-sort="11">
 <a href="../../content/learn/work/tune-text/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="work/tune-text/figs/grid-plot-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Tuning text models
@@ -916,9 +966,10 @@ extracting results
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="20" data-categories="model fitting,tidying results,linear regression,model tuning" data-listing-file-modified-sort="1684268055093" data-listing-reading-time-sort="10.905">
+<div class="g-col-1" data-index="20" data-categories="model fitting,tidying results,linear regression,model tuning" data-listing-file-modified-sort="1684268055093" data-listing-reading-time-sort="11">
 <a href="../../content/learn/models/coefficients/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="models/coefficients/figs/lm-plot-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Working with model coefficients
@@ -981,9 +1032,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1048,6 +1113,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
