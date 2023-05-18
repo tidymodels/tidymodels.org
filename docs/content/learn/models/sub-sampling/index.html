@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.78">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -96,8 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
-
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -158,7 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -409,7 +408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="subsampling-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="subsampling-the-data">Subsampling the data</h2>
 <p>One way to alleviate this issue is to <em>subsample</em> the data. There are a number of ways to do this but the most simple one is to <em>sample down</em> (undersample) the majority class data until it occurs with the same frequency as the minority class. While it may seem counterintuitive, throwing out a large percentage of your data can be effective at producing a useful model that can recognize both the majority and minority classes. In some cases, this even means that the overall performance of the model is better (e.g.&nbsp;improved area under the ROC curve). However, subsampling almost always produces models that are <em>better calibrated</em>, meaning that the distributions of the class probabilities are more well behaved. As a result, the default 50% cutoff is much more likely to produce better sensitivity and specificity values than they would otherwise.</p>
-<p>Let’s explore subsampling using <code>themis::step_rose()</code> in a recipe for the simulated data. It uses the ROSE (random over sampling examples) method from <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22training+and+assessing+classification+rules+with+imbalanced+data%22">Menardi, G. and Torelli, N. (2014)</a>. This is an example of an oversampling strategy, rather than undersampling.</p>
+<p>Let’s explore subsampling using <code>themis::step_rose()</code> in a recipe for the simulated data. It uses the ROSE (random over sampling examples) method from <a href="https://scholar.google.com/scholar?hl=en&amp;q=&quot;training and assessing classification rules with imbalanced data&quot;">Menardi, G. and Torelli, N. (2014)</a>. This is an example of an oversampling strategy, rather than undersampling.</p>
 <p>In terms of workflow:</p>
 <ul>
 <li>It is extremely important that subsampling occurs <em>inside of resampling</em>. Otherwise, the resampling process can produce <a href="https://topepo.github.io/caret/subsampling-for-class-imbalances.html#resampling">poor estimates of model performance</a>.</li>
@@ -466,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To measure model performance, let’s use two metrics:</p>
 <ul>
 <li>The area under the <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">ROC curve</a> is an overall assessment of performance across <em>all</em> cutoffs. Values near one indicate very good results while values near 0.5 would imply that the model is very poor.</li>
-<li>The <em>J</em> index (a.k.a. <a href="https://en.wikipedia.org/wiki/Youden%27s_J_statistic">Youden’s <em>J</em></a> statistic) is <code>sensitivity + specificity - 1</code>. Values near one are once again best.</li>
+<li>The <em>J</em> index (a.k.a. <a href="https://en.wikipedia.org/wiki/Youden's_J_statistic">Youden’s <em>J</em></a> statistic) is <code>sensitivity + specificity - 1</code>. Values near one are once again best.</li>
 </ul>
 <p>If a model is poorly calibrated, the ROC curve value might not show diminished performance. However, the <em>J</em> index would be lower for models with pathological distributions for the class probabilities. The yardstick package will be used to compute these metrics.</p>
 <div class="cell" data-layout-align="center" data-hash="cache/metrics_e973879401e7878aefe8e78b0970dbc3">
@@ -688,6 +687,34 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, function() {
+      let href = xref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note !== null) {
+        if (id.startsWith('sec-')) {
+          // Special case sections, only their first couple elements
+          const container = document.createElement("div");
+          if (note.children && note.children.length > 2) {
+            for (let i = 0; i < 2; i++) {
+              container.appendChild(note.children[i].cloneNode(true));
+            }
+            return container.innerHTML
+          } else {
+            return note.innerHTML;
+          }
+        } else {
+          return note.innerHTML;
+        }
+      } else {
+        return "";
+      }
     });
   }
       let selectedAnnoteEl;

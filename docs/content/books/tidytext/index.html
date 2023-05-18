@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.78">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -153,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
 <p>This practical book provides an introduction to text mining using tidy data principles in R, focusing on exploratory data analysis for text. Using tidy data principles can make text mining task easier and more effective; in this book, learn how to manipulate, summarize, and visualize characteristics of text using these methods and R packages from the tidy tool ecosystem.</p>
 <p>An <strong>HTML version</strong> of this text can be found at <a href="https://www.tidytextmining.com/"><code>https://www.tidytextmining.com/</code></a>.</p>
 <p>The data sets and R code are available in the GitHub repository <a href="https://github.com/dgrtwo/tidy-text-mining"><code>https://github.com/dgrtwo/tidy-text-mining</code></a>.</p>
-<p>The physical copies are sold by <a href="http://amzn.to/2tZkmxG"><strong>Amazon</strong></a> and <a href="http://www.jdoqocy.com/click-4428796-11290546?url=http%3A%2F%2Fshop.oreilly.com%2Fproduct%2F0636920067153.do%3Fcmp%3Daf-strata-books-video-product_cj_0636920067153_%25zp&amp;cjsku=0636920067153"><strong>O’Reilly</strong></a>.</p>
+<p>The physical copies are sold by <a href="http://amzn.to/2tZkmxG"><strong>Amazon</strong></a> and <a href="http://www.jdoqocy.com/click-4428796-11290546?url=http://shop.oreilly.com/product/0636920067153.do?cmp=af-strata-books-video-product_cj_0636920067153_%zp&amp;cjsku=0636920067153"><strong>O’Reilly</strong></a>.</p>
 
 
 
@@ -264,6 +264,34 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, function() {
+      let href = xref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note !== null) {
+        if (id.startsWith('sec-')) {
+          // Special case sections, only their first couple elements
+          const container = document.createElement("div");
+          if (note.children && note.children.length > 2) {
+            for (let i = 0; i < 2; i++) {
+              container.appendChild(note.children[i].cloneNode(true));
+            }
+            return container.innerHTML
+          } else {
+            return note.innerHTML;
+          }
+        } else {
+          return note.innerHTML;
+        }
+      } else {
+        return "";
+      }
     });
   }
       let selectedAnnoteEl;

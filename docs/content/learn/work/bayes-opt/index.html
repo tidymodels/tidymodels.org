@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.78">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -98,8 +98,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
-
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -160,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -390,10 +389,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Many of the examples for model tuning focus on <a href="../../../../learn/work/tune-svm/">grid search</a>. For that method, all the candidate tuning parameter combinations are defined prior to evaluation. Alternatively, <em>iterative search</em> can be used to analyze the existing tuning parameter results and then <em>predict</em> which tuning parameters to try next.</p>
 <p>There are a variety of methods for iterative search and the focus in this article is on <em>Bayesian optimization</em>. For more information on this method, these resources might be helpful:</p>
 <ul>
-<li><p><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=Practical+Bayesian+Optimization+of+Machine+Learning+Algorithms&amp;btnG="><em>Practical bayesian optimization of machine learning algorithms</em></a> (2012). J Snoek, H Larochelle, and RP Adams. Advances in neural information.</p></li>
+<li><p><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0,7&amp;q=Practical Bayesian Optimization of Machine Learning Algorithms&amp;btnG="><em>Practical bayesian optimization of machine learning algorithms</em></a> (2012). J Snoek, H Larochelle, and RP Adams. Advances in neural information.</p></li>
 <li><p><a href="https://www.cs.toronto.edu/~rgrosse/courses/csc411_f18/tutorials/tut8_adams_slides.pdf"><em>A Tutorial on Bayesian Optimization for Machine Learning</em></a> (2018). R Adams.</p></li>
 <li><p><a href="http://www.gaussianprocess.org/gpml/"><em>Gaussian Processes for Machine Learning</em></a> (2006). C E Rasmussen and C Williams.</p></li>
-<li><p><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22Bayesian+Optimization%22&amp;btnG=">Other articles!</a></p></li>
+<li><p><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0,7&amp;q=&quot;Bayesian Optimization&quot;&amp;btnG=">Other articles!</a></p></li>
 </ul>
 </section>
 <section id="cell-segmenting-revisited" class="level2">
@@ -1285,6 +1284,34 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, function() {
+      let href = xref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note !== null) {
+        if (id.startsWith('sec-')) {
+          // Special case sections, only their first couple elements
+          const container = document.createElement("div");
+          if (note.children && note.children.length > 2) {
+            for (let i = 0; i < 2; i++) {
+              container.appendChild(note.children[i].cloneNode(true));
+            }
+            return container.innerHTML
+          } else {
+            return note.innerHTML;
+          }
+        } else {
+          return note.innerHTML;
+        }
+      } else {
+        return "";
+      }
     });
   }
       let selectedAnnoteEl;
