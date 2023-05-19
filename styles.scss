@@ -12,6 +12,8 @@ $link-color: $theme-cranberry;
 $font-family-sans-serif: 'Lato', sans-serif;
 $font-family-monospace: 'Source Sans Pro', sans-serif;
 
+$h1-font-size: 2.4em;
+
 // Navigation ------------------------------------------------------------------
 $navbar-bg: $theme-white;
 
@@ -19,6 +21,37 @@ $footer-bg: rgba($theme-cranberry, 0.2);
 $footer-fg: $theme-cranberry;
 
 /*-- scss:rules --*/
+
+// General ---------------------------------------------------------------------
+
+a {
+  text-decoration: none;
+}
+
+// Headers ---------------------------------------------------------------------
+
+#title-block-header.quarto-title-block.default .quarto-title .title {
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  color: $theme-cranberry;
+  font-weight: 400;
+
+  &.title {
+    padding-top: 20px;
+  }
+}
+
+h2 {
+  text-transform: uppercase;
+  font-size: 1.3em;
+  letter-spacing: 1.5pt;
+  color: #1a162d;
+  font-weight: 400;
+}
+
+// Navigation ------------------------------------------------------------------
 
 .navbar {
   border-bottom: 1px solid;
@@ -42,4 +75,31 @@ $footer-fg: $theme-cranberry;
   font-size: 17px;
   padding: 30px 5%;
   align-items: center;
+}
+
+.sidebar-menu-container {
+  border-right: solid $theme-grey 1pt;
+  counter-reset: section;
+}
+
+#quarto-sidebar > * {
+  padding-top: 3em;
+  padding-right: 51px;
+}
+
+.sidebar-item {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+div.sidebar-item-container {
+  color: rgba(26, 22, 45, 0.6);
+}
+
+.sidebar-item:not(:first-child)::before {
+  counter-increment: section;
+  content: counter(section, decimal) "";
+  padding-right: 0.5em;
+  color: $theme-cranberry;
+
 }
