@@ -351,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#resampling-models" id="toc-resampling-models" class="nav-link" data-scroll-target="#resampling-models">Resampling models</a></li>
   <li><a href="#nested-resampling" id="toc-nested-resampling" class="nav-link" data-scroll-target="#nested-resampling">Nested resampling</a></li>
-  <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
 </nav>
     </div>
@@ -447,7 +447,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [90/10]&gt; Repeat1 Fold08 &lt;boot [25 × 2]&gt;</span></span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [90/10]&gt; Repeat1 Fold09 &lt;boot [25 × 2]&gt;</span></span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [90/10]&gt; Repeat1 Fold10 &lt;boot [25 × 2]&gt;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 40 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 40 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The splitting information for each resample is contained in the <code>split</code> objects. Focusing on the second fold of the first repeat:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/split-example_730f1d4661d7d82e99e7ae9d90d96252">
@@ -473,7 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;split [90/34]&gt; Bootstrap08</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;split [90/29]&gt; Bootstrap09</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;split [90/31]&gt; Bootstrap10</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 15 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 15 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These are self-contained, meaning that the bootstrap sample is aware that it is a sample of a specific 90% of the data:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/inner-boot-split_d614aafea425464b013e25aa1e7fda68">
@@ -600,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results<span class="sc">$</span>RMSE)</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.574   2.095   2.668   2.694   3.258   4.350</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.574   2.095   2.688   2.691   3.265   4.254</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The estimated RMSE for the model tuning process is 2.69.</p>
 <p>What is the RMSE estimate for the non-nested procedure when only the outer resampling method is used? For each cost value in the tuning grid, 50 SVM models are fit and their RMSE values are averaged. The table of cost values and mean RMSE estimates is used to determine the best cost value. The associated RMSE is the biased estimate.</p>
@@ -652,45 +652,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The nested procedure produces a closer estimate to the approximate truth but the non-nested estimate is very similar.</p>
 </section>
-<section id="session-information" class="level2">
-<h2 class="anchored" data-anchor-id="session-information">Session information</h2>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-19
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  furrr      * 0.3.1      2022-08-15 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  kernlab    * 0.9-31     2022-06-09 [1] CRAN (R 4.2.0)
-#&gt;  mlbench    * 2.1-3      2021-01-29 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  scales     * 1.2.1      2022-08-20 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  package    * version date (UTC) lib source
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  furrr      * 0.3.1   2022-08-15 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  kernlab    * 0.9-32  2023-01-31 [1] CRAN (R 4.2.0)
+#&gt;  mlbench    * 2.1-3   2021-01-29 [2] CRAN (R 4.2.0)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  scales     * 1.2.1   2022-08-20 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

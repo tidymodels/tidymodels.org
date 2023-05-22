@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#how-does-k-means-work" id="toc-how-does-k-means-work" class="nav-link" data-scroll-target="#how-does-k-means-work">How does K-means work?</a></li>
   <li><a href="#clustering-in-r" id="toc-clustering-in-r" class="nav-link" data-scroll-target="#clustering-in-r">Clustering in R</a></li>
   <li><a href="#exploratory-clustering" id="toc-exploratory-clustering" class="nav-link" data-scroll-target="#exploratory-clustering">Exploratory clustering</a></li>
-  <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
 </nav>
     </div>
@@ -243,12 +243,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="how-does-k-means-work">How does K-means work?</h2>
 <p>Rather than using equations, this short animation using the <a href="https://github.com/allisonhorst/stats-illustrations">artwork</a> of Allison Horst explains the clustering process:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/illustrations_ac33bdbf9aa409a303f4884ea81d9606">
-<div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="kmeans.gif" class="img-fluid figure-img"></p>
 </figure>
-</div>
 </div>
 </div>
 </section>
@@ -324,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8  6.16 -1.68  3       </span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9  7.13 -2.17  3       </span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10  5.24 -2.42  3       </span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 290 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>tidy()</code> function summarizes on a per-cluster level:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-7_0a4cf01e15081ad3264ba86f6be73b57">
@@ -429,41 +427,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This represents the variance within the clusters. It decreases as <code>k</code> increases, but notice a bend (or “elbow”) around <code>k = 3</code>. This bend indicates that additional clusters beyond the third have little value. (See <a href="https://web.stanford.edu/~hastie/Papers/gap.pdf">here</a> for a more mathematically rigorous interpretation and implementation of this method). Thus, all three methods of tidying data provided by broom are useful for summarizing clustering output.</p>
 </section>
-<section id="session-information" class="level2">
-<h2 class="anchored" data-anchor-id="session-information">Session information</h2>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-19
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  package    * version date (UTC) lib source
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>

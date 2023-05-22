@@ -352,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#simulated-data" id="toc-simulated-data" class="nav-link" data-scroll-target="#simulated-data">Simulated data</a></li>
   <li><a href="#subsampling-the-data" id="toc-subsampling-the-data" class="nav-link" data-scroll-target="#subsampling-the-data">Subsampling the data</a></li>
   <li><a href="#model-performance" id="toc-model-performance" class="nav-link" data-scroll-target="#model-performance">Model performance</a></li>
-  <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
 </nav>
     </div>
@@ -489,8 +489,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric .estimator  mean     n std_err .config             </span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 j_index binary     0.779    50 0.0218  Preprocessor1_Model1</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 roc_auc binary     0.954    50 0.00514 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 j_index binary     0.794    50 0.0197  Preprocessor1_Model1</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 roc_auc binary     0.948    50 0.00540 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>What do the results look like without using ROSE? We can create another workflow and fit the QDA model along the same resamples:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/qda-only_434ef41719060a908cfc5cf09f4f36fa">
@@ -538,46 +538,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This visually demonstrates that the subsampling mostly affects metrics that use the hard class predictions.</p>
 </section>
-<section id="session-information" class="level2">
-<h2 class="anchored" data-anchor-id="session-information">Session information</h2>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS Monterey 12.6.1
+#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       America/New_York
-#&gt;  date     2023-01-05
-#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-05-19
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.1.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  discrim    * 1.0.0.9000 2022-08-15 [1] Github (tidymodels/discrim@6060ce1)
-#&gt;  dplyr      * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  klaR       * 1.7-1      2022-06-27 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.0.3      2022-11-11 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.0      2022-12-20 [1] CRAN (R 4.2.0)
-#&gt;  readr      * 2.1.3      2022-10-01 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.3      2022-11-09 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
-#&gt;  ROSE       * 0.0-4      2021-06-14 [1] CRAN (R 4.2.0)
+#&gt;  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  discrim    * 1.0.1      2023-03-08 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  klaR       * 1.7-1      2022-06-27 [2] CRAN (R 4.2.0)
+#&gt;  parsnip    * 1.1.0      2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  readr      * 2.1.4      2023-02-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6      2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  ROSE       * 0.0-4      2021-06-14 [2] CRAN (R 4.2.0)
 #&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  themis     * 1.0.0      2022-07-02 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.0.0      2022-07-13 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.0.1.9001 2022-12-09 [1] Github (tidymodels/tune@e23abdf)
-#&gt;  workflows  * 1.1.2      2022-11-16 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.1.0.9000 2022-12-27 [1] Github (tidymodels/yardstick@5f1b9ce)
+#&gt;  themis     * 1.0.1.9000 2023-05-17 [1] local
+#&gt;  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1      2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
