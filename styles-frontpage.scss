@@ -6,13 +6,28 @@
   .band.first {
     height: 690px;
 
+    span.tagline {
+      text-transform: uppercase;
+      font-size: 1.2rem !important;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
     .bandContent {
+      max-width: 1100px;
+
+      margin-top: -140px;
+      margin-left: auto;
+      margin-right: auto;
+
       background-color: #ffffff;
       padding-top: 220px;
       height: 100%;
       background-image: url(images/tidy-back-01.svg);
       background-repeat: no-repeat;
       background-size: 570px 690px;
+      display: -webkit-flex;
+      -webkit-justify-content: space-between;
     }
   }
 
@@ -29,6 +44,7 @@
 
   .band {
     position: relative;
+    padding: 0 5%;
     .blurb {
       font-weight: 300;
       display: inline-block;
@@ -113,6 +129,48 @@
     }
     .hexBadges img.r1.c2, .hexBadges img.r3.c2, .hexBadges img.r5.c2 {
       left: 187px;
+    }
+  }
+
+  /* size & position adjustments */
+  @media screen and (max-width: 1023px) {
+    .band.first {
+      height: auto;
+    }
+
+    .band.first .bandContent {
+      background-image: none;
+      padding-bottom: 100px;
+    }
+
+    .band.second, .band.third {
+      height: auto;
+    }
+
+    .band.second .bandContent, .band.third .bandContent {
+      display: block;
+      height: auto;
+      background-image: none;
+      padding-bottom: 100px;
+    }
+
+    .band.second .bandContent .blurb, .band.third .bandContent .blurb {
+      max-width: 100%;
+    }
+    .bookCover {
+    margin-left: 0px;
+
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .band.first .bandContent {
+      display: block;
+      height: auto;
+    }
+
+    .band.first .bandContent .blurb {
+      max-width: 100%;
     }
   }
 }
