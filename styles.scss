@@ -3,6 +3,7 @@ $theme-cranberry: #CA225E;
 $theme-white: #FFFFFF;
 $theme-grey: #DDDDDD;
 $theme-blue: #4758AB;
+$theme-black: #1a162d;
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Source+Code+Pro&display=swap');
 
@@ -53,7 +54,7 @@ h2 {
   text-transform: uppercase;
   font-size: 1.3em;
   letter-spacing: 1.5pt;
-  color: #1a162d;
+  color: $theme-black;
   font-weight: 400;
 }
 
@@ -143,4 +144,55 @@ h2 {
   background-color: rgba(233,236,239,.65);
   border: 1px solid rgba(233,236,239,.65);
   border-radius: 0.25rem;
+}
+
+// tables as output ------------------------------------------------------------
+
+.cell-output-display table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-weight: inherit;
+  width: 100%;
+  text-align: left;
+  font-size: .87rem;
+  max-width: 70%;
+
+  thead {
+    font-weight: 600;
+    background-color: rgba($theme-cranberry, 0.15);
+
+    tr th {
+      padding: 15px 13px;
+    }
+
+    tr th:last-child {
+      padding: 15px 0;
+      padding-right: 15px;
+    }
+  }
+
+  tbody {
+    tr:nth-of-type(even) > * {
+      background-color: rgba($theme-cranberry, 0.03);
+      --bs-table-accent-bg: rgba($theme-cranberry, 0.03);
+    }
+
+    tr:nth-of-type(odd) > * {
+      background-color: $theme-white;
+      --bs-table-accent-bg:  $theme-white;
+    }
+
+    tr:last-of-type {
+      border-bottom: 1px solid #edf1f8;
+    }
+
+    tr td {
+      padding: 15px;
+    }
+
+    tr td:last-child{
+      padding: 15px 0;
+      padding-right: 15px;
+    }
+  }
 }
