@@ -1134,6 +1134,34 @@
     "text": "Session information\n\n#&gt; ─ Session info ─────────────────────────────────────────────────────\n#&gt;  setting  value\n#&gt;  version  R version 4.2.1 (2022-06-23)\n#&gt;  os       macOS Monterey 12.6\n#&gt;  system   aarch64, darwin20\n#&gt;  ui       X11\n#&gt;  language (EN)\n#&gt;  collate  en_US.UTF-8\n#&gt;  ctype    en_US.UTF-8\n#&gt;  tz       America/Los_Angeles\n#&gt;  date     2023-05-16\n#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)\n#&gt; \n#&gt; ─ Packages ─────────────────────────────────────────────────────────\n#&gt;  package      * version    date (UTC) lib source\n#&gt;  broom        * 1.0.4      2023-03-11 [1] CRAN (R 4.2.0)\n#&gt;  dials        * 1.2.0      2023-04-03 [1] CRAN (R 4.2.0)\n#&gt;  dplyr        * 1.1.2      2023-04-20 [1] CRAN (R 4.2.0)\n#&gt;  ggplot2      * 3.4.2      2023-04-03 [1] CRAN (R 4.2.1)\n#&gt;  infer        * 1.0.4      2022-12-02 [1] CRAN (R 4.2.1)\n#&gt;  parsnip      * 1.1.0      2023-04-12 [1] CRAN (R 4.2.0)\n#&gt;  purrr        * 1.0.1      2023-01-10 [1] CRAN (R 4.2.0)\n#&gt;  recipes      * 1.0.6      2023-04-25 [1] CRAN (R 4.2.0)\n#&gt;  rlang          1.1.1      2023-04-28 [1] CRAN (R 4.2.0)\n#&gt;  rsample      * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)\n#&gt;  stopwords    * 2.3        2021-10-28 [2] CRAN (R 4.2.0)\n#&gt;  textfeatures * 0.3.3      2019-09-03 [2] CRAN (R 4.2.0)\n#&gt;  textrecipes  * 1.0.3.9000 2023-04-27 [1] local\n#&gt;  tibble       * 3.2.1      2023-03-20 [1] CRAN (R 4.2.1)\n#&gt;  tidymodels   * 1.1.0      2023-05-01 [1] CRAN (R 4.2.0)\n#&gt;  tune         * 1.1.1      2023-04-11 [1] CRAN (R 4.2.0)\n#&gt;  workflows    * 1.1.3      2023-02-22 [1] CRAN (R 4.2.0)\n#&gt;  yardstick    * 1.2.0      2023-04-21 [1] CRAN (R 4.2.0)\n#&gt; \n#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library\n#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library\n#&gt; \n#&gt; ────────────────────────────────────────────────────────────────────"
   },
   {
+    "objectID": "content/packages/index.html",
+    "href": "content/packages/index.html",
+    "title": "Tidymodels packages",
+    "section": "",
+    "text": "Install many of the packages in the tidymodels ecosystem by running install.packages(\"tidymodels\").\nRun library(tidymodels) to load the core packages and make them available in your current R session.\nLearn more about the tidymodels metapackage itself athttps://tidymodels.tidymodels.org/."
+  },
+  {
+    "objectID": "content/packages/index.html#installation-and-use",
+    "href": "content/packages/index.html#installation-and-use",
+    "title": "Tidymodels packages",
+    "section": "",
+    "text": "Install many of the packages in the tidymodels ecosystem by running install.packages(\"tidymodels\").\nRun library(tidymodels) to load the core packages and make them available in your current R session."
+  },
+  {
+    "objectID": "content/packages/index.html#core-tidymodels",
+    "href": "content/packages/index.html#core-tidymodels",
+    "title": "Tidymodels packages",
+    "section": "Core tidymodels",
+    "text": "Core tidymodels\n\nThe core tidymodels packages work together to enable a wide variety of modeling approaches:"
+  },
+  {
+    "objectID": "content/packages/index.html#specialized-packages",
+    "href": "content/packages/index.html#specialized-packages",
+    "title": "Tidymodels packages",
+    "section": "Specialized packages",
+    "text": "Specialized packages\nThe tidymodels framework also includes many other packages designed for specialized data analysis and modeling tasks. They are not loaded automatically with library(tidymodels), so you’ll need to load each one with its own call to library(). These packages include:\n\nPerform statistical analysis\n\ninfer is a high-level API for tidyverse-friendly statistical inference.\nThe corrr package has tidy interfaces for working with correlation matrices.\n\n\n\nCreate robust models\n\nThe spatialsample package provides resampling functions and classes like rsample, but specialized for spatial data.\nparsnip also has additional packages that contain more model definitions. discrim contains definitions for discriminant analysis models, poissonreg provides definitions for Poisson regression models, plsmod enables linear projection models, and rules does the same for rule-based classification and regression models. baguette creates ensemble models via bagging, and multilevelmod provides support for multilevel models (otherwise known as mixed models or hierarchical models).\nThere are several add-on packages for creating recipes. embed contains steps to create embeddings or projections of predictors. textrecipes has extra steps for text processing, and themis can help alleviate class imbalance using sampling methods.\ntidypredict and modeldb can convert prediction equations to different languages (e.g. SQL) and fit some models in-database.\n\n\n\nTune, compare, and work with your models\n\nTo try out multiple different workflows (i.e. bundles of pre-processor and model) at once, workflowsets lets you create sets of workflow objects for tuning and resampling.\nTo integrate predictions from many models, the stacks package provides tools for stacked ensemble modeling.\nThe finetune package extends the tune package with more approaches such as racing and simulated annealing.\nThe usemodels package creates templates and automatically generates code to fit and tune models.\nprobably has tools for post-processing class probability estimates.\nThe tidyposterior package enables users to make formal statistical comparisons between models using resampling and Bayesian methods.\nSome R objects become inconveniently large when saved to disk. The butcher package can reduce the size of those objects by removing the sub-components.\nTo know whether the data that you are predicting are extrapolations from the training set, applicable can produce metrics that measure extrapolation.\nshinymodels lets you explore tuning or resampling results via a Shiny app.\n\n\n\nDevelop custom modeling tools\n\nhardhat is a developer-focused package that helps beginners create high-quality R packages for modeling."
+  },
+  {
     "objectID": "content/start/case-study/index.html",
     "href": "content/start/case-study/index.html",
     "title": "A predictive modeling case study",
