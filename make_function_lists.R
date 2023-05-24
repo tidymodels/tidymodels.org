@@ -126,7 +126,7 @@ broom_functions <-
 
 save(
   broom_functions,
-  file = "content/find/broom/broom_functions.RData",
+  file = "find/broom/broom_functions.RData",
   compress = TRUE)
 
 # ------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ recipe_functions <-
 
 save(
   recipe_functions,
-  file = "content/find/recipes/recipe_functions.RData",
+  file = "find/recipes/recipe_functions.RData",
   compress = TRUE)
 
 # ------------------------------------------------------------------------------
@@ -178,7 +178,7 @@ tidymodels_functions <-
 
 save(
   tidymodels_functions,
-  file = "content/find/all/tidymodels_functions.RData",
+  file = "find/all/tidymodels_functions.RData",
   compress = TRUE)
 
 # ------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ parsnip_models <-
 
 save(
   parsnip_models,
-  file = "content/find/parsnip/parsnip_models.RData",
+  file = "find/parsnip/parsnip_models.RData",
   compress = TRUE)
 
 
