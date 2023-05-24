@@ -73,6 +73,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -134,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../../content/author/index.html" rel="" target="">
+    <a class="nav-link" href="../../../../content/about/index.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
@@ -354,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
+  <ul class="collapse">
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#a-new-step-definition" id="toc-a-new-step-definition" class="nav-link" data-scroll-target="#a-new-step-definition">A new step definition</a></li>
   <li><a href="#create-the-function" id="toc-create-the-function" class="nav-link" data-scroll-target="#create-the-function">Create the function</a></li>
@@ -363,13 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#create-the-bake-method" id="toc-create-the-bake-method" class="nav-link" data-scroll-target="#create-the-bake-method">Create the <code>bake</code> method</a></li>
   <li><a href="#run-the-example" id="toc-run-the-example" class="nav-link" data-scroll-target="#run-the-example">Run the example</a></li>
   <li><a href="#custom-check-operations" id="toc-custom-check-operations" class="nav-link" data-scroll-target="#custom-check-operations">Custom check operations</a></li>
-  <li><a href="#other-step-methods" id="toc-other-step-methods" class="nav-link" data-scroll-target="#other-step-methods">Other step methods</a>
-  <ul class="collapse">
-  <li><a href="#a-print-method" id="toc-a-print-method" class="nav-link" data-scroll-target="#a-print-method">A print method</a></li>
-  <li><a href="#methods-for-declaring-required-packages" id="toc-methods-for-declaring-required-packages" class="nav-link" data-scroll-target="#methods-for-declaring-required-packages">Methods for declaring required packages</a></li>
-  <li><a href="#a-tidy-method" id="toc-a-tidy-method" class="nav-link" data-scroll-target="#a-tidy-method">A tidy method</a></li>
-  <li><a href="#methods-for-tuning-parameters" id="toc-methods-for-tuning-parameters" class="nav-link" data-scroll-target="#methods-for-tuning-parameters">Methods for tuning parameters</a></li>
-  </ul></li>
+  <li><a href="#other-step-methods" id="toc-other-step-methods" class="nav-link" data-scroll-target="#other-step-methods">Other step methods</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidymodels/tidymodels_dot_org/edit/main/content/learn/develop/recipes/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidymodels/tidymodels_dot_org/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -885,6 +881,33 @@ a clean R session then run: install.packages("some_package")</code></pre>
 </section>
 
 </main> <!-- /main -->
+<div class="section resources">
+  <div class="resourcesTitle">Resources</div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+    </div>
+    <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+    </div>
+    <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+    </div>
+    <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
+  </div>
+</div>
+
+<script>
+  sidebar = document.querySelector('#quarto-margin-sidebar');
+  resources = document.querySelector('.resources');
+  sidebar.appendChild(resources);
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1153,7 +1176,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right"><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> Back to top </a></div>
+    <div class="nav-footer-right"><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></div>
   </div>
 </footer>
 
