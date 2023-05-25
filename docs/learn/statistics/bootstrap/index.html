@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.78">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -99,6 +99,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
+
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -432,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 2.774 on 30 degrees of freedom</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of iterations to convergence: 1 </span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Achieved convergence tolerance: 1.878e-08</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Achieved convergence tolerance: 6.813e-09</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(wt, mpg)) <span class="sc">+</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -507,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="confidence-intervals">Confidence intervals</h2>
-<p>We can then calculate confidence intervals (using what is called the <a href="https://www.uvm.edu/~dhowell/StatPages/Randomization Tests/ResamplingWithR/BootstMeans/bootstrapping_means.html">percentile method</a>):</p>
+<p>We can then calculate confidence intervals (using what is called the <a href="https://www.uvm.edu/~dhowell/StatPages/Randomization%20Tests/ResamplingWithR/BootstMeans/bootstrapping_means.html">percentile method</a>):</p>
 <div class="cell" data-layout-align="center" data-hash="cache/percentiles_c9af04d41758d5e2d53d422bbfdc4e1b">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>percentile_intervals <span class="ot">&lt;-</span> <span class="fu">int_pctl</span>(boot_models, coef_info)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>percentile_intervals</span>
@@ -606,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.1 (2022-06-23)
+#&gt;  version  R version 4.3.0 (2023-04-21)
 #&gt;  os       macOS Monterey 12.6
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
@@ -614,29 +615,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/Los_Angeles
-#&gt;  date     2023-05-19
+#&gt;  date     2023-05-25
 #&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package    * version date (UTC) lib source
-#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
-#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
-#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
-#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
-#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #&gt; 
-#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
-#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.3/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
@@ -645,6 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 
 </main> <!-- /main -->
+
 <div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
@@ -778,34 +780,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, function() {
-      let href = xref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note !== null) {
-        if (id.startsWith('sec-')) {
-          // Special case sections, only their first couple elements
-          const container = document.createElement("div");
-          if (note.children && note.children.length > 2) {
-            for (let i = 0; i < 2; i++) {
-              container.appendChild(note.children[i].cloneNode(true));
-            }
-            return container.innerHTML
-          } else {
-            return note.innerHTML;
-          }
-        } else {
-          return note.innerHTML;
-        }
-      } else {
-        return "";
-      }
     });
   }
       let selectedAnnoteEl;
