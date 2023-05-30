@@ -4,6 +4,7 @@ $theme-blue: #4758AB;
 $theme-white: #FFFFFF;
 $theme-grey: #DDDDDD;
 $theme-black: #1a162d;
+$theme-code-bg: rgba(233,236,239,.3);
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Source+Code+Pro&display=swap');
 
@@ -158,12 +159,27 @@ h2 {
   }
 }
 
+// code ------------------------------------------------------------------------
+
+// code chunks
+div.sourceCode {
+    background-color: $theme-code-bg;
+    border: 1px solid $theme-code-bg;
+    border-radius: 0.25rem
+}
+
+// in-line code
+p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
+    background-color: $theme-code-bg;
+    padding: 0.2em;
+}
+
 // session information ---------------------------------------------------------
 
 #session-info div pre code {
   color: #5E5E5E;
-  background-color: rgba(233,236,239,.65);
-  border: 1px solid rgba(233,236,239,.65);
+  background-color: $theme-code-bg;
+  border: 1px solid $theme-code-bg;
   border-radius: 0.25rem;
 }
 
@@ -323,6 +339,5 @@ h2 {
     }
   }
 }
-
 
 
