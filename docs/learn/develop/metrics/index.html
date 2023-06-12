@@ -484,7 +484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-frame-implementation" class="level3">
 <h3 class="anchored" data-anchor-id="data-frame-implementation">Data frame implementation</h3>
 <p>The data frame version of the metric should be fairly simple. It is a generic function with a <code>data.frame</code> method that calls the yardstick helper, <code>numeric_metric_summarizer()</code>, and passes along the <code>mse_vec()</code> function to it along with versions of <code>truth</code> and <code>estimate</code> that have been wrapped in <code>rlang::enquo()</code> and then unquoted with <code>!!</code> so that non-standard evaluation can be supported.</p>
-<div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-7_560a0e7cae47327fb07ce47a734aa672">
+<div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-7_2d38e4f207935fac18e7a0cd2c356a66">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mse <span class="ot">&lt;-</span> <span class="cf">function</span>(data, ...) {</span>
@@ -496,8 +496,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>mse.data.frame <span class="ot">&lt;-</span> <span class="cf">function</span>(data, truth, estimate, <span class="at">na_rm =</span> <span class="cn">TRUE</span>, <span class="at">case_weights =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">numeric_metric_summarizer</span>(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"rmse"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> rmse_vec,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"mse"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> mse_vec,</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data,</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> <span class="sc">!!</span><span class="fu">enquo</span>(truth),</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="sc">!!</span><span class="fu">enquo</span>(estimate),</span>
