@@ -425,8 +425,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Pass on that implementation function to <code>metric_vec_template()</code>.</li>
 </ol>
 <p>Below, <code>mse_impl()</code> contains the actual implementation of the metric, and takes <code>truth</code> and <code>estimate</code> as arguments along with any metric specific arguments. Optionally <code>case_weights</code> if the calculations supports it.</p>
-<p>The yardstick function <code>check_numeric_metric()</code> takes <code>truth</code>, <code>estimate</code> and <code>case_weights</code>, and validates that they are the right type, and are the same length. <code>case_weights</code> is allowed to be <code>NULL</code> for when case weights aren’t used, or the metric doesn’t support them.</p>
+<p>The yardstick function <code>check_numeric_metric()</code> takes <code>truth</code>, <code>estimate</code> and <code>case_weights</code>, and validates that they are the right type, and are the same length.</p>
 <p>The <code>yardstick_remove_missing()</code> and <code>yardstick_any_missing()</code> yardstick functions are used to handle missing values in a consistent way, similarly to how the other metrics handle them. The code below is typically copy pasted from function to function, but certain types of metrics might want to deviate from this pattern.</p>
+<p>You are required to supply a <code>case_weights</code> argument to <code>mse_vec()</code> for the functions to work with yardstick. If your metric in question doesn’t support case weights, you can error if they are passed, or simply ignore it.</p>
 <div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-3_2dcb35dc484df67df8729f5d8d5748cb">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -537,16 +538,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 × 4</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    resample .metric .estimator .estimate</span></span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 1        rmse    standard       0.715</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 10       rmse    standard       0.673</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2        rmse    standard       0.716</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 3        rmse    standard       0.644</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 4        rmse    standard       0.737</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 5        rmse    standard       0.675</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 6        rmse    standard       0.807</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 7        rmse    standard       0.801</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 8        rmse    standard       0.635</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 9        rmse    standard       0.692</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 1        mse     standard       0.512</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 10       mse     standard       0.454</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2        mse     standard       0.513</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 3        mse     standard       0.414</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 4        mse     standard       0.543</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 5        mse     standard       0.456</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 6        mse     standard       0.652</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 7        mse     standard       0.642</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 8        mse     standard       0.404</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 9        mse     standard       0.479</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -558,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Classification metrics are more complicated than numeric ones because you have to think about extensions to the multiclass case. For now, let’s start with the binary case.</p>
 <section id="vector-implementation-1" class="level3">
 <h3 class="anchored" data-anchor-id="vector-implementation-1">Vector implementation</h3>
-<p>The vector implementation for classification metrics initially has a very similar setup as the numeric metrics. It used <code>check_class_metric()</code> instead of <code>check_numeric_metrics()</code>. It has an additional argument, <code>estimator</code> that determines the type of estimator to use (binary or some kind of multiclass implementation or averaging). This argument is auto-selected for the user, so default it to <code>NULL</code>. Additionally, pass it along to <code>check_class_metric()</code> so that it can check the provided <code>estimator</code> against the classes of <code>truth</code> and <code>estimate</code> to see if they are allowed.</p>
+<p>The vector implementation for classification metrics initially has a very similar setup as the numeric metrics. It used <code>check_class_metric()</code> instead of <code>check_numeric_metric()</code>. It has an additional argument, <code>estimator</code> that determines the type of estimator to use (binary or some kind of multiclass implementation or averaging). This argument is auto-selected for the user, so default it to <code>NULL</code>. Additionally, pass it along to <code>check_class_metric()</code> so that it can check the provided <code>estimator</code> against the classes of <code>truth</code> and <code>estimate</code> to see if they are allowed.</p>
 <div class="cell" data-layout-align="center" data-hash="cache/unnamed-chunk-10_f7a7699bccc91e2d57da5a5cad4e97a4">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Logic for `event_level`</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>event_col <span class="ot">&lt;-</span> <span class="cf">function</span>(xtab, event_level) {</span>
@@ -833,7 +834,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 rmse    standard       0.722</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 mse     standard       0.521</span></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 rmse    standard       0.722</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -854,22 +855,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.2.0)
-#&gt;  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.2.1)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.1)
-#&gt;  parsnip    * 1.1.0      2023-04-12 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.6.9000 2023-06-12 [1] local
-#&gt;  rlang      * 1.1.1      2023-04-28 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.2.1)
-#&gt;  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.1.1.9001 2023-05-26 [1] Github (tidymodels/tune@dde5d35)
-#&gt;  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.2.0)
+#&gt;  package    * version date (UTC) lib source
+#&gt;  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.2.1)
+#&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.2.1)
+#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang      * 1.1.1   2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.2.1)
+#&gt;  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.2.0)
 #&gt; 
 #&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.2/library
 #&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
