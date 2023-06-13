@@ -18,6 +18,212 @@ load("tidymodels_functions.RData")
 ```
 
 ```{r}
+#| label: grey-out-s3
+#| echo: false
+# Ran in `make_function_lists.R`
+# tidymodels_functions |>
+#   filter(stringr::str_detect(functions, "\\.")) |>
+#   mutate(s3 = stringr::str_remove(functions, "\\..*")) |>
+#   filter(s3 != "") |>
+#   relocate(s3, functions) |>
+#   arrange(s3) |>
+#   View()
+
+s3generics <- c(
+  "accuracy",
+  "apd_hat_values",
+  "apd_isolation",
+  "apd_pca",
+  "apd_similarity",
+  "as.data.frame",
+  "as_parsed_model",
+  "as_tibble",
+  "augment",
+  "autoplot",
+  "average_precision",
+  "axe_call",
+  "axe_ctrl",
+  "axe_data",
+  "axe_env",
+  "axe_fitted",
+  "bagger",
+  "bake",
+  "bal_accuracy",
+  "brier_class",
+  "brulee_linear_reg",
+  "brulee_logistic_reg",
+  "brulee_mlp",
+  "brulee_multinomial_reg",
+  "cal_apply",
+  "cal_estimate_beta",
+  "cal_estimate_isotonic",
+  "cal_estimate_isotonic_boot",
+  "cal_estimate_linear",
+  "cal_estimate_logistic",
+  "cal_estimate_multinomial",
+  "cal_plot_breaks",
+  "cal_plot_logistic",
+  "cal_plot_regression",
+  "cal_plot_windowed",
+  "cal_validate_beta",
+  "cal_validate_isotonic",
+  "cal_validate_isotonic_boot",
+  "cal_validate_linear",
+  "cal_validate_logistic",
+  "cal_validate_multinomial",
+  "ccc",
+  "classification_cost",
+  "coef",
+  "collect_extracts",
+  "collect_metrics",
+  "collect_notes",
+  "collect_parameters",
+  "collect_predictions",
+  "complement",
+  "conf_mat",
+  "detection_prevalence",
+  "discretize",
+  "explore",
+  "extract_fit_engine",
+  "extract_fit_parsnip",
+  "extract_mold",
+  "extract_parameter_dials",
+  "extract_parameter_set_dials",
+  "extract_preprocessor",
+  "extract_recipe",
+  "extract_spec_parsnip",
+  "extract_workflow",
+  "f_meas",
+  "finalize",
+  "fit",
+  "fit_best",
+  "fit_resamples",
+  "fit_xy",
+  "formula",
+  "gain_capture",
+  "gain_curve",
+  "get_expressions",
+  "get_p_value",
+  "get_rsplit",
+  "glance",
+  "glm",
+  "grid_latin_hypercube",
+  "grid_max_entropy",
+  "grid_random",
+  "grid_regular",
+  "huber_loss",
+  "huber_loss_pseudo",
+  "iic",
+  "int_conformal_infer",
+  "int_conformal_infer_cv",
+  "j_index",
+  "kap",
+  "labels",
+  "last_fit",
+  "levels",
+  "lift_curve",
+  "mae",
+  "make_splits",
+  "mape",
+  "mase",
+  "mcc",
+  "metrics",
+  "min_grid",
+  "mn_log_loss",
+  "mold",
+  "mpe",
+  "msd",
+  "multi_predict",
+  "npv",
+  "parameters",
+  "perf_mod",
+  "poisson_log_loss",
+  "ppv",
+  "pr_auc",
+  "pr_curve",
+  "precision",
+  "predict",
+  "predict_raw",
+  "prep",
+  "print",
+  "rank_results",
+  "recall",
+  "recipe",
+  "refit",
+  "required_pkgs",
+  "reverse_splits",
+  "rmse",
+  "roc_auc",
+  "roc_aunp",
+  "roc_aunu",
+  "roc_curve",
+  "rpd",
+  "rpiq",
+  "rsq",
+  "rsq_trad",
+  "run_forge",
+  "run_mold",
+  "score",
+  "select_best",
+  "select_by_one_std_err",
+  "select_by_pct_loss",
+  "sens",
+  "sensitivity",
+  "set_args",
+  "set_engine",
+  "set_mode",
+  "show_best",
+  "silhouette_avg",
+  "smape",
+  "smooth",
+  "spec",
+  "specificity",
+  "sse_ratio",
+  "sse_total",
+  "sse_within_total",
+  "summary",
+  "threshold_perf",
+  "tidy",
+  "translate",
+  "translate_tidyclust",
+  "tune_bayes",
+  "tune_cluster",
+  "tune_grid",
+  "tune_race_anova",
+  "tune_race_win_loss",
+  "tune_sim_anneal",
+  "update",
+  "use_C5",
+  "var_imp"
+)
+
+s3_regex <- paste(s3generics, collapse = "|")
+
+grey_out_s3 <- function(x) {
+  first <- stringr::str_extract(x, paste0("<tt>(", s3_regex, ")")) |>
+    stringr::str_remove("<tt>")
+  
+  second <- stringr::str_extract(x, "<tt>.*</tt>") |>
+    stringr::str_remove(paste0("<tt>(", s3_regex, ")")) |>
+    stringr::str_remove("</tt>")
+  
+  stringr::str_replace(
+    x, 
+    "<tt>.*</tt>",
+    glue::glue("<tt><span>{first}</span><span style='color: #808080;'>{second}</span></tt>")
+  )
+}
+
+tidymodels_functions <- tidymodels_functions |>
+  mutate(topic = if_else(
+    stringr::str_detect(topic, paste0("<tt>(", s3_regex, ")\\.")),
+    true = grey_out_s3(topic),
+    false = topic
+  ))
+```
+
+
+```{r}
 #| label: table-display
 #| echo: false
 tidymodels_functions %>% 
