@@ -157,7 +157,7 @@ The probably package has a set of functions with the prefix `int_conformal` that
 ```{r}
 #| label: split-obj
 
-split_int <- int_conformal_infer_split(nnet_fit, cal_data)
+split_int <- int_conformal_split(nnet_fit, cal_data)
 split_int
 ```
 
@@ -192,7 +192,7 @@ test_split_res %>%
     linewidth = 1, col = "blue"
   ) +
   geom_ribbon(aes(ymin = .pred_lower, ymax = .pred_upper), 
-              col = "orange", linewidth = 3 / 4, fill = NA)
+              col = "#D95F02", linewidth = 3 / 4, fill = NA)
 
 cal_resid_width <- 
   quantile(test_split_res$y - test_split_res$.pred, probs = c(0.05, 0.95)) %>% 
@@ -249,7 +249,7 @@ We can create another object for computing the intervals:
 ```{r}
 #| label: int-cv
 
-cv_int <- int_conformal_infer_cv(nnet_rs)
+cv_int <- int_conformal_cv(nnet_rs)
 cv_int
 
 # Produce 90% prediction intervals
@@ -277,7 +277,7 @@ test_cv_res %>%
     linewidth = 1, col = "blue"
   ) +
   geom_ribbon(aes(ymin = .pred_lower, ymax = .pred_upper), 
-              col = "orange", linewidth = 3 / 4, fill = NA)
+              col = "#D95F02", linewidth = 3 / 4, fill = NA)
 ```
 
 At each point, the interval length is `r round(mean(test_cv_res$.pred_upper - test_cv_res$.pred_lower), 2)`; the previous split conformal interval width was `r round(mean(test_split_res$.pred_upper - test_split_res$.pred_lower), 2)`. This is due to the training set being larger than the calibration set. 
@@ -343,7 +343,7 @@ nnet_variable_rs <-
   nnet_wflow %>% 
   fit_resamples(folds_variable, control = ctrl)
 
-cv_variable_int <- int_conformal_infer_cv(nnet_variable_rs)
+cv_variable_int <- int_conformal_cv(nnet_variable_rs)
 
 test_cv_variable_res <- 
   predict(cv_variable_int, test_variable_data, level = 0.90) %>% 
@@ -357,7 +357,7 @@ test_cv_variable_res %>%
     linewidth = 1, col = "blue"
   ) +
   geom_ribbon(aes(ymin = .pred_lower, ymax = .pred_upper), 
-              col = "orange", linewidth = 1, fill = NA)
+              col = "#D95F02", linewidth = 1, fill = NA)
 ```
 
 While the coverage is good (`r round(coverage(test_cv_variable_res)$coverage, 1)`%) there are obvious areas where it is either too wide or too narrow. 
@@ -366,7 +366,7 @@ Conformalized quantile regression ([Romano _et al_ (2019)](https://scholar.googl
 
 The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to adequately model the data. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, are low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below. 
 
-The function for this, `int_conformal_infer_quantile()` has a slightly different interface than the previous functions: 
+The function for this, `int_conformal_quantile()` has a slightly different interface than the previous functions: 
 
 * It requires both the training and calibration sets.
 * The confidence level must be set in advance. 
@@ -377,7 +377,7 @@ We'll also pass an argument to the `quantregForest()` function that will use 2,0
 #| label: quant-pred
 
 quant_int <-
-  int_conformal_infer_quantile(
+  int_conformal_quantile(
     nnet_variable_fit, 
     train_data = train_variable_data,
     cal_data = cal_variable_data, 
@@ -409,7 +409,7 @@ test_quant_res %>%
     linewidth = 1, col = "blue"
   ) +
   geom_ribbon(aes(ymin = .pred_lower, ymax = .pred_upper), 
-              col = "orange", linewidth = 3 / 4, fill = NA)
+              col = "#D95F02", linewidth = 3 / 4, fill = NA)
 ```
 
 The bumpiness of the bound are the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: `r round(coverage(test_quant_res)$coverage, 1)`%. 

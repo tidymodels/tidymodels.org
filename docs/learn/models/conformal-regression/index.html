@@ -160,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/models/coefficients/index.html">Create Robust Models</a></li><li class="breadcrumb-item"><a href="../../../learn/models/conformal-regression/index.html">An introduction to conformal inference for regression models with tidymodels</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/models/coefficients/index.html">Create Robust Models</a></li><li class="breadcrumb-item"><a href="../../../learn/models/conformal-regression/index.html">An introduction to conformal inference for regression models</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -267,7 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/models/conformal-regression/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">An introduction to conformal inference for regression models with tidymodels</span></a>
+ <span class="menu-text">An introduction to conformal inference for regression models</span></a>
   </div>
 </li>
       </ul>
@@ -501,8 +501,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> <span class="fu">make_data</span>(<span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The probably package has a set of functions with the prefix <code>int_conformal</code> that can be used to create prediction intervals. One is:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/split-obj_c19c1637c5fee746ac9898314aadb66a">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>split_int <span class="ot">&lt;-</span> <span class="fu">int_conformal_infer_split</span>(nnet_fit, cal_data)</span>
+<div class="cell" data-layout-align="center" data-hash="cache/split-obj_780e8d461b1e84474d32d0b7d4b33555">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>split_int <span class="ot">&lt;-</span> <span class="fu">int_conformal_split</span>(nnet_fit, cal_data)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>split_int</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Split Conformal inference</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; preprocessor: formula </span></span>
@@ -529,7 +529,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  1.24        0.873      1.61    0.0145  1.22</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The results:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/split-pred-plit_396f1e0fc8fc09dd2adc4d7faff65813">
+<div class="cell" data-layout-align="center" data-hash="cache/split-pred-plit_f42469e1c406a2a600d5ae1fd3e14b3a">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -579,8 +579,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The model has an estimated root mean squared error of 0.201 and an estimated R<sup>2</sup> of 0.95.</p>
 <p>We can create another object for computing the intervals:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/int-cv_1ab65ee7e26984d6c472fe89661991da">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cv_int <span class="ot">&lt;-</span> <span class="fu">int_conformal_infer_cv</span>(nnet_rs)</span>
+<div class="cell" data-layout-align="center" data-hash="cache/int-cv_b2f3d58e479114a2fcea11bb7a0da126">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cv_int <span class="ot">&lt;-</span> <span class="fu">int_conformal_cv</span>(nnet_rs)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>cv_int</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Conformal inference via CV+</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; preprocessor: formula </span></span>
@@ -606,7 +606,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       0.897  1.23       1.55    0.0145  1.22</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The results for this method are:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/cv-pred_cdcd61ce85b96842befadad29b6a0de5">
+<div class="cell" data-layout-align="center" data-hash="cache/cv-pred_3e347d492fd8175b31fd3bd40c48a45f">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -622,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   coverage</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    0.896</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     89.6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="adaptive-width-intervals" class="level2">
@@ -660,7 +660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>nnet_variable_pred <span class="ot">&lt;-</span> <span class="fu">augment</span>(nnet_variable_fit, train_variable_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can recreate the CV+ interval for this new version of the data:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/cv-redux_dd4b456d274c971cdbad595eb1a3ffd2">
+<div class="cell" data-layout-align="center" data-hash="cache/cv-redux_5b1f5ee314641b6ff227e04a37157a37">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -672,15 +672,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>While the coverage is good (90.3%) there are obvious areas where it is either too wide or too narrow.</p>
 <p>Conformalized quantile regression (<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Conformalized+quantile+regression%22">Romano <em>et al</em> (2019)</a>) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial <a href="https://en.wikipedia.org/wiki/Quantile_regression">quantile regression</a> model to do so and also required a split data set, such as our calibration data.</p>
 <p>The original work used basic quantile regression models. For tidymodels, we’ll use <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Quantile+Regression+Forests%22">quantile regression forests</a>. The reason being that some models require nonlinear terms, interactions, and other features to adequately model the data. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, are low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below.</p>
-<p>The function for this, <code>int_conformal_infer_quantile()</code> has a slightly different interface than the previous functions:</p>
+<p>The function for this, <code>int_conformal_quantile()</code> has a slightly different interface than the previous functions:</p>
 <ul>
 <li>It requires both the training and calibration sets.</li>
 <li>The confidence level must be set in advance.</li>
 </ul>
 <p>We’ll also pass an argument to the <code>quantregForest()</code> function that will use 2,000 trees to make the forest:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/quant-pred_bd17f40cf7d9b68dfc17057c715372b2">
+<div class="cell" data-layout-align="center" data-hash="cache/quant-pred_968fb70e038fcd4a1d76fb480db2016c">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>quant_int <span class="ot">&lt;-</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">int_conformal_infer_quantile</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">int_conformal_quantile</span>(</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    nnet_variable_fit, </span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">train_data =</span> train_variable_data,</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cal_data =</span> cal_variable_data, </span>
@@ -703,14 +703,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 5</span></span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .pred .pred_lower .pred_upper      x      y</span></span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  0.989       0.574      1.14    0.776  1.10 </span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  0.990       0.574      1.14    0.776  1.10 </span></span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 -0.327      -0.546     -0.0904 -0.686 -0.180</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  0.269       0.161      0.459  -0.274  0.364</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  0.265       0.161      0.459  -0.274  0.364</span></span>
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  1.01        0.666      1.13    0.759  1.21 </span></span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  2.00        1.90       2.12    0.367  1.87</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The results:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/quant-pred-split_cfbdf64906cf0726b37ce19bd18894b3">
+<div class="cell" data-layout-align="center" data-hash="cache/quant-pred-split_1850492a31b30e7dba449a495ae2f2c6">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
