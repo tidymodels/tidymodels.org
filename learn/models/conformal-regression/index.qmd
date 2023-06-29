@@ -66,7 +66,7 @@ reference_data %>%
   geom_line(stat = "density")
 ```
 
-If we had a new observation that we thought might be from the same distribution, how would we say (probabilistically) whether we think that it belongs to the original distribution? 
+If we had a new observation that we thought might be from the same distribution, how would we say (probabilistically) whether we believe that it belongs to the original distribution? 
 
 If we thought that 1,000 were a sufficient sample size, we might compute some quantiles of these data to define "the mainstream of the data." Let's use the 5th and 95th quantiles to set boundaries that define what we would expect to see most of the time:   
 
@@ -136,11 +136,11 @@ train_data %>%
             linewidth = 1, col = "blue")
 ```
 
-Let's examine three methods^[There is a fourth method that is implemented for "full conformal prediction". It was developed mostly as a proof of concept. While it is effective, it is _very_ computationally expensive.] to produce prediction intervals: 
+Let's examine three methods^[A fourth method is implemented for "full conformal prediction." It was developed mainly as a proof of concept. While it is effective, it is _very_ computationally expensive.] to produce prediction intervals: 
 
 ## Split Conformal Inference
 
-The most simple approach is to reserve some data specifically for estimating the residual distribution. We know that simply re-predicting the training set is **a bad idea**; the residuals would be smaller than they should be since the same data are used to create the model and to evaluate the model. 
+The most straightforward approach is reserving some data for estimating the residual distribution. We know that simply re-predicting the training set is **a bad idea**; the residuals would be smaller than they should be since the same data are used to create and evaluate the model. 
 
 Let's simulate another data set containing 250 samples and call that the "calibration set". These data can be predicted and the corresponding residuals can be used to define what conforms to model. We'll also create a large test set to see if we've done a good job. 
 
@@ -200,7 +200,7 @@ cal_resid_width <-
   signif(3)
 ```
 
-Since we know the outcome values, we can compute the coverage for this particular data set. Since we created a 90% prediction intervals, about 90% of the outcomes should be within our bounds. Let's create a function and apply it to these data:
+Since we know the outcome values, we can compute the coverage for this particular data set. Since we created a 90% prediction interval, about 90% of the outcomes should be within our bounds. Let's create a function and apply it to these data:
 
 ```{r}
 #| label: split-coverage
@@ -214,13 +214,13 @@ coverage(test_split_res)
 
 ## Using Resampling Results
 
-In a way, the calibration set serves a similar role as a traditional validation set. Since we can just re-predict our training set, we need to evaluate our model on a separate collection of labelled data. 
+In a way, the calibration set serves a similar role as a traditional validation set. Since we can just re-predict our training set, we need to evaluate our model on a separate collection of labeled data. 
 
 However, we also know that resampling methods can serve the same purpose. During resampling, we can compute a set of predictions that were not used to fit the model. For example, in 10-fold cross-validation, there are 10 collections of held-out predictions that do not suffer from the severe bias that occurs when we simple re-predict the training set. 
 
-The CV+ estimator ([Barber _et al_ (2021)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Predictive+inference+with+the+jackknife%2B%22&btnG=)) can be used to assemble a reference distribution of residuals. If we use `fit_resamples()` or one of the `tune_*()` functions, we can gather those residuals and use them to create prediction intervals. We'll have to make sure that we save the out-of-sample predictions as well as the resasmpled models.  
+The CV+ estimator ([Barber _et al._ (2021)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Predictive+inference+with+the+jackknife%2B%22&btnG=)) can be used to assemble a reference distribution of residuals. If we use `fit_resamples()` or one of the `tune_*()` functions, we can gather those residuals and use them to create prediction intervals. We'll have to make sure that we save the out-of-sample predictions as well as the resasmpled models.  
 
-The `control_*()` functions can be used for this purpose. To save the predicted values, we can set `save_pred = TRUE`. For the resampled models, we can use the tools to [extract the models](https://tidymodels.github.io/tidymodels_dot_org/learn/index.html#category=extracting%20results) via the `extract` argument. We'll use the `I()` function to return the fitted workflows from each resample: 
+The `control_*()` functions can be used for this purpose. We can set `save_pred = TRUE` to save the predicted values. For the resampled models, we can use the tools to [extract the models](https://tidymodels.github.io/tidymodels_dot_org/learn/index.html#category=extracting%20results) via the `extract` argument. We'll use the `I()` function to return the fitted workflows from each resample: 
 
 ```{r}
 #| label: control
@@ -292,7 +292,7 @@ coverage(test_cv_res)
 
 ## Adaptive width intervals
 
-The simulated data that we've been using has a constant error variance. That has worked for the two method that have been shown since their intervals are always the same width. Real data does not always have constant variation. 
+The simulated data that we've been using has a constant error variance. That has worked for the two methods shown since their intervals are always the same width. Real data does not always have constant variation. 
 
 To demonstrate, we can take the previous simulation system and induce a variance that is dynamic over the predictor range: 
 
@@ -360,13 +360,13 @@ test_cv_variable_res %>%
               col = "#D95F02", linewidth = 1, fill = NA)
 ```
 
-While the coverage is good (`r round(coverage(test_cv_variable_res)$coverage, 1)`%) there are obvious areas where it is either too wide or too narrow. 
+While the coverage is good (`r round(coverage(test_cv_variable_res)$coverage, 1)`%), there are obvious areas where it is either too wide or too narrow. 
 
 Conformalized quantile regression ([Romano _et al_ (2019)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Conformalized+quantile+regression%22)) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial [quantile regression](https://en.wikipedia.org/wiki/Quantile_regression) model to do so and also required a split data set, such as our calibration data. 
 
-The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to adequately model the data. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, are low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below. 
+The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, are low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below. 
 
-The function for this, `int_conformal_quantile()` has a slightly different interface than the previous functions: 
+The function for this, `int_conformal_quantile()`, has a slightly different interface than the previous functions: 
 
 * It requires both the training and calibration sets.
 * The confidence level must be set in advance. 
@@ -412,7 +412,7 @@ test_quant_res %>%
               col = "#D95F02", linewidth = 3 / 4, fill = NA)
 ```
 
-The bumpiness of the bound are the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: `r round(coverage(test_quant_res)$coverage, 1)`%. 
+The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: `r round(coverage(test_quant_res)$coverage, 1)`%. 
 
 ## Looking Forward
 
