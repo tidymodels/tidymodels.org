@@ -22,7 +22,7 @@ When updating the site, the goal is to use the most recent CRAN versions of the 
 1. Get a local copy of the website source.
    * Users of devtools/usethis can do:
      ```r
-     usethis::create_from_github(“tidymodels/tidymodels.org”)
+     usethis::create_from_github("tidymodels/tidymodels.org")
      ```
      Note that `usethis::create_from_github()` works best when it can find a
      GitHub personal access token and usethis (git2r, really) is configured
@@ -45,6 +45,11 @@ When updating the site, the goal is to use the most recent CRAN versions of the 
 
 1. You should now be able to render the site in all the usual ways for quarto by calling `quarto render`.
 
+### Quarto
+
+We use the latest release version of quarto. You can install and manage different version with [qvm](https://github.com/dpastoor/qvm).
+
+
 ## Structure
 
 The source of the website is a collection of `.qmd` files stored in the folders in this repository. This site is then rendered as a [Quarto html website](https://quarto.org/docs/websites/). 
@@ -62,3 +67,12 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 * [`books/`](books/): these files make up the books page, linked from resource stickies. To add a new book, create a new folder with a new `.qmd` file inside named `index.qmd`. An image file of the cover should be added in the same folder, named `cover.*`.
 
 * [`find/`](find/): these files make up the find page, linked from the top navbar and resource stickies. Each of these pages is an `.qmd` file.
+
+
+## Workflow
+
+* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post.
+
+* To preview the site, render it locally with the latest quarto release version.
+
+* The site is published via Netlify but rendered locally, so add those files to the PR. 
