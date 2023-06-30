@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Learn how tidymodels uses causal inference tools to measure performance of survival models.">
+
+<title>tidymodels - Accounting for Censoring in Performance Metrics for Event Time Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">tidymodels</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../packages/index.html" rel="" target="">
+ <span class="menu-text">Packages</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../start/index.html" rel="" target="">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../learn/index.html" rel="" target="">
+ <span class="menu-text">Learn</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../help/index.html" rel="" target="">
+ <span class="menu-text">Help</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../contribute/index.html" rel="" target="">
+ <span class="menu-text">Contribute</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about/index.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../find/index.html" rel="" target="">
+ <span class="menu-text">Find</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/tidymodels/" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data">Example data</a></li>
+  <li><a href="#converting-censored-data-to-binary-data" id="toc-converting-censored-data-to-binary-data" class="nav-link" data-scroll-target="#converting-censored-data-to-binary-data">Converting censored data to binary data</a></li>
+  <li><a href="#censoring-weights" id="toc-censoring-weights" class="nav-link" data-scroll-target="#censoring-weights">Censoring weights</a></li>
+  <li><a href="#illustration-confusion-matrix" id="toc-illustration-confusion-matrix" class="nav-link" data-scroll-target="#illustration-confusion-matrix">Illustration: Confusion matrix</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidymodels/tidymodels_dot_org/edit/main/learn/statistics/survival-metrics-details/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidymodels/tidymodels_dot_org/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Accounting for Censoring in Performance Metrics for Event Time Data</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistical analysis</div>
+    <div class="quarto-category">survival analysis</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    <p>Learn how tidymodels uses causal inference tools to measure performance of survival models.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>To use code in this article, you will need to install the following packages: censored, prodlim, and tidymodels. You’ll need the development versions of censored and parsnip. To install these, use</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("pak")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="fu">c</span>(<span class="st">"tidymodels/censored"</span>, <span class="st">"tidymodels/parsnip"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>One trend in modern survival analysis is to compute time-dependent measures of performance. These are primarily driven by an increased focus on predictions for the probability of survival at a given time (as opposed to the predictions of event times or linear predictors). Since these are conditional on the time of evaluation, we call them dynamic performance metrics.</p>
+<p>Many dynamic metrics are similar to those used for binary classification models. Examples include the Brier score and ROC curves (see the <a href="../survival-metrics/">Dynamic Performance Metrics for Event Time Data</a> article for details). The basic idea is that, for a given time <span class="math inline">\(t\)</span> for model evaluation, we try to encode the observed event time data into a binary “has there been an event at time <span class="math inline">\(t\)</span>?” version. We also convert the predicted survival probabilities into predicted events/non-events based on a threshold (default is 0.50). The survival versions of these metrics need those binary versions of observed truth and predictions as well as a way to account for censoring.</p>
+<p>Censoring plays into the details of the conversion and is additionally captured in the form of weights. This article covers both those aspects in detail to complement the <a href="../survival-metrics/">main article</a> on performance metrics for event time data.</p>
+<p>To start, let’s define the various types of times that will be mentioned:</p>
+<ul>
+<li>Observed time: time recorded in the data</li>
+<li>Event time: observed times for actual events</li>
+<li>Evaluation time: the time, specified by the analyst, that the model is evaluated.</li>
+</ul>
+</section>
+<section id="example-data" class="level2">
+<h2 class="anchored" data-anchor-id="example-data">Example data</h2>
+<p>As an example, we’ll simulate some data with the prodlim package, using the methods of <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&amp;btnG=">Bender <em>et al</em> (2005)</a>. A training and a validation set are simulated. We’ll also load the censored package so that we can fit a model to these time-to-event data:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/data_ff9ec6e0c8954db2cbaef260b25dc772">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(censored)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: survival</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(prodlim)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5882</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sim_dat <span class="ot">&lt;-</span> <span class="fu">SimSurv</span>(<span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event_time =</span> <span class="fu">Surv</span>(time, event)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event_time, X1, X2)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>split   <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(sim_dat)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>sim_tr  <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>sim_val <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’ll need a model to illustrate the code and concepts. Let’s fit a bagged survival tree model to the training set:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/bag-tree-fit_5a6c3b5b8b2141206912aa7a2fe8f384">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">17</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>bag_tree_fit <span class="ot">&lt;-</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bag_tree</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"censored regression"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(event_time <span class="sc">~</span> ., <span class="at">data =</span> sim_tr)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>bag_tree_fit</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parsnip model object</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bagging survival trees with 25 bootstrap replications </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call: bagging.data.frame(formula = event_time ~ ., data = data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using this model, we can make predictions of different types and <code>augment()</code> provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21.</p>
+<div class="cell" data-layout-align="center" data-hash="cache/val-pred_71be0c59aa8304196d00fda8a33005d7">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>time_points <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">21</span>, <span class="at">by =</span> <span class="fl">0.25</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>val_pred <span class="ot">&lt;-</span> <span class="fu">augment</span>(bag_tree_fit, sim_val, <span class="at">eval_time =</span> time_points)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>val_pred</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 500 × 5</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .pred             .pred_time event_time    X1      X2</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;list&gt;                 &lt;dbl&gt;     &lt;Surv&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 &lt;tibble [85 × 5]&gt;       6.66  4.831957      1 -0.630 </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;tibble [85 × 5]&gt;       6.66  6.110031      1 -0.606 </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;tibble [85 × 5]&gt;       7.47  6.597774+     1 -1.03  </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;tibble [85 × 5]&gt;       3.29  2.717484      1  0.811 </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;tibble [85 × 5]&gt;       5.10  4.727042+     1 -0.376 </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;tibble [85 × 5]&gt;       4.99  8.699061      0  1.18  </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;tibble [85 × 5]&gt;       7.23 10.818670      1 -0.851 </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;tibble [85 × 5]&gt;       6.46  6.886378      0  0.493 </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;tibble [85 × 5]&gt;       4.75  2.451893+     1  0.0207</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;tibble [85 × 5]&gt;      13.4   8.231911+     0 -1.52  </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 490 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The observed data are in the <code>event_time</code> column. The predicted survival probabilities are in the <code>.pred</code> column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column <code>.pred_survival</code>.</p>
+<div class="cell" data-layout-align="center" data-hash="cache/val-pred-dynamic_4711b5e193450241734314b22e92c8e2">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>val_pred<span class="sc">$</span>.pred[[<span class="dv">1</span>]]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 85 × 5</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .eval_time .pred_survival .weight_time .pred_censored .weight_censored</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       0             1            0              1                 1   </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       0.25          1            0.250          0.999             1.00</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       0.5           0.999        0.500          0.996             1.00</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       0.75          0.992        0.750          0.993             1.01</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       1             0.988        1.00           0.991             1.01</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       1.25          0.980        1.25           0.987             1.01</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       1.5           0.972        1.50           0.981             1.02</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       1.75          0.959        1.75           0.971             1.03</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       2             0.938        2.00           0.966             1.04</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       2.25          0.925        2.25           0.959             1.04</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 75 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First, let’s dive into how to convert the observed event time in <code>event_time</code> to a binary version. Then we will discuss the remaining columns as part of generating the required weights for the dynamic performance metrics.</p>
+</section>
+<section id="converting-censored-data-to-binary-data" class="level2">
+<h2 class="anchored" data-anchor-id="converting-censored-data-to-binary-data">Converting censored data to binary data</h2>
+<p>To assess model performance at evaluation time <span class="math inline">\(t\)</span>, we turn the observed event time data into a binary “was there an event at time <span class="math inline">\(t\)</span>?” version. For this, we follow the process described by <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&amp;btnG=">Graf <em>et al</em> (1999)</a> where observations are categorized into three groups, at evaluation time <span class="math inline">\(t\)</span>.</p>
+<ul>
+<li><strong>Category 1 - Events</strong>: Evaluation time is greater than or equal to the event time (“it has already happened”).</li>
+<li><strong>Category 2 - Non-events</strong>: Evaluation time is less than the observed time, censored or not (“nothing has happened yet”).</li>
+<li><strong>Category 3 - Ambiguous outcomes</strong>: Evaluation time is greater than or equal to the observed censored time (“we don’t know if anything might have happened by now”).</li>
+</ul>
+<p>We can use binary versions of the observations in the first two categories to compute binary performance metrics, but the observations in the third category are not used directly in these calculations. (They do influence the calculation of the weights, see next section.) So our usable sample size changes with the evaluation time.</p>
+<div class="cell" data-layout-align="center" data-hash="cache/plot-graf-categories_dfa05307f158925bfef894bc8b6ca0ae">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/plot-graf-categories-1.svg" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="censoring-weights" class="level2">
+<h2 class="anchored" data-anchor-id="censoring-weights">Censoring weights</h2>
+<p>Unfortunately, this categorization scheme alone is not sufficient to compute metrics. Graf <em>et al</em> took a page from the causal inference literature and added a propensity-type score based on the likelihood that each data point would be censored (regardless of the observed event status). This is not the probability than the original time-to-event data point is censored but rather the probability that at evaluation time, we have not observed an event (or a censoring) yet, i.e., that the data point falls into category 2.</p>
+<p>How do we compute this probability? The standard approach is to compute a “reverse Kaplan-Meier” (RKM) curve. Ordinarily, the Kaplan-Meier (KM) curve models the probability of survival. For the reverse Kaplan-Meier curve, the meaning of the status indicator is flipped, i.e., the event of interest changes from “death” to “censoring”. This should give us a reasonably reliable non-parametric model for estimating the probability of being censored at a given time.</p>
+<p>Every time a censored regression model is created using tidymodels, the RKM is estimated on the same data used to fit the model and attached to the parsnip object.</p>
+<p>For our simulated data, here is what the RKM curve looks like:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/RKM_baf89b5cfd596a5f3fa0470168482d57">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/RKM-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The red rug on the bottom shows the training point event times and the blue values at the top represent the times for the censored training set observations. As (evaluation) time increases, we pass more and more observed time points, and the probability of being censored, i.e., the probability of an observation to fall into category 2, decreases.</p>
+<p>The weights used in the calculation of the dynamic performance metrics are the inverse of these probabilities, hence the name “inverse probability of censoring weights” (IPCW). These weights should theoretically balance the exposure/effect/influence that the definitive observations have on performance calculations.</p>
+<section id="the-finer-details" class="level3">
+<h3 class="anchored" data-anchor-id="the-finer-details">The finer details</h3>
+<p>First, when do we evaluate the probability of censoring? There are different approaches used in the literature, and we follow what Graf <em>et al</em> suggest (as it seems most appropriate):</p>
+<ul>
+<li>If the evaluation time is less than the observed time (like in category 2), the evaluation time is used to predict the probability of censoring.</li>
+<li>If the evaluation is greater than or equal to the event time (like in category 1), the event time is used to predict the probability of censoring.</li>
+<li>If the evaluation time is greater than or equal to the observed censoring time, the observation falls into category 3 and is not used, i.e., also no weight is needed.</li>
+</ul>
+<p>We call this time at which to predict the probability of censoring the <em>weight time</em>. Here’s an example using the first data point in the validation set:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/eval-time-censored_65e017db80a7df2ba90f97b6ff4fc509">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dyn_val_pred <span class="ot">&lt;-</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  val_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(.pred, event_time) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_rowindex</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(.pred) </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>dyn_val_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.row <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> .eval_time <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">10</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event_time, .eval_time, .weight_time, .pred_censored, .weight_censored)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   event_time .eval_time .weight_time .pred_censored .weight_censored</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       &lt;Surv&gt;      &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   4.831957          1         1.00          0.991             1.01</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   4.831957          2         2.00          0.966             1.04</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   4.831957          4         4.00          0.848             1.18</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   4.831957          5         4.83          0.786             1.27</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   4.831957         10         4.83          0.786             1.27</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This observation was an event, observed at time 4.832 The column <code>.weight_time</code> captures at which time the probability of censoring was calculated. Up until that event time, the probability of being censored is computed at the evaluation time. After that, it is based on the event time.</p>
+<p>We add a slight modification to the weight time: If our evaluation time is today, we don’t have today’s data yet. In tidymodels, we calculate the probability of censoring just before the requested weight time. We are basically subtracting a small numerical value from the weight time used in the RKM model. You’ll only really see a difference if there is a bulk of censored observations at the original evaluation time.</p>
+<p>Finally, we use a simple RKM curve (i.e., no covariates or strata). This implies that there is non-informative censoring. Other applications of IPCW try to mitigate the effects of informative censoring. In the future, we may allow the censoring model to include covariates (as well as models beyond the RKM).</p>
+</section>
+</section>
+<section id="illustration-confusion-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="illustration-confusion-matrix">Illustration: Confusion matrix</h2>
+<p>To illustrate how these two tools for accounting for censoring are used in calculating dynamic performance metrics, we’ll take a look here at the 2x2 confusion matrices at a few evaluation time points. More details on performance metrics for censored data are in the aforementioned <a href="../survival-metrics/">Dynamic Performance Metrics for Event Time Data</a> article.</p>
+<p>First, let’s turn the observed event time data and the predictions into their binary versions.</p>
+<div class="cell" data-layout-align="center" data-hash="cache/binary-encoding_0b44b3bcd60032b1307944cf32ed87ba">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>time_as_binary_event <span class="ot">&lt;-</span> <span class="cf">function</span>(surv, eval_time) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  event_time <span class="ot">&lt;-</span> <span class="fu">.extract_surv_time</span>(surv)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  status <span class="ot">&lt;-</span> <span class="fu">.extract_surv_status</span>(surv)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  is_event_before_t <span class="ot">&lt;-</span> event_time <span class="sc">&lt;=</span> eval_time <span class="sc">&amp;</span> status <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Three possible contributions to the statistic from Graf 1999</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Censoring time before eval_time, no contribution (Graf category 3)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  binary_res <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA_character_</span>, <span class="fu">length</span>(event_time))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># A real event prior to eval_time (Graf category 1)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  binary_res <span class="ot">&lt;-</span> <span class="fu">if_else</span>(is_event_before_t, <span class="st">"event"</span>, binary_res)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Observed time greater than eval_time (Graf category 2)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  binary_res <span class="ot">&lt;-</span> <span class="fu">if_else</span>(event_time <span class="sc">&gt;</span> eval_time, <span class="st">"non-event"</span>, binary_res)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">factor</span>(binary_res, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"event"</span>, <span class="st">"non-event"</span>))</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>binary_encoding <span class="ot">&lt;-</span> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  dyn_val_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_class =</span> <span class="fu">time_as_binary_event</span>(event_time, .eval_time),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_class =</span> <span class="fu">if_else</span>(.pred_survival <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="st">"non-event"</span>, <span class="st">"event"</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_class =</span> <span class="fu">factor</span>(pred_class, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"event"</span>, <span class="st">"non-event"</span>)),</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Remember how observations falling into category 3 are removed from the analysis? This means we’ll likely have fewer data points to evaluate as the evaluation time increases. This implies that the variation in the metrics will be considerable as evaluation time goes on. For our simulated training set:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/usable-data_eadeec40f15901ae607d2d64126f8f63">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dyn_val_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">num_usable =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(.weight_censored)), <span class="at">.by =</span> <span class="fu">c</span>(.eval_time)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="fu">aes</span>(.eval_time, num_usable)) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"time"</span>, <span class="at">y =</span> <span class="st">"number of usable observations"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(sim_val)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/usable-data-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Keeping this in mind, let’s look at what happens with the data points we can use. Let’s start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>binary_encoding <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.eval_time <span class="sc">==</span> <span class="fl">1.00</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> obs_class, <span class="at">estimate =</span> pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For censored regression problems, we need to additionally use the censoring weights so we’ll include them via the <code>case_weights</code> argument:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/conf-mat-01_e7df6bde139b7cfe153201d59d66da45">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>binary_encoding <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.eval_time <span class="sc">==</span> <span class="fl">1.00</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> obs_class,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">estimate =</span> pred_class,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">case_weights =</span> .weight_censored)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            Truth</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Prediction      event non-event</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   event       0.00000   0.00000</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   non-event  14.11046 482.54963</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The values in the cells are the sum of the censoring weights, There are 14 actual events (out of 492 usable observations) before this evaluation time, so there are empty cells. Also note that the cell values are close to the actual counts. This early, the predicted censoring probabilities are very close to one so their inverse values are also.</p>
+<p>This early, performance looks very good but that is mostly because there are few events.</p>
+<p>Let’s shift to an evaluation time of 5.0.</p>
+<div class="cell" data-layout-align="center" data-hash="cache/conf-mat-05_2c03063a21b13db700d3dbda9f6c526f">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>binary_encoding <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.eval_time <span class="sc">==</span> <span class="fl">5.00</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> obs_class,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">estimate =</span> pred_class,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">case_weights =</span> .weight_censored)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            Truth</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Prediction      event non-event</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   event     112.98854  54.36531</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   non-event  56.14133 252.41039</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we have fewer total observations to consider (391 instead of 492 usable values) and more events (154 this time). Performance is fairly good; the sensitivity is 66.8% and the specificty is 82.3%.</p>
+<p>What happends when the evaluation time is 17?</p>
+<div class="cell" data-layout-align="center" data-hash="cache/conf-mat-17_b81a8365793c0e05c0fed48ebeed0565">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>binary_encoding <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.eval_time <span class="sc">==</span> <span class="fl">17.00</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> obs_class,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">estimate =</span> pred_class,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">case_weights =</span> .weight_censored)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            Truth</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Prediction     event non-event</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   event     429.9920  123.4458</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   non-event   0.0000    0.0000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The data are overwhelmingly events. Also, the censoring weights are larger now since the probability of being censored is very low. The mean censoring weight is 1.96.</p>
+<p>This concludes the illustration of how to account for censoring when using a confusion matrix for performance assessment. There’s more on dynamic performance metrics in the <a href="../survival-metrics/">Dynamic Performance Metrics for Event Time Data</a> article.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>When accounting for censoring in dynamic performance metrics, the main points to remember are:</p>
+<ul>
+<li>Event time data can be converted to a binary format.</li>
+<li>Some data points cannot be used in the calculations.</li>
+<li>To properly estimate statistical quantities, we weight the computations by the inverse of the probability of being censored.</li>
+<li>tidymodels currently assumes non-informative censoring.</li>
+</ul>
+</section>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+<div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
+<pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
+#&gt;  setting  value
+#&gt;  version  R version 4.2.0 (2022-04-22)
+#&gt;  os       macOS 13.4
+#&gt;  system   aarch64, darwin20
+#&gt;  ui       X11
+#&gt;  language (EN)
+#&gt;  collate  en_US.UTF-8
+#&gt;  ctype    en_US.UTF-8
+#&gt;  tz       Europe/London
+#&gt;  date     2023-06-29
+#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt; 
+#&gt; ─ Packages ─────────────────────────────────────────────────────────
+#&gt;  package    * version    date (UTC) lib source
+#&gt;  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.2.0)
+#&gt;  censored   * 0.2.0.9000 2023-06-22 [1] Github (tidymodels/censored@f9eccb6)
+#&gt;  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.2.0)
+#&gt;  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.2.0)
+#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
+#&gt;  parsnip    * 1.1.0.9003 2023-06-28 [1] Github (tidymodels/parsnip@e6278b0)
+#&gt;  prodlim    * 2023.03.31 2023-04-02 [1] CRAN (R 4.2.0)
+#&gt;  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.2.0)
+#&gt;  recipes    * 1.0.6      2023-04-25 [1] CRAN (R 4.2.0)
+#&gt;  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.2.0)
+#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
+#&gt;  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.2.0)
+#&gt;  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.2.0)
+#&gt;  tune       * 1.1.1      2023-04-11 [1] CRAN (R 4.2.0)
+#&gt;  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.2.0)
+#&gt;  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.2.0)
+#&gt; 
+#&gt;  [1] /Users/hannah/Library/R/arm64/4.2/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt; 
+#&gt; ────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+
+<div class="section resources">
+  <div class="resourcesTitle">Resources</div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+    </div>
+    <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+    </div>
+    <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+    </div>
+    <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
+  </div>
+</div>
+
+<script>
+  sidebar = document.querySelector('#quarto-margin-sidebar');
+  resources = document.querySelector('.resources');
+  sidebar.appendChild(resources);
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Proudly supported by <a href="https://posit.co"><img src="https://www.rstudio.com/assets/img/posit-logo-fullcolor-TM.svg" class="img-fluid" alt="Posit" width="65"></a></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right"><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></div>
+  </div>
+</footer>
+
+
+
+</body></html>
