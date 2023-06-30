@@ -322,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>How do we compute this probability? The standard approach is to compute a “reverse Kaplan-Meier” (RKM) curve. Ordinarily, the Kaplan-Meier (KM) curve models the probability of survival. For the reverse Kaplan-Meier curve, the meaning of the status indicator is flipped, i.e., the event of interest changes from “death” to “censoring”. This should give us a reasonably reliable non-parametric model for estimating the probability of being censored at a given time.</p>
 <p>Every time a censored regression model is created using tidymodels, the RKM is estimated on the same data used to fit the model and attached to the parsnip object.</p>
 <p>For our simulated data, here is what the RKM curve looks like:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/RKM_baf89b5cfd596a5f3fa0470168482d57">
+<div class="cell" data-layout-align="center" data-hash="cache/RKM_51d587d88b6e7aeb39b5884836692a31">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -397,13 +397,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Remember how observations falling into category 3 are removed from the analysis? This means we’ll likely have fewer data points to evaluate as the evaluation time increases. This implies that the variation in the metrics will be considerable as evaluation time goes on. For our simulated training set:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/usable-data_eadeec40f15901ae607d2d64126f8f63">
+<div class="cell" data-layout-align="center" data-hash="cache/usable-data_f60360b9dc0bf6ae1daa097b9239db67">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dyn_val_pred <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">num_usable =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(.weight_censored)), <span class="at">.by =</span> <span class="fu">c</span>(.eval_time)) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="fu">aes</span>(.eval_time, num_usable)) <span class="sc">+</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"time"</span>, <span class="at">y =</span> <span class="st">"number of usable observations"</span>) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(sim_val)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(sim_val))) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
