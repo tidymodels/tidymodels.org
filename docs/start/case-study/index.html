@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,7 +91,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -260,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#next" id="toc-next">Where to next?</a></li>
   <li><a href="#session-info" id="toc-session-info">Session information</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidymodels/tidymodels_dot_org/edit/main/start/case-study/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidymodels/tidymodels_dot_org/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidymodels/tidymodels.org/edit/main/start/case-study/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 <section id="intro" class="level2">
 <h2 class="anchored" data-anchor-id="intro">Introduction</h2>
 <p>Each of the four previous <a href="../../start/"><em>Get Started</em></a> articles has focused on a single task related to modeling. Along the way, we also introduced core packages in the tidymodels ecosystem and some of the key functions you’ll need to start working with models. In this final case study, we will use all of the previous articles as a foundation to build a predictive model from beginning to end with data on hotel stays.</p>
@@ -287,12 +288,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="data">The Hotel Bookings Data</h2>
 <p>Let’s use hotel bookings data from <a href="https://doi.org/10.1016/j.dib.2018.11.126">Antonio, Almeida, and Nunes (2019)</a> to predict which hotel stays included children and/or babies, based on the other characteristics of the stays such as which hotel the guests stay at, how much they pay, etc. This was also a <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11"><code>#TidyTuesday</code></a> dataset with a <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11#data-dictionary">data dictionary</a> you may want to look over to learn more about the variables. We’ll use a slightly <a href="https://gist.github.com/topepo/05a74916c343e57a71c51d6bc32a21ce">edited version of the dataset</a> for this case study.</p>
 <p>To start, let’s read our hotel data into R, which we’ll do by providing <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a> with a url where our CSV data is located (“<a href="https://tidymodels.org/start/case-study/hotels.csv" class="uri">https://tidymodels.org/start/case-study/hotels.csv</a>”):</p>
-<div class="cell" data-layout-align="center" data-hash="cache/hotel-import_74cc1fcf8fe97947ad7255887dfdf6e8">
+<div class="cell" data-layout-align="center" data-hash="cache/hotel-import_8f522b0e54585647073c587ebbdb202d">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>hotels <span class="ot">&lt;-</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">'https://tidymodels.org/start/case-study/hotels.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"https://tidymodels.org/start/case-study/hotels.csv"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), as.factor))</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(hotels)</span>
@@ -838,14 +839,14 @@ Happy modeling!
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.3.0 (2023-04-21)
-#&gt;  os       macOS Monterey 12.6
+#&gt;  os       macOS Ventura 13.4
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/Los_Angeles
-#&gt;  date     2023-05-25
+#&gt;  date     2023-07-02
 #&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
