@@ -56,7 +56,8 @@ Consider a two-class problem where the first class has a very low rate of occurr
 #| label: "load-data"
 #| message: false
 imbal_data <- 
-  readr::read_csv("https://bit.ly/imbal_data") %>% 
+  
+  readr::read_csv("https://tidymodels.org/learn/models/sub-sampling/imbal_data.csv") %>% 
   mutate(Class = factor(Class))
 dim(imbal_data)
 table(imbal_data$Class)
