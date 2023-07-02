@@ -33,6 +33,7 @@ packages <- c(
   "pls",
   "plsmod",
   "poissonreg",
+  "probably",
   "randomForest",
   "ranger",
   "rlang",
