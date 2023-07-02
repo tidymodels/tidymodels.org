@@ -34,6 +34,7 @@ packages <- c(
   "plsmod",
   "poissonreg",
   "probably",
+  "quantregForest",
   "randomForest",
   "ranger",
   "rlang",
