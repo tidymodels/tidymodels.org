@@ -229,20 +229,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center" data-hash="cache/data_ea43f6471536c88f5d0c74d179663a45">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(censored)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(prodlim)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5882</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>sim_dat <span class="ot">&lt;-</span> <span class="fu">SimSurv</span>(<span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event_time =</span> <span class="fu">Surv</span>(time, event)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event_time, X1, X2)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>split   <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(sim_dat)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>sim_tr  <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>sim_val <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Resampling object</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>sim_rs <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(sim_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: survival</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(prodlim)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5882</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sim_dat <span class="ot">&lt;-</span> <span class="fu">SimSurv</span>(<span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event_time =</span> <span class="fu">Surv</span>(time, event)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event_time, X1, X2)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>split   <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(sim_dat)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>sim_tr  <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>sim_val <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Resampling object</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>sim_rs <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(sim_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We’ll need a model to illustrate the code and concepts. Let’s fit a bagged survival tree model to the training set:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/bag-tree-fit_5a6c3b5b8b2141206912aa7a2fe8f384">
@@ -463,39 +464,39 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center" data-hash="cache/si_43a75b68dcc94565ba13180d7ad26a69">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       macOS 13.4
+#&gt;  version  R version 4.3.0 (2023-04-21)
+#&gt;  os       macOS Ventura 13.4
 #&gt;  system   aarch64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
-#&gt;  tz       Europe/London
-#&gt;  date     2023-06-30
+#&gt;  tz       America/Los_Angeles
+#&gt;  date     2023-07-02
 #&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package    * version    date (UTC) lib source
-#&gt;  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.2.0)
-#&gt;  censored   * 0.2.0.9000 2023-06-22 [1] Github (tidymodels/censored@f9eccb6)
-#&gt;  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.2.0)
-#&gt;  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.2.0)
-#&gt;  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.2.0)
-#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.2.0)
-#&gt;  parsnip    * 1.1.0.9003 2023-06-28 [1] Github (tidymodels/parsnip@e6278b0)
-#&gt;  prodlim    * 2023.03.31 2023-04-02 [1] CRAN (R 4.2.0)
-#&gt;  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.2.0)
-#&gt;  recipes    * 1.0.6      2023-04-25 [1] CRAN (R 4.2.0)
-#&gt;  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.2.0)
-#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.2.0)
-#&gt;  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.2.0)
-#&gt;  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.2.0)
-#&gt;  tune       * 1.1.1      2023-04-11 [1] CRAN (R 4.2.0)
-#&gt;  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.2.0)
-#&gt;  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.2.0)
+#&gt;  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.3.0)
+#&gt;  censored   * 0.2.0.9000 2023-07-02 [1] Github (tidymodels/censored@f9eccb6)
+#&gt;  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
+#&gt;  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.3.0)
+#&gt;  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.3.0)
+#&gt;  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.3.0)
+#&gt;  parsnip    * 1.1.0.9003 2023-07-02 [1] Github (tidymodels/parsnip@e6278b0)
+#&gt;  prodlim    * 2023.03.31 2023-04-02 [1] CRAN (R 4.3.0)
+#&gt;  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.3.0)
+#&gt;  recipes    * 1.0.6      2023-04-25 [1] CRAN (R 4.3.0)
+#&gt;  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.3.0)
+#&gt;  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.3.0)
+#&gt;  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
+#&gt;  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.3.0)
+#&gt;  tune       * 1.1.1      2023-04-11 [1] CRAN (R 4.3.0)
+#&gt;  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
+#&gt;  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.3.0)
 #&gt; 
-#&gt;  [1] /Users/hannah/Library/R/arm64/4.2/library
-#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+#&gt;  [1] /Users/emilhvitfeldt/Library/R/arm64/4.3/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
