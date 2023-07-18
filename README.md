@@ -71,8 +71,10 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 ## Workflow
 
-* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post.
+* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `installs.R`.
 
 * To preview the site, render it locally with the latest quarto release version.
 
 * The site is published via Netlify but rendered locally, so add those files to the PR. 
+
+* To do a complete rerender, run `re-render.R` script.
