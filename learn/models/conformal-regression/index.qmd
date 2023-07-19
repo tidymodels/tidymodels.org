@@ -85,7 +85,7 @@ reference_data %>%
 
 If we were to get a new sample beyond these data, we would be able to say that we are about 90% sure that the new sample does not conform to the original distribution. This works under the assumption that the data are exchangeable. 
 
-We can apply this relatively simple idea to model predictions. Suppose we have a model created on a numeric outcome. If we make predictions on a data set we can compute the model residuals and create a sort of reference error distribution. If we compute a prediction on a new unknown sample, we could use center this reference distribution around its predicted value. For some confidence level, we now know the range of predicted values that "conform" to the reference distribution. That range can define our prediction interval. 
+We can apply this relatively simple idea to model predictions. Suppose we have a model created on a numeric outcome. If we make predictions on a data set we can compute the model residuals and create a sort of reference error distribution. If we compute a prediction on a new unknown sample, we could center this reference distribution around its predicted value. For some confidence level, we now know the range of predicted values that "conform" to the reference distribution. That range can define our prediction interval. 
 
 There are a variety of ways to apply this concept (which is unsurprisingly more complex than that the above description). The probably package has implemented a few of them for regression models (classification methods are coming in the future). 
 
@@ -109,7 +109,7 @@ set.seed(8383)
 train_data <- make_data(n)
 
 train_data %>% 
-  ggplot(aes(x, y )) + 
+  ggplot(aes(x, y)) + 
   geom_point(alpha = 1 / 10)
 ```
 
@@ -364,7 +364,7 @@ While the coverage is good (`r round(coverage(test_cv_variable_res)$coverage, 1)
 
 Conformalized quantile regression ([Romano _et al_ (2019)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Conformalized+quantile+regression%22)) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial [quantile regression](https://en.wikipedia.org/wiki/Quantile_regression) model to do so and also required a split data set, such as our calibration data. 
 
-The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, are low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below. 
+The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below. 
 
 The function for this, `int_conformal_quantile()`, has a slightly different interface than the previous functions: 
 
