@@ -45,9 +45,9 @@ pkgs <- c("tidymodels", "probably", "nnet")
 
 `r article_req_pkgs(pkgs)` The probably package should be version 1.0.1 or greater.
 
-What is conformal inference? It is a collection of statistical methods that are mostly used to construct prediction intervals for any type of regression or classification model. The basic idea revolves around some theory on how to construct probability statements for a population of data points. 
+What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction)? It is a collection of statistical methods that are mostly used to construct prediction intervals (or prediction sets) for any type of regression or classification model. The basic idea revolves around some theory on how to construct probability statements for a population of data points. 
 
-For example, suppose we have collected a set of 1,000 standard normal data points. 
+Since this article is focused on regression problems, we'll motivate the methodology in the context of a numeric outcome. For example, suppose we have collected a set of 1,000 standard normal data points. 
 
 ```{r}
 #| label: normal-dist
