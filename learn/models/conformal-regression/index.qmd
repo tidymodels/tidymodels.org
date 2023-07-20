@@ -282,8 +282,7 @@ test_cv_res %>%
 
 At each point, the interval length is `r round(mean(test_cv_res$.pred_upper - test_cv_res$.pred_lower), 2)`; the previous split conformal interval width was `r round(mean(test_split_res$.pred_upper - test_split_res$.pred_lower), 2)`. This is due to the training set being larger than the calibration set. 
 
-Note that the coverage is a little better too: 
-
+Note that the coverage is a little better since it is near 90%:
 
 ```{r}
 #| label: cv-coverage
@@ -320,8 +319,8 @@ Let's create new data sets and re-fit our model:
 ```{r}
 #| label: variable-data
 set.seed(7292)
-train_variable_data  <- make_variable_data(n)
-cal_variable_data  <- make_variable_data(250)
+train_variable_data <- make_variable_data(n)
+cal_variable_data <- make_variable_data(250)
 test_variable_data <- make_variable_data(10000)
 
 nnet_variable_fit <- nnet_wflow %>% fit(train_variable_data)
@@ -422,10 +421,7 @@ Speaking of coverage, there's a [GitHub repo](https://github.com/topepo/conforma
 
 This is a growing research area; we will do our best to implement important new methods as they are created. 
 
-Also, there are a multitude of methods for classification models. Those are next on our list. 
-
 If you are interested and would like to learn more, try these resources: 
-
 
 * [_Introduction To Conformal Prediction With Python_](https://christophmolnar.com/books/conformal-prediction/) by Christoph Molnar
  (highly recommended)
