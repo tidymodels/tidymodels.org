@@ -372,7 +372,7 @@ However, there are obvious areas where it is either too wide or too narrow.
 
 Conformalized quantile regression ([Romano _et al_ (2019)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Conformalized+quantile+regression%22)) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial [quantile regression](https://en.wikipedia.org/wiki/Quantile_regression) model to do so and also required a split data set, such as our calibration data. 
 
-The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below. 
+The original work used basic quantile regression models. For tidymodels, we'll use [quantile regression forests](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Quantile+Regression+Forests%22). The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There are both minor and major downsides, as seen below. 
 
 The function for this, `int_conformal_quantile()`, has a slightly different interface than the previous functions: 
 
@@ -420,22 +420,66 @@ test_quant_res %>%
               col = "#D95F02", linewidth = 3 / 4, fill = NA)
 ```
 
-The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: 
+Minor downside: The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. 
+
+Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: 
 
 ```{r}
 #| label: coverage-quant
 
 coverage(test_quant_res)
 ```
+### The major downside
+
+When our predictions are extrapolating, the intervals can be very poor. Tree-based models will behave very differently than other models when predicting beyond the training set; they follow a static trend even as the predictor values move towards infinity. 
+
+To illustrate this, we can simulate another point outside of the training set range: 
+
+
+```{r}
+#| label: extrapolation
+#| echo: false
+#| out-width: 70%
+#| fig-width: 6
+#| fig-height: 4
+
+set.seed(382)
+one_outier <- 
+  tibble(x = 1.25) %>% 
+  mutate(
+    y = (x^3) + 2 * exp(-6 * (x - 0.3)^2),
+    y = y + rnorm(1, sd = 1 / 5)
+  )
+
+with_outlier <- 
+  bind_rows(test_variable_data, one_outier)
+with_outlier_res <- 
+  predict(quant_int, with_outlier) %>% 
+  bind_cols(with_outlier)
+with_outlier_pred <- augment(nnet_variable_fit, with_outlier)
+
+with_outlier_res %>% 
+  ggplot(aes(x)) +
+  geom_point(aes(y = y), alpha = 1 / 20) +
+  geom_point(data = one_outier, aes(y = y), pch = 8) +
+  geom_line(
+    data = with_outlier_pred, aes(y = .pred),
+    linewidth = 1, col = "blue"
+  ) +
+  geom_ribbon(aes(ymin = .pred_lower, ymax = .pred_upper), 
+              col = "#D95F02", linewidth = 3 / 4, fill = NA)
+```
+
+The neural network does fairly well but the quantile regression forest carries the same extract trend forward. In this case, the interval doesn't even include the predicted value (since two different models are used to compute both quantities). 
+
+To protect against this, we suggest using the tools in the [applicable package](https://applicable.tidymodels.org). It can help quantify how much a prediction is outside of the mainstream of the training set. 
 
 
 ## Coverage
 
 Speaking of coverage, there's a [GitHub repo](https://github.com/topepo/conformal_sim) where we did simulations for these methods to determine their average coverage. The repository's readme file has a summary. 
 
-## Looking Forward
-
-This is a growing research area; we will do our best to implement important new methods as they are created. 
+## Learning More
 
 If you are interested and would like to learn more, try these resources: 
 
