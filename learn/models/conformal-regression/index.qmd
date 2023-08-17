@@ -45,7 +45,7 @@ pkgs <- c("tidymodels", "probably", "nnet")
 
 `r article_req_pkgs(pkgs)` The probably package should be version 1.0.1 or greater.
 
-What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction)? It is a collection of statistical methods that are mostly used to construct prediction intervals (or prediction sets) for any type of regression or classification model. The basic idea revolves around some theory on how to construct probability statements for a population of data points. 
+What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction)? It is a collection of statistical methods that are mostly used to construct prediction intervals (or prediction sets) for any type of regression or classification model. The basic idea revolves around some Frequentist theory on how to construct probability statements about whether a new sample could have been from an existing reference distribution.
 
 Since this article is focused on regression problems, we'll motivate the methodology in the context of a numeric outcome. For example, suppose we have collected a set of 1,000 standard normal data points. 
 
@@ -83,9 +83,9 @@ reference_data %>%
   geom_vline(xintercept = quants, col = "red", lty = 2)
 ```
 
-If we were to get a new sample beyond these data, we would be able to say that we are about 90% sure that the new sample does not conform to the original distribution. This works under the assumption that the data are exchangeable. 
+If we were to get a new sample beyond these boundaries, we would be able to say that we are about 90% sure that the new sample does not conform to the original distribution. This works under the assumption that the data are exchangeable. 
 
-We can apply this relatively simple idea to model predictions. Suppose we have a model created on a numeric outcome. If we make predictions on a data set we can compute the model residuals and create a sort of reference error distribution. If we compute a prediction on a new unknown sample, we could center this reference distribution around its predicted value. For some confidence level, we now know the range of predicted values that "conform" to the reference distribution. That range can define our prediction interval. 
+We can apply this relatively simple idea to model predictions. Suppose we have a model created on a numeric outcome. If we make predictions on a data set we can compute the model residuals and create a sort of reference error distribution. If we compute a prediction on a new unknown sample, we could center this reference distribution around its predicted value. For some significance level, we now know the range of sample values that "conform" to the variance seen in the reference distribution. That range can define our prediction interval.
 
 There are a variety of ways to apply this concept (which is unsurprisingly more complex than the above description). The probably package has implemented a few of these.
 
