@@ -206,7 +206,7 @@ Since we know the outcome values, we can compute the coverage for this particula
 #| label: split-coverage
 coverage <- function(x) {
   x %>% 
-    mutate(in_bound = .pred_lower < y & .pred_upper > y) %>% 
+    mutate(in_bound = .pred_lower <= y & .pred_upper >= y) %>% 
     summarise(coverage = mean(in_bound) * 100)
 }
 coverage(test_split_res)
