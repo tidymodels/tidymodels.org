@@ -36,6 +36,7 @@ packages <- c(
   "poissonreg",
   "probably",
   "prodlim",
+  "quantregForest",
   "randomForest",
   "ranger",
   "rlang",
