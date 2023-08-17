@@ -368,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#using-resampling-results" id="toc-using-resampling-results" class="nav-link" data-scroll-target="#using-resampling-results">Using Resampling Results</a></li>
   <li><a href="#adaptive-width-intervals" id="toc-adaptive-width-intervals" class="nav-link" data-scroll-target="#adaptive-width-intervals">Adaptive width intervals</a></li>
   <li><a href="#coverage" id="toc-coverage" class="nav-link" data-scroll-target="#coverage">Coverage</a></li>
-  <li><a href="#looking-forward" id="toc-looking-forward" class="nav-link" data-scroll-target="#looking-forward">Looking Forward</a></li>
+  <li><a href="#learning-more" id="toc-learning-more" class="nav-link" data-scroll-target="#learning-more">Learning More</a></li>
   <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/conformal-regression/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -541,10 +541,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Since we know the outcome values, we can compute the coverage for this particular data set. Since we created a 90% prediction interval, about 90% of the outcomes should be within our bounds. Let’s create a function and apply it to these data:</p>
-<div class="cell" data-layout-align="center" data-hash="cache/split-coverage_270d2b10042234a2e102e2897a6025e6">
+<div class="cell" data-layout-align="center" data-hash="cache/split-coverage_910bffe3da7391a192693d0a6c06f521">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>coverage <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">in_bound =</span> .pred_lower <span class="sc">&lt;</span> y <span class="sc">&amp;</span> .pred_upper <span class="sc">&gt;</span> y) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">in_bound =</span> .pred_lower <span class="sc">&lt;=</span> y <span class="sc">&amp;</span> .pred_upper <span class="sc">&gt;=</span> y) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">coverage =</span> <span class="fu">mean</span>(in_bound) <span class="sc">*</span> <span class="dv">100</span>)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">coverage</span>(test_split_res)</span>
@@ -681,7 +681,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>However, there are obvious areas where it is either too wide or too narrow.</p>
 <p>Conformalized quantile regression (<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Conformalized+quantile+regression%22">Romano <em>et al</em> (2019)</a>) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial <a href="https://en.wikipedia.org/wiki/Quantile_regression">quantile regression</a> model to do so and also required a split data set, such as our calibration data.</p>
-<p>The original work used basic quantile regression models. For tidymodels, we’ll use <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Quantile+Regression+Forests%22">quantile regression forests</a>. The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below.</p>
+<p>The original work used basic quantile regression models. For tidymodels, we’ll use <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Quantile+Regression+Forests%22">quantile regression forests</a>. The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There are both minor and major downsides, as seen below.</p>
 <p>The function for this, <code>int_conformal_quantile()</code>, has a slightly different interface than the previous functions:</p>
 <ul>
 <li>It requires both the training and calibration sets.</li>
@@ -729,7 +729,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target:</p>
+<p>Minor downside: The bumpiness of the bound is the consequence of using a tree-based model for the quantiles.</p>
+<p>Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/coverage-quant_12ec3a9ae6cf2f4b55a57dcb5fe23d09">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coverage</span>(test_quant_res)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
@@ -737,14 +738,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     92.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="the-major-downside" class="level3">
+<h3 class="anchored" data-anchor-id="the-major-downside">The major downside</h3>
+<p>When our predictions are extrapolating, the intervals can be very poor. Tree-based models will behave very differently than other models when predicting beyond the training set; they follow a static trend even as the predictor values move towards infinity.</p>
+<p>To illustrate this, we can simulate another point outside of the training set range:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/extrapolation_6b7989e4f0f2cd4c62abf0d21575a9e8">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/extrapolation-1.svg" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The neural network does fairly well but the quantile regression forest carries the same extract trend forward. In this case, the interval doesn’t even include the predicted value (since two different models are used to compute both quantities).</p>
+<p>To protect against this, we suggest using the tools in the <a href="https://applicable.tidymodels.org">applicable package</a>. It can help quantify how much a prediction is outside of the mainstream of the training set.</p>
+</section>
 </section>
 <section id="coverage" class="level2">
 <h2 class="anchored" data-anchor-id="coverage">Coverage</h2>
 <p>Speaking of coverage, there’s a <a href="https://github.com/topepo/conformal_sim">GitHub repo</a> where we did simulations for these methods to determine their average coverage. The repository’s readme file has a summary.</p>
 </section>
-<section id="looking-forward" class="level2">
-<h2 class="anchored" data-anchor-id="looking-forward">Looking Forward</h2>
-<p>This is a growing research area; we will do our best to implement important new methods as they are created.</p>
+<section id="learning-more" class="level2">
+<h2 class="anchored" data-anchor-id="learning-more">Learning More</h2>
 <p>If you are interested and would like to learn more, try these resources:</p>
 <ul>
 <li><a href="https://christophmolnar.com/books/conformal-prediction/"><em>Introduction To Conformal Prediction With Python</em></a> by Christoph Molnar (highly recommended)</li>
