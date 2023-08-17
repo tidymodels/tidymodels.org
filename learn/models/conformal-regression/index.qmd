@@ -87,7 +87,7 @@ If we were to get a new sample beyond these data, we would be able to say that w
 
 We can apply this relatively simple idea to model predictions. Suppose we have a model created on a numeric outcome. If we make predictions on a data set we can compute the model residuals and create a sort of reference error distribution. If we compute a prediction on a new unknown sample, we could center this reference distribution around its predicted value. For some confidence level, we now know the range of predicted values that "conform" to the reference distribution. That range can define our prediction interval. 
 
-There are a variety of ways to apply this concept (which is unsurprisingly more complex than that the above description). The probably package has implemented a few of these.
+There are a variety of ways to apply this concept (which is unsurprisingly more complex than the above description). The probably package has implemented a few of these.
 
 Let's make a simple example to illustrate the results. We'll simulate a data set with a single predictor along with some unknown samples: 
 
@@ -142,7 +142,7 @@ Let's examine three methods^[A fourth method is implemented for "full conformal 
 
 The most straightforward approach is reserving some data for estimating the residual distribution. We know that simply re-predicting the training set is **a bad idea**; the residuals would be smaller than they should be since the same data are used to create and evaluate the model. 
 
-Let's simulate another data set containing 250 samples and call that the "calibration set". These data can be predicted and the corresponding residuals can be used to define what conforms to model. We'll also create a large test set to see if we've done a good job. 
+Let's simulate another data set containing 250 samples and call that the "calibration set". These data can be predicted and the corresponding residuals can be used to define what conforms to the model. We'll also create a large test set to see if we've done a good job. 
 
 ```{r}
 #| label: more-data
@@ -214,7 +214,7 @@ coverage(test_split_res)
 
 ## Using Resampling Results
 
-In a way, the calibration set serves a similar role as a traditional validation set. Since we can just re-predict our training set, we need to evaluate our model on a separate collection of labeled data. 
+In a way, the calibration set serves a similar role as a traditional validation set. Since we can't just re-predict our training set, we need to evaluate our model on a separate collection of labeled data. 
 
 However, we also know that resampling methods can serve the same purpose. During resampling, we can compute a set of predictions that were not used to fit the model. For example, in 10-fold cross-validation, there are 10 collections of held-out predictions that do not suffer from the severe bias that occurs when we simple re-predict the training set. 
 
@@ -379,7 +379,7 @@ The function for this, `int_conformal_quantile()`, has a slightly different inte
 * It requires both the training and calibration sets.
 * The confidence level must be set in advance. 
 
-We'll also pass an argument to the `quantregForest()` function that will use 2,000 trees to make the forest: 
+We'll also pass an argument to the `quantregForest()` function that we'll use 2,000 trees to make the forest: 
 
 ```{r}
 #| label: quant-pred
