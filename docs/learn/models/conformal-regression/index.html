@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.176">
+<meta name="generator" content="quarto-1.4.104">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -82,11 +82,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "panel-placement": "end",
   "type": "overlay",
   "limit": 20,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -165,9 +160,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/models/coefficients/index.html">Create Robust Models</a></li><li class="breadcrumb-item"><a href="../../../learn/models/conformal-regression/index.html">Conformal inference for regression models</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/models/coefficients/index.html">Create Robust Models</a></li><li class="breadcrumb-item"><a href="../../../learn/models/conformal-regression/index.html">Conformal inference for regression models</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
     </div>
   </nav>
 </header>
@@ -381,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/models/coefficients/index.html">Create Robust Models</a></li><li class="breadcrumb-item"><a href="../../../learn/models/conformal-regression/index.html">Conformal inference for regression models</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Conformal inference for regression models</h1>
   <div class="quarto-categories">
@@ -676,7 +671,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>While the coverage is good (90.3%), there are obvious areas where it is either too wide or too narrow.</p>
+<p>The <em>average</em> coverage is good:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/coverage-cv-variable_c583b3f89c0df9bbd62f0e6773a03898">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coverage</span>(test_cv_variable_res)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   coverage</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     90.3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>However, there are obvious areas where it is either too wide or too narrow.</p>
 <p>Conformalized quantile regression (<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Conformalized+quantile+regression%22">Romano <em>et al</em> (2019)</a>) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial <a href="https://en.wikipedia.org/wiki/Quantile_regression">quantile regression</a> model to do so and also required a split data set, such as our calibration data.</p>
 <p>The original work used basic quantile regression models. For tidymodels, we’ll use <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Quantile+Regression+Forests%22">quantile regression forests</a>. The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There is a minor downside, as seen below.</p>
 <p>The function for this, <code>int_conformal_quantile()</code>, has a slightly different interface than the previous functions:</p>
@@ -686,35 +689,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>We’ll also pass an argument to the <code>quantregForest()</code> function that will use 2,000 trees to make the forest:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/quant-pred_968fb70e038fcd4a1d76fb480db2016c">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>quant_int <span class="ot">&lt;-</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">int_conformal_quantile</span>(</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    nnet_variable_fit, </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">train_data =</span> train_variable_data,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cal_data =</span> cal_variable_data, </span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> <span class="fl">0.90</span>,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ntree =</span> <span class="dv">2000</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>quant_int</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Split Conformal inference via Quantile Regression</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; preprocessor: formula </span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; model: mlp (engine = nnet) </span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; calibration set size: 250 </span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; confidence level: 0.9 </span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use `predict(object, new_data)` to compute prediction intervals</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>test_quant_res <span class="ot">&lt;-</span> </span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(quant_int, test_variable_data) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(test_variable_data)</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>test_quant_res <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 5</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .pred .pred_lower .pred_upper      x      y</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  0.990       0.574      1.14    0.776  1.10 </span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 -0.327      -0.546     -0.0904 -0.686 -0.180</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  0.265       0.161      0.459  -0.274  0.364</span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  1.01        0.666      1.13    0.759  1.21 </span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  2.00        1.90       2.12    0.367  1.87</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>quant_int <span class="ot">&lt;-</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">int_conformal_quantile</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    nnet_variable_fit, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">train_data =</span> train_variable_data,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cal_data =</span> cal_variable_data, </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> <span class="fl">0.90</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ntree =</span> <span class="dv">2000</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>quant_int</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Split Conformal inference via Quantile Regression</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; preprocessor: formula </span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; model: mlp (engine = nnet) </span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; calibration set size: 250 </span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; confidence level: 0.9 </span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use `predict(object, new_data)` to compute prediction intervals</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>test_quant_res <span class="ot">&lt;-</span> </span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(quant_int, test_variable_data) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(test_variable_data)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>test_quant_res <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .pred .pred_lower .pred_upper      x      y</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  0.990       0.574      1.14    0.776  1.10 </span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 -0.327      -0.546     -0.0904 -0.686 -0.180</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  0.265       0.161      0.459  -0.274  0.364</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  1.01        0.666      1.13    0.759  1.21 </span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  2.00        1.90       2.12    0.367  1.87</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The results:</p>
 <div class="cell" data-layout-align="center" data-hash="cache/quant-pred-split_1850492a31b30e7dba449a495ae2f2c6">
@@ -726,7 +729,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: 92%.</p>
+<p>The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target:</p>
+<div class="cell" data-layout-align="center" data-hash="cache/coverage-quant_12ec3a9ae6cf2f4b55a57dcb5fe23d09">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coverage</span>(test_quant_res)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   coverage</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     92.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="coverage" class="level2">
 <h2 class="anchored" data-anchor-id="coverage">Coverage</h2>
@@ -749,15 +759,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  setting  value
 #&gt;  version  R version 4.3.1 (2023-06-16)
-#&gt;  os       macOS Ventura 13.3
+#&gt;  os       macOS Ventura 13.5
 #&gt;  system   x86_64, darwin20
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  en_US.UTF-8
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/New_York
-#&gt;  date     2023-07-20
-#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#&gt;  date     2023-08-16
+#&gt;  pandoc   3.1.6 @ /usr/local/bin/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package    * version date (UTC) lib source
@@ -766,11 +776,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
 #&gt;  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
 #&gt;  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#&gt;  nnet       * 7.3-19  2023-05-03 [1] CRAN (R 4.3.1)
-#&gt;  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
+#&gt;  nnet       * 7.3-19  2023-05-03 [2] CRAN (R 4.3.1)
+#&gt;  parsnip    * 1.1.1   2023-08-16 [1] local
 #&gt;  probably   * 1.0.2   2023-06-29 [1] CRAN (R 4.3.0)
-#&gt;  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#&gt;  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#&gt;  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#&gt;  recipes    * 1.0.7   2023-08-10 [1] CRAN (R 4.3.0)
 #&gt;  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
 #&gt;  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
 #&gt;  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
@@ -779,21 +789,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #&gt;  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #&gt; 
-#&gt;  [1] /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library
+#&gt;  [1] /Users/max/Library/R/x86_64/4.3/library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
 
 
 </section>
-
-
-<div id="quarto-appendix" class="default"><aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
 <li id="fn1"><p>A fourth method is implemented for “full conformal prediction.” It was developed mainly as a proof of concept. While it is effective, it is <em>very</em> computationally expensive.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</aside></div></main> <!-- /main -->
+</aside>
+
+</main> <!-- /main -->
 <div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
@@ -979,6 +990,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           const parser = new DOMParser();
           const htmlDoc = parser.parseFromString(html, "text/html");
           const note = htmlDoc.getElementById(id);
+          console.log(htmlDoc.body.innerHTML);
           if (note !== null) {
             const html = processXRef(id, note);
             instance.setContent(html);
@@ -1131,7 +1143,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
 
 
 

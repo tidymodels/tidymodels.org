@@ -359,7 +359,16 @@ test_cv_variable_res %>%
               col = "#D95F02", linewidth = 1, fill = NA)
 ```
 
-While the coverage is good (`r round(coverage(test_cv_variable_res)$coverage, 1)`%), there are obvious areas where it is either too wide or too narrow. 
+The _average_ coverage is good: 
+
+```{r}
+#| label: coverage-cv-variable
+
+coverage(test_cv_variable_res)
+```
+
+
+However, there are obvious areas where it is either too wide or too narrow. 
 
 Conformalized quantile regression ([Romano _et al_ (2019)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Conformalized+quantile+regression%22)) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial [quantile regression](https://en.wikipedia.org/wiki/Quantile_regression) model to do so and also required a split data set, such as our calibration data. 
 
@@ -411,7 +420,14 @@ test_quant_res %>%
               col = "#D95F02", linewidth = 3 / 4, fill = NA)
 ```
 
-The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: `r round(coverage(test_quant_res)$coverage, 1)`%. 
+The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: 
+
+```{r}
+#| label: coverage-quant
+
+coverage(test_quant_res)
+```
+
 
 ## Coverage
 
