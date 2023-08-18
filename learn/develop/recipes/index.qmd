@@ -76,17 +76,17 @@ ggplot(biomass_tr, aes(x = carbon)) +
 
 Based on the training set, `r round(mean(biomass_tr$carbon <= biomass_te$carbon[1])*100, 1)`% of the data are less than a value of `r biomass_te$carbon[1]`. There are some applications where it might be advantageous to represent the predictor values as percentiles rather than their original values. 
 
-Our new step will do this computation for any numeric variables of interest. We will call this new recipe step `step_percentile()`. The code below is designed for illustration and not speed or best practices. We've left out a lot of error trapping that we would want in a real implementation.  
+Our new step will do this computation for any numeric variables of interest. We will call this new recipe step `step_percentiles()`. The code below is designed for illustration and not speed or best practices. We've left out a lot of error trapping that we would want in a real implementation.  
 
 ## Create the function
 
-To start, there is a _user-facing_ function. Let's call that `step_percentile()`. This is just a simple wrapper around a _constructor function_, which defines the rules for any step object that defines a percentile transformation. We'll call this constructor `step_percentile_new()`. 
+To start, there is a _user-facing_ function. Let's call that `step_percentiles()`. This is just a simple wrapper around a _constructor function_, which defines the rules for any step object that defines a percentile transformation. We'll call this constructor `step_percentiles_new()`. 
 
-The function `step_percentile()` takes the same arguments as your function and simply adds it to a new recipe. The `...` signifies the variable selectors that can be used.
+The function `step_percentiles()` takes the same arguments as your function and simply adds it to a new recipe. The `...` signifies the variable selectors that can be used.
 
 ```{r}
 #| label: "initial_def"
-step_percentile <- function(
+step_percentiles <- function(
   recipe, 
   ..., 
   role = NA, 
@@ -94,13 +94,13 @@ step_percentile <- function(
   ref_dist = NULL,
   options = list(probs = (0:100)/100, names = TRUE),
   skip = FALSE,
-  id = rand_id("percentile")
+  id = rand_id("percentiles")
   ) {
 
   add_step(
     recipe, 
-    step_percentile_new(
-      terms = terms, 
+    step_percentiles_new(
+      terms = enquos(...),
       trained = trained,
       role = role, 
       ref_dist = ref_dist,
@@ -119,9 +119,9 @@ You should always keep the first four arguments (`recipe` though `trained`) the 
  * `skip` is a logical. Whenever a recipe is prepped, each step is trained and then baked. However, there are some steps that should not be applied when a call to `bake()` is used. For example, if a step is applied to the variables with roles of "outcomes", these data would not be available for new samples. 
  * `id` is a character string that can be used to identify steps in package code. `rand_id()` will create an ID that has the prefix and a random character sequence. 
 
-We can estimate the percentiles of new data points based on the percentiles from the training set with `approx()`. Our `step_percentile` contains a `ref_dist` object to store these percentiles (pre-computed from the training set in `prep()`) for later use in `bake()`.
+We can estimate the percentiles of new data points based on the percentiles from the training set with `approx()`. Our `step_percentiles` contains a `ref_dist` object to store these percentiles (pre-computed from the training set in `prep()`) for later use in `bake()`.
 
-We will use `stats::quantile()` to compute the grid. However, we might also want to have control over the granularity of this grid, so the `options` argument will be used to define how that calculation is done. We could use the ellipses (aka `...`) so that any options passed to `step_percentile()` that are not one of its arguments will then be passed to `stats::quantile()`. However, we recommend making a separate list object with the options and use these inside the function because `...` is already used to define the variable selection. 
+We will use `stats::quantile()` to compute the grid. However, we might also want to have control over the granularity of this grid, so the `options` argument will be used to define how that calculation is done. We could use the ellipses (aka `...`) so that any options passed to `step_percentiles()` that are not one of its arguments will then be passed to `stats::quantile()`. However, we recommend making a separate list object with the options and use these inside the function because `...` is already used to define the variable selection. 
 
 It is also important to consider if there are any _main arguments_ to the step. For example, for spline-related steps such as `step_ns()`, users typically want to adjust the argument for the degrees of freedom in the spline (e.g. `splines::ns(x, df)`). Rather than letting users add `df` to the `options` argument: 
 
@@ -138,19 +138,19 @@ Now, the constructor function can be created.
 The function cascade is: 
 
 ```
-step_percentile() calls recipes::add_step()
-└──> recipes::add_step() calls step_percentile_new()
-    └──> step_percentile_new() calls recipes::step()
+step_percentiles() calls recipes::add_step()
+└──> recipes::add_step() calls step_percentiles_new()
+    └──> step_percentiles_new() calls recipes::step()
 ```
 
-`step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentile"` will set the class of new objects to `"step_percentile"`. 
+`step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentile"` will set the class of new objects to `"step_percentiles"`. 
 
 ```{r}
 #| label: "initialize"
-step_percentile_new <- 
+step_percentiles_new <- 
   function(terms, role, trained, ref_dist, options, skip, id) {
     step(
-      subclass = "percentile", 
+      subclass = "percentiles", 
       terms = terms,
       role = role,
       trained = trained,
@@ -174,7 +174,7 @@ function(x, training, info = NULL)
 
 where
 
- * `x` will be the `step_percentile` object,
+ * `x` will be the `step_percentiles` object,
  * `training` will be a _tibble_ that has the training set data, and
  * `info` will also be a tibble that has information on the current set of data available. This information is updated as each step is evaluated by its specific `prep()` method so it may not have the variables from the original data. The columns in this tibble are `variable` (the variable name), `type` (currently either "numeric" or "nominal"), `role` (defining the variable's role), and `source` (either "original" or "derived" depending on where it originated).
 
@@ -189,8 +189,8 @@ The first thing that you might want to do in the `prep()` function is to transla
 ```{r}
 #| label: "prep_1"
 #| eval: false
-prep.step_percentile <- function(x, training, info = NULL, ...) {
-  col_names <- recipes_eval_select(x$terms, training, info) 
+prep.step_percentiles <- function(x, training, info = NULL, ...) {
+  col_names <- recipes_eval_select(x$terms, training, info)
   # TODO finish the rest of the function
 }
 ```
@@ -216,10 +216,10 @@ Now, the `prep()` method can be created:
 
 ```{r}
 #| label: "prep-2"
-prep.step_percentile <- function(x, training, info = NULL, ...) {
+prep.step_percentiles <- function(x, training, info = NULL, ...) {
   col_names <- recipes_eval_select(x$terms, training, info)
-  ## You can add error trapping for non-numeric data here and so on. 
-  
+  check_type(training[, col_names], types = c("double", "integer"))
+
   ## We'll use the names later so make sure they are available
   if (x$options$names == FALSE) {
     rlang::abort("`names` should be set to TRUE")
@@ -237,7 +237,7 @@ prep.step_percentile <- function(x, training, info = NULL, ...) {
   ## Use the constructor function to return the updated object. 
   ## Note that `trained` is now set to TRUE
   
-  step_percentile_new(
+  step_percentiles_new(
     terms = x$terms, 
     trained = TRUE,
     role = x$role, 
@@ -251,10 +251,9 @@ prep.step_percentile <- function(x, training, info = NULL, ...) {
 
 We suggest favoring `rlang::abort()` and `rlang::warn()` over `stop()` and `warning()`. The former can be used for better traceback results.
 
-
 ## Create the `bake` method
 
-Remember that the `prep()` function does not _apply_ the step to the data; it only estimates any required values such as `ref_dist`. We will need to create a new method for our `step_percentile()` class. The minimum arguments for this are
+Remember that the `prep()` function does not _apply_ the step to the data; it only estimates any required values such as `ref_dist`. We will need to create a new method for our `step_percentiles()` class. The minimum arguments for this are
 
 ```r
 function(object, new_data, ...)
@@ -274,20 +273,24 @@ pctl_by_approx <- function(x, ref) {
 }
 ```
 
-These computations are done column-wise using `purrr::map2_dfc()` to modify the new data in-place:
+We will loop over the variables one by and and apply the transformation. `check_new_data()` is used to make sure that the variables that are affected in this step are present.
 
 ```{r}
 #| label: "bake-method"
-bake.step_percentile <- function(object, new_data, ...) {
-  ## For illustration (and not speed), we will loop through the affected variables
-  ## and do the computations
-  vars <- names(object$ref_dist)
-  
-  new_data[, vars] <-
-    purrr::map2_dfc(new_data[, vars], object$ref_dist, pctl_by_approx)
-  
-  ## Always convert to tibbles on the way out
-  tibble::as_tibble(new_data)
+bake.step_percentiles <- function(object, new_data, ...) {
+  col_names <- names(object$ref_dist)
+  check_new_data(col_names, object, new_data)
+
+  for (col_name in col_names) {
+    new_data[[col_name]] <- pctl_by_approx(
+      x = new_data[[col_name]],
+      ref = object$ref_dist[[col_name]]
+    )
+  }
+
+  # new_data will be a tibble when passed to this function. It should also
+  # be a tibble on the way out.
+  new_data
 }
 ```
 
@@ -301,10 +304,9 @@ Let's use the example data to make sure that it works:
 
 ```{r}
 #| label: "example"
-#| eval: false
 rec_obj <- 
   recipe(HHV ~ ., data = biomass_tr) %>%
-  step_percentile(ends_with("gen")) %>%
+  step_percentiles(ends_with("gen")) %>%
   prep(training = biomass_tr)
 
 biomass_te %>% select(ends_with("gen")) %>% slice(1:2)
@@ -319,7 +321,6 @@ The plot below shows how the original hydrogen percentiles line up with the esti
 
 ```{r}
 #| label: "cdf_plot"
-#| eval: false
 hydrogen_values <- 
   bake(rec_obj, biomass_te, hydrogen) %>% 
   bind_cols(biomass_te %>% select(original = hydrogen))
@@ -356,12 +357,11 @@ There are a few other S3 methods that can be created for your step function. The
 
 ### A print method
 
-If you don't add a print method for `step_percentile`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `printer()` that should be useful in most cases. We are using it here for the custom print method for `step_percentile`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
+If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `printer()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
 
 ```{r}
 #| label: "print-method"
-#| eval: false
-print.step_percentile <-
+print.step_percentiles <-
   function(x, width = max(20, options()$width - 35), ...) {
     cat("Percentile transformation on ", sep = "")
     printer(
@@ -379,7 +379,7 @@ print.step_percentile <-
 
 # Results before `prep()`:
 recipe(HHV ~ ., data = biomass_tr) %>%
-  step_percentile(ends_with("gen"))
+  step_percentiles(ends_with("gen"))
 
 # Results after `prep()`: 
 rec_obj
@@ -398,7 +398,6 @@ a clean R session then run: install.packages("some_package")
 There is an S3 method that can be used to declare what packages should be loaded when using the step. For a hypothetical step that relies on the `hypothetical` package, this might look like: 
 
 ```{r}
-#| eval: false
 required_pkgs.step_hypothetical <- function(x, ...) {
   c("hypothetical", "myrecipespkg")
 }
@@ -411,7 +410,6 @@ The reason to declare what packages should be loaded is parallel processing. Whe
 If this S3 method is used for your step, you can rely on this for checking the installation: 
  
 ```{r}
-#| eval: false
 recipes::recipes_pkg_check(required_pkgs.step_hypothetical())
 ``` 
 
@@ -425,7 +423,6 @@ When the recipe has been prepped, those data are in the list `ref_dist`. A small
 
 ```{r}
 #| label: "tidy-calcs"
-#| eval: false
 format_pctl <- function(x) {
   tibble::tibble(
     value = unname(x),
@@ -443,8 +440,7 @@ The tidy method could return these values for each selected column. Before `prep
 
 ```{r}
 #| label: "tidy"
-#| eval: false
-tidy.step_percentile <- function(x, ...) {
+tidy.step_percentiles <- function(x, ...) {
   if (is_trained(x)) {
     res <- map_dfr(x$ref_dist, format_pctl, .id = "term")
   }
@@ -471,7 +467,6 @@ The tune package can be used to find reasonable values of step arguments by mode
 
 ```{r}
 #| label: "poly-args"
-#| eval: false
 args(step_poly)
 ```
 
@@ -497,7 +492,6 @@ For example, for a nearest-neighbors `neighbors` parameter, this value is just:
 
 ```{r}
 #| label: "mtry"
-#| eval: false
 info <- list(pkg = "dials", fun = "neighbors")
 
 # FYI: how it is used under-the-hood: 
@@ -521,7 +515,6 @@ For `step_poly()` the `tunable()` S3 method could be:
 
 ```{r}
 #| label: "tunable"
-#| eval: false
 tunable.step_poly <- function (x, ...) {
   tibble::tibble(
     name = c("degree"),
