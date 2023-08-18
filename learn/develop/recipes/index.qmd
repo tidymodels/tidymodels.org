@@ -361,20 +361,23 @@ There are a few other S3 methods that can be created for your step function. The
 
 ### A print method
 
-If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `printer()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
+If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `print_step()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
 
 ```{r}
 #| label: "print-method"
 print.step_percentiles <-
   function(x, width = max(20, options()$width - 35), ...) {
-    cat("Percentile transformation on ", sep = "")
-    printer(
-      # Names before prep (could be selectors)
-      untr_obj = x$terms,
+    title <- "Percentile transformation on "
+
+    print_step(
       # Names after prep:
       tr_obj = names(x$ref_dist),
+      # Names before prep (could be selectors)
+      untr_obj = x$terms,
       # Has it been prepped? 
       trained = x$trained,
+      # What does this step do?
+      title = title,
       # An estimate of how many characters to print on a line: 
       width = width
     )
@@ -446,9 +449,17 @@ The tidy method could return these values for each selected column. Before `prep
 #| label: "tidy"
 tidy.step_percentiles <- function(x, ...) {
   if (is_trained(x)) {
-    res <- map_dfr(x$ref_dist, format_pctl, .id = "term")
-  }
-  else {
+    if (length(x$ref_dist) == 0) {
+      # We need to create consistant output when no variables were selected
+      res <- tibble(
+        terms = character(),
+        value = numeric(),
+        percentile = numeric()
+      )
+    } else {
+      res <- map_dfr(x$ref_dist, format_pctl, .id = "term")
+    }
+  } else {
     term_names <- sel2char(x$terms)
     res <-
       tibble(
@@ -530,7 +541,6 @@ tunable.step_poly <- function (x, ...) {
 }
 ```
 
-
 ## Session information {#session-info}
 
 ```{r}
@@ -538,5 +548,3 @@ tunable.step_poly <- function (x, ...) {
 #| echo: false
 small_session(pkgs)
 ```
- 
- 
