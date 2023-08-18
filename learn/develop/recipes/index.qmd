@@ -78,6 +78,10 @@ Based on the training set, `r round(mean(biomass_tr$carbon <= biomass_te$carbon[
 
 Our new step will do this computation for any numeric variables of interest. We will call this new recipe step `step_percentiles()`. The code below is designed for illustration and not speed or best practices. We've left out a lot of error trapping that we would want in a real implementation.  
 
+::: {.callout-note}
+The step `step_percentiles()` that will be created on this page, has been implemented in recipes as [step_percentile()](https://recipes.tidymodels.org/reference/step_percentile.html).
+:::
+
 ## Create the function
 
 To start, there is a _user-facing_ function. Let's call that `step_percentiles()`. This is just a simple wrapper around a _constructor function_, which defines the rules for any step object that defines a percentile transformation. We'll call this constructor `step_percentiles_new()`. 
