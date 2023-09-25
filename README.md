@@ -49,6 +49,9 @@ When updating the site, the goal is to use the most recent CRAN versions of the 
 
 We use the latest release version of quarto. You can install and manage different version with [qvm](https://github.com/dpastoor/qvm).
 
+The website is set up to render with [Netlify](https://app.netlify.com/sites/tidymodels-org/deploys) in according to [quarto documentation](https://quarto.org/docs/publishing/netlify.html).
+
+The files [`_publish.yml`](_publish.yml), [`netlify.toml`](netlify.toml), and [`package.json`](package.json) specifies this configuration. 
 
 ## Structure
 
