@@ -64,7 +64,7 @@ Let's use hotel bookings data from [Antonio, Almeida, and Nunes (2019)](https://
 To start, let's read our hotel data into R, which we'll do by providing [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) with a url where our CSV data is located ("<https://tidymodels.org/start/case-study/hotels.csv>"):
 
 
-::: {.cell layout-align="center" hash='cache/hotel-import_8f522b0e54585647073c587ebbdb202d'}
+::: {.cell layout-align="center" hash='cache/hotel-import_faedaab83e5e7c40d08eccc29168d9d7'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -83,7 +83,7 @@ dim(hotels)
 In the original paper, the [authors](https://doi.org/10.1016/j.dib.2018.11.126) caution that the distribution of many variables (such as number of adults/children, room type, meals bought, country of origin of the guests, and so forth) is different for hotel stays that were canceled versus not canceled. This makes sense because much of that information is gathered (or gathered again more accurately) when guests check in for their stay, so canceled bookings are likely to have more missing data than non-canceled bookings, and/or to have different characteristics when data is not missing. Given this, it is unlikely that we can reliably detect meaningful differences between guests who cancel their bookings and those who do not with this dataset. To build our models here, we have already filtered the data to include only the bookings that did not cancel, so we'll be analyzing *hotel stays* only.
 
 
-::: {.cell layout-align="center" hash='cache/glimpse-hotels_fefde56d9a0d74646d115d87420ceaf9'}
+::: {.cell layout-align="center" hash='cache/glimpse-hotels_47a4704210ca28f8a9f9f0f1b5ef4d06'}
 
 ```{.r .cell-code}
 glimpse(hotels)
@@ -119,7 +119,7 @@ glimpse(hotels)
 We will build a model to predict which actual hotel stays included children and/or babies, and which did not. Our outcome variable `children` is a factor variable with two levels:
 
 
-::: {.cell layout-align="center" hash='cache/count-children_65252be0ed6f7cb8babd3646ddcf18a6'}
+::: {.cell layout-align="center" hash='cache/count-children_c23bae377c4039668370d9d4fe46be67'}
 
 ```{.r .cell-code}
 hotels %>% 
@@ -141,7 +141,7 @@ We can see that children were only in 8.1% of the reservations. This type of cla
 For a data splitting strategy, let's reserve 25% of the stays to the test set. As in our [*Evaluate your model with resampling*](/start/resampling/#data-split) article, we know our outcome variable `children` is pretty imbalanced so we'll use a stratified random sample:
 
 
-::: {.cell layout-align="center" hash='cache/tr-te-split_f60f5f3cacfad918e4134edd82789d10'}
+::: {.cell layout-align="center" hash='cache/tr-te-split_9ed892f98dda982ed2bc9bf13cf14854'}
 
 ```{.r .cell-code}
 set.seed(123)
@@ -182,7 +182,7 @@ For this case study, rather than using multiple iterations of resampling, let's 
 -   the remaining data used to fit the model, called the *training set*.
 
 
-::: {.cell layout-align="center" hash='cache/validation-fig_13eaf681711257e3a9d95d45ceb9a421'}
+::: {.cell layout-align="center" hash='cache/validation-fig_c4993a35cb6ccc30f8c4afa31059bfb2'}
 ::: {.cell-output-display}
 ![](img/validation-split.svg){fig-align='center' width=50%}
 :::
@@ -192,13 +192,15 @@ For this case study, rather than using multiple iterations of resampling, let's 
 We'll use the `validation_split()` function to allocate 20% of the `hotel_other` stays to the *validation set* and 30,000 stays to the *training set*. This means that our model performance metrics will be computed on a single set of 7,500 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
 
 
-::: {.cell layout-align="center" hash='cache/validation-set_4a3b1ed08c67fafb1cb73bfef87a19aa'}
+::: {.cell layout-align="center" hash='cache/validation-set_bf7b9f2929e15305e78bae11eb6fc488'}
 
 ```{.r .cell-code}
 set.seed(234)
 val_set <- validation_split(hotel_other, 
                             strata = children, 
                             prop = 0.80)
+#> Warning: `validation_split()` was deprecated in rsample 1.2.0.
+#> ℹ Please use `initial_validation_split()` instead.
 val_set
 #> # Validation Set Split (0.8/0.2)  using stratification 
 #> # A tibble: 1 × 2
@@ -220,7 +222,7 @@ Since our outcome variable `children` is categorical, logistic regression would 
 To specify a penalized logistic regression model that uses a feature selection penalty, let's use the parsnip package with the [glmnet engine](/find/parsnip/):
 
 
-::: {.cell layout-align="center" hash='cache/logistic-model_a96ebf59d90ba0221e9cef26eb80aa7b'}
+::: {.cell layout-align="center" hash='cache/logistic-model_79ebcfc4260f22aa496c82ec1999fa58'}
 
 ```{.r .cell-code}
 lr_mod <- 
@@ -253,7 +255,7 @@ Additionally, all categorical predictors (e.g., `distribution_channel`, `hotel`,
 Putting all these steps together into a recipe for a penalized logistic regression model, we have:
 
 
-::: {.cell layout-align="center" hash='cache/logistic-features_1754f74bb66129b1a296558fe696a89a'}
+::: {.cell layout-align="center" hash='cache/logistic-features_4d5a389599a5b2516da43ca54a170706'}
 
 ```{.r .cell-code}
 holidays <- c("AllSouls", "AshWednesday", "ChristmasEve", "Easter", 
@@ -276,7 +278,7 @@ lr_recipe <-
 As we introduced in [*Preprocess your data with recipes*](/start/recipes/#fit-workflow), let's bundle the model and recipe into a single `workflow()` object to make management of the R objects easier:
 
 
-::: {.cell layout-align="center" hash='cache/logistic-workflow_ec3f7a10278bda31b9c010911df74524'}
+::: {.cell layout-align="center" hash='cache/logistic-workflow_48913c4afff384022b17e8666160e534'}
 
 ```{.r .cell-code}
 lr_workflow <- 
@@ -292,7 +294,7 @@ lr_workflow <-
 Before we fit this model, we need to set up a grid of `penalty` values to tune. In our [*Tune model parameters*](/start/tuning/) article, we used [`dials::grid_regular()`](start/tuning/#tune-grid) to create an expanded grid based on a combination of two hyperparameters. Since we have only one hyperparameter to tune here, we can set the grid up manually using a one-column tibble with 30 candidate values:
 
 
-::: {.cell layout-align="center" hash='cache/logistic-grid_76318cc70d9ef36bd335b85845041a0b'}
+::: {.cell layout-align="center" hash='cache/logistic-grid_bfbe9db29a6c850588a4663e62a7794e'}
 
 ```{.r .cell-code}
 lr_reg_grid <- tibble(penalty = 10^seq(-4, -1, length.out = 30))
@@ -342,7 +344,7 @@ lr_res <-
 It might be easier to visualize the validation set metrics by plotting the area under the ROC curve against the range of penalty values:
 
 
-::: {.cell layout-align="center" hash='cache/logistic-results_c50e09f68b13dd92547a88be40103c50'}
+::: {.cell layout-align="center" hash='cache/logistic-results_d69177039151a82a4e476b5418bed7e4'}
 
 ```{.r .cell-code}
 lr_plot <- 
@@ -397,7 +399,7 @@ top_models
 ```
 :::
 
-::: {.cell layout-align="center" hash='cache/top-cand-mods_f38baa6162be8c16e9649554fb10ca56'}
+::: {.cell layout-align="center" hash='cache/top-cand-mods_49456c7ade7be8c2d901e00b85a29105'}
 
 :::
 
@@ -405,7 +407,7 @@ top_models
 Every candidate model in this tibble likely includes more predictor variables than the model in the row below it. If we used `select_best()`, it would return candidate model 11 with a penalty value of 0.00137, shown with the dotted line below.
 
 
-::: {.cell layout-align="center" hash='cache/lr-plot-lines_2ba82e58bf011149e6c30a059a0b6045'}
+::: {.cell layout-align="center" hash='cache/lr-plot-lines_6017c17ae7f1beb3d8ca631b060a51f5'}
 ::: {.cell-output-display}
 ![](figs/lr-plot-lines-1.svg){fig-align='center' width=576}
 :::
@@ -417,7 +419,7 @@ However, we may want to choose a penalty value further along the x-axis, closer 
 Let's select this value and visualize the validation set ROC curve:
 
 
-::: {.cell layout-align="center" hash='cache/logistic-best_536639b58aee05b2dc64901c039c81c4'}
+::: {.cell layout-align="center" hash='cache/logistic-best_5e4233e6550ce45da3c2a27d74c6c848'}
 
 ```{.r .cell-code}
 lr_best <- 
@@ -433,7 +435,7 @@ lr_best
 ```
 :::
 
-::: {.cell layout-align="center" hash='cache/logistic-roc-curve_4353a2ff045f53998a16d55d50d392e8'}
+::: {.cell layout-align="center" hash='cache/logistic-roc-curve_e254b040527a7bd3f56f114eb5e3d45e'}
 
 ```{.r .cell-code}
 lr_auc <- 
@@ -464,7 +466,7 @@ Although the default hyperparameters for random forests tend to give reasonable 
 But, here we are using a single validation set, so parallelization isn't an option using the tune package. For this specific case study, a good alternative is provided by the engine itself. The ranger package offers a built-in way to compute individual random forest models in parallel. To do this, we need to know the the number of cores we have to work with. We can use the parallel package to query the number of cores on your own computer to understand how much parallelization you can do:
 
 
-::: {.cell layout-align="center" hash='cache/num-cores_d8782f1f1a90527c8c8613f61864599a'}
+::: {.cell layout-align="center" hash='cache/num-cores_ddd3b3343763afa233d723f7b91af4e6'}
 
 ```{.r .cell-code}
 cores <- parallel::detectCores()
@@ -477,7 +479,7 @@ cores
 We have 10 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
 
 
-::: {.cell layout-align="center" hash='cache/rf-model_77a4ff80f861d79482f76885edba8a97'}
+::: {.cell layout-align="center" hash='cache/rf-model_aab782e34deb8dde6a39540252152b3f'}
 
 ```{.r .cell-code}
 rf_mod <- 
@@ -497,7 +499,7 @@ In this model, we used `tune()` as a placeholder for the `mtry` and `min_n` argu
 Unlike penalized logistic regression models, random forest models do not require [dummy](https://bookdown.org/max/FES/categorical-trees.html) or normalized predictor variables. Nevertheless, we want to do some feature engineering again with our `arrival_date` variable. As before, the date predictor is engineered so that the random forest model does not need to work hard to tease these potential patterns from the data.
 
 
-::: {.cell layout-align="center" hash='cache/rf-features_14c8aea1fbec48c0000c6e8618b6caac'}
+::: {.cell layout-align="center" hash='cache/rf-features_f8bd08729a2a5957aee45068a243dd58'}
 
 ```{.r .cell-code}
 rf_recipe <- 
@@ -512,7 +514,7 @@ rf_recipe <-
 Adding this recipe to our parsnip model gives us a new workflow for predicting whether a hotel stay included children and/or babies as guests with a random forest:
 
 
-::: {.cell layout-align="center" hash='cache/rf-workflow_756ce147a56c9a9fe820caec47dcc750'}
+::: {.cell layout-align="center" hash='cache/rf-workflow_f0330a762bd4767936989625d52cdffd'}
 
 ```{.r .cell-code}
 rf_workflow <- 
@@ -607,7 +609,7 @@ Right away, we see that these values for area under the ROC look more promising 
 Plotting the results of the tuning process highlights that both `mtry` (number of predictors at each node) and `min_n` (minimum number of data points required to keep splitting) should be fairly small to optimize performance. However, the range of the y-axis indicates that the model is very robust to the choice of these parameter values --- all but one of the ROC AUC values are greater than 0.90.
 
 
-::: {.cell layout-align="center" hash='cache/rf-results_d7b9a58a8c52195f5fb2cf1f291a0edf'}
+::: {.cell layout-align="center" hash='cache/rf-results_472d991de7728937b2ad072c057aaf9a'}
 
 ```{.r .cell-code}
 autoplot(rf_res)
@@ -622,7 +624,7 @@ autoplot(rf_res)
 Let's select the best model according to the ROC AUC metric. Our final tuning parameter values are:
 
 
-::: {.cell layout-align="center" hash='cache/rf-best_d4f2f0a02aebd94d6144c9e69c27decb'}
+::: {.cell layout-align="center" hash='cache/rf-best_ac176c992e3b6c49ed7316f04329f549'}
 
 ```{.r .cell-code}
 rf_best <- 
@@ -666,7 +668,7 @@ rf_res %>%
 To filter the predictions for only our best random forest model, we can use the `parameters` argument and pass it our tibble with the best hyperparameter values from tuning, which we called `rf_best`:
 
 
-::: {.cell layout-align="center" hash='cache/rf-roc_82e46ab48227fdb75b3701700019fa82'}
+::: {.cell layout-align="center" hash='cache/rf-roc_e0dd414690d526ec344efc5162655790'}
 
 ```{.r .cell-code}
 rf_auc <- 
@@ -681,7 +683,7 @@ rf_auc <-
 Now, we can compare the validation set ROC curves for our top penalized logistic regression model and random forest model:
 
 
-::: {.cell layout-align="center" hash='cache/rf-lr-roc-curve_4dd7892058b1fa9f2249484f1e97d958'}
+::: {.cell layout-align="center" hash='cache/rf-lr-roc-curve_7232e150c2df5b8317f74e6c68236d2c'}
 
 ```{.r .cell-code}
 bind_rows(rf_auc, lr_auc) %>% 
@@ -760,7 +762,7 @@ This ROC AUC value is pretty close to what we saw when we tuned the random fores
 We can access those variable importance scores via the `.workflow` column. We can [extract out the fit](https://tune.tidymodels.org/reference/extract-tune.html) from the workflow object, and then use the vip package to visualize the variable importance scores for the top 20 features:
 
 
-::: {.cell layout-align="center" hash='cache/rf-importance_bb789f3fc826121c61561fe2b64d0fd7'}
+::: {.cell layout-align="center" hash='cache/rf-importance_a05670b8abd84d273fc91e318eb085e4'}
 
 ```{.r .cell-code}
 last_rf_fit %>% 
@@ -779,7 +781,7 @@ The most important predictors in whether a hotel stay had children or not were t
 Let's generate our last ROC curve to visualize. Since the event we are predicting is the first level in the `children` factor ("children"), we provide `roc_curve()` with the [relevant class probability](https://yardstick.tidymodels.org/reference/roc_curve.html#relevant-level) `.pred_children`:
 
 
-::: {.cell layout-align="center" hash='cache/test-set-roc-curve_75d6e9b408cd8f9d578418f38f1ad9e8'}
+::: {.cell layout-align="center" hash='cache/test-set-roc-curve_2e7ecbc63afb4edc8ad737a3d46c460b'}
 
 ```{.r .cell-code}
 last_rf_fit %>% 
@@ -817,41 +819,41 @@ Here are some more ideas for where to go next:
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  glmnet     * 4.1-7   2023-03-23 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  glmnet     * 4.1-8   2023-08-22 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  ranger     * 0.15.1  2023-04-03 [1] CRAN (R 4.3.0)
 #>  readr      * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
-#>  vip        * 0.3.2   2020-12-17 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
+#>  vip        * 0.4.1   2023-08-21 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

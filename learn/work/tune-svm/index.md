@@ -29,7 +29,7 @@ This article demonstrates how to tune a model using grid search. Many models hav
 To demonstrate model tuning, we'll use the Ionosphere data in the mlbench package:
 
 
-::: {.cell layout-align="center" hash='cache/load-data_ccd52d98bd5d4c80115efb123b0cd574'}
+::: {.cell layout-align="center" hash='cache/load-data_d88b50480ccbe7f0518c5ee61a9a6de1'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -48,7 +48,7 @@ From `?Ionosphere`:
 There are 43 predictors and a factor outcome. Two of the predictors are factors (`V1` and `V2`) and the rest are numeric variables that have been scaled to a range of -1 to 1. Note that the two factor predictors have sparse distributions:
 
 
-::: {.cell layout-align="center" hash='cache/factor-pred_4de54531f8e5660a66ab0c8927650253'}
+::: {.cell layout-align="center" hash='cache/factor-pred_54a20bcc52808f96d64bbdc848ec6beb'}
 
 ```{.r .cell-code}
 table(Ionosphere$V1)
@@ -66,7 +66,7 @@ table(Ionosphere$V2)
 There's no point of putting `V2` into any model since is is a zero-variance predictor. `V1` is not but it _could_ be if the resampling process ends up sampling all of the same value. Is this an issue? It might be since the standard R formula infrastructure fails when there is only a single observed value:
 
 
-::: {.cell layout-align="center" hash='cache/glm-fail_8ead2e62aec261b8a14c5179b5b1071c'}
+::: {.cell layout-align="center" hash='cache/glm-fail_0a7fbb2098b351f01ef701b9727f83e3'}
 
 ```{.r .cell-code}
 glm(Class ~ ., data = Ionosphere, family = binomial)
@@ -81,7 +81,7 @@ glm(Class ~ . - V2, data = Ionosphere, family = binomial)
 Let's remove these two problematic variables:
 
 
-::: {.cell layout-align="center" hash='cache/ion-rm_49b6be55c3beb2f49da6f91955e1aaf5'}
+::: {.cell layout-align="center" hash='cache/ion-rm_62d6db52196e73e205480c6bd167664a'}
 
 ```{.r .cell-code}
 Ionosphere <- Ionosphere %>% select(-V1, -V2)
@@ -94,7 +94,7 @@ Ionosphere <- Ionosphere %>% select(-V1, -V2)
 To demonstrate, we'll fit a radial basis function support vector machine to these data and tune the SVM cost parameter and the $\sigma$ parameter in the kernel function:
 
 
-::: {.cell layout-align="center" hash='cache/svm-mod_d415239acd947bcb02cfc9c30198bde0'}
+::: {.cell layout-align="center" hash='cache/svm-mod_6aa8e6be5c55067394c955b30a0602cd'}
 
 ```{.r .cell-code}
 svm_mod <-
@@ -113,7 +113,7 @@ In this article, tuning will be demonstrated in two ways, using:
 Let's create a simple recipe here:
 
 
-::: {.cell layout-align="center" hash='cache/rec_392e244f6df3a5cc50ee6ee0f194a480'}
+::: {.cell layout-align="center" hash='cache/rec_b6acd803b9bbc3b00c8c4348a200ec0c'}
 
 ```{.r .cell-code}
 iono_rec <-
@@ -129,7 +129,7 @@ iono_rec <-
 The only other required item for tuning is a resampling strategy as defined by an rsample object. Let's demonstrate using basic bootstrapping:
 
 
-::: {.cell layout-align="center" hash='cache/rs_51fdb695637efb06c3026aacba88d1bc'}
+::: {.cell layout-align="center" hash='cache/rs_32482ccd9cbd1da5b2bfdd79240acf0b'}
 
 ```{.r .cell-code}
 set.seed(4943)
@@ -143,7 +143,7 @@ iono_rs <- bootstraps(Ionosphere, times = 30)
 An _optional_ step for model tuning is to specify which metrics should be computed using the out-of-sample predictions. For classification, the default is to calculate the log-likelihood statistic and overall accuracy. Instead of the defaults, the area under the ROC curve will be used. To do this, a yardstick package function can be used to create a metric set:
 
 
-::: {.cell layout-align="center" hash='cache/roc_9fbed0538a5de5e5f3fc808bf244c1dd'}
+::: {.cell layout-align="center" hash='cache/roc_5a0e23b529b673c49755178ae60745cd'}
 
 ```{.r .cell-code}
 roc_vals <- metric_set(roc_auc)
@@ -156,7 +156,7 @@ If no grid or parameters are provided, a set of 10 hyperparameters are created u
 Also, a control object can be passed that specifies different aspects of the search. Here, the verbose option is turned off and the option to save the out-of-sample predictions is turned on. 
 
 
-::: {.cell layout-align="center" hash='cache/ctrl_59b3e85dfc0d1270330de4d3c49306b0'}
+::: {.cell layout-align="center" hash='cache/ctrl_734d8b4c527e6499915fdce57d3e27b2'}
 
 ```{.r .cell-code}
 ctrl <- control_grid(verbose = FALSE, save_pred = TRUE)
@@ -169,7 +169,7 @@ ctrl <- control_grid(verbose = FALSE, save_pred = TRUE)
 First, we can use the formula interface:
 
 
-::: {.cell layout-align="center" hash='cache/grid_f1f79c8a8bae5826ef211f59f6120ebb'}
+::: {.cell layout-align="center" hash='cache/grid_02122a1d166b4488277cc1d49517fb9d'}
 
 ```{.r .cell-code}
 set.seed(35)
@@ -205,7 +205,7 @@ formula_res
 The `.metrics` column contains tibbles of the performance metrics for each tuning parameter combination:
 
 
-::: {.cell layout-align="center" hash='cache/raw-metrics_746b04a957450c71063d8c0473f311f8'}
+::: {.cell layout-align="center" hash='cache/raw-metrics_7760335f4cb80448852b001929f58545'}
 
 ```{.r .cell-code}
 formula_res %>% 
@@ -233,7 +233,7 @@ formula_res %>%
 To get the final resampling estimates, the `collect_metrics()` function can be used on the grid object:
 
 
-::: {.cell layout-align="center" hash='cache/metric-estimates_67ce86f3ea65fac48e17549a457f4e79'}
+::: {.cell layout-align="center" hash='cache/metric-estimates_570735aee8ed466163130cd8fd5eb928'}
 
 ```{.r .cell-code}
 estimates <- collect_metrics(formula_res)
@@ -258,7 +258,7 @@ estimates
 The top combinations are:
 
 
-::: {.cell layout-align="center" hash='cache/sorted-metrics_f9e61627272474db2c62116db39a02c6'}
+::: {.cell layout-align="center" hash='cache/sorted-metrics_de1bdf62c5967bc3eee76ee5aaa220b3'}
 
 ```{.r .cell-code}
 show_best(formula_res, metric = "roc_auc")
@@ -279,7 +279,7 @@ show_best(formula_res, metric = "roc_auc")
 Next, we can use the same syntax but pass a *recipe* in as the pre-processor argument:
 
 
-::: {.cell layout-align="center" hash='cache/recipe_890acb94821e471582dc23a1823d3b03'}
+::: {.cell layout-align="center" hash='cache/recipe_6636d7f87dcaca82b4292f0917a69148'}
 
 ```{.r .cell-code}
 set.seed(325)
@@ -315,7 +315,7 @@ recipe_res
 The best setting here is:
 
 
-::: {.cell layout-align="center" hash='cache/best-rec_d64b1cb94969614f0d931378ba119298'}
+::: {.cell layout-align="center" hash='cache/best-rec_80da6404712977983341a7fee52b19df'}
 
 ```{.r .cell-code}
 show_best(recipe_res, metric = "roc_auc")
@@ -336,7 +336,7 @@ show_best(recipe_res, metric = "roc_auc")
 If we used `save_pred = TRUE` to keep the out-of-sample predictions for each resample during tuning, we can obtain those predictions, along with the tuning parameters and resample identifier, using `collect_predictions()`:
 
 
-::: {.cell layout-align="center" hash='cache/rec-preds_7c8bd3092e13cf7052f2ed1428302f59'}
+::: {.cell layout-align="center" hash='cache/rec-preds_b5c0fa8279df699116430830735bbf34'}
 
 ```{.r .cell-code}
 collect_predictions(recipe_res)
@@ -361,7 +361,7 @@ collect_predictions(recipe_res)
 We can obtain the hold-out sets for all the resamples augmented with the predictions using `augment()`, which provides opportunities for flexible visualization of model results:
 
 
-::: {.cell layout-align="center" hash='cache/augment-preds_614bc71af7c867a0d948052868406aa5'}
+::: {.cell layout-align="center" hash='cache/augment-preds_e078d3dd280d3ba25ca6db2619f7b2bc'}
 
 ```{.r .cell-code}
 augment(recipe_res) %>%
@@ -379,39 +379,39 @@ augment(recipe_res) %>%
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
 #>  kernlab    * 0.9-32  2023-01-31 [1] CRAN (R 4.3.0)
 #>  mlbench    * 2.1-3.1 2023-05-05 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

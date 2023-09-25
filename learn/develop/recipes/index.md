@@ -40,7 +40,7 @@ As an example, we will create a step for converting data into percentiles.
 Let's create a step that replaces the value of a variable with its percentile from the training set. The example data we'll use is from the modeldata package:
 
 
-::: {.cell layout-align="center" hash='cache/initial_e9b15d7263a13cf19c62529abfd10bdb'}
+::: {.cell layout-align="center" hash='cache/initial_6d13a43b42215879966b6abb940cf7af'}
 
 ```{.r .cell-code}
 library(modeldata)
@@ -65,7 +65,7 @@ biomass_te <- biomass[biomass$dataset == "Testing",]
 To illustrate the transformation with the `carbon` variable, note the training set distribution of this variable with a vertical line below for the first value of the test set. 
 
 
-::: {.cell layout-align="center" hash='cache/carbon_dist_1ea4da99e7a470221927e2615897ebcd'}
+::: {.cell layout-align="center" hash='cache/carbon_dist_5e19122970b51ac1fc8e65315af2dcb6'}
 
 ```{.r .cell-code}
 library(ggplot2)
@@ -96,7 +96,7 @@ To start, there is a _user-facing_ function. Let's call that `step_percentiles()
 The function `step_percentiles()` takes the same arguments as your function and simply adds it to a new recipe. The `...` signifies the variable selectors that can be used.
 
 
-::: {.cell layout-align="center" hash='cache/initial_def_805ab9c389e52c6cddd6f2be5d9bef14'}
+::: {.cell layout-align="center" hash='cache/initial_def_0ccdbcc058e5d48f8e3c0d10999fdf4a'}
 
 ```{.r .cell-code}
 step_percentiles <- function(
@@ -161,7 +161,7 @@ step_percentiles() calls recipes::add_step()
 `step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentile"` will set the class of new objects to `"step_percentiles"`. 
 
 
-::: {.cell layout-align="center" hash='cache/initialize_2440d3b6bb2856f6b237cc8f30dc3d72'}
+::: {.cell layout-align="center" hash='cache/initialize_34ce5b213f25713676596819a20ce33e'}
 
 ```{.r .cell-code}
 step_percentiles_new <- 
@@ -206,7 +206,7 @@ The first thing that you might want to do in the `prep()` function is to transla
 :::
 
 
-::: {.cell layout-align="center" hash='cache/prep_1_c9e7a1ae58f6378927b67eb2c6b4ab96'}
+::: {.cell layout-align="center" hash='cache/prep_1_40cab72109e99fda0670583c26234071'}
 
 ```{.r .cell-code}
 prep.step_percentiles <- function(x, training, info = NULL, ...) {
@@ -222,7 +222,7 @@ After this function call, it is a good idea to check that the selected columns h
 Once we have this, we can save the approximation grid. For the grid, we will use a helper function that enables us to run `rlang::exec()` to splice in any extra arguments contained in the `options` list to the call to `quantile()`: 
 
 
-::: {.cell layout-align="center" hash='cache/splice_d7f87c1fe0ee11958f763f1b2ab1ee72'}
+::: {.cell layout-align="center" hash='cache/splice_fd7fa4ea1fae5ea5884f49be8e42af64'}
 
 ```{.r .cell-code}
 get_train_pctl <- function(x, args = NULL) {
@@ -245,7 +245,7 @@ get_train_pctl(biomass_tr$carbon)
 Now, the `prep()` method can be created: 
 
 
-::: {.cell layout-align="center" hash='cache/prep-2_4544c7071f4960037894d4b68dbfc6f3'}
+::: {.cell layout-align="center" hash='cache/prep-2_6223d167892e008d9f8938f000203eb2'}
 
 ```{.r .cell-code}
 prep.step_percentiles <- function(x, training, info = NULL, ...) {
@@ -298,7 +298,7 @@ where `object` is the updated step function that has been through the correspond
 Here is the code to convert the new data to percentiles. The input data (`x` below) comes in as a numeric vector and the output is a vector of approximate percentiles: 
 
 
-::: {.cell layout-align="center" hash='cache/bake-helpers_26b81d4ec4ac1dca48a0bd67178379d4'}
+::: {.cell layout-align="center" hash='cache/bake-helpers_e7f22959261650cb4d02aa8798c77335'}
 
 ```{.r .cell-code}
 pctl_by_approx <- function(x, ref) {
@@ -314,7 +314,7 @@ pctl_by_approx <- function(x, ref) {
 We will loop over the variables one by and and apply the transformation. `check_new_data()` is used to make sure that the variables that are affected in this step are present.
 
 
-::: {.cell layout-align="center" hash='cache/bake-method_fdcfd89d8059c7ec8cf1578c7f1de566'}
+::: {.cell layout-align="center" hash='cache/bake-method_6ef0e70c863d982dbdd6b1cb2f3deaac'}
 
 ```{.r .cell-code}
 bake.step_percentiles <- function(object, new_data, ...) {
@@ -345,7 +345,7 @@ You need to import `recipes::prep()` and `recipes::bake()` to create your own st
 Let's use the example data to make sure that it works: 
 
 
-::: {.cell layout-align="center" hash='cache/example_2683722828c7f06a2825bc490efb1386'}
+::: {.cell layout-align="center" hash='cache/example_5d94eafafb5d89d28d8e5e08bec77985'}
 
 ```{.r .cell-code}
 rec_obj <- 
@@ -376,7 +376,7 @@ mean(biomass_tr$oxygen   <= biomass_te$oxygen[1])
 The plot below shows how the original hydrogen percentiles line up with the estimated values:
 
 
-::: {.cell layout-align="center" hash='cache/cdf_plot_159799b7fd72828fadd4d606fa204f3e'}
+::: {.cell layout-align="center" hash='cache/cdf_plot_07361351c8ed5403565c88d52972d9e4'}
 
 ```{.r .cell-code}
 hydrogen_values <- 
@@ -424,7 +424,7 @@ There are a few other S3 methods that can be created for your step function. The
 If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `print_step()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
 
 
-::: {.cell layout-align="center" hash='cache/print-method_b9ec36e55ac0892b86c8b0ef3eabdbe0'}
+::: {.cell layout-align="center" hash='cache/print-method_8b311a057d031a3963449a8856bccbab'}
 
 ```{.r .cell-code}
 print.step_percentiles <-
@@ -529,7 +529,7 @@ The `broom::tidy()` method is a means to return information about the step in a 
 When the recipe has been prepped, those data are in the list `ref_dist`. A small function can be used to reformat that data into a tibble. It is customary to return the main values as `value`:
 
 
-::: {.cell layout-align="center" hash='cache/tidy-calcs_4ea442a4112fcdb07bcd881ce7e823bf'}
+::: {.cell layout-align="center" hash='cache/tidy-calcs_0bb2093f6f728fce90b41a36fdbc21e0'}
 
 ```{.r .cell-code}
 format_pctl <- function(x) {
@@ -542,7 +542,8 @@ format_pctl <- function(x) {
 # For example: 
 pctl_step_object <- rec_obj$steps[[1]]
 pctl_step_object
-#> Percentile transformation on hydrogen, oxygen, nitrogen [trained]
+#> • Percentile transformation on: hydrogen, oxygen, and nitrogen |
+#>   Trained
 format_pctl(pctl_step_object$ref_dist[["hydrogen"]])
 #> # A tibble: 87 × 2
 #>    value percentile
@@ -565,7 +566,7 @@ format_pctl(pctl_step_object$ref_dist[["hydrogen"]])
 The tidy method could return these values for each selected column. Before `prep()`, missing values can be used as placeholders. 
 
 
-::: {.cell layout-align="center" hash='cache/tidy_c6fc699a5734d4048a517e413585f8e1'}
+::: {.cell layout-align="center" hash='cache/tidy_de2ef0e9c3b5d089907cf10742a82046'}
 
 ```{.r .cell-code}
 tidy.step_percentiles <- function(x, ...) {
@@ -598,16 +599,16 @@ tidy(rec_obj, number = 1)
 #> # A tibble: 274 × 4
 #>    term     value percentile id               
 #>    <chr>    <dbl>      <dbl> <chr>            
-#>  1 hydrogen 0.03           0 percentiles_TlIS1
-#>  2 hydrogen 0.934          1 percentiles_TlIS1
-#>  3 hydrogen 1.60           2 percentiles_TlIS1
-#>  4 hydrogen 2.07           3 percentiles_TlIS1
-#>  5 hydrogen 2.45           4 percentiles_TlIS1
-#>  6 hydrogen 2.74           5 percentiles_TlIS1
-#>  7 hydrogen 3.15           6 percentiles_TlIS1
-#>  8 hydrogen 3.49           7 percentiles_TlIS1
-#>  9 hydrogen 3.71           8 percentiles_TlIS1
-#> 10 hydrogen 3.99           9 percentiles_TlIS1
+#>  1 hydrogen 0.03           0 percentiles_Ts41a
+#>  2 hydrogen 0.934          1 percentiles_Ts41a
+#>  3 hydrogen 1.60           2 percentiles_Ts41a
+#>  4 hydrogen 2.07           3 percentiles_Ts41a
+#>  5 hydrogen 2.45           4 percentiles_Ts41a
+#>  6 hydrogen 2.74           5 percentiles_Ts41a
+#>  7 hydrogen 3.15           6 percentiles_Ts41a
+#>  8 hydrogen 3.49           7 percentiles_Ts41a
+#>  9 hydrogen 3.71           8 percentiles_Ts41a
+#> 10 hydrogen 3.99           9 percentiles_Ts41a
 #> # ℹ 264 more rows
 ```
 :::
@@ -618,7 +619,7 @@ tidy(rec_obj, number = 1)
 The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn't really have any tunable parameters, so we will demonstrate using `step_poly()`, which returns a polynomial expansion of selected columns. Its function definition has the arguments: 
 
 
-::: {.cell layout-align="center" hash='cache/poly-args_aeebdb3dac81ee70eba24e6ae9ec6448'}
+::: {.cell layout-align="center" hash='cache/poly-args_caf441ee540f301d05ff5602487a2650'}
 
 ```{.r .cell-code}
 args(step_poly)
@@ -651,7 +652,7 @@ The main piece of information that requires some detail is `call_info`. This is 
 For example, for a nearest-neighbors `neighbors` parameter, this value is just: 
 
 
-::: {.cell layout-align="center" hash='cache/mtry_3c03e505855845f8e5bb7a077fd5b825'}
+::: {.cell layout-align="center" hash='cache/mtry_899f046b7cfc5bcc9eeb779067e4319f'}
 
 ```{.r .cell-code}
 info <- list(pkg = "dials", fun = "neighbors")
@@ -680,7 +681,7 @@ Looking at the `range` values, some return doubles and others return integers. F
 For `step_poly()` the `tunable()` S3 method could be: 
 
 
-::: {.cell layout-align="center" hash='cache/tunable_26252fa8f92d56e736ee7216ab1f5b80'}
+::: {.cell layout-align="center" hash='cache/tunable_e02664b2f7c9c506499ae62c337dcc2b'}
 
 ```{.r .cell-code}
 tunable.step_poly <- function (x, ...) {
@@ -699,38 +700,38 @@ tunable.step_poly <- function (x, ...) {
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  modeldata  * 1.1.0   2023-01-25 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  modeldata  * 1.2.0   2023-08-09 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

@@ -27,7 +27,7 @@ What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction
 Since this article is focused on regression problems, we'll motivate the methodology in the context of a numeric outcome. For example, suppose we have collected a set of 1,000 standard normal data points. 
 
 
-::: {.cell layout-align="center" hash='cache/normal-dist_c217b8f59782dc7a0e6cd690a7104a1f'}
+::: {.cell layout-align="center" hash='cache/normal-dist_6c1b1d8740b9805758a02494f017bcdc'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -52,7 +52,7 @@ If we had a new observation that we thought might be from the same distribution,
 If we thought that 1,000 were a sufficient sample size, we might compute some quantiles of these data to define "the mainstream of the data." Let's use the 5th and 95th quantiles to set boundaries that define what we would expect to see most of the time:   
 
 
-::: {.cell layout-align="center" hash='cache/normal-quant_21bb5d1002b8ba66a0af67f0a3fcd5b8'}
+::: {.cell layout-align="center" hash='cache/normal-quant_f569297eefe23e78e59e634ed067552c'}
 
 ```{.r .cell-code}
 quants <- quantile(reference_data$data, probs = c(0.05, 0.95))
@@ -78,7 +78,7 @@ There are a variety of ways to apply this concept (which is unsurprisingly more 
 Let's make a simple example to illustrate the results. We'll simulate a data set with a single predictor along with some unknown samples: 
 
 
-::: {.cell layout-align="center" hash='cache/example-data_d865bed9d25e6481a4b76ae9417f4751'}
+::: {.cell layout-align="center" hash='cache/example-data_bb3ae0829a77d7ba6f2dd95e2802c71c'}
 
 ```{.r .cell-code}
 make_data <- function(n, std_dev = 1 / 5) {
@@ -108,7 +108,7 @@ We'll use these data as a training set and fit a model:
 
 
 
-::: {.cell layout-align="center" hash='cache/model-fit_a7e98a016387e38de2e2ee03c5af697d'}
+::: {.cell layout-align="center" hash='cache/model-fit_f7ac2fcae06d14a0a209c331969f986e'}
 
 ```{.r .cell-code}
 set.seed(484)
@@ -140,7 +140,7 @@ The most straightforward approach is reserving some data for estimating the resi
 Let's simulate another data set containing 250 samples and call that the "calibration set". These data can be predicted and the corresponding residuals can be used to define what conforms to the model. We'll also create a large test set to see if we've done a good job. 
 
 
-::: {.cell layout-align="center" hash='cache/more-data_b937e69c5944e41fd4a34f53142b583b'}
+::: {.cell layout-align="center" hash='cache/more-data_be2d9a43ca287f6188ea6df8635e11a1'}
 
 ```{.r .cell-code}
 set.seed(7292)
@@ -153,7 +153,7 @@ test_data <- make_data(10000)
 The probably package has a set of functions with the prefix `int_conformal` that can be used to create prediction intervals. One is: 
 
 
-::: {.cell layout-align="center" hash='cache/split-obj_780e8d461b1e84474d32d0b7d4b33555'}
+::: {.cell layout-align="center" hash='cache/split-obj_a5454930644dc4515b5274d7290a51b3'}
 
 ```{.r .cell-code}
 split_int <- int_conformal_split(nnet_fit, cal_data)
@@ -172,7 +172,7 @@ To get predictions on new data, we use the standard `predict()` method on this o
 
 
 
-::: {.cell layout-align="center" hash='cache/split-pred_963a4e7de28cbbd24695ae2f6b79c0da'}
+::: {.cell layout-align="center" hash='cache/split-pred_4c5c5515f1467676c0d6b442ed40e0a2'}
 
 ```{.r .cell-code}
 # Produce 90% prediction intervals
@@ -186,7 +186,7 @@ test_split_res %>% slice(1:5)
 #>    <dbl>       <dbl>       <dbl>   <dbl>   <dbl>
 #> 1  1.30        0.933      1.67    0.621   1.17  
 #> 2 -0.298      -0.665      0.0692 -0.658  -0.302 
-#> 3  0.134      -0.234      0.501  -0.329   0.0970
+#> 3  0.133      -0.234      0.501  -0.329   0.0970
 #> 4  1.33        0.964      1.70    0.611   1.21  
 #> 5  1.24        0.873      1.61    0.0145  1.22
 ```
@@ -196,7 +196,7 @@ test_split_res %>% slice(1:5)
 The results: 
 
 
-::: {.cell layout-align="center" hash='cache/split-pred-plit_f42469e1c406a2a600d5ae1fd3e14b3a'}
+::: {.cell layout-align="center" hash='cache/split-pred-plit_4e7299324ffb3beeeee4f2d28b23e87f'}
 ::: {.cell-output-display}
 ![](figs/split-pred-plit-1.svg){fig-align='center' width=70%}
 :::
@@ -206,7 +206,7 @@ The results:
 Since we know the outcome values, we can compute the coverage for this particular data set. Since we created a 90% prediction interval, about 90% of the outcomes should be within our bounds. Let's create a function and apply it to these data:
 
 
-::: {.cell layout-align="center" hash='cache/split-coverage_910bffe3da7391a192693d0a6c06f521'}
+::: {.cell layout-align="center" hash='cache/split-coverage_f891f7f318ddff0587a11267691029f6'}
 
 ```{.r .cell-code}
 coverage <- function(x) {
@@ -234,7 +234,7 @@ The CV+ estimator ([Barber _et al._ (2021)](https://scholar.google.com/scholar?h
 The `control_*()` functions can be used for this purpose. We can set `save_pred = TRUE` to save the predicted values. For the resampled models, we can use the tools to [extract the models](https://tidymodels.github.io/tidymodels_dot_org/learn/index.html#category=extracting%20results) via the `extract` argument. We'll use the `I()` function to return the fitted workflows from each resample: 
 
 
-::: {.cell layout-align="center" hash='cache/control_baec0a9b56a67697431fc2771f564b19'}
+::: {.cell layout-align="center" hash='cache/control_d33210a4f404606b84f956a48b9a7477'}
 
 ```{.r .cell-code}
 ctrl <- control_resamples(save_pred = TRUE, extract = I)
@@ -245,7 +245,7 @@ ctrl <- control_resamples(save_pred = TRUE, extract = I)
 Let's use 10-fold cross-validation to resample the neural network: 
 
 
-::: {.cell layout-align="center" hash='cache/cv_1f2eb465a3fef0ae43523afa1b6f00ad'}
+::: {.cell layout-align="center" hash='cache/cv_a226c5726054acb6b79db9555e9cfcfd'}
 
 ```{.r .cell-code}
 set.seed(493)
@@ -270,7 +270,7 @@ The model has an estimated root mean squared error of 0.201 and an estimated R<s
 We can create another object for computing the intervals:
 
 
-::: {.cell layout-align="center" hash='cache/int-cv_b2f3d58e479114a2fcea11bb7a0da126'}
+::: {.cell layout-align="center" hash='cache/int-cv_305ff073c486219ea89b4bc7ae5b35ff'}
 
 ```{.r .cell-code}
 cv_int <- int_conformal_cv(nnet_rs)
@@ -292,11 +292,11 @@ test_cv_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>   .pred_lower  .pred .pred_upper       x       y
 #>         <dbl>  <dbl>       <dbl>   <dbl>   <dbl>
-#> 1       0.965  1.29       1.62    0.621   1.17  
-#> 2      -0.641 -0.312      0.0168 -0.658  -0.302 
-#> 3      -0.184  0.144      0.473  -0.329   0.0970
-#> 4       0.994  1.32       1.65    0.611   1.21  
-#> 5       0.897  1.23       1.55    0.0145  1.22
+#> 1       0.964  1.29       1.62    0.621   1.17  
+#> 2      -0.640 -0.311      0.0177 -0.658  -0.302 
+#> 3      -0.184  0.145      0.474  -0.329   0.0970
+#> 4       0.992  1.32       1.65    0.611   1.21  
+#> 5       0.896  1.23       1.55    0.0145  1.22
 ```
 :::
 
@@ -304,7 +304,7 @@ test_cv_res %>% slice(1:5)
 The results for this method are:
 
 
-::: {.cell layout-align="center" hash='cache/cv-pred_3e347d492fd8175b31fd3bd40c48a45f'}
+::: {.cell layout-align="center" hash='cache/cv-pred_7fce46055175d42de3250ed36cb7c0bd'}
 ::: {.cell-output-display}
 ![](figs/cv-pred-1.svg){fig-align='center' width=70%}
 :::
@@ -316,7 +316,7 @@ At each point, the interval length is 0.66; the previous split conformal interva
 Note that the coverage is a little better since it is near 90%:
 
 
-::: {.cell layout-align="center" hash='cache/cv-coverage_95ecc88ad865ed74ab60fefb5bd92fa5'}
+::: {.cell layout-align="center" hash='cache/cv-coverage_ba21d3f3f5f557fd32f23a58151dbe75'}
 
 ```{.r .cell-code}
 coverage(test_cv_res)
@@ -335,7 +335,7 @@ The simulated data that we've been using has a constant error variance. That has
 To demonstrate, we can take the previous simulation system and induce a variance that is dynamic over the predictor range:
 
 
-::: {.cell layout-align="center" hash='cache/variable-plot_c79a7c0ace984a1347124f53b12acb70'}
+::: {.cell layout-align="center" hash='cache/variable-plot_8c2ae6e0ba0c6db5984ee97e5bc7ef21'}
 
 ```{.r .cell-code}
 make_variable_data <- function(n, std_dev = 1 / 5) {
@@ -360,7 +360,7 @@ make_variable_data(1000) %>%
 Let's create new data sets and re-fit our model: 
 
 
-::: {.cell layout-align="center" hash='cache/variable-data_8369066731ee2261b5126b2dbcb5f40b'}
+::: {.cell layout-align="center" hash='cache/variable-data_4c07c26740a8517a7ace7289623949c3'}
 
 ```{.r .cell-code}
 set.seed(7292)
@@ -377,7 +377,7 @@ nnet_variable_pred <- augment(nnet_variable_fit, train_variable_data)
 We can recreate the CV+ interval for this new version of the data:
 
 
-::: {.cell layout-align="center" hash='cache/cv-redux_5b1f5ee314641b6ff227e04a37157a37'}
+::: {.cell layout-align="center" hash='cache/cv-redux_748d31a1da283817f3be9f7126e95449'}
 ::: {.cell-output-display}
 ![](figs/cv-redux-1.svg){fig-align='center' width=70%}
 :::
@@ -387,7 +387,7 @@ We can recreate the CV+ interval for this new version of the data:
 The _average_ coverage is good: 
 
 
-::: {.cell layout-align="center" hash='cache/coverage-cv-variable_c583b3f89c0df9bbd62f0e6773a03898'}
+::: {.cell layout-align="center" hash='cache/coverage-cv-variable_9e23ae12fd9668ad46ccb3a39a46526b'}
 
 ```{.r .cell-code}
 coverage(test_cv_variable_res)
@@ -414,7 +414,7 @@ The function for this, `int_conformal_quantile()`, has a slightly different inte
 We'll also pass an argument to the `quantregForest()` function that we'll use 2,000 trees to make the forest: 
 
 
-::: {.cell layout-align="center" hash='cache/quant-pred_968fb70e038fcd4a1d76fb480db2016c'}
+::: {.cell layout-align="center" hash='cache/quant-pred_a24b1cbf388f2f07985042e19d416351'}
 
 ```{.r .cell-code}
 quant_int <-
@@ -441,9 +441,9 @@ test_quant_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>    .pred .pred_lower .pred_upper      x      y
 #>    <dbl>       <dbl>       <dbl>  <dbl>  <dbl>
-#> 1  0.990       0.574      1.14    0.776  1.10 
-#> 2 -0.327      -0.546     -0.0904 -0.686 -0.180
-#> 3  0.265       0.161      0.459  -0.274  0.364
+#> 1  0.992       0.574      1.14    0.776  1.10 
+#> 2 -0.329      -0.546     -0.0904 -0.686 -0.180
+#> 3  0.269       0.161      0.459  -0.274  0.364
 #> 4  1.01        0.666      1.13    0.759  1.21 
 #> 5  2.00        1.90       2.12    0.367  1.87
 ```
@@ -453,7 +453,7 @@ test_quant_res %>% slice(1:5)
 The results: 
 
 
-::: {.cell layout-align="center" hash='cache/quant-pred-split_1850492a31b30e7dba449a495ae2f2c6'}
+::: {.cell layout-align="center" hash='cache/quant-pred-split_24a22314044ff1efb33cc1c046da7f2b'}
 ::: {.cell-output-display}
 ![](figs/quant-pred-split-1.svg){fig-align='center' width=70%}
 :::
@@ -465,7 +465,7 @@ Minor downside: The bumpiness of the bound is the consequence of using a tree-ba
 Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: 
 
 
-::: {.cell layout-align="center" hash='cache/coverage-quant_12ec3a9ae6cf2f4b55a57dcb5fe23d09'}
+::: {.cell layout-align="center" hash='cache/coverage-quant_1fe6ea78c3acb1f36bef9250422d7788'}
 
 ```{.r .cell-code}
 coverage(test_quant_res)
@@ -484,7 +484,7 @@ To illustrate this, we can simulate another point outside of the training set ra
 
 
 
-::: {.cell layout-align="center" hash='cache/extrapolation_6b7989e4f0f2cd4c62abf0d21575a9e8'}
+::: {.cell layout-align="center" hash='cache/extrapolation_5c755cc98cb15d2a9e90bee5aab89754'}
 ::: {.cell-output-display}
 ![](figs/extrapolation-1.svg){fig-align='center' width=70%}
 :::
@@ -520,38 +520,38 @@ If you are interested and would like to learn more, try these resources:
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.3.1 (2023-06-16)
-#>  os       macOS Ventura 13.5
-#>  system   x86_64, darwin20
+#>  os       macOS Ventura 13.5.2
+#>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
-#>  tz       America/New_York
-#>  date     2023-08-16
-#>  pandoc   3.1.6 @ /usr/local/bin/ (via rmarkdown)
+#>  tz       America/Los_Angeles
+#>  date     2023-09-25
+#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
 #>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  nnet       * 7.3-19  2023-05-03 [2] CRAN (R 4.3.1)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  nnet       * 7.3-19  2023-05-03 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
 #>  probably   * 1.0.2   2023-06-29 [1] CRAN (R 4.3.0)
 #>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.7   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 
-#>  [1] /Users/max/Library/R/x86_64/4.3/library
-#>  [2] /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.3/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

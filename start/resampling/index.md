@@ -52,7 +52,7 @@ library(modeldata)  # for the cells data
 Let's use data from [Hill, LaPan, Li, and Haney (2007)](http://www.biomedcentral.com/1471-2105/8/340), available in the [modeldata package](https://cran.r-project.org/web/packages/modeldata/index.html), to predict cell image segmentation quality with resampling. To start, we load this data into R:
 
 
-::: {.cell layout-align="center" hash='cache/cell-import_620d009694ed515939c5ab84c9919570'}
+::: {.cell layout-align="center" hash='cache/cell-import_5f111a92f81ab1d96958736979882b62'}
 
 ```{.r .cell-code}
 data(cells, package = "modeldata")
@@ -90,7 +90,7 @@ Some biologists conduct experiments on cells. In drug discovery, a particular ty
 For example, in top panel of this image of five cells, the green color is meant to define the boundary of the cell (coloring something called the cytoskeleton) while the blue color defines the nucleus of the cell.
 
 
-::: {.cell layout-align="center" hash='cache/cell-fig_a9f7aa84806e5959719d9ae20bedc78c'}
+::: {.cell layout-align="center" hash='cache/cell-fig_9cd5f01231b327f4f219579a9e2ee9d6'}
 ::: {.cell-output-display}
 ![](img/cells.png){fig-align='center' width=70%}
 :::
@@ -108,7 +108,7 @@ A cell-based experiment might involve millions of cells so it is unfeasible to v
 The `cells` data has `class` labels for 2019 cells --- each cell is labeled as either poorly segmented (`PS`) or well-segmented (`WS`). Each also has a total of 56 predictors based on automated image analysis measurements. For example, `avg_inten_ch_1` is the mean intensity of the data contained in the nucleus, `area_ch_1` is the total size of the cell, and so on (some predictors are fairly arcane in nature).
 
 
-::: {.cell layout-align="center" hash='cache/cells-show_9e1acf9a69d4a881d71cf50e07e75aaa'}
+::: {.cell layout-align="center" hash='cache/cells-show_4c8a04c697b74ca0518b682c75f4451a'}
 
 ```{.r .cell-code}
 cells
@@ -139,7 +139,7 @@ cells
 The rates of the classes are somewhat imbalanced; there are more poorly segmented cells than well-segmented cells:
 
 
-::: {.cell layout-align="center" hash='cache/rates_6444e66c05a37946e8bbdd8e6033a975'}
+::: {.cell layout-align="center" hash='cache/rates_d7f1ee151f0a52d0f8c7ea747daf8c48'}
 
 ```{.r .cell-code}
 cells %>% 
@@ -169,7 +169,7 @@ Since random sampling uses random numbers, it is important to set the random num
 The function `rsample::initial_split()` takes the original data and saves the information on how to make the partitions. In the original analysis, the authors made their own training/test set and that information is contained in the column `case`. To demonstrate how to make a split, we'll remove this column before we make our own split:
 
 
-::: {.cell layout-align="center" hash='cache/cell-split_ee190c5f50b7def1307d564ecbbfea38'}
+::: {.cell layout-align="center" hash='cache/cell-split_b453c4b4d081bca3271202a6a4744d7a'}
 
 ```{.r .cell-code}
 set.seed(123)
@@ -182,7 +182,7 @@ cell_split <- initial_split(cells %>% select(-case),
 Here we used the [`strata` argument](https://rsample.tidymodels.org/reference/initial_split.html), which conducts a stratified split. This ensures that, despite the imbalance we noticed in our `class` variable, our training and test data sets will keep roughly the same proportions of poorly and well-segmented cells as in the original data. After the `initial_split`, the `training()` and `testing()` functions return the actual data sets.
 
 
-::: {.cell layout-align="center" hash='cache/cell-train-test_2199ba8e44f190d3fb282ecac72bd112'}
+::: {.cell layout-align="center" hash='cache/cell-train-test_f04727af5f81a9bbac9cd74d0c2295ea'}
 
 ```{.r .cell-code}
 cell_train <- training(cell_split)
@@ -229,7 +229,7 @@ At the same time, the number of trees in the ensemble should be large (in the th
 To fit a random forest model on the training set, let's use the [parsnip](https://parsnip.tidymodels.org/) package with the [ranger](https://cran.r-project.org/package=ranger) engine. We first define the model that we want to create:
 
 
-::: {.cell layout-align="center" hash='cache/rf-def_d511a40526dda7ce4a5018970f3b10a7'}
+::: {.cell layout-align="center" hash='cache/rf-def_a7f23e895c6a4ef3e1afd72543cbe3a7'}
 
 ```{.r .cell-code}
 rf_mod <- 
@@ -243,7 +243,7 @@ rf_mod <-
 Starting with this parsnip model object, the `fit()` function can be used with a model formula. Since random forest models use random numbers, we again set the seed prior to computing:
 
 
-::: {.cell layout-align="center" hash='cache/rf-fit_fa56896bd1bf05f5ad08855bf1a84030'}
+::: {.cell layout-align="center" hash='cache/rf-fit_55c45b2d07a94e2ce732d0b03b34bb9c'}
 
 ```{.r .cell-code}
 set.seed(234)
@@ -288,7 +288,7 @@ The [yardstick package](https://yardstick.tidymodels.org/) has functions for com
 At first glance, it might seem like a good idea to use the training set data to compute these statistics. (This is actually a very bad idea.) Let's see what happens if we try this. To evaluate performance based on the training set, we call the `predict()` method to get both types of predictions (i.e. probabilities and hard class predictions).
 
 
-::: {.cell layout-align="center" hash='cache/rf-train-pred_c7a327376a9ce7f31b1f691abbc21119'}
+::: {.cell layout-align="center" hash='cache/rf-train-pred_b8929f1fcc1cd81191944fd4358fbe7c'}
 
 ```{.r .cell-code}
 rf_training_pred <- 
@@ -304,7 +304,7 @@ rf_training_pred <-
 Using the yardstick functions, this model has spectacular results, so spectacular that you might be starting to get suspicious:
 
 
-::: {.cell layout-align="center" hash='cache/rf-train-perf_151ecd729bde2a913feb0ff1caa1980d'}
+::: {.cell layout-align="center" hash='cache/rf-train-perf_f2a66587d34abc67aa56470a02f4da4e'}
 
 ```{.r .cell-code}
 rf_training_pred %>%                # training set predictions
@@ -326,7 +326,7 @@ rf_training_pred %>%                # training set predictions
 Now that we have this model with exceptional performance, we proceed to the test set. Unfortunately, we discover that, although our results aren't bad, they are certainly worse than what we initially thought based on predicting the training set:
 
 
-::: {.cell layout-align="center" hash='cache/rf-test_81af7572faea897acb5c503792e2a939'}
+::: {.cell layout-align="center" hash='cache/rf-test_1155b69e8d4fe7187d7a9ec625e40edd'}
 
 ```{.r .cell-code}
 rf_testing_pred <- 
@@ -336,7 +336,7 @@ rf_testing_pred <-
 ```
 :::
 
-::: {.cell layout-align="center" hash='cache/rf-test-perf_2f092152e191eea26ef2df29532042f8'}
+::: {.cell layout-align="center" hash='cache/rf-test-perf_a2683c823fee6b7665f40e14e83ba4ad'}
 
 ```{.r .cell-code}
 rf_testing_pred %>%                   # test set predictions
@@ -370,7 +370,7 @@ To understand that second point better, think about an analogy from teaching. Su
 Resampling methods, such as cross-validation and the bootstrap, are empirical simulation systems. They create a series of data sets similar to the training/testing split discussed previously; a subset of the data are used for creating the model and a different subset is used to measure performance. Resampling is always used with the *training set*. This schematic from [Kuhn and Johnson (2019)](https://bookdown.org/max/FES/resampling.html) illustrates data usage for resampling methods:
 
 
-::: {.cell layout-align="center" hash='cache/resampling-fig_96516c0c742a824aaef9eba8b5781946'}
+::: {.cell layout-align="center" hash='cache/resampling-fig_8c2883f54b442eed9fa689523d98896c'}
 ::: {.cell-output-display}
 ![](img/resampling.svg){fig-align='center' width=85%}
 :::
@@ -392,7 +392,7 @@ In this example, 10-fold CV moves iteratively through the folds and leaves a dif
 The final resampling estimates for the model are the **averages** of the performance statistics replicates. For example, suppose for our data the results were:
 
 
-::: {.cell layout-align="center" hash='cache/rs-table_3db1a319eedfb38180c7a3475d9a573e'}
+::: {.cell layout-align="center" hash='cache/rs-table_915fb878f5d04c22c456675f40fc1aad'}
 ::: {.cell-output-display}
 
 `````{=html}
@@ -484,7 +484,7 @@ These resampling statistics are an effective method for measuring model performa
 To generate these results, the first step is to create a resampling object using rsample. There are [several resampling methods](https://rsample.tidymodels.org/reference/index.html#section-resampling-methods) implemented in rsample; cross-validation folds can be created using `vfold_cv()`:
 
 
-::: {.cell layout-align="center" hash='cache/folds_61f1f654b3ca89e4ddb3d02c2c008ec1'}
+::: {.cell layout-align="center" hash='cache/folds_cd73691bd5c877eca3807000f0662dca'}
 
 ```{.r .cell-code}
 set.seed(345)
@@ -519,7 +519,7 @@ However, the tune package contains high-level functions that can do the required
 For this example, let's use a `workflow()` that bundles together the random forest model and a formula, since we are not using a recipe. Whichever of these options you use, the syntax to `fit_resamples()` is very similar to `fit()`:
 
 
-::: {.cell layout-align="center" hash='cache/rs_812801b606c5af8cc535a5bc972924b7'}
+::: {.cell layout-align="center" hash='cache/rs_a626ba4e352e6f053075bdc271c3bd8b'}
 
 ```{.r .cell-code}
 rf_wf <- 
@@ -534,7 +534,7 @@ rf_fit_rs <-
 ```
 :::
 
-::: {.cell layout-align="center" hash='cache/rs-show_31df0335cd3e307bc6390f667238140d'}
+::: {.cell layout-align="center" hash='cache/rs-show_f9f20b4bc80b1adbf969e44d10691ce6'}
 
 ```{.r .cell-code}
 rf_fit_rs
@@ -560,7 +560,7 @@ rf_fit_rs
 The results are similar to the `folds` results with some extra columns. The column `.metrics` contains the performance statistics created from the 10 assessment sets. These can be manually unnested but the tune package contains a number of simple functions that can extract these data:
 
 
-::: {.cell layout-align="center" hash='cache/metrics_2d478aa9561f2bc931b1cc153e38760e'}
+::: {.cell layout-align="center" hash='cache/metrics_0041219942e7200778d61af09a4e9692'}
 
 ```{.r .cell-code}
 collect_metrics(rf_fit_rs)
@@ -600,39 +600,39 @@ The performance metrics from the test set are much closer to the performance met
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  modeldata  * 1.1.0   2023-01-25 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  modeldata  * 1.2.0   2023-08-09 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  ranger     * 0.15.1  2023-04-03 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

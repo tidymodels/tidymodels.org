@@ -36,7 +36,7 @@ We use the `new_quant_param()` function since this is a numeric parameter. The m
 The `range` specifies the possible values of the parameter. For our example, a minimal value might be one or two. What is the upper limit? The default in the earth package is
 
 
-::: {.cell layout-align="center" hash='cache/eart_0aaa451856e86c8fdc7e0c3f099c8de4'}
+::: {.cell layout-align="center" hash='cache/eart_bd156423f9838146bef6e93ab190c4a5'}
 
 ```{.r .cell-code}
 min(200, max(20, 2 * ncol(x))) + 1
@@ -51,7 +51,7 @@ The other argument is `trans`, which represents a transformation that should be 
 The `trans` parameter accepts a transformation object from the scales package. For example:
 
 
-::: {.cell layout-align="center" hash='cache/scales_b25ae3bb346dde06d2a7e463ba1f4c4d'}
+::: {.cell layout-align="center" hash='cache/scales_0f79e0e3e1073bf18a53a1df590b6741'}
 
 ```{.r .cell-code}
 library(scales)
@@ -89,7 +89,7 @@ A value of `NULL` means that no transformation should be used.
 A quantitative parameter function should have these two arguments and, in the function body, a call `new_quant_param()`. There are a few arguments to this function:
 
 
-::: {.cell layout-align="center" hash='cache/new_quant_param_dc898a8030c6fa2847b68be9c2db5701'}
+::: {.cell layout-align="center" hash='cache/new_quant_param_4c583b709f7aed054a575b832ae525bb'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -113,7 +113,7 @@ args(new_quant_param)
 Here's an example of a basic quantitative parameter object:
 
 
-::: {.cell layout-align="center" hash='cache/num-initial-terms_d602318800beb1ef90a7bde3e6959438'}
+::: {.cell layout-align="center" hash='cache/num-initial-terms_d35b4522a3e30a5de9845023636d4ad0'}
 
 ```{.r .cell-code}
 num_initial_terms <- function(range = c(1L, 10L), trans = NULL) {
@@ -144,7 +144,7 @@ num_initial_terms() %>% value_sample(5)
 It might be the case that the range of the parameter is unknown. For example, parameters that are related to the number of columns in a data set cannot be exactly specified in the absence of data. In those cases, a placeholder of `unknown()` can be added. This will force the user to "finalize" the parameter object for their particular data set. Let's redefine our function with an `unknown()` value:
 
 
-::: {.cell layout-align="center" hash='cache/num-initial-terms-unk_9de7d72b673760c5098403e4f395b8d8'}
+::: {.cell layout-align="center" hash='cache/num-initial-terms-unk_e34cedef8c29d5023fd1bf2ea3b2dd52'}
 
 ```{.r .cell-code}
 num_initial_terms <- function(range = c(1L, unknown()), trans = NULL) {
@@ -168,7 +168,7 @@ num_initial_terms() %>% value_sample(5)
 The `finalize` argument of `num_initial_terms()` can take a function that uses data to set the range. For example, the package already includes a few functions for finalization:
 
 
-::: {.cell layout-align="center" hash='cache/dials-final-funcs_13c8f3f4f0f277ecb3c76d762cb7a32c'}
+::: {.cell layout-align="center" hash='cache/dials-final-funcs_8be343a4a5a1bd088928007c15446d89'}
 
 ```{.r .cell-code}
 lsf.str("package:dials", pattern = "^get_")
@@ -186,7 +186,7 @@ lsf.str("package:dials", pattern = "^get_")
 These functions generally take a data frame of predictors (in an argument called `x`) and add the range of the parameter object. Using the formula in the earth package, we might use:
 
 
-::: {.cell layout-align="center" hash='cache/earth-range_e1c9bf6b8f535f761d22d3b738ea8bb2'}
+::: {.cell layout-align="center" hash='cache/earth-range_67fef94243ad67342f18c894f8bdb397'}
 
 ```{.r .cell-code}
 get_initial_mars_terms <- function(object, x) {
@@ -208,7 +208,7 @@ num_initial_terms() %>% get_initial_mars_terms(x = mtcars[, -1])
 Once we add this function to the object, the general `finalize()` method can be used:
 
 
-::: {.cell layout-align="center" hash='cache/final-obj_9b8361428190d870490441c3eecf012e'}
+::: {.cell layout-align="center" hash='cache/final-obj_e06a460674ec96fd0e8637ae11521733'}
 
 ```{.r .cell-code}
 num_initial_terms <- function(range = c(1L, unknown()), trans = NULL) {
@@ -234,7 +234,7 @@ num_initial_terms() %>% finalize(x = mtcars[, -1])
 Now let's look at an example of a qualitative parameter. If a model includes a data aggregation step, we want to allow users to tune how our parameters are aggregated. For example, in embedding methods, possible values might be `min`, `max`, `mean`, `sum`, or to not aggregate at all ("none"). Since these cannot be put on a numeric scale, they are possible values of a qualitative parameter. We'll take "character" input (not "logical"), and we must specify the allowed values. By default we won't aggregate.
 
 
-::: {.cell layout-align="center" hash='cache/aggregation_39f71033809bc19015c698dbeca6311d'}
+::: {.cell layout-align="center" hash='cache/aggregation_07b73ec4fac0366a60eb5bfd602b357b'}
 
 ```{.r .cell-code}
 aggregation <- function(values = c("none", "min", "max", "mean", "sum")) {
@@ -254,7 +254,7 @@ aggregation <- function(values = c("none", "min", "max", "mean", "sum")) {
 Within the dials package, the convention is to have the values contained in a separate vector whose name starts with `values_`. For example:
 
 
-::: {.cell layout-align="center" hash='cache/aggregation-vec_7dcc9f145f63cccd19b24d9fa23f4d10'}
+::: {.cell layout-align="center" hash='cache/aggregation-vec_1781c5970d6ac17e6e9e79b0e9118453'}
 
 ```{.r .cell-code}
 values_aggregation <- c("none", "min", "max", "mean", "sum")
@@ -277,7 +277,7 @@ This step may not make sense if you are using the function in a script and not k
 We can use our `aggregation` parameters with dials functions.
 
 
-::: {.cell layout-align="center" hash='cache/aggregation-use_9ac92377d564310ae312bf63617fedad'}
+::: {.cell layout-align="center" hash='cache/aggregation-use_6958d3593a11c1e746f951fe48e825d3'}
 
 ```{.r .cell-code}
 aggregation()
@@ -295,38 +295,38 @@ aggregation() %>% value_sample(3)
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  scales     * 1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

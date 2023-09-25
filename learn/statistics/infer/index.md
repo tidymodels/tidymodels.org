@@ -46,7 +46,7 @@ The workflow of this package is designed around these ideas. Starting from some 
 Throughout this vignette, we make use of `gss`, a data set available in infer containing a sample of 500 observations of 11 variables from the *General Social Survey*. 
 
 
-::: {.cell layout-align="center" hash='cache/load-gss_2bc44232d1aa786bcdceae545fa6f4f0'}
+::: {.cell layout-align="center" hash='cache/load-gss_a042a9eacc9a42b54138539a1f5dd336'}
 
 ```{.r .cell-code}
 library(tidymodels) # Includes the infer package
@@ -80,7 +80,7 @@ Each row is an individual survey response, containing some basic demographic inf
 The `specify()` function can be used to specify which of the variables in the data set you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
 
 
-::: {.cell layout-align="center" hash='cache/specify-example_f39f9849a4304bfdd4d54eee9dcbaf90'}
+::: {.cell layout-align="center" hash='cache/specify-example_1373cd8a84746e5e303b728325d01b0f'}
 
 ```{.r .cell-code}
 gss %>%
@@ -107,7 +107,7 @@ gss %>%
 On the front end, the output of `specify()` just looks like it selects off the columns in the dataframe that you've specified. What do we see if we check the class of this object, though?
 
 
-::: {.cell layout-align="center" hash='cache/specify-one_47f1a10e3b2037b5729aac2b5c5608f0'}
+::: {.cell layout-align="center" hash='cache/specify-one_46e382104b29af25ba7545d1834d82f5'}
 
 ```{.r .cell-code}
 gss %>%
@@ -123,7 +123,7 @@ We can see that the infer class has been appended on top of the dataframe classe
 If you're interested in two variables (`age` and `partyid`, for example) you can `specify()` their relationship in one of two (equivalent) ways:
 
 
-::: {.cell layout-align="center" hash='cache/specify-two_1217a708eb37fe77a83e733029668e4c'}
+::: {.cell layout-align="center" hash='cache/specify-two_272cfc68febb7f132356d0923718ab81'}
 
 ```{.r .cell-code}
 # as a formula
@@ -172,7 +172,7 @@ gss %>%
 If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of the population with a college degree, you might use the following code:
 
 
-::: {.cell layout-align="center" hash='cache/specify-success_85bb9f390a98d0b03a92fa67dee02785'}
+::: {.cell layout-align="center" hash='cache/specify-success_58525b56c2b4a7f2ec9f4d1acb70a0ec'}
 
 ```{.r .cell-code}
 # specifying for inference on proportions
@@ -202,7 +202,7 @@ gss %>%
 The next step in the infer pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
 
 
-::: {.cell layout-align="center" hash='cache/hypothesize-independence_a081019d5492a3ac5bd37d83d3bd7d42'}
+::: {.cell layout-align="center" hash='cache/hypothesize-independence_fff9f4d5ee9bffdceb42dd9f64dd962c'}
 
 ```{.r .cell-code}
 gss %>%
@@ -232,7 +232,7 @@ gss %>%
 If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:
 
 
-::: {.cell layout-align="center" hash='cache/hypothesize-40-hr-week_9fc84aab707ba927208d59a9ae5858c4'}
+::: {.cell layout-align="center" hash='cache/hypothesize-40-hr-week_9a75a69ce3d5c12f5e4f22b4373f32a0'}
 
 ```{.r .cell-code}
 gss %>%
@@ -271,7 +271,7 @@ Once we've asserted our null hypothesis using `hypothesize()`, we can construct 
 Continuing on with our example above, about the average number of hours worked a week, we might write:
 
 
-::: {.cell layout-align="center" hash='cache/generate-point_99f5f76d6e4b6607b7306ef3c01f673b'}
+::: {.cell layout-align="center" hash='cache/generate-point_97e7dd2b98b06be563687c18a0e2c5da'}
 
 ```{.r .cell-code}
 gss %>%
@@ -284,16 +284,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1 48.6 
-#>  2         1 48.6 
-#>  3         1 42.6 
-#>  4         1 35.6 
-#>  5         1 48.6 
-#>  6         1  4.62
-#>  7         1 38.6 
-#>  8         1 54.6 
-#>  9         1 35.6 
-#> 10         1 48.6 
+#>  1         1  43.6
+#>  2         1  38.6
+#>  3         1  46.6
+#>  4         1  87.6
+#>  5         1  28.6
+#>  6         1  18.6
+#>  7         1  38.6
+#>  8         1  37.6
+#>  9         1  22.6
+#> 10         1  87.6
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -304,7 +304,7 @@ In the above example, we take 5000 bootstrap samples to form our null distributi
 To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 5000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
 
 
-::: {.cell layout-align="center" hash='cache/generate-permute_7170025bb93d810d654d5cb892f0b937'}
+::: {.cell layout-align="center" hash='cache/generate-permute_441b5ae10a6c65bd8e956ac85eff2d4d'}
 
 ```{.r .cell-code}
 gss %>%
@@ -318,16 +318,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
-#>  1 ind        36         1
-#>  2 ind        34         1
-#>  3 dem        24         1
-#>  4 dem        42         1
+#>  1 rep        36         1
+#>  2 rep        34         1
+#>  3 rep        24         1
+#>  4 ind        42         1
 #>  5 ind        31         1
-#>  6 ind        32         1
-#>  7 ind        48         1
-#>  8 dem        36         1
-#>  9 rep        30         1
-#> 10 rep        33         1
+#>  6 rep        32         1
+#>  7 rep        48         1
+#>  8 ind        36         1
+#>  9 ind        30         1
+#> 10 dem        33         1
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -338,7 +338,7 @@ gss %>%
 Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize()`, respectively. The function, for one, takes in a `stat` argument, which is currently one of `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`, `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`, `"z"`, `"slope"`, or `"correlation"`. For example, continuing our example above to calculate the null distribution of mean hours worked per week:
 
 
-::: {.cell layout-align="center" hash='cache/calculate-point_cb5eb4b469232ee013b50b8f17442ae7'}
+::: {.cell layout-align="center" hash='cache/calculate-point_af5360f5305a633bfc99f59555431130'}
 
 ```{.r .cell-code}
 gss %>%
@@ -351,16 +351,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  39.2
-#>  2         2  39.4
-#>  3         3  39.8
-#>  4         4  41.0
-#>  5         5  40.3
-#>  6         6  39.5
-#>  7         7  40.1
-#>  8         8  39.3
-#>  9         9  40.4
-#> 10        10  40.3
+#>  1         1  40.2
+#>  2         2  39.8
+#>  3         3  38.5
+#>  4         4  40.0
+#>  5         5  39.4
+#>  6         6  39.7
+#>  7         7  40.5
+#>  8         8  39.2
+#>  9         9  39.5
+#> 10        10  40.8
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -369,7 +369,7 @@ gss %>%
 The output of `calculate()` here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you're carrying out inference on differences in means, medians, or proportions, or $t$ and $z$ statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
 
 
-::: {.cell layout-align="center" hash='cache/specify-diff-in-means_0b3512391564e751997da5dedf18fa08'}
+::: {.cell layout-align="center" hash='cache/specify-diff-in-means_baee6bcc43d72bf365186ddd5c56ad58'}
 
 ```{.r .cell-code}
 gss %>%
@@ -383,16 +383,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate   stat
 #>        <int>  <dbl>
-#>  1         1  1.13 
-#>  2         2  0.200
-#>  3         3 -0.285
-#>  4         4  0.800
-#>  5         5  0.729
-#>  6         6  1.31 
-#>  7         7 -0.514
-#>  8         8 -0.999
-#>  9         9 -1.86 
-#> 10        10  1.01 
+#>  1         1  1.11 
+#>  2         2 -0.320
+#>  3         3  0.429
+#>  4         4  0.782
+#>  5         5 -2.40 
+#>  6         6  0.350
+#>  7         7  1.47 
+#>  8         8 -0.487
+#>  9         9  0.676
+#> 10        10 -1.48 
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -405,7 +405,7 @@ The infer package also offers several utilities to extract meaning out of summar
 To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
 
 
-::: {.cell layout-align="center" hash='cache/utilities-examples_db7c0f64693429e9c2e6d4f8cd43892e'}
+::: {.cell layout-align="center" hash='cache/utilities-examples_f21e5830f9d8600a7522b65a94705b8e'}
 
 ```{.r .cell-code}
 # find the point estimate
@@ -430,7 +430,7 @@ Our point estimate 41.382 seems *pretty* close to 40, but a little bit different
 We could initially just visualize the null distribution.
 
 
-::: {.cell layout-align="center" hash='cache/visualize_ba45a5708f9535ab429378e6104e0623'}
+::: {.cell layout-align="center" hash='cache/visualize_c33c5a3fb0e2c44eacbb820d63b4111a'}
 
 ```{.r .cell-code}
 null_dist %>%
@@ -446,7 +446,7 @@ null_dist %>%
 Where does our sample's observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
 
 
-::: {.cell layout-align="center" hash='cache/visualize2_1493ab73ed2491fe4347180e255d151c'}
+::: {.cell layout-align="center" hash='cache/visualize2_d9dfc9d49fa56f785f4add3368faec69'}
 
 ```{.r .cell-code}
 null_dist %>%
@@ -463,7 +463,7 @@ null_dist %>%
 Notice that infer has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value()` function. This is because `visualize()` outputs a plot object from ggplot2 instead of a dataframe, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
 
 
-::: {.cell layout-align="center" hash='cache/get_p_value_9ff59346118812eb2586c37fc7af4b26'}
+::: {.cell layout-align="center" hash='cache/get_p_value_0c9e565365420b098e1b0147d70f844f'}
 
 ```{.r .cell-code}
 # get a two-tailed p-value
@@ -474,17 +474,17 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0444
+#> 1  0.0356
 ```
 :::
 
 
-It looks like the p-value is 0.0444, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0444. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.0356, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0356. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
 
-::: {.cell layout-align="center" hash='cache/get_conf_c42a6753bef5ebab49c9ed46a27f8bc2'}
+::: {.cell layout-align="center" hash='cache/get_conf_105af2f3883f72df037db1036712b6e7'}
 
 ```{.r .cell-code}
 # start with the null distribution
@@ -589,37 +589,37 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

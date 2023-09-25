@@ -27,7 +27,7 @@ To use code in this article,  you will need to install the following packages: m
 "Multivariate analysis" usually refers to multiple _outcomes_ being modeled, analyzed, and/or predicted. There are multivariate versions of many common statistical tools. For example, suppose there was a data set with columns `y1` and `y2` representing two outcomes to be predicted. The `lm()` function would look something like:
 
 
-::: {.cell layout-align="center" hash='cache/lm_36d90c1aed59c0679cdfdde16dfcf574'}
+::: {.cell layout-align="center" hash='cache/lm_dd5a6fb8c0a7eb13d8f4802a4633f15e'}
 
 ```{.r .cell-code}
 lm(cbind(y1, y2) ~ ., data = dat)
@@ -48,7 +48,7 @@ The goal is to predict the proportion of the three substances using the chemistr
 To start, let's take the two data matrices (called `endpoints` and `absorp`) and bind them together in a data frame:
 
 
-::: {.cell layout-align="center" hash='cache/data_7962e3e49e5e2bfe6e4626edd3a76067'}
+::: {.cell layout-align="center" hash='cache/data_6422a442b4ce6029557e8459a58c0093'}
 
 ```{.r .cell-code}
 library(modeldata)
@@ -70,7 +70,7 @@ Since we are working with variances and covariances, we need to standardize the 
 Many base R functions that deal with multivariate outcomes using a formula require the use of `cbind()` on the left-hand side of the formula to work with the traditional formula methods. In tidymodels, recipes do not; the outcomes can be symbolically "added" together on the left-hand side:
 
 
-::: {.cell layout-align="center" hash='cache/recipe_cadc0ff0922e4cf47f8b5ff54db7f0fa'}
+::: {.cell layout-align="center" hash='cache/recipe_2d12fecc6bc977736f5029d0a2f5e2d8'}
 
 ```{.r .cell-code}
 norm_rec <- 
@@ -87,7 +87,7 @@ Since the data set isn't large, let's use resampling to measure these proportion
 The folds can be created using the [rsample](https://rsample.tidymodels.org/) package and the recipe can be estimated for each resample using the [`prepper()`](https://rsample.tidymodels.org/reference/prepper.html) function: 
 
 
-::: {.cell layout-align="center" hash='cache/cv_92ea8083c6bb6e1a1890f5a0e59a5a0d'}
+::: {.cell layout-align="center" hash='cache/cv_2a934588572251400f15e5a511cd299c'}
 
 ```{.r .cell-code}
 set.seed(57343)
@@ -117,7 +117,7 @@ The function `get_var_explained()` shown here will do all these computations and
 
 
 
-::: {.cell layout-align="center" hash='cache/var-explained_2acce73dfd57c3f85ec64c27afb58a06'}
+::: {.cell layout-align="center" hash='cache/var-explained_2ffe91f3d7d47f3a0ccd222dbe48e574'}
 
 ```{.r .cell-code}
 library(pls)
@@ -167,7 +167,7 @@ get_var_explained <- function(recipe, ...) {
 We compute this data frame for each resample and save the results in the different columns. 
 
 
-::: {.cell layout-align="center" hash='cache/get-estimates_692f96aaee6ff253cc50aa0c09d2c872'}
+::: {.cell layout-align="center" hash='cache/get-estimates_f6578622ab2fe6634341a4c139708a25'}
 
 ```{.r .cell-code}
 folds <- 
@@ -181,7 +181,7 @@ folds <-
 To extract and aggregate these data, simple row binding can be used to stack the data vertically. Most of the action happens in the first 15 components so let's filter the data and compute the _average_ proportion.
 
 
-::: {.cell layout-align="center" hash='cache/collapse-and-average_c90711694d17ab11dd03860f64ac6514'}
+::: {.cell layout-align="center" hash='cache/collapse-and-average_e425f0e602fdd8427c2d9600ce6b0c87'}
 
 ```{.r .cell-code}
 variance_data <- 
@@ -198,7 +198,7 @@ variance_data <-
 The plot below shows that, if the protein measurement is important, you might require 10 or so components to achieve a good representation of that outcome. Note that the predictor variance is captured extremely well using a single component. This is due to the high degree of correlation in those data. 
 
 
-::: {.cell layout-align="center" hash='cache/plot_c869332810008a4caf85c4116e9906ea'}
+::: {.cell layout-align="center" hash='cache/plot_21b5fd70a8802135a6280abf0669de3e'}
 
 ```{.r .cell-code}
 ggplot(variance_data, aes(x = components, y = proportion, col = source)) + 
@@ -218,39 +218,39 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  modeldata  * 1.1.0   2023-01-25 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  modeldata  * 1.2.0   2023-08-09 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
 #>  pls        * 2.8-2   2023-05-19 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

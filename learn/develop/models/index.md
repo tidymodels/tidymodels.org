@@ -35,7 +35,7 @@ This article describes the process of creating a new model function. Before proc
 As an example, we'll create a function for _mixture discriminant analysis_. There are [a few packages](http://search.r-project.org/cgi-bin/namazu.cgi?query=%22mixture+discriminant%22&max=100&result=normal&sort=score&idxname=functions) that implement this but we'll focus on `mda::mda`:
 
 
-::: {.cell layout-align="center" hash='cache/mda-str_2507ce72a9bea74f5a66c14f1b9a6f0c'}
+::: {.cell layout-align="center" hash='cache/mda-str_943fa722b35b714976d35a097f832259'}
 
 ```{.r .cell-code}
 str(mda::mda)
@@ -73,7 +73,7 @@ If you are adding a new model from your own package, you can use these functions
 We will add the MDA model using the model type `discrim_mixture`. Since this is a classification method, we only have to register a single mode:
 
 
-::: {.cell layout-align="center" hash='cache/mda-reg_813c25564c4902aaf7134053970a9517'}
+::: {.cell layout-align="center" hash='cache/mda-reg_7ddc03928b7548cc5f39b2190c5b2619'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -92,7 +92,7 @@ set_dependency("discrim_mixture", eng = "mda", pkg = "mda")
 These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip: 
 
 
-::: {.cell layout-align="center" hash='cache/mda-show-1_9396d1b849a4beb0cdfd6d51aa181c18'}
+::: {.cell layout-align="center" hash='cache/mda-show-1_cf2c74254a523952ef2d777a39d5a83b'}
 
 ```{.r .cell-code}
 show_model_info("discrim_mixture")
@@ -126,7 +126,7 @@ The next step would be to declare the main arguments to the model. These are dec
 For `mda::mda()`, the main tuning parameter is `subclasses` which we will rewrite as `sub_classes`. 
 
 
-::: {.cell layout-align="center" hash='cache/mda-args_b8661eaf9c0755d84dc9208615fbd80f'}
+::: {.cell layout-align="center" hash='cache/mda-args_51c235c71b9c11f9fe70dcc9daabd5b0'}
 
 ```{.r .cell-code}
 set_model_arg(
@@ -168,7 +168,7 @@ This is a fairly simple function that can follow a basic template. The main argu
 A basic version of the function is:
 
 
-::: {.cell layout-align="center" hash='cache/model-fun_8731a20c3f2b9dfc4d820df0de753fde'}
+::: {.cell layout-align="center" hash='cache/model-fun_c1f253c880a51d13df4e427a601c8540'}
 
 ```{.r .cell-code}
 discrim_mixture <-
@@ -216,7 +216,7 @@ Now that parsnip knows about the model, mode, and engine, we can give it the inf
 For the first engine:
 
 
-::: {.cell layout-align="center" hash='cache/fit-mod_cf52907288c4d4390ed78ff6c73ce98b'}
+::: {.cell layout-align="center" hash='cache/fit-mod_4cf2eee4c001ffcf2add9f015560f414'}
 
 ```{.r .cell-code}
 set_fit(
@@ -296,7 +296,7 @@ The parsnip prediction code will expect the result to be an unnamed character st
 To add this method to the model environment, a similar `set()` function is used:
 
 
-::: {.cell layout-align="center" hash='cache/mds-class_5c5ee27330cfbd92a4c3a1ec35650c25'}
+::: {.cell layout-align="center" hash='cache/mds-class_440c322f95f0842c1645f4449994347b'}
 
 ```{.r .cell-code}
 class_info <- 
@@ -335,7 +335,7 @@ As an example of the `post` function, the data frame created by `mda:::predict.m
 We register the probability module. There is a template function that makes this slightly easier to format the objects:
 
 
-::: {.cell layout-align="center" hash='cache/mda-prob_3a0051a27dbbcd0cd670ead843f2b834'}
+::: {.cell layout-align="center" hash='cache/mda-prob_cb7c9fc239e4d5de21bc33b429a01621'}
 
 ```{.r .cell-code}
 prob_info <-
@@ -394,7 +394,7 @@ As a developer, one thing that may come in handy is the `translate()` function. 
 For example:
 
 
-::: {.cell layout-align="center" hash='cache/mda-code_1554fa6e9a05b793b88344760c6dd217'}
+::: {.cell layout-align="center" hash='cache/mda-code_7b2e24d6a9d26afff191077459c706bb'}
 
 ```{.r .cell-code}
 discrim_mixture(sub_classes = 2) %>%
@@ -415,7 +415,7 @@ discrim_mixture(sub_classes = 2) %>%
 Let's try it on a data set from the modeldata package:
 
 
-::: {.cell layout-align="center" hash='cache/mda-data_3c82cce5ac335857cac771447abc0954'}
+::: {.cell layout-align="center" hash='cache/mda-data_c18ca73fcd706769e63094c4c8d82fb8'}
 
 ```{.r .cell-code}
 data("two_class_dat", package = "modeldata")
@@ -484,7 +484,7 @@ predict(mda_fit, new_data = example_test) %>%
 The process for adding an engine to an existing model is _almost_ the same as building a new model but simpler with fewer steps. You only need to add the engine-specific aspects of the model. For example, if we wanted to fit a linear regression model using M-estimation, we could only add a new engine. The code for the `rlm()` function in MASS is pretty similar to `lm()`, so we can copy that code and change the package/function names:
 
 
-::: {.cell layout-align="center" hash='cache/rlm_1efd4fceb00e524a782846ca6bfcd5c0'}
+::: {.cell layout-align="center" hash='cache/rlm_e963efa76e16fc7860aac40f7d969155'}
 
 ```{.r .cell-code}
 set_model_engine("linear_reg", "regression", eng = "rlm")
@@ -627,7 +627,7 @@ The main piece of information that requires some detail is `call_info`. This is 
 For example, for a nearest-neighbors `neighbors` parameter, this value is just: 
 
 
-::: {.cell layout-align="center" hash='cache/mtry_3c03e505855845f8e5bb7a077fd5b825'}
+::: {.cell layout-align="center" hash='cache/mtry_899f046b7cfc5bcc9eeb779067e4319f'}
 
 ```{.r .cell-code}
 info <- list(pkg = "dials", fun = "neighbors")
@@ -644,7 +644,7 @@ rlang::eval_tidy(new_param_call)
 For `discrim_mixture()`, a dials object is needed that returns an integer that is the number of sub-classes that should be create. We can create a dials parameter function for this:
 
 
-::: {.cell layout-align="center" hash='cache/sub-classes_f1d2aa270057a937d0fb1b22437c4b6b'}
+::: {.cell layout-align="center" hash='cache/sub-classes_64cd6c00d45e73ebb6f5274cb18fc702'}
 
 ```{.r .cell-code}
 sub_classes <- function(range = c(1L, 10L), trans = NULL) {
@@ -664,7 +664,7 @@ sub_classes <- function(range = c(1L, 10L), trans = NULL) {
 If this were in the dials package, we could use: 
 
 
-::: {.cell layout-align="center" hash='cache/tunable_6f690f2f8f8fd9613d4fa6d96183784b'}
+::: {.cell layout-align="center" hash='cache/tunable_5709131f90db2497b786ec3bc3813103'}
 
 ```{.r .cell-code}
 tunable.discrim_mixture <- function(x, ...) {
@@ -683,7 +683,7 @@ tunable.discrim_mixture <- function(x, ...) {
 Once this method is in place, the tuning functions can be used: 
 
 
-::: {.cell layout-align="center" hash='cache/tune-mda_0dcd9b8898400f7cba95d8d28f58a8ec'}
+::: {.cell layout-align="center" hash='cache/tune-mda_b3ef8c4097d927be207c775b35988adf'}
 
 ```{.r .cell-code}
 mda_spec <- 
@@ -723,7 +723,7 @@ There are some models (e.g. `glmnet`, `plsr`, `Cubist`, etc.) that can make pred
 For example, if I fit a linear regression model via `glmnet` and get four values of the regularization parameter (`lambda`):
 
 
-::: {.cell layout-align="center" hash='cache/glmnet_be2808b89c377b91701228133ccb2349'}
+::: {.cell layout-align="center" hash='cache/glmnet_bbb7dde1c18eb109fa6c17c67c432ea1'}
 
 ```{.r .cell-code}
 linear_reg() %>%
@@ -741,7 +741,7 @@ _However_, the API is still being developed. Currently, there is not an interfac
 Some modeling functions in R create indicator/dummy variables from categorical data when you use a model formula (typically using `model.matrix()`), and some do not. Some examples of models that do _not_ create indicator variables include tree-based models, naive Bayes models, and multilevel or hierarchical models. The tidymodels ecosystem assumes a `model.matrix()`-like default encoding for categorical data used in a model formula, but you can change this encoding using `set_encoding()`. For example, you can set predictor encodings that say, "leave my data alone," and keep factors as is:
 
 
-::: {.cell layout-align="center" hash='cache/encodinginfo_3e86c6fbe0bbb2a3fbc9efd669daa223'}
+::: {.cell layout-align="center" hash='cache/encodinginfo_27a702fd2b9b38d45ed00e689dcf9b1e'}
 
 ```{.r .cell-code}
 set_encoding(
@@ -772,7 +772,7 @@ To learn more about encoding categorical predictors, check out [this blog post](
 You might want to set defaults that can be overridden by the user. For example, for logistic regression with `glm`, it make sense to default `family = binomial`. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:
 
 
-::: {.cell layout-align="center" hash='cache/glm-alt_457c8ae71c6e3b2c6afe4b41c18ddd3f'}
+::: {.cell layout-align="center" hash='cache/glm-alt_41508ad48a69fb2799242261eaabc86f'}
 
 ```{.r .cell-code}
 defaults = list(family = expr(binomial))
@@ -783,7 +783,7 @@ defaults = list(family = expr(binomial))
 So that is the default:
 
 
-::: {.cell layout-align="center" hash='cache/glm-alt-show_0871388099af74cb137d4ac5b98cadc6'}
+::: {.cell layout-align="center" hash='cache/glm-alt-show_4f4e114f7f9505ded73bf2430279daa5'}
 
 ```{.r .cell-code}
 logistic_reg() %>% translate(engine = "glm")
@@ -808,7 +808,7 @@ The `translate` function can be used to check values or set defaults once the mo
 For example, the ranger and randomForest package functions have arguments for calculating importance. One is a logical and the other is a string. Since this is likely to lead to a bunch of frustration and GitHub issues, we can put in a check:
 
 
-::: {.cell layout-align="center" hash='cache/rf-trans_2befe6ee20fcf17345860f655481c147'}
+::: {.cell layout-align="center" hash='cache/rf-trans_5bf37c37c3824d18cbb877c88515842a'}
 
 ```{.r .cell-code}
 # Simplified version
@@ -860,39 +860,39 @@ If you have a suggestion, please add a [GitHub issue](https://github.com/tidymod
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
 #>  mda        * 0.5-4   2023-06-23 [1] CRAN (R 4.3.0)
-#>  modeldata  * 1.1.0   2023-01-25 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  modeldata  * 1.2.0   2023-08-09 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

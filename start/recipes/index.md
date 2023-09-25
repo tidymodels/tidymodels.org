@@ -61,7 +61,7 @@ library(skimr)           # for variable summaries
 ## The New York City flight data {#data}
 
 
-::: {.cell layout-align="center" hash='cache/flight-start_7be6e44d7c7fe4440aa1ab409842361b'}
+::: {.cell layout-align="center" hash='cache/flight-start_7d93e697ea9b727faa92e6743410100e'}
 
 :::
 
@@ -100,7 +100,7 @@ flight_data <-
 We can see that about 16% of the flights in this data set arrived more than 30 minutes late.
 
 
-::: {.cell layout-align="center" hash='cache/count-delays_5849290b5c6a7df218e9cb949a0f0433'}
+::: {.cell layout-align="center" hash='cache/count-delays_4bb4c48b33a698525a4504d1d32852b7'}
 
 ```{.r .cell-code}
 flight_data %>% 
@@ -120,7 +120,7 @@ Before we start building up our recipe, let's take a quick look at a few specifi
 First, notice that the variable we created called `arr_delay` is a factor variable; it is important that our outcome variable for training a logistic regression model is a factor.
 
 
-::: {.cell layout-align="center" hash='cache/glimpse-flights_9e7969e05e325dd83978b5118de71ddb'}
+::: {.cell layout-align="center" hash='cache/glimpse-flights_7bf40651e86f2d9e62b004756070f702'}
 
 ```{.r .cell-code}
 glimpse(flight_data)
@@ -145,7 +145,7 @@ Second, there are two variables that we don't want to use as predictors in our m
 Third, there are 104 flight destinations contained in `dest` and 16 distinct `carrier`s.
 
 
-::: {.cell layout-align="center" hash='cache/skim-flights_3663c5c037362c6e9287904011f4027d'}
+::: {.cell layout-align="center" hash='cache/skim-flights_d33c7b7f8c526d993301ee5d58b2ee8a'}
 
 ```{.r .cell-code}
 flight_data %>% 
@@ -238,7 +238,7 @@ To get started, let's split this single dataset into two: a *training* set and a
 To do this, we can use the [rsample](https://rsample.tidymodels.org/) package to create an object that contains the information on *how* to split the data, and then two more rsample functions to create data frames for the training and testing sets:
 
 
-::: {.cell layout-align="center" hash='cache/split_63f6881dbae8f8d1bcbe87ef8e48ecfc'}
+::: {.cell layout-align="center" hash='cache/split_9c5a1fd0055b214caff1490c36c50f38'}
 
 ```{.r .cell-code}
 # Fix the random numbers by setting the seed 
@@ -261,7 +261,7 @@ To get started, let's create a recipe for a simple logistic regression model. Be
 Let's initiate a new recipe:
 
 
-::: {.cell layout-align="center" hash='cache/initial-recipe_7233f1669fd288b82db7342770322065'}
+::: {.cell layout-align="center" hash='cache/initial-recipe_e85822fa94948be0cfe2d83b035c8289'}
 
 ```{.r .cell-code}
 flights_rec <- 
@@ -279,7 +279,7 @@ The [`recipe()` function](https://recipes.tidymodels.org/reference/recipe.html) 
 Now we can add [roles](https://recipes.tidymodels.org/reference/roles.html) to this recipe. We can use the [`update_role()` function](https://recipes.tidymodels.org/reference/roles.html) to let recipes know that `flight` and `time_hour` are variables with a custom role that we called `"ID"` (a role can have any character value). Whereas our formula included all variables in the training set other than `arr_delay` as predictors, this tells the recipe to keep these two variables but not use them as either outcomes or predictors.
 
 
-::: {.cell layout-align="center" hash='cache/recipe-roles_f2c8735ea1622ce477471ac7a4c9da15'}
+::: {.cell layout-align="center" hash='cache/recipe-roles_c52c48ab3454c3555f1c285fd3700021'}
 
 ```{.r .cell-code}
 flights_rec <- 
@@ -294,7 +294,7 @@ This step of adding roles to a recipe is optional; the purpose of using it here 
 To get the current set of variables and roles, use the `summary()` function:
 
 
-::: {.cell layout-align="center" hash='cache/summary_c2d837bd91379fb42c1dd50b549de4df'}
+::: {.cell layout-align="center" hash='cache/summary_772f2fd00a6f6dbcafb727bf7e916483'}
 
 ```{.r .cell-code}
 summary(flights_rec)
@@ -320,7 +320,7 @@ summary(flights_rec)
 Now we can start adding steps onto our recipe using the pipe operator. Perhaps it is reasonable for the date of the flight to have an effect on the likelihood of a late arrival. A little bit of **feature engineering** might go a long way to improving our model. How should the date be encoded into the model? The `date` column has an R `date` object so including that column "as is" will mean that the model will convert it to a numeric format equal to the number of days after a reference date:
 
 
-::: {.cell layout-align="center" hash='cache/dates_60ff94620824ef3668623d9704514378'}
+::: {.cell layout-align="center" hash='cache/dates_fe10b005563c3c4a8be947b0fec75899'}
 
 ```{.r .cell-code}
 flight_data %>% 
@@ -355,7 +355,7 @@ It's possible that the numeric date variable is a good option for modeling; perh
 Let's do all three of these by adding steps to our recipe:
 
 
-::: {.cell layout-align="center" hash='cache/date-recipe_d2ec85245dd4ac821e783a3b81be807f'}
+::: {.cell layout-align="center" hash='cache/date-recipe_419212ab5499094b2293d5cf5a2edcac'}
 
 ```{.r .cell-code}
 flights_rec <- 
@@ -384,7 +384,7 @@ For factors like `dest` and `origin`, [standard practice](https://bookdown.org/m
 
 
 
-::: {.cell layout-align="center" hash='cache/dummy-table_6cd9a745b2ec8a08a34aadd0b204464f'}
+::: {.cell layout-align="center" hash='cache/dummy-table_de92d9ef981b2f11a8b1557f4bc2f46a'}
 ::: {.cell-output-display}
 
 `````{=html}
@@ -424,7 +424,7 @@ For factors like `dest` and `origin`, [standard practice](https://bookdown.org/m
 But, unlike the standard model formula methods in R, a recipe **does not** automatically create these dummy variables for you; you'll need to tell your recipe to add this step. This is for two reasons. First, many models do not require [numeric predictors](https://bookdown.org/max/FES/categorical-trees.html), so dummy variables may not always be preferred. Second, recipes can also be used for purposes outside of modeling, where non-dummy versions of the variables may work better. For example, you may want to make a table or a plot with a variable as a single factor. For those reasons, you need to explicitly tell recipes to create dummy variables using `step_dummy()`:
 
 
-::: {.cell layout-align="center" hash='cache/dummy_49f08ce7a83b6de72ec52a1b272e62c4'}
+::: {.cell layout-align="center" hash='cache/dummy_ac83217ea1b2f0661807b6fd33ccfc51'}
 
 ```{.r .cell-code}
 flights_rec <- 
@@ -448,7 +448,7 @@ More generally, the recipe selectors mean that you don't always have to apply st
 We need one final step to add to our recipe. Since `carrier` and `dest` have some infrequently occurring factor values, it is possible that dummy variables might be created for values that don't exist in the training set. For example, there is one destination that is only in the test set:
 
 
-::: {.cell layout-align="center" hash='cache/zv-cols_a8e419ee339885441896c728f0a8eb2a'}
+::: {.cell layout-align="center" hash='cache/zv-cols_cbf754038f0daf277adcd924a0a290fc'}
 
 ```{.r .cell-code}
 test_data %>% 
@@ -466,7 +466,7 @@ test_data %>%
 When the recipe is applied to the training set, a column is made for LEX because the factor levels come from `flight_data` (not the training set), but this column will contain all zeros. This is a "zero-variance predictor" that has no information within the column. While some R functions will not produce an error for such predictors, it usually causes warnings and other issues. `step_zv()` will remove columns from the data when the training set data have a single value, so it is added to the recipe *after* `step_dummy()`:
 
 
-::: {.cell layout-align="center" hash='cache/zv_6afa0de7c3f6740f875dcf509adc5d77'}
+::: {.cell layout-align="center" hash='cache/zv_5cdfbc5727f3f87f2a12edf85645bb1b'}
 
 ```{.r .cell-code}
 flights_rec <- 
@@ -489,7 +489,7 @@ Now we've created a *specification* of what should be done with the data. How do
 Let's use logistic regression to model the flight data. As we saw in [*Build a Model*](/start/models/), we start by [building a model specification](/start/models/#build-model) using the parsnip package:
 
 
-::: {.cell layout-align="center" hash='cache/model_cf6cc6dc3690e0fea4d0c57d1d045e16'}
+::: {.cell layout-align="center" hash='cache/model_3711ca7974344eddd78936985dae9c6a'}
 
 ```{.r .cell-code}
 lr_mod <- 
@@ -510,7 +510,7 @@ We will want to use our recipe across several steps as we train and test our mod
 To simplify this process, we can use a *model workflow*, which pairs a model and recipe together. This is a straightforward approach because different recipes are often needed for different models, so when a model and recipe are bundled, it becomes easier to train and test *workflows*. We'll use the [workflows package](https://workflows.tidymodels.org/) from tidymodels to bundle our parsnip model (`lr_mod`) with our recipe (`flights_rec`).
 
 
-::: {.cell layout-align="center" hash='cache/workflow_b76ceff88efdf6911b44754fe85d2dee'}
+::: {.cell layout-align="center" hash='cache/workflow_5f986bed0d4afb6a34a82a6a4f2f4fa2'}
 
 ```{.r .cell-code}
 flights_wflow <- 
@@ -542,7 +542,7 @@ flights_wflow
 Now, there is a single function that can be used to prepare the recipe and train the model from the resulting predictors:
 
 
-::: {.cell layout-align="center" hash='cache/fit_c048a5aa49766b9ee2e4a4dc03222b11'}
+::: {.cell layout-align="center" hash='cache/fit_470d3c2d8581ca6defff0bd04ea1e6e2'}
 
 ```{.r .cell-code}
 flights_fit <- 
@@ -555,7 +555,7 @@ flights_fit <-
 This object has the finalized recipe and fitted model objects inside. You may want to extract the model or recipe objects from the workflow. To do this, you can use the helper functions `extract_fit_parsnip()` and `extract_recipe()`. For example, here we pull the fitted model object then use the `broom::tidy()` function to get a tidy tibble of model coefficients:
 
 
-::: {.cell layout-align="center" hash='cache/fit-glance_89457f1224a78f974440d42b4d4b450e'}
+::: {.cell layout-align="center" hash='cache/fit-glance_a0172470402b6bd70318f0f5adba58f6'}
 
 ```{.r .cell-code}
 flights_fit %>% 
@@ -594,7 +594,7 @@ Our goal was to predict whether a plane arrives more than 30 minutes late. We ha
 The next step is to use the trained workflow (`flights_fit`) to predict with the unseen test data, which we will do with a single call to `predict()`. The `predict()` method applies the recipe to the new data, then passes them to the fitted model.
 
 
-::: {.cell layout-align="center" hash='cache/pred-class_6f0bcf4a99b4993171e481adf569d456'}
+::: {.cell layout-align="center" hash='cache/pred-class_896b9f4ba10cacb6f084a45e95eae8b8'}
 
 ```{.r .cell-code}
 predict(flights_fit, test_data)
@@ -619,7 +619,7 @@ predict(flights_fit, test_data)
 Because our outcome variable here is a factor, the output from `predict()` returns the predicted class: `late` versus `on_time`. But, let's say we want the predicted class probabilities for each flight instead. To return those, we can specify `type = "prob"` when we use `predict()` or use `augment()` with the model plus test data to save them together:
 
 
-::: {.cell layout-align="center" hash='cache/test-pred_6df86f199df4958b9c2a47b74bfd8a3a'}
+::: {.cell layout-align="center" hash='cache/test-pred_34143c00f2c8205156eeda35cf278310'}
 
 ```{.r .cell-code}
 flights_aug <- 
@@ -653,7 +653,7 @@ Let's use the area under the [ROC curve](https://bookdown.org/max/FES/measuring-
 To generate a ROC curve, we need the predicted class probabilities for `late` and `on_time`, which we just calculated in the code chunk above. We can create the ROC curve with these values, using `roc_curve()` and then piping to the `autoplot()` method:
 
 
-::: {.cell layout-align="center" hash='cache/roc-plot_2b4379a2561a283475b502d9d3be939e'}
+::: {.cell layout-align="center" hash='cache/roc-plot_98b2e5ce10cabc66b1c1809c9d7b3120'}
 
 ```{.r .cell-code}
 flights_aug %>% 
@@ -670,7 +670,7 @@ flights_aug %>%
 Similarly, `roc_auc()` estimates the area under the curve:
 
 
-::: {.cell layout-align="center" hash='cache/roc-auc_d976c75aa17ddfd1a4b37d632c808be9'}
+::: {.cell layout-align="center" hash='cache/roc-auc_fca39b5619ab25b6a13a3e072969fb95'}
 
 ```{.r .cell-code}
 flights_aug %>% 
@@ -692,39 +692,39 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      * version date (UTC) lib source
-#>  broom        * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom        * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials        * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr        * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2      * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer        * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
+#>  dplyr        * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2      * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer        * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
 #>  nycflights13 * 1.0.2   2021-04-12 [1] CRAN (R 4.3.0)
-#>  parsnip      * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr        * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes      * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  parsnip      * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes      * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang          1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample      * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample      * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  skimr        * 2.1.5   2022-12-23 [1] CRAN (R 4.3.0)
 #>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels   * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune         * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels   * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune         * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows    * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick    * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

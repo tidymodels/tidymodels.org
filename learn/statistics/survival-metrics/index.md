@@ -45,7 +45,7 @@ To start, let's define the various types of times that will be mentioned:
 As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
 
 
-::: {.cell layout-align="center" hash='cache/data_ea43f6471536c88f5d0c74d179663a45'}
+::: {.cell layout-align="center" hash='cache/data_42b48883e7903f8958700bf3f39525ee'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -72,7 +72,7 @@ sim_rs <- vfold_cv(sim_tr)
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
 
 
-::: {.cell layout-align="center" hash='cache/bag-tree-fit_5a6c3b5b8b2141206912aa7a2fe8f384'}
+::: {.cell layout-align="center" hash='cache/bag-tree-fit_aacc16c94e976eb09a5315d41fef916f'}
 
 ```{.r .cell-code}
 set.seed(17)
@@ -107,7 +107,7 @@ where `eval_time` is a vector of time points at which we want the corresponding 
 The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred_71be0c59aa8304196d00fda8a33005d7'}
+::: {.cell layout-align="center" hash='cache/val-pred_7dd8d8645b17d7f4f00e9eac86ba3128'}
 
 ```{.r .cell-code}
 time_points <- seq(0, 21, by = 0.25)
@@ -135,7 +135,7 @@ val_pred
 The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column `.pred_survival`. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-dynamic_4711b5e193450241734314b22e92c8e2'}
+::: {.cell layout-align="center" hash='cache/val-pred-dynamic_c386171d6bfc889b48602c2e15fc50c0'}
 
 ```{.r .cell-code}
 val_pred$.pred[[1]]
@@ -186,7 +186,7 @@ How do we compute this using the yardstick package? The function [`brier_surviva
 Since the evaluation times and the case weights are within the `.pred` column, there is no need to specify these. Here are the results of our validation set: 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-brier_0391afe98b2bf9fa705d559462925d9f'}
+::: {.cell layout-align="center" hash='cache/val-pred-brier_cc3492ab0108dabc8c2c8c4ba1fbd542'}
 
 ```{.r .cell-code}
 brier_scores <-
@@ -214,7 +214,7 @@ brier_scores
 Over time:
 
 
-::: {.cell layout-align="center" hash='cache/brier-scores_0ba183e42477511b0983e526f92c8327'}
+::: {.cell layout-align="center" hash='cache/brier-scores_13db6b16e82feb40db50c941da37199b'}
 
 ```{.r .cell-code}
 brier_scores %>% 
@@ -234,7 +234,7 @@ brier_scores %>%
 There is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the plot shown above. The syntax is the same but the result has a single row: 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-brier-int_0d396825f603e072c6e54819480a4647'}
+::: {.cell layout-align="center" hash='cache/val-pred-brier-int_a3cc43e2b5d8b2a3edda42d4eed6eb62'}
 
 ```{.r .cell-code}
 val_pred %>% brier_survival_integrated(truth = event_time, .pred)
@@ -260,7 +260,7 @@ These depend on the threshold used to turn predicted probabilities into predicte
 
 
 
-::: {.cell layout-align="center" hash='cache/surv-hist-05_54b7c12287ff4cc6a372c72aeeeb32f8'}
+::: {.cell layout-align="center" hash='cache/surv-hist-05_7d278716c6b14edbfcc22ee2eb5df16f'}
 ::: {.cell-output-display}
 ![](figs/surv-hist-05-1.svg){fig-align='center' width=70%}
 :::
@@ -278,7 +278,7 @@ ROC curves were designed as a general method that, given a collection of continu
 For our example at evaluation time $t = 5.00$, the ROC curve is: 
 
 
-::: {.cell layout-align="center" hash='cache/roc-5_2af790d64c21bcecd736afc35cf90091'}
+::: {.cell layout-align="center" hash='cache/roc-5_51cf7b7d58c785ec0b33ff7855854742'}
 ::: {.cell-output-display}
 ![](figs/roc-5-1.svg){fig-align='center' width=672}
 :::
@@ -290,7 +290,7 @@ The area under this curve is 0.807.
 Since this is a dynamic metric, we compute the AUC for each evaluation time. The syntax is very similar to the Brier code shown above: 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-roc_a13af258a54f3b92eb17af9dc3b5140e'}
+::: {.cell layout-align="center" hash='cache/val-pred-roc_aac3021d4364dbc86df2aa1486eb62bb'}
 
 ```{.r .cell-code}
 roc_scores <-
@@ -318,7 +318,7 @@ roc_scores
 Over time:
 
 
-::: {.cell layout-align="center" hash='cache/roc-scores_2854d1506efb429887eefb1bf75e89be'}
+::: {.cell layout-align="center" hash='cache/roc-scores_66155d0cc449a9b6c3e124bbda82c073'}
 
 ```{.r .cell-code}
 roc_scores %>% 
@@ -359,39 +359,39 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version    date (UTC) lib source
-#>  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.3.0)
-#>  censored   * 0.2.0.9000 2023-07-02 [1] Github (tidymodels/censored@f9eccb6)
+#>  broom      * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
+#>  censored   * 0.2.0      2023-04-13 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0.9003 2023-07-02 [1] Github (tidymodels/parsnip@e6278b0)
-#>  prodlim    * 2023.03.31 2023-04-02 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6      2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3      2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3      2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
+#>  prodlim    * 2023.08.28 2023-08-28 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1      2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2      2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.3.0)
 #> 

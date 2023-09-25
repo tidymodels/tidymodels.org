@@ -34,7 +34,7 @@ This article describes subsampling for dealing with class imbalances. For better
 Consider a two-class problem where the first class has a very low rate of occurrence. The data were simulated and can be imported into R using the code below:
 
 
-::: {.cell layout-align="center" hash='cache/load-data_19f040e3447e4c2c6a9acc39595b5cc5'}
+::: {.cell layout-align="center" hash='cache/load-data_6f155ed2d84d80d62e3c732326e0a151'}
 
 ```{.r .cell-code}
 imbal_data <- 
@@ -69,7 +69,7 @@ In terms of workflow:
 Here is a simple recipe implementing oversampling: 
 
 
-::: {.cell layout-align="center" hash='cache/rec_284148e0900db2f3ccf21596f79fd3ab'}
+::: {.cell layout-align="center" hash='cache/rec_62a9444a87a1f0d2d538a0a658ea1b40'}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -84,7 +84,7 @@ imbal_rec <-
 For a model, let's use a [quadratic discriminant analysis](https://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis) (QDA) model. From the discrim package, this model can be specified using:
 
 
-::: {.cell layout-align="center" hash='cache/qda_c232c75cb7155b22a49defee9e3fd73b'}
+::: {.cell layout-align="center" hash='cache/qda_61f5a3e99a905bf674095ab9532a4f60'}
 
 ```{.r .cell-code}
 library(discrim)
@@ -98,7 +98,7 @@ qda_mod <-
 To keep these objects bound together, they can be combined in a [workflow](https://workflows.tidymodels.org/):
 
 
-::: {.cell layout-align="center" hash='cache/wflw_4104f55c2acf370483095be6ffefc736'}
+::: {.cell layout-align="center" hash='cache/wflw_cc28c388ec1349524e77aeb8545b3b16'}
 
 ```{.r .cell-code}
 qda_rose_wflw <- 
@@ -132,7 +132,7 @@ qda_rose_wflw
 Stratified, repeated 10-fold cross-validation is used to resample the model:
 
 
-::: {.cell layout-align="center" hash='cache/cv_257b1666f905152b0854162652710a31'}
+::: {.cell layout-align="center" hash='cache/cv_686989ce48b57cc6825c4fee56399f36'}
 
 ```{.r .cell-code}
 set.seed(5732)
@@ -149,7 +149,7 @@ To measure model performance, let's use two metrics:
 If a model is poorly calibrated, the ROC curve value might not show diminished performance. However, the _J_ index would be lower for models with pathological distributions for the class probabilities. The yardstick package will be used to compute these metrics. 
 
 
-::: {.cell layout-align="center" hash='cache/metrics_e973879401e7878aefe8e78b0970dbc3'}
+::: {.cell layout-align="center" hash='cache/metrics_36f95c9985a757993a9df95a6bbfffa0'}
 
 ```{.r .cell-code}
 cls_metrics <- metric_set(roc_auc, j_index)
@@ -160,7 +160,7 @@ cls_metrics <- metric_set(roc_auc, j_index)
 Now, we train the models and generate the results using `tune::fit_resamples()`:
 
 
-::: {.cell layout-align="center" hash='cache/resample-rose_9c88feb770ed61c524ccbe0365481e64'}
+::: {.cell layout-align="center" hash='cache/resample-rose_f73e87bd59fb1dbc99c321bd005238ed'}
 
 ```{.r .cell-code}
 set.seed(2180)
@@ -174,8 +174,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.787    50 0.0209  Preprocessor1_Model1
-#> 2 roc_auc binary     0.950    50 0.00520 Preprocessor1_Model1
+#> 1 j_index binary     0.787    50 0.0193  Preprocessor1_Model1
+#> 2 roc_auc binary     0.952    50 0.00497 Preprocessor1_Model1
 ```
 :::
 
@@ -183,7 +183,7 @@ collect_metrics(qda_rose_res)
 What do the results look like without using ROSE? We can create another workflow and fit the QDA model along the same resamples:
 
 
-::: {.cell layout-align="center" hash='cache/qda-only_434ef41719060a908cfc5cf09f4f36fa'}
+::: {.cell layout-align="center" hash='cache/qda-only_0e9e98635048a82865ded0efe3ee1a0a'}
 
 ```{.r .cell-code}
 qda_wflw <- 
@@ -208,7 +208,7 @@ It looks like ROSE helped a lot, especially with the J-index. Class imbalance sa
 Let's plot the metrics for each resample to see how the individual results changed. 
 
 
-::: {.cell layout-align="center" hash='cache/merge-metrics_e2e3e8b29cc2a2d8e7ea774b83e8b5dc'}
+::: {.cell layout-align="center" hash='cache/merge-metrics_ac2ffff279e82141473fd710a8f28ada'}
 
 ```{.r .cell-code}
 no_sampling <- 
@@ -241,42 +241,42 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
 #>  discrim    * 1.0.1   2023-03-08 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
 #>  klaR       * 1.7-2   2023-03-17 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  readr      * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
 #>  ROSE       * 0.0-4   2021-06-14 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
-#>  themis     * 1.0.1   2023-04-14 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
+#>  themis     * 1.0.2   2023-08-14 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

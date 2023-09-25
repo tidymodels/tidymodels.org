@@ -56,7 +56,7 @@ Let's use the data from [Constable (1993)](https://link.springer.com/article/10.
 To start, let's read our urchins data into R, which we'll do by providing [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) with a url where our CSV data is located ("<https://tidymodels.org/start/models/urchins.csv>"):
 
 
-::: {.cell layout-align="center" hash='cache/data_39e92d22ba6540af904d9844fd3cad57'}
+::: {.cell layout-align="center" hash='cache/data_e77342354b69380c4bad8b35f35f210a'}
 
 ```{.r .cell-code}
 urchins <-
@@ -113,7 +113,7 @@ The urchins data is a [tibble](https://tibble.tidyverse.org/index.html). If you 
 As a first step in modeling, it's always a good idea to plot the data: 
 
 
-::: {.cell layout-align="center" hash='cache/urchin-plot_1603f2b800553a9fcdb01f08303e4c82'}
+::: {.cell layout-align="center" hash='cache/urchin-plot_ac61ac58f8f8b93ac9e5b493b57dab3d'}
 
 ```{.r .cell-code}
 ggplot(urchins,
@@ -140,7 +140,7 @@ We can see that urchins that were larger in volume at the start of the experimen
 A standard two-way analysis of variance ([ANOVA](https://www.itl.nist.gov/div898/handbook/prc/section4/prc43.htm)) model makes sense for this dataset because we have both a continuous predictor and a categorical predictor. Since the slopes appear to be different for at least two of the feeding regimes, let's build a model that allows for two-way interactions. Specifying an R formula with our variables in this way: 
 
 
-::: {.cell layout-align="center" hash='cache/two-way-int_a0f9010460df05a6b677180db1efa18e'}
+::: {.cell layout-align="center" hash='cache/two-way-int_d73a8f0cb3e8ab74475da3aad6f2902c'}
 
 ```{.r .cell-code}
 width ~ initial_volume * food_regime
@@ -154,7 +154,7 @@ For this kind of model, ordinary least squares is a good initial approach. With 
 
 
 
-::: {.cell layout-align="center" hash='cache/lm-tm_e2a755c4c6624fa5215375d5f0aef776'}
+::: {.cell layout-align="center" hash='cache/lm-tm_18e812b29f0a898806f05c5c5c22cc7c'}
 
 ```{.r .cell-code}
 linear_reg()
@@ -168,7 +168,7 @@ linear_reg()
 That is pretty underwhelming since, on its own, it doesn't really do much. However, now that the type of model has been specified, we can think about a method for _fitting_ or training the model, the model **engine**. The engine value is often a mash-up of the software that can be used to fit or train the model as well as the estimation method. The default for `linear_reg()` is `"lm"` for ordinary least squares, as you can see above. We could set a non-default option instead:
 
 
-::: {.cell layout-align="center" hash='cache/lm-spec_cda99ca6749ca900647312148fe394e0'}
+::: {.cell layout-align="center" hash='cache/lm-spec_7f983214e9e28e6e13ea34dbb0a7a66d'}
 
 ```{.r .cell-code}
 linear_reg() %>% 
@@ -194,7 +194,7 @@ lm_mod <- linear_reg()
 From here, the model can be estimated or trained using the [`fit()`](https://parsnip.tidymodels.org/reference/fit.html) function:
 
 
-::: {.cell layout-align="center" hash='cache/lm-fit_ac90c3b9f0b2cea68ef81afa87f0593d'}
+::: {.cell layout-align="center" hash='cache/lm-fit_9161d10dd029c0301c77fd2839976b87'}
 
 ```{.r .cell-code}
 lm_fit <- 
@@ -221,7 +221,7 @@ lm_fit
 Perhaps our analysis requires a description of the model parameter estimates and their statistical properties. Although the `summary()` function for `lm` objects can provide that, it gives the results back in an unwieldy format. Many models have a `tidy()` method that provides the summary results in a more predictable and useful format (e.g. a data frame with standard column names): 
 
 
-::: {.cell layout-align="center" hash='cache/lm-table_f31fd5d2fb97daf14365207c56f7d982'}
+::: {.cell layout-align="center" hash='cache/lm-table_336d44ab5a68463cc444e672d24e7e03'}
 
 ```{.r .cell-code}
 tidy(lm_fit)
@@ -241,7 +241,7 @@ tidy(lm_fit)
 This kind of output can be used to generate a dot-and-whisker plot of our regression results using the dotwhisker package:
 
 
-::: {.cell layout-align="center" hash='cache/dwplot_39f0dcc3141b08785643d2da2b33dda8'}
+::: {.cell layout-align="center" hash='cache/dwplot_f21b08f73cedd25e1458a4d40317813a'}
 
 ```{.r .cell-code}
 tidy(lm_fit) %>% 
@@ -264,7 +264,7 @@ This fitted object `lm_fit` has the `lm` model output built-in, which you can ac
 Suppose that, for a publication, it would be particularly interesting to make a plot of the mean body size for urchins that started the experiment with an initial volume of 20ml. To create such a graph, we start with some new example data that we will make predictions for, to show in our graph:
 
 
-::: {.cell layout-align="center" hash='cache/new-points_ff1664824d31fadb2ca327ca199e357a'}
+::: {.cell layout-align="center" hash='cache/new-points_16e975a6a443daf737d701d386ec1e44'}
 
 ```{.r .cell-code}
 new_points <- expand.grid(initial_volume = 20, 
@@ -287,7 +287,7 @@ Instead, with tidymodels, the types of predicted values are standardized so that
 First, let's generate the mean body width values: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-pred-mean_d903c9188834966ac82e0773cb20c03c'}
+::: {.cell layout-align="center" hash='cache/lm-pred-mean_200e2f6584232c82f35daa5458c1e217'}
 
 ```{.r .cell-code}
 mean_pred <- predict(lm_fit, new_data = new_points)
@@ -305,7 +305,7 @@ mean_pred
 When making predictions, the tidymodels convention is to always produce a tibble of results with standardized column names. This makes it easy to combine the original data and the predictions in a usable format: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-all-pred_de80c71006396b25f96613de87596cbd'}
+::: {.cell layout-align="center" hash='cache/lm-all-pred_cbe4becdd14a31ffa636484d2d346e9f'}
 
 ```{.r .cell-code}
 conf_int_pred <- predict(lm_fit, 
@@ -347,7 +347,7 @@ Every one on your team is happy with that plot _except_ that one person who just
 The [documentation](https://mc-stan.org/rstanarm/articles/priors.html) on the rstanarm package shows us that the `stan_glm()` function can be used to estimate this model, and that the function arguments that need to be specified are called `prior` and `prior_intercept`. It turns out that `linear_reg()` has a [`stan` engine](https://parsnip.tidymodels.org/reference/linear_reg.html#details). Since these prior distribution arguments are specific to the Stan software, they are passed as arguments to [`parsnip::set_engine()`](https://parsnip.tidymodels.org/reference/set_engine.html). After that, the same exact `fit()` call is used:
 
 
-::: {.cell layout-align="center" hash='cache/go-stan_eddd72fd40bea602d679d53647cfec4f'}
+::: {.cell layout-align="center" hash='cache/go-stan_d2e4c04008ba47a994abd65a4fc3eda1'}
 
 ```{.r .cell-code}
 # set the prior distribution
@@ -377,16 +377,16 @@ print(bayes_fit, digits = 5)
 #>  predictors:   6
 #> ------
 #>                                Median   MAD_SD  
-#> (Intercept)                     0.03336  0.01003
-#> initial_volume                  0.00156  0.00040
-#> food_regimeLow                  0.01963  0.01308
-#> food_regimeHigh                 0.02120  0.01421
-#> initial_volume:food_regimeLow  -0.00126  0.00051
-#> initial_volume:food_regimeHigh  0.00054  0.00070
+#> (Intercept)                     0.03339  0.00943
+#> initial_volume                  0.00155  0.00039
+#> food_regimeLow                  0.01918  0.01296
+#> food_regimeHigh                 0.02095  0.01506
+#> initial_volume:food_regimeLow  -0.00125  0.00052
+#> initial_volume:food_regimeHigh  0.00053  0.00074
 #> 
 #> Auxiliary parameter(s):
 #>       Median  MAD_SD 
-#> sigma 0.02129 0.00188
+#> sigma 0.02128 0.00193
 #> 
 #> ------
 #> * For help interpreting the printed output see ?print.stanreg
@@ -400,19 +400,19 @@ This kind of Bayesian analysis (like many models) involves randomly generated nu
 To update the parameter table, the `tidy()` method is once again used: 
 
 
-::: {.cell layout-align="center" hash='cache/tidy-stan_bb45497a37b521633e968f3529225176'}
+::: {.cell layout-align="center" hash='cache/tidy-stan_b7f9c42eb5a5a3ce0684fd8833c81ef4'}
 
 ```{.r .cell-code}
 tidy(bayes_fit, conf.int = TRUE)
 #> # A tibble: 6 × 5
 #>   term                            estimate std.error  conf.low conf.high
 #>   <chr>                              <dbl>     <dbl>     <dbl>     <dbl>
-#> 1 (Intercept)                     0.0334    0.0100    0.0179    0.0493  
-#> 2 initial_volume                  0.00156   0.000404  0.000876  0.00219 
-#> 3 food_regimeLow                  0.0196    0.0131   -0.00271   0.0414  
-#> 4 food_regimeHigh                 0.0212    0.0142   -0.00289   0.0455  
-#> 5 initial_volume:food_regimeLow  -0.00126   0.000515 -0.00213  -0.000364
-#> 6 initial_volume:food_regimeHigh  0.000541  0.000696 -0.000669  0.00174
+#> 1 (Intercept)                     0.0334    0.00943   0.0175    0.0491  
+#> 2 initial_volume                  0.00155   0.000394  0.000903  0.00220 
+#> 3 food_regimeLow                  0.0192    0.0130   -0.00148   0.0411  
+#> 4 food_regimeHigh                 0.0210    0.0151   -0.00274   0.0447  
+#> 5 initial_volume:food_regimeLow  -0.00125   0.000516 -0.00208  -0.000429
+#> 6 initial_volume:food_regimeHigh  0.000530  0.000735 -0.000662  0.00171
 ```
 :::
 
@@ -420,7 +420,7 @@ tidy(bayes_fit, conf.int = TRUE)
 A goal of the tidymodels packages is that the **interfaces to common tasks are standardized** (as seen in the `tidy()` results above). The same is true for getting predictions; we can use the same code even though the underlying packages use very different syntax:
 
 
-::: {.cell layout-align="center" hash='cache/stan-pred_ceeac20323f8d65322224aef7a6bbd72'}
+::: {.cell layout-align="center" hash='cache/stan-pred_be90d7c63ae8d4bfc2a5f320ec01248f'}
 
 ```{.r .cell-code}
 bayes_plot_data <- 
@@ -456,7 +456,7 @@ Also, using the tidymodels framework, we can do some interesting things by incre
 If you are familiar with the tidyverse, you may have noticed that our modeling code uses the magrittr pipe (`%>%`). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the _data_ as the first argument. For example: 
 
 
-::: {.cell layout-align="center" hash='cache/tidy-data_5fe8b739527b2f81ab4b0be04a791074'}
+::: {.cell layout-align="center" hash='cache/tidy-data_5baa7ec16f98f9fb235985f8995d8b2b'}
 
 ```{.r .cell-code}
 urchins %>% 
@@ -475,7 +475,7 @@ urchins %>%
 whereas the modeling code uses the pipe to pass around the _model object_:
 
 
-::: {.cell layout-align="center" hash='cache/tidy-model_1494c19f5cade983524eb65c04ab2513'}
+::: {.cell layout-align="center" hash='cache/tidy-model_99c2fdc9d55231fb53a0cbc266ffabcc'}
 
 ```{.r .cell-code}
 bayes_mod %>% 
@@ -502,41 +502,41 @@ ggplot(urchins,
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     * version date (UTC) lib source
-#>  broom       * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom       * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  broom.mixed * 0.2.9.4 2022-04-17 [1] CRAN (R 4.3.0)
 #>  dials       * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
 #>  dotwhisker  * 0.7.4   2021-09-02 [1] CRAN (R 4.3.0)
-#>  dplyr       * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer       * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip     * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr       * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+#>  dplyr       * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2     * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer       * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip     * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  readr       * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
-#>  recipes     * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  recipes     * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample     * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
-#>  rstanarm    * 2.21.4  2023-04-08 [1] CRAN (R 4.3.0)
+#>  rsample     * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
+#>  rstanarm    * 2.26.1  2023-09-13 [1] CRAN (R 4.3.0)
 #>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels  * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune        * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels  * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune        * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows   * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick   * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

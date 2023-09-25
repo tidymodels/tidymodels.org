@@ -54,7 +54,7 @@ library(vip)         # for variable importance plots
 In our previous [*Evaluate your model with resampling*](/start/resampling/) article, we introduced a data set of images of cells that were labeled by experts as well-segmented (`WS`) or poorly segmented (`PS`). We trained a [random forest model](/start/resampling/#modeling) to predict which images are segmented well vs. poorly, so that a biologist could filter out poorly segmented cell images in their analysis. We used [resampling](/start/resampling/#resampling) to estimate the performance of our model on this data.
 
 
-::: {.cell layout-align="center" hash='cache/cell-import_620d009694ed515939c5ab84c9919570'}
+::: {.cell layout-align="center" hash='cache/cell-import_5f111a92f81ab1d96958736979882b62'}
 
 ```{.r .cell-code}
 data(cells, package = "modeldata")
@@ -97,7 +97,7 @@ We will tune the model hyperparameters to avoid overfitting. Tuning the value of
 Before we start the tuning process, we split our data into training and testing sets, just like when we trained the model with one default set of hyperparameters. As [before](/start/resampling/), we can use `strata = class` if we want our training and testing sets to be created using stratified sampling so that both have the same proportion of both kinds of segmentation.
 
 
-::: {.cell layout-align="center" hash='cache/cell-split_8c1ca0d7be68dc025f6b0d565111c005'}
+::: {.cell layout-align="center" hash='cache/cell-split_9505326e9e00a28af0da7d682d3ff651'}
 
 ```{.r .cell-code}
 set.seed(123)
@@ -116,7 +116,7 @@ We use the training data for tuning the model.
 Let's start with the parsnip package, using a [`decision_tree()`](https://parsnip.tidymodels.org/reference/decision_tree.html) model with the [rpart](https://cran.r-project.org/web/packages/rpart/index.html) engine. To tune the decision tree hyperparameters `cost_complexity` and `tree_depth`, we create a model specification that identifies which hyperparameters we plan to tune.
 
 
-::: {.cell layout-align="center" hash='cache/tune-spec_e5d79e884708d6f25b9535caaddb3023'}
+::: {.cell layout-align="center" hash='cache/tune-spec_6a63b501635e9815a552a93502c214c8'}
 
 ```{.r .cell-code}
 tune_spec <- 
@@ -144,7 +144,7 @@ Think of `tune()` here as a placeholder. After the tuning process, we will selec
 We can't train this specification on a single data set (such as the entire training set) and learn what the hyperparameter values should be, but we *can* train many models using resampled data and see which models turn out best. We can create a regular grid of values to try using some convenience functions for each hyperparameter:
 
 
-::: {.cell layout-align="center" hash='cache/tree-grid_d67adfb503bc52dbebef73da6a919228'}
+::: {.cell layout-align="center" hash='cache/tree-grid_7f322b925334cb13bd17f52efa9a512d'}
 
 ```{.r .cell-code}
 tree_grid <- grid_regular(cost_complexity(),
@@ -157,7 +157,7 @@ tree_grid <- grid_regular(cost_complexity(),
 The function [`grid_regular()`](https://dials.tidymodels.org/reference/grid_regular.html) is from the [dials](https://dials.tidymodels.org/) package. It chooses sensible values to try for each hyperparameter; here, we asked for 5 of each. Since we have two to tune, `grid_regular()` returns 5 $\times$ 5 = 25 different possible tuning combinations to try in a tidy tibble format.
 
 
-::: {.cell layout-align="center" hash='cache/tree-grid-tibble_4e757ce1804c78a04dcf463e25e24531'}
+::: {.cell layout-align="center" hash='cache/tree-grid-tibble_c0ae5a16bdb9f5cdd82c1976c68fa8b0'}
 
 ```{.r .cell-code}
 tree_grid
@@ -202,7 +202,7 @@ tree_grid %>%
 Armed with our grid filled with 25 candidate decision tree models, let's create [cross-validation folds](/start/resampling/) for tuning:
 
 
-::: {.cell layout-align="center" hash='cache/cell-folds_53cd98ea6dad5a92958c3f0f00346611'}
+::: {.cell layout-align="center" hash='cache/cell-folds_c7fad351f968a97465907cf2dcf01779'}
 
 ```{.r .cell-code}
 set.seed(234)
@@ -224,7 +224,7 @@ We are ready to tune! Let's use [`tune_grid()`](https://tune.tidymodels.org/refe
 Here we use a `workflow()` with a straightforward formula; if this model required more involved data preprocessing, we could use `add_recipe()` instead of `add_formula()`.
 
 
-::: {.cell layout-align="center" hash='cache/tree-res_89ca0dc2ed9e3c2dd2e573d34a84a13d'}
+::: {.cell layout-align="center" hash='cache/tree-res_e8f9c2ef9e8aeda2100e5f1873a4f074'}
 
 ```{.r .cell-code}
 set.seed(345)
@@ -263,7 +263,7 @@ tree_res
 Once we have our tuning results, we can both explore them through visualization and then select the best result. The function `collect_metrics()` gives us a tidy tibble with all the results. We had 25 candidate models and two metrics, `accuracy` and `roc_auc`, and we get a row for each `.metric` and model.
 
 
-::: {.cell layout-align="center" hash='cache/collect-trees_f80e0747e613667426443cad2059daf8'}
+::: {.cell layout-align="center" hash='cache/collect-trees_8b6594b98765121998ff93696a8fe673'}
 
 ```{.r .cell-code}
 tree_res %>% 
@@ -289,7 +289,7 @@ tree_res %>%
 We might get more out of plotting these results:
 
 
-::: {.cell layout-align="center" hash='cache/best-tree_1a55e75c20efa9caa9d7cdf71f3a405f'}
+::: {.cell layout-align="center" hash='cache/best-tree_c052eb0fd61fa3fbb0e9ec0baf950ae5'}
 
 ```{.r .cell-code}
 tree_res %>%
@@ -314,7 +314,7 @@ tree_res %>%
 We can see that our "stubbiest" tree, with a depth of 1, is the worst model according to both metrics and across all candidate values of `cost_complexity`. Our deepest tree, with a depth of 15, did better. However, the best tree seems to be between these values with a tree depth of 4. The [`show_best()`](https://tune.tidymodels.org/reference/show_best.html) function shows us the top 5 candidate models by default:
 
 
-::: {.cell layout-align="center" hash='cache/show-best-tree_33388e34b2f988c64badd924a600d8ea'}
+::: {.cell layout-align="center" hash='cache/show-best-tree_aa1bc7d453af4acf8ff127e3072e7aa3'}
 
 ```{.r .cell-code}
 tree_res %>%
@@ -334,7 +334,7 @@ tree_res %>%
 We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show_best.html) function to pull out the single set of hyperparameter values for our best decision tree model:
 
 
-::: {.cell layout-align="center" hash='cache/select-best-tree_6de0d6852f5e5913d2c8d3f1689db25f'}
+::: {.cell layout-align="center" hash='cache/select-best-tree_15721402f425632396aa6dc053a2fa6d'}
 
 ```{.r .cell-code}
 best_tree <- tree_res %>%
@@ -356,7 +356,7 @@ These are the values for `tree_depth` and `cost_complexity` that maximize accura
 We can update (or "finalize") our workflow object `tree_wf` with the values from `select_best()`.
 
 
-::: {.cell layout-align="center" hash='cache/final-wf_ac50f36798990c975198e3d3454362e3'}
+::: {.cell layout-align="center" hash='cache/final-wf_5c6fb3bd4a5e1cfb2bebc6a756443aa1'}
 
 ```{.r .cell-code}
 final_wf <- 
@@ -390,7 +390,7 @@ Our tuning is done!
 Finally, let's fit this final model to the training data and use our test data to estimate the model performance we expect to see with new data. We can use the function [`last_fit()`](https://tune.tidymodels.org/reference/last_fit.html) with our finalized model; this function *fits* the finalized model on the full training data set and *evaluates* the finalized model on the testing data.
 
 
-::: {.cell layout-align="center" hash='cache/last-fit_f43e4f1224d157f36174805864397d06'}
+::: {.cell layout-align="center" hash='cache/last-fit_93f2210fff51d4b344d2b74fb8a9d55f'}
 
 ```{.r .cell-code}
 final_fit <- 
@@ -422,7 +422,7 @@ The performance metrics from the test set indicate that we did not overfit durin
 The `final_fit` object contains a finalized, fitted workflow that you can use for predicting on new data or further understanding the results. You may want to extract this object, using [one of the `extract_` helper functions](https://tune.tidymodels.org/reference/extract-tune.html).
 
 
-::: {.cell layout-align="center" hash='cache/last-fit-wf_e9628897749dc6b616930438ec04247f'}
+::: {.cell layout-align="center" hash='cache/last-fit-wf_57bb4c377e933d01457f171773326acd'}
 
 ```{.r .cell-code}
 final_tree <- extract_workflow(final_fit)
@@ -462,7 +462,7 @@ final_tree
 We can create a visualization of the decision tree using another helper function to extract the underlying engine-specific fit.
 
 
-::: {.cell layout-align="center" hash='cache/rpart-plot_0d99c5d26ec04a41d741cd3fd4721a6f'}
+::: {.cell layout-align="center" hash='cache/rpart-plot_95e3ddd2255bbb8527b39d073e623784'}
 
 ```{.r .cell-code}
 final_tree %>%
@@ -479,7 +479,7 @@ final_tree %>%
 Perhaps we would also like to understand what variables are important in this final model. We can use the [vip](https://koalaverse.github.io/vip/) package to estimate variable importance [based on the model's structure](https://koalaverse.github.io/vip/reference/vi_model.html#details).
 
 
-::: {.cell layout-align="center" hash='cache/vip_6dfe96ef8d26fe2d8082e117fef2f980'}
+::: {.cell layout-align="center" hash='cache/vip_4ec00b369b059f8252043529b3e76d2e'}
 
 ```{.r .cell-code}
 library(vip)
@@ -516,40 +516,40 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-25
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rpart      * 4.1.19  2022-10-21 [2] CRAN (R 4.3.0)
+#>  rpart      * 4.1.19  2022-10-21 [1] CRAN (R 4.3.0)
 #>  rpart.plot * 3.1.1   2022-05-21 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
-#>  vip        * 0.3.2   2020-12-17 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
+#>  vip        * 0.4.1   2023-08-21 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 
