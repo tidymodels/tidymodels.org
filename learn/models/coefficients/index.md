@@ -37,7 +37,7 @@ Let's use the [Chicago train data](https://bookdown.org/max/FES/chicago-intro.ht
 The data are in the modeldata package:  
 
 
-::: {.cell layout-align="center" hash='cache/setup-tm_3c62ed3269c9f83290a23b1868643123'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -63,7 +63,7 @@ The `fit()` function estimates the model coefficients, given a formula and data 
 
 
 
-::: {.cell layout-align="center" hash='cache/lm-single_d682bba3e2c615596ba0fa9d3e2dcab6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_spec <- linear_reg()
@@ -85,7 +85,7 @@ lm_fit
 The best way to retrieve the fitted parameters is to use the `tidy()` method. This function, in the broom package, returns the coefficients and their associated statistics in a data frame with standardized column names: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-tidy_9ffd88b1fd2ef662d63fc2b321fecc28'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(lm_fit)
@@ -109,7 +109,7 @@ The tidymodels framework emphasizes the use of resampling methods to evaluate an
 We'll use five bootstrap resamples of the data to simplify the plots and output (normally, we would use a larger number of resamples for more reliable estimates).
 
 
-::: {.cell layout-align="center" hash='cache/bootstraps_6dc56e6534f5e6428e847824c53d16ae'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(123)
@@ -135,7 +135,7 @@ From this, we can extract the model fit. There are two "levels" of model objects
 We'll use the latter option and then tidy this model object as we did in the previous section. Let's add this to the control function so that we can re-use it. 
 
 
-::: {.cell layout-align="center" hash='cache/lm-ctrl_68eb5854b3d09c10827ef5796782bf90'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_lm_coefs <- function(x) {
@@ -153,7 +153,7 @@ tidy_ctrl <- control_grid(extract = get_lm_coefs)
 This argument is then passed to `fit_resamples()`:
 
 
-::: {.cell layout-align="center" hash='cache/lm-resampled_4c7cdd481978bb8ecf3a7175bb2b6767'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_res <- 
@@ -178,7 +178,7 @@ Note that there is a `.extracts` column in our resampling results. This object c
 
 
 
-::: {.cell layout-align="center" hash='cache/lm-extract-ex_6fe70af4d83026c301f4a01b8989a77c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_res$.extracts[[1]]
@@ -193,7 +193,7 @@ lm_res$.extracts[[1]]
 There is _another_ column in this element called `.extracts` that has the results of the `tidy()` function call: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-extract-again_220bcd7c5fb1ad860be00f1ca6070ca5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_res$.extracts[[1]]$.extracts[[1]]
@@ -211,7 +211,7 @@ lm_res$.extracts[[1]]$.extracts[[1]]
 These nested columns can be flattened via the purrr `unnest()` function: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-extract-almost_8aab0eb0e6b5300b0875e34f8f942440'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_res %>% 
@@ -232,7 +232,7 @@ lm_res %>%
 We still have a column of nested tibbles, so we can run the same command again to get the data into a more useful format: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-extract-final_c3c0255dea0e96a5063d20a9c5f29a0d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_coefs <- 
@@ -272,7 +272,7 @@ lm_coefs %>% select(id, term, estimate, p.value)
 That's better! Now, let's plot the model coefficients for each resample: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-plot_d4c214c82a5c28639908e4376dc4b6f0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_coefs %>%
@@ -307,7 +307,7 @@ There are two types of penalization that this model uses:
 The glmnet model has two primary tuning parameters, the total amount of penalization and the mixture of the two penalty types. For example, this specification:
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-spec_aa8ba4a27027dd2f3203ca0c4cbcadd0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_spec <- 
@@ -326,7 +326,7 @@ Models with regularization require that predictors are all on the same scale. Th
 Let's combine the model specification with a formula in a model `workflow()` and then fit the model to the data:
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-wflow_a4b94750dfc257f9c705550ea02976aa'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_wflow <- 
@@ -412,7 +412,7 @@ Let's look at two different approaches to obtaining the coefficients. Both will 
 This glmnet fit contains multiple penalty values which depend on the data set; changing the data (or the mixture amount) often produces a different set of values. For this data set, there are 55 penalties available. To get the set of penalties produced for this data set, we can extract the engine fit and tidy: 
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-tidy_193cd691eef436b864295c72fa770419'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_fit %>% 
@@ -445,7 +445,7 @@ This works well but, it turns out that our penalty value (0.1) is not in the lis
 If we run the `tidy()` method on the workflow or parsnip object, a different function is used that returns the coefficients for the penalty value that we specified: 
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-tidy-parsnip_0eeca1d15406f3d7fd92e2ee5d5df8c4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(glmnet_fit)
@@ -463,7 +463,7 @@ tidy(glmnet_fit)
 For any another (single) penalty, we can use an additional argument:
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-tidy-parsnip-alt_bed47e5d6f6cc5fcce6ef86f9e7c28d1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(glmnet_fit, penalty = 5.5620)  # A value from above
@@ -488,7 +488,7 @@ If we know a priori acceptable values for penalty and mixture, we can use the `f
 Let's tune our glmnet model over both parameters with this grid: 
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-grid_396d1081fd95a74298ca7d9a70eaecc3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 pen_vals <- 10^seq(-3, 0, length.out = 10)
@@ -504,7 +504,7 @@ The approach that we suggest is to use the special `path_values` option for glmn
 We can pass these as an engine argument and then update our previous workflow object:
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-tune_2dbffd41c2f5410869a0be00772abe92'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_tune_spec <- 
@@ -521,7 +521,7 @@ glmnet_wflow <-
 Now we will use an extraction function similar to when we used ordinary least squares. We add an additional argument to retain coefficients that are shrunk to zero by the lasso penalty: 
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-tuning_b40071672f600dd53563c123428f6925'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_glmnet_coefs <- function(x) {
@@ -557,7 +557,7 @@ glmnet_res
 As noted before, the elements of the main `.extracts` column have an embedded list column with the results of `get_glmnet_coefs()`:  
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-extract-single_fc0edc41740522e1d3d3dc6a72e49b19'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_res$.extracts[[1]] %>% head()
@@ -588,7 +588,7 @@ glmnet_res$.extracts[[1]]$.extracts[[1]] %>% head()
 As before, we'll have to use a double `unnest()`. Since the penalty value is in both the top-level and lower-level `.extracts`, we'll use `select()` to get rid of the first version (but keep `mixture`):
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-extract-1_9455fc19d1549afcae51a11e1cc7e9f5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_res %>% 
@@ -603,7 +603,7 @@ glmnet_res %>%
 But wait! We know that each glmnet fit contains all of the coefficients. This means, for a specific resample and value of `mixture`, the results are the same:  
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-extract-dups_03b7f89e440fb7b9ae447769db4b0f9c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 all.equal(
@@ -620,7 +620,7 @@ all.equal(
 For this reason, we'll add a `slice(1)` when grouping by `id` and `mixture`. This will get rid of the replicated results. 
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-extract-final_cc8c2db66a277d13ec182505294e8545'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_coefs <- 
@@ -657,7 +657,7 @@ glmnet_coefs %>%
 Now we have the coefficients. Let's look at how they behave as more regularization is used: 
 
 
-::: {.cell layout-align="center" hash='cache/glmnet-plot_8468a6d5387d7c2f6de1f493913cec7c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_coefs %>% 
@@ -688,7 +688,7 @@ Notice a couple of things:
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -701,7 +701,7 @@ Notice a couple of things:
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

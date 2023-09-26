@@ -46,7 +46,7 @@ To start, let's define the various types of times that will be mentioned:
 As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
 
 
-::: {.cell layout-align="center" hash='cache/data_91ea1cc62a91d03aefd413be0f807086'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -70,7 +70,7 @@ sim_val <- testing(split)
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
 
 
-::: {.cell layout-align="center" hash='cache/bag-tree-fit_aacc16c94e976eb09a5315d41fef916f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(17)
@@ -93,7 +93,7 @@ bag_tree_fit
 Using this model, we can make predictions of different types and `augment()` provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred_7dd8d8645b17d7f4f00e9eac86ba3128'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 time_points <- seq(0, 21, by = 0.25)
@@ -121,7 +121,7 @@ val_pred
 The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column `.pred_survival`. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-dynamic_c386171d6bfc889b48602c2e15fc50c0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 val_pred$.pred[[1]]
@@ -157,7 +157,7 @@ To assess model performance at evaluation time $t$, we turn the observed event t
 We can use binary versions of the observations in the first two categories to compute binary performance metrics, but the observations in the third category are not used directly in these calculations. (They do influence the calculation of the weights, see next section.) So our usable sample size changes with the evaluation time.
 
 
-::: {.cell layout-align="center" hash='cache/plot-graf-categories_e87b93b5a00ac22f5e194c380ffc0ce7'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/plot-graf-categories-1.svg){fig-align='center' width=864}
 :::
@@ -175,7 +175,7 @@ Every time a censored regression model is created using tidymodels, the RKM is e
 For our simulated data, here is what the RKM curve looks like: 
 
 
-::: {.cell layout-align="center" hash='cache/RKM_e2682098e15aa020dfe6ac2c3a01e2dc'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/RKM-1.svg){fig-align='center' width=672}
 :::
@@ -197,7 +197,7 @@ First, when do we evaluate the probability of censoring? There are different app
 We call this time at which to predict the probability of censoring the _weight time_. Here's an example using the first data point in the validation set: 
 
 
-::: {.cell layout-align="center" hash='cache/eval-time-censored_b460b245e264e40e1b41e9985ec3b069'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 dyn_val_pred <- 
@@ -236,7 +236,7 @@ To illustrate how these two tools for accounting for censoring are used in calcu
 First, let's turn the observed event time data and the predictions into their binary versions.
 
 
-::: {.cell layout-align="center" hash='cache/binary-encoding_67aa6106d63929ca7590dc08d7677cc7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 time_as_binary_event <- function(surv, eval_time) {
@@ -270,7 +270,7 @@ binary_encoding <-
 Remember how observations falling into category 3 are removed from the analysis? This means we'll likely have fewer data points to evaluate as the evaluation time increases. This implies that the variation in the metrics will be considerable as evaluation time goes on. For our simulated training set: 
 
 
-::: {.cell layout-align="center" hash='cache/usable-data_fd493a254fc3b3a74db7db7fa6366561'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 dyn_val_pred %>% 
@@ -299,7 +299,7 @@ binary_encoding %>%
 For censored regression problems, we need to additionally use the censoring weights so we'll include them via the `case_weights` argument:
 
 
-::: {.cell layout-align="center" hash='cache/conf-mat-01_6abc2f19da9df32e988b0af5272339a4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_encoding %>%
@@ -324,7 +324,7 @@ This early, performance looks very good but that is mostly because there are few
 Let's shift to an evaluation time of 5.0. 
 
 
-::: {.cell layout-align="center" hash='cache/conf-mat-05_bf66b9d4634d90bd79b7e46d4e8ba016'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_encoding %>%
@@ -347,7 +347,7 @@ Now we have fewer total observations to consider (391 instead of 492 usable valu
 What happends when the evaluation time is 17?
 
 
-::: {.cell layout-align="center" hash='cache/conf-mat-17_5928256f2a6474659d553aadd85d0e5e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_encoding %>%
@@ -382,7 +382,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -395,7 +395,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

@@ -30,7 +30,7 @@ This article demonstrates how to create and use importance weights in a predicti
 To demonstrate we will use the Chicago data from the modeldata package.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_b073b9c0d2d38aeb4a5224075d7fd41e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -63,7 +63,7 @@ $$ weight = base ^ x $$
 where `base` is some constant and `x` is the number of days. To make sure that we select a reasonable `base`, we need to do some manual testing, starting with looking at how old the oldest observation is.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-4_ef4371c9549adc79f61c9d1327fb804a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 difftime("2016-01-01", min(Chicago$date))
@@ -75,7 +75,7 @@ difftime("2016-01-01", min(Chicago$date))
 Using this information we can visualize the weight curve, to see if we like the value of `base`.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_c74cef63496f3567b4bd4942bad4892a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tibble_days <- tibble(days = 0:5457)
@@ -96,7 +96,7 @@ setting `base` to 0.99 appears to be down weighted too much. Any observation mor
 Let us try a few more values to find 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_958a7138f25afbfc3161fbf834e13d95'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 map_dfr(
@@ -116,7 +116,7 @@ map_dfr(
 From this, we could pick something around 0.999 since it gives a better balance. Let's create a small function to help us encode this weight. 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_6ab55e103a49d631a5cc38beedc580f3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 weights_from_dates <- function(x, ref) {
@@ -133,7 +133,7 @@ weights_from_dates <- function(x, ref) {
 We then modify `Chicago` to add a weight column, explicitly making it an importance weight with `importance_weight()`.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-8_a5652b9e9e09ac4c66ed19872be89eb8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 Chicago <- Chicago %>%
@@ -150,7 +150,7 @@ This approach to creating importance weights from dates is not limited to cases 
 We start by splitting up our data into a training and testing set based on the day `"2016-01-01"`. We added weights to the data set before splitting it so each set has weights.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_8135e3246a09512d38ee24dcde4681f7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 Chicago_train <- Chicago %>% filter(date < "2016-01-01")
@@ -162,7 +162,7 @@ Chicago_test <- Chicago %>% filter(date >= "2016-01-01")
 Next, we are going to create a recipe. The weights won't have any influence on the preprocessing since none of these operations are supervised and we are using importance weights.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_ef84fffe914d6e05e47d4c33949c56e6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 base_recipe <-
@@ -183,7 +183,7 @@ base_recipe <-
 Next we need to build the rest of the workflow. We use a linear regression specification
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_97612c19efbb436b81e1a8d88fa0c208'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_spec <-
@@ -196,7 +196,7 @@ lm_spec <-
 and we add these together in the workflow. To activate the case weights, we use the `add_case_weights()` function to specify the name of the case weights being used.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_896852baf2e4899bc3ea08d055cab4d2'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_wflow <-
@@ -233,7 +233,7 @@ lm_wflow
 With all that done we can fit the workflow with the usual syntax: 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_c322328206c4095202be5989a8810759'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_fit <- fit(lm_wflow, data = Chicago_train)
@@ -277,7 +277,7 @@ lm_fit
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -290,7 +290,7 @@ lm_fit
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

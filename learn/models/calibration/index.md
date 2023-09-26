@@ -36,7 +36,7 @@ A classification model is well-calibrated if its probability estimate is consist
 To get started, load some packages: 
 
 
-::: {.cell layout-align="center" hash='cache/startup2_26afe043f69fc2c36bb6e63eb4cb1036'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -58,7 +58,7 @@ The modeldata package contains a data set called `cells`. Initially distributed 
 Let's load the data, remove an unwanted column, and look at the outcome frequencies: 
 
 
-::: {.cell layout-align="center" hash='cache/cell-data-start_d2231c2fda30aef15ca463e4726e6b53'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 data(cells)
@@ -81,7 +81,7 @@ There is a class imbalance but that will not affect our work here.
 Let's make a 75% to 25% split of the data into training and testing using `initial_split()`. We'll also create a set of 10-fold cross-validation indices for model resampling. 
 
 
-::: {.cell layout-align="center" hash='cache/cell-data-obj_0f70702f7c72a3d59558dacfbb45ef81'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(8928)
@@ -103,7 +103,7 @@ We'll show the utility of calibration tools by using a type of model that, in th
 To demonstrate, let's set up the model:
 
 
-::: {.cell layout-align="center" hash='cache/bayes-setup_ac7cd226df98c425885d3b26be8dd3ea'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 bayes_wflow <-
@@ -117,7 +117,7 @@ bayes_wflow <-
 We'll resample the model first so that we can get a good assessment of the results. During the resampling process, two metrics are used to judge how well the model worked. First, the area under the ROC curve is used to measure the ability of the model to separate the classes (using probability predictions). Second, the Brier score can measure how close the probability estimates are to the actual outcome values (zero or one). The `collect_metrics()` function shows the resampling estimates: 
 
 
-::: {.cell layout-align="center" hash='cache/bayes-resample_e037b3c3d8ffe4116bef3c6052b0003f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cls_met <- metric_set(roc_auc, brier_class)
@@ -147,7 +147,7 @@ Spoilers: no. It is not.
 The first clue is the extremely U-shaped distribution of the probability scores (facetted by the true class value): 
 
 
-::: {.cell layout-align="center" hash='cache/prob-hist_6c5705dea7f588d73bb5191d5773dfcc'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 collect_predictions(bayes_res) %>%
@@ -171,7 +171,7 @@ The probably package has tools for visualizing and correcting models with poor c
 The most common plot is to break the predictions into about ten equally sized buckets and compute the actual event rate within each. For example, if a bin captures the samples predicted to be poorly segmented with probabilities between 20% and 30%, we should expect about a 25% event rate (i.e., the bin midpoint) within that partition. Here's a plot with ten bins: 
 
 
-::: {.cell layout-align="center" hash='cache/break-plot_2ba0e22cea27fdae16d9a04248337ce6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cal_plot_breaks(bayes_res)
@@ -188,7 +188,7 @@ The probabilities are not showing very good accuracy.
 There is also a similar function that can use moving windows with overlapping partitions. This provides a little more detail: 
 
 
-::: {.cell layout-align="center" hash='cache/break-windowed_c6ebcb94d5b19e487b331b83c702e820'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cal_plot_windowed(bayes_res, step_size = 0.025)
@@ -205,7 +205,7 @@ Bad. Still bad.
 Finally, for two class outcomes, we can fit a logistic generalized additive model (GAM) and examine the trend. 
 
 
-::: {.cell layout-align="center" hash='cache/break-logistic_dc5b63db0367e06f4e8c8b79d0e7c9c4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cal_plot_logistic(bayes_res)
@@ -232,7 +232,7 @@ How do we know if this works? There are a set of `cal_validate_*()` functions th
 `collect_metrics()` can again be used to see the performance statistics. We'll also use `cal_plot_windowed()` on the calibrated holdout data to get a visual assessment:  
 
 
-::: {.cell layout-align="center" hash='cache/logistic-cal_534de56452cf2a3dca84de4c6ed5411c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 logit_val <- cal_validate_logistic(bayes_res, metrics = cls_met, save_pred = TRUE)
@@ -262,7 +262,7 @@ That's a lot better but it is problematic that the calibrated predictions do not
 A different approach is to use isotonic regression. This method can result in very few unique probability estimates. The probably package has a version of isotonic regression that resamples the process to produce more unique probabilities: 
 
 
-::: {.cell layout-align="center" hash='cache/isoreg-cal_58488f41d2b0676ebe853b7ecad0a827'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(1212)
@@ -294,7 +294,7 @@ Much better. However, there is a slight bias since the estimated points are cons
 Finally, we can also test out [Beta calibration](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Beyond+sigmoids%22+calibration&btnG=): 
 
 
-::: {.cell layout-align="center" hash='cache/beta-cal_c5a2c8d3f91654b0c667388cce5fc00e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 beta_val <- cal_validate_beta(bayes_res, metrics = cls_met, save_pred = TRUE)
@@ -326,7 +326,7 @@ Beta calibration appears to have the best results. We'll save a model that is tr
 We can also fit the final naive Bayes model to predict the test set: 
 
 
-::: {.cell layout-align="center" hash='cache/finalize_db348508be0165f15ee11320869da5b4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cell_cal <- cal_estimate_beta(bayes_res)
@@ -342,7 +342,7 @@ The `cell_cal` object can be used to enact the calibration for new predictions (
 First, we make our ordinary predictions: 
 
 
-::: {.cell layout-align="center" hash='cache/uncalibrated_a1640019be59d16ea8fdc0502042631e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cell_test_pred <- augment(bayes_fit, new_data = cells_te)
@@ -361,7 +361,7 @@ These metric estimates are very consistent with the resampled performance estima
 We can then use our `cell_cal` object with the `cal_apply()` function:
 
 
-::: {.cell layout-align="center" hash='cache/calibrated_d22f0582cc06dd1a09398dba32c3a50c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cell_test_cal_pred <-
@@ -391,7 +391,7 @@ Note that `cal_apply()` recomputed the hard class predictions in the `.pred_clas
 What do the calibrated test set results show? 
 
 
-::: {.cell layout-align="center" hash='cache/calibrated-res_21035e55141524b83c1b10c4b759965f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cell_test_cal_pred %>% cls_met(class, .pred_PS)
@@ -429,7 +429,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 ## Session information
 
 
-::: {.cell layout-align="center" hash='cache/si_4fd2d384ef4c6813978500db3c094c71'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -442,7 +442,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

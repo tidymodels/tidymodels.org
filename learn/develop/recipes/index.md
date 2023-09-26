@@ -40,7 +40,7 @@ As an example, we will create a step for converting data into percentiles.
 Let's create a step that replaces the value of a variable with its percentile from the training set. The example data we'll use is from the modeldata package:
 
 
-::: {.cell layout-align="center" hash='cache/initial_6d13a43b42215879966b6abb940cf7af'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(modeldata)
@@ -65,7 +65,7 @@ biomass_te <- biomass[biomass$dataset == "Testing",]
 To illustrate the transformation with the `carbon` variable, note the training set distribution of this variable with a vertical line below for the first value of the test set. 
 
 
-::: {.cell layout-align="center" hash='cache/carbon_dist_5e19122970b51ac1fc8e65315af2dcb6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(ggplot2)
@@ -96,7 +96,7 @@ To start, there is a _user-facing_ function. Let's call that `step_percentiles()
 The function `step_percentiles()` takes the same arguments as your function and simply adds it to a new recipe. The `...` signifies the variable selectors that can be used.
 
 
-::: {.cell layout-align="center" hash='cache/initial_def_0ccdbcc058e5d48f8e3c0d10999fdf4a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 step_percentiles <- function(
@@ -161,7 +161,7 @@ step_percentiles() calls recipes::add_step()
 `step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentile"` will set the class of new objects to `"step_percentiles"`. 
 
 
-::: {.cell layout-align="center" hash='cache/initialize_34ce5b213f25713676596819a20ce33e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 step_percentiles_new <- 
@@ -206,7 +206,7 @@ The first thing that you might want to do in the `prep()` function is to transla
 :::
 
 
-::: {.cell layout-align="center" hash='cache/prep_1_40cab72109e99fda0670583c26234071'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 prep.step_percentiles <- function(x, training, info = NULL, ...) {
@@ -222,7 +222,7 @@ After this function call, it is a good idea to check that the selected columns h
 Once we have this, we can save the approximation grid. For the grid, we will use a helper function that enables us to run `rlang::exec()` to splice in any extra arguments contained in the `options` list to the call to `quantile()`: 
 
 
-::: {.cell layout-align="center" hash='cache/splice_fd7fa4ea1fae5ea5884f49be8e42af64'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_train_pctl <- function(x, args = NULL) {
@@ -245,7 +245,7 @@ get_train_pctl(biomass_tr$carbon)
 Now, the `prep()` method can be created: 
 
 
-::: {.cell layout-align="center" hash='cache/prep-2_6223d167892e008d9f8938f000203eb2'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 prep.step_percentiles <- function(x, training, info = NULL, ...) {
@@ -298,7 +298,7 @@ where `object` is the updated step function that has been through the correspond
 Here is the code to convert the new data to percentiles. The input data (`x` below) comes in as a numeric vector and the output is a vector of approximate percentiles: 
 
 
-::: {.cell layout-align="center" hash='cache/bake-helpers_e7f22959261650cb4d02aa8798c77335'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 pctl_by_approx <- function(x, ref) {
@@ -314,7 +314,7 @@ pctl_by_approx <- function(x, ref) {
 We will loop over the variables one by and and apply the transformation. `check_new_data()` is used to make sure that the variables that are affected in this step are present.
 
 
-::: {.cell layout-align="center" hash='cache/bake-method_6ef0e70c863d982dbdd6b1cb2f3deaac'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 bake.step_percentiles <- function(object, new_data, ...) {
@@ -345,7 +345,7 @@ You need to import `recipes::prep()` and `recipes::bake()` to create your own st
 Let's use the example data to make sure that it works: 
 
 
-::: {.cell layout-align="center" hash='cache/example_5d94eafafb5d89d28d8e5e08bec77985'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rec_obj <- 
@@ -376,7 +376,7 @@ mean(biomass_tr$oxygen   <= biomass_te$oxygen[1])
 The plot below shows how the original hydrogen percentiles line up with the estimated values:
 
 
-::: {.cell layout-align="center" hash='cache/cdf_plot_07361351c8ed5403565c88d52972d9e4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 hydrogen_values <- 
@@ -424,7 +424,7 @@ There are a few other S3 methods that can be created for your step function. The
 If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `print_step()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
 
 
-::: {.cell layout-align="center" hash='cache/print-method_8b311a057d031a3963449a8856bccbab'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 print.step_percentiles <-
@@ -492,7 +492,7 @@ a clean R session then run: install.packages("some_package")
 There is an S3 method that can be used to declare what packages should be loaded when using the step. For a hypothetical step that relies on the `hypothetical` package, this might look like: 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-15_f598d97f938ef3964628a17c380c69a5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 required_pkgs.step_hypothetical <- function(x, ...) {
@@ -509,7 +509,7 @@ The reason to declare what packages should be loaded is parallel processing. Whe
 If this S3 method is used for your step, you can rely on this for checking the installation: 
  
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-16_ddd25c4a6798358a6c399170fc7028b4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 recipes::recipes_pkg_check(required_pkgs.step_hypothetical())
@@ -529,7 +529,7 @@ The `broom::tidy()` method is a means to return information about the step in a 
 When the recipe has been prepped, those data are in the list `ref_dist`. A small function can be used to reformat that data into a tibble. It is customary to return the main values as `value`:
 
 
-::: {.cell layout-align="center" hash='cache/tidy-calcs_0bb2093f6f728fce90b41a36fdbc21e0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 format_pctl <- function(x) {
@@ -566,7 +566,7 @@ format_pctl(pctl_step_object$ref_dist[["hydrogen"]])
 The tidy method could return these values for each selected column. Before `prep()`, missing values can be used as placeholders. 
 
 
-::: {.cell layout-align="center" hash='cache/tidy_de2ef0e9c3b5d089907cf10742a82046'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy.step_percentiles <- function(x, ...) {
@@ -599,16 +599,16 @@ tidy(rec_obj, number = 1)
 #> # A tibble: 274 × 4
 #>    term     value percentile id               
 #>    <chr>    <dbl>      <dbl> <chr>            
-#>  1 hydrogen 0.03           0 percentiles_Ts41a
-#>  2 hydrogen 0.934          1 percentiles_Ts41a
-#>  3 hydrogen 1.60           2 percentiles_Ts41a
-#>  4 hydrogen 2.07           3 percentiles_Ts41a
-#>  5 hydrogen 2.45           4 percentiles_Ts41a
-#>  6 hydrogen 2.74           5 percentiles_Ts41a
-#>  7 hydrogen 3.15           6 percentiles_Ts41a
-#>  8 hydrogen 3.49           7 percentiles_Ts41a
-#>  9 hydrogen 3.71           8 percentiles_Ts41a
-#> 10 hydrogen 3.99           9 percentiles_Ts41a
+#>  1 hydrogen 0.03           0 percentiles_mESA8
+#>  2 hydrogen 0.934          1 percentiles_mESA8
+#>  3 hydrogen 1.60           2 percentiles_mESA8
+#>  4 hydrogen 2.07           3 percentiles_mESA8
+#>  5 hydrogen 2.45           4 percentiles_mESA8
+#>  6 hydrogen 2.74           5 percentiles_mESA8
+#>  7 hydrogen 3.15           6 percentiles_mESA8
+#>  8 hydrogen 3.49           7 percentiles_mESA8
+#>  9 hydrogen 3.71           8 percentiles_mESA8
+#> 10 hydrogen 3.99           9 percentiles_mESA8
 #> # ℹ 264 more rows
 ```
 :::
@@ -619,7 +619,7 @@ tidy(rec_obj, number = 1)
 The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn't really have any tunable parameters, so we will demonstrate using `step_poly()`, which returns a polynomial expansion of selected columns. Its function definition has the arguments: 
 
 
-::: {.cell layout-align="center" hash='cache/poly-args_caf441ee540f301d05ff5602487a2650'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 args(step_poly)
@@ -652,7 +652,7 @@ The main piece of information that requires some detail is `call_info`. This is 
 For example, for a nearest-neighbors `neighbors` parameter, this value is just: 
 
 
-::: {.cell layout-align="center" hash='cache/mtry_899f046b7cfc5bcc9eeb779067e4319f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 info <- list(pkg = "dials", fun = "neighbors")
@@ -681,7 +681,7 @@ Looking at the `range` values, some return doubles and others return integers. F
 For `step_poly()` the `tunable()` S3 method could be: 
 
 
-::: {.cell layout-align="center" hash='cache/tunable_e02664b2f7c9c506499ae62c337dcc2b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tunable.step_poly <- function (x, ...) {
@@ -700,7 +700,7 @@ tunable.step_poly <- function (x, ...) {
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -713,7 +713,7 @@ tunable.step_poly <- function (x, ...) {
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

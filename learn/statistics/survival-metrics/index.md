@@ -45,7 +45,7 @@ To start, let's define the various types of times that will be mentioned:
 As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
 
 
-::: {.cell layout-align="center" hash='cache/data_42b48883e7903f8958700bf3f39525ee'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -72,7 +72,7 @@ sim_rs <- vfold_cv(sim_tr)
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
 
 
-::: {.cell layout-align="center" hash='cache/bag-tree-fit_aacc16c94e976eb09a5315d41fef916f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(17)
@@ -107,7 +107,7 @@ where `eval_time` is a vector of time points at which we want the corresponding 
 The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred_7dd8d8645b17d7f4f00e9eac86ba3128'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 time_points <- seq(0, 21, by = 0.25)
@@ -135,7 +135,7 @@ val_pred
 The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column `.pred_survival`. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-dynamic_c386171d6bfc889b48602c2e15fc50c0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 val_pred$.pred[[1]]
@@ -186,7 +186,7 @@ How do we compute this using the yardstick package? The function [`brier_surviva
 Since the evaluation times and the case weights are within the `.pred` column, there is no need to specify these. Here are the results of our validation set: 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-brier_cc3492ab0108dabc8c2c8c4ba1fbd542'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 brier_scores <-
@@ -214,7 +214,7 @@ brier_scores
 Over time:
 
 
-::: {.cell layout-align="center" hash='cache/brier-scores_13db6b16e82feb40db50c941da37199b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 brier_scores %>% 
@@ -234,7 +234,7 @@ brier_scores %>%
 There is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the plot shown above. The syntax is the same but the result has a single row: 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-brier-int_a3cc43e2b5d8b2a3edda42d4eed6eb62'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 val_pred %>% brier_survival_integrated(truth = event_time, .pred)
@@ -260,7 +260,7 @@ These depend on the threshold used to turn predicted probabilities into predicte
 
 
 
-::: {.cell layout-align="center" hash='cache/surv-hist-05_7d278716c6b14edbfcc22ee2eb5df16f'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/surv-hist-05-1.svg){fig-align='center' width=70%}
 :::
@@ -278,7 +278,7 @@ ROC curves were designed as a general method that, given a collection of continu
 For our example at evaluation time $t = 5.00$, the ROC curve is: 
 
 
-::: {.cell layout-align="center" hash='cache/roc-5_51cf7b7d58c785ec0b33ff7855854742'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/roc-5-1.svg){fig-align='center' width=672}
 :::
@@ -290,7 +290,7 @@ The area under this curve is 0.807.
 Since this is a dynamic metric, we compute the AUC for each evaluation time. The syntax is very similar to the Brier code shown above: 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-roc_aac3021d4364dbc86df2aa1486eb62bb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roc_scores <-
@@ -318,7 +318,7 @@ roc_scores
 Over time:
 
 
-::: {.cell layout-align="center" hash='cache/roc-scores_66155d0cc449a9b6c3e124bbda82c073'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roc_scores %>% 
@@ -359,7 +359,7 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -372,7 +372,7 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

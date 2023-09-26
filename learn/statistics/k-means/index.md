@@ -32,7 +32,7 @@ K-means clustering serves as a useful example of applying tidy data principles t
 Let's start by generating some random two-dimensional data with three clusters. Data in each cluster will come from a multivariate gaussian distribution, with different means for each cluster:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_da2530708f5dfb4a750218471fffffbf'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -72,7 +72,7 @@ This is an ideal case for k-means clustering.
 Rather than using equations, this short animation using the [artwork](https://github.com/allisonhorst/stats-illustrations) of Allison Horst explains the clustering process:
 
 
-::: {.cell layout-align="center" hash='cache/illustrations_3c3dd62fcfef9dfc0e08cd418f582dfc'}
+::: {.cell layout-align="center"}
 ![](kmeans.gif){fig-align='center'}
 :::
 
@@ -82,7 +82,7 @@ Rather than using equations, this short animation using the [artwork](https://gi
 We'll use the built-in `kmeans()` function, which accepts a data frame with all numeric columns as it's primary argument.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_d5799415ae2a6c1256f67a67ce3a5e21'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 points <- 
@@ -144,7 +144,7 @@ These differing lengths have important meaning when we want to tidy our data set
 Which of these do we want to extract? There is no right answer; each of them may be interesting to an analyst. Because they communicate entirely different information (not to mention there's no straightforward way to combine them), they are extracted by separate functions. `augment` adds the point classifications to the original data set:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_d3717c89fa92a77f402386f99eef2483'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 augment(kclust, points)
@@ -169,7 +169,7 @@ augment(kclust, points)
 The `tidy()` function summarizes on a per-cluster level:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_0a4cf01e15081ad3264ba86f6be73b57'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(kclust)
@@ -186,7 +186,7 @@ tidy(kclust)
 And as it always does, the `glance()` function extracts a single-row summary:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-8_8f7a9984fb72d6f34b4de07a0298ed4a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glance(kclust)
@@ -205,7 +205,7 @@ While these summaries are useful, they would not have been too difficult to extr
 Let's say we want to explore the effect of different choices of `k`, from 1 to 9, on this clustering. First cluster the data 9 times, each using a different value of `k`, then create columns containing the tidied, glanced and augmented data:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_8a3b763e4cfe1ee19371d93a101e539b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 kclusts <- 
@@ -237,7 +237,7 @@ kclusts
 We can turn these into three separate data sets each representing a different type of data: using `tidy()`, using `augment()`, and using `glance()`. Each of these goes into a separate data set as they represent different types of data.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_4ee4df38af9a1ae909e447f414ee89d3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 clusters <- 
@@ -258,7 +258,7 @@ clusterings <-
 Now we can plot the original points using the data from `augment()`, with each point colored according to the predicted cluster.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_3abb5db4f373908d0863fd146b176426'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 p1 <- 
@@ -277,7 +277,7 @@ p1
 Already we get a good sense of the proper number of clusters (3), and how the k-means algorithm functions when `k` is too high or too low. We can then add the centers of the cluster using the data from `tidy()`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_49aab4b0d7329a8754bd357b1756a811'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 p2 <- p1 + geom_point(data = clusters, size = 10, shape = "x")
@@ -293,7 +293,7 @@ p2
 The data from `glance()` fills a different but equally important purpose; it lets us view trends of some summary statistics across values of `k`. Of particular interest is the total within sum of squares, saved in the `tot.withinss` column.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_82d1ec1e6969b8d13f5406447ac5ea8c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(clusterings, aes(k, tot.withinss)) +
@@ -312,7 +312,7 @@ This represents the variance within the clusters. It decreases as `k` increases,
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -325,7 +325,7 @@ This represents the variance within the clusters. It decreases as `k` increases,
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

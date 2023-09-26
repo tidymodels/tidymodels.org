@@ -35,7 +35,7 @@ This article describes the process of creating a new model function. Before proc
 As an example, we'll create a function for _mixture discriminant analysis_. There are [a few packages](http://search.r-project.org/cgi-bin/namazu.cgi?query=%22mixture+discriminant%22&max=100&result=normal&sort=score&idxname=functions) that implement this but we'll focus on `mda::mda`:
 
 
-::: {.cell layout-align="center" hash='cache/mda-str_943fa722b35b714976d35a097f832259'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 str(mda::mda)
@@ -73,7 +73,7 @@ If you are adding a new model from your own package, you can use these functions
 We will add the MDA model using the model type `discrim_mixture`. Since this is a classification method, we only have to register a single mode:
 
 
-::: {.cell layout-align="center" hash='cache/mda-reg_7ddc03928b7548cc5f39b2190c5b2619'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -92,7 +92,7 @@ set_dependency("discrim_mixture", eng = "mda", pkg = "mda")
 These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip: 
 
 
-::: {.cell layout-align="center" hash='cache/mda-show-1_cf2c74254a523952ef2d777a39d5a83b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 show_model_info("discrim_mixture")
@@ -126,7 +126,7 @@ The next step would be to declare the main arguments to the model. These are dec
 For `mda::mda()`, the main tuning parameter is `subclasses` which we will rewrite as `sub_classes`. 
 
 
-::: {.cell layout-align="center" hash='cache/mda-args_51c235c71b9c11f9fe70dcc9daabd5b0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set_model_arg(
@@ -168,7 +168,7 @@ This is a fairly simple function that can follow a basic template. The main argu
 A basic version of the function is:
 
 
-::: {.cell layout-align="center" hash='cache/model-fun_c1f253c880a51d13df4e427a601c8540'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 discrim_mixture <-
@@ -216,7 +216,7 @@ Now that parsnip knows about the model, mode, and engine, we can give it the inf
 For the first engine:
 
 
-::: {.cell layout-align="center" hash='cache/fit-mod_4cf2eee4c001ffcf2add9f015560f414'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set_fit(
@@ -264,7 +264,7 @@ We also set up the information on how the predictors should be handled. These op
 * `allow_sparse_x` specifies whether the model can accommodate a sparse representation for predictors during fitting and tuning.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_976d33fa6c8f55ff45f773c90c747280'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set_encoding(
@@ -296,7 +296,7 @@ The parsnip prediction code will expect the result to be an unnamed character st
 To add this method to the model environment, a similar `set()` function is used:
 
 
-::: {.cell layout-align="center" hash='cache/mds-class_440c322f95f0842c1645f4449994347b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 class_info <- 
@@ -335,7 +335,7 @@ As an example of the `post` function, the data frame created by `mda:::predict.m
 We register the probability module. There is a template function that makes this slightly easier to format the objects:
 
 
-::: {.cell layout-align="center" hash='cache/mda-prob_cb7c9fc239e4d5de21bc33b429a01621'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 prob_info <-
@@ -394,7 +394,7 @@ As a developer, one thing that may come in handy is the `translate()` function. 
 For example:
 
 
-::: {.cell layout-align="center" hash='cache/mda-code_7b2e24d6a9d26afff191077459c706bb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 discrim_mixture(sub_classes = 2) %>%
@@ -415,7 +415,7 @@ discrim_mixture(sub_classes = 2) %>%
 Let's try it on a data set from the modeldata package:
 
 
-::: {.cell layout-align="center" hash='cache/mda-data_c18ca73fcd706769e63094c4c8d82fb8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 data("two_class_dat", package = "modeldata")
@@ -484,7 +484,7 @@ predict(mda_fit, new_data = example_test) %>%
 The process for adding an engine to an existing model is _almost_ the same as building a new model but simpler with fewer steps. You only need to add the engine-specific aspects of the model. For example, if we wanted to fit a linear regression model using M-estimation, we could only add a new engine. The code for the `rlm()` function in MASS is pretty similar to `lm()`, so we can copy that code and change the package/function names:
 
 
-::: {.cell layout-align="center" hash='cache/rlm_e963efa76e16fc7860aac40f7d969155'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set_model_engine("linear_reg", "regression", eng = "rlm")
@@ -563,7 +563,7 @@ For parsnip to register them, that package must already be loaded. For this reas
 The first difference is that the functions that define the model must be inside of a wrapper function that is called when your package is loaded. For our example here, this might look like: 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-15_c86c7bad2cde1ced1e94b19098904ee1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 make_discrim_mixture_mda <- function() {
@@ -580,7 +580,7 @@ make_discrim_mixture_mda <- function() {
 This function is then executed when your package is loaded: 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-16_12a6d5fdc03df118fde7c97baba4a5ed'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 .onLoad <- function(libname, pkgname) {
@@ -627,7 +627,7 @@ The main piece of information that requires some detail is `call_info`. This is 
 For example, for a nearest-neighbors `neighbors` parameter, this value is just: 
 
 
-::: {.cell layout-align="center" hash='cache/mtry_899f046b7cfc5bcc9eeb779067e4319f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 info <- list(pkg = "dials", fun = "neighbors")
@@ -644,7 +644,7 @@ rlang::eval_tidy(new_param_call)
 For `discrim_mixture()`, a dials object is needed that returns an integer that is the number of sub-classes that should be create. We can create a dials parameter function for this:
 
 
-::: {.cell layout-align="center" hash='cache/sub-classes_64cd6c00d45e73ebb6f5274cb18fc702'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 sub_classes <- function(range = c(1L, 10L), trans = NULL) {
@@ -664,7 +664,7 @@ sub_classes <- function(range = c(1L, 10L), trans = NULL) {
 If this were in the dials package, we could use: 
 
 
-::: {.cell layout-align="center" hash='cache/tunable_5709131f90db2497b786ec3bc3813103'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tunable.discrim_mixture <- function(x, ...) {
@@ -683,7 +683,7 @@ tunable.discrim_mixture <- function(x, ...) {
 Once this method is in place, the tuning functions can be used: 
 
 
-::: {.cell layout-align="center" hash='cache/tune-mda_b3ef8c4097d927be207c775b35988adf'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mda_spec <- 
@@ -723,7 +723,7 @@ There are some models (e.g. `glmnet`, `plsr`, `Cubist`, etc.) that can make pred
 For example, if I fit a linear regression model via `glmnet` and get four values of the regularization parameter (`lambda`):
 
 
-::: {.cell layout-align="center" hash='cache/glmnet_bbb7dde1c18eb109fa6c17c67c432ea1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 linear_reg() %>%
@@ -741,7 +741,7 @@ _However_, the API is still being developed. Currently, there is not an interfac
 Some modeling functions in R create indicator/dummy variables from categorical data when you use a model formula (typically using `model.matrix()`), and some do not. Some examples of models that do _not_ create indicator variables include tree-based models, naive Bayes models, and multilevel or hierarchical models. The tidymodels ecosystem assumes a `model.matrix()`-like default encoding for categorical data used in a model formula, but you can change this encoding using `set_encoding()`. For example, you can set predictor encodings that say, "leave my data alone," and keep factors as is:
 
 
-::: {.cell layout-align="center" hash='cache/encodinginfo_27a702fd2b9b38d45ed00e689dcf9b1e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set_encoding(
@@ -772,7 +772,7 @@ To learn more about encoding categorical predictors, check out [this blog post](
 You might want to set defaults that can be overridden by the user. For example, for logistic regression with `glm`, it make sense to default `family = binomial`. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:
 
 
-::: {.cell layout-align="center" hash='cache/glm-alt_41508ad48a69fb2799242261eaabc86f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 defaults = list(family = expr(binomial))
@@ -783,7 +783,7 @@ defaults = list(family = expr(binomial))
 So that is the default:
 
 
-::: {.cell layout-align="center" hash='cache/glm-alt-show_4f4e114f7f9505ded73bf2430279daa5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 logistic_reg() %>% translate(engine = "glm")
@@ -808,7 +808,7 @@ The `translate` function can be used to check values or set defaults once the mo
 For example, the ranger and randomForest package functions have arguments for calculating importance. One is a logical and the other is a string. Since this is likely to lead to a bunch of frustration and GitHub issues, we can put in a check:
 
 
-::: {.cell layout-align="center" hash='cache/rf-trans_5bf37c37c3824d18cbb877c88515842a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # Simplified version
@@ -860,7 +860,7 @@ If you have a suggestion, please add a [GitHub issue](https://github.com/tidymod
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -873,7 +873,7 @@ If you have a suggestion, please add a [GitHub issue](https://github.com/tidymod
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

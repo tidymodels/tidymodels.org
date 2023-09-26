@@ -33,7 +33,7 @@ Second, let's fit a regularized linear regression model to demonstrate how to mo
 We'll use the Ames housing data set to demonstrate how to create regression models using parsnip. First, set up the data set and create a simple training/test set split:
 
 
-::: {.cell layout-align="center" hash='cache/ames-split_1cffb6805fe30fd72dba31d96b7ddb49'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -56,7 +56,7 @@ The use of the test set here is _only for illustration_; normally in a data anal
 We'll start by fitting a random forest model to a small set of parameters. Let's create a model with the predictors `Longitude`, `Latitude`, `Lot_Area`, `Neighborhood`, and `Year_Sold`. A simple random forest model can be specified via:
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic_0df526ec01ec8ba4c196ff6cd8c96cf5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rf_defaults <- rand_forest(mode = "regression")
@@ -79,7 +79,7 @@ Let's start with the non-formula interface:
 
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic-xy_a47ec0687acbde2cace0dc6fe6ca270f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 preds <- c("Longitude", "Latitude", "Lot_Area", "Neighborhood", "Year_Sold")
@@ -119,7 +119,7 @@ The non-formula interface doesn't do anything to the predictors before passing t
 For regression models, we can use the basic `predict()` method, which returns a tibble with a column named `.pred`:
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic-xy-pred_bb1a3f3339963ed2058dfe050e15599c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 test_results <- 
@@ -159,7 +159,7 @@ Note that:
 Now, for illustration, let's use the formula method using some new parameter values:
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic-form_93439ec824c4988a70025e2d6bbd8dcc'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
@@ -193,7 +193,7 @@ Suppose that we would like to use the randomForest package instead of ranger. To
 
 
 
-::: {.cell layout-align="center" hash='cache/rf-rf_18acd4850c8fc4b984609e54ce878f19'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
@@ -233,7 +233,7 @@ Since ranger won't create indicator values, `.preds()` would be appropriate for 
 For example, let's use an expression with the `.preds()` descriptor to fit a bagging model: 
 
 
-::: {.cell layout-align="center" hash='cache/bagged_d3f81af7423e0370b8da8a21af4ed32d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rand_forest(mode = "regression", mtry = .preds(), trees = 1000) %>%
@@ -271,7 +271,7 @@ A linear model might work for this data set as well. We can use the `linear_reg(
 When regularization is used, the predictors should first be centered and scaled before being passed to the model. The formula method won't do that automatically so we will need to do this ourselves. We'll use the [recipes](https://recipes.tidymodels.org/) package for these steps. 
 
 
-::: {.cell layout-align="center" hash='cache/glmn-form_3ac2c8be95e6da2428f93277d2b4760f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 norm_recipe <- 
@@ -374,7 +374,7 @@ If `penalty` were not specified, all of the `lambda` values would be computed.
 To get the predictions for this specific value of `lambda` (aka `penalty`):
 
 
-::: {.cell layout-align="center" hash='cache/glmn-pred_73ed4e3eb2aaee9c2c74f21f9be9fda3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # First, get the processed version of the test set predictors:
@@ -431,7 +431,7 @@ This final plot compares the performance of the random forest and regularized re
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -444,7 +444,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

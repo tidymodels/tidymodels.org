@@ -33,7 +33,7 @@ Let's fit a model to a small, two predictor classification data set. The data ar
 
 
 
-::: {.cell layout-align="center" hash='cache/biv--split_a8010283945b9d916dbab968a4f5957a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(AppliedPredictiveModeling)
@@ -49,7 +49,7 @@ cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
 A plot of the data shows two right-skewed predictors: 
 
 
-::: {.cell layout-align="center" hash='cache/biv-plot_878d41ddf6121cf24638174c7f4cfd3a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(cls_train, aes(x = A, y = B, col = class)) + 
@@ -66,7 +66,7 @@ ggplot(cls_train, aes(x = A, y = B, col = class)) +
 Let's use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the `step_BoxCox()` function) and on a common scale (using `step_normalize()`). We can use [recipes](https://recipes.tidymodels.org/) to do so:
 
 
-::: {.cell layout-align="center" hash='cache/biv--proc_0e937bbc2d4f28cb47ae4435dc664559'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 biv_rec <- 
@@ -81,7 +81,7 @@ This recipe is not directly executed; the steps will be estimated when the model
 We can use the brulee package to fit a model with 5 hidden units and a 10% dropout rate, to regularize the model:
 
 
-::: {.cell layout-align="center" hash='cache/biv-nnet_015615b1f23fea51ab5904a097034ceb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 nnet_spec <- 
@@ -116,7 +116,7 @@ nnet_fit %>% extract_fit_engine()
 In parsnip, the `predict()` function can be used to characterize performance on the validation set. Since parsnip always produces tibble outputs, these can just be column bound to the original data: 
 
 
-::: {.cell layout-align="center" hash='cache/biv--perf_04540a8f0072cc8f8e9470aa6062cc15'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 val_results <- 
@@ -157,7 +157,7 @@ val_results %>% conf_mat(truth = class, .pred_class)
 Let's also create a grid to get a visual sense of the class boundary for the test set.
 
 
-::: {.cell layout-align="center" hash='cache/biv-boundary_f535c2e6a77b330790280c0cba08554c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 a_rng <- range(cls_train$A)
@@ -190,7 +190,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -203,7 +203,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

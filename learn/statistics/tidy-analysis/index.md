@@ -30,7 +30,7 @@ While the tidymodels package [broom](https://broom.tidyverse.org/) is useful for
 Let's demonstrate this with a simple data set, the built-in `Orange`. We start by coercing `Orange` to a `tibble`. This gives a nicer print method that will be especially useful later on when we start working with list-columns.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_b8c28b0b2e42595af6cd6e42e320211e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -60,7 +60,7 @@ Orange
 This contains 35 observations of three variables: `Tree`, `age`, and `circumference`. `Tree` is a factor with five levels describing five trees. As might be expected, age and circumference are correlated:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-4_d23aebe621890c33deabf5c88ab2e2e7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cor(Orange$age, Orange$circumference)
@@ -81,7 +81,7 @@ ggplot(Orange, aes(age, circumference, color = Tree)) +
 Suppose you want to test for correlations individually *within* each tree. You can do this with dplyr's `group_by`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_91dbe7c00d07ed20010e073d66c2fdda'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 Orange %>% 
@@ -104,7 +104,7 @@ Orange %>%
 Suppose that instead of simply estimating a correlation, we want to perform a hypothesis test with `cor.test()`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_46fa9b020ddb8990c5c81c2814b26dca'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ct <- cor.test(Orange$age, Orange$circumference)
@@ -127,7 +127,7 @@ ct
 This test output contains multiple values we may be interested in. Some are vectors of length 1, such as the p-value and the estimate, and some are longer, such as the confidence interval. We can get this into a nicely organized tibble using the `tidy()` function:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_e76d10df195a88e005ab096c3a46fd52'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(ct)
@@ -142,7 +142,7 @@ tidy(ct)
 Often, we want to perform multiple tests or fit multiple models, each on a different part of the data. In this case, we recommend a `nest-map-unnest` workflow. For example, suppose we want to perform correlation tests for each different tree. We start by `nest`ing our data based on the group of interest:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-8_3a8c5c9b027a3b1290a315655286c386'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 nested <- 
@@ -155,7 +155,7 @@ nested <-
 Then we perform a correlation test for each nested tibble using `purrr::map()`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_99179b6d70604b3edd0d0107b29bea04'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 nested %>% 
@@ -175,7 +175,7 @@ nested %>%
 This results in a list-column of S3 objects. We want to tidy each of the objects, which we can also do with `map()`.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_1d2edd8b12d02933b931669b101d050e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 nested %>% 
@@ -198,7 +198,7 @@ nested %>%
 Finally, we want to unnest the tidied data frames so we can see the results in a flat tibble. All together, this looks like:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_48290f0abce3aa8054e3b335ae75bfdf'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 Orange %>% 
@@ -227,7 +227,7 @@ Orange %>%
 This type of workflow becomes even more useful when applied to regressions. Untidy output for a regression looks like:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_b1826e99afb5e6d9f52a61ffc0f64eb3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_fit <- lm(age ~ circumference, data = Orange)
@@ -257,7 +257,7 @@ summary(lm_fit)
 When we tidy these results, we get multiple rows of output for each model:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_3097cfaa120e9f8a9c38220653816d1e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(lm_fit)
@@ -273,7 +273,7 @@ tidy(lm_fit)
 Now we can handle multiple regressions at once using exactly the same workflow as before:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-14_8e75b7bb2abc579c067c0c472239046f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 Orange %>%
@@ -304,7 +304,7 @@ Orange %>%
 You can just as easily use multiple predictors in the regressions, as shown here on the `mtcars` dataset. We nest the data into automatic vs. manual cars (the `am` column), then perform the regression within each nested tibble.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-15_b9dc82496897bd3f80514e02077a3dd8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 data(mtcars)
@@ -351,7 +351,7 @@ mtcars %>%
 What if you want not just the `tidy()` output, but the `augment()` and `glance()` outputs as well, while still performing each regression only once? Since we're using list-columns, we can just fit the model once and use multiple list-columns to store the tidied, glanced and augmented outputs.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-16_bfe852ae3caea34b424dc7d4ad083632'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 regressions <- 
@@ -422,7 +422,7 @@ In each of these cases, we can easily filter, facet, or distinguish based on the
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -435,7 +435,7 @@ In each of these cases, we can easily filter, facet, or distinguish based on the
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

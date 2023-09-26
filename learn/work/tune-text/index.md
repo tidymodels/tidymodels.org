@@ -40,7 +40,7 @@ This article uses a small subset of the total reviews [available at the original
 There is a column for the product, a column for the text of the review, and a factor column for the outcome variable. The outcome is whether the reviewer gave the product a five-star rating or not.
 
 
-::: {.cell layout-align="center" hash='cache/data_7273febd310153f263d486e4032ba382'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -100,7 +100,7 @@ Some of these preprocessing steps (such as stemming) may or may not be good idea
 Before we start building our preprocessing recipe, we need some helper objects. For example, for the Yeo-Johnson transformation, we need to know the set of count-based text features: 
 
 
-::: {.cell layout-align="center" hash='cache/feat-list_93a1f197dd2c41083315994a17d94c0a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(textfeatures)
@@ -116,7 +116,7 @@ head(basics)
 Also, the implementation of feature hashes does not produce the binary values we need. This small function will help convert the scores to values of -1, 0, or 1:
 
 
-::: {.cell layout-align="center" hash='cache/hash-func_b1411ad348e7facb9953e04d9c2d2d74'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_hash <- function(x) {
@@ -131,7 +131,7 @@ binary_hash <- function(x) {
 Now, let's put this all together in one recipe:
 
 
-::: {.cell layout-align="center" hash='cache/text-rec_b45edc04e480bd8df26d4fa08fdd5ac7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(textrecipes)
@@ -173,7 +173,7 @@ pre_proc <-
 The preprocessing recipe is long and complex (often typical for working with text data) but the model we'll use is more straightforward. Let's stick with a regularized logistic regression model: 
 
 
-::: {.cell layout-align="center" hash='cache/lr_c18e61f5df69e584a577a834b90592b9'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lr_mod <-
@@ -194,7 +194,7 @@ There are three tuning parameters for this data analysis:
 There are enough data here so that 10-fold resampling would hold out 400 reviews at a time to estimate performance. Performance estimates using this many observations have sufficiently low noise to measure and tune models.  
 
 
-::: {.cell layout-align="center" hash='cache/folds_ec0df7708a7dabe704734694d785ebe7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(8935)
@@ -223,7 +223,7 @@ folds
 Let's begin our tuning with [grid search](https://www.tidymodels.org/learn/work/tune-svm/) and a regular grid. For glmnet models, evaluating penalty values is fairly cheap because of the use of the ["submodel-trick"](https://tune.tidymodels.org/articles/extras/optimizations.html#sub-model-speed-ups-1). The grid will use 20 penalty values, 5 mixture values, and 3 values for the number of hash features.  
 
 
-::: {.cell layout-align="center" hash='cache/grid_9207895c06a47fed914a53681a947b71'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 five_star_grid <- 
@@ -256,7 +256,7 @@ Note that, for each resample, the (computationally expensive) text preprocessing
 Let's save information on the number of predictors by penalty value for each glmnet model. This can help us understand how many features were used across the penalty values. Use an extraction function to do this:
 
 
-::: {.cell layout-align="center" hash='cache/extract_8c26c1d28aed94898ccb613ff9536937'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glmnet_vars <- function(x) {
@@ -274,7 +274,7 @@ ctrl <- control_grid(extract = glmnet_vars, verbose = TRUE)
 Finally, let's run the grid search:
 
 
-::: {.cell layout-align="center" hash='cache/grid-search_fb053f7f6b35e94d20320415bb0a9bec'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roc_scores <- metric_set(roc_auc)
@@ -319,7 +319,7 @@ five_star_glmnet
 This took a while to complete! What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
 
 
-::: {.cell layout-align="center" hash='cache/grid-roc_e4bf493056dab8bff24c3ca0d409c841'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 grid_roc <- 
@@ -349,7 +349,7 @@ The best results have a fairly high penalty value and focus on the ridge penalty
 What is the relationship between performance and the tuning parameters? 
 
 
-::: {.cell layout-align="center" hash='cache/grid-plot_8dadd8518f3147ca1dd04e33df0366f1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 autoplot(five_star_glmnet, metric = "roc_auc")
@@ -379,7 +379,7 @@ Let's pretend that we haven't seen the grid search results. We'll initialize the
 It might be good to use a custom `dials` object for the number of hash terms. The default object, `num_terms()`, uses a linear range and tries to set the upper bound of the parameter using the data. Instead, let's create a parameter set, change the scale to be `log2`, and define the same range as was used in grid search. 
 
 
-::: {.cell layout-align="center" hash='cache/hash-range_2cbf4e15f1b6f6737e0f37c237ab8961'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 hash_range <- num_terms(c(8, 12), trans = log2_trans())
@@ -394,7 +394,7 @@ hash_range
 To use this, we have to merge the recipe and `parsnip` model object into a workflow:
 
 
-::: {.cell layout-align="center" hash='cache/wflow_6c32a07c1d6fd8f971a03e05787ae82c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 five_star_wflow <-
@@ -408,7 +408,7 @@ five_star_wflow <-
 Then we can extract and manipulate the corresponding parameter set:
 
 
-::: {.cell layout-align="center" hash='cache/search-set_f5573bcc4427080c3559571923ba01b8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 five_star_set <-
@@ -430,7 +430,7 @@ This is passed to the search function via the `param_info` argument.
 The initial rounds of search can be biased more towards exploration of the parameter space (as opposed to staying near the current best results). If expected improvement is used as the acquisition function, the trade-off value can be slowly moved from exploration to exploitation over iterations (see the tune vignette on [acquisition functions](https://tune.tidymodels.org/articles/acquisition_functions.html) for more details). The tune package has a built-in function called `expo_decay()` that can help accomplish this:
 
 
-::: {.cell layout-align="center" hash='cache/decay_f05a56ff422852135e6a000fe32dabba'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 trade_off_decay <- function(iter) {
@@ -443,7 +443,7 @@ trade_off_decay <- function(iter) {
 Using these values, let's run the search:
 
 
-::: {.cell layout-align="center" hash='cache/search_384e2e8b1b62225960f8c1e33a2fc772'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(12)
@@ -876,7 +876,7 @@ These results show some improvement over the initial set. One issue is that so m
 Let's look at a plot of model performance versus the search iterations:
 
 
-::: {.cell layout-align="center" hash='cache/iter-plot_e680c2d0278e39da18f732d92ede5df9'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 autoplot(five_star_search, type = "performance")
@@ -897,7 +897,7 @@ What would we do if we knew about the grid search results and wanted to try dire
 Let's return to the grid search results and examine the results of our `extract` function. For each _fitted model_, a tibble was saved that contains the relationship between the number of predictors and the penalty value. Let's look at these results for the best model:
 
 
-::: {.cell layout-align="center" hash='cache/best-res_a5f9bd4efb15eeee826b5af7d0f1e95a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 params <- select_best(five_star_glmnet, metric = "roc_auc")
@@ -913,7 +913,7 @@ params
 Recall that we saved the glmnet results in a tibble. The column `five_star_glmnet$.extracts` is a list of tibbles. As an example, the first element of the list is:
 
 
-::: {.cell layout-align="center" hash='cache/first-elem_87438115007b4501c1905d25cc8b02c8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 five_star_glmnet$.extracts[[1]]
@@ -938,7 +938,7 @@ five_star_glmnet$.extracts[[1]]
 More nested tibbles! Let's `unnest()` the `five_star_glmnet$.extracts` column:
 
 
-::: {.cell layout-align="center" hash='cache/unnest_ade9206814f5ffbb1a28d315d07ee266'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidyr)
@@ -969,7 +969,7 @@ One thing to realize here is that `tune_grid()` [may not fit all of the models](
 
 
 
-::: {.cell layout-align="center" hash='cache/select-best_a8f31374a5e8e45f1473ca66e5c649d4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 extracted <- 
@@ -1000,7 +1000,7 @@ extracted
 Now we can get at the results that we want using another `unnest()`:
 
 
-::: {.cell layout-align="center" hash='cache/final-unnest_fa6ce1aff9936658ec90ca315c5127ce'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 extracted <- 
@@ -1028,7 +1028,7 @@ extracted
 Let's look at a plot of these results (per resample):
 
 
-::: {.cell layout-align="center" hash='cache/var-plot_5ea3a747986cb1b0eac8ae189196af34'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(extracted, aes(x = penalty, y = num_vars)) + 
@@ -1050,7 +1050,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -1063,7 +1063,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

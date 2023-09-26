@@ -32,7 +32,7 @@ Bootstrapping consists of randomly sampling a data set with replacement, then pe
 Let's say we want to fit a nonlinear model to the weight/mileage relationship in the `mtcars` data set.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_4d1be3efaa09424aefbeea43776a815a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -50,7 +50,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 We might use the method of nonlinear least squares (via the `nls()` function) to fit a model.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-4_2bafa86d0e39af7c235277e2037c35a7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 nlsfit <- nls(mpg ~ k / wt + b, mtcars, start = list(k = 1, b = 0))
@@ -90,7 +90,7 @@ We can use the `bootstraps()` function in the rsample package to sample bootstra
 An `rsplit` object has two main components: an analysis data set and an assessment data set, accessible via `analysis(rsplit)` and `assessment(rsplit)` respectively. For bootstrap samples, the analysis data set is the bootstrap sample itself, and the assessment data set consists of all the out-of-bag samples.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_63f97c7e2129364ca39ef1776d4f9840'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(27)
@@ -118,7 +118,7 @@ boots
 Let's create a helper function to fit an `nls()` model on each bootstrap sample, and then use `purrr::map()` to apply this function to all the bootstrap samples at once. Similarly, we create a column of tidy coefficient information by unnesting.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_a74d37c174fe360a0893118e4316c3f5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 fit_nls_on_bootstrap <- function(split) {
@@ -140,7 +140,7 @@ boot_coefs <-
 The unnested coefficient information contains a summary of each replication combined in a single data frame:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_b968cf604ebf00ac63257cbf5b3fac8a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 boot_coefs
@@ -167,7 +167,7 @@ boot_coefs
 We can then calculate confidence intervals (using what is called the [percentile method](https://www.uvm.edu/~dhowell/StatPages/Randomization%20Tests/ResamplingWithR/BootstMeans/bootstrapping_means.html)):
 
 
-::: {.cell layout-align="center" hash='cache/percentiles_c4bdf81ddc8321e9eb5828498c35be5c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 percentile_intervals <- int_pctl(boot_models, coef_info)
@@ -184,7 +184,7 @@ percentile_intervals
 Or we can use histograms to get a more detailed idea of the uncertainty in each estimate:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_61fefcd26abbc2962014e78c500cb006'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(boot_coefs, aes(estimate)) +
@@ -207,7 +207,7 @@ The rsample package also has functions for [other types of confidence intervals]
 We can use `augment()` to visualize the uncertainty in the fitted curve. Since there are so many bootstrap samples, we'll only show a sample of the model fits in our visualization:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_b3da0f309c5814e5008c4e0f1250ae7a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 boot_aug <- 
@@ -234,7 +234,7 @@ boot_aug
 ```
 :::
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_610d1c960519a5123340e494bdac45c4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(boot_aug, aes(wt, mpg)) +
@@ -251,7 +251,7 @@ ggplot(boot_aug, aes(wt, mpg)) +
 With only a few small changes, we could easily perform bootstrapping with other kinds of predictive or hypothesis testing models, since the `tidy()` and `augment()` functions works for many statistical outputs. As another example, we could use `smooth.spline()`, which fits a cubic smoothing spline to data:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_163a2bbcfb15170c317936822fc092e9'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 fit_spline_on_bootstrap <- function(split) {
@@ -285,7 +285,7 @@ ggplot(splines_aug, aes(x, y)) +
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -298,7 +298,7 @@ ggplot(splines_aug, aes(x, y)) +
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

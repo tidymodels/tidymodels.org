@@ -8,9 +8,7 @@ knitr::opts_chunk$set(
   dev.args = list(bg = "transparent"),
   fig.path = "figs/",
   fig.align = "center",
-  collapse = TRUE,
-  cache = TRUE,
-  cache.path = "cache/"
+  collapse = TRUE
 )
 options(width = 80, cli.width = 70)
 

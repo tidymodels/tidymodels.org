@@ -34,7 +34,7 @@ This article describes subsampling for dealing with class imbalances. For better
 Consider a two-class problem where the first class has a very low rate of occurrence. The data were simulated and can be imported into R using the code below:
 
 
-::: {.cell layout-align="center" hash='cache/load-data_6f155ed2d84d80d62e3c732326e0a151'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 imbal_data <- 
@@ -69,7 +69,7 @@ In terms of workflow:
 Here is a simple recipe implementing oversampling: 
 
 
-::: {.cell layout-align="center" hash='cache/rec_62a9444a87a1f0d2d538a0a658ea1b40'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -84,7 +84,7 @@ imbal_rec <-
 For a model, let's use a [quadratic discriminant analysis](https://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis) (QDA) model. From the discrim package, this model can be specified using:
 
 
-::: {.cell layout-align="center" hash='cache/qda_61f5a3e99a905bf674095ab9532a4f60'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(discrim)
@@ -98,7 +98,7 @@ qda_mod <-
 To keep these objects bound together, they can be combined in a [workflow](https://workflows.tidymodels.org/):
 
 
-::: {.cell layout-align="center" hash='cache/wflw_cc28c388ec1349524e77aeb8545b3b16'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 qda_rose_wflw <- 
@@ -132,7 +132,7 @@ qda_rose_wflw
 Stratified, repeated 10-fold cross-validation is used to resample the model:
 
 
-::: {.cell layout-align="center" hash='cache/cv_686989ce48b57cc6825c4fee56399f36'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(5732)
@@ -149,7 +149,7 @@ To measure model performance, let's use two metrics:
 If a model is poorly calibrated, the ROC curve value might not show diminished performance. However, the _J_ index would be lower for models with pathological distributions for the class probabilities. The yardstick package will be used to compute these metrics. 
 
 
-::: {.cell layout-align="center" hash='cache/metrics_36f95c9985a757993a9df95a6bbfffa0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cls_metrics <- metric_set(roc_auc, j_index)
@@ -160,7 +160,7 @@ cls_metrics <- metric_set(roc_auc, j_index)
 Now, we train the models and generate the results using `tune::fit_resamples()`:
 
 
-::: {.cell layout-align="center" hash='cache/resample-rose_f73e87bd59fb1dbc99c321bd005238ed'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(2180)
@@ -174,8 +174,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.787    50 0.0193  Preprocessor1_Model1
-#> 2 roc_auc binary     0.952    50 0.00497 Preprocessor1_Model1
+#> 1 j_index binary     0.797    50 0.0199  Preprocessor1_Model1
+#> 2 roc_auc binary     0.954    50 0.00447 Preprocessor1_Model1
 ```
 :::
 
@@ -183,7 +183,7 @@ collect_metrics(qda_rose_res)
 What do the results look like without using ROSE? We can create another workflow and fit the QDA model along the same resamples:
 
 
-::: {.cell layout-align="center" hash='cache/qda-only_0e9e98635048a82865ded0efe3ee1a0a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 qda_wflw <- 
@@ -208,7 +208,7 @@ It looks like ROSE helped a lot, especially with the J-index. Class imbalance sa
 Let's plot the metrics for each resample to see how the individual results changed. 
 
 
-::: {.cell layout-align="center" hash='cache/merge-metrics_ac2ffff279e82141473fd710a8f28ada'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 no_sampling <- 
@@ -241,7 +241,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -254,7 +254,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

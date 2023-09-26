@@ -29,7 +29,7 @@ This article demonstrates how to tune a model using grid search. Many models hav
 To demonstrate model tuning, we'll use the Ionosphere data in the mlbench package:
 
 
-::: {.cell layout-align="center" hash='cache/load-data_d88b50480ccbe7f0518c5ee61a9a6de1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -48,7 +48,7 @@ From `?Ionosphere`:
 There are 43 predictors and a factor outcome. Two of the predictors are factors (`V1` and `V2`) and the rest are numeric variables that have been scaled to a range of -1 to 1. Note that the two factor predictors have sparse distributions:
 
 
-::: {.cell layout-align="center" hash='cache/factor-pred_54a20bcc52808f96d64bbdc848ec6beb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 table(Ionosphere$V1)
@@ -66,7 +66,7 @@ table(Ionosphere$V2)
 There's no point of putting `V2` into any model since is is a zero-variance predictor. `V1` is not but it _could_ be if the resampling process ends up sampling all of the same value. Is this an issue? It might be since the standard R formula infrastructure fails when there is only a single observed value:
 
 
-::: {.cell layout-align="center" hash='cache/glm-fail_0a7fbb2098b351f01ef701b9727f83e3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glm(Class ~ ., data = Ionosphere, family = binomial)
@@ -81,7 +81,7 @@ glm(Class ~ . - V2, data = Ionosphere, family = binomial)
 Let's remove these two problematic variables:
 
 
-::: {.cell layout-align="center" hash='cache/ion-rm_62d6db52196e73e205480c6bd167664a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 Ionosphere <- Ionosphere %>% select(-V1, -V2)
@@ -94,7 +94,7 @@ Ionosphere <- Ionosphere %>% select(-V1, -V2)
 To demonstrate, we'll fit a radial basis function support vector machine to these data and tune the SVM cost parameter and the $\sigma$ parameter in the kernel function:
 
 
-::: {.cell layout-align="center" hash='cache/svm-mod_6aa8e6be5c55067394c955b30a0602cd'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 svm_mod <-
@@ -113,7 +113,7 @@ In this article, tuning will be demonstrated in two ways, using:
 Let's create a simple recipe here:
 
 
-::: {.cell layout-align="center" hash='cache/rec_b6acd803b9bbc3b00c8c4348a200ec0c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 iono_rec <-
@@ -129,7 +129,7 @@ iono_rec <-
 The only other required item for tuning is a resampling strategy as defined by an rsample object. Let's demonstrate using basic bootstrapping:
 
 
-::: {.cell layout-align="center" hash='cache/rs_32482ccd9cbd1da5b2bfdd79240acf0b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(4943)
@@ -143,7 +143,7 @@ iono_rs <- bootstraps(Ionosphere, times = 30)
 An _optional_ step for model tuning is to specify which metrics should be computed using the out-of-sample predictions. For classification, the default is to calculate the log-likelihood statistic and overall accuracy. Instead of the defaults, the area under the ROC curve will be used. To do this, a yardstick package function can be used to create a metric set:
 
 
-::: {.cell layout-align="center" hash='cache/roc_5a0e23b529b673c49755178ae60745cd'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roc_vals <- metric_set(roc_auc)
@@ -156,7 +156,7 @@ If no grid or parameters are provided, a set of 10 hyperparameters are created u
 Also, a control object can be passed that specifies different aspects of the search. Here, the verbose option is turned off and the option to save the out-of-sample predictions is turned on. 
 
 
-::: {.cell layout-align="center" hash='cache/ctrl_734d8b4c527e6499915fdce57d3e27b2'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ctrl <- control_grid(verbose = FALSE, save_pred = TRUE)
@@ -169,7 +169,7 @@ ctrl <- control_grid(verbose = FALSE, save_pred = TRUE)
 First, we can use the formula interface:
 
 
-::: {.cell layout-align="center" hash='cache/grid_02122a1d166b4488277cc1d49517fb9d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(35)
@@ -205,7 +205,7 @@ formula_res
 The `.metrics` column contains tibbles of the performance metrics for each tuning parameter combination:
 
 
-::: {.cell layout-align="center" hash='cache/raw-metrics_7760335f4cb80448852b001929f58545'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 formula_res %>% 
@@ -233,7 +233,7 @@ formula_res %>%
 To get the final resampling estimates, the `collect_metrics()` function can be used on the grid object:
 
 
-::: {.cell layout-align="center" hash='cache/metric-estimates_570735aee8ed466163130cd8fd5eb928'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 estimates <- collect_metrics(formula_res)
@@ -258,7 +258,7 @@ estimates
 The top combinations are:
 
 
-::: {.cell layout-align="center" hash='cache/sorted-metrics_de1bdf62c5967bc3eee76ee5aaa220b3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 show_best(formula_res, metric = "roc_auc")
@@ -279,7 +279,7 @@ show_best(formula_res, metric = "roc_auc")
 Next, we can use the same syntax but pass a *recipe* in as the pre-processor argument:
 
 
-::: {.cell layout-align="center" hash='cache/recipe_6636d7f87dcaca82b4292f0917a69148'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(325)
@@ -315,7 +315,7 @@ recipe_res
 The best setting here is:
 
 
-::: {.cell layout-align="center" hash='cache/best-rec_80da6404712977983341a7fee52b19df'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 show_best(recipe_res, metric = "roc_auc")
@@ -336,7 +336,7 @@ show_best(recipe_res, metric = "roc_auc")
 If we used `save_pred = TRUE` to keep the out-of-sample predictions for each resample during tuning, we can obtain those predictions, along with the tuning parameters and resample identifier, using `collect_predictions()`:
 
 
-::: {.cell layout-align="center" hash='cache/rec-preds_b5c0fa8279df699116430830735bbf34'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 collect_predictions(recipe_res)
@@ -361,7 +361,7 @@ collect_predictions(recipe_res)
 We can obtain the hold-out sets for all the resamples augmented with the predictions using `augment()`, which provides opportunities for flexible visualization of model results:
 
 
-::: {.cell layout-align="center" hash='cache/augment-preds_e078d3dd280d3ba25ca6db2619f7b2bc'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 augment(recipe_res) %>%
@@ -379,7 +379,7 @@ augment(recipe_res) %>%
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -392,7 +392,7 @@ augment(recipe_res) %>%
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

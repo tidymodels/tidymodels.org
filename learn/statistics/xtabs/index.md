@@ -29,7 +29,7 @@ In this vignette, we'll walk through conducting a $\chi^2$ (chi-squared) test of
 Throughout this vignette, we'll make use of the `ad_data` data set (available in the modeldata package, which is part of tidymodels). This data set is related to cognitive impairment in 333 patients from [Craig-Schapiro _et al_ (2011)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3079734/). See `?ad_data` for more information on the variables included and their source. One of the main research questions in these data were how a person's genetics related to the Apolipoprotein E gene affect their cognitive skills. The data shows: 
 
 
-::: {.cell layout-align="center" hash='cache/glimpse-ad_data-actual_9444781da4250c3de8343280976490ab'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels) # Includes the infer package
@@ -62,7 +62,7 @@ The three main genetic variants are called E2, E3, and E4. The values in `Genoty
 To carry out a chi-squared test of independence, we'll examine the association between their cognitive ability (impaired and healthy) and the genetic makeup. This is what the relationship looks like in the sample data:
 
 
-::: {.cell layout-align="center" hash='cache/plot-indep_b1690d83bbd5c61fee95868e269efff1'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/plot-indep-1.svg){fig-align='center' width=672}
 :::
@@ -74,7 +74,7 @@ If there were no relationship, we would expect to see the purple bars reaching t
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
 
-::: {.cell layout-align="center" hash='cache/calc-obs-stat-indep_a4228e512bfad7de079b01f3da6cd8d4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculate the observed statistic
@@ -90,7 +90,7 @@ The observed $\chi^2$ statistic is 21.5774809. Now, we want to compare this stat
 We can `generate()` the null distribution in one of two ways: using randomization or theory-based methods. The randomization approach permutes the response and explanatory variables, so that each person's genetics is matched up with a random cognitive rating from the sample in order to break up any association between the two.
 
 
-::: {.cell layout-align="center" hash='cache/generate-null-indep_6067c11280313f00c5118d48b4e57051'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # generate the null distribution using randomization
@@ -106,7 +106,7 @@ null_distribution_simulated <- ad_data %>%
 Note that, in the line `specify(Genotype ~ Class)` above, we could use the equivalent syntax `specify(response = Genotype, explanatory = Class)`. The same goes in the code below, which generates the null distribution using theory-based methods instead of randomization.
 
 
-::: {.cell layout-align="center" hash='cache/generate-null-indep-t_4dae91bdca3644e7cc52d699cffddf4d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # generate the null distribution by theoretical approximation
@@ -122,7 +122,7 @@ null_distribution_theoretical <- ad_data %>%
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep_bbb2f891bd9207b9c248208240347856'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize the null distribution and test statistic!
@@ -141,7 +141,7 @@ null_distribution_simulated %>%
 We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the `generate()` and `calculate()` steps when using the theoretical approach, and that we now need to provide `method = "theoretical"` to `visualize()`.
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep-theor_1634ba32fdc5b9a1b1f509a6ff291b59'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize the theoretical null distribution and test statistic!
@@ -162,7 +162,7 @@ ad_data %>%
 To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into `visualize()`, and further provide `method = "both"`.
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep-both_43d8b0978027006c32f0ca83f7af0b1b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize both null distributions and the test statistic!
@@ -181,7 +181,7 @@ null_distribution_simulated %>%
 Either way, it looks like our observed test statistic would be fairly unlikely if there were actually no association between cognition and genotype. More exactly, we can calculate the p-value:
 
 
-::: {.cell layout-align="center" hash='cache/p-value-indep_f35d57dd00c0767bc0e679256390e050'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculate the p value from the observed statistic and null distribution
@@ -193,17 +193,17 @@ p_value_independence
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0008
+#> 1  0.0006
 ```
 :::
 
 
-Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 8\times 10^{-4}.
+Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 6\times 10^{-4}.
 
 Note that, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
 
 
-::: {.cell layout-align="center" hash='cache/chisq-indep-wrapper_ea57b46cfb50f2f822596840909cd37c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 chisq_test(ad_data, Genotype ~ Class)
@@ -223,7 +223,7 @@ Now, moving on to a chi-squared goodness of fit test, we'll take a look at just 
 The rates of the meta-analysis and our observed data are: 
  
 
-::: {.cell layout-align="center" hash='cache/rates_49560c656ccea8f19423b79754686c06'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # Song, Y., Stampfer, M. J., & Liu, S. (2004). Meta-Analysis: Apolipoprotein E 
@@ -251,7 +251,7 @@ Suppose our null hypothesis is that `Genotype` follows the same frequency distri
 First, to carry out this hypothesis test, we would calculate our observed statistic.
 
 
-::: {.cell layout-align="center" hash='cache/observed-gof-statistic_5e0650455b1fd1a7615d7cf28f3691fb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculating the null distribution
@@ -267,7 +267,7 @@ The observed statistic is 23.3838483. Now, generating a null distribution, by ju
 
 
 
-::: {.cell layout-align="center" hash='cache/null-distribution-gof_8103c027d3dd1f48e89ac6f92633b8cd'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # generating a null distribution
@@ -283,7 +283,7 @@ null_distribution_gof <- ad_data %>%
 Again, to get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep-gof_6b8ee4b3fa7b53f3dbf9c93fa7910c2e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize the null distribution and test statistic!
@@ -302,7 +302,7 @@ null_distribution_gof %>%
 This statistic seems like it would be unlikely if our rates were the same as the rates from the meta-analysis! How unlikely, though? Calculating the p-value:
 
 
-::: {.cell layout-align="center" hash='cache/get-p-value-gof_9ed72e5e4466973b8a76496d3a66885c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculate the p-value
@@ -314,17 +314,17 @@ p_value_gof
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1   0.001
+#> 1  0.0008
 ```
 :::
 
 
-Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 0.001.
+Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 8\times 10^{-4}.
 
 Again, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out chi-squared goodness of fit tests on tidy data. The syntax goes like this:
 
 
-::: {.cell layout-align="center" hash='cache/chisq-gof-wrapper_092eea1ed6846ae0085ad3018478d5e1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 chisq_test(ad_data, response = Genotype, p = meta_rates)
@@ -341,7 +341,7 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -354,7 +354,7 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

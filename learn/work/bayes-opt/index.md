@@ -41,7 +41,7 @@ There are a variety of methods for iterative search and the focus in this articl
 To demonstrate this approach to tuning models, let's return to the cell segmentation data from the [Getting Started](/start/resampling/) article on resampling: 
 
 
-::: {.cell layout-align="center" hash='cache/import-data_55799729effaf25afde25ffe183a1f89'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -66,7 +66,7 @@ folds <- vfold_cv(cell_train, v = 10)
 Since the predictors are highly correlated, we can used a recipe to convert the original predictors to principal component scores. There is also slight class imbalance in these data; about 64% of the data are poorly segmented. To mitigate this, the data will be down-sampled at the end of the pre-processing so that the number of poorly and well segmented cells occur with equal frequency. We can use a recipe for all this pre-processing, but the number of principal components will need to be _tuned_ so that we have enough (but not too many) representations of the data. 
 
 
-::: {.cell layout-align="center" hash='cache/recipe_61d40f5037d0999e9cb27e53b4db2d21'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(themis)
@@ -84,7 +84,7 @@ cell_pre_proc <-
 In this analysis, we will use a support vector machine to model the data. Let's use a radial basis function (RBF) kernel and tune its main parameter ($\sigma$). Additionally, the main SVM parameter, the cost value, also needs optimization. 
 
 
-::: {.cell layout-align="center" hash='cache/model_c50db642bfcd5a983d8015c499484549'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 svm_mod <-
@@ -97,7 +97,7 @@ svm_mod <-
 These two objects (the recipe and model) will be combined into a single object via the `workflow()` function from the [workflows](https://workflows.tidymodels.org/) package; this object will be used in the optimization process. 
 
 
-::: {.cell layout-align="center" hash='cache/workflow_7973003642ea7eb6fd7dced472ed32ed'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 svm_wflow <-
@@ -111,7 +111,7 @@ svm_wflow <-
 From this object, we can derive information about what parameters are slated to be tuned. A parameter set is derived by: 
 
 
-::: {.cell layout-align="center" hash='cache/pset_f20780f808937594ded59c16540e05c5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 svm_set <- extract_parameter_set_dials(svm_wflow)
@@ -129,7 +129,7 @@ svm_set
 The default range for the number of PCA components is rather small for this data set. A member of the parameter set can be modified using the `update()` function. Let's constrain the search to one to twenty components by updating the `num_comp` parameter. Additionally, the lower bound of this parameter is set to zero which specifies that the original predictor set should also be evaluated (i.e., with no PCA step at all): 
 
 
-::: {.cell layout-align="center" hash='cache/update_b880232f77e11836adb259277ffb556c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 svm_set <- 
@@ -465,7 +465,7 @@ search_res <-
 The resulting tibble is a stacked set of rows of the rsample object with an additional column for the iteration number:
 
 
-::: {.cell layout-align="center" hash='cache/show-iters_36dc3313d421a4f2e3388ef5a4773148'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 search_res
@@ -492,7 +492,7 @@ search_res
 As with grid search, we can summarize the results over resamples:
 
 
-::: {.cell layout-align="center" hash='cache/summarize-iters_658b86df928959f079fa6267607bb02e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 estimates <- 
@@ -523,7 +523,7 @@ estimates
 The best performance of the initial set of candidate values was `AUC = 0.8793995 `. The best results were achieved at iteration 17 with a corresponding AUC value of 0.8995344. The five best results are:
 
 
-::: {.cell layout-align="center" hash='cache/best_f8c6d844d88527be5cc8fd3bc15c5cef'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 show_best(search_res, metric = "roc_auc")
@@ -542,7 +542,7 @@ show_best(search_res, metric = "roc_auc")
 A plot of the search iterations can be created via:
 
 
-::: {.cell layout-align="center" hash='cache/bo-plot_6974f3b87e6101248a080765f5f9a452'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 autoplot(search_res, type = "performance")
@@ -560,7 +560,7 @@ How did the parameters change over iterations?
 
 
 
-::: {.cell layout-align="center" hash='cache/bo-param-plot_df3a97a65fc356046bdfa2a85e4de520'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 autoplot(search_res, type = "parameters") + 
@@ -579,7 +579,7 @@ autoplot(search_res, type = "parameters") +
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -592,7 +592,7 @@ autoplot(search_res, type = "parameters") +
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

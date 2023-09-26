@@ -30,7 +30,7 @@ To use code in this article,  you will need to install the following packages: f
 The data for this article are sales of alcoholic beverages originally from [the Federal Reserve Bank of St. Louis website](https://fred.stlouisfed.org/series/S4248SM144NCEN).
 
 
-::: {.cell layout-align="center" hash='cache/read-data_3eb1a0ab77ab69dd963e02f211de2c22'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -52,7 +52,7 @@ Each row represents one month of sales (in millions of US dollars).
 Suppose that we need predictions for one year ahead and our model should use the most recent data from the last 20 years. To set up this resampling scheme:
 
 
-::: {.cell layout-align="center" hash='cache/rof_087e94168b5cff45d73fb1075b413b3a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs <- rolling_origin(
@@ -88,7 +88,7 @@ roll_rs
 Each `split` element contains the information about that resample:
 
 
-::: {.cell layout-align="center" hash='cache/split_5382896300b603e53bd5cf10205801f5'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs$splits[[1]]
@@ -101,7 +101,7 @@ roll_rs$splits[[1]]
 For plotting, let's index each split by the first day of the assessment set:
 
 
-::: {.cell layout-align="center" hash='cache/labels_a83265e0e0e73b8336d43b681d4301da'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_date <- function(x) {
@@ -120,7 +120,7 @@ head(roll_rs$start_date)
 This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the `auto.arima()` function from the forecast package. The rsample functions `analysis()` and `assessment()` return a data frame, so another step converts the data to a `ts` object called `mod_dat` using a function in the timetk package.
 
 
-::: {.cell layout-align="center" hash='cache/model-fun_18e24055d5cfb6d48c46c6fed52634aa'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(forecast)  # for `auto.arima`
@@ -145,7 +145,7 @@ fit_model <- function(x, ...) {
 Save each model in a new column:
 
 
-::: {.cell layout-align="center" hash='cache/model-fit_e9ef6538b791f1c945a2676d493fcfbd'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs$arima <- map(roll_rs$splits, fit_model)
@@ -178,7 +178,7 @@ Using the model fits, let's measure performance in two ways:
 In each case, the mean absolute percent error (MAPE) is the statistic used to characterize the model fits. The interpolation error can be computed from the `Arima` object. To make things easy, let's use the sweep package's `sw_glance()` function:
 
 
-::: {.cell layout-align="center" hash='cache/interp_15ab940d89247dea468ff9b0f2ae35eb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(sweep)
@@ -199,7 +199,7 @@ summary(roll_rs$interpolation)
 For the extrapolation error, the model and split objects are required. Using these:
 
 
-::: {.cell layout-align="center" hash='cache/extrap_2898922f3f86cfaa8bce127cefa6585c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_extrap <- function(split, mod) {
@@ -226,7 +226,7 @@ summary(roll_rs$extrapolation)
 What do these error estimates look like over time?
 
 
-::: {.cell layout-align="center" hash='cache/plot_5014e79463438acdd380386f1980c2c8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs %>%
@@ -250,7 +250,7 @@ It is also worth noting that `rolling_origin()` can be used over calendar period
 The example below demonstrates this idea by splitting `drinks` into a nested set of 26 years, and rolling over years rather than months. Note that the end result accomplishes a different task than the original example; in this new case, each slice moves forward an entire year, rather than just one month.
 
 
-::: {.cell layout-align="center" hash='cache/rof-annual_b795014db340be5280098a06c7cc04b8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # The idea is to nest by the period to roll over,
@@ -296,7 +296,7 @@ The workflow to access these calendar slices is to use `bind_rows()` to join
 each analysis set together.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_39cadf66f7df3b333da1ff288df20ec3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mutate(
@@ -321,7 +321,7 @@ mutate(
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -334,7 +334,7 @@ mutate(
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

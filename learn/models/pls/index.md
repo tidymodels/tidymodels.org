@@ -27,7 +27,7 @@ To use code in this article,  you will need to install the following packages: m
 "Multivariate analysis" usually refers to multiple _outcomes_ being modeled, analyzed, and/or predicted. There are multivariate versions of many common statistical tools. For example, suppose there was a data set with columns `y1` and `y2` representing two outcomes to be predicted. The `lm()` function would look something like:
 
 
-::: {.cell layout-align="center" hash='cache/lm_dd5a6fb8c0a7eb13d8f4802a4633f15e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm(cbind(y1, y2) ~ ., data = dat)
@@ -48,7 +48,7 @@ The goal is to predict the proportion of the three substances using the chemistr
 To start, let's take the two data matrices (called `endpoints` and `absorp`) and bind them together in a data frame:
 
 
-::: {.cell layout-align="center" hash='cache/data_6422a442b4ce6029557e8459a58c0093'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(modeldata)
@@ -70,7 +70,7 @@ Since we are working with variances and covariances, we need to standardize the 
 Many base R functions that deal with multivariate outcomes using a formula require the use of `cbind()` on the left-hand side of the formula to work with the traditional formula methods. In tidymodels, recipes do not; the outcomes can be symbolically "added" together on the left-hand side:
 
 
-::: {.cell layout-align="center" hash='cache/recipe_2d12fecc6bc977736f5029d0a2f5e2d8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 norm_rec <- 
@@ -87,7 +87,7 @@ Since the data set isn't large, let's use resampling to measure these proportion
 The folds can be created using the [rsample](https://rsample.tidymodels.org/) package and the recipe can be estimated for each resample using the [`prepper()`](https://rsample.tidymodels.org/reference/prepper.html) function: 
 
 
-::: {.cell layout-align="center" hash='cache/cv_2a934588572251400f15e5a511cd299c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(57343)
@@ -117,7 +117,7 @@ The function `get_var_explained()` shown here will do all these computations and
 
 
 
-::: {.cell layout-align="center" hash='cache/var-explained_2ffe91f3d7d47f3a0ccd222dbe48e574'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(pls)
@@ -167,7 +167,7 @@ get_var_explained <- function(recipe, ...) {
 We compute this data frame for each resample and save the results in the different columns. 
 
 
-::: {.cell layout-align="center" hash='cache/get-estimates_f6578622ab2fe6634341a4c139708a25'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 folds <- 
@@ -181,7 +181,7 @@ folds <-
 To extract and aggregate these data, simple row binding can be used to stack the data vertically. Most of the action happens in the first 15 components so let's filter the data and compute the _average_ proportion.
 
 
-::: {.cell layout-align="center" hash='cache/collapse-and-average_e425f0e602fdd8427c2d9600ce6b0c87'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 variance_data <- 
@@ -198,7 +198,7 @@ variance_data <-
 The plot below shows that, if the protein measurement is important, you might require 10 or so components to achieve a good representation of that outcome. Note that the predictor variance is captured extremely well using a single component. This is due to the high degree of correlation in those data. 
 
 
-::: {.cell layout-align="center" hash='cache/plot_21b5fd70a8802135a6280abf0669de3e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(variance_data, aes(x = components, y = proportion, col = source)) + 
@@ -218,7 +218,7 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -231,7 +231,7 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────

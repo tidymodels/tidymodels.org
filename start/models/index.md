@@ -29,7 +29,7 @@ How do you create a statistical model using tidymodels? In this article, we will
 To use code in this article,  you will need to install the following packages: broom.mixed, dotwhisker, readr, rstanarm, and tidymodels.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_85ae9ade00802be6b86e52368433af07'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)  # for the parsnip package, along with the rest of tidymodels
@@ -56,7 +56,7 @@ Let's use the data from [Constable (1993)](https://link.springer.com/article/10.
 To start, let's read our urchins data into R, which we'll do by providing [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) with a url where our CSV data is located ("<https://tidymodels.org/start/models/urchins.csv>"):
 
 
-::: {.cell layout-align="center" hash='cache/data_e77342354b69380c4bad8b35f35f210a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 urchins <-
@@ -82,7 +82,7 @@ urchins <-
 Let's take a quick look at the data:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_1e4ae78769856ab4fcf4afd423a5a206'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 urchins
@@ -113,7 +113,7 @@ The urchins data is a [tibble](https://tibble.tidyverse.org/index.html). If you 
 As a first step in modeling, it's always a good idea to plot the data: 
 
 
-::: {.cell layout-align="center" hash='cache/urchin-plot_ac61ac58f8f8b93ac9e5b493b57dab3d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(urchins,
@@ -140,7 +140,7 @@ We can see that urchins that were larger in volume at the start of the experimen
 A standard two-way analysis of variance ([ANOVA](https://www.itl.nist.gov/div898/handbook/prc/section4/prc43.htm)) model makes sense for this dataset because we have both a continuous predictor and a categorical predictor. Since the slopes appear to be different for at least two of the feeding regimes, let's build a model that allows for two-way interactions. Specifying an R formula with our variables in this way: 
 
 
-::: {.cell layout-align="center" hash='cache/two-way-int_d73a8f0cb3e8ab74475da3aad6f2902c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 width ~ initial_volume * food_regime
@@ -154,7 +154,7 @@ For this kind of model, ordinary least squares is a good initial approach. With 
 
 
 
-::: {.cell layout-align="center" hash='cache/lm-tm_18e812b29f0a898806f05c5c5c22cc7c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 linear_reg()
@@ -168,7 +168,7 @@ linear_reg()
 That is pretty underwhelming since, on its own, it doesn't really do much. However, now that the type of model has been specified, we can think about a method for _fitting_ or training the model, the model **engine**. The engine value is often a mash-up of the software that can be used to fit or train the model as well as the estimation method. The default for `linear_reg()` is `"lm"` for ordinary least squares, as you can see above. We could set a non-default option instead:
 
 
-::: {.cell layout-align="center" hash='cache/lm-spec_7f983214e9e28e6e13ea34dbb0a7a66d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 linear_reg() %>% 
@@ -183,7 +183,7 @@ linear_reg() %>%
 The [documentation page for `linear_reg()`](https://parsnip.tidymodels.org/reference/linear_reg.html) lists all the possible engines. We'll save our model object using the default engine as `lm_mod`.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_c9235c54519f3ab630742819ff3ae69a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_mod <- linear_reg()
@@ -194,7 +194,7 @@ lm_mod <- linear_reg()
 From here, the model can be estimated or trained using the [`fit()`](https://parsnip.tidymodels.org/reference/fit.html) function:
 
 
-::: {.cell layout-align="center" hash='cache/lm-fit_9161d10dd029c0301c77fd2839976b87'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 lm_fit <- 
@@ -221,7 +221,7 @@ lm_fit
 Perhaps our analysis requires a description of the model parameter estimates and their statistical properties. Although the `summary()` function for `lm` objects can provide that, it gives the results back in an unwieldy format. Many models have a `tidy()` method that provides the summary results in a more predictable and useful format (e.g. a data frame with standard column names): 
 
 
-::: {.cell layout-align="center" hash='cache/lm-table_336d44ab5a68463cc444e672d24e7e03'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(lm_fit)
@@ -241,7 +241,7 @@ tidy(lm_fit)
 This kind of output can be used to generate a dot-and-whisker plot of our regression results using the dotwhisker package:
 
 
-::: {.cell layout-align="center" hash='cache/dwplot_f21b08f73cedd25e1458a4d40317813a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(lm_fit) %>% 
@@ -264,7 +264,7 @@ This fitted object `lm_fit` has the `lm` model output built-in, which you can ac
 Suppose that, for a publication, it would be particularly interesting to make a plot of the mean body size for urchins that started the experiment with an initial volume of 20ml. To create such a graph, we start with some new example data that we will make predictions for, to show in our graph:
 
 
-::: {.cell layout-align="center" hash='cache/new-points_16e975a6a443daf737d701d386ec1e44'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 new_points <- expand.grid(initial_volume = 20, 
@@ -287,7 +287,7 @@ Instead, with tidymodels, the types of predicted values are standardized so that
 First, let's generate the mean body width values: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-pred-mean_200e2f6584232c82f35daa5458c1e217'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mean_pred <- predict(lm_fit, new_data = new_points)
@@ -305,7 +305,7 @@ mean_pred
 When making predictions, the tidymodels convention is to always produce a tibble of results with standardized column names. This makes it easy to combine the original data and the predictions in a usable format: 
 
 
-::: {.cell layout-align="center" hash='cache/lm-all-pred_cbe4becdd14a31ffa636484d2d346e9f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 conf_int_pred <- predict(lm_fit, 
@@ -347,7 +347,7 @@ Every one on your team is happy with that plot _except_ that one person who just
 The [documentation](https://mc-stan.org/rstanarm/articles/priors.html) on the rstanarm package shows us that the `stan_glm()` function can be used to estimate this model, and that the function arguments that need to be specified are called `prior` and `prior_intercept`. It turns out that `linear_reg()` has a [`stan` engine](https://parsnip.tidymodels.org/reference/linear_reg.html#details). Since these prior distribution arguments are specific to the Stan software, they are passed as arguments to [`parsnip::set_engine()`](https://parsnip.tidymodels.org/reference/set_engine.html). After that, the same exact `fit()` call is used:
 
 
-::: {.cell layout-align="center" hash='cache/go-stan_d2e4c04008ba47a994abd65a4fc3eda1'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # set the prior distribution
@@ -400,7 +400,7 @@ This kind of Bayesian analysis (like many models) involves randomly generated nu
 To update the parameter table, the `tidy()` method is once again used: 
 
 
-::: {.cell layout-align="center" hash='cache/tidy-stan_b7f9c42eb5a5a3ce0684fd8833c81ef4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(bayes_fit, conf.int = TRUE)
@@ -420,7 +420,7 @@ tidy(bayes_fit, conf.int = TRUE)
 A goal of the tidymodels packages is that the **interfaces to common tasks are standardized** (as seen in the `tidy()` results above). The same is true for getting predictions; we can use the same code even though the underlying packages use very different syntax:
 
 
-::: {.cell layout-align="center" hash='cache/stan-pred_be90d7c63ae8d4bfc2a5f320ec01248f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 bayes_plot_data <- 
@@ -456,7 +456,7 @@ Also, using the tidymodels framework, we can do some interesting things by incre
 If you are familiar with the tidyverse, you may have noticed that our modeling code uses the magrittr pipe (`%>%`). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the _data_ as the first argument. For example: 
 
 
-::: {.cell layout-align="center" hash='cache/tidy-data_5baa7ec16f98f9fb235985f8995d8b2b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 urchins %>% 
@@ -475,7 +475,7 @@ urchins %>%
 whereas the modeling code uses the pipe to pass around the _model object_:
 
 
-::: {.cell layout-align="center" hash='cache/tidy-model_99c2fdc9d55231fb53a0cbc266ffabcc'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 bayes_mod %>% 
@@ -487,7 +487,7 @@ bayes_mod %>%
 This may seem jarring if you have used dplyr a lot, but it is extremely similar to how ggplot2 operates:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-22_7497a76ac6f0cccf90bc271055a00601'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(urchins,
@@ -502,7 +502,7 @@ ggplot(urchins,
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_5db2644d2f49a924bcfd72b2c3cad09a'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
@@ -515,7 +515,7 @@ ggplot(urchins,
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-09-25
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
