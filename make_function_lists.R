@@ -187,8 +187,8 @@ parsnip_pkgs <- revdepcheck::cran_revdeps("parsnip", dependencies = c("Depends",
 parsnip_pkgs <- c(parsnip_pkgs, "parsnip")
 # These ignore the tidymodels design principles and/or don't work with the broader ecosystem
 # or we don't don't have any models in them
-excl <- c("additive", "bayesian", "SSLR", "workflowsets", "workflows", "tune",
-          "tidymodels", "shinymodels", "stacks")
+excl <- c("additive", "bayesian", "cuda.ml", "SSLR", "workflowsets", "workflows",
+          "tune", "tidymodels", "shinymodels", "stacks")
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
 # Load them then get the model data base
