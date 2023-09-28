@@ -44,7 +44,7 @@ The first step is to re-export the generic functions for `tidy()`, `glance()`, a
 First you'll need to add the [generics](https://github.com/r-lib/generics) package to `Imports`. We recommend using the [usethis](https://github.com/r-lib/usethis) package for this:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_9890cbc4ec42f61834efb425089f40ef'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 usethis::use_package("generics", "Imports")
@@ -55,7 +55,7 @@ usethis::use_package("generics", "Imports")
 Next, you'll need to re-export the appropriate tidying methods. If you plan to implement a `glance()` method, for example, you can re-export the `glance()` generic by adding the following somewhere inside the `/R` folder of your package:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-4_38cd34fad95df0770cbd636f223a96e7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 #' @importFrom generics glance
@@ -78,7 +78,7 @@ You'll now need to implement specific tidying methods for each of the generics y
 In this article, we'll use the base R dataset `trees`, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R `lm()` function. 
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_14c6f51df99d72397978bc741263b776'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # load in the trees dataset
@@ -100,7 +100,7 @@ trees_model <- lm(Volume ~ Girth + Height, data = trees)
 Let's take a look at the `summary()` of our `trees_model` fit.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_4f89f95475d520f5553d536286380800'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 summary(trees_model)
@@ -136,7 +136,7 @@ The `tidy(x, ...)` method will return a tibble where each row contains informati
 Returning to the example of our linear model on timber volume, we'd like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its `summary()`, you might notice that you can extract the regression coefficients as follows:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_2d06ddc139453420a1f9c3a700076bce'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 summary(trees_model)$coefficients
@@ -151,7 +151,7 @@ summary(trees_model)$coefficients
 This object contains the model coefficients as a table, where the information giving which coefficient is being described in each row is given in the row names. Converting to a tibble where the row names are contained in a column, you might write:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-8_1c9d567aab67cfe9d789e4d092820760'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 trees_model_tidy <- summary(trees_model)$coefficients %>% 
@@ -171,7 +171,7 @@ trees_model_tidy
 The broom package standardizes common column names used to describe coefficients. In this case, the column names are:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_d3b69cc8d7b0204354a5642b201db1e8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 colnames(trees_model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
@@ -184,7 +184,7 @@ A glossary giving the currently acceptable column names outputted by `tidy()` me
 Finally, it is common for `tidy()` methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the `confint()` function can be used to calculate confidence intervals from a model object resulting from `lm()`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_21580f34c068d2b20c54019dfd267709'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 confint(trees_model)
@@ -199,7 +199,7 @@ confint(trees_model)
 With these considerations in mind, a reasonable `tidy()` method for `lm()` might look something like:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_f6d9f15ccd6cf42ff842df57e4438e6d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy.lm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
@@ -233,7 +233,7 @@ Some things to keep in mind while writing your `tidy()` method:
 * Sometimes a model will have several different types of components. For example, in mixed models, there is different information associated with fixed effects and random effects. Since this information doesn't have the same interpretation, it doesn't make sense to summarize the fixed and random effects in the same table. In cases like this you should add an argument that allows the user to specify which type of information they want. For example, you might implement an interface along the lines of:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_ec29c6d574e594c3ef38ee8eaa1897c8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 model <- mixed_model(...)
@@ -256,7 +256,7 @@ tidy(model, effects = "random")
 Returning to the `trees_model` example, we could pull out the $R^2$ value with the following code:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_2c1d97c34148db31a7158546bb447925'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 summary(trees_model)$r.squared
@@ -268,7 +268,7 @@ summary(trees_model)$r.squared
 Similarly, for the adjusted $R^2$:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-14_39b89051fa403289ab9a48d9960cd1ed'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 summary(trees_model)$adj.r.squared
@@ -280,7 +280,7 @@ summary(trees_model)$adj.r.squared
 Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a `tibble()` element-by-element by subsetting the `summary()` object repeatedly. The `with()` function, however, can help make this process a bit less tedious by evaluating expressions inside of the `summary(trees_model)` environment. To grab those those same two model elements from above using `with()`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-15_523943d96a851fb13ebcd46a651285c2'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 with(summary(trees_model),
@@ -297,7 +297,7 @@ with(summary(trees_model),
 A reasonable `glance()` method for `lm()`, then, might look something like:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-16_562078fcbb69c81f75881559d1cd7b6a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glance.lm <- function(x, ...) {
@@ -346,7 +346,7 @@ If a `data` argument is not specified, `augment()` should try to reconstruct the
 With this is mind, we can look back to our `trees_model` example. For one, the `model` element inside of the `trees_model` object will allow us to recover the original data:
 
 
-::: {.cell layout-align="center" rows.print='5' hash='cache/unnamed-chunk-17_7c6e8b627700bd9f5e2a735a3d928bc6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 trees_model$model
@@ -389,7 +389,7 @@ trees_model$model
 Similarly, the fitted values and residuals can be accessed with the following code:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-18_54bcee9723318351916df71231a948e6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 head(trees_model$fitted.values)
@@ -405,7 +405,7 @@ head(trees_model$residuals)
 As with `glance()` methods, it's fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-19_c1e56b6e58b3dfef31c1fd4f075b0be6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 se.fit <- predict(trees_model, newdata = trees, se.fit = TRUE)$se.fit %>%
@@ -420,7 +420,7 @@ head(se.fit)
 Thus, a reasonable `augment()` method for `lm` might look something like this:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-20_1099546007cdf74e838cc6ce7ff9bc2a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 augment.lm <- function(x, data = x$model, newdata = NULL, ...) {
@@ -458,7 +458,7 @@ The recommended interface and functionality for `augment()` methods may change s
 The only remaining step is to integrate the new methods into the parent package! To do so, just drop the methods into a `.R` file inside of the `/R` folder and document them using roxygen2. If you're unfamiliar with the process of documenting objects, you can read more about it [here](http://r-pkgs.had.co.nz/man.html). Here's an example of how our `tidy.lm()` method might be documented:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-21_bed5f753c0ac47c186d0574f61f2942a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 #' Tidy a(n) lm object
@@ -506,12 +506,12 @@ Once you've documented each of your new methods and executed `devtools::document
 Tidier methods have a standardized set of acceptable argument and output column names. The currently acceptable argument names by tidier method are:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-23_d64cbb8b19e213d52d5c8c97634481a4'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 
 ```{=html}
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-40b846a22d18f5515baa" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-40b846a22d18f5515baa">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment"],["alpha","boot_se","by_class","col.names","component","conf.int","conf.level","conf.method","conf.type","diagonal","droppars","effects","ess","estimate.method","exponentiate","fe","include_studies","instruments","intervals","matrix","measure","na.rm","object","p.values","par_type","parameters","parametric","pars","prob","region","return_zeros","rhat","robust","scales","se.type","strata","test","trim","upper","deviance","diagnostics","looic","mcmc","test","x","data","interval","newdata","se_fit","type.predict","type.residuals","weights"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Argument<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5dc840cba4450d99e0c4" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5dc840cba4450d99e0c4">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment"],["alpha","boot_se","by_class","col.names","component","conf.int","conf.level","conf.method","conf.type","diagonal","droppars","effects","ess","estimate.method","exponentiate","fe","include_studies","instruments","intervals","matrix","measure","na.rm","object","p.values","par_type","parameters","parametric","pars","prob","region","return_zeros","rhat","robust","scales","se.type","strata","test","trim","upper","deviance","diagnostics","looic","mcmc","test","x","data","interval","newdata","se_fit","type.predict","type.residuals","weights"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Argument<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
 :::
@@ -523,12 +523,12 @@ Tidier methods have a standardized set of acceptable argument and output column 
 The currently acceptable column names by tidier method are:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-24_53d73b4cb01f15e416ba42c248920e7d'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 
 ```{=html}
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-53f9ff7f595f11e2af5e" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-53f9ff7f595f11e2af5e">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment"],["acf","adj.p.value","alternative","at.value","at.variable","atmean","autocorrelation","bias","ci.width","class","cluster","coef.type","column1","column2","comp","comparison","component","conf.high","conf.low","contrast","cumulative","cutoff","delta","den.df","denominator","dev.ratio","df","distance","estimate","estimate1","estimate2","event","exp","expected","fpr","freq","GCV","group","group1","group2","index","item1","item2","kendall_score","lag","lambda","letters","lhs","logLik","mcmc.error","mean","meansq","method","n","N","n.censor","n.event","n.risk","null.value","num.df","nzero","obs","op","outcome","p","p.value","p.value.Sargan","p.value.weakinst","p.value.Wu.Hausman","parameter","PC","percent","power","proportion","pyears","response","rhs","robust.se","row","scale","sd","series","sig.level","size","spec","state","statistic","statistic.Sargan","statistic.weakinst","statistic.Wu.Hausman","std_estimate","std.all","std.dev","std.error","std.lv","std.nox","step","strata","stratum","study","sumsq","tau","term","time","tpr","type","uniqueness","value","var_kendall_score","variable","variance","withinss","y.level","y.value","z","adj.r.squared","agfi","AIC","AICc","alpha","alternative","autocorrelation","avg.silhouette.width","betweenss","BIC","cfi","chi.squared","chisq","cochran.qe","cochran.qm","conf.high","conf.low","converged","convergence","crit","cv.crit","den.df","deviance","df","df.null","df.residual","dw.original","dw.transformed","edf","estimator","events","finTol","function.count","G","g.squared","gamma","gradient.count","H","h.squared","hypvol","i.squared","independence","isConv","iter","iterations","kHKB","kLW","lag.order","lambda","lambda.1se","lambda.min","lambdaGCV","logLik","max.cluster.size","max.hazard","max.time","maxit","MCMC.burnin","MCMC.interval","MCMC.samplesize","measure","median","method","min.hazard","min.time","missing_method","model","n","n.clusters","n.factors","n.max","n.start","nevent","nexcluded","ngroups","nobs","norig","npar","npasses","null.deviance","nulldev","num.df","number.interaction","offtable","p.value","p.value.cochran.qe","p.value.cochran.qm","p.value.original","p.value.Sargan","p.value.transformed","p.value.weak.instr","p.value.Wu.Hausman","parameter","pen.crit","power","power.reached","pseudo.r.squared","r.squared","records","residual.deviance","rho","rho2","rho20","rmean","rmean.std.error","rmsea","rmsea.conf.high","rscore","score","sigma","sigma2_j","spar","srmr","statistic","statistic.Sargan","statistic.weak.instr","statistic.Wu.Hausman","tau","tau.squared","tau.squared.se","theta","timepoints","tli","tot.withinss","total","total.variance","totss","value","within.r.squared",".class",".cluster",".cochran.qe.loo",".col.prop",".conf.high",".conf.low",".cooksd",".cov.ratio",".cred.high",".cred.low",".dffits",".expected",".fitted",".fitted_j_0",".fitted_j_1",".hat",".lower",".moderator",".moderator.level",".observed",".probability",".prop",".remainder",".resid",".resid_j_0",".resid_j_1",".row.prop",".rownames",".se.fit",".seasadj",".seasonal",".sigma",".std.resid",".tau",".tau.squared.loo",".trend",".uncertainty",".upper",".weight"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Column<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2fe09edf769227680ad9" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2fe09edf769227680ad9">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment"],["acf","adj.p.value","alternative","at.value","at.variable","atmean","autocorrelation","bias","ci.width","class","cluster","coef.type","column1","column2","comp","comparison","component","conf.high","conf.low","contrast","cumulative","cutoff","delta","den.df","denominator","dev.ratio","df","distance","estimate","estimate1","estimate2","event","exp","expected","fpr","freq","GCV","group","group1","group2","index","item1","item2","kendall_score","lag","lambda","letters","lhs","logLik","mcmc.error","mean","meansq","method","n","N","n.censor","n.event","n.risk","null.value","num.df","nzero","obs","op","outcome","p","p.value","p.value.Sargan","p.value.weakinst","p.value.Wu.Hausman","parameter","PC","percent","power","proportion","pyears","response","rhs","robust.se","row","scale","sd","series","sig.level","size","spec","state","statistic","statistic.Sargan","statistic.weakinst","statistic.Wu.Hausman","std_estimate","std.all","std.dev","std.error","std.lv","std.nox","step","strata","stratum","study","sumsq","tau","term","time","tpr","type","uniqueness","value","var_kendall_score","variable","variance","withinss","y.level","y.value","z","adj.r.squared","agfi","AIC","AICc","alpha","alternative","autocorrelation","avg.silhouette.width","betweenss","BIC","cfi","chi.squared","chisq","cochran.qe","cochran.qm","conf.high","conf.low","converged","convergence","crit","cv.crit","den.df","deviance","df","df.null","df.residual","dw.original","dw.transformed","edf","estimator","events","finTol","function.count","G","g.squared","gamma","gradient.count","H","h.squared","hypvol","i.squared","independence","isConv","iter","iterations","kHKB","kLW","lag.order","lambda","lambda.1se","lambda.min","lambdaGCV","logLik","max.cluster.size","max.hazard","max.time","maxit","MCMC.burnin","MCMC.interval","MCMC.samplesize","measure","median","method","min.hazard","min.time","missing_method","model","n","n.clusters","n.factors","n.max","n.start","nevent","nexcluded","ngroups","nobs","norig","npar","npasses","null.deviance","nulldev","num.df","number.interaction","offtable","p.value","p.value.cochran.qe","p.value.cochran.qm","p.value.original","p.value.Sargan","p.value.transformed","p.value.weak.instr","p.value.Wu.Hausman","parameter","pen.crit","power","power.reached","pseudo.r.squared","r.squared","records","residual.deviance","rho","rho2","rho20","rmean","rmean.std.error","rmsea","rmsea.conf.high","rscore","score","sigma","sigma2_j","spar","srmr","statistic","statistic.Sargan","statistic.weak.instr","statistic.Wu.Hausman","tau","tau.squared","tau.squared.se","theta","timepoints","tli","tot.withinss","total","total.variance","totss","value","within.r.squared",".class",".cluster",".cochran.qe.loo",".col.prop",".conf.high",".conf.low",".cooksd",".cov.ratio",".cred.high",".cred.low",".dffits",".expected",".fitted",".fitted_j_0",".fitted_j_1",".hat",".lower",".moderator",".moderator.level",".observed",".probability",".prop",".remainder",".resid",".resid_j_0",".resid_j_1",".row.prop",".rownames",".se.fit",".seasadj",".seasonal",".sigma",".std.resid",".tau",".tau.squared.loo",".trend",".uncertainty",".upper",".weight"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Column<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
 :::
@@ -540,39 +540,39 @@ The [alexpghayes/modeltests](https://github.com/alexpghayes/modeltests) package 
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
 #>  generics   * 0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
 #>  tidyverse  * 2.0.0   2023-02-22 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

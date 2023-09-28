@@ -138,7 +138,6 @@ Armed with our grid filled with 25 candidate decision tree models, let's create 
 
 ```{r}
 #| label: "cell-folds"
-#| dependson: "cell-split"
 set.seed(234)
 cell_folds <- vfold_cv(cell_train)
 ```
@@ -157,7 +156,6 @@ Here we use a `workflow()` with a straightforward formula; if this model require
 
 ```{r}
 #| label: "tree-res"
-#| dependson: c("tune-spec", "cell-folds", "tree-grid")
 #| message: false
 set.seed(345)
 
@@ -179,7 +177,6 @@ Once we have our tuning results, we can both explore them through visualization 
 
 ```{r}
 #| label: "collect-trees"
-#| dependson: "tree-res"
 tree_res %>% 
   collect_metrics()
 ```
@@ -188,7 +185,6 @@ We might get more out of plotting these results:
 
 ```{r}
 #| label: "best-tree"
-#| dependson: "tree-res"
 #| fig-width:  8
 #| fig-height:  7
 tree_res %>%
@@ -206,7 +202,6 @@ We can see that our "stubbiest" tree, with a depth of `r min(tree_grid$tree_dept
 
 ```{r}
 #| label: "show-best-tree"
-#| dependson: "tree-res"
 tree_res %>%
   show_best("accuracy")
 ```
@@ -215,7 +210,6 @@ We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show
 
 ```{r}
 #| label: "select-best-tree"
-#| dependson: "tree-res"
 best_tree <- tree_res %>%
   select_best("accuracy")
 
@@ -230,7 +224,6 @@ We can update (or "finalize") our workflow object `tree_wf` with the values from
 
 ```{r}
 #| label: "final-wf"
-#| dependson: "best-tree"
 final_wf <- 
   tree_wf %>% 
   finalize_workflow(best_tree)
@@ -246,7 +239,6 @@ Finally, let's fit this final model to the training data and use our test data t
 
 ```{r}
 #| label: "last-fit"
-#| dependson: c("final-wf", "cell-split")
 final_fit <- 
   final_wf %>%
   last_fit(cell_split) 
@@ -266,7 +258,6 @@ The `final_fit` object contains a finalized, fitted workflow that you can use fo
 
 ```{r}
 #| label: "last-fit-wf"
-#| dependson: "last-fit"
 final_tree <- extract_workflow(final_fit)
 final_tree
 ```
@@ -275,7 +266,6 @@ We can create a visualization of the decision tree using another helper function
 
 ```{r}
 #| label: "rpart-plot"
-#| dependson: "last-fit-wf"
 #| fig-width:  8
 #| fig-height:  5
 final_tree %>%
@@ -287,7 +277,6 @@ Perhaps we would also like to understand what variables are important in this fi
 
 ```{r}
 #| label: "vip"
-#| dependson: "final-tree"
 #| fig-width:  6
 #| fig-height:  5
 library(vip)

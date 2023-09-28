@@ -33,7 +33,7 @@ Second, let's fit a regularized linear regression model to demonstrate how to mo
 We'll use the Ames housing data set to demonstrate how to create regression models using parsnip. First, set up the data set and create a simple training/test set split:
 
 
-::: {.cell layout-align="center" hash='cache/ames-split_18b5bf0134171b332b56ced5fc3b1911'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -56,7 +56,7 @@ The use of the test set here is _only for illustration_; normally in a data anal
 We'll start by fitting a random forest model to a small set of parameters. Let's create a model with the predictors `Longitude`, `Latitude`, `Lot_Area`, `Neighborhood`, and `Year_Sold`. A simple random forest model can be specified via:
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic_02332292464935db3e80ae3984b88bfe'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rf_defaults <- rand_forest(mode = "regression")
@@ -79,7 +79,7 @@ Let's start with the non-formula interface:
 
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic-xy_b14276d12ae7cf9ce85ecf44ee6a9bb4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 preds <- c("Longitude", "Latitude", "Lot_Area", "Neighborhood", "Year_Sold")
@@ -119,7 +119,7 @@ The non-formula interface doesn't do anything to the predictors before passing t
 For regression models, we can use the basic `predict()` method, which returns a tibble with a column named `.pred`:
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic-xy-pred_6e4354a6451e46bc8faa718908d9a912'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 test_results <- 
@@ -159,7 +159,7 @@ Note that:
 Now, for illustration, let's use the formula method using some new parameter values:
 
 
-::: {.cell layout-align="center" hash='cache/rf-basic-form_1e1aadae8c7bde9360f11e8062781218'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
@@ -193,7 +193,7 @@ Suppose that we would like to use the randomForest package instead of ranger. To
 
 
 
-::: {.cell layout-align="center" hash='cache/rf-rf_7f5cc80f129451dce218438d3e2b5856'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
@@ -233,7 +233,7 @@ Since ranger won't create indicator values, `.preds()` would be appropriate for 
 For example, let's use an expression with the `.preds()` descriptor to fit a bagging model: 
 
 
-::: {.cell layout-align="center" hash='cache/bagged_2b76f70b641acbdb2616b84443585217'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rand_forest(mode = "regression", mtry = .preds(), trees = 1000) %>%
@@ -271,7 +271,7 @@ A linear model might work for this data set as well. We can use the `linear_reg(
 When regularization is used, the predictors should first be centered and scaled before being passed to the model. The formula method won't do that automatically so we will need to do this ourselves. We'll use the [recipes](https://recipes.tidymodels.org/) package for these steps. 
 
 
-::: {.cell layout-align="center" hash='cache/glmn-form_a0ca81e5cfdf6601081373c7b271e499'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 norm_recipe <- 
@@ -374,7 +374,7 @@ If `penalty` were not specified, all of the `lambda` values would be computed.
 To get the predictions for this specific value of `lambda` (aka `penalty`):
 
 
-::: {.cell layout-align="center" hash='cache/glmn-pred_673611c19e448251aeb977fec5788162'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # First, get the processed version of the test set predictors:
@@ -431,40 +431,40 @@ This final plot compares the performance of the random forest and regularized re
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      * version date (UTC) lib source
-#>  broom        * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom        * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials        * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr        * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2      * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  glmnet       * 4.1-7   2023-03-23 [1] CRAN (R 4.3.0)
-#>  infer        * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip      * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr        * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+#>  dplyr        * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2      * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  glmnet       * 4.1-8   2023-08-22 [1] CRAN (R 4.3.0)
+#>  infer        * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip      * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  randomForest * 4.7-1.1 2022-05-23 [1] CRAN (R 4.3.0)
 #>  ranger       * 0.15.1  2023-04-03 [1] CRAN (R 4.3.0)
-#>  recipes      * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  recipes      * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang          1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample      * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample      * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels   * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune         * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels   * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune         * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows    * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick    * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

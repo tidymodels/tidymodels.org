@@ -58,7 +58,7 @@ The `yardstick_remove_missing()` and `yardstick_any_missing()` yardstick functio
 You are required to supply a `case_weights` argument to `mse_vec()` for the functions to work with yardstick. If your metric in question doesn't support case weights, you can error if they are passed, or simply ignore it.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_2dcb35dc484df67df8729f5d8d5748cb'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -89,7 +89,7 @@ mse_vec <- function(truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
 At this point, you've created the vector version of the mean squared error metric.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-4_d550e4bdba84740582e612ff889e8142'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 data("solubility_test")
@@ -106,7 +106,7 @@ mse_vec(
 Intelligent error handling is immediately available.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_4bf3c418c6588cb409c4d210eb940ce6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mse_vec(truth = "apple", estimate = 1)
@@ -123,7 +123,7 @@ mse_vec(truth = 1, estimate = factor("xyz"))
 `NA` values are removed if `na_rm = TRUE` (the default). If `na_rm = FALSE` and any `NA` values are detected, then the metric automatically returns `NA`.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_78a790915bfde0b439d9d0662a01e6ec'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # NA values removed
@@ -142,7 +142,7 @@ mse_vec(truth = c(NA, .5, .4), estimate = c(1, .6, .5), na_rm = FALSE)
 The data frame version of the metric should be fairly simple. It is a generic function with a `data.frame` method that calls the yardstick helper, `numeric_metric_summarizer()`, and passes along the `mse_vec()` function to it along with versions of `truth` and `estimate` that have been wrapped in `rlang::enquo()` and then unquoted with `!!` so that non-standard evaluation can be supported.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_2d38e4f207935fac18e7a0cd2c356a66'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(rlang)
@@ -172,7 +172,7 @@ mse.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_weights = N
 And that's it. The yardstick package handles the rest.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-8_311f848a765d18c3ed89af83e8c36fbd'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mse(solubility_test, truth = solubility, estimate = prediction)
@@ -186,7 +186,7 @@ mse(solubility_test, truth = solubility, estimate = factor("xyz"))
 Let's test it out on a grouped data frame.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_8826c75b88bc25aea3d6ec123b1ad1ef'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(dplyr)
@@ -240,7 +240,7 @@ Classification metrics are more complicated than numeric ones because you have t
 The vector implementation for classification metrics initially has a very similar setup as the numeric metrics. It used `check_class_metric()` instead of `check_numeric_metric()`. It has an additional argument, `estimator` that determines the type of estimator to use (binary or some kind of multiclass implementation or averaging). This argument is auto-selected for the user, so default it to  `NULL`. Additionally, pass it along to `check_class_metric()` so that it can check the provided `estimator` against the classes of `truth` and `estimate` to see if they are allowed.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_f7a7699bccc91e2d57da5a5cad4e97a4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # Logic for `event_level`
@@ -294,7 +294,7 @@ miss_rate_vec <- function(truth,
 Another change from the numeric metric is that a call to `finalize_estimator()` is made. This is the infrastructure that auto-selects the type of estimator to use.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_c182ce73ca2334a963cd46213c8ce1ce'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 data("two_class_example")
@@ -307,7 +307,7 @@ miss_rate_vec(two_class_example$truth, two_class_example$predicted)
 What happens if you try and pass in a multiclass result?
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_8f6e15521b8c0445c0d66710d116a6c0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 data("hpc_cv")
@@ -328,7 +328,7 @@ Don't worry about the `metric_dispatcher` argument. This is handled for you and 
 It is also good practice to call `validate_estimator()` which handles the case where a user passed in the estimator themselves. This validates that the supplied `estimator` is one of the allowed types and error otherwise.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_28fa3e7b101af36542408e1cd18c0ba2'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 finalize_estimator_internal.miss_rate <- function(metric_dispatcher, x, estimator, call) {
@@ -388,7 +388,7 @@ Generally, they require more effort to get right than the binary case, especiall
 Let's first remove the "binary" restriction we created earlier.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-14_642ada2cc50c512d049f5ffd21c05624'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rm(finalize_estimator_internal.miss_rate)
@@ -405,7 +405,7 @@ The main changes below are:
 -   `miss_rate_multiclass()` provides the implementation for the multiclass case. It calculates the true positive and false negative values as vectors with one value per class. For the macro case, it returns a vector of miss rate calculations, and for micro, it first sums the individual pieces and returns a single miss rate calculation. In the macro case, the vector is then weighted appropriately in `miss_rate_estimator_impl()` depending on whether or not it was macro or weighted macro.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-15_17bdeca019091f79b4c96bbb7cd90723'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 miss_rate_vec <- function(truth, 
@@ -492,7 +492,7 @@ For the macro case, this separation of weighting from the core implementation mi
 Let's try it out now:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-16_7e8336cb6ff907f90fb914111e7bf279'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # two class
@@ -511,7 +511,7 @@ miss_rate_vec(fold1$obs, fold1$pred)
 Luckily, the data frame implementation is as simple as the numeric case, we just need to add an extra `estimator` argument and pass that through.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-17_0fdffb381be0b51ab1fbc1a67422d7c8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 miss_rate <- function(data, ...) {
@@ -543,7 +543,7 @@ miss_rate.data.frame <- function(data,
 ```
 :::
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-18_37dddc8d1f30e4e126853d7430c0f8c3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # Macro weighted automatically selected
@@ -570,7 +570,7 @@ miss_rate(hpc_cv, obs, VF)
 The `metric_set()` function validates that all metric functions are of the same metric type by checking the class of the function. If any metrics are not of the right class, `metric_set()` fails. By using `new_numeric_metric()` and `new_class_metric()` in the above custom metrics, they work out of the box without any additional adjustments.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-19_8332e2c7eb70c5408f4edb0449a94e4d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 numeric_mets <- metric_set(mse, rmse)
@@ -588,37 +588,37 @@ numeric_mets(solubility_test, solubility, prediction)
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_b0adcc0cbf400d613cf82d9561b6fba7'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang      * 1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

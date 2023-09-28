@@ -30,7 +30,7 @@ To use code in this article,  you will need to install the following packages: f
 The data for this article are sales of alcoholic beverages originally from [the Federal Reserve Bank of St. Louis website](https://fred.stlouisfed.org/series/S4248SM144NCEN).
 
 
-::: {.cell layout-align="center" hash='cache/read-data_01b26233ff6bfabab491b8c16997ff7d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -52,7 +52,7 @@ Each row represents one month of sales (in millions of US dollars).
 Suppose that we need predictions for one year ahead and our model should use the most recent data from the last 20 years. To set up this resampling scheme:
 
 
-::: {.cell layout-align="center" hash='cache/rof_a3901abdf6e0b2628ab084f7f5963b30'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs <- rolling_origin(
@@ -88,7 +88,7 @@ roll_rs
 Each `split` element contains the information about that resample:
 
 
-::: {.cell layout-align="center" hash='cache/split_5fdb9ea2a48981f11ea3492abe5e9a3b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs$splits[[1]]
@@ -101,7 +101,7 @@ roll_rs$splits[[1]]
 For plotting, let's index each split by the first day of the assessment set:
 
 
-::: {.cell layout-align="center" hash='cache/labels_0aca53ecc7434fd84f4e6e048b075dc0'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_date <- function(x) {
@@ -120,7 +120,7 @@ head(roll_rs$start_date)
 This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the `auto.arima()` function from the forecast package. The rsample functions `analysis()` and `assessment()` return a data frame, so another step converts the data to a `ts` object called `mod_dat` using a function in the timetk package.
 
 
-::: {.cell layout-align="center" hash='cache/model-fun_873a12102712d4dad2abf7d98219cd29'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(forecast)  # for `auto.arima`
@@ -145,7 +145,7 @@ fit_model <- function(x, ...) {
 Save each model in a new column:
 
 
-::: {.cell layout-align="center" hash='cache/model-fit_fcf002b6825a607bf4e20193cb40ff1d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs$arima <- map(roll_rs$splits, fit_model)
@@ -178,7 +178,7 @@ Using the model fits, let's measure performance in two ways:
 In each case, the mean absolute percent error (MAPE) is the statistic used to characterize the model fits. The interpolation error can be computed from the `Arima` object. To make things easy, let's use the sweep package's `sw_glance()` function:
 
 
-::: {.cell layout-align="center" hash='cache/interp_a12a048c24fd442bf30585d097853601'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(sweep)
@@ -199,7 +199,7 @@ summary(roll_rs$interpolation)
 For the extrapolation error, the model and split objects are required. Using these:
 
 
-::: {.cell layout-align="center" hash='cache/extrap_a2698a074c1c93aafef9deb134c18898'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 get_extrap <- function(split, mod) {
@@ -226,7 +226,7 @@ summary(roll_rs$extrapolation)
 What do these error estimates look like over time?
 
 
-::: {.cell layout-align="center" hash='cache/plot_3f95e9f1f47c3c69779b59f205ee7673'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 roll_rs %>%
@@ -250,7 +250,7 @@ It is also worth noting that `rolling_origin()` can be used over calendar period
 The example below demonstrates this idea by splitting `drinks` into a nested set of 26 years, and rolling over years rather than months. Note that the end result accomplishes a different task than the original example; in this new case, each slice moves forward an entire year, rather than just one month.
 
 
-::: {.cell layout-align="center" hash='cache/rof-annual_57bb05c6982e168bb14d462998eb2839'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # The idea is to nest by the period to roll over,
@@ -296,7 +296,7 @@ The workflow to access these calendar slices is to use `bind_rows()` to join
 each analysis set together.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_39cadf66f7df3b333da1ff288df20ec3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mutate(
@@ -321,40 +321,40 @@ mutate(
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  forecast   * 8.21    2023-02-27 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  forecast   * 8.21.1  2023-08-31 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
-#>  sweep      * 0.2.4   2023-05-25 [1] Github (business-science/sweep@d0327bc)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
+#>  sweep      * 0.2.5   2023-09-25 [1] Github (business-science/sweep@8dcfa11)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  timetk     * 2.8.3   2023-03-30 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  timetk     * 2.8.4   2023-09-22 [1] CRAN (R 4.3.1)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #>  zoo        * 1.8-12  2023-04-13 [1] CRAN (R 4.3.0)

@@ -29,7 +29,7 @@ In this vignette, we'll walk through conducting a $\chi^2$ (chi-squared) test of
 Throughout this vignette, we'll make use of the `ad_data` data set (available in the modeldata package, which is part of tidymodels). This data set is related to cognitive impairment in 333 patients from [Craig-Schapiro _et al_ (2011)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3079734/). See `?ad_data` for more information on the variables included and their source. One of the main research questions in these data were how a person's genetics related to the Apolipoprotein E gene affect their cognitive skills. The data shows: 
 
 
-::: {.cell layout-align="center" hash='cache/glimpse-ad_data-actual_94d0250e8076cbdabed74e9980d3fa0c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels) # Includes the infer package
@@ -62,7 +62,7 @@ The three main genetic variants are called E2, E3, and E4. The values in `Genoty
 To carry out a chi-squared test of independence, we'll examine the association between their cognitive ability (impaired and healthy) and the genetic makeup. This is what the relationship looks like in the sample data:
 
 
-::: {.cell layout-align="center" hash='cache/plot-indep_7b4b4278ee24551267ebbc164a3d5901'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/plot-indep-1.svg){fig-align='center' width=672}
 :::
@@ -74,7 +74,7 @@ If there were no relationship, we would expect to see the purple bars reaching t
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
 
-::: {.cell layout-align="center" hash='cache/calc-obs-stat-indep_5b5c2708335eaa5642566a36bc8607a8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculate the observed statistic
@@ -90,7 +90,7 @@ The observed $\chi^2$ statistic is 21.5774809. Now, we want to compare this stat
 We can `generate()` the null distribution in one of two ways: using randomization or theory-based methods. The randomization approach permutes the response and explanatory variables, so that each person's genetics is matched up with a random cognitive rating from the sample in order to break up any association between the two.
 
 
-::: {.cell layout-align="center" hash='cache/generate-null-indep_f0c4dc6d3909bf492fff7fec016efe78'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # generate the null distribution using randomization
@@ -106,7 +106,7 @@ null_distribution_simulated <- ad_data %>%
 Note that, in the line `specify(Genotype ~ Class)` above, we could use the equivalent syntax `specify(response = Genotype, explanatory = Class)`. The same goes in the code below, which generates the null distribution using theory-based methods instead of randomization.
 
 
-::: {.cell layout-align="center" hash='cache/generate-null-indep-t_caa67003246e478f63031c6cfddd20db'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # generate the null distribution by theoretical approximation
@@ -122,7 +122,7 @@ null_distribution_theoretical <- ad_data %>%
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep_f2f200d811183a0c4cb1c5db5a6887da'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize the null distribution and test statistic!
@@ -141,7 +141,7 @@ null_distribution_simulated %>%
 We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the `generate()` and `calculate()` steps when using the theoretical approach, and that we now need to provide `method = "theoretical"` to `visualize()`.
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep-theor_69d67e24d9d20b2cc417500817530986'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize the theoretical null distribution and test statistic!
@@ -162,7 +162,7 @@ ad_data %>%
 To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into `visualize()`, and further provide `method = "both"`.
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep-both_de4ea057f276adae65c0500f0b101204'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize both null distributions and the test statistic!
@@ -181,7 +181,7 @@ null_distribution_simulated %>%
 Either way, it looks like our observed test statistic would be fairly unlikely if there were actually no association between cognition and genotype. More exactly, we can calculate the p-value:
 
 
-::: {.cell layout-align="center" hash='cache/p-value-indep_c4fc49cb845ca2d17eb8b90ad1415c5f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculate the p value from the observed statistic and null distribution
@@ -203,7 +203,7 @@ Thus, if there were really no relationship between cognition and genotype, the p
 Note that, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
 
 
-::: {.cell layout-align="center" hash='cache/chisq-indep-wrapper_5a5fe1de95b0fa9f10274adace466c56'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 chisq_test(ad_data, Genotype ~ Class)
@@ -223,7 +223,7 @@ Now, moving on to a chi-squared goodness of fit test, we'll take a look at just 
 The rates of the meta-analysis and our observed data are: 
  
 
-::: {.cell layout-align="center" hash='cache/rates_08b62e13f32945d5639e4fa0a3e7650e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # Song, Y., Stampfer, M. J., & Liu, S. (2004). Meta-Analysis: Apolipoprotein E 
@@ -251,7 +251,7 @@ Suppose our null hypothesis is that `Genotype` follows the same frequency distri
 First, to carry out this hypothesis test, we would calculate our observed statistic.
 
 
-::: {.cell layout-align="center" hash='cache/observed-gof-statistic_e91fd2fa77ac6bf08b1757bfed1f3f5d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculating the null distribution
@@ -267,7 +267,7 @@ The observed statistic is 23.3838483. Now, generating a null distribution, by ju
 
 
 
-::: {.cell layout-align="center" hash='cache/null-distribution-gof_bb60d11813808ededfda9e5bf2d1b026'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # generating a null distribution
@@ -283,7 +283,7 @@ null_distribution_gof <- ad_data %>%
 Again, to get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
 
 
-::: {.cell layout-align="center" hash='cache/visualize-indep-gof_4d066a35c73c809812320d0660a99d40'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # visualize the null distribution and test statistic!
@@ -302,7 +302,7 @@ null_distribution_gof %>%
 This statistic seems like it would be unlikely if our rates were the same as the rates from the meta-analysis! How unlikely, though? Calculating the p-value:
 
 
-::: {.cell layout-align="center" hash='cache/get-p-value-gof_3b42f07bf93dda8fb8c6c6fdec48548d'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # calculate the p-value
@@ -314,17 +314,17 @@ p_value_gof
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0004
+#> 1  0.0008
 ```
 :::
 
 
-Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 4\times 10^{-4}.
+Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 8\times 10^{-4}.
 
 Again, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out chi-squared goodness of fit tests on tidy data. The syntax goes like this:
 
 
-::: {.cell layout-align="center" hash='cache/chisq-gof-wrapper_7462abfdbc94485cd21a800c19791b3f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 chisq_test(ad_data, response = Genotype, p = meta_rates)
@@ -341,37 +341,37 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 
