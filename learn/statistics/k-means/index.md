@@ -32,7 +32,7 @@ K-means clustering serves as a useful example of applying tidy data principles t
 Let's start by generating some random two-dimensional data with three clusters. Data in each cluster will come from a multivariate gaussian distribution, with different means for each cluster:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-3_da2530708f5dfb4a750218471fffffbf'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -72,7 +72,7 @@ This is an ideal case for k-means clustering.
 Rather than using equations, this short animation using the [artwork](https://github.com/allisonhorst/stats-illustrations) of Allison Horst explains the clustering process:
 
 
-::: {.cell layout-align="center" hash='cache/illustrations_ac33bdbf9aa409a303f4884ea81d9606'}
+::: {.cell layout-align="center"}
 ![](kmeans.gif){fig-align='center'}
 :::
 
@@ -82,7 +82,7 @@ Rather than using equations, this short animation using the [artwork](https://gi
 We'll use the built-in `kmeans()` function, which accepts a data frame with all numeric columns as it's primary argument.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-5_d5799415ae2a6c1256f67a67ce3a5e21'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 points <- 
@@ -144,7 +144,7 @@ These differing lengths have important meaning when we want to tidy our data set
 Which of these do we want to extract? There is no right answer; each of them may be interesting to an analyst. Because they communicate entirely different information (not to mention there's no straightforward way to combine them), they are extracted by separate functions. `augment` adds the point classifications to the original data set:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-6_d3717c89fa92a77f402386f99eef2483'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 augment(kclust, points)
@@ -169,7 +169,7 @@ augment(kclust, points)
 The `tidy()` function summarizes on a per-cluster level:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-7_0a4cf01e15081ad3264ba86f6be73b57'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(kclust)
@@ -186,7 +186,7 @@ tidy(kclust)
 And as it always does, the `glance()` function extracts a single-row summary:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-8_8f7a9984fb72d6f34b4de07a0298ed4a'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 glance(kclust)
@@ -205,7 +205,7 @@ While these summaries are useful, they would not have been too difficult to extr
 Let's say we want to explore the effect of different choices of `k`, from 1 to 9, on this clustering. First cluster the data 9 times, each using a different value of `k`, then create columns containing the tidied, glanced and augmented data:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-9_8a3b763e4cfe1ee19371d93a101e539b'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 kclusts <- 
@@ -237,7 +237,7 @@ kclusts
 We can turn these into three separate data sets each representing a different type of data: using `tidy()`, using `augment()`, and using `glance()`. Each of these goes into a separate data set as they represent different types of data.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-10_4ee4df38af9a1ae909e447f414ee89d3'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 clusters <- 
@@ -258,7 +258,7 @@ clusterings <-
 Now we can plot the original points using the data from `augment()`, with each point colored according to the predicted cluster.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-11_3abb5db4f373908d0863fd146b176426'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 p1 <- 
@@ -277,7 +277,7 @@ p1
 Already we get a good sense of the proper number of clusters (3), and how the k-means algorithm functions when `k` is too high or too low. We can then add the centers of the cluster using the data from `tidy()`:
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-12_49aab4b0d7329a8754bd357b1756a811'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 p2 <- p1 + geom_point(data = clusters, size = 10, shape = "x")
@@ -293,7 +293,7 @@ p2
 The data from `glance()` fills a different but equally important purpose; it lets us view trends of some summary statistics across values of `k`. Of particular interest is the total within sum of squares, saved in the `tot.withinss` column.
 
 
-::: {.cell layout-align="center" hash='cache/unnamed-chunk-13_82d1ec1e6969b8d13f5406447ac5ea8c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(clusterings, aes(k, tot.withinss)) +
@@ -312,37 +312,37 @@ This represents the variance within the clusters. It decreases as `k` increases,
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

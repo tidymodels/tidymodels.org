@@ -46,7 +46,7 @@ To start, let's define the various types of times that will be mentioned:
 As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
 
 
-::: {.cell layout-align="center" hash='cache/data_ff9ec6e0c8954db2cbaef260b25dc772'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -70,7 +70,7 @@ sim_val <- testing(split)
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
 
 
-::: {.cell layout-align="center" hash='cache/bag-tree-fit_5a6c3b5b8b2141206912aa7a2fe8f384'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(17)
@@ -93,7 +93,7 @@ bag_tree_fit
 Using this model, we can make predictions of different types and `augment()` provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred_71be0c59aa8304196d00fda8a33005d7'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 time_points <- seq(0, 21, by = 0.25)
@@ -121,7 +121,7 @@ val_pred
 The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column `.pred_survival`. 
 
 
-::: {.cell layout-align="center" hash='cache/val-pred-dynamic_4711b5e193450241734314b22e92c8e2'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 val_pred$.pred[[1]]
@@ -157,7 +157,7 @@ To assess model performance at evaluation time $t$, we turn the observed event t
 We can use binary versions of the observations in the first two categories to compute binary performance metrics, but the observations in the third category are not used directly in these calculations. (They do influence the calculation of the weights, see next section.) So our usable sample size changes with the evaluation time.
 
 
-::: {.cell layout-align="center" hash='cache/plot-graf-categories_dfa05307f158925bfef894bc8b6ca0ae'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/plot-graf-categories-1.svg){fig-align='center' width=864}
 :::
@@ -175,7 +175,7 @@ Every time a censored regression model is created using tidymodels, the RKM is e
 For our simulated data, here is what the RKM curve looks like: 
 
 
-::: {.cell layout-align="center" hash='cache/RKM_51d587d88b6e7aeb39b5884836692a31'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/RKM-1.svg){fig-align='center' width=672}
 :::
@@ -197,7 +197,7 @@ First, when do we evaluate the probability of censoring? There are different app
 We call this time at which to predict the probability of censoring the _weight time_. Here's an example using the first data point in the validation set: 
 
 
-::: {.cell layout-align="center" hash='cache/eval-time-censored_65e017db80a7df2ba90f97b6ff4fc509'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 dyn_val_pred <- 
@@ -236,7 +236,7 @@ To illustrate how these two tools for accounting for censoring are used in calcu
 First, let's turn the observed event time data and the predictions into their binary versions.
 
 
-::: {.cell layout-align="center" hash='cache/binary-encoding_0b44b3bcd60032b1307944cf32ed87ba'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 time_as_binary_event <- function(surv, eval_time) {
@@ -270,7 +270,7 @@ binary_encoding <-
 Remember how observations falling into category 3 are removed from the analysis? This means we'll likely have fewer data points to evaluate as the evaluation time increases. This implies that the variation in the metrics will be considerable as evaluation time goes on. For our simulated training set: 
 
 
-::: {.cell layout-align="center" hash='cache/usable-data_f60360b9dc0bf6ae1daa097b9239db67'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 dyn_val_pred %>% 
@@ -299,7 +299,7 @@ binary_encoding %>%
 For censored regression problems, we need to additionally use the censoring weights so we'll include them via the `case_weights` argument:
 
 
-::: {.cell layout-align="center" hash='cache/conf-mat-01_e7df6bde139b7cfe153201d59d66da45'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_encoding %>%
@@ -324,7 +324,7 @@ This early, performance looks very good but that is mostly because there are few
 Let's shift to an evaluation time of 5.0. 
 
 
-::: {.cell layout-align="center" hash='cache/conf-mat-05_2c03063a21b13db700d3dbda9f6c526f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_encoding %>%
@@ -347,7 +347,7 @@ Now we have fewer total observations to consider (391 instead of 492 usable valu
 What happends when the evaluation time is 17?
 
 
-::: {.cell layout-align="center" hash='cache/conf-mat-17_b81a8365793c0e05c0fed48ebeed0565'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 binary_encoding %>%
@@ -382,39 +382,39 @@ When accounting for censoring in dynamic performance metrics, the main points to
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version    date (UTC) lib source
-#>  broom      * 1.0.4      2023-03-11 [1] CRAN (R 4.3.0)
-#>  censored   * 0.2.0.9000 2023-07-02 [1] Github (tidymodels/censored@f9eccb6)
+#>  broom      * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
+#>  censored   * 0.2.0      2023-04-13 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2      2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2      2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4      2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0.9003 2023-07-02 [1] Github (tidymodels/parsnip@e6278b0)
-#>  prodlim    * 2023.03.31 2023-04-02 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1      2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6      2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3      2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3      2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
+#>  prodlim    * 2023.08.28 2023-08-28 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1      2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0      2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1      2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2      2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.3.0)
 #> 

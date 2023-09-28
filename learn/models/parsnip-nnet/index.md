@@ -33,7 +33,7 @@ Let's fit a model to a small, two predictor classification data set. The data ar
 
 
 
-::: {.cell layout-align="center" hash='cache/biv--split_a52be8694e1630c82c8a997715818d2f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(AppliedPredictiveModeling)
@@ -49,7 +49,7 @@ cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
 A plot of the data shows two right-skewed predictors: 
 
 
-::: {.cell layout-align="center" hash='cache/biv-plot_01f6128bd0ca79ee6725e5aa44a43ca8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(cls_train, aes(x = A, y = B, col = class)) + 
@@ -66,7 +66,7 @@ ggplot(cls_train, aes(x = A, y = B, col = class)) +
 Let's use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the `step_BoxCox()` function) and on a common scale (using `step_normalize()`). We can use [recipes](https://recipes.tidymodels.org/) to do so:
 
 
-::: {.cell layout-align="center" hash='cache/biv--proc_ffa29913458a770549c19a00ec0100e9'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 biv_rec <- 
@@ -81,7 +81,7 @@ This recipe is not directly executed; the steps will be estimated when the model
 We can use the brulee package to fit a model with 5 hidden units and a 10% dropout rate, to regularize the model:
 
 
-::: {.cell layout-align="center" hash='cache/biv-nnet_bb4c7ebfa6b8b8a735ac07f1e5db3d0c'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 nnet_spec <- 
@@ -116,7 +116,7 @@ nnet_fit %>% extract_fit_engine()
 In parsnip, the `predict()` function can be used to characterize performance on the validation set. Since parsnip always produces tibble outputs, these can just be column bound to the original data: 
 
 
-::: {.cell layout-align="center" hash='cache/biv--perf_790f24a48a151216e707b8de11042b11'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 val_results <- 
@@ -157,7 +157,7 @@ val_results %>% conf_mat(truth = class, .pred_class)
 Let's also create a grid to get a visual sense of the class boundary for the test set.
 
 
-::: {.cell layout-align="center" hash='cache/biv-boundary_649fab72ec1b36da93d0add4a6fbd0b8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 a_rng <- range(cls_train$A)
@@ -190,39 +190,39 @@ ggplot(x_grid, aes(x = A, y = B)) +
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package                   * version date (UTC) lib source
 #>  AppliedPredictiveModeling * 1.1-7   2018-05-22 [1] CRAN (R 4.3.0)
-#>  broom                     * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom                     * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  brulee                      0.2.0   2022-09-19 [1] CRAN (R 4.3.0)
 #>  dials                     * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr                     * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
-#>  ggplot2                   * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer                     * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
-#>  parsnip                   * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr                     * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes                   * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  dplyr                     * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
+#>  ggplot2                   * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer                     * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip                   * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr                     * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes                   * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang                       1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample                   * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample                   * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble                    * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels                * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune                      * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels                * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune                      * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows                 * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick                 * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 

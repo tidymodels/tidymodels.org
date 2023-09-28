@@ -29,7 +29,7 @@ In this article, we discuss an alternative method for evaluating and tuning mode
 A typical scheme for splitting the data when developing a predictive model is to create an initial split of the data into a training and test set. If resampling is used, it is executed on the training set. A series of binary splits is created. In rsample, we use the term *analysis set* for the data that are used to fit the model and the term *assessment set* for the set used to compute performance:
 
 
-::: {.cell layout-align="center" hash='cache/resampling-fig_214078c494ebc8f5e36f063603746f5e'}
+::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](img/resampling.svg){fig-align='center' width=70%}
 :::
@@ -47,7 +47,7 @@ Once the tuning results are complete, a model is fit to each of the outer resamp
 We will simulate some regression data to illustrate the methods. The mlbench package has a function `mlbench::mlbench.friedman1()` that can simulate a complex regression data structure from the [original MARS publication](https://scholar.google.com/scholar?hl=en&q=%22Multivariate+adaptive+regression+splines%22&btnG=&as_sdt=1%2C7&as_sdtp=). A training set size of 100 data points are generated as well as a large set that will be used to characterize how well the resampling procedure performed.
 
 
-::: {.cell layout-align="center" hash='cache/sim-data_e983661ec506849cbf1bd8ec69ce0743'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(mlbench)
@@ -73,7 +73,7 @@ To get started, the types of resampling methods need to be specified. This isn't
 To create the tibble with the resampling specifications:
 
 
-::: {.cell layout-align="center" hash='cache/tibble-gen_ed46b63d3ba7bc40ee23e6405c95dba4'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
@@ -105,7 +105,7 @@ results
 The splitting information for each resample is contained in the `split` objects. Focusing on the second fold of the first repeat:
 
 
-::: {.cell layout-align="center" hash='cache/split-example_730f1d4661d7d82e99e7ae9d90d96252'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 results$splits[[2]]
@@ -120,7 +120,7 @@ results$splits[[2]]
 Each element of `inner_resamples` has its own tibble with the bootstrapping splits.
 
 
-::: {.cell layout-align="center" hash='cache/inner-splits_0546fa38a72ce1afdce4680dececa5d8'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 results$inner_resamples[[5]]
@@ -146,7 +146,7 @@ results$inner_resamples[[5]]
 These are self-contained, meaning that the bootstrap sample is aware that it is a sample of a specific 90% of the data:
 
 
-::: {.cell layout-align="center" hash='cache/inner-boot-split_d614aafea425464b013e25aa1e7fda68'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 results$inner_resamples[[5]]$splits[[1]]
@@ -163,7 +163,7 @@ After the model is fit to the analysis set, the root-mean squared error (RMSE) i
 Our function to fit the model and compute the RMSE is:
 
 
-::: {.cell layout-align="center" hash='cache/rmse-func_234730528ec8a0043f8c594c31abc649'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(kernlab)
@@ -192,7 +192,7 @@ rmse_wrapper <- function(cost, object) svm_rmse(object, cost)
 For the nested resampling, a model needs to be fit for each tuning parameter and each bootstrap split. To do this, create a wrapper:
 
 
-::: {.cell layout-align="center" hash='cache/inner-tune-func_5699d21fd6e91cb7f1d70c07e072bc52'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # `object` will be an `rsplit` object for the bootstrap samples
@@ -207,7 +207,7 @@ tune_over_cost <- function(object) {
 Since this will be called across the set of outer cross-validation splits, another wrapper is required:
 
 
-::: {.cell layout-align="center" hash='cache/inner-func_e60f5a82560824dd74fe7a4086f7668e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 # `object` is an `rsplit` object in `results$inner_resamples` 
@@ -228,7 +228,7 @@ summarize_tune_results <- function(object) {
 Now that those functions are defined, we can execute all the inner resampling loops:
 
 
-::: {.cell layout-align="center" hash='cache/inner-runs_ca610ccb577b23142f8afd7cda95089e'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tuning_results <- map(results$inner_resamples, summarize_tune_results) 
@@ -239,7 +239,7 @@ tuning_results <- map(results$inner_resamples, summarize_tune_results)
 Alternatively, since these computations can be run in parallel, we can use the furrr package. Instead of using `map()`, the function `future_map()` parallelizes the iterations using the [future package](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html). The `multisession` plan uses the local cores to process the inner resampling loop. The end results are the same as the sequential computations.
 
 
-::: {.cell layout-align="center" hash='cache/inner-runs-parallel_0e2e84113b39b62daa49eaad97238ac6'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(furrr)
@@ -255,7 +255,7 @@ The object `tuning_results` is a list of data frames for each of the 50 outer re
 Let's make a plot of the averaged results to see what the relationship is between the RMSE and the tuning parameters for each of the inner bootstrapping operations:
 
 
-::: {.cell layout-align="center" hash='cache/rmse-plot_47c97acb3c9e2590f03f265dcd2dd865'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(scales)
@@ -289,7 +289,7 @@ Each gray line is a separate bootstrap resampling curve created from a different
 To determine the best parameter estimate for each of the outer resampling iterations:
 
 
-::: {.cell layout-align="center" hash='cache/choose_16a9265675bde0043286c8a94fcd67a9'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 cost_vals <- 
@@ -318,7 +318,7 @@ Most of the resamples produced an optimal cost value of 2.0, but the distributio
 Now that we have these estimates, we can compute the outer resampling results for each of the 50 splits using the corresponding tuning parameter value:
 
 
-::: {.cell layout-align="center" hash='cache/run-out-r_4763ba770361039f73c24636628bc34f'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 results <- 
@@ -327,7 +327,7 @@ results <-
 
 summary(results$RMSE)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.574   2.095   2.685   2.692   3.252   4.325
+#>   1.672   2.095   2.685   2.688   3.265   4.297
 ```
 :::
 
@@ -337,7 +337,7 @@ The estimated RMSE for the model tuning process is 2.69.
 What is the RMSE estimate for the non-nested procedure when only the outer resampling method is used? For each cost value in the tuning grid, 50 SVM models are fit and their RMSE values are averaged. The table of cost values and mean RMSE estimates is used to determine the best cost value. The associated RMSE is the biased estimate.
 
 
-::: {.cell layout-align="center" hash='cache/not-nested_352b1fd09cc9828e5d75a4c8d1abc6bf'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 not_nested <- 
@@ -382,7 +382,7 @@ The non-nested procedure estimates the RMSE to be 2.62. Both estimates are fairl
 The approximately true RMSE for an SVM model with a cost value of 2.0 can be approximated with the large sample that was simulated at the beginning.
 
 
-::: {.cell layout-align="center" hash='cache/large-sample-estimate_e753225c1e50dcca8f214f4e41cc47bd'}
+::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 finalModel <- ksvm(y ~ ., data = train_dat, C = 2)
@@ -398,41 +398,41 @@ The nested procedure produces a closer estimate to the approximate truth but the
 ## Session information {#session-info}
 
 
-::: {.cell layout-align="center" hash='cache/si_43a75b68dcc94565ba13180d7ad26a69'}
+::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.0 (2023-04-21)
-#>  os       macOS Ventura 13.4
+#>  version  R version 4.3.1 (2023-06-16)
+#>  os       macOS Ventura 13.5.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2023-07-02
+#>  date     2023-09-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.4   2023-03-11 [1] CRAN (R 4.3.0)
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials      * 1.2.0   2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+#>  dplyr      * 1.1.3   2023-09-03 [1] CRAN (R 4.3.0)
 #>  furrr      * 0.3.1   2022-08-15 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.4   2022-12-02 [1] CRAN (R 4.3.0)
+#>  ggplot2    * 3.4.3   2023-08-14 [1] CRAN (R 4.3.0)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
 #>  kernlab    * 0.9-32  2023-01-31 [1] CRAN (R 4.3.0)
 #>  mlbench    * 2.1-3.1 2023-05-05 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.0   2023-04-12 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.6   2023-04-25 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.1.1   2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.8   2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang        1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
-#>  rsample    * 1.1.1   2022-12-07 [1] CRAN (R 4.3.0)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
 #>  scales     * 1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.0   2023-05-01 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.1   2023-04-11 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
 #>  workflows  * 1.1.3   2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick  * 1.2.0   2023-04-21 [1] CRAN (R 4.3.0)
 #> 
