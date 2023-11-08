@@ -7,6 +7,7 @@ packages <- c(
   "broom.mixed",
   "brulee",
   "censored",
+  "detectors",
   "devtools",
   "dials",
   "discrim",
