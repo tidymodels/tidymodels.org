@@ -1,0 +1,518 @@
+---
+title: "Fair prediction of hospital readmission: a machine learning fairness case study"
+categories:
+  - yardstick
+  - metrics
+  - tune
+  - workflow sets
+type: learn-subsection
+weight: 6
+description: |
+  With information on a diabetes patient's stay at a hospital like demographics, diagnostic results, payment, and medications, a hospital can train a machine learning model to predict reasonably well whether a patient will be readmitted within 30 days. What harms to patients could result from using such a model, though?
+toc: true
+toc-depth: 2
+include-after-body: ../../../resources.html
+bibliography: refs.bib
+---
+
+------------------------------------------------------------------------
+
+```{r}
+#| label: "setup"
+#| include: false
+#| message: false
+#| warning: false
+source(here::here("common.R"))
+saved_fits <- "learn/work/fairness-readmission/data/wflow_set_fit.rda"
+saved_final_model <- "learn/work/fairness-readmission/data/final_model.rda"
+
+if (file.exists(here::here(saved_fits))) {
+  eval_fits <- FALSE
+  # read outputs in from source:
+  load(here::here(saved_fits))
+  load(here::here(saved_final_model))
+} else {
+  eval_fits <- TRUE
+}
+```
+
+```{r}
+#| label: "load"
+#| include: false
+library(tidymodels)
+library(readmission)
+library(baguette)
+library(bundle)
+pkgs <- c("tidymodels", "readmission", "baguette")
+
+theme_set(theme_bw() + theme(legend.position = "top"))
+```
+
+In 2019, @obermeyer2019 published an analysis of predictions from a machine learning model that health care providers use to allocate resources. The model's outputs are used to recommend a patient for _high-risk care management_ programs:
+
+> These programs seek to improve the care of patients with complex health needs by providing additional resources, including greater attention from trained providers, to help ensure that care is well coordinated. Most health systems use these programs as the cornerstone of population health management efforts, and they are widely considered effective at improving outcomes and satisfaction while reducing costs. [...] Because the programs are themselves expensive---with costs going toward teams of dedicated nurses, extra primary care appointment slots, and other scarce resources---**health systems rely extensively on algorithms to identify patients who will benefit the most.**
+
+They argue in their analysis that the model in question exhibits substantial racial bias, where "Black patients assigned the same level of risk by the algorithm are sicker than White patients." In practice, this resulted in the reduction of "the number of Black patients identified for extra care by more than half."
+
+This article will demonstrate a fairness-oriented workflow for training a machine learning model to identify high-risk patients. Throughout the model development process, we'll consider the social impacts that different modeling decisions may have when such a model is deployed in context.
+
+## Setup
+
+The data we'll use in this analysis is a publicly available database containing information on `r format(nrow(readmission), big.mark = ",")` hospital stays from diabetes patients. The data comes from a study by @strack2014, where the authors model the effectiveness of a particular lab test in predicting readmission. A version of that data is available in the [readmission R package](https://simonpcouch.github.io/readmission/):
+
+```{r}
+#| label: "load-readmission"
+#| eval: false
+library(readmission)
+
+readmission
+```
+
+The first variable in this data, `readmitted`, gives whether the patient was readmitted within 30 days of discharge. We'll use this variable as a proxy for "unmet need for additional care," in that readmission within one month indicates that the patient may have benefited from additional attention during their hospital stay; if a machine learning model consistently identifies lesser need (via prediction of non-readmission) in one subgroup than another, the subgroup allocated lesser need will go without care they'd benefit from. We'd like to train a model that is both fair with regard to how it treats `race` groups and is as performant as possible. The tidymodels framework provides the tools needed to identify such disparities.
+
+Loading needed packages:
+
+```{r}
+#| label: "load-tidymodels"
+library(tidymodels)
+library(baguette)
+```
+
+## Exploratory Analysis
+
+Let's start off our analysis with some explanatory summarization and plotting. First, taking a look at our outcome variable:
+
+```{r}
+#| label: "count-by-readmitted"
+readmission %>%
+  count(readmitted)
+```
+
+`r round(mean(readmission$readmitted == "Yes"), 3)*100`% of patients readmitted within 30 days after being discharged from the hospital. This is an example of a modeling problem with a _class imbalance_, where one value of the outcome variable is much more common than another. Now, taking a look at the counts of those in each protected class:
+
+```{r}
+#| label: "count-by-race"
+readmission %>%
+  count(race)
+```
+
+::: callout-note
+We'll refer to the `race` groups in this data by their actual value (e.g. `"Caucasian"` rather than Caucasian) so as to not to take for granted the choices that the dataset authors made in choosing these categorizations. Racial categorizations are not stable across time and place---as you read on, consider how a change in the categories used in data collection might affect this analysis [@omi1994].
+:::
+
+A vast majority of patients are labeled `"Caucasian"` (`r round(mean(readmission$race == "Caucasian"), 3)*100`%) or `"African American"` (`r round(mean(readmission$race == "African American"), 3)*100`%). The counts for the remaining racial categorizations are quite a bit smaller, and when we split the data up into resamples, those counts will reduce even further. As a result, the variability associated with the estimates `"Asian"`, `"Hispanic"`, `"Other"`, and `"Unknown"` will be larger than those for `"African American"` and `"Causasian"`. As an example:
+
+```{r}
+#| label: "prop-by-race"
+#| message: false
+#| warning: false
+readmission %>%
+  # randomly split into groups
+  mutate(., group = sample(1:10, nrow(.), replace = TRUE)) %>%
+  group_by(race, group) %>%
+  # compute proportion readmitted by race + random `group`ing
+  summarize(prop = mean(readmitted == "Yes"), n = n()) %>%
+  # compute variation in the proportion by race.
+  # note that, by default, the output from above is grouped by race only.
+  summarize(mean = mean(prop), sd = sd(prop), n = sum(n))
+```
+
+The standard deviations `sd` are much larger for groups with a smaller number of observations `n`, even if the average proportions `mean` are similar. This variation will affect our analysis downstream in that fairness metrics measure variation across groups; the noise associated with proportions calculated for `race` groups with fewer values may overwhelm the signal associated with actual disparities in care for those groups.
+
+We have several options when considering how to address this:
+
+* **Remove rows arising from infrequent classes.** In this example, this would mean removing all rows with `race` values other than `"Caucasian"` or `"African American"`. This is the approach taken by other public analyses of these data, including the original study that this data arose from. An analysis resulting from this approach would ignore any disparities in care for `race` groups other than `"Caucasian"` or `"African American"`.
+* **Construct custom fairness metrics that address the increased variability associated with smaller counts.** We could scale the variability of the estimates for each `race` group before calculating fairness metrics.
+* **Bin the values for infrequent classes.** This would entail collapsing values of `race` other than `"Caucasian"` and `"African American"` into one factor level. This approach is somewhat of a hybrid of the two approaches above; we lose some granularity in information regarding care for `race` groups other than `"Caucasian"` and `"African American"`, but reduce the variability associated with the estimates for those groups in the process.
+
+For this analysis, we'll go with the last option.
+
+::: callout-note
+While we won't construct custom fairness metrics in this example, you can do so using the `new_groupwise_metric()` function in yardstick.
+:::
+
+Recoding that data column:
+
+```{r}
+#| label: "collapse-race"
+readmission_collapsed <-
+  readmission %>%
+  mutate(
+    race = case_when(
+      !race %in% c("Caucasian", "African American") ~ "Other",
+      .default = race
+    ),
+    race = factor(race)
+  )
+
+readmission_collapsed %>%
+  count(race)
+```
+
+Plotting distributions of remaining predictors:
+
+```{r}
+#| label: "plot-age-by-source"
+readmission_collapsed %>%
+  ggplot(aes(x = age)) +
+  geom_bar() +
+  facet_grid(rows = vars(admission_source))
+```
+
+Most patients in this data are in their 60s and 70s. Emergencies account for most admissions in this data, though many others are from referrals or other sources.
+
+```{r}
+#| label: "plot-insurer"
+readmission_collapsed %>%
+  ggplot(aes(x = insurer)) +
+  geom_bar()
+```
+
+While payment information on most patients is missing, most patients in this data are covered under medicare.
+
+::: callout-tip
+The payment method is one way in which societal unfairness may be reflected in the source data besides the variables on protected groups themselves. Medicaid coverage is only available to people below a certain income, and many self-pay patients do not have medical insurance because they cannot afford it. Relatedly, poverty rates differ drastically among racial groups in the U.S.
+:::
+
+```{r}
+#| label: "plot-n-variables"
+#| message: false
+#| warning: false
+readmission_collapsed %>%
+  pivot_longer(starts_with("n_")) %>%
+  ggplot(aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(vars(name), scales = "free_x")
+```
+
+For many patients, this was their first inpatient visit to this hospital system. During their stay, many patients receive 10-20 medications and experience several procedures.
+
+With a sense for the distributions of variables in this dataset, we can move on to splitting data up for modeling.
+
+## Resampling Data
+
+First, splitting data into training and testing:
+
+```{r}
+#| label: "split"
+set.seed(1)
+readmission_splits <- initial_split(readmission_collapsed)
+readmission_train <-  training(readmission_splits)
+readmission_test <-   testing(readmission_splits)
+```
+
+We'll set the `r format(nrow(readmission_test), big.mark = ",")`-row `readmission_test` test set to the side for the remainder of the analysis until we compute a final estimate of our performance on the chosen model. Splitting the `r format(nrow(readmission_train), big.mark = ",")` rows of the training data into 10 resamples:
+
+```{r}
+#| label: "resample"
+readmission_folds <- vfold_cv(readmission_train)
+
+readmission_folds
+```
+
+Each split contains an analysis and assessment set: one for model fitting and the other for evaluation. Averaging performance estimates across resamples will give us a sense for how well the model performs on data it hasn't yet seen.
+
+## Training and Evaluating Models
+
+We'll define a diverse set of models and pre-processing strategies and then evaluate them against our resamples.
+
+### Model Workflows
+
+We'll first define a basic recipe that first sets a factor level for missing values and then centers and scales numeric data:
+
+```{r}
+#| label: "recipe-basic"
+recipe_basic <-
+  recipe(readmitted ~ ., data = readmission) %>%
+  step_unknown(all_nominal_predictors()) %>%
+  step_YeoJohnson(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors()) %>%
+  step_dummy(all_nominal_predictors())
+```
+
+The other preprocessor that we'll try encodes the age as a numeric variable rather than the bins as in the source data:
+
+```{r}
+#| label: "recipe-age"
+# specify the age as the midpoint of the range
+# rather than as an interval, like in the source data
+# e.g. "[10-20]" -> 1 * 10 + 5 -> 15
+recipe_age <-
+  recipe(readmitted ~ ., data = readmission) %>%
+  step_mutate(
+    age_num = 
+      age %>% 
+      as.character() %>% 
+      substr(2, 2) %>% 
+      as.numeric() %>%
+      `*`(10) %>% `+`(5)
+  ) %>%
+  step_rm(age) %>%
+  step_unknown(all_nominal_predictors()) %>%
+  step_YeoJohnson(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors()) %>%
+  step_dummy(all_nominal_predictors())
+```
+
+Both of these preprocessors will be combined with one of three models. Logistic regressions, XGBoost, and bagged neural networks make a diverse set of assumptions about the underlying data generating process. Defining model specifications for each:
+
+```{r}
+#| label: "model-specs"
+spec_lr <- 
+  logistic_reg("classification")
+
+spec_bt <-
+  boost_tree("classification", mtry = tune(), learn_rate = tune(), trees = 500)
+
+spec_nn <-
+  bag_mlp("classification", hidden_units = tune(), penalty = tune())
+```
+
+We now combine each unique combination of recipe and preprocessor in a workflow set:
+
+```{r}
+#| label: "wflow-set"
+wflow_set <- 
+  workflow_set(
+    preproc = list(basic = recipe_basic, age = recipe_age),
+    models = list(lr = spec_lr, bt = spec_bt, nn = spec_nn)
+  )
+
+wflow_set
+```
+
+Each workflow in the workflow set is now ready to be evaluated. We now need to decide how to best evaluate these modeling workflows, though.
+
+### Metrics
+
+The metrics with which we choose to evaluate our models with are the core of our fairness analysis. In addition to the default metrics for classification in tune, `accuracy()` and `roc_auc()`, we'll compute a set of fairness metrics: `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`.
+
+* `equal_opportunity()`: Equal opportunity is satisfied when a model's predictions have the same true positive and false negative rates across protected groups. In this example, a model satisfies equal opportunity if it correctly predicts readmission and incorrectly predicts non-readmission at the same rate across `race` groups. In this case, the metric represents the interests of the patient; a patient would like to be just as likely to receive additional care resources as another if they are of equal need, and no more likely to go without unneeded care than another. Since this metric does not consider false positives, it notably does not penalize disparately providing additional care resources to a patient who may not need them.
+
+* `equalized_odds()`: Equalized odds is satisfied when a model's predictions have the same false positive, true positive, false negative, and true negative rates across protected groups. This definition is a special case of the one above, where there's additionally a constraint placed on the false positive and true negative rates. In this example, a model satisfies equalized odds if it correctly predicts both readmission and non-readmission _and_ incorrectly predicts readmission and non-readmission at the same rate across `race` groups.  Similar to equal opportunity, the stakeholders for the metric in this case can be generally understood to be those who are subject to the model's predictions, except that this metric also aims to prevent disparately 1) providing additional care resources to those who may not need them and 2) identifying patients who do _not_ need additional care resources correctly.
+
+* `demographic_parity()`: Demographic parity is satisfied when a model's predictions have the same predicted positive rate across groups. In this example, a model satisfies demographic parity if it predicts readmission at the same rate across `race` groups. Note that this metric does not depend on the true outcome value, `readmitted`. The interests of a stakeholder who would like to see additional care resources provisioned at the same rate across `race` groups, even if the actual need for those resources differs among groups, are represented by this metric. As demographic parity is broadly accepted as part of a legal definition of machine learning fairness, hospital systems might consider this metric to protect themselves legally [@ecfr].
+
+The above three metrics are defined specifically with fairness in mind. By another view of fairness, though, `accuracy()` and `roc_auc()` are _also_ fairness metrics. Some stakeholders may believe that the most performant model regardless of group membership---i.e. the model that predicts readmission most accurately across groups---is the most fair model. 
+
+To evaluate each of these metrics against the specified workflows, we create a metric set like so:
+
+```{r}
+#| label: "m-set"
+m_set <-
+  metric_set(
+    accuracy,
+    roc_auc,
+    equal_opportunity(race),
+    equalized_odds(race),
+    demographic_parity(race)
+  )
+
+m_set
+```
+
+
+::: callout-note
+The first two inputs, `accuracy()` and `roc_auc()`, are standard [yardstick](https://yardstick.tidymodels.org) metrics. The latter three are also yardstick metrics like any other, though are created using the [_metric factories_](https://yardstick.tidymodels.org/dev/reference/new_groupwise_metric.html) `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`. When passed a data-column, metric factories output yardstick metrics. 
+:::
+
+<!-- TODO: remove the /dev from the above URL -->
+
+### Evaluation
+
+We can now evaluate the workflows we've defined against resamples using our metric set. The `workflow_map()` function will call `tune_grid()` on each workflow:
+
+```{r}
+#| eval: !expr eval_fits
+#| label: "wflow-map"
+set.seed(1)
+wflow_set_fit <- 
+  workflow_map(
+    wflow_set, 
+    verbose = TRUE, 
+    seed = 1, 
+    metrics = m_set,
+    resamples = readmission_folds
+  )
+```
+
+```{r}
+#| label: "save-wflow-set"
+#| eval: !expr eval_fits
+#| include: false
+save(wflow_set_fit, file = saved_fits)
+```
+
+A fitted workflow set looks just like the unfitted workflow set we saw previously, except that information on the tuning process is now stored in the `option` and `result` variables for each modeling workflow:
+
+```{r}
+#| label: "print-wflow-set"
+wflow_set_fit
+```
+
+## Model Selection
+
+Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning by a quick exploratory plot of our metrics:
+
+<!-- TODO: i'd really like to use `autoplot(wflow_set_fit, rank_metric = "roc_auc")` here, but the plot isn't usable without differentiating between the recipes. -->
+
+```{r}
+#| label: "plot-wflow-set-fit"
+wflow_set_fit %>%
+  rowwise() %>%
+  mutate(metrics = list(collect_metrics(result))) %>%
+  select(wflow_id, metrics) %>%
+  unnest(metrics) %>%
+  mutate(
+    .,
+    .config = paste0(wflow_id, .config)
+  ) %>%
+  mutate(
+    .config = factor(.config, 
+                     levels = filter(., .metric == "roc_auc") %>%
+                              arrange(desc(mean)) %>%
+                              pull(.config) %>% 
+                              unique()
+                     )
+  ) %>%
+  ggplot(aes(x = .config, y = mean, color = wflow_id)) +
+  facet_wrap(vars(.metric), scales = "free") +
+  geom_point() +
+  scale_x_discrete(breaks = NULL)
+```
+
+Each dot in the plots above represents one configuration of a modeling workflow. For each modeling workflow besides logistic regressions, we've tried 10 unique combinations of hyperparameters. For the workflows using logistic regressions, we've tried only one, since we didn't mark any parameters for tuning using the `tune()` placeholder. The dots are "ranked" by `roc_auc()` in that, in each pane, the left-most models took the highest `roc_auc()` values.
+
+The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Notably, the left-most models (i.e. the most performant models with respect to `roc_auc()`) happen to be among the most fair according to the metrics we've chosen.
+
+More concretely, we can rank the model configurations to examine only the most performant models:
+
+```{r}
+#| label: "rank-results"
+rank_results(wflow_set_fit, rank_metric = "roc_auc") %>%
+  filter(.metric == "roc_auc")
+```
+
+As in the plot above, we see that almost all of the most performant model configurations arise from the boosted tree modeling workflow. Let's examine the results for specifically the modeling workflow that encodes age as a number more thoroughly:
+
+```{r}
+#| label: "autoplot-age-bt"
+autoplot(wflow_set_fit, id = "age_bt")
+```
+
+The learning rate `learn_rate` seems to have a more pronounced effect on the results metrics than the number of randomly selected predictors `mtry`. As before, we see that the most performant models with respect to `roc_auc()` tend to be the most fair with respect to our fairness metrics. Further, the values of each of the fairness metrics plotted above seem highly correlated. 
+
+From the perspective of a practitioner hoping to satisfy various stakeholders, the fact that these metrics are highly correlated makes the model selection process much easier. We can choose one fairness metric that we'd like to optimize for, and likely end up with a near-optimal configuration for the other metrics as a byproduct.
+
+:::callout-note
+In machine learning fairness, "impossibility thereoms" show that fairness definitions "are not mathematically or morally compatible in general" [@mitchell2021]. More concretely, unless we live in a world with no inequality, there is no way to satisfy many definitions of fairness at once. However, recent research emphasizes that near-fairness among more limited sets of metrics, like the three we've used here, is both possible and relevant [@bell2023].
+:::
+
+To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will:
+
+1) Find the "best" model with respect to `roc_auc()`.
+2) Choose the most fair model with respect to `equalized_odds()` among the models within one standard error of `roc_auc()` to the model we identified in step 1.
+
+We can do so by first aggregating performance metrics from the `"age_bt"` result with `collect_metrics()` and then using some tidyr and dplyr for data manipulation:
+
+<!-- 
+TODO: it'd be great if `select_by_one_std_err()` could "just work" here, i.e.  
+select_by_one_std_err(best_workflow, metric = "roc_auc", desc(equalized_odds))
+-->
+
+```{r}
+#| label: "find-best-params"
+best_params <-
+  # extract the tuning results for the boosted tree model
+  extract_workflow_set_result(wflow_set_fit, "age_bt") %>%
+  # collect the metrics associated with it
+  collect_metrics() %>%
+  # pivot metric values into columns
+  pivot_wider(
+    id_cols = c(.config, mtry, learn_rate), 
+    names_from = .metric, 
+    values_from = c(mean, std_err)
+  ) %>%
+  # calculate the worst allowable `roc_auc()`
+  mutate(lower_bound = max(mean_roc_auc) - max(std_err_roc_auc)) %>%
+  # retain only those with an `roc_auc()` value better than the worst
+  filter(mean_roc_auc > lower_bound) %>%
+  # of the remaining, pick the model with the best equalized odds
+  arrange(desc(mean_equalized_odds)) %>%
+  slice(1)
+```
+
+The result is a tibble giving the parameter values that resulted in the best model:
+
+```{r}
+#| label: "print-best-params"
+best_params
+```
+
+We can use that tibble to finalize a workflow that we'll use to generate our final model fit:
+
+```{r}
+#| label: "make-model-config"
+final_model_config <-
+  extract_workflow(wflow_set_fit, "age_bt") %>%
+  finalize_workflow(best_params)
+```
+
+Finally, generating our final model fit:
+
+```{r}
+#| label: "make-final-model"
+#| eval: !expr eval_fits
+final_model <- 
+  last_fit(final_model_config, readmission_splits, metrics = m_set)
+```
+
+```{r}
+#| label: "save-final-fit"
+#| eval: !expr eval_fits
+#| include: false
+save(final_model, file = saved_final_model)
+```
+
+We can see the metrics associated with the final fit using `collect_metrics()`, just as with a tuning result:
+
+```{r}
+#| label: "collect-metrics-final"
+collect_metrics(final_model)
+```
+
+```{r}
+#| label: "calc-final-metrics"
+#| include: false
+final_metrics <- collect_metrics(final_model)
+```
+
+The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is `r round(final_metrics$.estimate[final_metrics$.metric == "accuracy"], 4)*100`%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (`r (1 - round(mean(readmission_collapsed$readmitted == "Yes"), 4))*100`%). The `roc_auc()` value `r round(final_metrics$.estimate[final_metrics$.metric == "roc_auc"], 3)` indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement.
+
+Extracting the model fit from the `last_fit` object:
+
+```{r}
+#| label: "make-final-model-fit"
+final_model_fit <- extract_workflow(final_model)
+```
+
+The `final_model_fit` object is now ready to predict on new data! Models generated with tidymodels are easily versioned, deployed, and monitored using the vetiver framework; learn more about the framework on the [vetiver website](https://vetiver.rstudio.com/get-started/).
+
+In this article, we've demonstrated a fairness-oriented modeling analysis. Modeling with fairness in mind is not simply a numerical optimization problem, but a holistic process of examining the moral meanings of fairness in our problem context and how they are represented---or not represented---by various mathematical notions of fairness. 
+
+While this analysis allowed us to train models that are near-fair with respect to a limited set of fairness metrics, it leaves many questions to be answered about the impacts of using such a model. Among other things:
+
+* We've only evaluated the fairness of the model with `race` in mind. We also have information on the patient's `sex`. Could this model behave unfairly with respect to the patient's `sex`? How about with respect to the intersections of `race` and `sex`? A growing body of research shows us that black women experience pronounced discrimination as patients [@johnson2019; @okoro2020; @gopal2021].
+* The categorizations of `race` and `sex` that we have access to are coarse. Race/ethnicity and sex/gender are richly and diversely experienced, and the limited set of categories that patients are presented with (or unknowingly assigned to) in healthcare contexts are only a proxy for how a patient may experience them. 
+* We've used _readmission_ as a proxy for _need for additional care_. What factors might influence whether a patient willingly readmits? Or is admitted to the hospital in the first place? Note, especially, the disproportionate financial burden of healthcare for poorer patients.
+* We don't know how the predictions resulting from this model will be used by practitioners or trusted by patients. The outputs of the model, of course, should be evaluated in conjunction with other evidence collected by a healthcare team throughout a patient's stay. Knowing this, though, will the model's outputs be differently interpreted for different groups in the patient population? For example, would a positive prediction of readmission be considered more seriously as evidence for needed additional care for a white man than for others? Further, given historical exploitation and unethical practice, would protected groups believe that algorithmic recommendation for additional care is likely discriminatory and mistrust the recommendations offered to them? [See @rajkomar2018.] 
+
+Machine learning models can both have significant positive impacts on our lives and at the same time cause significant harms. Given the tremendous reach of these models in our society, efforts to include fairness as a criteria for evaluating machine learning models are as necessary as ever.
+
+## Session information {#session-info}
+
+```{r si}
+#| echo: false
+small_session(pkgs)
+```
+
