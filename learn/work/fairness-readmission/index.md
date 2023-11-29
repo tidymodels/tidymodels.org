@@ -124,12 +124,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0849 0.00744 12887
-#> 2 Asian            0.0831 0.0520    497
-#> 3 Caucasian        0.0900 0.00424 53491
-#> 4 Hispanic         0.0809 0.0227   1517
-#> 5 Other            0.0694 0.0211   1177
-#> 6 Unknown          0.0724 0.0194   1946
+#> 1 African American 0.0848 0.00898 12887
+#> 2 Asian            0.0793 0.0495    497
+#> 3 Caucasian        0.0900 0.00260 53491
+#> 4 Hispanic         0.0802 0.0180   1517
+#> 5 Other            0.0685 0.0221   1177
+#> 6 Unknown          0.0721 0.0184   1946
 ```
 :::
 
