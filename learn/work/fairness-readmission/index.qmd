@@ -364,6 +364,9 @@ Now that we've evaluated a number of models with a variety of metrics, we can ex
 #| label: "plot-wflow-set-fit-corr"
 #| message: false
 #| warning: false
+#| out.width: 80%
+#| fig.width: 7
+#| fig.height: 7
 wflow_set_fit %>%
   collect_metrics() %>%
   pivot_wider(
@@ -372,7 +375,8 @@ wflow_set_fit %>%
     values_from = mean
   ) %>%
   select(-c(wflow_id, .config)) %>%
-  ggpairs()
+  ggpairs() +
+  theme(axis.text.x = element_text(angle = 45, vjust = .8, hjust = .9))
 ```
 
 The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Also, the metric values are highly correlated with each other, including correlations between fairness metrics and the more general-purpose performance metrics. That is, the most performant models also seem to be among the most fair.
@@ -390,7 +394,7 @@ Almost all of the most performant model configurations arise from the boosted tr
 ```{r}
 #| label: "autoplot-age-bt"
 #| out.width: 70%
-#| fig.width: 5
+#| fig.width: 6
 #| fig.height: 7
 autoplot(wflow_set_fit, id = "age_bt")
 ```

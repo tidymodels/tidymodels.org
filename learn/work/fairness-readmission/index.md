@@ -141,12 +141,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0849 0.00784 12887
-#> 2 Asian            0.0822 0.0213    497
-#> 3 Caucasian        0.0900 0.00250 53491
-#> 4 Hispanic         0.0801 0.0188   1517
-#> 5 Other            0.0687 0.0195   1177
-#> 6 Unknown          0.0720 0.0181   1946
+#> 1 African American 0.0848 0.00851 12887
+#> 2 Asian            0.0845 0.0405    497
+#> 3 Caucasian        0.0900 0.00303 53491
+#> 4 Hispanic         0.0811 0.0259   1517
+#> 5 Other            0.0682 0.0170   1177
+#> 6 Unknown          0.0729 0.0231   1946
 ```
 :::
 
@@ -505,11 +505,12 @@ wflow_set_fit %>%
     values_from = mean
   ) %>%
   select(-c(wflow_id, .config)) %>%
-  ggpairs()
+  ggpairs() +
+  theme(axis.text.x = element_text(angle = 45, vjust = .8, hjust = .9))
 ```
 
 ::: {.cell-output-display}
-![](figs/plot-wflow-set-fit-corr-1.svg){fig-align='center' width=672}
+![](figs/plot-wflow-set-fit-corr-1.svg){fig-align='center' width=80%}
 :::
 :::
 
