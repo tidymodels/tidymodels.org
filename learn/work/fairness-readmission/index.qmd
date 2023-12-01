@@ -296,6 +296,8 @@ The metrics with which we choose to evaluate our models are the core of our fair
 
 * `demographic_parity()`: Demographic parity is satisfied when a model's predictions have the same predicted positive rate across groups. In this example, a model satisfies demographic parity if it predicts readmission at the same rate across `race` groups. Note that this metric does not depend on the true outcome value, `readmitted`. The interests of a stakeholder who would like to see additional care resources provisioned at the same rate across `race` groups, even if the actual need for those resources differs among groups, are represented by this metric. As demographic parity is broadly accepted as part of a legal definition of machine learning fairness, hospital systems might consider this metric to protect themselves legally [@ecfr].
 
+For each of the above metrics, values closer to zero indicate that a model is more fair.
+
 The above three metrics are defined specifically with fairness in mind. By another view of fairness, though, `accuracy()` and `roc_auc()` are _also_ fairness metrics. Some stakeholders may believe that the most performant model regardless of group membership---i.e. the model that predicts readmission most accurately across groups---is the most fair model. 
 
 To evaluate each of these metrics against the specified workflows, we create a metric set like so:

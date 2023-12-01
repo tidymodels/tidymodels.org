@@ -140,12 +140,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0849 0.00835 12887
-#> 2 Asian            0.0798 0.0447    497
-#> 3 Caucasian        0.0901 0.00379 53491
-#> 4 Hispanic         0.0809 0.0260   1517
-#> 5 Other            0.0686 0.0232   1177
-#> 6 Unknown          0.0723 0.0180   1946
+#> 1 African American 0.0848 0.00812 12887
+#> 2 Asian            0.0839 0.0410    497
+#> 3 Caucasian        0.0900 0.00455 53491
+#> 4 Hispanic         0.0798 0.0237   1517
+#> 5 Other            0.0683 0.0246   1177
+#> 6 Unknown          0.0731 0.0144   1946
 ```
 :::
 
@@ -406,6 +406,8 @@ The metrics with which we choose to evaluate our models are the core of our fair
 * `equalized_odds()`: Equalized odds is satisfied when a model's predictions have the same false positive, true positive, false negative, and true negative rates across protected groups. This definition is a special case of the one above, where there's additionally a constraint placed on the false positive and true negative rates. In this example, a model satisfies equalized odds if it correctly predicts both readmission and non-readmission _and_ incorrectly predicts readmission and non-readmission at the same rate across `race` groups.  Similar to equal opportunity, the stakeholders for the metric in this case can be generally understood to be those who are subject to the model's predictions, except that this metric also aims to prevent disparately 1) providing additional care resources to those who may not need them and 2) identifying patients who do _not_ need additional care resources correctly.
 
 * `demographic_parity()`: Demographic parity is satisfied when a model's predictions have the same predicted positive rate across groups. In this example, a model satisfies demographic parity if it predicts readmission at the same rate across `race` groups. Note that this metric does not depend on the true outcome value, `readmitted`. The interests of a stakeholder who would like to see additional care resources provisioned at the same rate across `race` groups, even if the actual need for those resources differs among groups, are represented by this metric. As demographic parity is broadly accepted as part of a legal definition of machine learning fairness, hospital systems might consider this metric to protect themselves legally [@ecfr].
+
+For each of the above metrics, values closer to zero indicate that a model is more fair.
 
 The above three metrics are defined specifically with fairness in mind. By another view of fairness, though, `accuracy()` and `roc_auc()` are _also_ fairness metrics. Some stakeholders may believe that the most performant model regardless of group membership---i.e. the model that predicts readmission most accurately across groups---is the most fair model. 
 
