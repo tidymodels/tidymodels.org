@@ -141,12 +141,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0848 0.00851 12887
-#> 2 Asian            0.0845 0.0405    497
-#> 3 Caucasian        0.0900 0.00303 53491
-#> 4 Hispanic         0.0811 0.0259   1517
-#> 5 Other            0.0682 0.0170   1177
-#> 6 Unknown          0.0729 0.0231   1946
+#> 1 African American 0.0847 0.00786 12887
+#> 2 Asian            0.0792 0.0409    497
+#> 3 Caucasian        0.0900 0.00391 53491
+#> 4 Hispanic         0.0815 0.0253   1517
+#> 5 Other            0.0687 0.0216   1177
+#> 6 Unknown          0.0723 0.0194   1946
 ```
 :::
 
@@ -264,12 +264,16 @@ First, splitting data into training and testing:
 
 ```{.r .cell-code}
 set.seed(1)
-readmission_splits <- initial_split(readmission_collapsed)
-readmission_train <-  training(readmission_splits)
-readmission_test <-   testing(readmission_splits)
+readmission_splits <- initial_split(readmission_collapsed, strata = readmitted)
+readmission_train  <- training(readmission_splits)
+readmission_test   <- testing(readmission_splits)
 ```
 :::
 
+
+:::callout-note
+We've set `strata = readmitted` here to stratify our sample by the outcome variable in order to address the class imbalance. To learn more about class imbalances and stratification, see the ["Common Methods for Splitting Data"](https://www.tmwr.org/splitting#splitting-methods) chapter of [_Tidy Modeling with R_](https://www.tmwr.org/) [@kuhn2022].
+:::
 
 We'll set the 17,879-row `readmission_test` test set to the side for the remainder of the analysis until we compute a final estimate of our performance on the chosen model. Splitting the 53,636 rows of the training data into 10 resamples:
 
@@ -277,10 +281,10 @@ We'll set the 17,879-row `readmission_test` test set to the side for the remaind
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission_folds <- vfold_cv(readmission_train)
+readmission_folds <- vfold_cv(readmission_train, strata = readmitted)
 
 readmission_folds
-#> #  10-fold cross-validation 
+#> #  10-fold cross-validation using stratification 
 #> # A tibble: 10 × 2
 #>    splits               id    
 #>    <list>               <chr> 

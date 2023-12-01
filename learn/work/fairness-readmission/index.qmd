@@ -199,16 +199,20 @@ First, splitting data into training and testing:
 ```{r}
 #| label: "split"
 set.seed(1)
-readmission_splits <- initial_split(readmission_collapsed)
-readmission_train <-  training(readmission_splits)
-readmission_test <-   testing(readmission_splits)
+readmission_splits <- initial_split(readmission_collapsed, strata = readmitted)
+readmission_train  <- training(readmission_splits)
+readmission_test   <- testing(readmission_splits)
 ```
+
+:::callout-note
+We've set `strata = readmitted` here to stratify our sample by the outcome variable in order to address the class imbalance. To learn more about class imbalances and stratification, see the ["Common Methods for Splitting Data"](https://www.tmwr.org/splitting#splitting-methods) chapter of [_Tidy Modeling with R_](https://www.tmwr.org/) [@kuhn2022].
+:::
 
 We'll set the `r format(nrow(readmission_test), big.mark = ",")`-row `readmission_test` test set to the side for the remainder of the analysis until we compute a final estimate of our performance on the chosen model. Splitting the `r format(nrow(readmission_train), big.mark = ",")` rows of the training data into 10 resamples:
 
 ```{r}
 #| label: "resample"
-readmission_folds <- vfold_cv(readmission_train)
+readmission_folds <- vfold_cv(readmission_train, strata = readmitted)
 
 readmission_folds
 ```
