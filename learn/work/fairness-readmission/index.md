@@ -140,12 +140,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0848 0.00812 12887
-#> 2 Asian            0.0839 0.0410    497
-#> 3 Caucasian        0.0900 0.00455 53491
-#> 4 Hispanic         0.0798 0.0237   1517
-#> 5 Other            0.0683 0.0246   1177
-#> 6 Unknown          0.0731 0.0144   1946
+#> 1 African American 0.0847 0.00661 12887
+#> 2 Asian            0.0816 0.0355    497
+#> 3 Caucasian        0.0901 0.00373 53491
+#> 4 Hispanic         0.0811 0.0185   1517
+#> 5 Other            0.0675 0.0134   1177
+#> 6 Unknown          0.0725 0.0191   1946
 ```
 :::
 
@@ -567,7 +567,7 @@ autoplot(wflow_set_fit, id = "age_bt")
 ```
 
 ::: {.cell-output-display}
-![](figs/autoplot-age-bt-1.svg){fig-align='center' width=672}
+![](figs/autoplot-age-bt-1.svg){fig-align='center' width=70%}
 :::
 :::
 
