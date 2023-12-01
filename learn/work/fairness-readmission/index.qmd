@@ -42,7 +42,8 @@ if (file.exists(here::here(saved_fits))) {
 library(tidymodels)
 library(readmission)
 library(baguette)
-pkgs <- c("tidymodels", "readmission", "baguette")
+library(GGally)
+pkgs <- c("tidymodels", "readmission", "baguette", "GGally")
 
 tidymodels_prefer()
 
@@ -77,6 +78,7 @@ Loading needed packages:
 #| label: "load-tidymodels"
 library(tidymodels)
 library(baguette)
+library(GGally)
 ```
 
 ## Exploratory Analysis
@@ -356,38 +358,24 @@ wflow_set_fit
 
 ## Model Selection
 
-Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning by a quick exploratory plot of our metrics:
-
-<!-- TODO: i'd really like to use `autoplot(wflow_set_fit, rank_metric = "roc_auc")` here, but the plot isn't usable without differentiating between the recipes. -->
+Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning by a quick exploratory plot of the distributions of our metrics:
 
 ```{r}
-#| label: "plot-wflow-set-fit"
+#| label: "plot-wflow-set-fit-corr"
+#| message: false
+#| warning: false
 wflow_set_fit %>%
-  rowwise() %>%
-  mutate(metrics = list(collect_metrics(result))) %>%
-  select(wflow_id, metrics) %>%
-  unnest(metrics) %>%
-  mutate(
-    .,
-    .config = paste0(wflow_id, .config)
+  collect_metrics() %>%
+  pivot_wider(
+    id_cols = c(wflow_id, .config), 
+    names_from = .metric, 
+    values_from = mean
   ) %>%
-  mutate(
-    .config = factor(.config, 
-                     levels = filter(., .metric == "roc_auc") %>%
-                              arrange(desc(mean)) %>%
-                              pull(.config) %>% 
-                              unique()
-                     )
-  ) %>%
-  ggplot(aes(x = .config, y = mean, color = wflow_id)) +
-  facet_wrap(vars(.metric), scales = "free") +
-  geom_point() +
-  scale_x_discrete(breaks = NULL)
+  select(-c(wflow_id, .config)) %>%
+  ggpairs()
 ```
 
-Each dot in the plots above represents one configuration of a modeling workflow. For each modeling workflow besides logistic regressions, we've tried 10 unique combinations of hyperparameters. For the workflows using logistic regressions, we've tried only one, since we didn't mark any parameters for tuning using the `tune()` placeholder. The dots are "ranked" by `roc_auc()` in that, in each pane, the left-most models took the highest `roc_auc()` values.
-
-The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Notably, the left-most models (i.e. the most performant models with respect to `roc_auc()`) happen to be among the most fair according to the metrics we've chosen.
+The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Also, the metric values are highly correlated with each other, including correlations between fairness metrics and the more general-purpose performance metrics. That is, the most performant models also seem to be among the most fair.
 
 More concretely, we can rank the model configurations to examine only the most performant models:
 
@@ -397,7 +385,7 @@ rank_results(wflow_set_fit, rank_metric = "roc_auc") %>%
   filter(.metric == "roc_auc")
 ```
 
-As in the plot above, we see that almost all of the most performant model configurations arise from the boosted tree modeling workflow. Let's examine the results for specifically the modeling workflow that encodes age as a number more thoroughly:
+Almost all of the most performant model configurations arise from the boosted tree modeling workflow. Let's examine the results for specifically the modeling workflow that encodes age as a number more thoroughly:
 
 ```{r}
 #| label: "autoplot-age-bt"

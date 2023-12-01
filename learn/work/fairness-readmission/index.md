@@ -74,6 +74,7 @@ Loading needed packages:
 ```{.r .cell-code}
 library(tidymodels)
 library(baguette)
+library(GGally)
 ```
 :::
 
@@ -140,12 +141,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0847 0.00661 12887
-#> 2 Asian            0.0816 0.0355    497
-#> 3 Caucasian        0.0901 0.00373 53491
-#> 4 Hispanic         0.0811 0.0185   1517
-#> 5 Other            0.0675 0.0134   1177
-#> 6 Unknown          0.0725 0.0191   1946
+#> 1 African American 0.0849 0.00784 12887
+#> 2 Asian            0.0822 0.0213    497
+#> 3 Caucasian        0.0900 0.00250 53491
+#> 4 Hispanic         0.0801 0.0188   1517
+#> 5 Other            0.0687 0.0195   1177
+#> 6 Unknown          0.0720 0.0181   1946
 ```
 :::
 
@@ -490,46 +491,30 @@ wflow_set_fit
 
 ## Model Selection
 
-Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning by a quick exploratory plot of our metrics:
-
-<!-- TODO: i'd really like to use `autoplot(wflow_set_fit, rank_metric = "roc_auc")` here, but the plot isn't usable without differentiating between the recipes. -->
+Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning by a quick exploratory plot of the distributions of our metrics:
 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 wflow_set_fit %>%
-  rowwise() %>%
-  mutate(metrics = list(collect_metrics(result))) %>%
-  select(wflow_id, metrics) %>%
-  unnest(metrics) %>%
-  mutate(
-    .,
-    .config = paste0(wflow_id, .config)
+  collect_metrics() %>%
+  pivot_wider(
+    id_cols = c(wflow_id, .config), 
+    names_from = .metric, 
+    values_from = mean
   ) %>%
-  mutate(
-    .config = factor(.config, 
-                     levels = filter(., .metric == "roc_auc") %>%
-                              arrange(desc(mean)) %>%
-                              pull(.config) %>% 
-                              unique()
-                     )
-  ) %>%
-  ggplot(aes(x = .config, y = mean, color = wflow_id)) +
-  facet_wrap(vars(.metric), scales = "free") +
-  geom_point() +
-  scale_x_discrete(breaks = NULL)
+  select(-c(wflow_id, .config)) %>%
+  ggpairs()
 ```
 
 ::: {.cell-output-display}
-![](figs/plot-wflow-set-fit-1.svg){fig-align='center' width=672}
+![](figs/plot-wflow-set-fit-corr-1.svg){fig-align='center' width=672}
 :::
 :::
 
 
-Each dot in the plots above represents one configuration of a modeling workflow. For each modeling workflow besides logistic regressions, we've tried 10 unique combinations of hyperparameters. For the workflows using logistic regressions, we've tried only one, since we didn't mark any parameters for tuning using the `tune()` placeholder. The dots are "ranked" by `roc_auc()` in that, in each pane, the left-most models took the highest `roc_auc()` values.
-
-The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Notably, the left-most models (i.e. the most performant models with respect to `roc_auc()`) happen to be among the most fair according to the metrics we've chosen.
+The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Also, the metric values are highly correlated with each other, including correlations between fairness metrics and the more general-purpose performance metrics. That is, the most performant models also seem to be among the most fair.
 
 More concretely, we can rank the model configurations to examine only the most performant models:
 
@@ -557,7 +542,7 @@ rank_results(wflow_set_fit, rank_metric = "roc_auc") %>%
 :::
 
 
-As in the plot above, we see that almost all of the most performant model configurations arise from the boosted tree modeling workflow. Let's examine the results for specifically the modeling workflow that encodes age as a number more thoroughly:
+Almost all of the most performant model configurations arise from the boosted tree modeling workflow. Let's examine the results for specifically the modeling workflow that encodes age as a number more thoroughly:
 
 
 ::: {.cell layout-align="center"}
@@ -736,6 +721,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  broom       * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials       * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
 #>  dplyr       * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
+#>  GGally      * 2.2.0      2023-11-22 [1] CRAN (R 4.3.1)
 #>  ggplot2     * 3.4.4      2023-10-12 [1] CRAN (R 4.3.1)
 #>  infer       * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
 #>  parsnip     * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)

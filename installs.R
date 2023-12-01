@@ -17,6 +17,7 @@ packages <- c(
   "forecast",
   "fs",
   "furrr",
+  "GGally",
   "glmnet",
   "glue",
   "kableExtra",
