@@ -2,7 +2,7 @@
 title: "Fair prediction of hospital readmission: a machine learning fairness case study"
 categories:
   - yardstick
-  - metrics
+  - fairness
   - tune
   - workflow sets
 type: learn-subsection
@@ -142,12 +142,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0848 0.00511 12887
-#> 2 Asian            0.0812 0.0505    497
-#> 3 Caucasian        0.0900 0.00390 53491
-#> 4 Hispanic         0.0803 0.0221   1517
-#> 5 Other            0.0676 0.0118   1177
-#> 6 Unknown          0.0724 0.0215   1946
+#> 1 African American 0.0848 0.0101  12887
+#> 2 Asian            0.0812 0.0272    497
+#> 3 Caucasian        0.0900 0.00346 53491
+#> 4 Hispanic         0.0811 0.0222   1517
+#> 5 Other            0.0679 0.0159   1177
+#> 6 Unknown          0.0728 0.0158   1946
 ```
 :::
 
