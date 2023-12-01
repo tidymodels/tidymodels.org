@@ -44,6 +44,8 @@ library(readmission)
 library(baguette)
 pkgs <- c("tidymodels", "readmission", "baguette")
 
+tidymodels_prefer()
+
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 
@@ -61,7 +63,7 @@ The data we'll use in this analysis is a publicly available database containing 
 
 ```{r}
 #| label: "load-readmission"
-#| eval: false
+#| eval: true
 library(readmission)
 
 readmission
@@ -87,7 +89,7 @@ readmission %>%
   count(readmitted)
 ```
 
-`r round(mean(readmission$readmitted == "Yes"), 3)*100`% of patients readmitted within 30 days after being discharged from the hospital. This is an example of a modeling problem with a _class imbalance_, where one value of the outcome variable is much more common than another. Now, taking a look at the counts of those in each protected class:
+`r round(mean(readmission$readmitted == "Yes"), 3)*100`% of patients were readmitted within 30 days after being discharged from the hospital. This is an example of a modeling problem with a _class imbalance_, where one value of the outcome variable is much more common than another. Now, taking a look at the counts of those in each protected class:
 
 ```{r}
 #| label: "count-by-race"
@@ -138,7 +140,7 @@ readmission_collapsed <-
   readmission %>%
   mutate(
     race = case_when(
-      !race %in% c("Caucasian", "African American") ~ "Other",
+      !(race %in% c("Caucasian", "African American")) ~ "Other",
       .default = race
     ),
     race = factor(race)
@@ -233,19 +235,21 @@ The other preprocessor that we'll try encodes the age as a numeric variable rath
 
 ```{r}
 #| label: "recipe-age"
-# specify the age as the midpoint of the range
-# rather than as an interval, like in the source data
-# e.g. "[10-20]" -> 1 * 10 + 5 -> 15
+# e.g. "[10-20]" -> 15
+age_bin_to_midpoint <- function(age_bin) {
+  # ensure factors are treated as their label
+  age <- as.character(age_bin) 
+  # take the second character, e.g. "[10-20]" -> "1"
+  age <- substr(age, 2, 2)
+  # convert to numeric, e.g. "1" -> 1
+  age <- as.numeric(age)
+  # scale to bin's midpoint, e.g. 1 -> 10 + 5 -> 15
+  age * 10 + 5
+}
+
 recipe_age <-
   recipe(readmitted ~ ., data = readmission) %>%
-  step_mutate(
-    age_num = 
-      age %>% 
-      as.character() %>% 
-      substr(2, 2) %>% 
-      as.numeric() %>%
-      `*`(10) %>% `+`(5)
-  ) %>%
+  step_mutate(age_num = age_bin_to_midpoint(age)) %>%
   step_rm(age) %>%
   step_unknown(all_nominal_predictors()) %>%
   step_YeoJohnson(all_numeric_predictors()) %>%
@@ -284,7 +288,7 @@ Each workflow in the workflow set is now ready to be evaluated. We now need to d
 
 ### Metrics
 
-The metrics with which we choose to evaluate our models with are the core of our fairness analysis. In addition to the default metrics for classification in tune, `accuracy()` and `roc_auc()`, we'll compute a set of fairness metrics: `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`.
+The metrics with which we choose to evaluate our models are the core of our fairness analysis. In addition to the default metrics for classification in tune, `accuracy()` and `roc_auc()`, we'll compute a set of fairness metrics: `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`.
 
 * `equal_opportunity()`: Equal opportunity is satisfied when a model's predictions have the same true positive and false negative rates across protected groups. In this example, a model satisfies equal opportunity if it correctly predicts readmission and incorrectly predicts non-readmission at the same rate across `race` groups. In this case, the metric represents the interests of the patient; a patient would like to be just as likely to receive additional care resources as another if they are of equal need, and no more likely to go without unneeded care than another. Since this metric does not consider false positives, it notably does not penalize disparately providing additional care resources to a patient who may not need them.
 
@@ -309,7 +313,6 @@ m_set <-
 
 m_set
 ```
-
 
 ::: callout-note
 The first two inputs, `accuracy()` and `roc_auc()`, are standard [yardstick](https://yardstick.tidymodels.org) metrics. The latter three are also yardstick metrics like any other, though are created using the [_metric factories_](https://yardstick.tidymodels.org/dev/reference/new_groupwise_metric.html) `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`. When passed a data-column, metric factories output yardstick metrics. 

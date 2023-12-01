@@ -44,6 +44,22 @@ The data we'll use in this analysis is a publicly available database containing 
 library(readmission)
 
 readmission
+#> # A tibble: 71,515 × 12
+#>    readmitted race   sex   age   admission_source blood_glucose insurer duration
+#>    <fct>      <fct>  <fct> <fct> <fct>            <fct>         <fct>      <dbl>
+#>  1 Yes        Afric… Male  [60-… Referral         <NA>          <NA>           7
+#>  2 No         Cauca… Fema… [50-… Emergency        Normal        Private        4
+#>  3 Yes        Cauca… Fema… [70-… Referral         <NA>          Medica…        5
+#>  4 No         Cauca… Fema… [80-… Referral         <NA>          Private        5
+#>  5 No         Cauca… Fema… [70-… Referral         <NA>          <NA>           4
+#>  6 No         Cauca… Male  [50-… Emergency        Very High     <NA>           2
+#>  7 Yes        Afric… Fema… [70-… Referral         <NA>          Private        3
+#>  8 No         Cauca… Fema… [20-… Emergency        <NA>          <NA>           1
+#>  9 No         Cauca… Male  [60-… Other            <NA>          <NA>          12
+#> 10 No         Cauca… Fema… [80-… Referral         <NA>          Medica…        1
+#> # ℹ 71,505 more rows
+#> # ℹ 4 more variables: n_previous_visits <dbl>, n_diagnoses <dbl>,
+#> #   n_procedures <dbl>, n_medications <dbl>
 ```
 :::
 
@@ -81,7 +97,7 @@ readmission %>%
 :::
 
 
-8.8% of patients readmitted within 30 days after being discharged from the hospital. This is an example of a modeling problem with a _class imbalance_, where one value of the outcome variable is much more common than another. Now, taking a look at the counts of those in each protected class:
+8.8% of patients were readmitted within 30 days after being discharged from the hospital. This is an example of a modeling problem with a _class imbalance_, where one value of the outcome variable is much more common than another. Now, taking a look at the counts of those in each protected class:
 
 
 ::: {.cell layout-align="center"}
@@ -124,12 +140,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0848 0.00898 12887
-#> 2 Asian            0.0793 0.0495    497
-#> 3 Caucasian        0.0900 0.00260 53491
-#> 4 Hispanic         0.0802 0.0180   1517
-#> 5 Other            0.0685 0.0221   1177
-#> 6 Unknown          0.0721 0.0184   1946
+#> 1 African American 0.0849 0.00835 12887
+#> 2 Asian            0.0798 0.0447    497
+#> 3 Caucasian        0.0901 0.00379 53491
+#> 4 Hispanic         0.0809 0.0260   1517
+#> 5 Other            0.0686 0.0232   1177
+#> 6 Unknown          0.0723 0.0180   1946
 ```
 :::
 
@@ -158,7 +174,7 @@ readmission_collapsed <-
   readmission %>%
   mutate(
     race = case_when(
-      !race %in% c("Caucasian", "African American") ~ "Other",
+      !(race %in% c("Caucasian", "African American")) ~ "Other",
       .default = race
     ),
     race = factor(race)
@@ -311,19 +327,21 @@ The other preprocessor that we'll try encodes the age as a numeric variable rath
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# specify the age as the midpoint of the range
-# rather than as an interval, like in the source data
-# e.g. "[10-20]" -> 1 * 10 + 5 -> 15
+# e.g. "[10-20]" -> 15
+age_bin_to_midpoint <- function(age_bin) {
+  # ensure factors are treated as their label
+  age <- as.character(age_bin) 
+  # take the second character, e.g. "[10-20]" -> "1"
+  age <- substr(age, 2, 2)
+  # convert to numeric, e.g. "1" -> 1
+  age <- as.numeric(age)
+  # scale to bin's midpoint, e.g. 1 -> 10 + 5 -> 15
+  age * 10 + 5
+}
+
 recipe_age <-
   recipe(readmitted ~ ., data = readmission) %>%
-  step_mutate(
-    age_num = 
-      age %>% 
-      as.character() %>% 
-      substr(2, 2) %>% 
-      as.numeric() %>%
-      `*`(10) %>% `+`(5)
-  ) %>%
+  step_mutate(age_num = age_bin_to_midpoint(age)) %>%
   step_rm(age) %>%
   step_unknown(all_nominal_predictors()) %>%
   step_YeoJohnson(all_numeric_predictors()) %>%
@@ -381,7 +399,7 @@ Each workflow in the workflow set is now ready to be evaluated. We now need to d
 
 ### Metrics
 
-The metrics with which we choose to evaluate our models with are the core of our fairness analysis. In addition to the default metrics for classification in tune, `accuracy()` and `roc_auc()`, we'll compute a set of fairness metrics: `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`.
+The metrics with which we choose to evaluate our models are the core of our fairness analysis. In addition to the default metrics for classification in tune, `accuracy()` and `roc_auc()`, we'll compute a set of fairness metrics: `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`.
 
 * `equal_opportunity()`: Equal opportunity is satisfied when a model's predictions have the same true positive and false negative rates across protected groups. In this example, a model satisfies equal opportunity if it correctly predicts readmission and incorrectly predicts non-readmission at the same rate across `race` groups. In this case, the metric represents the interests of the patient; a patient would like to be just as likely to receive additional care resources as another if they are of equal need, and no more likely to go without unneeded care than another. Since this metric does not consider false positives, it notably does not penalize disparately providing additional care resources to a patient who may not need them.
 
@@ -417,7 +435,6 @@ m_set
 #> 5 demographic_parity(race) class_metric minimize
 ```
 :::
-
 
 
 ::: callout-note
@@ -708,7 +725,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Chicago
-#>  date     2023-11-29
+#>  date     2023-12-01
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -716,10 +733,10 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  baguette    * 1.0.1      2023-04-04 [1] CRAN (R 4.3.0)
 #>  broom       * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
 #>  dials       * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr       * 1.1.3      2023-09-03 [1] CRAN (R 4.3.0)
+#>  dplyr       * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
 #>  ggplot2     * 3.4.4      2023-10-12 [1] CRAN (R 4.3.1)
 #>  infer       * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
-#>  parsnip     * 1.1.1.9003 2023-11-22 [1] local
+#>  parsnip     * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
 #>  purrr       * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
 #>  readmission * 0.0.3      2023-11-29 [1] Github (simonpcouch/readmission@7d1a793)
 #>  recipes     * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
@@ -727,7 +744,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  rsample     * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble      * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
 #>  tidymodels  * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune        * 1.1.2.9000 2023-11-27 [1] Github (tidymodels/tune@3509577)
+#>  tune        * 1.1.2.9001 2023-11-29 [1] Github (tidymodels/tune@7155350)
 #>  workflows   * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick   * 1.2.0.9001 2023-11-27 [1] Github (tidymodels/yardstick@2f556df)
 #> 
