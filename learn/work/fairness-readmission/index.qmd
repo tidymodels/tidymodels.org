@@ -42,8 +42,9 @@ if (file.exists(here::here(saved_fits))) {
 library(tidymodels)
 library(readmission)
 library(baguette)
+library(desirability2)
 library(GGally)
-pkgs <- c("tidymodels", "readmission", "baguette", "GGally")
+pkgs <- c("tidymodels", "readmission", "baguette", "GGally", "desirability2")
 
 tidymodels_prefer()
 
@@ -78,6 +79,7 @@ Loading needed packages:
 #| label: "load-tidymodels"
 library(tidymodels)
 library(baguette)
+library(desirability2)
 library(GGally)
 ```
 
@@ -411,17 +413,7 @@ From the perspective of a practitioner hoping to satisfy various stakeholders, t
 In machine learning fairness, "impossibility thereoms" show that fairness definitions "are not mathematically or morally compatible in general" [@mitchell2021]. More concretely, unless we live in a world with no inequality, there is no way to satisfy many definitions of fairness at once. However, recent research emphasizes that near-fairness among more limited sets of metrics, like the three we've used here, is both possible and relevant [@bell2023].
 :::
 
-To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will:
-
-1) Find the "best" model with respect to `roc_auc()`.
-2) Choose the most fair model with respect to `equalized_odds()` among the models within one standard error of `roc_auc()` to the model we identified in step 1.
-
-We can do so by first aggregating performance metrics from the `"age_bt"` result with `collect_metrics()` and then using some tidyr and dplyr for data manipulation:
-
-<!-- 
-TODO: it'd be great if `select_by_one_std_err()` could "just work" here, i.e.  
-select_by_one_std_err(best_workflow, metric = "roc_auc", desc(equalized_odds))
--->
+To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will make use of [desirability functions](https://www.tidyverse.org/blog/2023/05/desirability2/), which allow us to optimize based on multiple metrics at once.
 
 ```{r}
 #| label: "find-best-params"
@@ -430,19 +422,22 @@ best_params <-
   extract_workflow_set_result(wflow_set_fit, "age_bt") %>%
   # collect the metrics associated with it
   collect_metrics() %>%
-  # pivot metric values into columns
+  # pivot the metrics so that each is in a column
   pivot_wider(
-    id_cols = c(.config, mtry, learn_rate), 
+    id_cols = c(mtry, learn_rate), 
     names_from = .metric, 
-    values_from = c(mean, std_err)
+    values_from = mean
   ) %>%
-  # calculate the worst allowable `roc_auc()`
-  mutate(lower_bound = max(mean_roc_auc) - max(std_err_roc_auc)) %>%
-  # retain only those with an `roc_auc()` value better than the worst
-  filter(mean_roc_auc > lower_bound) %>%
-  # of the remaining, pick the model with the best equalized odds
-  arrange(desc(mean_equalized_odds)) %>%
-  slice(1)
+  mutate(
+    # higher roc values are better; detect max and min from the data
+    d_roc     = d_max(roc_auc, use_data = TRUE),
+    # lower equalized odds are better; detect max and min from the data
+    d_e_odds  = d_min(equalized_odds, use_data = TRUE),
+    # compute overall desirability based on d_roc and d_e_odds
+    d_overall = d_overall(across(starts_with("d_")))
+  ) %>%
+  # pick the model with the highest desirability value
+  slice_max(d_overall)
 ```
 
 The result is a tibble giving the parameter values that resulted in the best model:

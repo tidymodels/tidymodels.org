@@ -74,6 +74,7 @@ Loading needed packages:
 ```{.r .cell-code}
 library(tidymodels)
 library(baguette)
+library(desirability2)
 library(GGally)
 ```
 :::
@@ -141,12 +142,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0847 0.00786 12887
-#> 2 Asian            0.0792 0.0409    497
-#> 3 Caucasian        0.0900 0.00391 53491
-#> 4 Hispanic         0.0815 0.0253   1517
-#> 5 Other            0.0687 0.0216   1177
-#> 6 Unknown          0.0723 0.0194   1946
+#> 1 African American 0.0848 0.00511 12887
+#> 2 Asian            0.0812 0.0505    497
+#> 3 Caucasian        0.0900 0.00390 53491
+#> 4 Hispanic         0.0803 0.0221   1517
+#> 5 Other            0.0676 0.0118   1177
+#> 6 Unknown          0.0724 0.0215   1946
 ```
 :::
 
@@ -570,17 +571,7 @@ From the perspective of a practitioner hoping to satisfy various stakeholders, t
 In machine learning fairness, "impossibility thereoms" show that fairness definitions "are not mathematically or morally compatible in general" [@mitchell2021]. More concretely, unless we live in a world with no inequality, there is no way to satisfy many definitions of fairness at once. However, recent research emphasizes that near-fairness among more limited sets of metrics, like the three we've used here, is both possible and relevant [@bell2023].
 :::
 
-To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will:
-
-1) Find the "best" model with respect to `roc_auc()`.
-2) Choose the most fair model with respect to `equalized_odds()` among the models within one standard error of `roc_auc()` to the model we identified in step 1.
-
-We can do so by first aggregating performance metrics from the `"age_bt"` result with `collect_metrics()` and then using some tidyr and dplyr for data manipulation:
-
-<!-- 
-TODO: it'd be great if `select_by_one_std_err()` could "just work" here, i.e.  
-select_by_one_std_err(best_workflow, metric = "roc_auc", desc(equalized_odds))
--->
+To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will make use of [desirability functions](https://www.tidyverse.org/blog/2023/05/desirability2/), which allow us to optimize based on multiple metrics at once.
 
 
 ::: {.cell layout-align="center"}
@@ -591,19 +582,22 @@ best_params <-
   extract_workflow_set_result(wflow_set_fit, "age_bt") %>%
   # collect the metrics associated with it
   collect_metrics() %>%
-  # pivot metric values into columns
+  # pivot the metrics so that each is in a column
   pivot_wider(
-    id_cols = c(.config, mtry, learn_rate), 
+    id_cols = c(mtry, learn_rate), 
     names_from = .metric, 
-    values_from = c(mean, std_err)
+    values_from = mean
   ) %>%
-  # calculate the worst allowable `roc_auc()`
-  mutate(lower_bound = max(mean_roc_auc) - max(std_err_roc_auc)) %>%
-  # retain only those with an `roc_auc()` value better than the worst
-  filter(mean_roc_auc > lower_bound) %>%
-  # of the remaining, pick the model with the best equalized odds
-  arrange(desc(mean_equalized_odds)) %>%
-  slice(1)
+  mutate(
+    # higher roc values are better; detect max and min from the data
+    d_roc     = d_max(roc_auc, use_data = TRUE),
+    # lower equalized odds are better; detect max and min from the data
+    d_e_odds  = d_min(equalized_odds, use_data = TRUE),
+    # compute overall desirability based on d_roc and d_e_odds
+    d_overall = d_overall(across(starts_with("d_")))
+  ) %>%
+  # pick the model with the highest desirability value
+  slice_max(d_overall)
 ```
 :::
 
@@ -615,14 +609,12 @@ The result is a tibble giving the parameter values that resulted in the best mod
 
 ```{.r .cell-code}
 best_params
-#> # A tibble: 1 × 14
-#>   .config                mtry learn_rate mean_accuracy mean_demographic_parity
-#>   <chr>                 <int>      <dbl>         <dbl>                   <dbl>
-#> 1 Preprocessor1_Model06    19    0.00842         0.912                0.000100
-#> # ℹ 9 more variables: mean_equal_opportunity <dbl>, mean_equalized_odds <dbl>,
-#> #   mean_roc_auc <dbl>, std_err_accuracy <dbl>,
-#> #   std_err_demographic_parity <dbl>, std_err_equal_opportunity <dbl>,
-#> #   std_err_equalized_odds <dbl>, std_err_roc_auc <dbl>, lower_bound <dbl>
+#> # A tibble: 1 × 10
+#>    mtry learn_rate accuracy demographic_parity equal_opportunity equalized_odds
+#>   <int>      <dbl>    <dbl>              <dbl>             <dbl>          <dbl>
+#> 1     7    0.00456    0.912                  0                 0              0
+#> # ℹ 4 more variables: roc_auc <dbl>, d_roc <dbl>, d_e_odds <dbl>,
+#> #   d_overall <dbl>
 ```
 :::
 
@@ -721,25 +713,26 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package     * version    date (UTC) lib source
-#>  baguette    * 1.0.1      2023-04-04 [1] CRAN (R 4.3.0)
-#>  broom       * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
-#>  dials       * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr       * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
-#>  GGally      * 2.2.0      2023-11-22 [1] CRAN (R 4.3.1)
-#>  ggplot2     * 3.4.4      2023-10-12 [1] CRAN (R 4.3.1)
-#>  infer       * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
-#>  parsnip     * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
-#>  purrr       * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
-#>  readmission * 0.0.3      2023-11-29 [1] Github (simonpcouch/readmission@7d1a793)
-#>  recipes     * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
-#>  rlang         1.1.2      2023-11-04 [1] CRAN (R 4.3.1)
-#>  rsample     * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
-#>  tibble      * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels  * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune        * 1.1.2.9001 2023-11-29 [1] Github (tidymodels/tune@7155350)
-#>  workflows   * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
-#>  yardstick   * 1.2.0.9001 2023-11-27 [1] Github (tidymodels/yardstick@2f556df)
+#>  package       * version    date (UTC) lib source
+#>  baguette      * 1.0.1      2023-04-04 [1] CRAN (R 4.3.0)
+#>  broom         * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
+#>  desirability2 * 0.0.1      2023-05-11 [1] CRAN (R 4.3.0)
+#>  dials         * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
+#>  dplyr         * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
+#>  GGally        * 2.2.0      2023-11-22 [1] CRAN (R 4.3.1)
+#>  ggplot2       * 3.4.4      2023-10-12 [1] CRAN (R 4.3.1)
+#>  infer         * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip       * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
+#>  purrr         * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
+#>  readmission   * 0.0.3      2023-11-29 [1] Github (simonpcouch/readmission@7d1a793)
+#>  recipes       * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
+#>  rlang           1.1.2      2023-11-04 [1] CRAN (R 4.3.1)
+#>  rsample       * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
+#>  tibble        * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
+#>  tidymodels    * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune          * 1.1.2.9001 2023-11-29 [1] Github (tidymodels/tune@7155350)
+#>  workflows     * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
+#>  yardstick     * 1.2.0.9001 2023-11-27 [1] Github (tidymodels/yardstick@2f556df)
 #> 
 #>  [1] /Users/simoncouch/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
