@@ -485,7 +485,7 @@ collect_metrics(final_model)
 final_metrics <- collect_metrics(final_model)
 ```
 
-The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is `r round(final_metrics$.estimate[final_metrics$.metric == "accuracy"], 4)*100`%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (`r (1 - round(mean(readmission_collapsed$readmitted == "Yes"), 4))*100`%). The `roc_auc()` value `r round(final_metrics$.estimate[final_metrics$.metric == "roc_auc"], 3)` indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement.
+The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is `r round(final_metrics$.estimate[final_metrics$.metric == "accuracy"], 4)*100`%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (`r (1 - round(mean(readmission_collapsed$readmitted == "Yes"), 4))*100`%). The `roc_auc()` value `r round(final_metrics$.estimate[final_metrics$.metric == "roc_auc"], 3)` indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class---as in, patients that did actually readmit---like [`sens()`](https://yardstick.tidymodels.org/reference/sens.html?q=sens#details).
 
 Extracting the model fit from the `last_fit` object:
 

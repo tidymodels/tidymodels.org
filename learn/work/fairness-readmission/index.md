@@ -142,12 +142,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0848 0.0101  12887
-#> 2 Asian            0.0812 0.0272    497
-#> 3 Caucasian        0.0900 0.00346 53491
-#> 4 Hispanic         0.0811 0.0222   1517
-#> 5 Other            0.0679 0.0159   1177
-#> 6 Unknown          0.0728 0.0158   1946
+#> 1 African American 0.0849 0.00524 12887
+#> 2 Asian            0.0822 0.0247    497
+#> 3 Caucasian        0.0900 0.00369 53491
+#> 4 Hispanic         0.0805 0.0159   1517
+#> 5 Other            0.0681 0.0240   1177
+#> 6 Unknown          0.0727 0.0144   1946
 ```
 :::
 
@@ -433,14 +433,15 @@ m_set <-
   )
 
 m_set
-#> # A tibble: 5 × 3
-#>   metric                   class        direction
-#>   <chr>                    <chr>        <chr>    
-#> 1 accuracy                 class_metric maximize 
-#> 2 roc_auc                  prob_metric  maximize 
-#> 3 equal_opportunity(race)  class_metric minimize 
-#> 4 equalized_odds(race)     class_metric minimize 
-#> 5 demographic_parity(race) class_metric minimize
+#> A metric set, consisting of:
+#> - `accuracy()`, a class metric                 | direction: maximize
+#> - `roc_auc()`, a probability metric            | direction: maximize
+#> - `equal_opportunity(race)()`, a class metric  | direction: minimize,
+#> group-wise on: race
+#> - `equalized_odds(race)()`, a class metric     | direction: minimize,
+#> group-wise on: race
+#> - `demographic_parity(race)()`, a class metric | direction: minimize,
+#> group-wise on: race
 ```
 :::
 
@@ -667,7 +668,7 @@ collect_metrics(final_model)
 
 
 
-The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is 91.17%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The `roc_auc()` value 0.596 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement.
+The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is 91.17%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The `roc_auc()` value 0.596 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class---as in, patients that did actually readmit---like [`sens()`](https://yardstick.tidymodels.org/reference/sens.html?q=sens#details).
 
 Extracting the model fit from the `last_fit` object:
 
@@ -709,7 +710,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Chicago
-#>  date     2023-12-01
+#>  date     2023-12-05
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -730,9 +731,9 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  rsample       * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble        * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
 #>  tidymodels    * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune          * 1.1.2.9001 2023-11-29 [1] Github (tidymodels/tune@7155350)
+#>  tune          * 1.1.2.9001 2023-12-05 [1] Github (tidymodels/tune@1b67e42)
 #>  workflows     * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
-#>  yardstick     * 1.2.0.9001 2023-11-27 [1] Github (tidymodels/yardstick@2f556df)
+#>  yardstick     * 1.2.0.9001 2023-12-05 [1] Github (tidymodels/yardstick@2eb9555)
 #> 
 #>  [1] /Users/simoncouch/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
