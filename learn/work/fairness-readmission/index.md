@@ -121,7 +121,7 @@ readmission %>%
 
 
 ::: callout-note
-We'll refer to the `race` groups in this data by their actual value (e.g. `"Caucasian"` rather than Caucasian) so as to not to take for granted the choices that the dataset authors made in choosing these categorizations. Racial categorizations are not stable across time and place---as you read on, consider how a change in the categories used in data collection might affect this analysis [@omi1994].
+We'll refer to the `race` groups in this data by their actual value (e.g. `"Caucasian"` rather than Caucasian) so as to not take for granted the choices that the dataset authors made in choosing these categorizations. Racial categorizations are not stable across time and place---as you read on, consider how a change in the categories used in data collection might affect this analysis [@omi1994].
 :::
 
 A vast majority of patients are labeled `"Caucasian"` (74.8%) or `"African American"` (18%). The counts for the remaining racial categorizations are quite a bit smaller, and when we split the data up into resamples, those counts will reduce even further. As a result, the variability associated with the estimates `"Asian"`, `"Hispanic"`, `"Other"`, and `"Unknown"` will be larger than those for `"African American"` and `"Causasian"`. As an example:
@@ -142,12 +142,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0849 0.00524 12887
-#> 2 Asian            0.0822 0.0247    497
-#> 3 Caucasian        0.0900 0.00369 53491
-#> 4 Hispanic         0.0805 0.0159   1517
-#> 5 Other            0.0681 0.0240   1177
-#> 6 Unknown          0.0727 0.0144   1946
+#> 1 African American 0.0847 0.00776 12887
+#> 2 Asian            0.0806 0.0288    497
+#> 3 Caucasian        0.0900 0.00316 53491
+#> 4 Hispanic         0.0800 0.0200   1517
+#> 5 Other            0.0673 0.0269   1177
+#> 6 Unknown          0.0725 0.0214   1946
 ```
 :::
 
@@ -229,7 +229,7 @@ readmission_collapsed %>%
 :::
 
 
-While payment information on most patients is missing, most patients in this data are covered under medicare.
+While payment information on most patients is missing, most patients in this data are covered under Medicare.
 
 ::: callout-tip
 The payment method is one way in which societal unfairness may be reflected in the source data besides the variables on protected groups themselves. Medicaid coverage is only available to people below a certain income, and many self-pay patients do not have medical insurance because they cannot afford it. Relatedly, poverty rates differ drastically among racial groups in the U.S.
@@ -497,7 +497,7 @@ wflow_set_fit
 
 ## Model Selection
 
-Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning by a quick exploratory plot of the distributions of our metrics:
+Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning with a quick exploratory plot of the distributions of our metrics:
 
 
 ::: {.cell layout-align="center"}
@@ -564,12 +564,12 @@ autoplot(wflow_set_fit, id = "age_bt")
 :::
 
 
-The learning rate `learn_rate` seems to have a more pronounced effect on the results metrics than the number of randomly selected predictors `mtry`. As before, we see that the most performant models with respect to `roc_auc()` tend to be the most fair with respect to our fairness metrics. Further, the values of each of the fairness metrics plotted above seem highly correlated. 
+The learning rate `learn_rate` seems to have a more pronounced effect on the results metrics than the number of randomly selected predictors `mtry`. As before, we see that the most performant models with respect to `roc_auc()` also tend to be the most fair according to our fairness metrics. Further, the values of each of the fairness metrics plotted above seem highly correlated. 
 
 From the perspective of a practitioner hoping to satisfy various stakeholders, the fact that these metrics are highly correlated makes the model selection process much easier. We can choose one fairness metric that we'd like to optimize for, and likely end up with a near-optimal configuration for the other metrics as a byproduct.
 
 :::callout-note
-In machine learning fairness, "impossibility thereoms" show that fairness definitions "are not mathematically or morally compatible in general" [@mitchell2021]. More concretely, unless we live in a world with no inequality, there is no way to satisfy many definitions of fairness at once. However, recent research emphasizes that near-fairness among more limited sets of metrics, like the three we've used here, is both possible and relevant [@bell2023].
+In machine learning fairness, "impossibility theorems" show that fairness definitions "are not mathematically or morally compatible in general" [@mitchell2021]. More concretely, unless we live in a world with no inequality, there is no way to satisfy many definitions of fairness at once. However, recent research emphasizes that near-fairness among more limited sets of metrics, like the three we've used here, is both possible and relevant [@bell2023].
 :::
 
 To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will make use of [desirability functions](https://www.tidyverse.org/blog/2023/05/desirability2/), which allow us to optimize based on multiple metrics at once.
@@ -710,7 +710,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Chicago
-#>  date     2023-12-05
+#>  date     2023-12-07
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -731,7 +731,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  rsample       * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble        * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
 #>  tidymodels    * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune          * 1.1.2.9001 2023-12-05 [1] Github (tidymodels/tune@1b67e42)
+#>  tune          * 1.1.2.9002 2023-12-07 [1] Github (tidymodels/tune@8f99330)
 #>  workflows     * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
 #>  yardstick     * 1.2.0.9001 2023-12-05 [1] Github (tidymodels/yardstick@2eb9555)
 #> 
