@@ -142,12 +142,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0847 0.00776 12887
-#> 2 Asian            0.0806 0.0288    497
-#> 3 Caucasian        0.0900 0.00316 53491
-#> 4 Hispanic         0.0800 0.0200   1517
-#> 5 Other            0.0673 0.0269   1177
-#> 6 Unknown          0.0725 0.0214   1946
+#> 1 African American 0.0848 0.00573 12887
+#> 2 Asian            0.0813 0.0351    497
+#> 3 Caucasian        0.0900 0.00520 53491
+#> 4 Hispanic         0.0814 0.0238   1517
+#> 5 Other            0.0677 0.0198   1177
+#> 6 Unknown          0.0727 0.0102   1946
 ```
 :::
 
@@ -534,16 +534,16 @@ rank_results(wflow_set_fit, rank_metric = "roc_auc") %>%
 #> # A tibble: 42 × 9
 #>    wflow_id .config         .metric  mean std_err     n preprocessor model  rank
 #>    <chr>    <chr>           <chr>   <dbl>   <dbl> <int> <chr>        <chr> <int>
-#>  1 age_bt   Preprocessor1_… roc_auc 0.605 0.00489    10 recipe       boos…     1
-#>  2 age_bt   Preprocessor1_… roc_auc 0.603 0.00484    10 recipe       boos…     2
-#>  3 age_bt   Preprocessor1_… roc_auc 0.603 0.00465    10 recipe       boos…     3
-#>  4 basic_bt Preprocessor1_… roc_auc 0.602 0.00465    10 recipe       boos…     4
-#>  5 basic_bt Preprocessor1_… roc_auc 0.602 0.00439    10 recipe       boos…     5
-#>  6 age_bt   Preprocessor1_… roc_auc 0.602 0.00478    10 recipe       boos…     6
-#>  7 basic_bt Preprocessor1_… roc_auc 0.602 0.00463    10 recipe       boos…     7
-#>  8 age_bt   Preprocessor1_… roc_auc 0.600 0.00553    10 recipe       boos…     8
-#>  9 basic_bt Preprocessor1_… roc_auc 0.600 0.00480    10 recipe       boos…     9
-#> 10 age_nn   Preprocessor1_… roc_auc 0.599 0.00600    10 recipe       bag_…    10
+#>  1 age_bt   Preprocessor1_… roc_auc 0.605 0.00424    10 recipe       boos…     1
+#>  2 basic_bt Preprocessor1_… roc_auc 0.605 0.00423    10 recipe       boos…     2
+#>  3 age_bt   Preprocessor1_… roc_auc 0.604 0.00378    10 recipe       boos…     3
+#>  4 age_bt   Preprocessor1_… roc_auc 0.603 0.00421    10 recipe       boos…     4
+#>  5 basic_bt Preprocessor1_… roc_auc 0.603 0.00410    10 recipe       boos…     5
+#>  6 basic_bt Preprocessor1_… roc_auc 0.603 0.00436    10 recipe       boos…     6
+#>  7 age_bt   Preprocessor1_… roc_auc 0.602 0.00372    10 recipe       boos…     7
+#>  8 basic_nn Preprocessor1_… roc_auc 0.602 0.00403    10 recipe       bag_…     8
+#>  9 age_nn   Preprocessor1_… roc_auc 0.600 0.00431    10 recipe       bag_…     9
+#> 10 age_nn   Preprocessor1_… roc_auc 0.600 0.00412    10 recipe       bag_…    10
 #> # ℹ 32 more rows
 ```
 :::
@@ -661,14 +661,14 @@ collect_metrics(final_model)
 #> 2 equal_opportunity  binary         0     race  Preprocessor1_Model1
 #> 3 equalized_odds     binary         0     race  Preprocessor1_Model1
 #> 4 demographic_parity binary         0     race  Preprocessor1_Model1
-#> 5 roc_auc            binary         0.596 <NA>  Preprocessor1_Model1
+#> 5 roc_auc            binary         0.602 <NA>  Preprocessor1_Model1
 ```
 :::
 
 
 
 
-The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is 91.17%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The `roc_auc()` value 0.596 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class---as in, patients that did actually readmit---like [`sens()`](https://yardstick.tidymodels.org/reference/sens.html?q=sens#details).
+The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is 91.16%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The `roc_auc()` value 0.602 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class---as in, patients that did actually readmit---like [`sens()`](https://yardstick.tidymodels.org/reference/sens.html?q=sens#details).
 
 Extracting the model fit from the `last_fit` object:
 
