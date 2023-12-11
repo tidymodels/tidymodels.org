@@ -49,7 +49,7 @@ packages <- c(
   "rules",
   "scales",
   "sessioninfo",
-  "simonpcouch/readmission",
+  "readmission",
   "skimr",
   "spatialsample",
   "stacks",

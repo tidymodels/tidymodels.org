@@ -725,7 +725,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  infer         * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
 #>  parsnip       * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
 #>  purrr         * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
-#>  readmission   * 0.0.3      2023-11-29 [1] Github (simonpcouch/readmission@7d1a793)
+#>  readmission   * 0.1.0      2023-12-11 [1] CRAN (R 4.3.1)
 #>  recipes       * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang           1.1.2      2023-11-04 [1] CRAN (R 4.3.1)
 #>  rsample       * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
