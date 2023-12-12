@@ -108,6 +108,12 @@ We'll refer to the `race` groups in this data by their actual value (e.g. `"Cauc
 A vast majority of patients are labeled `"Caucasian"` (`r round(mean(readmission$race == "Caucasian"), 3)*100`%) or `"African American"` (`r round(mean(readmission$race == "African American"), 3)*100`%). The counts for the remaining racial categorizations are quite a bit smaller, and when we split the data up into resamples, those counts will reduce even further. As a result, the variability associated with the estimates `"Asian"`, `"Hispanic"`, `"Other"`, and `"Unknown"` will be larger than those for `"African American"` and `"Causasian"`. As an example:
 
 ```{r}
+#| label: "prop-by-race-set-seed"
+#| include: false
+set.seed(1)
+```
+
+```{r}
 #| label: "prop-by-race"
 #| message: false
 #| warning: false

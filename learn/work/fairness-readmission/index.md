@@ -127,6 +127,8 @@ We'll refer to the `race` groups in this data by their actual value (e.g. `"Cauc
 A vast majority of patients are labeled `"Caucasian"` (74.8%) or `"African American"` (18%). The counts for the remaining racial categorizations are quite a bit smaller, and when we split the data up into resamples, those counts will reduce even further. As a result, the variability associated with the estimates `"Asian"`, `"Hispanic"`, `"Other"`, and `"Unknown"` will be larger than those for `"African American"` and `"Causasian"`. As an example:
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -142,12 +144,12 @@ readmission %>%
 #> # A tibble: 6 × 4
 #>   race               mean      sd     n
 #>   <fct>             <dbl>   <dbl> <int>
-#> 1 African American 0.0848 0.00573 12887
-#> 2 Asian            0.0813 0.0351    497
-#> 3 Caucasian        0.0900 0.00520 53491
-#> 4 Hispanic         0.0814 0.0238   1517
-#> 5 Other            0.0677 0.0198   1177
-#> 6 Unknown          0.0727 0.0102   1946
+#> 1 African American 0.0849 0.00713 12887
+#> 2 Asian            0.0825 0.0295    497
+#> 3 Caucasian        0.0900 0.00369 53491
+#> 4 Hispanic         0.0805 0.0285   1517
+#> 5 Other            0.0680 0.0265   1177
+#> 6 Unknown          0.0720 0.0178   1946
 ```
 :::
 
@@ -710,7 +712,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Chicago
-#>  date     2023-12-07
+#>  date     2023-12-12
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -725,7 +727,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  infer         * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
 #>  parsnip       * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
 #>  purrr         * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
-#>  readmission   * 0.1.0      2023-12-11 [1] CRAN (R 4.3.1)
+#>  readmission   * 0.0.3      2023-11-29 [1] Github (simonpcouch/readmission@7d1a793)
 #>  recipes       * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
 #>  rlang           1.1.2      2023-11-04 [1] CRAN (R 4.3.1)
 #>  rsample       * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
