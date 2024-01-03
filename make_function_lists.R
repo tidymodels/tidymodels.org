@@ -9,6 +9,7 @@ library(revdepcheck)
 library(fs)
 library(pkgdown)
 library(urlchecker)
+library(stringr)
 
 # ------------------------------------------------------------------------------
 
@@ -198,17 +199,29 @@ table(loaded)
 # h2o overwrites soooo many functions; this may take a few minutes
 conflicted::conflict_prefer_all("base", loser = "h2o", quiet = TRUE)
 
+origin_pkg <- rlang::env_get_list(
+  env = parsnip::get_model_env(),
+  nms = ls(parsnip::get_model_env(), pattern = "_pkg")
+) %>%
+  purrr::list_rbind(names_to = "model") %>%
+  mutate(pkg = map_chr(pkg, ~ {
+    pkg <- intersect(.x, parsnip_pkgs)
+    if (length(pkg) == 0) {
+      pkg <- "parsnip"
+    }
+    pkg
+  })) %>%
+  mutate(model = str_remove(model, "_pkgs$"))
+
 model_list <-
   map_dfr(get_from_env("models"), ~ get_from_env(.x) %>% mutate(model = .x)) %>%
   mutate(
     mode = factor(mode, levels = c("classification", "regression", "censored regression"))
   ) %>%
-  group_nest(model, engine) %>%
+  left_join(origin_pkg, by = c("engine", "mode", "model")) %>%
   mutate(
-    modes = map_chr(data, ~ paste0(sort(.x$mode), collapse = ", ")),
     functions = glue("details_{model}_{engine}")
-  ) %>%
-  select(-data)
+  )
 
 parsnip_model_info <-
   map_dfr(
@@ -236,10 +249,10 @@ no_details <-
 
 parsnip_models <-
   no_details %>%
-  select(title, model, engine, topic, modes, package) %>%
+  select(title, model, engine, topic, mode, package = pkg) %>%
   bind_rows(
     has_details %>%
-      select(title, model, engine, topic, modes, package)
+      select(title, model, engine, topic, mode, package = pkg)
   ) %>%
   mutate(
     model = paste0("<code>",  model, "</code>"),
@@ -247,11 +260,10 @@ parsnip_models <-
     title = gsub("General Interface for ", "", title)
   ) %>%
   arrange(model, engine) %>%
-  select(title, model, engine, topic, modes, package)
+  select(title, model, engine, topic, mode, package)
 
 save(
   parsnip_models,
   file = "find/parsnip/parsnip_models.RData",
-  compress = TRUE)
-
-
+  compress = TRUE
+)

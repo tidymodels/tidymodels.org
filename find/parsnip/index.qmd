@@ -24,6 +24,8 @@ load("parsnip_models.RData")
 #| label: table-display
 #| echo: false
 parsnip_models %>% 
+  mutate(package = factor(package)) %>%
+  mutate(mode = factor(mode)) %>%
   datatable(rownames = FALSE,
             class = 'cell-border stripe',
             filter = 'top',
