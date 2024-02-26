@@ -240,10 +240,8 @@ detectors %>%
 
 
 ::: callout-tip
-To learn more about how the yardstick package handles groups in data, see the ["Grouping behavior in yardstick" vignette](https://yardstick.tidymodels.org/dev/articles/grouping.html).
+To learn more about how the yardstick package handles groups in data, see the ["Grouping behavior in yardstick" vignette](https://yardstick.tidymodels.org/articles/grouping.html).
 :::
-
-<!-- TODO: remove the /dev from the above link once this yardstick vignette makes it to CRAN -->
 
 From this perspective, the models with the highest `roc_auc()` estimates are the most fair.
 
@@ -272,11 +270,12 @@ To calculate equal opportunity with yardstick, we use `equal_opportunity()` to c
 
 ```{.r .cell-code}
 equal_opportunity_by_native <- equal_opportunity(by = native)
+
+equal_opportunity_by_native
+#> A class metric | direction: minimize, group-wise on: native
 ```
 :::
 
-
-<!-- TODO: print out the following function once the metric print method is merged into yardstick -->
 
 The function `equal_opportunity_by_native()` is a yardstick metric function like any other, except it knows to temporarily group by and summarize across a data-column called `native`. Applying it:
 
@@ -415,34 +414,34 @@ In all, we've seen that applied fairness analysis is as much a social problem as
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.3.1 (2023-06-16)
-#>  os       macOS Sonoma 14.0
+#>  os       macOS Sonoma 14.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Chicago
-#>  date     2023-12-01
+#>  date     2024-02-26
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package    * version    date (UTC) lib source
-#>  broom      * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
-#>  detectors  * 0.1.0      2023-10-26 [1] CRAN (R 4.3.1)
-#>  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
-#>  ggplot2    * 3.4.4      2023-10-12 [1] CRAN (R 4.3.1)
-#>  infer      * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
-#>  purrr      * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
-#>  rlang        1.1.2      2023-11-04 [1] CRAN (R 4.3.1)
-#>  rsample    * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
-#>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.2.9001 2023-11-29 [1] Github (tidymodels/tune@7155350)
-#>  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
-#>  yardstick  * 1.2.0.9001 2023-11-27 [1] Github (tidymodels/yardstick@2f556df)
+#>  package    * version date (UTC) lib source
+#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
+#>  detectors  * 0.1.0   2023-10-26 [1] CRAN (R 4.3.1)
+#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
+#>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
+#>  ggplot2    * 3.4.4   2023-10-12 [1] CRAN (R 4.3.1)
+#>  infer      * 1.0.5   2023-09-06 [1] CRAN (R 4.3.0)
+#>  parsnip    * 1.2.0   2024-02-16 [1] CRAN (R 4.3.1)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
+#>  rlang        1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
+#>  rsample    * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
+#>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune       * 1.1.2   2023-08-23 [1] CRAN (R 4.3.0)
+#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
+#>  yardstick  * 1.3.0   2024-01-19 [1] CRAN (R 4.3.1)
 #> 
 #>  [1] /Users/simoncouch/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library

@@ -167,10 +167,8 @@ detectors %>%
 ```
 
 ::: callout-tip
-To learn more about how the yardstick package handles groups in data, see the ["Grouping behavior in yardstick" vignette](https://yardstick.tidymodels.org/dev/articles/grouping.html).
+To learn more about how the yardstick package handles groups in data, see the ["Grouping behavior in yardstick" vignette](https://yardstick.tidymodels.org/articles/grouping.html).
 :::
-
-<!-- TODO: remove the /dev from the above link once this yardstick vignette makes it to CRAN -->
 
 From this perspective, the models with the highest `roc_auc()` estimates are the most fair.
 
@@ -196,9 +194,9 @@ To calculate equal opportunity with yardstick, we use `equal_opportunity()` to c
 
 ```{r ep-opp-native}
 equal_opportunity_by_native <- equal_opportunity(by = native)
-```
 
-<!-- TODO: print out the following function once the metric print method is merged into yardstick -->
+equal_opportunity_by_native
+```
 
 The function `equal_opportunity_by_native()` is a yardstick metric function like any other, except it knows to temporarily group by and summarize across a data-column called `native`. Applying it:
 
