@@ -8,6 +8,7 @@ packages <- c(
   "brulee",
   "censored",
   "desirability2",
+  "detectors",
   "devtools",
   "dials",
   "discrim",
