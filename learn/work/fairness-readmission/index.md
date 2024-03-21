@@ -449,10 +449,8 @@ m_set
 
 
 ::: callout-note
-The first two inputs, `accuracy()` and `roc_auc()`, are standard [yardstick](https://yardstick.tidymodels.org) metrics. The latter three are also yardstick metrics like any other, though are created using the [_metric factories_](https://yardstick.tidymodels.org/dev/reference/new_groupwise_metric.html) `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`. When passed a data-column, metric factories output yardstick metrics. 
+The first two inputs, `accuracy()` and `roc_auc()`, are standard [yardstick](https://yardstick.tidymodels.org) metrics. The latter three are also yardstick metrics like any other, though are created using the [_metric factories_](https://yardstick.tidymodels.org/reference/new_groupwise_metric.html) `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`. When passed a data-column, metric factories output yardstick metrics. 
 :::
-
-<!-- TODO: remove the /dev from the above URL -->
 
 ### Evaluation
 
@@ -704,38 +702,38 @@ Machine learning models can both have significant positive impacts on our lives 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.1 (2023-06-16)
-#>  os       macOS Sonoma 14.0
+#>  version  R version 4.3.3 (2024-02-29)
+#>  os       macOS Sonoma 14.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Chicago
-#>  date     2023-12-12
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2024-03-21
+#>  pandoc   3.1.12.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package       * version    date (UTC) lib source
-#>  baguette      * 1.0.1      2023-04-04 [1] CRAN (R 4.3.0)
-#>  broom         * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
-#>  desirability2 * 0.0.1      2023-05-11 [1] CRAN (R 4.3.0)
-#>  dials         * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr         * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
-#>  GGally        * 2.2.0      2023-11-22 [1] CRAN (R 4.3.1)
-#>  ggplot2       * 3.4.4      2023-10-12 [1] CRAN (R 4.3.1)
-#>  infer         * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
-#>  parsnip       * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
-#>  purrr         * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
-#>  readmission   * 0.0.3      2023-11-29 [1] Github (simonpcouch/readmission@7d1a793)
-#>  recipes       * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
-#>  rlang           1.1.2      2023-11-04 [1] CRAN (R 4.3.1)
-#>  rsample       * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
-#>  tibble        * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels    * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune          * 1.1.2.9002 2023-12-07 [1] Github (tidymodels/tune@8f99330)
-#>  workflows     * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
-#>  yardstick     * 1.2.0.9001 2023-12-05 [1] Github (tidymodels/yardstick@2eb9555)
+#>  package       * version date (UTC) lib source
+#>  baguette      * 1.0.2   2024-02-13 [1] CRAN (R 4.3.1)
+#>  broom         * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
+#>  desirability2 * 0.0.1   2023-05-11 [1] CRAN (R 4.3.0)
+#>  dials         * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
+#>  dplyr         * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
+#>  GGally        * 2.2.0   2023-11-22 [1] CRAN (R 4.3.1)
+#>  ggplot2       * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
+#>  infer         * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
+#>  parsnip       * 1.2.0   2024-02-16 [1] CRAN (R 4.3.1)
+#>  purrr         * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  readmission   * 0.1.0   2023-12-07 [1] CRAN (R 4.3.1)
+#>  recipes       * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
+#>  rlang           1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
+#>  rsample       * 1.2.0   2023-08-23 [1] CRAN (R 4.3.0)
+#>  tibble        * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+#>  tidymodels    * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tune          * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
+#>  workflows     * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
+#>  yardstick     * 1.3.0   2024-01-19 [1] CRAN (R 4.3.1)
 #> 
 #>  [1] /Users/simoncouch/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
