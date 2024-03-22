@@ -21,13 +21,7 @@ include-after-body: ../../../resources.html
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: censored, prodlim, and tidymodels. You'll need the development versions of censored and parsnip. To install these, use
-
-```r
-#install.packages("pak")
-
-pak::pak(c("tidymodels/censored", "tidymodels/parsnip"))
-```
+To use code in this article,  you will need to install the following packages: censored, prodlim, and tidymodels.
 
 One trend in modern survival analysis is to compute time-dependent measures of performance. These are primarily driven by an increased focus on predictions for the probability of survival at a given time (as opposed to the predictions of event times or linear predictors). Since these are conditional on the time of evaluation, we call them dynamic performance metrics.
 
@@ -387,38 +381,38 @@ When accounting for censoring in dynamic performance metrics, the main points to
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.1 (2023-06-16)
-#>  os       macOS Ventura 13.5.2
+#>  version  R version 4.3.2 (2023-10-31)
+#>  os       macOS Sonoma 14.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
-#>  tz       America/Los_Angeles
-#>  date     2023-09-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  tz       Europe/London
+#>  date     2024-03-22
+#>  pandoc   3.1.11 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version    date (UTC) lib source
 #>  broom      * 1.0.5      2023-06-09 [1] CRAN (R 4.3.0)
-#>  censored   * 0.2.0      2023-04-13 [1] CRAN (R 4.3.0)
-#>  dials      * 1.2.0      2023-04-03 [1] CRAN (R 4.3.0)
-#>  dplyr      * 1.1.3      2023-09-03 [1] CRAN (R 4.3.0)
-#>  ggplot2    * 3.4.3      2023-08-14 [1] CRAN (R 4.3.0)
-#>  infer      * 1.0.5      2023-09-06 [1] CRAN (R 4.3.0)
-#>  parsnip    * 1.1.1      2023-08-17 [1] CRAN (R 4.3.0)
+#>  censored   * 0.3.0      2024-01-31 [1] CRAN (R 4.3.1)
+#>  dials      * 1.2.1      2024-02-22 [1] CRAN (R 4.3.1)
+#>  dplyr      * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
+#>  ggplot2    * 3.5.0      2024-02-23 [1] CRAN (R 4.3.1)
+#>  infer      * 1.0.6      2024-01-31 [1] CRAN (R 4.3.1)
+#>  parsnip    * 1.2.0      2024-02-16 [1] CRAN (R 4.3.1)
 #>  prodlim    * 2023.08.28 2023-08-28 [1] CRAN (R 4.3.0)
 #>  purrr      * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.8      2023-08-25 [1] CRAN (R 4.3.0)
-#>  rlang        1.1.1      2023-04-28 [1] CRAN (R 4.3.0)
+#>  recipes    * 1.0.10     2024-02-18 [1] CRAN (R 4.3.1)
+#>  rlang        1.1.3      2024-01-10 [1] CRAN (R 4.3.1)
 #>  rsample    * 1.2.0      2023-08-23 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
-#>  tune       * 1.1.2      2023-08-23 [1] CRAN (R 4.3.0)
-#>  workflows  * 1.1.3      2023-02-22 [1] CRAN (R 4.3.0)
-#>  yardstick  * 1.2.0      2023-04-21 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.1.1      2023-08-24 [1] CRAN (R 4.3.1)
+#>  tune       * 1.2.0      2024-03-20 [1] CRAN (R 4.3.1)
+#>  workflows  * 1.1.4      2024-02-19 [1] CRAN (R 4.3.1)
+#>  yardstick  * 1.3.1      2024-03-21 [1] CRAN (R 4.3.1)
 #> 
-#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.3/library
+#>  [1] /Users/hannah/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
 #> 
 #> ────────────────────────────────────────────────────────────────────
