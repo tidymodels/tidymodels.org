@@ -203,7 +203,7 @@ We can see that our "stubbiest" tree, with a depth of `r min(tree_grid$tree_dept
 ```{r}
 #| label: "show-best-tree"
 tree_res %>%
-  show_best("accuracy")
+  show_best(metric = "accuracy")
 ```
 
 We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show_best.html) function to pull out the single set of hyperparameter values for our best decision tree model:
@@ -211,7 +211,7 @@ We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show
 ```{r}
 #| label: "select-best-tree"
 best_tree <- tree_res %>%
-  select_best("accuracy")
+  select_best(metric = "accuracy")
 
 best_tree
 ```
