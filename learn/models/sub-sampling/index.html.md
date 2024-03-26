@@ -174,8 +174,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.787    50 0.0188  Preprocessor1_Model1
-#> 2 roc_auc binary     0.954    50 0.00429 Preprocessor1_Model1
+#> 1 j_index binary     0.768    50 0.0201  Preprocessor1_Model1
+#> 2 roc_auc binary     0.948    50 0.00552 Preprocessor1_Model1
 ```
 :::
 
@@ -254,7 +254,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-25
+#>  date     2024-03-26
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -264,7 +264,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  discrim    * 1.0.1   2023-03-08 [1] CRAN (R 4.3.0)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
 #>  ggplot2    * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer      * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
+#>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
 #>  klaR       * 1.7-3   2023-12-13 [1] CRAN (R 4.3.1)
 #>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
 #>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
@@ -275,7 +275,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
 #>  themis     * 1.0.2   2023-08-14 [1] CRAN (R 4.3.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
 #>  tune       * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
 #>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)

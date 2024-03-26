@@ -334,7 +334,7 @@ mutate(
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-25
+#>  date     2024-03-26
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -344,7 +344,7 @@ mutate(
 #>  dplyr      * 1.1.4      2023-11-17 [1] CRAN (R 4.3.1)
 #>  forecast   * 8.22.0     2024-03-04 [1] CRAN (R 4.3.1)
 #>  ggplot2    * 3.5.0      2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer      * 1.0.6      2024-01-31 [1] CRAN (R 4.3.1)
+#>  infer      * 1.0.7      2024-03-25 [1] CRAN (R 4.3.1)
 #>  parsnip    * 1.2.1      2024-03-22 [1] CRAN (R 4.3.1)
 #>  purrr      * 1.0.2      2023-08-10 [1] CRAN (R 4.3.0)
 #>  recipes    * 1.0.10     2024-02-18 [1] CRAN (R 4.3.1)
@@ -352,7 +352,7 @@ mutate(
 #>  rsample    * 1.2.1      2024-03-25 [1] CRAN (R 4.3.1)
 #>  sweep      * 0.2.5.9000 2024-03-22 [1] Github (business-science/sweep@940f287)
 #>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.1      2023-08-24 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.2.0      2024-03-25 [1] CRAN (R 4.3.1)
 #>  timetk     * 2.9.0      2023-10-31 [1] CRAN (R 4.3.1)
 #>  tune       * 1.2.0      2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows  * 1.1.4      2024-02-19 [1] CRAN (R 4.3.1)

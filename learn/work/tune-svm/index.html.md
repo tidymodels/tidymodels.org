@@ -392,7 +392,7 @@ augment(recipe_res) %>%
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-25
+#>  date     2024-03-26
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -401,7 +401,7 @@ augment(recipe_res) %>%
 #>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
 #>  ggplot2    * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer      * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
+#>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
 #>  kernlab    * 0.9-32  2023-01-31 [1] CRAN (R 4.3.0)
 #>  mlbench    * 2.1-3.1 2023-05-05 [1] CRAN (R 4.3.0)
 #>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
@@ -410,7 +410,7 @@ augment(recipe_res) %>%
 #>  rlang        1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
 #>  tune       * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
 #>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)

@@ -1011,7 +1011,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-25
+#>  date     2024-03-26
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -1020,7 +1020,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  dials        * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
 #>  dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
 #>  ggplot2      * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer        * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
+#>  infer        * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
 #>  parsnip      * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
 #>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  recipes      * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
@@ -1030,7 +1030,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  textfeatures * 0.3.3   2019-09-03 [1] CRAN (R 4.3.0)
 #>  textrecipes  * 1.0.6   2023-11-15 [1] CRAN (R 4.3.1)
 #>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels   * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
 #>  tune         * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
 #>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)

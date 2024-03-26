@@ -515,7 +515,7 @@ ggplot(urchins,
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-25
+#>  date     2024-03-26
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -526,7 +526,7 @@ ggplot(urchins,
 #>  dotwhisker  * 0.8.1   2024-03-07 [1] CRAN (R 4.3.1)
 #>  dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
 #>  ggplot2     * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer       * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
+#>  infer       * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
 #>  parsnip     * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
 #>  purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  readr       * 2.1.5   2024-01-10 [1] CRAN (R 4.3.1)
@@ -535,7 +535,7 @@ ggplot(urchins,
 #>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
 #>  rstanarm    * 2.32.1  2024-01-18 [1] CRAN (R 4.3.1)
 #>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels  * 1.1.1   2023-08-24 [1] CRAN (R 4.3.0)
+#>  tidymodels  * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
 #>  tune        * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows   * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
 #>  yardstick   * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
