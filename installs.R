@@ -56,7 +56,6 @@ packages <- c(
   "stacks",
   "stopwords",
   "stringr",
-  "textfeatures",
   "textrecipes",
   "themis",
   "tidymodels",
