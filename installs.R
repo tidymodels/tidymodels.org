@@ -62,6 +62,7 @@ packages <- c(
   "tidymodels",
   "tidyposterior",
   "timetk",
+  "torch",
   "tune",
   "vip",
   "zoo",
@@ -71,6 +72,10 @@ packages <- c(
 
 pak::pak(packages)
 
+# Running `library(brulee)` will trigger installation of torch
+library(brulee)
+
+# Setup keras
 library(keras)
 
 install_keras(method = "virtualenv")
