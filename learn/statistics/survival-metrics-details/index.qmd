@@ -32,13 +32,7 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 
 ## Introduction
 
-`r article_req_pkgs(pkgs)` You'll need the development versions of censored and parsnip. To install these, use
-
-```r
-#install.packages("pak")
-
-pak::pak(c("tidymodels/censored", "tidymodels/parsnip"))
-```
+`r article_req_pkgs(pkgs)`
 
 One trend in modern survival analysis is to compute time-dependent measures of performance. These are primarily driven by an increased focus on predictions for the probability of survival at a given time (as opposed to the predictions of event times or linear predictors). Since these are conditional on the time of evaluation, we call them dynamic performance metrics.
 
