@@ -267,7 +267,7 @@ Our model performance seems to plateau at the smaller penalty values, so going b
 ```{r}
 top_models <-
   lr_res %>% 
-  show_best("roc_auc", n = 15) %>% 
+  show_best(metric = "roc_auc", n = 15) %>% 
   arrange(penalty) 
 top_models
 ```
@@ -282,7 +282,7 @@ top_models <-
 
 top_pen <- 
   lr_res %>% 
-  select_best("roc_auc") %>% 
+  select_best(metric = "roc_auc") %>% 
   pull(penalty)
 
 top_cand <- 
