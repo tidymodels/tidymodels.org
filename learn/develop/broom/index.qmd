@@ -347,20 +347,16 @@ Once you've documented each of your new methods and executed `devtools::document
 #| include: false
 # grab the argument glossary: make a temporary file, write the
 # data to it, load it, and then delete it
-args_url <- "https://github.com/alexpghayes/modeltests/blob/master/data/argument_glossary.rda?raw=true"
+args_url <- "https://raw.githubusercontent.com/alexpghayes/modeltests/main/data/argument_glossary.rda"
 args_file <- tempfile()
-args_get <- httr::GET(args_url)
-httr::stop_for_status(args_get)
-writeBin(httr::content(args_get, type = "raw"), args_file)
+download.file(args_url, args_file)
 load(args_file)
 unlink(args_file)
 
 # do the same thing for the columns
-cols_url <- "https://github.com/alexpghayes/modeltests/blob/master/data/column_glossary.rda?raw=true"
+cols_url <- "https://raw.githubusercontent.com/alexpghayes/modeltests/main/data/column_glossary.rda"
 cols_file <- tempfile()
-cols_get <- httr::GET(cols_url)
-httr::stop_for_status(cols_get)
-writeBin(httr::content(cols_get, type = "raw"), cols_file)
+download.file(cols_url, cols_file)
 load(cols_file)
 unlink(cols_file)
 ```
