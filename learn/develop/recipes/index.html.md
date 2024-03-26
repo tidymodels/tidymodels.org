@@ -158,7 +158,7 @@ step_percentiles() calls recipes::add_step()
     └──> step_percentiles_new() calls recipes::step()
 ```
 
-`step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentile"` will set the class of new objects to `"step_percentiles"`. 
+`step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentiles"` will set the class of new objects to `"step_percentiles"`. 
 
 
 ::: {.cell layout-align="center"}
@@ -598,16 +598,16 @@ tidy(rec_obj, number = 1)
 #> # A tibble: 274 × 4
 #>    term     value percentile id               
 #>    <chr>    <dbl>      <dbl> <chr>            
-#>  1 hydrogen 0.03           0 percentiles_vkGJq
-#>  2 hydrogen 0.934          1 percentiles_vkGJq
-#>  3 hydrogen 1.60           2 percentiles_vkGJq
-#>  4 hydrogen 2.07           3 percentiles_vkGJq
-#>  5 hydrogen 2.45           4 percentiles_vkGJq
-#>  6 hydrogen 2.74           5 percentiles_vkGJq
-#>  7 hydrogen 3.15           6 percentiles_vkGJq
-#>  8 hydrogen 3.49           7 percentiles_vkGJq
-#>  9 hydrogen 3.71           8 percentiles_vkGJq
-#> 10 hydrogen 3.99           9 percentiles_vkGJq
+#>  1 hydrogen 0.03           0 percentiles_EbktP
+#>  2 hydrogen 0.934          1 percentiles_EbktP
+#>  3 hydrogen 1.60           2 percentiles_EbktP
+#>  4 hydrogen 2.07           3 percentiles_EbktP
+#>  5 hydrogen 2.45           4 percentiles_EbktP
+#>  6 hydrogen 2.74           5 percentiles_EbktP
+#>  7 hydrogen 3.15           6 percentiles_EbktP
+#>  8 hydrogen 3.49           7 percentiles_EbktP
+#>  9 hydrogen 3.71           8 percentiles_EbktP
+#> 10 hydrogen 3.99           9 percentiles_EbktP
 #> # ℹ 264 more rows
 ```
 :::
