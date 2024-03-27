@@ -45,16 +45,14 @@ library(censored)
 
 ## The buildings complaints data
 
-The city of New York publishes data on the [complaints](https://data.cityofnewyork.us/Housing-Development/DOB-Complaints-Received/eabe-havv/about_data) received by the Department of Buildings. The data includes information on the type of complaint, the date it was entered, the date it was dispositioned, and the location of the building the complaint was about. We are using a subset of the data, available in the modeldatatoo package.
+The city of New York publishes data on the [complaints](https://data.cityofnewyork.us/Housing-Development/DOB-Complaints-Received/eabe-havv/about_data) received by the Department of Buildings. The data includes information on the type of complaint, the date it was entered in their records, the date it was dispositioned, and the location of the building the complaint was about. We are using a subset of the data, available in the modeldatatoo package.
 
 ```{r}
 data(building_complaints, package = "modeldatatoo")
 glimpse(building_complaints)
 ```
 
-We can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with status `"ACTIVE"`, the time to disposition is censored, meaning we do know that is has taken at least that long, but not how long it will have taken eventually.
-
-TODO: Look at the amount of censoring?
+We can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with status `"ACTIVE"`, the time to disposition is censored, meaning we do know that is has taken at least that long, but not how long it will have taken eventually. 
 
 The standard form for time-to-event data are `Surv` objects which capture the time as well as the event status. As with all transformations of the response, it is advisable to do this before heading into the model fitting process with tidymodels.
 
@@ -76,8 +74,10 @@ complaints_split <- initial_validation_split(building_complaints)
 ```
 
 First, let's pull out the training data and have a brief look at the response.
+
 ```{r}
 complaints_train <- training(complaints_split)
+
 survfit(disposition_surv ~ 1, data = complaints_train) %>% plot()
 ```
 
@@ -111,7 +111,11 @@ wflow_survreg <- workflow() %>%
   add_model(spec_survreg)
 ```
 
-Let's access the resampling set from the initial split and fit the model. We are calculating several different performance metrics here: the Brier score, its integrated version, the area under the ROC curve, and the concordance index. Note that all of these are used in a version tailored to survival analysis. The concordance index uses the predicted event time to measure the model's ability to rank the observations correctly. The Brier score and the ROC curve use the predicted probability of survival at a given time point. We are evaluating these metrics every 30 days up to 300 days, as provided in the `eval_time` argument. The Brier score is a measure of the accuracy of the predicted probabilities while the ROC curve is a measure of the model's ability to discriminate between events and non-events at the given time point. Because these metrics are defined "at a given time point" they are also referred to as dynamic metrics. For more information see the [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
+Let's access the resampling set from the initial split and fit the model. We are calculating several different performance metrics here: the Brier score, its integrated version, the area under the ROC curve, and the concordance index. Note that all of these are used in a version tailored to survival analysis. The concordance index uses the predicted event time to measure the model's ability to rank the observations correctly. The Brier score and the ROC curve use the predicted probability of survival at a given time point. We are evaluating these metrics every 30 days up to 300 days, as provided in the `eval_time` argument. The Brier score is a measure of the accuracy of the predicted probabilities while the ROC curve is a measure of the model's ability to discriminate between events and non-events at the given time point. Because these metrics are defined "at a given time point" they are also referred to as dynamic metrics. 
+
+::: {.callout-tip}
+For more information see the [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
+:::
 
 ```{r}
 complaints_rset <- validation_set(complaints_split)
@@ -127,7 +131,26 @@ res_survreg <- fit_resamples(
 )
 ```
 
-Let's take a look at the AUC ROC first.
+So how do predictions from censored regression models look like?
+
+```{r}
+preds <- collect_predictions(res_survreg)
+preds
+```
+
+The predicted survival time is in the `.pred_time` column and the predicted survival probabilities are in the `.pred` list column. 
+
+```{r}
+preds$.pred[[6]]
+```
+
+For each observation, `.pred` contains a tibble with the evaluation time `.eval_time` and the corresponding survival probability `.pred_survival`. The column `.weight_censored` contains the weights used in the calculation of the dynamic performance metrics. 
+
+::: {.callout-tip}
+For details on the weights see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details/) article.
+:::
+
+Of the metrics we calculated with these predictions, let's take a look at the AUC ROC first.
 
 ```{r}
 collect_metrics(res_survreg) %>% 
@@ -141,7 +164,9 @@ collect_metrics(res_survreg) %>%
   filter(.metric %in% c("brier_survival_integrated", "brier_survival"))
 ```
 
-The accuracy of the predicted probabilities is generally good, albeit lowest for evaluation times of 30 and 60 days. The integrated Brier score is a measure of the overall accuracy of the predicted probabilities. Since we don't have a particular evaluation time that we want to predict well at, we are going to use the integrated Brier score as our main performance metric.
+The accuracy of the predicted probabilities is generally good, albeit lowest for evaluation times of 30 and 60 days. The integrated Brier score is a measure of the overall accuracy of the predicted probabilities. 
+
+Which metric to optimise for depends on whether separation or calibration is more important in the modeling problem at hand. We'll go with calibration here. Since we don't have a particular evaluation time that we want to predict well at, we are going to use the integrated Brier score as our main performance metric.
 
 ## Try out more models
 
@@ -161,7 +186,7 @@ rec_dummies <- rec_unknown %>%
 ```
 
 Next, we are creating the model specifications and tagging several hyperparameters for tuning. 
-For the random forest, we are using the `"aorsf"` engine for accelerated oblique random survival forests. Oblique trees are a type of tree that can split on linear combinations of the predictors, i.e., they provide more flexibility in the splits than trees which split on a single predictor.
+For the random forest, we are using the `"aorsf"` engine for accelerated oblique random survival forests. An oblique tree can split on linear combinations of the predictors, i.e., it provides more flexibility in the splits than a tree which splits on a single predictor.
 For the regularized model, we are using the `"glmnet"` engine for a semi-parametric Cox proportional hazards model.
 
 ```{r}
@@ -225,7 +250,7 @@ if (bi_best_cox <= bi_best_rf || bi_best_survreg <= bi_best_rf) {
 }
 ```
 
-The best regularized Cox model performs a little better than the parametric survival model, with an integrated Brier score of `r bi_best_cox` compared to `r bi_best_survreg` for the parametric model. The random forest yet a little better with an integrated Brier score of `r bi_best_rf`.
+The best regularized Cox model performs a little better than the parametric survival model, with an integrated Brier score of `r round(bi_best_cox, 4)` compared to `r round(bi_best_survreg, 4)` for the parametric model. The random forest performs yet a little better with an integrated Brier score of `r round(bi_best_rf, 4)`.
 
 ## The final model
 
