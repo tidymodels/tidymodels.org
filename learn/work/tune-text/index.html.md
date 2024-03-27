@@ -24,7 +24,7 @@ include-after-body: ../../../resources.html
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: stopwords, textfeatures, textrecipes, and tidymodels.
+To use code in this article,  you will need to install the following packages: stopwords, textrecipes, and tidymodels.
 
 This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.
 
@@ -71,7 +71,7 @@ Our modeling goal is to create modeling features from the text of the reviews to
 
 Text, perhaps more so than tabular data we often deal with, must be heavily processed to be used as predictor data for modeling. There are multiple ways to process and prepare text for modeling; let's add several steps together to create different kinds of features:
 
-* Create an initial set of count-based features, such as the number of words, spaces, lower- or uppercase characters, URLs, and so on; we can use the [textfeatures](https://github.com/mkearney/textfeatures) package for this.
+* Create an initial set of count-based features, such as the number of words, spaces, lower- or uppercase characters, URLs, and so on; we can use the [step_textfeatures()](https://textrecipes.tidymodels.org/reference/step_textfeature.html) fun for this.
 
 * [Tokenize](https://smltar.com/tokenization.html) the text (i.e. break the text into smaller components such as words).
 
@@ -103,9 +103,7 @@ Before we start building our preprocessing recipe, we need some helper objects. 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-library(textfeatures)
-
-basics <- names(textfeatures:::count_functions)
+basics <- names(textrecipes::count_functions)
 head(basics)
 #> [1] "n_words"    "n_uq_words" "n_charS"    "n_uq_charS" "n_digits"  
 #> [6] "n_hashtags"
@@ -135,11 +133,6 @@ Now, let's put this all together in one recipe:
 
 ```{.r .cell-code}
 library(textrecipes)
-#> 
-#> Attaching package: 'textrecipes'
-#> The following object is masked from 'package:textfeatures':
-#> 
-#>     count_functions
 
 pre_proc <-
   recipe(score ~ product + review, data = training_data) %>%
@@ -266,7 +259,7 @@ Let's save information on the number of predictors by penalty value for each glm
 ```{.r .cell-code}
 glmnet_vars <- function(x) {
   # `x` will be a workflow object
-  mod <- extract_model(x)
+  mod <- extract_fit_engine(x)
   # `df` is the number of model terms for each penalty value
   tibble(penalty = mod$lambda, num_vars = mod$df)
 }
@@ -301,23 +294,16 @@ five_star_glmnet
 #> # A tibble: 10 × 5
 #>    splits             id     .metrics           .notes           .extracts
 #>    <list>             <chr>  <list>             <list>           <list>   
-#>  1 <split [3600/400]> Fold01 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  2 <split [3600/400]> Fold02 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  3 <split [3600/400]> Fold03 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  4 <split [3600/400]> Fold04 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  5 <split [3600/400]> Fold05 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  6 <split [3600/400]> Fold06 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  7 <split [3600/400]> Fold07 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  8 <split [3600/400]> Fold08 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#>  9 <split [3600/400]> Fold09 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#> 10 <split [3600/400]> Fold10 <tibble [300 × 7]> <tibble [4 × 3]> <tibble> 
-#> 
-#> There were issues with some computations:
-#> 
-#>   - Warning(s) x30: Unknown columns: `politeness`
-#>   - Warning(s) x10: `extract_model()` was deprecated in tune 0.1.6. ℹ Please use `ext...
-#> 
-#> Run `show_notes(.Last.tune.result)` for more information.
+#>  1 <split [3600/400]> Fold01 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  2 <split [3600/400]> Fold02 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  3 <split [3600/400]> Fold03 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  4 <split [3600/400]> Fold04 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  5 <split [3600/400]> Fold05 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  6 <split [3600/400]> Fold06 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  7 <split [3600/400]> Fold07 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  8 <split [3600/400]> Fold08 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#>  9 <split [3600/400]> Fold09 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
+#> 10 <split [3600/400]> Fold10 <tibble [300 × 7]> <tibble [0 × 3]> <tibble>
 ```
 :::
 
@@ -799,23 +785,17 @@ five_star_search
 #> # A tibble: 260 × 5
 #>    splits             id     .metrics         .notes           .iter
 #>    <list>             <chr>  <list>           <list>           <int>
-#>  1 <split [3600/400]> Fold01 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  2 <split [3600/400]> Fold02 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  3 <split [3600/400]> Fold03 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  4 <split [3600/400]> Fold04 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  5 <split [3600/400]> Fold05 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  6 <split [3600/400]> Fold06 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  7 <split [3600/400]> Fold07 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  8 <split [3600/400]> Fold08 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#>  9 <split [3600/400]> Fold09 <tibble [5 × 7]> <tibble [5 × 3]>     0
-#> 10 <split [3600/400]> Fold10 <tibble [5 × 7]> <tibble [5 × 3]>     0
+#>  1 <split [3600/400]> Fold01 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  2 <split [3600/400]> Fold02 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  3 <split [3600/400]> Fold03 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  4 <split [3600/400]> Fold04 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  5 <split [3600/400]> Fold05 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  6 <split [3600/400]> Fold06 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  7 <split [3600/400]> Fold07 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  8 <split [3600/400]> Fold08 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#>  9 <split [3600/400]> Fold09 <tibble [5 × 7]> <tibble [0 × 3]>     0
+#> 10 <split [3600/400]> Fold10 <tibble [5 × 7]> <tibble [0 × 3]>     0
 #> # ℹ 250 more rows
-#> 
-#> There were issues with some computations:
-#> 
-#>   - Warning(s) x300: Unknown columns: `politeness`
-#> 
-#> Run `show_notes(.Last.tune.result)` for more information.
 ```
 :::
 
@@ -1011,29 +991,28 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-26
+#>  date     2024-03-27
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      * version date (UTC) lib source
-#>  broom        * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
-#>  dials        * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
-#>  dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
-#>  ggplot2      * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer        * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
-#>  parsnip      * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
-#>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
-#>  recipes      * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
-#>  rlang          1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
-#>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
-#>  stopwords    * 2.3     2021-10-28 [1] CRAN (R 4.3.0)
-#>  textfeatures * 0.3.3   2019-09-03 [1] CRAN (R 4.3.0)
-#>  textrecipes  * 1.0.6   2023-11-15 [1] CRAN (R 4.3.1)
-#>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
-#>  tune         * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
-#>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
-#>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
+#>  package     * version date (UTC) lib source
+#>  broom       * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
+#>  dials       * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
+#>  dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
+#>  ggplot2     * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
+#>  infer       * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
+#>  parsnip     * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
+#>  purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes     * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
+#>  rlang         1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
+#>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
+#>  stopwords   * 2.3     2021-10-28 [1] CRAN (R 4.3.0)
+#>  textrecipes * 1.0.6   2023-11-15 [1] CRAN (R 4.3.1)
+#>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+#>  tidymodels  * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
+#>  tune        * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
+#>  workflows   * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
+#>  yardstick   * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
 #> 
 #>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
