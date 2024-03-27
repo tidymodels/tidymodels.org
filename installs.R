@@ -19,6 +19,7 @@ packages <- c(
   "forecast",
   "fs",
   "furrr",
+  "future",
   "GGally",
   "glmnet",
   "glue",

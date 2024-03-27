@@ -29,6 +29,8 @@ source(here::here("common.R"))
 #| include: false
 library(tidymodels)
 library(stopwords)
+library(future)
+plan(multisession)
 
 pkgs <- c("tidymodels", "textrecipes", "stopwords")
 
@@ -171,7 +173,7 @@ There are enough data here so that 10-fold resampling would hold out 400 reviews
 ```{r}
 #| label: "folds"
 set.seed(8935)
-folds <- vfold_cv(training_data)
+folds <- vfold_cv(training_data, v = 2)
 folds
 ```
 
