@@ -65,7 +65,17 @@ glimpse(building_complaints)
 :::
 
 
-We can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with status `"ACTIVE"`, the time to disposition is censored, meaning we do know that is has taken at least that long, but not how long it will have taken eventually. 
+Before we dive into survival analysis, let's get a impression of how the complaints are distributed across the city. We have complaints in all five boroughs, albeit with a somewhat lower density of complaints in Staten Island.
+
+
+::: {.cell layout-align="center"}
+::: {.cell-output-display}
+![Building complaints in New York City](nyc_building_complaints.png){fig-align='center' fig-alt='A scatter plot of building complaint locations superimposed on a street map. Complaints are raised in all five boroughs.' width=100%}
+:::
+:::
+
+
+In the dataset, we can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with status `"ACTIVE"`, the time to disposition is censored, meaning we do know that is has taken at least that long, but not how long it will have taken eventually. 
 
 The standard form for time-to-event data are `Surv` objects which capture the time as well as the event status. As with all transformations of the response, it is advisable to do this before heading into the model fitting process with tidymodels.
 
@@ -108,7 +118,7 @@ survfit(disposition_surv ~ 1, data = complaints_train) %>% plot()
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-7-1.svg){fig-align='center' width=672}
+![](figs/unnamed-chunk-7-1.svg){fig-align='center' fig-alt='A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days.' width=672}
 :::
 :::
 
