@@ -168,12 +168,12 @@ There are three tuning parameters for this data analysis:
 
 ## Resampling
 
-There are enough data here so that 10-fold resampling would hold out 400 reviews at a time to estimate performance. Performance estimates using this many observations have sufficiently low noise to measure and tune models.  
+There is enough data here so that 5-fold resampling would hold out 800 reviews at a time to estimate performance. Performance estimates using this many observations have sufficiently low noise to measure and tune models.  
 
 ```{r}
 #| label: "folds"
 set.seed(8935)
-folds <- vfold_cv(training_data)
+folds <- vfold_cv(training_data, v = 5)
 folds
 ```
 
@@ -318,7 +318,7 @@ five_star_search <-
     resamples = folds,
     param_info = five_star_set,
     initial = 5,
-    iter = 30,
+    iter = 10,
     metrics = roc_scores,
     objective = exp_improve(trade_off_decay),
     control = control_bayes(verbose_iter = TRUE)
