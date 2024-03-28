@@ -37,7 +37,7 @@ Survival analysis is a field of statistics and machine learning for analyzing th
 
 Here we want to predict the time it takes for a complaint to be dispositioned^[In this context, the term _disposition_ means that there has been a decision or resolution regarding the complaint that is the conclusion of the process.] by the Department of Buildings in New York City. We are going to walk through a complete analysis from beginning to end, showing how to analyze time-to-event data.
 
-Let's start with loading the censored package, the parnsip extension for survival analysis models.
+Let's start with loading the tidymodels and censored packages (the parsnip extension package for survival analysis models).
 
 ```{r}
 library(tidymodels)
@@ -64,7 +64,7 @@ Before we dive into survival analysis, let's get a impression of how the complai
 knitr::include_graphics("nyc_building_complaints.png")
 ```
 
-In the dataset, we can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with status `"ACTIVE"`, the time to disposition is censored, meaning we do know that is has taken at least that long, but not how long it will have taken eventually. 
+In the dataset, we can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with the status "ACTIVE", the time to disposition is censored, meaning we do know that it has taken at least that long, but not how long for it to be completely resolved. 
 
 The standard form for time-to-event data are `Surv` objects which capture the time as well as the event status. As with all transformations of the response, it is advisable to do this before heading into the model fitting process with tidymodels.
 
@@ -78,14 +78,14 @@ building_complaints <- building_complaints %>%
 
 ## Data splitting and resampling
 
-For our resampling strategy, let's use a 3-way split into training, validation, and test set.
+For our resampling strategy, let's use a [3-way split](https://www.tmwr.org/resampling#validation) into training, validation, and test set.
 
 ```{r}
 set.seed(403)
 complaints_split <- initial_validation_split(building_complaints)
 ```
 
-First, let's pull out the training data and have a brief look at the response.
+First, let's pull out the training data and have a brief look at the response using a [Kaplan-Meier curve](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3059453/). 
 
 ```{r}
 #| fig.alt: "A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days."
@@ -125,7 +125,7 @@ wflow_survreg <- workflow() %>%
   add_model(spec_survreg)
 ```
 
-Let's access the resampling set from the initial split and fit the model. We are calculating several different performance metrics here: the Brier score, its integrated version, the area under the ROC curve, and the concordance index. Note that all of these are used in a version tailored to survival analysis. The concordance index uses the predicted event time to measure the model's ability to rank the observations correctly. The Brier score and the ROC curve use the predicted probability of survival at a given time point. We are evaluating these metrics every 30 days up to 300 days, as provided in the `eval_time` argument. The Brier score is a measure of the accuracy of the predicted probabilities while the ROC curve is a measure of the model's ability to discriminate between events and non-events at the given time point. Because these metrics are defined "at a given time point" they are also referred to as dynamic metrics. 
+Let’s access the training and validation sets from the initial split and fit the model. We are calculating several performance metrics: the Brier score, its integrated version, the area under the ROC curve, and the concordance index. Note that all of these are used in a version tailored to survival analysis. The concordance index uses the predicted event time to measure the model’s ability to rank the observations correctly. The Brier score and the ROC curve use the predicted probability of survival at a given time. We evaluate these metrics every 30 days up to 300 days, as provided in the `eval_time` argument. The Brier score is a measure of the accuracy of the predicted probabilities, while the ROC curve is a measure of the model’s ability to discriminate between events and non-events at the given time point. Because these metrics are defined “at a given time,” they are also referred to as *dynamic metrics*.
 
 ::: {.callout-tip}
 For more information see the [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
@@ -145,7 +145,7 @@ res_survreg <- fit_resamples(
 )
 ```
 
-So how do predictions from censored regression models look like?
+The structure of survival model predictions is slightly different from classification and regression model predictions:
 
 ```{r}
 preds <- collect_predictions(res_survreg)
@@ -186,7 +186,7 @@ Which metric to optimise for depends on whether separation or calibration is mor
 
 Lumping factor levels together based on frequencies can lead to a loss of information so let's also try some different approaches. We can let a random forest model group the factor levels via the tree splits. Alternatively, we can turn the factors into dummy variables and use a regularized model to select relevant factor levels.
 
-First, we are creating the recipes for these two approaches.
+First, let’s create the recipes for these two approaches:
 
 ```{r}
 rec_unknown <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
@@ -199,7 +199,7 @@ rec_dummies <- rec_unknown %>%
   step_normalize(all_numeric_predictors())
 ```
 
-Next, we are creating the model specifications and tagging several hyperparameters for tuning. 
+Next, let's create the model specifications and tag several hyperparameters for tuning. 
 For the random forest, we are using the `"aorsf"` engine for accelerated oblique random survival forests. An oblique tree can split on linear combinations of the predictors, i.e., it provides more flexibility in the splits than a tree which splits on a single predictor.
 For the regularized model, we are using the `"glmnet"` engine for a semi-parametric Cox proportional hazards model.
 
