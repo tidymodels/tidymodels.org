@@ -33,9 +33,9 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 
 `r article_req_pkgs(pkgs)`
 
-Survival analysis is a field of statistics and machine learning for analyzing the time to an event. While it has its roots in medical research, the event of interest can be anything from customer churn to machine failure. Methods from survival analysis take into account that some observations may not yet have experienced the event of interest and are thus censored. 
+Survival analysis is a field of statistics and machine learning for analyzing the time to an event. While it has its roots in medical research, the event of interest can be anything from customer churn to machine failure. Methods from survival analysis take into account that some observations may not yet have experienced the event of interest and are thus _censored_. 
 
-Here we want to predict the time it takes for a complaint to be dispositioned by the Department of Buildings in New York City. We are going to walk through a complete analysis from beginning to end, showing how to analyze time-to-event data.
+Here we want to predict the time it takes for a complaint to be dispositioned^[In this context, the term _disposition_ means that there has been a decision or resolution regarding the complaint that is the conclusion of the process.] by the Department of Buildings in New York City. We are going to walk through a complete analysis from beginning to end, showing how to analyze time-to-event data.
 
 Let's start with loading the censored package, the parnsip extension for survival analysis models.
 
