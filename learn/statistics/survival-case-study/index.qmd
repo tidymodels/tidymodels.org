@@ -76,7 +76,7 @@ building_complaints %>%
   )
 ```
 
-In the dataset, we can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with the status "ACTIVE", the time to disposition is censored, meaning we do know that it has taken at least that long, but not how long for it to be completely resolved. 
+In the dataset, we can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with the status `"ACTIVE"`, the time to disposition is censored, meaning we do know that it has taken at least that long, but not how long for it to be completely resolved. 
 
 The standard form for time-to-event data are `Surv` objects which capture the time as well as the event status. As with all transformations of the response, it is advisable to do this before heading into the model fitting process with tidymodels.
 
@@ -319,18 +319,18 @@ collect_metrics(last_oblique_fit) %>%
   filter(.metric == "brier_survival_integrated")
 ```
 
-The Brier score across the different evaluation time points is also similar between the validation set and the test set.
+The Brier score across the different evaluation time points is also very similar between the validation set and the test set.
 
 ```{r final-fit-brier}
-collect_metrics(last_oblique_fit) %>% 
+brier_val <- collect_metrics(oblique_res) %>% 
   filter(.metric == "brier_survival") %>% 
-  mutate(Data = "Validation") %>% 
-  bind_rows(
-    collect_metrics(last_oblique_fit) %>% 
-      filter(.metric == "brier_survival") %>% 
-      mutate(Data = "Testing") %>% 
-      rename(mean = .estimate)
-  ) %>% 
+  filter(mtry == param_best$mtry, min_n == param_best$min_n) %>% 
+  mutate(Data = "Validation") 
+brier_test <- collect_metrics(last_oblique_fit) %>% 
+  filter(.metric == "brier_survival") %>% 
+  mutate(Data = "Testing") %>% 
+  rename(mean = .estimate)
+bind_rows(brier_val, brier_test) %>% 
   ggplot(aes(.eval_time, mean, col = Data)) + 
   geom_line() + 
   labs(x = "Evaluation Time", y = "Brier Score")
