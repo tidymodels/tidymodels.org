@@ -102,7 +102,7 @@ We can see that the majority of complaints is dispositioned relatively quickly, 
 The censored package includes parametric, semi-parametric, and tree-based models for this type of analysis. To start, we are fitting a parametric survival model with the default of assuming a Weibull distribution on the time to disposition. We'll explore the more flexible models once we have a sense of how well this more restrictive model performs on this dataset.
 
 ```{r}
-spec_survreg <- survival_reg() %>% 
+survreg_spec <- survival_reg() %>% 
   set_engine("survival") %>% 
   set_mode("censored regression")
 ```
@@ -120,9 +120,9 @@ rec_other <- recipe(disposition_surv ~ ., data = complaints_train) %>%
 We combine the recipe and the model into a workflow. This allows us to easily resample the model because all preprocessing steps are applied to the training set and the validation set for us.
 
 ```{r}
-wflow_survreg <- workflow() %>% 
+survreg_wflow <- workflow() %>% 
   add_recipe(rec_other) %>% 
-  add_model(spec_survreg)
+  add_model(survreg_spec)
 ```
 
 To fit and evaluate the model, we need the training and validation sets. While we can access them each on their own, `validation_set()` extracts them both, in a manner that emulates a single resample of the data. This enables us to use `fit_resamples()` and other tuning functions in the same way as if we had used some other resampling scheme (such as cross-validation). 
@@ -141,8 +141,8 @@ survival_metrics <- metric_set(brier_survival_integrated, brier_survival,
 evaluation_time_points <- seq(0, 300, 30)
 
 set.seed(1)
-res_survreg <- fit_resamples(
-  wflow_survreg,
+survreg_res <- fit_resamples(
+  survreg_wflow,
   resamples = complaints_rset,
   metrics = survival_metrics,
   eval_time = evaluation_time_points, 
@@ -153,7 +153,7 @@ res_survreg <- fit_resamples(
 The structure of survival model predictions is slightly different from classification and regression model predictions:
 
 ```{r}
-preds <- collect_predictions(res_survreg)
+preds <- collect_predictions(survreg_res)
 preds
 ```
 
@@ -172,7 +172,7 @@ For details on the weights see the [Accounting for Censoring in Performance Metr
 Of the metrics we calculated with these predictions, let's take a look at the AUC ROC first.
 
 ```{r survreg-roc-auc}
-collect_metrics(res_survreg) %>% 
+collect_metrics(survreg_res) %>% 
   filter(.metric == "roc_auc_survival") %>% 
   ggplot(aes(.eval_time, mean)) + 
   geom_line() + 
@@ -182,7 +182,7 @@ collect_metrics(res_survreg) %>%
 We can discriminate between events and non-events reasonably well, especially in the first 30 and 60 days. How about the probabilities that the categorization into event and non-event is based on? 
 
 ```{r survreg-brier}
-collect_metrics(res_survreg) %>% 
+collect_metrics(survreg_res) %>% 
   filter(.metric == "brier_survival") %>% 
   ggplot(aes(.eval_time, mean)) + 
   geom_line() + 
@@ -192,7 +192,7 @@ collect_metrics(res_survreg) %>%
 The accuracy of the predicted probabilities is generally good, albeit lowest for evaluation times of 30 and 60 days. The integrated Brier score is a measure of the overall accuracy of the predicted probabilities. 
 
 ```{r}
-collect_metrics(res_survreg) %>% 
+collect_metrics(survreg_res) %>% 
   filter(.metric == "brier_survival_integrated")
 ```
 
@@ -220,29 +220,29 @@ For the random forest, we are using the `"aorsf"` engine for accelerated oblique
 For the regularized model, we are using the `"glmnet"` engine for a semi-parametric Cox proportional hazards model.
 
 ```{r}
-spec_oblique <- rand_forest(mtry = tune(), min_n = tune()) %>% 
+oblique_spec <- rand_forest(mtry = tune(), min_n = tune()) %>% 
   set_engine("aorsf") %>% 
   set_mode("censored regression")
 
-wflow_oblique <- workflow() %>% 
+oblique_wflow <- workflow() %>% 
   add_recipe(rec_unknown) %>% 
-  add_model(spec_oblique)
+  add_model(oblique_spec)
 
-spec_coxnet <- proportional_hazards(penalty = tune()) %>% 
+coxnet_spec <- proportional_hazards(penalty = tune()) %>% 
   set_engine("glmnet") %>% 
   set_mode("censored regression")
 
-wflow_coxnet <- workflow() %>% 
+coxnet_wflow <- workflow() %>% 
   add_recipe(rec_dummies) %>% 
-  add_model(spec_coxnet)
+  add_model(coxnet_spec)
 ```
 
 We can tune workflows with any of the `tune_*()` functions such as `tune_grid()` for grid search or `tune_bayes()` for Bayesian optimization. Here we are using grid search for simplicity.
 
 ```{r}
 set.seed(1)
-res_oblique <- tune_grid(
-  wflow_oblique,
+oblique_res <- tune_grid(
+  oblique_wflow,
   resamples = complaints_rset,
   grid = 10,
   metrics = survival_metrics,
@@ -251,8 +251,8 @@ res_oblique <- tune_grid(
 )
 
 set.seed(1)
-res_coxnet <- tune_grid(
-  wflow_coxnet,
+coxnet_res <- tune_grid(
+  coxnet_wflow,
   resamples = complaints_rset,
   grid = 10,
   metrics = survival_metrics,
@@ -264,16 +264,16 @@ res_coxnet <- tune_grid(
 So do any of these models perform better than the parametric survival model?
 
 ```{r}
-show_best(res_oblique, metric = "brier_survival_integrated", n = 5)
+show_best(oblique_res, metric = "brier_survival_integrated", n = 5)
 
-show_best(res_coxnet, metric = "brier_survival_integrated", n = 5)
+show_best(coxnet_res, metric = "brier_survival_integrated", n = 5)
 ```
 
 ```{r}
 #| echo: false
-bi_best_cox <- show_best(res_coxnet, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
-bi_best_rf <- show_best(res_oblique, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
-bi_best_survreg <- show_best(res_survreg, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
+bi_best_cox <- show_best(coxnet_res, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
+bi_best_rf <- show_best(oblique_res, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
+bi_best_survreg <- show_best(survreg_res, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
 
 if (bi_best_cox <= bi_best_rf || bi_best_survreg <= bi_best_rf) {
   stop("The best model changed.")
@@ -287,34 +287,34 @@ The best regularized Cox model performs a little better than the parametric surv
 We chose the random forest model as the final model. So let's finalize the workflow by replacing the `tune()` placeholders with the best hyperparameters.
 
 ```{r}
-param_best <- select_best(res_oblique, metric = "brier_survival_integrated")
+param_best <- select_best(oblique_res, metric = "brier_survival_integrated")
 
-wflow_oblique_best <- finalize_workflow(wflow_oblique, param_best)
+last_oblique_wflow <- finalize_workflow(oblique_wflow, param_best)
 ```
 
 We can now fit the final model on the training data and evaluate it on the test data.
 
 ```{r}
 set.seed(2)
-fit_oblique <- last_fit(
-  wflow_oblique_best, 
+last_oblique_fit <- last_fit(
+  last_oblique_wflow, 
   split = complaints_split,
   metrics = survival_metrics,
   eval_time = evaluation_time_points, 
 )
 
-collect_metrics(fit_oblique) %>% 
+collect_metrics(last_oblique_fit) %>% 
   filter(.metric == "brier_survival_integrated")
 ```
 
 The Brier score across the different evaluation time points is also similar between the validation set and the test set.
 
 ```{r final-fit-brier}
-collect_metrics(res_survreg) %>% 
+collect_metrics(last_oblique_fit) %>% 
   filter(.metric == "brier_survival") %>% 
   mutate(Data = "Validation") %>% 
   bind_rows(
-    collect_metrics(fit_oblique) %>% 
+    collect_metrics(last_oblique_fit) %>% 
       filter(.metric == "brier_survival") %>% 
       mutate(Data = "Testing") %>% 
       rename(mean = .estimate)
@@ -327,7 +327,7 @@ collect_metrics(res_survreg) %>%
 To finish, we can extract the fitted workflow to either predict directly on new data or deploy the model.
 
 ```{r}
-complaints_model <- extract_workflow(fit_oblique)
+complaints_model <- extract_workflow(last_oblique_fit)
 
 complaints_5 <- testing(complaints_split) %>% slice(1:5)
 predict(complaints_model, new_data = complaints_5, type = "time")

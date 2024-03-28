@@ -20,7 +20,7 @@ include-after-body: ../../../resources.html
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: censored and tidymodels.
+To use code in this article,  you will need to install the following packages: aorsf, censored, glmnet, modeldatatoo, and tidymodels.
 
 Survival analysis is a field of statistics and machine learning for analyzing the time to an event. While it has its roots in medical research, the event of interest can be anything from customer churn to machine failure. Methods from survival analysis take into account that some observations may not yet have experienced the event of interest and are thus _censored_. 
 
@@ -134,7 +134,7 @@ The censored package includes parametric, semi-parametric, and tree-based models
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-spec_survreg <- survival_reg() %>% 
+survreg_spec <- survival_reg() %>% 
   set_engine("survival") %>% 
   set_mode("censored regression")
 ```
@@ -162,9 +162,9 @@ We combine the recipe and the model into a workflow. This allows us to easily re
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-wflow_survreg <- workflow() %>% 
+survreg_wflow <- workflow() %>% 
   add_recipe(rec_other) %>% 
-  add_model(spec_survreg)
+  add_model(survreg_spec)
 ```
 :::
 
@@ -188,8 +188,8 @@ survival_metrics <- metric_set(brier_survival_integrated, brier_survival,
 evaluation_time_points <- seq(0, 300, 30)
 
 set.seed(1)
-res_survreg <- fit_resamples(
-  wflow_survreg,
+survreg_res <- fit_resamples(
+  survreg_wflow,
   resamples = complaints_rset,
   metrics = survival_metrics,
   eval_time = evaluation_time_points, 
@@ -205,7 +205,7 @@ The structure of survival model predictions is slightly different from classific
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-preds <- collect_predictions(res_survreg)
+preds <- collect_predictions(survreg_res)
 preds
 #> # A tibble: 847 × 6
 #>    .pred             .pred_time id          .row disposition_surv .config       
@@ -262,7 +262,7 @@ Of the metrics we calculated with these predictions, let's take a look at the AU
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(res_survreg) %>% 
+collect_metrics(survreg_res) %>% 
   filter(.metric == "roc_auc_survival") %>% 
   ggplot(aes(.eval_time, mean)) + 
   geom_line() + 
@@ -281,7 +281,7 @@ We can discriminate between events and non-events reasonably well, especially in
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(res_survreg) %>% 
+collect_metrics(survreg_res) %>% 
   filter(.metric == "brier_survival") %>% 
   ggplot(aes(.eval_time, mean)) + 
   geom_line() + 
@@ -300,7 +300,7 @@ The accuracy of the predicted probabilities is generally good, albeit lowest for
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(res_survreg) %>% 
+collect_metrics(survreg_res) %>% 
   filter(.metric == "brier_survival_integrated")
 #> # A tibble: 1 × 7
 #>   .metric                   .estimator .eval_time   mean     n std_err .config  
@@ -342,21 +342,21 @@ For the regularized model, we are using the `"glmnet"` engine for a semi-paramet
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-spec_oblique <- rand_forest(mtry = tune(), min_n = tune()) %>% 
+oblique_spec <- rand_forest(mtry = tune(), min_n = tune()) %>% 
   set_engine("aorsf") %>% 
   set_mode("censored regression")
 
-wflow_oblique <- workflow() %>% 
+oblique_wflow <- workflow() %>% 
   add_recipe(rec_unknown) %>% 
-  add_model(spec_oblique)
+  add_model(oblique_spec)
 
-spec_coxnet <- proportional_hazards(penalty = tune()) %>% 
+coxnet_spec <- proportional_hazards(penalty = tune()) %>% 
   set_engine("glmnet") %>% 
   set_mode("censored regression")
 
-wflow_coxnet <- workflow() %>% 
+coxnet_wflow <- workflow() %>% 
   add_recipe(rec_dummies) %>% 
-  add_model(spec_coxnet)
+  add_model(coxnet_spec)
 ```
 :::
 
@@ -368,8 +368,8 @@ We can tune workflows with any of the `tune_*()` functions such as `tune_grid()`
 
 ```{.r .cell-code}
 set.seed(1)
-res_oblique <- tune_grid(
-  wflow_oblique,
+oblique_res <- tune_grid(
+  oblique_wflow,
   resamples = complaints_rset,
   grid = 10,
   metrics = survival_metrics,
@@ -379,8 +379,8 @@ res_oblique <- tune_grid(
 #> i Creating pre-processing data to finalize unknown parameter: mtry
 
 set.seed(1)
-res_coxnet <- tune_grid(
-  wflow_coxnet,
+coxnet_res <- tune_grid(
+  coxnet_wflow,
   resamples = complaints_rset,
   grid = 10,
   metrics = survival_metrics,
@@ -397,7 +397,7 @@ So do any of these models perform better than the parametric survival model?
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-show_best(res_oblique, metric = "brier_survival_integrated", n = 5)
+show_best(oblique_res, metric = "brier_survival_integrated", n = 5)
 #> # A tibble: 5 × 9
 #>    mtry min_n .metric         .estimator .eval_time   mean     n std_err .config
 #>   <int> <int> <chr>           <chr>           <dbl>  <dbl> <int>   <dbl> <chr>  
@@ -407,7 +407,7 @@ show_best(res_oblique, metric = "brier_survival_integrated", n = 5)
 #> 4     6    23 brier_survival… standard           NA 0.0470     1      NA Prepro…
 #> 5     9    38 brier_survival… standard           NA 0.0471     1      NA Prepro…
 
-show_best(res_coxnet, metric = "brier_survival_integrated", n = 5)
+show_best(coxnet_res, metric = "brier_survival_integrated", n = 5)
 #> # A tibble: 5 × 8
 #>         penalty .metric       .estimator .eval_time   mean     n std_err .config
 #>           <dbl> <chr>         <chr>           <dbl>  <dbl> <int>   <dbl> <chr>  
@@ -434,9 +434,9 @@ We chose the random forest model as the final model. So let's finalize the workf
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-param_best <- select_best(res_oblique, metric = "brier_survival_integrated")
+param_best <- select_best(oblique_res, metric = "brier_survival_integrated")
 
-wflow_oblique_best <- finalize_workflow(wflow_oblique, param_best)
+last_oblique_wflow <- finalize_workflow(oblique_wflow, param_best)
 ```
 :::
 
@@ -448,14 +448,14 @@ We can now fit the final model on the training data and evaluate it on the test 
 
 ```{.r .cell-code}
 set.seed(2)
-fit_oblique <- last_fit(
-  wflow_oblique_best, 
+last_oblique_fit <- last_fit(
+  last_oblique_wflow, 
   split = complaints_split,
   metrics = survival_metrics,
   eval_time = evaluation_time_points, 
 )
 
-collect_metrics(fit_oblique) %>% 
+collect_metrics(last_oblique_fit) %>% 
   filter(.metric == "brier_survival_integrated")
 #> # A tibble: 1 × 5
 #>   .metric                   .estimator .estimate .eval_time .config             
@@ -471,11 +471,11 @@ The Brier score across the different evaluation time points is also similar betw
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(res_survreg) %>% 
+collect_metrics(last_oblique_fit) %>% 
   filter(.metric == "brier_survival") %>% 
   mutate(Data = "Validation") %>% 
   bind_rows(
-    collect_metrics(fit_oblique) %>% 
+    collect_metrics(last_oblique_fit) %>% 
       filter(.metric == "brier_survival") %>% 
       mutate(Data = "Testing") %>% 
       rename(mean = .estimate)
@@ -483,6 +483,8 @@ collect_metrics(res_survreg) %>%
   ggplot(aes(.eval_time, mean, col = Data)) + 
   geom_line() + 
   labs(x = "Evaluation Time", y = "Brier Score")
+#> Warning: Removed 11 rows containing missing values or values outside the scale
+#> range (`geom_line()`).
 ```
 
 ::: {.cell-output-display}
@@ -497,7 +499,7 @@ To finish, we can extract the fitted workflow to either predict directly on new 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-complaints_model <- extract_workflow(fit_oblique)
+complaints_model <- extract_workflow(last_oblique_fit)
 
 complaints_5 <- testing(complaints_split) %>% slice(1:5)
 predict(complaints_model, new_data = complaints_5, type = "time")
@@ -536,11 +538,13 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
+#>  aorsf      * 0.1.3   2024-01-22 [1] CRAN (R 4.3.1)
 #>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
 #>  censored   * 0.3.0   2024-01-31 [1] CRAN (R 4.3.1)
 #>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
 #>  ggplot2    * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
+#>  glmnet     * 4.1-8   2023-08-22 [1] CRAN (R 4.3.0)
 #>  infer      * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
 #>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
 #>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
