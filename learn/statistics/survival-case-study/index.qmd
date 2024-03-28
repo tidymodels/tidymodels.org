@@ -25,6 +25,7 @@ source(here::here("common.R"))
 #| include: false
 library(tidymodels)
 library(sessioninfo)
+library(leaflet)
 pkgs <- c("tidymodels", "censored", "modeldatatoo", "glmnet", "aorsf")
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
@@ -58,10 +59,21 @@ Before we dive into survival analysis, let's get a impression of how the complai
 ```{r nyc-map}
 #| out.width: "100%"
 #| echo: false
-#| fig.cap: "Building complaints in New York City"
-#| fig.alt: "A scatter plot of building complaint locations superimposed on a street map. Complaints are raised in all five boroughs." 
+#| fig.cap: "Building complaints in New York City (closed complaints in purple, active complaints in pink)."
 
-knitr::include_graphics("nyc_building_complaints.png")
+building_complaints %>% 
+  mutate(status = if_else(status == "CLOSED", "#7570B3", "#E7298A")) %>%
+  leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%  
+  addCircles(
+    lng = ~ longitude,
+    lat = ~ latitude,
+    fill = TRUE,
+    opacity = .01,
+    fillOpacity = 1,
+    color = ~ status,
+    popup = ~ paste("Days to disposition:", days_to_disposition)
+  )
 ```
 
 In the dataset, we can see the `days_to_disposition` as well as the `status` of the complaint. For a complaint with the status "ACTIVE", the time to disposition is censored, meaning we do know that it has taken at least that long, but not how long for it to be completely resolved. 
