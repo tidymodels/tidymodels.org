@@ -125,7 +125,9 @@ wflow_survreg <- workflow() %>%
   add_model(spec_survreg)
 ```
 
-Let’s access the training and validation sets from the initial split and fit the model. We are calculating several performance metrics: the Brier score, its integrated version, the area under the ROC curve, and the concordance index. Note that all of these are used in a version tailored to survival analysis. The concordance index uses the predicted event time to measure the model’s ability to rank the observations correctly. The Brier score and the ROC curve use the predicted probability of survival at a given time. We evaluate these metrics every 30 days up to 300 days, as provided in the `eval_time` argument. The Brier score is a measure of the accuracy of the predicted probabilities, while the ROC curve is a measure of the model’s ability to discriminate between events and non-events at the given time point. Because these metrics are defined “at a given time,” they are also referred to as *dynamic metrics*.
+To fit and evaluate the model, we need the training and validation sets. While we can access them each on their own, `validation_set()` extracts them both, in a manner that emulates a single resample of the data. This enables us to use `fit_resamples()` and other tuning functions in the same way as if we had used some other resampling scheme (such as cross-validation). 
+
+We are calculating several performance metrics: the Brier score, its integrated version, the area under the ROC curve, and the concordance index. Note that all of these are used in a version tailored to survival analysis. The concordance index uses the predicted event time to measure the model’s ability to rank the observations correctly. The Brier score and the ROC curve use the predicted probability of survival at a given time. We evaluate these metrics every 30 days up to 300 days, as provided in the `eval_time` argument. The Brier score is a measure of the accuracy of the predicted probabilities, while the ROC curve is a measure of the model’s ability to discriminate between events and non-events at the given time point. Because these metrics are defined “at a given time,” they are also referred to as *dynamic metrics*.
 
 ::: {.callout-tip}
 For more information see the [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
@@ -134,14 +136,17 @@ For more information see the [Dynamic Performance Metrics for Event Time Data](.
 ```{r}
 complaints_rset <- validation_set(complaints_split)
 
+survival_metrics <- metric_set(brier_survival_integrated, brier_survival,
+                               roc_auc_survival, concordance_survival)
+evaluation_time_points <- seq(0, 300, 30)
+
 set.seed(1)
 res_survreg <- fit_resamples(
   wflow_survreg,
-  complaints_rset,
-  metrics = metric_set(brier_survival_integrated, brier_survival, roc_auc_survival,
-                       concordance_survival),
-  eval_time = seq(0, 300, 30), 
-  control = control_resamples(save_workflow = TRUE, save_pred = TRUE)
+  resamples = complaints_rset,
+  metrics = survival_metrics,
+  eval_time = evaluation_time_points, 
+  control = control_resamples(save_pred = TRUE)
 )
 ```
 
@@ -166,19 +171,30 @@ For details on the weights see the [Accounting for Censoring in Performance Metr
 
 Of the metrics we calculated with these predictions, let's take a look at the AUC ROC first.
 
-```{r}
+```{r survreg-roc-auc}
 collect_metrics(res_survreg) %>% 
-  filter(.metric == "roc_auc_survival")
+  filter(.metric == "roc_auc_survival") %>% 
+  ggplot(aes(.eval_time, mean)) + 
+  geom_line() + 
+  labs(x = "Evaluation Time", y = "Area Under the ROC Curve")
 ```
 
 We can discriminate between events and non-events reasonably well, especially in the first 30 and 60 days. How about the probabilities that the categorization into event and non-event is based on? 
 
-```{r}
+```{r survreg-brier}
 collect_metrics(res_survreg) %>% 
-  filter(.metric %in% c("brier_survival_integrated", "brier_survival"))
+  filter(.metric == "brier_survival") %>% 
+  ggplot(aes(.eval_time, mean)) + 
+  geom_line() + 
+  labs(x = "Evaluation Time", y = "Brier Score")
 ```
 
 The accuracy of the predicted probabilities is generally good, albeit lowest for evaluation times of 30 and 60 days. The integrated Brier score is a measure of the overall accuracy of the predicted probabilities. 
+
+```{r}
+collect_metrics(res_survreg) %>% 
+  filter(.metric == "brier_survival_integrated")
+```
 
 Which metric to optimise for depends on whether separation or calibration is more important in the modeling problem at hand. We'll go with calibration here. Since we don't have a particular evaluation time that we want to predict well at, we are going to use the integrated Brier score as our main performance metric.
 
@@ -227,20 +243,20 @@ We can tune workflows with any of the `tune_*()` functions such as `tune_grid()`
 set.seed(1)
 res_oblique <- tune_grid(
   wflow_oblique,
-  complaints_rset,
+  resamples = complaints_rset,
   grid = 10,
-  metrics = metric_set(brier_survival_integrated, brier_survival, roc_auc_survival, concordance_survival),
-  eval_time = seq(0, 300, 30), 
+  metrics = survival_metrics,
+  eval_time = evaluation_time_points, 
   control = control_grid(save_workflow = TRUE)
 )
 
 set.seed(1)
 res_coxnet <- tune_grid(
   wflow_coxnet,
-  complaints_rset,
+  resamples = complaints_rset,
   grid = 10,
-  metrics = metric_set(brier_survival_integrated, brier_survival, roc_auc_survival, concordance_survival),
-  eval_time = seq(0, 300, 30), 
+  metrics = survival_metrics,
+  eval_time = evaluation_time_points, 
   control = control_grid(save_workflow = TRUE)
 )
 ```
@@ -273,10 +289,7 @@ We chose the random forest model as the final model. So let's finalize the workf
 ```{r}
 param_best <- select_best(res_oblique, metric = "brier_survival_integrated")
 
-wflow_oblique_best <- finalize_workflow(
-  wflow_oblique,
-  param_best
-)
+wflow_oblique_best <- finalize_workflow(wflow_oblique, param_best)
 ```
 
 We can now fit the final model on the training data and evaluate it on the test data.
@@ -285,22 +298,38 @@ We can now fit the final model on the training data and evaluate it on the test 
 set.seed(2)
 fit_oblique <- last_fit(
   wflow_oblique_best, 
-  complaints_split,
-  metrics = metric_set(brier_survival_integrated, brier_survival, roc_auc_survival, concordance_survival),
-  eval_time = seq(0, 300, 30)
+  split = complaints_split,
+  metrics = survival_metrics,
+  eval_time = evaluation_time_points, 
 )
 
 collect_metrics(fit_oblique) %>% 
   filter(.metric == "brier_survival_integrated")
 ```
 
-We can extract the fitted workflow to either predict directly on new data or deploy the model.
+The Brier score across the different evaluation time points is also similar between the validation set and the test set.
+
+```{r final-fit-brier}
+collect_metrics(res_survreg) %>% 
+  filter(.metric == "brier_survival") %>% 
+  mutate(Data = "Validation") %>% 
+  bind_rows(
+    collect_metrics(fit_oblique) %>% 
+      filter(.metric == "brier_survival") %>% 
+      mutate(Data = "Testing") %>% 
+      rename(mean = .estimate)
+  ) %>% 
+  ggplot(aes(.eval_time, mean, col = Data)) + 
+  geom_line() + 
+  labs(x = "Evaluation Time", y = "Brier Score")
+```
+
+To finish, we can extract the fitted workflow to either predict directly on new data or deploy the model.
 
 ```{r}
 complaints_model <- extract_workflow(fit_oblique)
 
 complaints_5 <- testing(complaints_split) %>% slice(1:5)
-
 predict(complaints_model, new_data = complaints_5, type = "time")
 ```
 
