@@ -24,8 +24,15 @@ source(here::here("common.R"))
 #| label: "load"
 #| include: false
 library(tidymodels)
+library(probably)
+library(patchwork)
+library(doParallel)
 library(sessioninfo)
-pkgs <- c("tidymodels", "censored", "prodlim")
+
+cl <- makePSOCKcluster(parallel::detectCores(logical = FALSE))
+registerDoParallel(cl)
+
+pkgs <- c("tidymodels", "censored", "modeldatatoo")
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 
@@ -53,33 +60,40 @@ As an example, we'll simulate some data with the prodlim package, using the meth
 #| label: data
 library(tidymodels)
 library(censored)
-library(prodlim)
 
-set.seed(5882)
-sim_dat <- SimSurv(2000) %>%
-  mutate(event_time = Surv(time, event)) %>%
-  select(event_time, X1, X2)
+data(building_complaints, package = "modeldatatoo")
 
-set.seed(2)
-split   <- initial_split(sim_dat)
-sim_tr  <- training(split)
-sim_val <- testing(split)
+building_complaints <- building_complaints %>% 
+  mutate(
+    disposition_surv = Surv(days_to_disposition, status == "CLOSED"), 
+    .keep = "unused"
+  )
 
-## Resampling object
-sim_rs <- vfold_cv(sim_tr)
+set.seed(403)
+complaints_split <- initial_validation_split(building_complaints)
+complaints_train <- training(complaints_split)
+complaints_val <- validation(complaints_split)
 ```
 
-We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
+We'll need a model to illustrate the code and concepts. Let's fit a basic proportional hazards model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
 
 ```{r}
 #| label: bag-tree-fit
-set.seed(17)
-bag_tree_fit <- 
-  bag_tree() %>% 
-  set_mode("censored regression") %>% 
-  set_engine("rpart") %>% 
-  fit(event_time ~ ., data = sim_tr)
-bag_tree_fit
+survreg_spec <- survival_reg() %>% 
+  set_engine("survival") %>% 
+  set_mode("censored regression")
+
+other_rec <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
+  step_unknown(complaint_priority) %>% 
+  step_rm(complaint_category) %>% 
+  step_novel(community_board, unit) %>%
+  step_other(community_board, unit, threshold = 0.02)
+
+survreg_wflow <- workflow() %>% 
+  add_recipe(other_rec) %>% 
+  add_model(survreg_spec)
+
+survreg_fit <- fit(survreg_wflow, data = complaints_train)
 ```
 
 Using this model, we'll make predictions of different types. 
@@ -94,17 +108,17 @@ predict(object, new_data, type = "survival", eval_time = numeric())
 
 where `eval_time` is a vector of time points at which we want the corresponding survivor function estimates. Alternatively, we can use the `augment()` function to get both types of prediction and automatically attach them to the data. 
 
-The largest event time in the training set is `r round(max(sim_tr$event_time[,1]), 3)` so we will use a set of evaluation times between zero and 21. 
+For this analysis, we'll use a finer grid than the original analysis with a maximum evaluation time of 200 days. 
 
 ```{r}
 #| label: val-pred
-time_points <- seq(0, 21, by = 0.25)
+time_points <- seq(0, 200, by = 10) # 21 evaluation times
 
-val_pred <- augment(bag_tree_fit, sim_val, eval_time = time_points)
+val_pred <- augment(survreg_fit, complaints_val, eval_time = time_points)
 val_pred
 ```
 
-The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the `r length(time_points)` evaluation time points in the (nested) column `.pred_survival`. 
+The observed data are in the `disposition_surv` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the `r length(time_points)` evaluation time points in the (nested) column `.pred_survival`. 
 
 ```{r}
 #| label: val-pred-dynamic
@@ -143,7 +157,7 @@ Since the evaluation times and the case weights are within the `.pred` column, t
 #| label: val-pred-brier
 brier_scores <-
   val_pred %>% 
-  brier_survival(truth = event_time, .pred)
+  brier_survival(truth = disposition_surv, .pred)
 brier_scores
 ```
 
@@ -159,14 +173,18 @@ brier_scores %>%
   labs(x = "time", y = "Brier score")
 ```
 
-There is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the plot shown above. The syntax is the same but the result has a single row: 
+This shows the worst predictions (relatively speaking) occur at `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".eval_time")` days with a corresponding Brier score of `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".estimate") %>% signif(digits = 3)` Performance gets steadily better over (evaluation) time. 
+
+Instead of thinking in `r length(time_points)` dimensions, there is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the curve shown above. The syntax is the same but the result has a single row: 
 
 ```{r}
 #| label: val-pred-brier-int
-val_pred %>% brier_survival_integrated(truth = event_time, .pred)
+val_pred %>% brier_survival_integrated(truth = disposition_surv, .pred)
 ```
 
 Again, smaller values are better. 
+
+We'll look at the data behind this performance metric in more detail in a bit. 
 
 ## Receiver Operating Characteristic (ROC) Curves
 
@@ -175,71 +193,76 @@ When we not only turn the event time data into a binary representation but also 
 - Sensitivity: How well do we predict the events? This is analogous to the true positive rate.
 - Specificity: How well do we predict the non-events? One minus specificity is the false positive rate. 
 
-These depend on the threshold used to turn predicted probabilities into predicted events/non-events. Let's take a look at the distribution of the survival probabilities for our example data at an evaluation time of 5.00. The distributions are separated by the observed class and weighted by the censoring weights. Details of both aspects are the same as for the Brier score and can be found in the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article.
+These depend on the threshold used to turn predicted probabilities into predicted events/non-events. Let's take a look at the distribution of the survival probabilities for our example data at an evaluation time of 10 days. The distributions are separated by the observed class and weighted by the censoring weights. Details of both aspects are the same as for the Brier score and can be found in the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article.
 
 ```{r}
-#| label: data-at-5
+#| label: early-data
 #| include: false 
 time_as_binary_event <- function(surv, eval_time) {
-  event_time <- .extract_surv_time(surv)
+  disposition_surv <- .extract_surv_time(surv)
   status <- .extract_surv_status(surv)
-  is_event_before_t <- event_time <= eval_time & status == 1
+  is_event_before_t <- disposition_surv <= eval_time & status == 1
 
   # Three possible contributions to the statistic from Graf 1999
   # Censoring time before eval_time, no contribution (Graf category 3)
-  binary_res <- rep(NA_character_, length(event_time))
+  binary_res <- rep(NA_character_, length(disposition_surv))
 
   # A real event prior to eval_time (Graf category 1)
   binary_res <- if_else(is_event_before_t, "event", binary_res)
 
   # Observed time greater than eval_time (Graf category 2)
-  binary_res <- if_else(event_time > eval_time, "non-event", binary_res)
+  binary_res <- if_else(disposition_surv > eval_time, "non-event", binary_res)
   factor(binary_res, levels = c("event", "non-event"))
 }
 
 # Unnest the list columns and convert the event time data to binary format 
 binary_encoding <- 
   val_pred %>% 
-  select(.pred, event_time) %>% 
+  select(.pred, disposition_surv) %>% 
   add_rowindex() %>% 
   unnest(.pred) %>% 
   mutate(
-    obs_class = time_as_binary_event(event_time, .eval_time),
+    obs_class = time_as_binary_event(disposition_surv, .eval_time),
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
-    pred_class = factor(pred_class, levels = c("event", "non-event"))
+    pred_class = factor(pred_class, levels = c("event", "non-event")),
+    .pred_event = 1 - .pred_survival
   )
 
-data_at_5 <- 
+early_data <- 
   binary_encoding %>% 
-  filter(.eval_time == 5.00 & !is.na(.weight_censored)) %>% 
-  select(.eval_time, .pred_survival, .weight_censored, obs_class, pred_class, event_time)
+  filter(.eval_time == 10 & !is.na(.weight_censored)) %>% 
+  select(.eval_time, .pred_survival, .weight_censored, obs_class, pred_class, 
+         .pred_event, disposition_surv)
 
+if (!file.exists("binary_encoding.RData")) {
+  save(binary_encoding, file = "binary_encoding.RData")
+}
 ```
 
 ```{r}
-#| label: surv-hist-05
+#| label: surv-hist-early
 #| echo: false
 #| warning: false
 #| out-width: 70%
 #| fig-width: 7
 #| fig-height: 7
-data_at_5 %>% 
-  ggplot(aes(x = .pred_survival, weight = .weight_censored)) + 
+early_data %>% 
+  ggplot(aes(x = 1 - .pred_survival, weight = .weight_censored)) + 
   geom_vline(xintercept = 1 / 2, col = "blue", lty = 2) +
   geom_histogram(col = "white", bins = 30) + 
   facet_wrap(~obs_class, ncol = 1) +
   lims(x = 0:1) +
-  labs(x = "probability of survival", y = "sum of weights") +
+  labs(x = "probability of event at or before 10 weeks\n(1 - probability of 10 week survival)", y = "sum of weights") +
   theme_bw()
 ```
 
 
 ```{r}
-#| label: conf-mat-05-hide
+#| label: conf-mat-early-hide
 #| include: false 
 cls_set <- metric_set(accuracy, sens, spec)
-stats_05 <- 
-  data_at_5 %>%
+stats_early <- 
+  early_data %>%
   mutate(
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
     pred_class = factor(pred_class, levels = c("event", "non-event"))
@@ -248,31 +271,31 @@ stats_05 <-
            estimate = pred_class,
            case_weights = .weight_censored)
 
-pred_05 <- augment(bag_tree_fit, sim_val, eval_time = 5)
+pred_early <- augment(survreg_fit, complaints_val, eval_time = 10)
 
-curve_05 <- pred_05 %>% roc_curve_survival(truth = event_time, .pred)
-auc_05 <- pred_05 %>% roc_auc_survival(truth = event_time, .pred)
+curve_early <- pred_early %>% roc_curve_survival(truth = disposition_surv, .pred)
+auc_early <- pred_early %>% roc_auc_survival(truth = disposition_surv, .pred)
 ```
 
-More probability values are to the right of the 50% cutoff for the true non-events. Conversely, true events tend to have smaller probabilities. Using this cutoff, the sensitivity would be `r round(stats_05$.estimate[2] * 100, 1)`% and the specificity would be `r round(stats_05$.estimate[3] * 100, 1)`%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
+More probability values are to the right of the 50% cutoff for the true non-events. Conversely, true events tend to have smaller probabilities. Using this cutoff, the sensitivity would be `r round(stats_early$.estimate[2] * 100, 1)`% and the specificity would be `r round(stats_early$.estimate[3] * 100, 1)`%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
 
 ROC curves were designed as a general method that, given a collection of continuous predictions, determines an effective threshold such that values above the threshold indicate a specific event. For our purposes, the ROC curve will compute the sensitivity and specificity for _all possible_ probability thresholds. It then plots the true positive rate versus the false positive rate. Generally, we use the area under the ROC curve to quantify it with a single number. Values near one indicate a perfect model, while values near 1/2 occur with non-informative models. 
 
 [Blanche _et al_ (2013)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Review+and+comparison+of+ROC+curve+estimators+for+a+time-dependent+outcome+with+marker-dependent+censoring%22&btnG=) gives a good overview of ROC curves for survival analysis and their Section 4.3 is most relevant here. 
 
-For our example at evaluation time $t = 5.00$, the ROC curve is: 
+For our example at evaluation time $t = 10.00$, the ROC curve is: 
 
 ```{r}
-#| label: roc-5
+#| label: roc-early
 #| echo: false
-curve_05 %>% 
+curve_early %>% 
   ggplot(aes(1 - specificity, sensitivity)) +
   geom_abline(col = "red", lty = 3) +
   geom_step(direction = "vh") +
   coord_equal()
 ```
 
-The area under this curve is `r round(auc_05$.estimate[1], 3)`. 
+The area under this curve is `r round(auc_early$.estimate[1], 3)`. 
 
 Since this is a dynamic metric, we compute the AUC for each evaluation time. The syntax is very similar to the Brier code shown above: 
 
@@ -280,7 +303,7 @@ Since this is a dynamic metric, we compute the AUC for each evaluation time. The
 #| label: val-pred-roc
 roc_scores <-
   val_pred %>% 
-  roc_auc_survival(truth = event_time, .pred)
+  roc_auc_survival(truth = disposition_surv, .pred)
 roc_scores
 ```
 
@@ -296,9 +319,242 @@ roc_scores %>%
   labs(x = "time", y = "ROC AUC")
 ```
 
-The initial variation is due to so few events at the early stages of analysis. 
+In this case, performance is best at earlier time points (unlike the Brier score), degrades a bit, and then increases again. Despite this, performance is fairly good across all non-zero evaluation times. 
 
-The ROC measures the separation between classes and the Brier score focuses more on accurate and well-calibrated predictions. It should not be surprising that each metric's results over time differ. 
+
+## Disagreement between metrics
+
+It should not be surprising that each metric's results over time differ but it may seem odd that the best model results are different between metrics. 
+
+The issue is that the ROC measures the separation between classes, and the Brier score focuses more on accurate and well-calibrated predictions. These are not the same thing. As we'll see shortly, it can be easy to separate data between qualitative prediction (event or no event) even when the corresponding probability predictions are very inaccurate. 
+
+```{r}
+#| label: example-miscal-data
+#| echo: false
+#| fig-height: 4
+#| fig-width: 8
+sim_n <- 500
+example_data <- 
+  tibble(
+    .pred_event = c(rnorm(sim_n, mean = .55, sd = 0.025),
+                    rnorm(sim_n, mean = .45, sd = 0.025)),
+    class = factor(rep(c("event", "no-event"), each = sim_n))
+  )
+
+p_ex_dens <- 
+  example_data %>% 
+  ggplot(aes(.pred_event, col = class, fill = class)) + 
+  stat_density(alpha = 1 / 4, trim = TRUE, adjust = 1.2) + 
+  lims(x = 0:1) +
+  labs(x = "Probability of Event") +
+  theme(legend.position = "top") +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1")
+p_ex_cal <- cal_plot_breaks(example_data, class, .pred_event, num_breaks = 30)
+
+roc_val <- roc_auc(example_data, class, .pred_event)$.estimate
+brier_val <- brier_class(example_data, class, .pred_event)$.estimate
+```
+
+Below is a contrived (but common) case with two classes. The probability distributions between the true classes are shown on the left. Note that the curves show separation between the event and non-event groups. As we would expect, the area under the ROC curve is very high (`r signif(roc_val, 3)`).
+
+The problem is that the predicted probabilities are not realistic. They are too close to the commonly used cutoff of 0.5. Across all of the data, the probabilities only range from `r round(min(example_data$.pred_event), 2)` to `r round(max(example_data$.pred_event), 2)`. We would expect these to be much closer to zero and one, respectively.
+
+```{r}
+#| label: example-miscal
+#| echo: false
+
+p_ex_dens + p_ex_cal
+```
+
+The figure on the right shows a _calibration plot_ for the same data (see [this article](https://www.tidymodels.org/learn/models/calibration/) for more information). The points would fall along the diagonal line if the probabilities were accurate. Since the Brier score partly measures calibration, it has a correspondingly poor value of `r signif(brier_val, 3)`. 
+
+```{r}
+#| label: prep-auc-for-shiny
+#| include: false
+
+if (!file.exists("auc_plot_data.RData")) {
+  
+  get_binary_data <- function(eval_time) {
+    binary_encoding %>%
+      filter(.eval_time == eval_time & !is.na(.weight_censored)) %>%
+      select(.eval_time, .pred_survival, .weight_censored, obs_class, pred_class,
+             .pred_event, disposition_surv)
+  }
+  
+  get_roc_curves <- function(time) {
+    pred_vals <- augment(survreg_fit, complaints_val, eval_time = time)
+    pred_vals %>%
+      roc_curve_survival(truth = disposition_surv, .pred) %>%
+      mutate(.eval_time = time)
+    
+  }
+  
+  auc_plot_data <- map_dfr(time_points, get_roc_curves)
+  save(auc_plot_data, file = "auc_plot_data.RData")
+} else {
+  load("auc_plot_data.RData")
+}
+
+auc_100 <- 
+  binary_encoding %>% 
+  dplyr::filter(.eval_time %in% c(100) & !is.na(obs_class)) %>% 
+  roc_auc(obs_class, .pred_event, case_weights = .weight_censored) %>% 
+  pluck(".estimate")
+small_100 <- 
+  binary_encoding %>% 
+  dplyr::filter(.eval_time %in% c(100) & !is.na(obs_class)) %>% 
+  summarize(min = min(.pred_event)) %>% 
+  pluck("min")
+```
+
+
+```{r}
+#| label: prep-cal-for-shiny
+#| include: false
+
+if (!file.exists("cal_plot_data")) {
+  
+  get_binary_data <- function(eval_time) {
+    binary_encoding %>%
+      filter(.eval_time == eval_time & !is.na(.weight_censored)) %>%
+      select(.eval_time, .pred_survival, .weight_censored, obs_class, 
+             pred_class, .pred_event, disposition_surv)
+  }
+  
+  cal_data <- function(truth, prob, wts, lower, mid, upper) {
+    inds <- purrr::map2(lower, upper, make_cut, prob)
+    map2_dfr(inds, mid, obs_rate, truth = truth, wts = wts)
+  }
+  
+  make_cut <- function(lo, hi, prob) {
+    which(prob <= hi & prob > lo)
+  }
+  
+  obs_rate <- function(ind, mid, truth, wts) {
+    if (length(ind) == 0) {
+      res <-
+        tibble(expected = mid, observed = NA_real_,
+               .lower = NA_real_,
+               .upper = NA_real_)
+      return(res)
+    }
+    truth_sub <- truth[ind]
+    wts_sub <- wts[ind]
+    event <- levels(truth)[1]
+    
+    numer <- sum(wts_sub[truth_sub == event], na.rm = TRUE)
+    denom <- sum(wts_sub, na.rm = TRUE)
+    res <- prop.test(numer, denom)
+    tibble(expected = mid, observed = res$estimate,
+           .lower = res$conf.int[1],
+           .upper = res$conf.int[2])
+  }
+  
+  get_each_cal_data <- function(eval_time) {
+    
+    step_size <- 0.025
+    window_size <- 0.1
+    
+    # overlapping bins
+    # steps <- seq(0, 1, by = step_size)
+    # cuts <- list()
+    # cuts$lower_cut <- steps - (window_size / 2)
+    # cuts$upper_cut <- steps + (window_size / 2)
+    # cuts$mid <- cuts$lower_cut + ((cuts$upper_cut - cuts$lower_cut) / 2)
+    # cuts$lower_cut[cuts$lower_cut < 0] <- 0
+    # cuts$upper_cut[cuts$upper_cut > 1] <- 1
+    
+    # non-overlapping bins
+    side <- seq(0, 1, by = 1 / 14)
+    cuts <- list(
+      lower_cut = side[1:length(side) - 1],
+      upper_cut = side[2:length(side)]
+    )
+    cuts$mid <- cuts$lower_cut + ((cuts$upper_cut - cuts$lower_cut) / 2)
+    
+    dat <- get_binary_data(eval_time)
+    
+    cal_data(
+      dat$obs_class,
+      dat$.pred_event,
+      dat$.weight_censored,
+      cuts$lower_cut,
+      cuts$mid,
+      cuts$upper_cut
+    ) %>%
+      mutate(.eval_time = eval_time) %>%
+      dplyr::filter(!is.na(observed))
+  }
+  
+  get_all_cal_data <- function(eval_time) {
+    purrr::map_dfr(eval_time, get_each_cal_data)
+  }
+  
+  cal_plot_data <- get_all_cal_data(time_points)
+  
+  save(cal_plot_data, file = "cal_plot_data.RData")
+} else {
+  load("cal_plot_data.RData")
+}
+```
+
+For the NY building complaint data, let’s look at evaluation times of 10 and 100 days. First, we can examine the distribution of the probability predictions at both time points: 
+
+```{r}
+#| label: cal-hist
+#| echo: false
+#| warning: false
+binary_encoding %>% 
+  dplyr::filter(.eval_time %in% c(10, 100) & !is.na(obs_class)) %>%
+  ggplot(aes(x = 1 - .pred_survival, weight = .weight_censored)) + 
+  geom_vline(xintercept = 1 / 2, col = "blue", lty = 2) +
+  geom_histogram(col = "white", bins = 20) + 
+  facet_grid(obs_class ~ .eval_time) +
+  lims(x = 0:1) +
+  labs(x = "probability of event at or before eval time") +
+  theme_bw()
+```
+
+The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is `r round(small_100, 2)`. Clearly, these predictions are not well calibrated. The calibration plots tell the same story:
+
+```{r}
+#| label: cal-both
+#| echo: false
+#| fig-height: 4
+cal_plot_data %>%
+  dplyr::filter(.eval_time %in% c(10, 100)) %>%
+  mutate(time_label = paste("Evaluation time:", .eval_time)) %>% 
+  ggplot(aes(expected, observed)) +
+  geom_abline(col = "green", lty = 2) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ time_label) +
+  lims(x = 0:1, y = 0:1) +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), alpha = 1 / 10) +
+  labs(x = "Expected Rate", y = "Observed Rate")
+```
+
+What about the ROC curves produced by these data? They are: 
+
+```{r}
+#| label: roc-both
+#| echo: false
+
+auc_plot_data %>%
+  dplyr::filter(.eval_time %in% c(10, 100)) %>%
+  mutate(time_label = paste("Evaluation time:", .eval_time)) %>% 
+  ggplot(aes(1 - specificity, sensitivity, col = time_label)) +
+  geom_abline(col = "red", lty = 3) +
+  geom_step() +
+  coord_obs_pred() +
+  labs(x = "1 - Specificity", y = "Sensitivity") +
+  theme(legend.title = element_blank())
+```
+
+It may be difficult to tell from the histograms above, but the area under the ROC curve at 100 days is `r round(auc_100, 2)`. That's not bad; the metric is seeing separation despite the lack of accuracy. 
+
+This demonstrates that there are situations where the metrics have discordant results. The context of the project should determine whether the separation of classes or accuracy is more important.
 
 ## Tuning these metrics
 
@@ -306,7 +562,7 @@ Many of the event time models available in tidymodels have tuning parameters. Th
 
 In some cases, such as [iterative search](https://www.tmwr.org/iterative-search.html) or [racing methods](https://www.tmwr.org/grid-search.html#racing), the functions need a single value to optimize. If a dynamic metric is used to guide the optimization, _the first evaluation time given by the user_ will be used. 
 
-For example, if a model for these data was being optimized, and we wanted a time of 5.00 to guide the process, we would need to use that value of 5.00 as the first element `time_points`, the vector given to the `eval_time` argument in our example above.
+For example, if a model for these data was being optimized, and we wanted a time of 10 days to guide the search, we would need to use that value of 10.00 as the first element `time_points`, the vector given to the `eval_time` argument in our example above.
 
 
 ## Summary

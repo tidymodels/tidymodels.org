@@ -54,50 +54,60 @@ As an example, we'll simulate some data with the prodlim package, using the meth
 #| label: data
 library(tidymodels)
 library(censored)
-library(prodlim)
 
-set.seed(5882)
-sim_dat <- SimSurv(2000) %>%
-  mutate(event_time = Surv(time, event)) %>%
-  select(event_time, X1, X2)
+data(building_complaints, package = "modeldatatoo")
 
-set.seed(2)
-split   <- initial_split(sim_dat)
-sim_tr  <- training(split)
-sim_val <- testing(split)
+building_complaints <- building_complaints %>% 
+  mutate(
+    disposition_surv = Surv(days_to_disposition, status == "CLOSED"), 
+    .keep = "unused"
+  )
+
+set.seed(403)
+complaints_split <- initial_validation_split(building_complaints)
+complaints_train <- training(complaints_split)
+complaints_val <- validation(complaints_split)
 ```
 
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
 
 ```{r}
 #| label: bag-tree-fit
-set.seed(17)
-bag_tree_fit <- 
-  bag_tree() %>% 
-  set_mode("censored regression") %>% 
-  set_engine("rpart") %>% 
-  fit(event_time ~ ., data = sim_tr)
-bag_tree_fit
+survreg_spec <- survival_reg() %>% 
+  set_engine("survival") %>% 
+  set_mode("censored regression")
+
+other_rec <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
+  step_unknown(complaint_priority) %>% 
+  step_rm(complaint_category) %>% 
+  step_novel(community_board, unit) %>%
+  step_other(community_board, unit, threshold = 0.02)
+
+survreg_wflow <- workflow() %>% 
+  add_recipe(other_rec) %>% 
+  add_model(survreg_spec)
+
+survreg_fit <- fit(survreg_wflow, data = complaints_train)
 ```
 
-Using this model, we can make predictions of different types and `augment()` provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is `r round(max(sim_tr$event_time[,1]), 3)` so we will use a set of evaluation times between zero and 21. 
+Using this model, we can make predictions of different types and `augment()` provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is `r round(max(complaints_train$disposition_surv[,1]), 3)` so we will use a set of evaluation times between zero and 21. 
 
 ```{r}
 #| label: val-pred
-time_points <- seq(0, 21, by = 0.25)
+time_points <- seq(0, 100, by = 5)
 
-val_pred <- augment(bag_tree_fit, sim_val, eval_time = time_points)
+val_pred <- augment(survreg_fit, complaints_val, eval_time = time_points)
 val_pred
 ```
 
-The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the `r length(time_points)` evaluation time points in the (nested) column `.pred_survival`. 
+The observed data are in the `disposition_surv` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the `r length(time_points)` evaluation time points in the (nested) column `.pred_survival`. 
 
 ```{r}
 #| label: val-pred-dynamic
 val_pred$.pred[[1]]
 ```
 
-First, let's dive into how to convert the observed event time in `event_time` to a binary version. Then we will discuss the remaining columns as part of generating the required weights for the dynamic performance metrics.
+First, let's dive into how to convert the observed event time in `disposition_surv` to a binary version. Then we will discuss the remaining columns as part of generating the required weights for the dynamic performance metrics.
 
 
 ## Converting censored data to binary data
@@ -184,7 +194,7 @@ For our simulated data, here is what the RKM curve looks like:
 #| echo : false
 dyn_val_pred <- 
   val_pred %>% 
-  select(.pred, event_time) %>% 
+  select(.pred, disposition_surv) %>% 
   add_rowindex() %>% 
   unnest(.pred) 
 
@@ -195,13 +205,13 @@ dyn_val_pred %>%
   geom_step(aes(.weight_time, .pred_censored)) + 
   ylim(0:1) + 
   geom_rug(
-    data = sim_tr %>% filter(event_time[,2] == 1), 
-    aes(x = event_time[,1]), 
+    data = complaints_train %>% filter(disposition_surv[,2] == 1), 
+    aes(x = disposition_surv[,1]), 
     alpha = 1 / 2, col = "red"
   ) + 
   geom_rug(
-    data = sim_tr %>% filter(event_time[,2] == 0), 
-    aes(x = event_time[,1]), 
+    data = complaints_train %>% filter(disposition_surv[,2] == 0), 
+    aes(x = disposition_surv[,1]), 
     alpha = 1 / 2, col = "blue", sides = "t"
   ) +
   labs(x = "time", y = "probability of being censored") +
@@ -220,28 +230,51 @@ First, when do we evaluate the probability of censoring? There are different app
 - If the evaluation is greater than or equal to the event time (like in category 1), the event time is used to predict the probability of censoring.
 - If the evaluation time is greater than or equal to the observed censoring time, the observation falls into category 3 and is not used, i.e., also no weight is needed.
 
-We call this time at which to predict the probability of censoring the _weight time_. Here's an example using the first data point in the validation set: 
+We call this time at which to predict the probability of censoring the _weight time_. 
+
+#### An event {.unnumbered}
+
+Here's an example using the first data point in the validation set: 
 
 ```{r}
-#| label: eval-time-censored
+#| label: eval-time-event
 dyn_val_pred <- 
   val_pred %>% 
-  select(.pred, event_time) %>% 
+  select(.pred, disposition_surv) %>% 
   add_rowindex() %>% 
   unnest(.pred) 
 
 dyn_val_pred %>% 
-  filter(.row == 1 & .eval_time %in% c(1, 2, 4, 5, 10)) %>% 
-  select(event_time, .eval_time, .weight_time, .pred_censored, .weight_censored)
+  filter(.row == 29 & .eval_time <= 35) %>% 
+  select(disposition_surv, .eval_time, .weight_time, .pred_censored, .weight_censored)
 ```
 
 ```{r}
 #| label: example-time-hide
 #| include: false
-time_1 <- parsnip::.extract_surv_time(sim_val$event_time[1])
+time_1 <- parsnip::.extract_surv_time(complaints_val$disposition_surv[1])
 ```
 
 This observation was an event, observed at time `r round(time_1, 3)` The column `.weight_time` captures at which time the probability of censoring was calculated. Up until that event time, the probability of being censored is computed at the evaluation time. After that, it is based on the event time. 
+
+#### An censored time {.unnumbered}
+
+Now let's look at a censored data point: 
+
+```{r}
+#| label: eval-time-censored
+dyn_val_pred <- 
+  val_pred %>% 
+  select(.pred, disposition_surv) %>% 
+  add_rowindex() %>% 
+  unnest(.pred) 
+
+dyn_val_pred %>% 
+  filter(.row == 1 & .eval_time <= 40) %>% 
+  select(disposition_surv, .eval_time, .weight_time, .pred_censored, .weight_censored)
+```
+
+#### Even finer details {.unnumbered}
 
 We add a slight modification to the weight time: If our evaluation time is today, we don't have today's data yet. In tidymodels, we calculate the probability of censoring just before the requested weight time. We are basically subtracting a small numerical value from the weight time used in the RKM model. You'll only really see a difference if there is a bulk of censored observations at the original evaluation time.
 
@@ -256,26 +289,26 @@ First, let's turn the observed event time data and the predictions into their bi
 ```{r}
 #| label: binary-encoding
 time_as_binary_event <- function(surv, eval_time) {
-  event_time <- .extract_surv_time(surv)
+  disposition_surv <- .extract_surv_time(surv)
   status <- .extract_surv_status(surv)
-  is_event_before_t <- event_time <= eval_time & status == 1
+  is_event_before_t <- disposition_surv <= eval_time & status == 1
   
   # Three possible contributions to the statistic from Graf 1999
   # Censoring time before eval_time, no contribution (Graf category 3)
-  binary_res <- rep(NA_character_, length(event_time))
+  binary_res <- rep(NA_character_, length(disposition_surv))
   
   # A real event prior to eval_time (Graf category 1)
   binary_res <- if_else(is_event_before_t, "event", binary_res)
   
   # Observed time greater than eval_time (Graf category 2)
-  binary_res <- if_else(event_time > eval_time, "non-event", binary_res)
+  binary_res <- if_else(disposition_surv > eval_time, "non-event", binary_res)
   factor(binary_res, levels = c("event", "non-event"))
 }
 
 binary_encoding <- 
   dyn_val_pred %>% 
   mutate(
-    obs_class = time_as_binary_event(event_time, .eval_time),
+    obs_class = time_as_binary_event(disposition_surv, .eval_time),
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
     pred_class = factor(pred_class, levels = c("event", "non-event")),
   )
@@ -290,24 +323,24 @@ dyn_val_pred %>%
   ggplot() + 
   geom_step(aes(.eval_time, num_usable)) +
   labs(x = "time", y = "number of usable observations") +
-  lims(y = c(0, nrow(sim_val))) +
+  lims(y = c(0, nrow(complaints_val))) +
   theme_bw()
 ```
 
-Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:
+Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 30. To compute the confusion matrix for a classification problem, we would simply use:
 
 ```r
 binary_encoding %>% 
-  filter(.eval_time == 1.00) %>% 
+  filter(.eval_time == 30) %>% 
   conf_mat(truth = obs_class, estimate = pred_class)
 ```
 
 For censored regression problems, we need to additionally use the censoring weights so we'll include them via the `case_weights` argument:
 
 ```{r}
-#| label: conf-mat-01
+#| label: conf-mat-early
 binary_encoding %>%
-  filter(.eval_time == 1.00) %>%
+  filter(.eval_time == 30) %>%
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -315,68 +348,68 @@ binary_encoding %>%
 
 
 ```{r}
-#| label: conf-mat-01-hide
+#| label: conf-mat-early-hide
 #| include: false 
-dat_01 <- binary_encoding %>% filter(.eval_time == 1.00 & !is.na(.weight_censored))
-events_01 <- nrow(dat_01 %>% filter(event_time[,1] <= 1))
+dat_early <- binary_encoding %>% filter(.eval_time == 30 & !is.na(.weight_censored))
+events_early <- nrow(dat_early %>% filter(disposition_surv[,1] <= 30))
 ```
 
-The values in the cells are the sum of the censoring weights, There are `r events_01` actual events (out of `r nrow(dat_01)` usable observations) before this evaluation time, so there are empty cells. Also note that the cell values are close to the actual counts. This early, the predicted censoring probabilities are very close to one so their inverse values are also. 
+The values in the cells are the sum of the censoring weights, There are `r events_early` actual events (out of `r nrow(dat_early)` usable observations) before this evaluation time, so there are empty cells. Also note that the cell values are close to the actual counts. This early, the predicted censoring probabilities are very close to one so their inverse values are also. 
 
 This early, performance looks very good but that is mostly because there are few events.
 
 Let's shift to an evaluation time of 5.0. 
 
 ```{r}
-#| label: conf-mat-05
+#| label: conf-mat-mid
 binary_encoding %>%
-  filter(.eval_time == 5.00) %>%
+  filter(.eval_time == 90) %>%
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
 ```
 
 ```{r}
-#| label: conf-mat-05-hide
+#| label: conf-mat-mid-hide
 #| include: false 
-dat_05 <- binary_encoding %>% filter(.eval_time == 5.00 & !is.na(.weight_censored))
-events_05 <- nrow(dat_05 %>% filter(event_time[,1] <= 5))
+dat_mid <- binary_encoding %>% filter(.eval_time == 90 & !is.na(.weight_censored))
+events_mid <- nrow(dat_mid %>% filter(disposition_surv[,1] <= 90))
 cls_set <- metric_set(accuracy, sens, spec)
-stats_05 <- 
+stats_mid <- 
   binary_encoding %>%
-  filter(.eval_time == 5.00) %>%
+  filter(.eval_time == 60) %>%
   cls_set(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
 ```
 
-Now we have fewer total observations to consider (`r nrow(dat_05)` instead of `r nrow(dat_01)` usable values) and more events (`r events_05` this time). Performance is fairly good; the sensitivity is `r round(stats_05$.estimate[2] * 100, 1)`% and the specificty is `r round(stats_05$.estimate[3] * 100, 1)`%.
+Now we have fewer total observations to consider (`r nrow(dat_mid)` instead of `r nrow(dat_early)` usable values) and more events (`r events_mid` this time). Performance is fairly good; the sensitivity is `r round(stats_mid$.estimate[2] * 100, 1)`% and the specificity is `r round(stats_mid$.estimate[3] * 100, 1)`%.
 
-What happends when the evaluation time is 17?
+What happens when the evaluation time is 17?
 
 ```{r}
-#| label: conf-mat-17
+#| label: conf-mat-late
 binary_encoding %>%
-  filter(.eval_time == 17.00) %>%
+  filter(.eval_time == 120) %>%
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
 ```
 
 ```{r}
-#| label: conf-mat-17-hide
+#| label: conf-mat-late-hide
 #| include: false 
-dat_17 <- binary_encoding %>% filter(.eval_time == 17.00 & !is.na(.weight_censored))
-events_17 <- nrow(dat_17 %>% filter(event_time[,1] <= 17))
-stats_17 <- 
+dat_late <- binary_encoding %>% filter(.eval_time == 90 & !is.na(.weight_censored))
+events_late <- nrow(dat_late %>% filter(disposition_surv[,1] <= 90))
+stats_late <- 
   binary_encoding %>%
-  filter(.eval_time == 17.00) %>%
+  filter(.eval_time == 90) %>%
   cls_set(truth = obs_class,
           estimate = pred_class,
           case_weights = .weight_censored)
 ```
 
-The data are overwhelmingly events. Also, the censoring weights are larger now since the probability of being censored is very low. The mean censoring weight is `r round(mean(dat_17$.weight_censored), 2)`.
+The data are overwhelmingly events. Also, the censoring weights are larger now since the probability of being censored is very low. The mean censoring weight is `r round(mean(dat_late$.weight_censored), 2)`.
 
 This concludes the illustration of how to account for censoring when using a confusion matrix for performance assessment. There's more on dynamic performance metrics in the [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
 
