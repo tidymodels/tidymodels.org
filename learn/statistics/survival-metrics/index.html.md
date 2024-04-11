@@ -46,7 +46,7 @@ library(tidymodels)
 library(censored)
 #> Loading required package: survival
 
-data(building_complaints, package = "modeldatatoo")
+building_complaints <- modeldatatoo::data_building_complaints()
 
 building_complaints <- building_complaints %>% 
   mutate(
@@ -62,7 +62,7 @@ complaints_val <- validation(complaints_split)
 :::
 
 
-We'll need a model to illustrate the code and concepts. Let's fit a basic proportional hazards model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
+We'll need a model to illustrate the code and concepts. Let's fit a basic Weibull model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
 
 
 ::: {.cell layout-align="center"}
@@ -82,7 +82,7 @@ survreg_wflow <- workflow() %>%
   add_recipe(other_rec) %>% 
   add_model(survreg_spec)
 
-survreg_fit <- fit(survreg_wflow, data = complaints_train)
+complaints_fit <- fit(survreg_wflow, data = complaints_train)
 ```
 :::
 
@@ -99,29 +99,29 @@ predict(object, new_data, type = "survival", eval_time = numeric())
 
 where `eval_time` is a vector of time points at which we want the corresponding survivor function estimates. Alternatively, we can use the `augment()` function to get both types of prediction and automatically attach them to the data. 
 
-We’ll use a finer grid than the original analysis with a maximum evaluation time of 200 days for this analysis. 
+We’ll use a finer grid than the [case study](../survival-case-study) with a maximum evaluation time of 200 days for this analysis. 
 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-time_points <- seq(0, 200, by = 10) # 21 evaluation times
+time_points <- seq(0, 200, by = 10)
 
-val_pred <- augment(survreg_fit, complaints_val, eval_time = time_points)
+val_pred <- augment(complaints_fit, complaints_val, eval_time = time_points)
 val_pred
 #> # A tibble: 847 × 12
 #>    .pred    .pred_time year_entered latitude longitude borough  special_district
 #>    <list>        <dbl> <fct>           <dbl>     <dbl> <fct>    <fct>           
-#>  1 <tibble>       93.3 2023             40.7     -73.8 Queens   None            
-#>  2 <tibble>       16.6 2023             40.8     -74.0 Manhatt… None            
-#>  3 <tibble>       30.1 2023             40.6     -74.0 Brooklyn None            
-#>  4 <tibble>       33.8 2023             40.7     -73.8 Queens   None            
-#>  5 <tibble>       22.7 2023             40.7     -74.0 Manhatt… None            
-#>  6 <tibble>       55.6 2023             40.6     -74.0 Brooklyn None            
-#>  7 <tibble>       69.6 2023             40.7     -73.9 Brooklyn None            
-#>  8 <tibble>       95.2 2023             40.7     -73.7 Queens   None            
-#>  9 <tibble>       50.0 2023             40.7     -74.0 Brooklyn None            
-#> 10 <tibble>       30.1 2023             40.6     -74.0 Brooklyn None            
+#>  1 <tibble>       96.6 2023             40.7     -73.8 Queens   None            
+#>  2 <tibble>       18.7 2023             40.8     -74.0 Manhatt… None            
+#>  3 <tibble>       29.5 2023             40.6     -74.0 Brooklyn None            
+#>  4 <tibble>       29.8 2023             40.7     -73.8 Queens   None            
+#>  5 <tibble>       24.8 2023             40.7     -74.0 Manhatt… None            
+#>  6 <tibble>       58.4 2023             40.6     -74.0 Brooklyn None            
+#>  7 <tibble>       71.3 2023             40.7     -73.9 Brooklyn None            
+#>  8 <tibble>      102.  2023             40.7     -73.7 Queens   None            
+#>  9 <tibble>       47.1 2023             40.7     -74.0 Brooklyn None            
+#> 10 <tibble>       28.5 2023             40.6     -74.0 Brooklyn None            
 #> # ℹ 837 more rows
 #> # ℹ 5 more variables: unit <fct>, community_board <fct>,
 #> #   complaint_category <fct>, complaint_priority <fct>, disposition_surv <Surv>
@@ -140,15 +140,15 @@ val_pred$.pred[[1]]
 #>    .eval_time .pred_survival .weight_time .pred_censored .weight_censored
 #>         <dbl>          <dbl>        <dbl>          <dbl>            <dbl>
 #>  1          0          1              0            1                 1   
-#>  2         10          0.843         10.0          0.990             1.01
-#>  3         20          0.744         20.0          0.977             1.02
-#>  4         30          0.666         30.0          0.964             1.04
-#>  5         40          0.600         NA           NA                NA   
-#>  6         50          0.543         NA           NA                NA   
-#>  7         60          0.494         NA           NA                NA   
-#>  8         70          0.451         NA           NA                NA   
-#>  9         80          0.413         NA           NA                NA   
-#> 10         90          0.378         NA           NA                NA   
+#>  2         10          0.847         10.0          0.988             1.01
+#>  3         20          0.750         20.0          0.976             1.02
+#>  4         30          0.673         30.0          0.963             1.04
+#>  5         40          0.608         NA           NA                NA   
+#>  6         50          0.552         NA           NA                NA   
+#>  7         60          0.504         NA           NA                NA   
+#>  8         70          0.461         NA           NA                NA   
+#>  9         80          0.423         NA           NA                NA   
+#> 10         90          0.388         NA           NA                NA   
 #> # ℹ 11 more rows
 ```
 :::
@@ -166,7 +166,7 @@ $$
 Brier_{class} = \frac{1}{N}\sum_{i=1}^N\sum_{k=1}^C (y_{ik} - \hat{p}_{ik})^2
 $$
 
-For survival models, we transform the event time data into a binary version $y_{it}$: is there an event at evaluation time $t$^[Again, see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article for more on this.]. The survival function estimates $\hat{p}_{it}$ is the probability corresponding to non-events at time $t$. For example, if there has not been an event at the current evaluation time, our best model should estimate the survival probability near one. For observations that are events, the probability estimate is just one minus the survivor estimate. To account for censoring, we also weight each observation with $w_{it}$. The [time-dependent Brier score](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&btnG=) is: 
+For survival models, we transform the event time data into a binary version $y_{it}$: is there an event at evaluation time $t$^[Again, see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article for more on this.]. The survival function estimate $\hat{p}_{it}$ is the probability corresponding to non-events at time $t$. For example, if there has not been an event at the current evaluation time, our best model should estimate the survival probability near one. For observations that are events, the probability estimate is just one minus the survivor estimate. To account for censoring, we also weight each observation with $w_{it}$. The [time-dependent Brier score](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&btnG=) is: 
 
 $$
 Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(y_{it} - \hat{p}_{it})^2}_\text{non-events} +  \underbrace{I(y_{it} = 1)(y_{it} - (1 - \hat{p}_{it}))^2}_\text{events}\right]
@@ -194,15 +194,15 @@ brier_scores
 #>    .metric        .estimator .eval_time .estimate
 #>    <chr>          <chr>           <dbl>     <dbl>
 #>  1 brier_survival standard            0    0     
-#>  2 brier_survival standard           10    0.176 
+#>  2 brier_survival standard           10    0.177 
 #>  3 brier_survival standard           20    0.168 
-#>  4 brier_survival standard           30    0.163 
-#>  5 brier_survival standard           40    0.154 
-#>  6 brier_survival standard           50    0.135 
-#>  7 brier_survival standard           60    0.122 
-#>  8 brier_survival standard           70    0.0955
-#>  9 brier_survival standard           80    0.0810
-#> 10 brier_survival standard           90    0.0722
+#>  4 brier_survival standard           30    0.160 
+#>  5 brier_survival standard           40    0.156 
+#>  6 brier_survival standard           50    0.138 
+#>  7 brier_survival standard           60    0.121 
+#>  8 brier_survival standard           70    0.0954
+#>  9 brier_survival standard           80    0.0808
+#> 10 brier_survival standard           90    0.0697
 #> # ℹ 11 more rows
 ```
 :::
@@ -228,7 +228,7 @@ brier_scores %>%
 :::
 
 
-This shows the worst predictions (relatively speaking) occur at 10 days with a corresponding Brier score of 0.176 Performance gets steadily better over (evaluation) time. 
+This shows the worst predictions (relatively speaking) occur at 10 days with a corresponding Brier score of 0.177. Performance gets steadily better over (evaluation) time. 
 
 Instead of thinking in 21 dimensions, there is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the above curve. The syntax is the same, but the result has a single row: 
 
@@ -240,7 +240,7 @@ val_pred %>% brier_survival_integrated(truth = disposition_surv, .pred)
 #> # A tibble: 1 × 3
 #>   .metric                   .estimator .estimate
 #>   <chr>                     <chr>          <dbl>
-#> 1 brier_survival_integrated standard      0.0774
+#> 1 brier_survival_integrated standard      0.0772
 ```
 :::
 
@@ -270,7 +270,7 @@ These depend on the threshold used to turn predicted probabilities into predicte
 
 
 
-More probability values are to the right of the 50% cutoff for the true non-events. Conversely, true events tend to have smaller probabilities. Using this cutoff, the sensitivity would be 56.9% and the specificity would be 88.5%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
+More probability values are to the left of the 50% cutoff for the true non-events. The true events tend to have larger probabilities but are not nearly as clearly distributed to the right of the cutoff as the non-events are to the left of the cutoff. Using this cutoff, the sensitivity would be 56.9% and the specificity would be 88.2%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
 
 ROC curves were designed as a general method that, given a collection of continuous predictions, determines an effective threshold such that values above the threshold indicate a specific event. For our purposes, the ROC curve will compute the sensitivity and specificity for _all possible_ probability thresholds. It then plots the true positive rate versus the false positive rate. Generally, we use the area under the ROC curve to quantify it with a single number. Values near one indicate a perfect model, while values near 1/2 occur with non-informative models. 
 
@@ -286,7 +286,7 @@ For our example at evaluation time $t = 10.00$, the ROC curve is:
 :::
 
 
-The area under this curve is 0.82. 
+The area under this curve is 0.822. 
 
 Since this is a dynamic metric, we compute the AUC for each evaluation time. The syntax is very similar to the Brier code shown above: 
 
@@ -302,15 +302,15 @@ roc_scores
 #>    .metric          .estimator .eval_time .estimate
 #>    <chr>            <chr>           <dbl>     <dbl>
 #>  1 roc_auc_survival standard            0     0.5  
-#>  2 roc_auc_survival standard           10     0.820
-#>  3 roc_auc_survival standard           20     0.832
-#>  4 roc_auc_survival standard           30     0.823
-#>  5 roc_auc_survival standard           40     0.802
-#>  6 roc_auc_survival standard           50     0.804
-#>  7 roc_auc_survival standard           60     0.781
-#>  8 roc_auc_survival standard           70     0.787
-#>  9 roc_auc_survival standard           80     0.774
-#> 10 roc_auc_survival standard           90     0.766
+#>  2 roc_auc_survival standard           10     0.822
+#>  3 roc_auc_survival standard           20     0.831
+#>  4 roc_auc_survival standard           30     0.831
+#>  5 roc_auc_survival standard           40     0.815
+#>  6 roc_auc_survival standard           50     0.811
+#>  7 roc_auc_survival standard           60     0.789
+#>  8 roc_auc_survival standard           70     0.794
+#>  9 roc_auc_survival standard           80     0.790
+#> 10 roc_auc_survival standard           90     0.784
 #> # ℹ 11 more rows
 ```
 :::
@@ -341,7 +341,7 @@ In this case, performance is best at earlier time points (unlike the Brier score
 
 ## Disagreement between metrics
 
-It should not be surprising that each metric's results differ over time, but it may seem odd that the best model results differ between metrics. 
+While it may not be surprising that each metric's results vary over time, it may seem odd that _when_ the model does best also differs between metrics. 
 
 The issue is that the ROC measures class separation, and the Brier score focuses more on accurate and well-calibrated predictions. These are not the same thing. As we'll see shortly, it can be easy to separate data between qualitative prediction (event or no event) even when the corresponding probability predictions are very inaccurate. 
 
@@ -381,7 +381,9 @@ For the NY building complaint data, let’s look at evaluation times of 10 and 1
 :::
 
 
-The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is 0.53. Clearly, these predictions are not well calibrated. The calibration plots tell the same story:
+The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is 0.49. 
+
+The calibration plots are below with the size of the points being proportional to the sum of the weights:
 
 
 ::: {.cell layout-align="center"}
@@ -390,6 +392,8 @@ The range of probabilities at 10 days is almost the entire range, and there is m
 :::
 :::
 
+
+On the left, the plot shows a few deviations away from the diagonal. The right panel shows that the majority of the data (about 74%) are in the first two bins near the upper right-hand side. These points are along the diagonal, indicating good calibration. As we move away from these points, the model becomes less calibrated. Overall though, the Brier statistic is small since most of the data (i.e., weights) are along the diagonal. 
 
 What about the ROC curves produced by these data? They are: 
 
@@ -401,7 +405,7 @@ What about the ROC curves produced by these data? They are:
 :::
 
 
-It may be difficult to tell from the histograms above, but the groups are separated enough at 100 days to produce an area under the ROC curve of 0.74. That's not bad; the metric is seeing separation despite the lack of accuracy. 
+It may be difficult to tell from the histograms above, but the groups are separated enough at 100 days to produce an area under the ROC curve of 0.76. That's not bad; the metric is seeing separation despite the lack of accuracy. 
 
 This demonstrates that there are situations where the metrics have discordant results. The context of the project should determine whether the separation of classes or accuracy is more important.
 
@@ -440,23 +444,24 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  pandoc   3.1.11 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package    * version date (UTC) lib source
-#>  broom      * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
-#>  censored   * 0.3.0   2024-01-31 [1] CRAN (R 4.3.1)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
-#>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
-#>  ggplot2    * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer      * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
-#>  rlang        1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
-#>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
-#>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
-#>  tune       * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
+#>  package      * version date (UTC) lib source
+#>  broom        * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
+#>  censored     * 0.3.0   2024-01-31 [1] CRAN (R 4.3.1)
+#>  dials        * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
+#>  dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
+#>  ggplot2      * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
+#>  infer        * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
+#>  modeldatatoo   0.3.0   2024-03-29 [1] CRAN (R 4.3.1)
+#>  parsnip      * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
+#>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes      * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
+#>  rlang          1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
+#>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
+#>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
+#>  tune         * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
+#>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
+#>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
 #> 
 #>  [1] /Users/max/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library

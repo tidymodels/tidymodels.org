@@ -78,7 +78,7 @@ complaints_val <- validation(complaints_split)
 We'll need a model to illustrate the code and concepts. Let's fit a basic Weibull model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
 
 ```{r}
-#| label: bag-tree-fit
+#| label: fit
 survreg_spec <- survival_reg() %>% 
   set_engine("survival") %>% 
   set_mode("censored regression")
@@ -93,7 +93,7 @@ survreg_wflow <- workflow() %>%
   add_recipe(other_rec) %>% 
   add_model(survreg_spec)
 
-survreg_fit <- fit(survreg_wflow, data = complaints_train)
+complaints_fit <- fit(survreg_wflow, data = complaints_train)
 ```
 
 Using this model, we'll make predictions of different types. 
@@ -114,7 +114,7 @@ We’ll use a finer grid than the [case study](../survival-case-study) with a ma
 #| label: val-pred
 time_points <- seq(0, 200, by = 10)
 
-val_pred <- augment(survreg_fit, complaints_val, eval_time = time_points)
+val_pred <- augment(complaints_fit, complaints_val, eval_time = time_points)
 val_pred
 ```
 
@@ -199,19 +199,19 @@ These depend on the threshold used to turn predicted probabilities into predicte
 #| label: early-data
 #| include: false 
 time_as_binary_event <- function(surv, eval_time) {
-  disposition_surv <- .extract_surv_time(surv)
+  event_time <- .extract_surv_time(surv)
   status <- .extract_surv_status(surv)
-  is_event_before_t <- disposition_surv <= eval_time & status == 1
+  is_event_before_t <- event_time <= eval_time & status == 1
 
   # Three possible contributions to the statistic from Graf 1999
   # Censoring time before eval_time, no contribution (Graf category 3)
-  binary_res <- rep(NA_character_, length(disposition_surv))
+  binary_res <- rep(NA_character_, length(event_time))
 
   # A real event prior to eval_time (Graf category 1)
   binary_res <- if_else(is_event_before_t, "event", binary_res)
 
   # Observed time greater than eval_time (Graf category 2)
-  binary_res <- if_else(disposition_surv > eval_time, "non-event", binary_res)
+  binary_res <- if_else(event_time > eval_time, "non-event", binary_res)
   factor(binary_res, levels = c("event", "non-event"))
 }
 
@@ -252,7 +252,7 @@ early_data %>%
   geom_histogram(col = "white", bins = 30) + 
   facet_wrap(~obs_class, ncol = 1) +
   lims(x = 0:1) +
-  labs(x = "probability of event at or before 10 weeks\n(1 - probability of 10 week survival)", y = "sum of weights") +
+  labs(x = "predicted probability of event at or before 10 weeks\n(1 - probability of 10 week survival)", y = "sum of weights") +
   theme_bw()
 ```
 
@@ -271,7 +271,7 @@ stats_early <-
            estimate = pred_class,
            case_weights = .weight_censored)
 
-pred_early <- augment(survreg_fit, complaints_val, eval_time = 10)
+pred_early <- augment(complaints_fit, complaints_val, eval_time = 10)
 
 curve_early <- pred_early %>% roc_curve_survival(truth = disposition_surv, .pred)
 auc_early <- pred_early %>% roc_auc_survival(truth = disposition_surv, .pred)
@@ -346,7 +346,7 @@ p_ex_dens <-
   ggplot(aes(.pred_event, col = class, fill = class)) + 
   stat_density(alpha = 1 / 4, trim = TRUE, adjust = 1.2) + 
   lims(x = 0:1) +
-  labs(x = "Probability of Event") +
+  labs(x = "predicted probability of Event") +
   theme(legend.position = "top") +
   scale_color_brewer(palette = "Set1") +
   scale_fill_brewer(palette = "Set1")
@@ -383,7 +383,7 @@ if (!file.exists("auc_plot_data.RData")) {
   }
   
   get_roc_curves <- function(time) {
-    pred_vals <- augment(survreg_fit, complaints_val, eval_time = time)
+    pred_vals <- augment(complaints_fit, complaints_val, eval_time = time)
     pred_vals %>%
       roc_curve_survival(truth = disposition_surv, .pred) %>%
       mutate(.eval_time = time)
@@ -446,7 +446,10 @@ if (!file.exists("cal_plot_data")) {
     numer <- sum(wts_sub[truth_sub == event], na.rm = TRUE)
     denom <- sum(wts_sub, na.rm = TRUE)
     res <- prop.test(numer, denom)
-    tibble(expected = mid, observed = res$estimate,
+    
+    tibble(expected = mid, 
+           `sum of weights` = denom,
+           observed = res$estimate,
            .lower = res$conf.int[1],
            .upper = res$conf.int[2])
   }
@@ -455,15 +458,6 @@ if (!file.exists("cal_plot_data")) {
     
     step_size <- 0.025
     window_size <- 0.1
-    
-    # overlapping bins
-    # steps <- seq(0, 1, by = step_size)
-    # cuts <- list()
-    # cuts$lower_cut <- steps - (window_size / 2)
-    # cuts$upper_cut <- steps + (window_size / 2)
-    # cuts$mid <- cuts$lower_cut + ((cuts$upper_cut - cuts$lower_cut) / 2)
-    # cuts$lower_cut[cuts$lower_cut < 0] <- 0
-    # cuts$upper_cut[cuts$upper_cut > 1] <- 1
     
     # non-overlapping bins
     side <- seq(0, 1, by = 1 / 14)
@@ -512,28 +506,39 @@ binary_encoding %>%
   geom_histogram(col = "white", bins = 20) + 
   facet_grid(obs_class ~ .eval_time) +
   lims(x = 0:1) +
-  labs(x = "probability of event at or before eval time") +
+  labs(x = "predicted probability of event at or before eval time") +
   theme_bw()
 ```
 
-The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is `r round(small_100, 2)`. Clearly, these predictions are not well calibrated. The calibration plots tell the same story:
+The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is `r round(small_100, 2)`. 
+
+The calibration plots are below with the size of the points being proportional to the sum of the weights:
 
 ```{r}
 #| label: cal-both
 #| echo: false
 #| fig-height: 4
+below_85 <- 
+  cal_plot_data %>%
+  dplyr::filter(.eval_time %in% c(100)) %>% 
+  mutate(below_85 = ifelse(`sum of weights` <= 85, 0, `sum of weights`)) %>% 
+  select(`sum of weights`, below_85) %>% 
+  colMeans()
+
 cal_plot_data %>%
   dplyr::filter(.eval_time %in% c(10, 100)) %>%
   mutate(time_label = paste("Evaluation time:", .eval_time)) %>% 
   ggplot(aes(expected, observed)) +
   geom_abline(col = "green", lty = 2) +
-  geom_point() +
+  geom_point(aes(size = `sum of weights`)) +
   geom_line() +
   facet_wrap(~ time_label) +
   lims(x = 0:1, y = 0:1) +
   geom_ribbon(aes(ymin = .lower, ymax = .upper), alpha = 1 / 10) +
   labs(x = "Expected Rate", y = "Observed Rate")
 ```
+
+On the left, the plot shows a few deviations away from the diagonal. The right panel shows that the majority of the data (about `r round(below_85[2] / below_85[1] * 100, 0)`%) are in the first two bins near the upper right-hand side. These points are along the diagonal, indicating good calibration. As we move away from these points, the model becomes less calibrated. Overall though, the Brier statistic is small since most of the data (i.e., weights) are along the diagonal. 
 
 What about the ROC curves produced by these data? They are: 
 
