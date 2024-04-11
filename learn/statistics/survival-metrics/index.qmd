@@ -61,7 +61,7 @@ As an example, we'll simulate some data with the prodlim package, using the meth
 library(tidymodels)
 library(censored)
 
-data(building_complaints, package = "modeldatatoo")
+building_complaints <- modeldatatoo::data_building_complaints()
 
 building_complaints <- building_complaints %>% 
   mutate(
@@ -75,7 +75,7 @@ complaints_train <- training(complaints_split)
 complaints_val <- validation(complaints_split)
 ```
 
-We'll need a model to illustrate the code and concepts. Let's fit a basic proportional hazards model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
+We'll need a model to illustrate the code and concepts. Let's fit a basic Weibull model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
 
 ```{r}
 #| label: bag-tree-fit
@@ -108,11 +108,11 @@ predict(object, new_data, type = "survival", eval_time = numeric())
 
 where `eval_time` is a vector of time points at which we want the corresponding survivor function estimates. Alternatively, we can use the `augment()` function to get both types of prediction and automatically attach them to the data. 
 
-We’ll use a finer grid than the original analysis with a maximum evaluation time of 200 days for this analysis. 
+We’ll use a finer grid than the [case study](../survival-case-study) with a maximum evaluation time of 200 days for this analysis. 
 
 ```{r}
 #| label: val-pred
-time_points <- seq(0, 200, by = 10) # 21 evaluation times
+time_points <- seq(0, 200, by = 10)
 
 val_pred <- augment(survreg_fit, complaints_val, eval_time = time_points)
 val_pred
@@ -137,7 +137,7 @@ $$
 Brier_{class} = \frac{1}{N}\sum_{i=1}^N\sum_{k=1}^C (y_{ik} - \hat{p}_{ik})^2
 $$
 
-For survival models, we transform the event time data into a binary version $y_{it}$: is there an event at evaluation time $t$^[Again, see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article for more on this.]. The survival function estimates $\hat{p}_{it}$ is the probability corresponding to non-events at time $t$. For example, if there has not been an event at the current evaluation time, our best model should estimate the survival probability near one. For observations that are events, the probability estimate is just one minus the survivor estimate. To account for censoring, we also weight each observation with $w_{it}$. The [time-dependent Brier score](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&btnG=) is: 
+For survival models, we transform the event time data into a binary version $y_{it}$: is there an event at evaluation time $t$^[Again, see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article for more on this.]. The survival function estimate $\hat{p}_{it}$ is the probability corresponding to non-events at time $t$. For example, if there has not been an event at the current evaluation time, our best model should estimate the survival probability near one. For observations that are events, the probability estimate is just one minus the survivor estimate. To account for censoring, we also weight each observation with $w_{it}$. The [time-dependent Brier score](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&btnG=) is: 
 
 $$
 Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(y_{it} - \hat{p}_{it})^2}_\text{non-events} +  \underbrace{I(y_{it} = 1)(y_{it} - (1 - \hat{p}_{it}))^2}_\text{events}\right]
@@ -173,7 +173,7 @@ brier_scores %>%
   labs(x = "time", y = "Brier score")
 ```
 
-This shows the worst predictions (relatively speaking) occur at `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".eval_time")` days with a corresponding Brier score of `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".estimate") %>% signif(digits = 3)` Performance gets steadily better over (evaluation) time. 
+This shows the worst predictions (relatively speaking) occur at `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".eval_time")` days with a corresponding Brier score of `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".estimate") %>% signif(digits = 3)`. Performance gets steadily better over (evaluation) time. 
 
 Instead of thinking in `r length(time_points)` dimensions, there is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the above curve. The syntax is the same, but the result has a single row: 
 
@@ -277,7 +277,7 @@ curve_early <- pred_early %>% roc_curve_survival(truth = disposition_surv, .pred
 auc_early <- pred_early %>% roc_auc_survival(truth = disposition_surv, .pred)
 ```
 
-More probability values are to the right of the 50% cutoff for the true non-events. Conversely, true events tend to have smaller probabilities. Using this cutoff, the sensitivity would be `r round(stats_early$.estimate[2] * 100, 1)`% and the specificity would be `r round(stats_early$.estimate[3] * 100, 1)`%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
+More probability values are to the left of the 50% cutoff for the true non-events. The true events tend to have larger probabilities but are not nearly as clearly distributed to the right of the cutoff as the non-events are to the left of the cutoff. Using this cutoff, the sensitivity would be `r round(stats_early$.estimate[2] * 100, 1)`% and the specificity would be `r round(stats_early$.estimate[3] * 100, 1)`%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
 
 ROC curves were designed as a general method that, given a collection of continuous predictions, determines an effective threshold such that values above the threshold indicate a specific event. For our purposes, the ROC curve will compute the sensitivity and specificity for _all possible_ probability thresholds. It then plots the true positive rate versus the false positive rate. Generally, we use the area under the ROC curve to quantify it with a single number. Values near one indicate a perfect model, while values near 1/2 occur with non-informative models. 
 
@@ -324,7 +324,7 @@ In this case, performance is best at earlier time points (unlike the Brier score
 
 ## Disagreement between metrics
 
-It should not be surprising that each metric's results differ over time, but it may seem odd that the best model results differ between metrics. 
+While it may not be surprising that each metric's results vary over time, it may seem odd that _when_ the model does best also differs between metrics. 
 
 The issue is that the ROC measures class separation, and the Brier score focuses more on accurate and well-calibrated predictions. These are not the same thing. As we'll see shortly, it can be easy to separate data between qualitative prediction (event or no event) even when the corresponding probability predictions are very inaccurate. 
 
