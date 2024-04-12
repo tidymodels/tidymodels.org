@@ -4,8 +4,8 @@ categories:
   - model fitting
   - confidence intervals
   - bootstrapping
-type: learn-subsection
-weight: 5
+type: model-subsection
+weight: 6
 description: | 
   tidymodels has high-level functions to produnce bootstrap confidence intervals for performace statistics.
 toc: true
@@ -24,7 +24,7 @@ The tidymodels framework focuses on evaluating models via _empirical validation_
 
 If a model uses traditional resampling (such as 10-fold cross-validation), it is easy to get confidence intervals (or Bayesian intervals) of performances. For example, if you are looking at classification accuracy, you can say something like, 
 
-> Our accuracy was estimated to be 91.3% with a 90% confidence interval of (80.1%, 99.9%).
+> Our accuracy was estimated to be 91.3% with a 90% confidence interval of (80.1%, 95.9%).
 
 For some performance metrics, it is very difficult to compute interval estimates of validation sets (or test sets). 
 
