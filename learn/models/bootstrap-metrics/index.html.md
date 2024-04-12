@@ -7,7 +7,7 @@ categories:
 type: learn-subsection
 weight: 5
 description: | 
-  Create models that use coefficients, extract them from fitted models, and visualize them.
+  tidymodels has high-level functions to produnce bootstrap confidence intervals for performace statistics.
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
