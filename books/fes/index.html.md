@@ -7,6 +7,8 @@ weight: 3
 
 
 
+
+
 ![](cover.jpg) 
 
 A primary goal of predictive modeling is to find a reliable and effective predictive relationship between an available set of features and an outcome. This book provides an extensive set of techniques for uncovering effective representations of the features for modeling the outcome and for finding an optimal subset of features to improve a model’s predictive performance.
