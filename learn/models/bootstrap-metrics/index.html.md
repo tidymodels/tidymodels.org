@@ -4,7 +4,7 @@ categories:
   - model fitting
   - confidence intervals
   - bootstrapping
-type: model-subsection
+type: learn-subsection
 weight: 6
 description: | 
   tidymodels has high-level functions to produnce bootstrap confidence intervals for performace statistics.
