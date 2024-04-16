@@ -458,7 +458,7 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  rlang          1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
 #>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.3.2)
 #>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels   * 1.1.1   2023-08-24 [1] CRAN (R 4.3.1)
+#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
 #>  tune         * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
 #>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
