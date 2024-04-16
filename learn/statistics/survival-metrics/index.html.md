@@ -36,7 +36,7 @@ To start, let's define the various types of times that will be mentioned:
 
 ## Example data
 
-As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
+As an example, we'll use the building complaints data from the [case study](../survival-case-study). We'll also load the censored package so that we can fit a model to these time-to-event data:
 
 
 ::: {.cell layout-align="center"}
@@ -439,9 +439,9 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
-#>  tz       America/New_York
-#>  date     2024-04-11
-#>  pandoc   3.1.11 @ /opt/homebrew/bin/ (via rmarkdown)
+#>  tz       Europe/London
+#>  date     2024-04-16
+#>  pandoc   3.1.12.3 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      * version date (UTC) lib source
@@ -456,14 +456,14 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  recipes      * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
 #>  rlang          1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
-#>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
+#>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.3.2)
 #>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
+#>  tidymodels   * 1.1.1   2023-08-24 [1] CRAN (R 4.3.1)
 #>  tune         * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
 #>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
 #>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
 #> 
-#>  [1] /Users/max/Library/R/arm64/4.3/library
+#>  [1] /Users/hannah/Library/R/arm64/4.3/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
 #> 
 #> ────────────────────────────────────────────────────────────────────
