@@ -7,7 +7,7 @@ categories:
 type: learn-subsection
 weight: 6
 description: | 
-  tidymodels has high-level functions to produnce bootstrap confidence intervals for performace statistics.
+  tidymodels has high-level functions to produce bootstrap confidence intervals for performance statistics.
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
@@ -95,7 +95,6 @@ Let's use grid search to evaluate a grid of values between 2 and 50. We'll use `
 #| cache: true
 
 grid <- tibble(num_terms = 2:50)
-
 ctrl <- control_grid(save_pred = TRUE)
 
 mars_res <- 
@@ -123,7 +122,7 @@ For that, we'll compute confidence intervals. However, there are no analytical f
 
 In statistics, the bootstrap is a resampling method that takes a random sample the same size as the original but samples [with replacement](https://en.wikipedia.org/wiki/Sampling_(statistics)#Replacement_of_selected_units). This means that, in the bootstrap sample, some rows of data are represented multiple times and others not at all. 
 
-There is [some theory](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22bootstrap+confidence+intervals%22&btnG=) that shows that if we recompute a statistic a large number of times using the bootstrap, we can understand its sampling distribution and, from that, compute confidence intervals. A good recent reference on this subject (but the original inventor of the bootstrap) is [_Computer Age Statistical Inference_](https://hastie.su.domains/CASI/) (which includes a book PDF).
+There is [some theory](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22bootstrap+confidence+intervals%22&btnG=) that shows that if we recompute a statistic a large number of times using the bootstrap, we can understand its sampling distribution and, from that, compute confidence intervals. A good recent reference on this subject by the original inventor of the bootstrap is [_Computer Age Statistical Inference_](https://hastie.su.domains/CASI/) which is available as a free PDF.
 
 For our application, we'll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. 
 
@@ -156,13 +155,13 @@ Those are very tight! Maybe there is some credence to using many terms. Let's sa
 
 ## Test Set Intervals
 
-Suppose the MARS model was the best we could do for these data. We would then fit the model (with 40 terms) on the training set then finally evaluate the test set. tidymodels has an API called `last_fit()` that uses our original data splitting object (`delivery_split`) and the model specification. To get the test set predictions, we can use `collect_metrics()`: 
+Suppose the MARS model was the best we could do for these data. We would then fit the model (with 40 terms) on the training set then finally evaluate the test set. tidymodels has a function called `last_fit()` that uses our original data splitting object (`delivery_split`) and the model specification. To get the test set predictions, we can use `collect_metrics()`: 
 
 ```{r}
 #| label: test-res
 
 mars_final_spec <- 
-    mars(num_terms = 40, prod_degree = 2, prune_method = "none") %>% 
+  mars(num_terms = 40, prod_degree = 2, prune_method = "none") %>% 
   set_mode("regression")
 
 mars_test_res <- 
@@ -188,6 +187,8 @@ mars_test_boot <- int_pctl(mars_test_res, alpha = 0.10)
 mars_test_boot
 ```
 
+So, to sum up the main idea: If you're not getting multiple estimates of your performance metric from your resample procedure—like when using a validation set—you can still get interval estimates for your metrics. A metric-agnostic approach is to bootstrap your predictions and recalculate your metrics based on those.
+
 ## Notes
 
  - The point estimates produced by `collect_metrics()` and `int_pctl()` may disagree. They are two different statistical estimates of the same quantity. For reasonably sized data sets, they should be pretty close. 
@@ -195,7 +196,7 @@ mars_test_boot
  - Parallel processing can be used for bootstrapping (using the [same tools](https://www.tmwr.org/grid-search#parallel-processing) that can be used with the tune package). 
  
  
- - `int_pctl()` works with classification and censored regression models. For the latter, the default is to compute intervals for every metric and every evaluation time. 
+ - `int_pctl()` also works with classification and censored regression models. For the latter, the default is to compute intervals for every metric and every evaluation time. 
 
  - `int_pctl()` has options to filter which models, metrics, and/or evaluation times are used for analysis. If you investigated many grid points, you don't have to bootstrap them all. 
  
