@@ -393,12 +393,7 @@ window.document.addEventListener("DOMContentLoaded", function (_event) {
       return focusedEl.tagName.toLowerCase() === tag;
     });
 
-    if (
-      kbds &&
-      kbds.includes(key) &&
-      !isFormElFocused &&
-      !document.activeElement.isContentEditable
-    ) {
+    if (kbds && kbds.includes(key) && !isFormElFocused) {
       event.preventDefault();
       window.quartoOpenSearch();
     }
