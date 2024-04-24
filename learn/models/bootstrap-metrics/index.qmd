@@ -50,7 +50,7 @@ options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
 registerDoMC(cores = parallel::detectCores(logical = FALSE))
 ```
 
-We'll use the [delivery time data](https://modeldata.tidymodels.org/reference/deliveries.html) and follow the analysis used on [this website](https://aml4td.org/chapters/whole-game.html#sec-delivery-times). The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with `item_`):
+We'll use the [delivery time data](https://modeldata.tidymodels.org/reference/deliveries.html) and follow the analysis used in [_Applied Machine Learning for Tabular Data_](https://aml4td.org/chapters/whole-game.html#sec-delivery-times). The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with `item_`):
 
 ```{r}
 library(tidymodels)
@@ -72,8 +72,7 @@ delivery_train <- training(delivery_split)
 delivery_test  <- testing(delivery_split)
 delivery_val   <- validation(delivery_split)
 
-# Create an object that makes a validation set "look like resampling"
-# to tidymodels: 
+# Create an object that bundle training and validation set as a resample object
 delivery_rs    <- validation_set(delivery_split)
 ```
 
