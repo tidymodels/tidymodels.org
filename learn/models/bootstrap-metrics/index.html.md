@@ -7,12 +7,11 @@ categories:
 type: learn-subsection
 weight: 6
 description: | 
-  tidymodels has high-level functions to produnce bootstrap confidence intervals for performace statistics.
+  tidymodels has high-level functions to produce bootstrap confidence intervals for performance statistics.
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
 ---
-
 
 
 
@@ -26,9 +25,11 @@ If a model uses traditional resampling (such as 10-fold cross-validation), it is
 
 > Our accuracy was estimated to be 91.3% with a 90% confidence interval of (80.1%, 95.9%).
 
-For some performance metrics, it is very difficult to compute interval estimates of validation sets (or test sets). 
+We have replicated performance estimates for these traditional resampling methods (e.g., 10 accuracy estimates from 10-fold cross-validation), so a simple standard error calculation is often a good approach for computing a confidence interval. 
 
-This article discusses using the bootstrap to estimate confidence intervals for performance using tidymodels. To use code in this article,  you will need to install the following packages: earth and tidymodels. We'll use data from the modeldata package. 
+When we have a lot of data, for some definition of “a lot,” we might choose to use a validation set. This single data collection allows us to estimate performance during model development (without touching the test set). However, it results in a single performance estimate, so the traditional approach to computing confidence intervals isn’t feasible.
+
+This article discusses using [the bootstrap](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) to estimate confidence intervals for performance using tidymodels. To use code in this article,  you will need to install the following packages: earth and tidymodels. We'll use data from the modeldata package to demonstrate. 
 
 ## Example Data
 
@@ -36,10 +37,7 @@ This article discusses using the bootstrap to estimate confidence intervals for 
 
 
 
-
-
-We'll use the [delivery time data](https://modeldata.tidymodels.org/reference/deliveries.html) and follow the analysis used on [this website](https://aml4td.org/chapters/whole-game.html#sec-delivery-times). The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with `item_`):
-
+We'll use the [delivery time data](https://modeldata.tidymodels.org/reference/deliveries.html) and follow the analysis used in [_Applied Machine Learning for Tabular Data_](https://aml4td.org/chapters/whole-game.html#sec-delivery-times). The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with `item_`):
 
 
 ::: {.cell layout-align="center"}
@@ -84,9 +82,7 @@ str(deliveries)
 :::
 
 
-
 Given the amount of data, a validation set was used _in lieu_ of multiple resamples. This means that we can fit models on the training set, evaluate/compare them with the validation set, and reserve the test set for a final performance assessment (after model development). The data splitting code is:
-
 
 
 ::: {.cell layout-align="center"}
@@ -101,19 +97,16 @@ delivery_train <- training(delivery_split)
 delivery_test  <- testing(delivery_split)
 delivery_val   <- validation(delivery_split)
 
-# Create an object that makes a validation set "look like resampling"
-# to tidymodels: 
+# Create an object that bundle training and validation set as a resample object
 delivery_rs    <- validation_set(delivery_split)
 ```
 :::
-
 
 
 ## Tuning a Model
 
 To demonstrate, we'll use a multivariate adaptive regression spline ([MARS](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22multivariate+adaptive+regression+splines%22&btnG=)) model produced by the earth package. The original analysis of these data shows some significant interactions between predictors, so we will specify a model that can estimate them using the argument `prod_degree = 2`. Let's create a model specification that tunes the number of terms to retain: 
  
-
 
 ::: {.cell layout-align="center"}
 
@@ -125,16 +118,13 @@ mars_spec <-
 :::
 
 
-
 Let's use grid search to evaluate a grid of values between 2 and 50. We'll use `tune_grid()` with an option to save the out-of-sample (i.e., validation set) predictions for each candidate model in the grid. By default, for regression models, the function computes the root mean squared error (RMSE) and R<sup>2</sup>:  
-
 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 grid <- tibble(num_terms = 2:50)
-
 ctrl <- control_grid(save_pred = TRUE)
 
 mars_res <- 
@@ -149,9 +139,7 @@ mars_res <-
 :::
 
 
-
 How did the model look?
-
 
 
 ::: {.cell layout-align="center"}
@@ -166,8 +154,7 @@ autoplot(mars_res)
 :::
 
 
-
-After about 20 retained terms, both statistics appear to plateau.  However, we have no sense of the noise around these values. Is a model with 20 terms just as good as a model using 50? 
+After about 20 retained terms, both statistics appear to plateau.  However, we have no sense of the noise around these values. Is a model with 20 terms just as good as a model using 40? In other words, is the slight improvement in RMSE that we see around 39 terms real or within the experimental noise? Forty is a lot of model terms, but that smidgeon of improvement might really be worth it for our application. 
 
 For that, we'll compute confidence intervals. However, there are no analytical formulas for most performance statistics, so we need a more general method for computing them.
 
@@ -175,12 +162,11 @@ For that, we'll compute confidence intervals. However, there are no analytical f
 
 In statistics, the bootstrap is a resampling method that takes a random sample the same size as the original but samples [with replacement](https://en.wikipedia.org/wiki/Sampling_(statistics)#Replacement_of_selected_units). This means that, in the bootstrap sample, some rows of data are represented multiple times and others not at all. 
 
-There is [some theory](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22bootstrap+confidence+intervals%22&btnG=) that shows that if we recompute a statistic a large number of times using the bootstrap, we can understand its sampling distribution and, from that, compute confidence intervals. A good recent reference on this subject (but the original inventor of the bootstrap) is [_Computer Age Statistical Inference_](https://hastie.su.domains/CASI/) (which includes a book PDF).
+There is [some theory](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22bootstrap+confidence+intervals%22&btnG=) that shows that if we recompute a statistic a large number of times using the bootstrap, we can understand its sampling distribution and, from that, compute confidence intervals. A good recent reference on this subject by the original inventor of the bootstrap is [_Computer Age Statistical Inference_](https://hastie.su.domains/CASI/) which is available as a free PDF.
 
-For our application, we'll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. 
+For our application, we'll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. Note that we are not refitting the model; we will be solely relying on the existing out-of-sample predictions from the validation set. 
 
 There's a tidymodels function called `int_pctl()` for this purpose. It has a method to work with objects produced by the tune package, such as our `mars_res` object. Let's compute 90% confidence intervals using 2,000 bootstrap samples:
-
 
 
 ::: {.cell layout-align="center"}
@@ -207,9 +193,7 @@ mars_boot
 :::
 
 
-
 The results have columns for the mean of the sampling distribution (`.estimate`) and the upper and lower confidence bounds (`.upper` and `.lower`, respectively). Let's visualize these results: 
-
 
 
 ::: {.cell layout-align="center"}
@@ -230,20 +214,18 @@ mars_boot %>%
 :::
 
 
-
-Those are very tight! Maybe there is some credence to using many terms. Let's say that 40 terms seems like a reasonable value for that tuning parameter. It's large, but the out-of-sample statistics indicate that it does not overfit at this point. 
+Those are very tight! Maybe there is some credence to using many terms. Let's say that 40 terms seems like a reasonable value for that tuning parameter since the high degree of certainty indicates that the small drop in RMSE is likely to be real. 
 
 ## Test Set Intervals
 
-Suppose the MARS model was the best we could do for these data. We would then fit the model (with 40 terms) on the training set then finally evaluate the test set. tidymodels has an API called `last_fit()` that uses our original data splitting object (`delivery_split`) and the model specification. To get the test set predictions, we can use `collect_metrics()`: 
-
+Suppose the MARS model was the best we could do for these data. We would then fit the model (with 40 terms) on the training set then finally evaluate the test set. tidymodels has a function called `last_fit()` that uses our original data splitting object (`delivery_split`) and the model specification. To get the test set predictions, we can use `collect_metrics()`: 
 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 mars_final_spec <- 
-    mars(num_terms = 40, prod_degree = 2, prune_method = "none") %>% 
+  mars(num_terms = 40, prod_degree = 2, prune_method = "none") %>% 
   set_mode("regression")
 
 mars_test_res <- 
@@ -260,9 +242,7 @@ collect_metrics(mars_test_res)
 :::
 
 
-
 These values are pretty consistent with what the validation set (and its confidence intervals) produced: 
-
 
 
 ::: {.cell layout-align="center"}
@@ -278,9 +258,7 @@ mars_boot %>% filter(num_terms == 40)
 :::
 
 
-
 `int_pctl()` also works on objects produced by `last_fit()`: 
-
 
 
 ::: {.cell layout-align="center"}
@@ -298,23 +276,23 @@ mars_test_boot
 :::
 
 
+So, to sum up the main idea: If you're not getting multiple estimates of your performance metric from your resample procedure—like when using a validation set—you can still get interval estimates for your metrics. A metric-agnostic approach is to bootstrap your predictions and recalculate your metrics based on those.
 
 ## Notes
 
  - The point estimates produced by `collect_metrics()` and `int_pctl()` may disagree. They are two different statistical estimates of the same quantity. For reasonably sized data sets, they should be pretty close. 
  
- - Parallel processing can be used for bootstrapping (using the [same tools](https://www.tmwr.org/grid-search#parallel-processing) that can be used with the tune package). 
+ - Parallel processing can be used for bootstrapping (using the [same tools](https://www.tmwr.org/grid-search#parallel-processing) that can be used with the tune package). The documentation for the tune page has some [practical advice on setting those tools up](https://tune.tidymodels.org/articles/extras/optimizations.html#parallel-processing).
  
  
- - `int_pctl()` works with classification and censored regression models. For the latter, the default is to compute intervals for every metric and every evaluation time. 
+ - `int_pctl()` also works with classification and censored regression models. For the latter, the default is to compute intervals for every metric and every evaluation time. 
 
  - `int_pctl()` has options to filter which models, metrics, and/or evaluation times are used for analysis. If you investigated many grid points, you don't have to bootstrap them all. 
  
- - Since bootstrap percentiles use... percentiles, you should generate a few thousand bootstrap samples to compute the intervals to get stable and accurate results. 
+ - Unsurprisingly, bootstrap percentile methods use percentiles. To compute the intervals, you should generate a few thousand bootstrap samples to get stable and accurate estimates of these extreme parts of the sampling distribution. 
  
 
 ## Session information {#session-info}
-
 
 
 ::: {.cell layout-align="center"}
@@ -323,15 +301,15 @@ mars_test_boot
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.3.2 (2023-10-31)
-#>  os       macOS Ventura 13.6.4
+#>  os       macOS Sonoma 14.4.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/New_York
-#>  date     2024-04-12
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2024-04-23
+#>  pandoc   3.1.11 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
@@ -340,7 +318,7 @@ mars_test_boot
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
 #>  earth      * 5.3.2   2023-01-26 [1] CRAN (R 4.3.0)
 #>  ggplot2    * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
+#>  infer      * 1.0.6   2024-01-31 [1] CRAN (R 4.3.1)
 #>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
 #>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
 #>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)

@@ -30,9 +30,11 @@ If a model uses traditional resampling (such as 10-fold cross-validation), it is
 
 > Our accuracy was estimated to be 91.3% with a 90% confidence interval of (80.1%, 95.9%).
 
-For some performance metrics, it is very difficult to compute interval estimates of validation sets (or test sets). 
+We have replicated performance estimates for these traditional resampling methods (e.g., 10 accuracy estimates from 10-fold cross-validation), so a simple standard error calculation is often a good approach for computing a confidence interval. 
 
-This article discusses using the bootstrap to estimate confidence intervals for performance using tidymodels. `r article_req_pkgs(pkgs)` We'll use data from the modeldata package. 
+When we have a lot of data, for some definition of “a lot,” we might choose to use a validation set. This single data collection allows us to estimate performance during model development (without touching the test set). However, it results in a single performance estimate, so the traditional approach to computing confidence intervals isn’t feasible.
+
+This article discusses using [the bootstrap](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) to estimate confidence intervals for performance using tidymodels. `r article_req_pkgs(pkgs)` We'll use data from the modeldata package to demonstrate. 
 
 ## Example Data
 
@@ -114,7 +116,7 @@ How did the model look?
 autoplot(mars_res)
 ```
 
-After about 20 retained terms, both statistics appear to plateau.  However, we have no sense of the noise around these values. Is a model with 20 terms just as good as a model using 50? 
+After about 20 retained terms, both statistics appear to plateau.  However, we have no sense of the noise around these values. Is a model with 20 terms just as good as a model using 40? In other words, is the slight improvement in RMSE that we see around 39 terms real or within the experimental noise? Forty is a lot of model terms, but that smidgeon of improvement might really be worth it for our application. 
 
 For that, we'll compute confidence intervals. However, there are no analytical formulas for most performance statistics, so we need a more general method for computing them.
 
@@ -124,7 +126,7 @@ In statistics, the bootstrap is a resampling method that takes a random sample t
 
 There is [some theory](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22bootstrap+confidence+intervals%22&btnG=) that shows that if we recompute a statistic a large number of times using the bootstrap, we can understand its sampling distribution and, from that, compute confidence intervals. A good recent reference on this subject by the original inventor of the bootstrap is [_Computer Age Statistical Inference_](https://hastie.su.domains/CASI/) which is available as a free PDF.
 
-For our application, we'll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. 
+For our application, we'll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. Note that we are not refitting the model; we will be solely relying on the existing out-of-sample predictions from the validation set. 
 
 There's a tidymodels function called `int_pctl()` for this purpose. It has a method to work with objects produced by the tune package, such as our `mars_res` object. Let's compute 90% confidence intervals using 2,000 bootstrap samples:
 
@@ -141,7 +143,6 @@ The results have columns for the mean of the sampling distribution (`.estimate`)
 
 ```{r}
 #| label: int-plot
-
 mars_boot %>% 
   ggplot(aes(num_terms)) + 
     geom_line(aes(y = .estimate)) + 
@@ -151,7 +152,7 @@ mars_boot %>%
     labs(y = NULL, x = "# Retained Terms")
 ```
 
-Those are very tight! Maybe there is some credence to using many terms. Let's say that 40 terms seems like a reasonable value for that tuning parameter. It's large, but the out-of-sample statistics indicate that it does not overfit at this point. 
+Those are very tight! Maybe there is some credence to using many terms. Let's say that 40 terms seems like a reasonable value for that tuning parameter since the high degree of certainty indicates that the small drop in RMSE is likely to be real. 
 
 ## Test Set Intervals
 
@@ -193,14 +194,14 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 
  - The point estimates produced by `collect_metrics()` and `int_pctl()` may disagree. They are two different statistical estimates of the same quantity. For reasonably sized data sets, they should be pretty close. 
  
- - Parallel processing can be used for bootstrapping (using the [same tools](https://www.tmwr.org/grid-search#parallel-processing) that can be used with the tune package). 
+ - Parallel processing can be used for bootstrapping (using the [same tools](https://www.tmwr.org/grid-search#parallel-processing) that can be used with the tune package). The documentation for the tune page has some [practical advice on setting those tools up](https://tune.tidymodels.org/articles/extras/optimizations.html#parallel-processing).
  
  
  - `int_pctl()` also works with classification and censored regression models. For the latter, the default is to compute intervals for every metric and every evaluation time. 
 
  - `int_pctl()` has options to filter which models, metrics, and/or evaluation times are used for analysis. If you investigated many grid points, you don't have to bootstrap them all. 
  
- - Since bootstrap percentiles use... percentiles, you should generate a few thousand bootstrap samples to compute the intervals to get stable and accurate results. 
+ - Unsurprisingly, bootstrap percentile methods use percentiles. To compute the intervals, you should generate a few thousand bootstrap samples to get stable and accurate estimates of these extreme parts of the sampling distribution. 
  
 
 ## Session information {#session-info}
