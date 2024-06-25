@@ -2,7 +2,6 @@
 title: "Creating case weights based on time"
 categories:
   - model fitting
-  - case weights
   - time series
 type: learn-subsection
 weight: 5

@@ -5,8 +5,7 @@ categories:
   - tuning
   - rsample
   - parsnip
-  - tune
-  - dials
+  - tuning
   - workflows
   - yardstick
 description: | 

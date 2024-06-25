@@ -7,7 +7,7 @@ categories:
   - parsnip
   - workflows
   - yardstick
-  - broom
+  - tidying results
 description: | 
   Prepare data for modeling with modular preprocessing steps.
 toc-location: body

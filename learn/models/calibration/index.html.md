@@ -4,7 +4,6 @@ categories:
   - probably
   - yardstick
   - classification
-  - calibration
 type: learn-subsection
 weight: 5
 description: | 

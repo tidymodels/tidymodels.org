@@ -2,10 +2,9 @@
 title: "Evaluate your model with resampling"
 weight: 3
 categories:
-  - resampling
   - rsample
   - parsnip
-  - tune
+  - tuning
   - workflows
   - yardstick
 description: | 

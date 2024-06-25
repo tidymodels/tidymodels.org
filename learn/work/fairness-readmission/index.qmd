@@ -3,8 +3,8 @@ title: "Fair prediction of hospital readmission: a machine learning fairness cas
 categories:
   - yardstick
   - fairness
-  - tune
-  - workflow sets
+  - tuning
+  - classification
 type: learn-subsection
 weight: 6
 description: |

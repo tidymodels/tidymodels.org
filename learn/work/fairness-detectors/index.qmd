@@ -3,6 +3,7 @@ title: "Are GPT detectors fair? A machine learning fairness case study"
 categories:
   - yardstick
   - fairness
+  - classification
 type: learn-subsection
 weight: 6
 description: |

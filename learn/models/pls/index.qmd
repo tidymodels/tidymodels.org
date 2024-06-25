@@ -3,7 +3,7 @@ title: "Multivariate analysis using partial least squares"
 categories:
   - pre-processing
   - multivariate analysis
-  - partial least squares
+  - correlation
 type: learn-subsection
 weight: 6
 description: | 

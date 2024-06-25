@@ -2,8 +2,8 @@
 title: "Regression models two ways"
 categories:
   - model fitting
-  - random forests
-  - linear regression
+  - parsnip
+  - regression
 type: learn-subsection
 weight: 1
 description: | 

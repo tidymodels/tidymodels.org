@@ -2,7 +2,6 @@
 title: "Statistical analysis of contingency tables"
 categories:
   - statistical analysis
-  - analysis of tables
   - hypothesis testing
 type: learn-subsection
 weight: 5
