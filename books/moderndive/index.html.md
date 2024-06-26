@@ -7,9 +7,6 @@ weight: 5
 
 
 
-
-
-
 ![](cover.png) 
 
 This book is intended to be a gentle introduction to the practice of analyzing data and answering questions using data the way data scientists, statisticians, data journalists, and other researchers would. Over the course of this book, you will develop your "data science toolbox," equipping yourself with tools such as data visualization, data formatting, data wrangling, data modeling using regression, and statistical inference via hypothesis testing and confidence intervals.
