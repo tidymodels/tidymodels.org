@@ -2,7 +2,6 @@
 title: "K-means clustering with tidy data principles"
 categories:
   - statistical analysis
-  - clustering
   - tidying results
 type: learn-subsection
 weight: 2

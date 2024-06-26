@@ -2,8 +2,8 @@
 title: "Classification models using a neural network"
 categories:
   - model fitting
-  - torch
   - neural networks
+  - classification
 type: learn-subsection
 weight: 2
 description: | 

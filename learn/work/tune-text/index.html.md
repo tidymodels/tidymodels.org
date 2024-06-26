@@ -1,11 +1,8 @@
 ---
 title: "Tuning text models"
 categories:
-  - model tuning
-  - text analysis
-  - logistic regression
-  - Bayesian optimization
-  - extracting results
+  - tuning
+  - regression
 
 type: learn-subsection
 weight: 4

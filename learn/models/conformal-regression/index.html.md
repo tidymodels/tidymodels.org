@@ -3,7 +3,7 @@ title: "Conformal inference for regression models"
 categories:
   - probably
   - parsnip
-  - tune
+  - tuning
   - regression
 type: learn-subsection
 weight: 5

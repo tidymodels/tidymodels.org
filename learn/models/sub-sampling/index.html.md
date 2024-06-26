@@ -3,8 +3,6 @@ title: "Subsampling for class imbalances"
 categories:
   - model fitting
   - pre-processing
-  - class imbalances
-  - discriminant analysis
 type: learn-subsection
 weight: 3
 description: | 

@@ -1,8 +1,9 @@
 ---
 title: "Model tuning via grid search"
 categories:
-  - model tuning
+  - tuning
   - SVMs
+  - classification
 type: learn-subsection
 weight: 1
 description: | 

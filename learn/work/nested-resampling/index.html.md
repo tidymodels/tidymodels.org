@@ -1,7 +1,6 @@
 ---
 title: "Nested resampling"
 categories:
-  - nested resampling
   - SVMs
 type: learn-subsection
 weight: 2

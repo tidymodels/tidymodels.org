@@ -3,8 +3,8 @@ title: "Working with model coefficients"
 categories:
   - model fitting
   - tidying results
-  - linear regression
-  - model tuning
+  - regression
+  - tuning
 type: learn-subsection
 weight: 5
 description: | 

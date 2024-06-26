@@ -8,7 +8,7 @@ categories:
   - recipes
   - rsample
   - workflows
-  - tune
+  - tuning
 description: | 
   Develop, from beginning to end, a predictive model using best practices.
 toc-location: body
