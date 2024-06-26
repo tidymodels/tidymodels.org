@@ -377,16 +377,16 @@ print(bayes_fit, digits = 5)
 #>  predictors:   6
 #> ------
 #>                                Median   MAD_SD  
-#> (Intercept)                     0.03277  0.00949
-#> initial_volume                  0.00156  0.00040
-#> food_regimeLow                  0.02015  0.01314
-#> food_regimeHigh                 0.02190  0.01434
-#> initial_volume:food_regimeLow  -0.00128  0.00052
-#> initial_volume:food_regimeHigh  0.00049  0.00071
+#> (Intercept)                     0.03312  0.00950
+#> initial_volume                  0.00155  0.00039
+#> food_regimeLow                  0.01972  0.01304
+#> food_regimeHigh                 0.02226  0.01428
+#> initial_volume:food_regimeLow  -0.00126  0.00051
+#> initial_volume:food_regimeHigh  0.00050  0.00068
 #> 
 #> Auxiliary parameter(s):
 #>       Median  MAD_SD 
-#> sigma 0.02141 0.00193
+#> sigma 0.02130 0.00178
 #> 
 #> ------
 #> * For help interpreting the printed output see ?print.stanreg
@@ -407,12 +407,12 @@ tidy(bayes_fit, conf.int = TRUE)
 #> # A tibble: 6 × 5
 #>   term                            estimate std.error  conf.low conf.high
 #>   <chr>                              <dbl>     <dbl>     <dbl>     <dbl>
-#> 1 (Intercept)                     0.0328    0.00949   0.0160    0.0491  
-#> 2 initial_volume                  0.00156   0.000396  0.000876  0.00226 
-#> 3 food_regimeLow                  0.0201    0.0131   -0.00119   0.0425  
-#> 4 food_regimeHigh                 0.0219    0.0143   -0.00227   0.0457  
-#> 5 initial_volume:food_regimeLow  -0.00128   0.000519 -0.00217  -0.000422
-#> 6 initial_volume:food_regimeHigh  0.000491  0.000713 -0.000666  0.00167
+#> 1 (Intercept)                     0.0331    0.00950   0.0172    0.0481  
+#> 2 initial_volume                  0.00155   0.000389  0.000898  0.00222 
+#> 3 food_regimeLow                  0.0197    0.0130   -0.00174   0.0418  
+#> 4 food_regimeHigh                 0.0223    0.0143   -0.00257   0.0457  
+#> 5 initial_volume:food_regimeLow  -0.00126   0.000509 -0.00212  -0.000420
+#> 6 initial_volume:food_regimeHigh  0.000504  0.000681 -0.000690  0.00169
 ```
 :::
 
@@ -507,7 +507,7 @@ ggplot(urchins,
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.3.3 (2024-02-29)
+#>  version  R version 4.4.0 (2024-04-24)
 #>  os       macOS Sonoma 14.4.1
 #>  system   aarch64, darwin20
 #>  ui       X11
@@ -515,33 +515,32 @@ ggplot(urchins,
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-03-26
-#>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
+#>  date     2024-06-26
+#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     * version date (UTC) lib source
-#>  broom       * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
-#>  broom.mixed * 0.2.9.4 2022-04-17 [1] CRAN (R 4.3.0)
-#>  dials       * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
-#>  dotwhisker  * 0.8.1   2024-03-07 [1] CRAN (R 4.3.1)
-#>  dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
-#>  ggplot2     * 3.5.0   2024-02-23 [1] CRAN (R 4.3.1)
-#>  infer       * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
-#>  parsnip     * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
-#>  purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
-#>  readr       * 2.1.5   2024-01-10 [1] CRAN (R 4.3.1)
-#>  recipes     * 1.0.10  2024-02-18 [1] CRAN (R 4.3.1)
-#>  rlang         1.1.3   2024-01-10 [1] CRAN (R 4.3.1)
-#>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
-#>  rstanarm    * 2.32.1  2024-01-18 [1] CRAN (R 4.3.1)
-#>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
-#>  tidymodels  * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
-#>  tune        * 1.2.0   2024-03-20 [1] CRAN (R 4.3.1)
-#>  workflows   * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
-#>  yardstick   * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
+#>  broom       * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
+#>  broom.mixed * 0.2.9.5 2024-04-01 [1] CRAN (R 4.4.0)
+#>  dials       * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  dotwhisker  * 0.8.2   2024-06-07 [1] CRAN (R 4.4.0)
+#>  dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+#>  ggplot2     * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+#>  infer       * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
+#>  parsnip     * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
+#>  purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+#>  readr       * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
+#>  recipes     * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
+#>  rlang         1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
+#>  rstanarm    * 2.32.1  2024-01-18 [1] CRAN (R 4.4.0)
+#>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+#>  tidymodels  * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
+#>  tune        * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
+#>  workflows   * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
+#>  yardstick   * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
 #> 
-#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.3/library
-#>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
+#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

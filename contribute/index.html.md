@@ -7,9 +7,6 @@ include-after-body: ../resources.html
 
 
 
-
-
-
 The ecosystem of tidymodels packages would not be possible without the contributions of the R community. No matter your current skills, it's possible to contribute back to tidymodels. Contributions are guided by our design goals.
 
 ## Design goals

@@ -1,6 +1,7 @@
 packages <- c(
   "abind",
   "AmesHousing",
+  "aorsf",
   "AppliedPredictiveModeling",
   "baguette",
   "blogdown",
@@ -27,9 +28,11 @@ packages <- c(
   "keras",
   "kernlab",
   "klaR",
+  "leaflet",
   "mda",
   "mlbench",
   "modeldata",
+  "modeldatatoo",
   "modeltime",
   "nycflights13",
   "parsnip",
@@ -58,6 +61,7 @@ packages <- c(
   "stopwords",
   "stringr",
   "textrecipes",
+  "text2vec",
   "themis",
   "tidymodels",
   "tidyposterior",
@@ -66,7 +70,7 @@ packages <- c(
   "tune",
   "vip",
   "zoo",
-  "business-science/sweep",
+  "sweep",
   "rstudio/DT"
 )
 

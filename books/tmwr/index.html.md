@@ -7,9 +7,6 @@ weight: 1
 
 
 
-
-
-
 ![](cover.png)
 
 Modeling of data is integral to science, business, politics, and many other aspects of our lives. The goals of this book are to:
