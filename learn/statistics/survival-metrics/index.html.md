@@ -18,6 +18,7 @@ include-after-body: ../../../resources.html
 
 
 
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: censored, modeldatatoo, and tidymodels. 
@@ -37,6 +38,7 @@ To start, let's define the various types of times that will be mentioned:
 ## Example data
 
 As an example, we'll use the building complaints data from the [case study](../survival-case-study). We'll also load the censored package so that we can fit a model to these time-to-event data:
+
 
 
 ::: {.cell layout-align="center"}
@@ -62,7 +64,9 @@ complaints_val <- validation(complaints_split)
 :::
 
 
+
 We'll need a model to illustrate the code and concepts. Let's fit a basic Weibull model to the training set. We'll do a little bit of work on some of the predictors that have many possible levels using a recipe:
+
 
 
 ::: {.cell layout-align="center"}
@@ -87,6 +91,7 @@ complaints_fit <- fit(survreg_wflow, data = complaints_train)
 :::
 
 
+
 Using this model, we'll make predictions of different types. 
 
 ## Survival Probability Prediction
@@ -100,6 +105,7 @@ predict(object, new_data, type = "survival", eval_time = numeric())
 where `eval_time` is a vector of time points at which we want the corresponding survivor function estimates. Alternatively, we can use the `augment()` function to get both types of prediction and automatically attach them to the data. 
 
 We’ll use a finer grid than the [case study](../survival-case-study) with a maximum evaluation time of 200 days for this analysis. 
+
 
 
 ::: {.cell layout-align="center"}
@@ -129,7 +135,9 @@ val_pred
 :::
 
 
+
 The observed data are in the `disposition_surv` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 21 evaluation time points in the (nested) column `.pred_survival`. 
+
 
 
 ::: {.cell layout-align="center"}
@@ -154,6 +162,7 @@ val_pred$.pred[[1]]
 :::
 
 
+
 The yardstick package currently has two dynamic metrics. Each is described below.
 
 ## Brier Score
@@ -169,8 +178,10 @@ $$
 For survival models, we transform the event time data into a binary version $y_{it}$: is there an event at evaluation time $t$^[Again, see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article for more on this.]. The survival function estimate $\hat{p}_{it}$ is the probability corresponding to non-events at time $t$. For example, if there has not been an event at the current evaluation time, our best model should estimate the survival probability near one. For observations that are events, the probability estimate is just one minus the survivor estimate. To account for censoring, we also weight each observation with $w_{it}$. The [time-dependent Brier score](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&btnG=) is: 
 
 $$
-Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(y_{it} - \hat{p}_{it})^2}_\text{non-events} +  \underbrace{I(y_{it} = 1)(y_{it} - (1 - \hat{p}_{it}))^2}_\text{events}\right]
+Brier_{surv}(t) = \frac{1}{W_t}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(y_{it} - \hat{p}_{it})^2}_\text{non-events} +  \underbrace{I(y_{it} = 1)(y_{it} - (1 - \hat{p}_{it}))^2}_\text{events}\right]
 $$
+
+where $W_t$ is the sum of the weights at time $t$.
 
 For this score, a perfect model has a score of zero, while an uninformative model would have a score of around 1/4. 
 
@@ -181,6 +192,7 @@ How do we compute this using the yardstick package? The function [`brier_surviva
 - `...`: the name of the column with the dynamic predictions. Within tidymodels, this column is always called `.pred`. In other words, `.pred` should be passed without an argument name. 
 
 Since the evaluation times and the case weights are within the `.pred` column, there is no need to specify these. Here are the results of our validation set: 
+
 
 
 ::: {.cell layout-align="center"}
@@ -208,7 +220,9 @@ brier_scores
 :::
 
 
+
 Over time:
+
 
 
 ::: {.cell layout-align="center"}
@@ -228,9 +242,11 @@ brier_scores %>%
 :::
 
 
+
 This shows the worst predictions (relatively speaking) occur at 10 days with a corresponding Brier score of 0.177. Performance gets steadily better over (evaluation) time. 
 
 Instead of thinking in 21 dimensions, there is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the above curve. The syntax is the same, but the result has a single row: 
+
 
 
 ::: {.cell layout-align="center"}
@@ -243,6 +259,7 @@ val_pred %>% brier_survival_integrated(truth = disposition_surv, .pred)
 #> 1 brier_survival_integrated standard      0.0772
 ```
 :::
+
 
 
 Again, smaller values are better. 
@@ -261,11 +278,13 @@ These depend on the threshold used to turn predicted probabilities into predicte
 
 
 
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/surv-hist-early-1.svg){fig-align='center' width=70%}
 :::
 :::
+
 
 
 
@@ -279,6 +298,7 @@ ROC curves were designed as a general method that, given a collection of continu
 For our example at evaluation time $t = 10.00$, the ROC curve is: 
 
 
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/roc-early-1.svg){fig-align='center' width=672}
@@ -286,9 +306,11 @@ For our example at evaluation time $t = 10.00$, the ROC curve is:
 :::
 
 
+
 The area under this curve is 0.822. 
 
 Since this is a dynamic metric, we compute the AUC for each evaluation time. The syntax is very similar to the Brier code shown above: 
+
 
 
 ::: {.cell layout-align="center"}
@@ -316,7 +338,9 @@ roc_scores
 :::
 
 
+
 Over time:
+
 
 
 ::: {.cell layout-align="center"}
@@ -336,6 +360,7 @@ roc_scores %>%
 :::
 
 
+
 In this case, performance is best at earlier time points (unlike the Brier score), degrades a bit, and then increases again. Despite this, performance is fairly good across all non-zero evaluation times. 
 
 
@@ -346,9 +371,11 @@ While it may not be surprising that each metric's results vary over time, it may
 The issue is that the ROC measures class separation, and the Brier score focuses more on accurate and well-calibrated predictions. These are not the same thing. As we'll see shortly, it can be easy to separate data between qualitative prediction (event or no event) even when the corresponding probability predictions are very inaccurate. 
 
 
+
 ::: {.cell layout-align="center"}
 
 :::
+
 
 
 Below is a contrived (but common) case with two classes. The probability distributions between the true classes are shown on the left. Note that the curves show separation between the event and non-event groups. As expected, the area under the ROC curve is very high (0.997).
@@ -356,11 +383,13 @@ Below is a contrived (but common) case with two classes. The probability distrib
 The problem is that the predicted probabilities are not realistic. They are too close to the commonly used cutoff of 0.5. Across all of the data, the probabilities only range from 0.37 to 0.62. We expect these to be much closer to zero and one, respectively.
 
 
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/example-miscal-1.svg){fig-align='center' width=672}
 :::
 :::
+
 
 
 The figure on the right shows a _calibration plot_ for the same data (see [this article](https://www.tidymodels.org/learn/models/calibration/) for more information). The points would fall along the diagonal line if the probabilities were accurate. Since the Brier score partly measures calibration, it has a correspondingly poor value of 0.203. 
@@ -371,7 +400,10 @@ The figure on the right shows a _calibration plot_ for the same data (see [this 
 
 
 
+
+
 For the NY building complaint data, let’s look at evaluation times of 10 and 100 days. First, we can examine the distribution of the probability predictions at both time points: 
+
 
 
 ::: {.cell layout-align="center"}
@@ -381,9 +413,11 @@ For the NY building complaint data, let’s look at evaluation times of 10 and 1
 :::
 
 
+
 The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is 0.49. 
 
 The calibration plots are below with the size of the points being proportional to the sum of the weights:
+
 
 
 ::: {.cell layout-align="center"}
@@ -393,9 +427,11 @@ The calibration plots are below with the size of the points being proportional t
 :::
 
 
+
 On the left, the plot shows a few deviations away from the diagonal. The right panel shows that the majority of the data (about 74%) are in the first two bins near the upper right-hand side. These points are along the diagonal, indicating good calibration. As we move away from these points, the model becomes less calibrated. Overall though, the Brier statistic is small since most of the data (i.e., weights) are along the diagonal. 
 
 What about the ROC curves produced by these data? They are: 
+
 
 
 ::: {.cell layout-align="center"}
@@ -403,6 +439,7 @@ What about the ROC curves produced by these data? They are:
 ![](figs/roc-both-1.svg){fig-align='center' width=672}
 :::
 :::
+
 
 
 It may be difficult to tell from the histograms above, but the groups are separated enough at 100 days to produce an area under the ROC curve of 0.76. That's not bad; the metric is seeing separation despite the lack of accuracy. 
@@ -427,43 +464,45 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 ## Session information {#session-info}
 
 
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.3.2 (2023-10-31)
+#>  os       macOS Sonoma 14.5
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
-#>  tz       America/Los_Angeles
-#>  date     2024-06-26
+#>  tz       America/New_York
+#>  date     2024-07-05
 #>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      * version date (UTC) lib source
-#>  broom        * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  censored     * 0.3.2   2024-06-11 [1] CRAN (R 4.4.0)
-#>  dials        * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
-#>  dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2      * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer        * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  modeldatatoo   0.3.0   2024-03-29 [1] CRAN (R 4.4.0)
-#>  parsnip      * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes      * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang          1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
-#>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune         * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  broom        * 1.0.6   2024-05-17 [1] CRAN (R 4.3.3)
+#>  censored     * 0.3.2   2024-06-11 [1] CRAN (R 4.3.2)
+#>  dials        * 1.2.1   2024-02-22 [1] CRAN (R 4.3.1)
+#>  dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.3.1)
+#>  ggplot2      * 3.5.1   2024-04-23 [1] CRAN (R 4.3.1)
+#>  infer        * 1.0.7   2024-03-25 [1] CRAN (R 4.3.1)
+#>  modeldatatoo   0.3.0   2024-03-29 [1] CRAN (R 4.3.1)
+#>  parsnip      * 1.2.1   2024-03-22 [1] CRAN (R 4.3.1)
+#>  purrr        * 1.0.2   2023-08-10 [1] CRAN (R 4.3.0)
+#>  recipes      * 1.1.0   2024-07-04 [1] CRAN (R 4.3.2)
+#>  rlang          1.1.4   2024-06-04 [1] CRAN (R 4.3.3)
+#>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.3.1)
+#>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+#>  tidymodels   * 1.2.0   2024-03-25 [1] CRAN (R 4.3.1)
+#>  tune         * 1.2.1   2024-04-18 [1] CRAN (R 4.3.1)
+#>  workflows    * 1.1.4   2024-02-19 [1] CRAN (R 4.3.1)
+#>  yardstick    * 1.3.1   2024-03-21 [1] CRAN (R 4.3.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/max/Library/R/arm64/4.3/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
