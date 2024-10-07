@@ -40,7 +40,7 @@ This article demonstrates how we can use a sparse matrix in tidymodels.
 
 ## Example data
 
-The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. Data was downloaded from <https://snap.stanford.edu/data/web-FineFoods.html>, slides down to 100,000 rows, tokenized and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R.
+The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. Data was downloaded from <https://snap.stanford.edu/data/web-FineFoods.html>, sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and the code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R.
 
 This data set is encoded as a sparse matrix from the Matrix package. We are using this data for this article because if we were to turn it into a dense matrix it would take up 3GB which is a considerable size.
 
@@ -123,7 +123,7 @@ This should run in a reasonable amount of time. Once that is done, then we can l
 autoplot(tune_res)
 ```
 
-It appears that it did, so we finalize the workflows and fit the final model on the training data set.
+It appears that it did, so we finalized the workflows and fit the final model on the training data set.
 
 ```{r}
 #| label: "finalize-workflow"

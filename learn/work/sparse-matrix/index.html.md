@@ -20,6 +20,7 @@ include-after-body: ../../../resources.html
 
 
 
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: sparsevctrs and tidymodels.
@@ -28,9 +29,10 @@ This article demonstrates how we can use a sparse matrix in tidymodels.
 
 ## Example data
 
-The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. Data was downloaded from <https://snap.stanford.edu/data/web-FineFoods.html>, slides down to 100,000 rows, tokenized and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R.
+The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. Data was downloaded from <https://snap.stanford.edu/data/web-FineFoods.html>, sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and the code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R.
 
 This data set is encoded as a sparse matrix from the Matrix package. We are using this data for this article because if we were to turn it into a dense matrix it would take up 3GB which is a considerable size.
+
 
 
 
@@ -56,9 +58,11 @@ reviews |> head()
 
 
 
+
 ## Modeling
 
 We start by loading tidymodels and the sparsevctrs package. The sparsevctrs package includes some helper functions that will allow us to more easily work with sparse matrices in tidymodels.
+
 
 
 
@@ -72,7 +76,9 @@ library(sparsevctrs)
 
 
 
+
 While sparse matrices now work parsnip, recipes, and workflows directly. If we turn it into a tibble we can use rsample's sampling functions as well. Calling `as_tibble()` would be uncomfortable as it would take up 3GB. We can however use the `coerce_to_sparse_tibble()` from the sparsevctrs package. This will create a tibble with sparse columns. We call that a **sparse tibble**.
+
 
 
 
@@ -106,7 +112,9 @@ reviews_tbl
 
 
 
+
 Despite this tibble contains 15,000 rows and a little under 25,000 columns it only takes up marginally more space than the sparse matrix.
+
 
 
 
@@ -122,7 +130,9 @@ lobstr::obj_size(reviews_tbl)
 
 
 
+
 The outcome `SCORE` is currently encoded as a double, but we want it to be a factor for it to work well with tidymodels.
+
 
 
 
@@ -136,7 +146,9 @@ reviews_tbl <- reviews_tbl |>
 
 
 
+
 Since `reviews_tbl` is now a tibble, we can use `initial_split()` as we usually do.
+
 
 
 
@@ -155,7 +167,9 @@ review_folds <- vfold_cv(review_train)
 
 
 
+
 Next, we will specify our workflow. Since we are showcasing how sparse data works in tidymodels, we will stick to a simple lasso regression model. These models tend to work well with sparse predictors. `penalty` has been set to be tuned.
+
 
 
 
@@ -173,7 +187,9 @@ wf_spec <- workflow(rec_spec, lm_spec)
 
 
 
+
 With everything in order, we can now fit the different models with `tune_grid()`.
+
 
 
 
@@ -186,7 +202,9 @@ tune_res <- tune_grid(wf_spec, review_folds)
 
 
 
+
 This should run in a reasonable amount of time. Once that is done, then we can look at the performance for different values of regularization, to make sure that the optimal value was within the range we searched.
+
 
 
 
@@ -203,7 +221,9 @@ autoplot(tune_res)
 
 
 
-It appears that it did, so we finalize the workflows and fit the final model on the training data set.
+
+It appears that it did, so we finalized the workflows and fit the final model on the training data set.
+
 
 
 
@@ -221,7 +241,9 @@ wf_fit <- fit(wf_final, review_train)
 
 
 
+
 With this fitted model, we can now predict with a sparse tibble.
+
 
 
 
@@ -248,7 +270,9 @@ predict(wf_fit, review_test)
 
 
 
+
 ## Session information {#session-info}
+
 
 
 
@@ -265,7 +289,7 @@ predict(wf_fit, review_test)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-10-04
+#>  date     2024-10-07
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -277,7 +301,7 @@ predict(wf_fit, review_test)
 #>  infer       * 1.0.7      2024-03-25 [1] CRAN (R 4.4.0)
 #>  parsnip     * 1.2.1.9002 2024-10-02 [1] local
 #>  purrr       * 1.0.2      2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes     * 1.1.0.9000 2024-09-24 [1] Github (tidymodels/recipes@3b12331)
+#>  recipes     * 1.1.0.9000 2024-10-04 [1] local
 #>  rlang         1.1.4      2024-06-04 [1] CRAN (R 4.4.0)
 #>  rsample     * 1.2.1.9000 2024-09-18 [1] Github (tidymodels/rsample@77fc1fe)
 #>  sparsevctrs * 0.1.0.9002 2024-09-30 [1] Github (r-lib/sparsevctrs@b29b723)
