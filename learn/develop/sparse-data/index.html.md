@@ -1,5 +1,5 @@
 ---
-title: "How Sparse Data is used in tidymodels"
+title: "How Sparse Data is Used in tidymodels"
 categories:
  - sparse data
 type: learn-subsection
@@ -18,11 +18,12 @@ include-after-body: ../../../resources.html
 
 
 
+
 ## What is sparse data?
 
-We use the term **sparse data** to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse is used to describe how the information is packed in, as we can easily get above 99% percent of 0s in the predictors. 
+We use the term **sparse data** to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors. 
 
-The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be refered to as a **dense vector**.
+The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a **dense vector**.
 
 ```r
 c(100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
@@ -66,7 +67,7 @@ Sparse data does not yet work with the formula interface for `fit()`. This is a 
 
 For the remaining interfaces for `fit()` and `fit_xy()`, both sparse tibbles and sparse matrices are supported. Sparse matrices are turned into sparse tibbles early on. When fitting a model in parsnip. It checks whether the engine supports sparse matrices using the `allow_sparse_x` specification. A warning is thrown if sparse data is passed to an engine that doesn't support it, informing the user of that fact and that the data will be converted to a dense representation.
 
-`predict()` works with sparse tibbles and sparse matrics, where sparse matrices are turned into sparse tibbles right away, and into the appropriate format before it is passed to the model engine.
+`predict()` works with sparse tibbles and sparse matrices, where sparse matrices are turned into sparse tibbles right away, and into the appropriate format before it is passed to the model engine.
 
 ## workflows
 
