@@ -75,7 +75,7 @@ The parsnip package receives data in `fit()`, `fit_xy()`, and `predict()`.
 
 Sparse data does not yet work with the formula interface for `fit()`. This is a known issue and is expected to be fixed long term.
 
-For the remaining interfaces for `fit()` and `fit_xy()`, both sparse tibbles and sparse matrices are supported. Sparse matrices are turned into sparse tibbles early on. When fitting a model in parsnip, the package checks whether the engine supports sparse matrices using the `allow_sparse_x` specification. A warning is thrown if sparse data is passed to an engine that doesn't support it, informing the user of that fact and that the data will be converted to a dense representation.
+For `fit_xy()`, both sparse tibbles and sparse matrices are supported. Sparse matrices are turned into sparse tibbles early on. When fitting a model in parsnip, the package checks whether the engine supports sparse matrices using the `allow_sparse_x` specification. A warning is thrown if sparse data is passed to an engine that doesn't support it, informing the user of that fact and that the data will be converted to a dense representation.
 
 `predict()` works with sparse tibbles and sparse matrices, where sparse matrices are turned into sparse tibbles right away, and into the appropriate format before it is passed to the model engine.
 
