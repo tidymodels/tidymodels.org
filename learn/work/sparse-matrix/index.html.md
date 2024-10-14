@@ -29,9 +29,7 @@ This article demonstrates how we can use a sparse matrix in tidymodels.
 
 ## Example data
 
-The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. Data was downloaded from <https://snap.stanford.edu/data/web-FineFoods.html>, sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and the code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R.
-
-This data set is encoded as a sparse matrix from the Matrix package. We are using this data for this article because if we were to turn it into a dense matrix it would take up 3GB which is a considerable size.
+The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. The [raw data](https://snap.stanford.edu/data/web-FineFoods.html) was sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and the code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R. This data set is encoded as a sparse matrix from the Matrix package; if we were to turn it into a dense matrix, it would take up 3GB.
 
 
 
@@ -77,7 +75,7 @@ library(sparsevctrs)
 
 
 
-While sparse matrices now work parsnip, recipes, and workflows directly. If we turn it into a tibble we can use rsample's sampling functions as well. Calling `as_tibble()` would be uncomfortable as it would take up 3GB. We can however use the `coerce_to_sparse_tibble()` from the sparsevctrs package. This will create a tibble with sparse columns. We call that a **sparse tibble**.
+While sparse matrices now work in parsnip, recipes, and workflows directly, we can use rsample's sampling functions as well if we turn it into a tibble. The usual `as_tibble()` would turn the object to a dense representation, greatly expanding the object size. However, sparsevctrs' `coerce_to_sparse_tibble()` will create a tibble with sparse columns, which we call a **sparse tibble**.
 
 
 
@@ -113,7 +111,7 @@ reviews_tbl
 
 
 
-Despite this tibble contains 15,000 rows and a little under 25,000 columns it only takes up marginally more space than the sparse matrix.
+Despite this tibble containing 15,000 rows and a little under 25,000 columns, it only takes up marginally more space than the sparse matrix.
 
 
 
@@ -188,7 +186,7 @@ wf_spec <- workflow(rec_spec, lm_spec)
 
 
 
-With everything in order, we can now fit the different models with `tune_grid()`.
+With everything in order, we can now evaluate several different values of `penalty` with `tune_grid()`.
 
 
 
@@ -203,7 +201,7 @@ tune_res <- tune_grid(wf_spec, review_folds)
 
 
 
-This should run in a reasonable amount of time. Once that is done, then we can look at the performance for different values of regularization, to make sure that the optimal value was within the range we searched.
+Despite the size of the data, this code runs quite quickly due to the sparse encoding of the data. Once the tuning process is done, then we can look at the performance for different values of regularization.
 
 
 
@@ -222,7 +220,7 @@ autoplot(tune_res)
 
 
 
-It appears that it did, so we finalized the workflows and fit the final model on the training data set.
+We can now finalize the workflow and fit the final model on the training data set.
 
 
 
@@ -289,7 +287,7 @@ predict(wf_fit, review_test)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-10-07
+#>  date     2024-10-14
 #>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
