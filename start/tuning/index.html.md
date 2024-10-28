@@ -42,7 +42,7 @@ library(vip)         # for variable importance plots
 :::
 
 
-{{< test-drive url="https://rstudio.cloud/project/2674862" >}}
+[Test Drive](https://rstudio.cloud/project/2674862)
 
 
 
