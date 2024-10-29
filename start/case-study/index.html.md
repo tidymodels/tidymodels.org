@@ -24,9 +24,13 @@ include-after-body: ../repo-actions-delete.html
 
 
 
+
+
 ## Introduction {#intro}
 
 Each of the four previous [*Get Started*](/start/) articles has focused on a single task related to modeling. Along the way, we also introduced core packages in the tidymodels ecosystem and some of the key functions you'll need to start working with models. In this final case study, we will use all of the previous articles as a foundation to build a predictive model from beginning to end with data on hotel stays.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -36,7 +40,11 @@ Each of the four previous [*Get Started*](/start/) articles has focused on a sin
 :::
 
 
+
+
 To use code in this article,  you will need to install the following packages: glmnet, ranger, readr, tidymodels, and vip.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -51,17 +59,17 @@ library(vip)         # for variable importance plots
 :::
 
 
-{{< test-drive url="https://rstudio.cloud/project/2674862" >}}
 
 
-
-
+[Test Drive](https://rstudio.cloud/project/2674862)
 
 ## The Hotel Bookings Data {#data}
 
 Let's use hotel bookings data from [Antonio, Almeida, and Nunes (2019)](https://doi.org/10.1016/j.dib.2018.11.126) to predict which hotel stays included children and/or babies, based on the other characteristics of the stays such as which hotel the guests stay at, how much they pay, etc. This was also a [`#TidyTuesday`](https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11) dataset with a [data dictionary](https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11#data-dictionary) you may want to look over to learn more about the variables. We'll use a slightly [edited version of the dataset](https://gist.github.com/topepo/05a74916c343e57a71c51d6bc32a21ce) for this case study.
 
 To start, let's read our hotel data into R, which we'll do by providing [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) with a url where our CSV data is located ("<https://tidymodels.org/start/case-study/hotels.csv>"):
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -80,7 +88,11 @@ dim(hotels)
 :::
 
 
+
+
 In the original paper, the [authors](https://doi.org/10.1016/j.dib.2018.11.126) caution that the distribution of many variables (such as number of adults/children, room type, meals bought, country of origin of the guests, and so forth) is different for hotel stays that were canceled versus not canceled. This makes sense because much of that information is gathered (or gathered again more accurately) when guests check in for their stay, so canceled bookings are likely to have more missing data than non-canceled bookings, and/or to have different characteristics when data is not missing. Given this, it is unlikely that we can reliably detect meaningful differences between guests who cancel their bookings and those who do not with this dataset. To build our models here, we have already filtered the data to include only the bookings that did not cancel, so we'll be analyzing *hotel stays* only.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -116,7 +128,11 @@ glimpse(hotels)
 :::
 
 
+
+
 We will build a model to predict which actual hotel stays included children and/or babies, and which did not. Our outcome variable `children` is a factor variable with two levels:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -134,11 +150,15 @@ hotels %>%
 :::
 
 
+
+
 We can see that children were only in 8.1% of the reservations. This type of class imbalance can often wreak havoc on an analysis. While there are several methods for combating this issue using [recipes](/find/recipes/) (search for steps to `upsample` or `downsample`) or other more specialized packages like [themis](https://themis.tidymodels.org/), the analyses shown below analyze the data as-is.
 
 ## Data Splitting & Resampling {#data-split}
 
 For a data splitting strategy, let's reserve 25% of the stays to the test set. As in our [*Evaluate your model with resampling*](/start/resampling/#data-split) article, we know our outcome variable `children` is pretty imbalanced so we'll use a stratified random sample:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -173,6 +193,8 @@ hotel_test  %>%
 :::
 
 
+
+
 In our articles so far, we've relied on 10-fold cross-validation as the primary resampling method using [`rsample::vfold_cv()`](https://rsample.tidymodels.org/reference/vfold_cv.html). This has created 10 different resamples of the training set (which we further split into *analysis* and *assessment* sets), producing 10 different performance metrics that we then aggregated.
 
 For this case study, rather than using multiple iterations of resampling, let's create a single resample called a *validation set*. In tidymodels, a validation set is treated as a single iteration of resampling. This will be a split from the 37,500 stays that were not used for testing, which we called `hotel_other`. This split creates two new datasets:
@@ -182,6 +204,8 @@ For this case study, rather than using multiple iterations of resampling, let's 
 -   the remaining data used to fit the model, called the *training set*.
 
 
+
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](img/validation-split.svg){fig-align='center' width=50%}
@@ -189,7 +213,11 @@ For this case study, rather than using multiple iterations of resampling, let's 
 :::
 
 
+
+
 We'll use the `validation_split()` function to allocate 20% of the `hotel_other` stays to the *validation set* and 30,000 stays to the *training set*. This means that our model performance metrics will be computed on a single set of 7,500 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -211,6 +239,8 @@ val_set
 :::
 
 
+
+
 This function, like `initial_split()`, has the same `strata` argument, which uses stratified sampling to create the resample. This means that we'll have roughly the same proportions of hotel stays with and without children in our new validation and training sets, as compared to the original `hotel_other` proportions.
 
 ## A first model: penalized logistic regression {#first-model}
@@ -222,6 +252,8 @@ Since our outcome variable `children` is categorical, logistic regression would 
 To specify a penalized logistic regression model that uses a feature selection penalty, let's use the parsnip package with the [glmnet engine](/find/parsnip/):
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -230,6 +262,8 @@ lr_mod <-
   set_engine("glmnet")
 ```
 :::
+
+
 
 
 We'll set the `penalty` argument to `tune()` as a placeholder for now. This is a model hyperparameter that we will [tune](/start/tuning/) to find the best value for making predictions with our data. Setting `mixture` to a value of one means that the glmnet model will potentially remove irrelevant predictors and choose a simpler model.
@@ -255,6 +289,8 @@ Additionally, all categorical predictors (e.g., `distribution_channel`, `hotel`,
 Putting all these steps together into a recipe for a penalized logistic regression model, we have:
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -273,9 +309,13 @@ lr_recipe <-
 :::
 
 
+
+
 ### Create the workflow
 
 As we introduced in [*Preprocess your data with recipes*](/start/recipes/#fit-workflow), let's bundle the model and recipe into a single `workflow()` object to make management of the R objects easier:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -289,9 +329,13 @@ lr_workflow <-
 :::
 
 
+
+
 ### Create the grid for tuning
 
 Before we fit this model, we need to set up a grid of `penalty` values to tune. In our [*Tune model parameters*](/start/tuning/) article, we used [`dials::grid_regular()`](start/tuning/#tune-grid) to create an expanded grid based on a combination of two hyperparameters. Since we have only one hyperparameter to tune here, we can set the grid up manually using a one-column tibble with 30 candidate values:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -323,9 +367,13 @@ lr_reg_grid %>% top_n(5)  # highest penalty values
 :::
 
 
+
+
 ### Train and tune the model
 
 Let's use `tune::tune_grid()` to train these 30 penalized logistic regression models. We'll also save the validation set predictions (via the call to `control_grid()`) so that diagnostic information can be available after the model fit. The area under the ROC curve will be used to quantify how well the model performs across a continuum of event thresholds (recall that the event rate---the proportion of stays including children--- is very low for these data).
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -341,7 +389,11 @@ lr_res <-
 :::
 
 
+
+
 It might be easier to visualize the validation set metrics by plotting the area under the ROC curve against the range of penalty values:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -365,9 +417,13 @@ lr_plot
 :::
 
 
+
+
 This plots shows us that model performance is generally better at the smaller penalty values. This suggests that the majority of the predictors are important to the model. We also see a steep drop in the area under the ROC curve towards the highest penalty values. This happens because a large enough penalty will remove *all* predictors from the model, and not surprisingly predictive accuracy plummets with no predictors in the model (recall that an ROC AUC value of 0.50 means that the model does no better than chance at predicting the correct class).
 
 Our model performance seems to plateau at the smaller penalty values, so going by the `roc_auc` metric alone could lead us to multiple options for the "best" value for this hyperparameter:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -404,7 +460,11 @@ top_models
 :::
 
 
+
+
 Every candidate model in this tibble likely includes more predictor variables than the model in the row below it. If we used `select_best()`, it would return candidate model 11 with a penalty value of 0.00137, shown with the dotted line below.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -414,9 +474,13 @@ Every candidate model in this tibble likely includes more predictor variables th
 :::
 
 
+
+
 However, we may want to choose a penalty value further along the x-axis, closer to where we start to see the decline in model performance. For example, candidate model 12 with a penalty value of 0.00174 has effectively the same performance as the numerically best model, but might eliminate more predictors. This penalty value is marked by the solid line above. In general, fewer irrelevant predictors is better. If performance is about the same, we'd prefer to choose a higher penalty value.
 
 Let's select this value and visualize the validation set ROC curve:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -453,6 +517,8 @@ autoplot(lr_auc)
 :::
 
 
+
+
 The level of performance generated by this logistic regression model is good, but not groundbreaking. Perhaps the linear nature of the prediction equation is too limiting for this data set. As a next step, we might consider a highly non-linear model generated using a tree-based ensemble method.
 
 ## A second model: tree-based ensemble {#second-model}
@@ -466,6 +532,8 @@ Although the default hyperparameters for random forests tend to give reasonable 
 But, here we are using a single validation set, so parallelization isn't an option using the tune package. For this specific case study, a good alternative is provided by the engine itself. The ranger package offers a built-in way to compute individual random forest models in parallel. To do this, we need to know the the number of cores we have to work with. We can use the parallel package to query the number of cores on your own computer to understand how much parallelization you can do:
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -476,7 +544,11 @@ cores
 :::
 
 
+
+
 We have 10 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -490,6 +562,8 @@ rf_mod <-
 :::
 
 
+
+
 This works well in this modeling context, but it bears repeating: if you use any other resampling method, let tune do the parallel processing for you --- we typically do not recommend relying on the modeling engine (like we did here) to do this.
 
 In this model, we used `tune()` as a placeholder for the `mtry` and `min_n` argument values, because these are our two hyperparameters that we will [tune](/start/tuning/).
@@ -497,6 +571,8 @@ In this model, we used `tune()` as a placeholder for the `mtry` and `min_n` argu
 ### Create the recipe and workflow
 
 Unlike penalized logistic regression models, random forest models do not require [dummy](https://bookdown.org/max/FES/categorical-trees.html) or normalized predictor variables. Nevertheless, we want to do some feature engineering again with our `arrival_date` variable. As before, the date predictor is engineered so that the random forest model does not need to work hard to tease these potential patterns from the data.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -511,7 +587,11 @@ rf_recipe <-
 :::
 
 
+
+
 Adding this recipe to our parsnip model gives us a new workflow for predicting whether a hotel stay included children and/or babies as guests with a random forest:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -525,9 +605,13 @@ rf_workflow <-
 :::
 
 
+
+
 ### Train and tune the model
 
 When we set up our parsnip model, we chose two hyperparameters for tuning:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -562,9 +646,13 @@ extract_parameter_set_dials(rf_mod)
 :::
 
 
+
+
 The `mtry` hyperparameter sets the number of predictor variables that each node in the decision tree "sees" and can learn about, so it can range from 1 to the total number of features present; when `mtry` = all possible features, the model is the same as bagging decision trees. The `min_n` hyperparameter sets the minimum `n` to split at any node.
 
 We will use a space-filling design to tune, with 25 candidate models:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -582,9 +670,13 @@ rf_res <-
 :::
 
 
+
+
 The message printed above *"Creating pre-processing data to finalize unknown parameter: mtry"* is related to the size of the data set. Since `mtry` depends on the number of predictors in the data set, `tune_grid()` determines the upper bound for `mtry` once it receives the data.
 
 Here are our top 5 random forest models, out of the 25 candidates:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -604,9 +696,13 @@ rf_res %>%
 :::
 
 
+
+
 Right away, we see that these values for area under the ROC look more promising than our top model using penalized logistic regression, which yielded an ROC AUC of 0.876.
 
 Plotting the results of the tuning process highlights that both `mtry` (number of predictors at each node) and `min_n` (minimum number of data points required to keep splitting) should be fairly small to optimize performance. However, the range of the y-axis indicates that the model is very robust to the choice of these parameter values --- all but one of the ROC AUC values are greater than 0.90.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -621,7 +717,11 @@ autoplot(rf_res)
 :::
 
 
+
+
 Let's select the best model according to the ROC AUC metric. Our final tuning parameter values are:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -639,7 +739,11 @@ rf_best
 :::
 
 
+
+
 To calculate the data needed to plot the ROC curve, we use `collect_predictions()`. This is only possible after tuning with `control_grid(save_pred = TRUE)`. In the output, you can see the two columns that hold our class probabilities for predicting hotel stays including and not including children.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -665,7 +769,11 @@ rf_res %>%
 :::
 
 
+
+
 To filter the predictions for only our best random forest model, we can use the `parameters` argument and pass it our tibble with the best hyperparameter values from tuning, which we called `rf_best`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -680,7 +788,11 @@ rf_auc <-
 :::
 
 
+
+
 Now, we can compare the validation set ROC curves for our top penalized logistic regression model and random forest model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -700,6 +812,8 @@ bind_rows(rf_auc, lr_auc) %>%
 :::
 
 
+
+
 The random forest is uniformly better across event probability thresholds.
 
 ## The last fit {#last-fit}
@@ -707,6 +821,8 @@ The random forest is uniformly better across event probability thresholds.
 Our goal was to predict which hotel stays included children and/or babies. The random forest model clearly performed better than the penalized logistic regression model, and would be our best bet for predicting hotel stays with and without children. After selecting our best model and hyperparameter values, our last step is to fit the final model on all the rows of data not originally held out for testing (both the training and the validation sets combined), and then evaluate the model performance one last time with the held-out test set.
 
 We'll start by building our parsnip model object again from scratch. We take our best hyperparameter values from our random forest model. When we set the engine, we add a new argument: `importance = "impurity"`. This will provide *variable importance* scores for this last model, which gives some insight into which predictors drive model performance.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -740,7 +856,11 @@ last_rf_fit
 :::
 
 
+
+
 This fitted workflow contains *everything*, including our final metrics based on the test set. So, how did this model do on the test set? Was the validation set a good estimate of future performance?
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -758,9 +878,13 @@ last_rf_fit %>%
 :::
 
 
+
+
 This ROC AUC value is pretty close to what we saw when we tuned the random forest model with the validation set, which is good news. That means that our estimate of how well our model would perform with new data was not too far off from how well our model actually performed with the unseen test data.
 
 We can access those variable importance scores via the `.workflow` column. We can [extract out the fit](https://tune.tidymodels.org/reference/extract-tune.html) from the workflow object, and then use the vip package to visualize the variable importance scores for the top 20 features:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -777,9 +901,13 @@ last_rf_fit %>%
 :::
 
 
+
+
 The most important predictors in whether a hotel stay had children or not were the daily cost for the room, the type of room reserved, the time between the creation of the reservation and the arrival date, and the type of room that was ultimately assigned.
 
 Let's generate our last ROC curve to visualize. Since the event we are predicting is the first level in the `children` factor ("children"), we provide `roc_curve()` with the [relevant class probability](https://yardstick.tidymodels.org/reference/roc_curve.html#relevant-level) `.pred_children`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -795,6 +923,8 @@ last_rf_fit %>%
 ![](figs/test-set-roc-curve-1.svg){fig-align='center' width=672}
 :::
 :::
+
+
 
 
 Based on these results, the validation set and test set performance statistics are very close, so we would have pretty high confidence that our random forest model with the selected hyperparameters would perform well when predicting new data.
@@ -820,26 +950,28 @@ Here are some more ideas for where to go next:
 ## Session information {#session-info}
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  os       macOS 15.0.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2024-10-28
+#>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
 #>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  dials      * 1.3.0   2024-07-30 [1] CRAN (R 4.4.0)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  glmnet     * 4.1-8   2023-08-22 [1] CRAN (R 4.4.0)
@@ -848,7 +980,7 @@ Here are some more ideas for where to go next:
 #>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
 #>  ranger     * 0.16.0  2023-11-12 [1] CRAN (R 4.4.0)
 #>  readr      * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
+#>  recipes    * 1.1.0   2024-07-04 [1] CRAN (R 4.4.0)
 #>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
