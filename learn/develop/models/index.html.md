@@ -114,6 +114,7 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mdaNA
 #> 
+#> ¹The model can use case weights.
 #> 
 #>  no registered arguments.
 #> 
@@ -159,6 +160,7 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mdaNA
 #> 
+#> ¹The model can use case weights.
 #> 
 #>  arguments: 
 #>    mda: 
@@ -260,6 +262,7 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mda
 #> 
+#> ¹The model can use case weights.
 #> 
 #>  arguments: 
 #>    mda: 
@@ -398,6 +401,7 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mda
 #> 
+#> ¹The model can use case weights.
 #> 
 #>  arguments: 
 #>    mda: 
@@ -766,10 +770,10 @@ show_best(mda_tune_res, metric = "roc_auc")
 #> # A tibble: 4 × 7
 #>   sub_classes .metric .estimator  mean     n std_err .config             
 #>         <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1           1 roc_auc binary     0.890    10  0.0149 Preprocessor1_Model2
-#> 2           4 roc_auc binary     0.887    10  0.0148 Preprocessor1_Model3
-#> 3          10 roc_auc binary     0.885    10  0.0141 Preprocessor1_Model4
-#> 4           7 roc_auc binary     0.884    10  0.0137 Preprocessor1_Model1
+#> 1           2 roc_auc binary     0.890    10  0.0143 Preprocessor1_Model3
+#> 2           3 roc_auc binary     0.889    10  0.0142 Preprocessor1_Model4
+#> 3           6 roc_auc binary     0.884    10  0.0147 Preprocessor1_Model2
+#> 4           8 roc_auc binary     0.881    10  0.0146 Preprocessor1_Model1
 ```
 :::
 
@@ -782,11 +786,7 @@ show_best(mda_tune_res, metric = "roc_auc")
 
 There are various things that came to mind while developing this resource.
 
-**Do I have to return a simple vector for `predict` and `predict_class`?**
-
-Previously, when discussing the `pred` information:
-
-> For numeric prediction, the model requires an unnamed numeric vector output **(usually)**.
+**Do I have to return a simple vector for `predict()`?**
 
 There are some models (e.g. `glmnet`, `plsr`, `Cubist`, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via `multi_predict()`, rather than `predict()`.
 
@@ -1005,24 +1005,24 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 #>  pandoc   3.4 @ /opt/homebrew/bin/ (via rmarkdown)
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package    * version    date (UTC) lib source
-#>  broom      * 1.0.7.9000 2024-10-28 [1] Github (tidymodels/broom@e480deb)
-#>  dials      * 1.3.0.9000 2024-10-28 [1] Github (tidymodels/dials@caeee86)
-#>  dplyr      * 1.1.4.9000 2024-10-28 [1] Github (tidyverse/dplyr@e4e9a29)
-#>  ggplot2    * 3.5.1.9000 2024-10-28 [1] Github (tidyverse/ggplot2@b174986)
-#>  infer      * 1.0.7.9000 2024-10-28 [1] Github (tidymodels/infer@288542b)
-#>  mda        * 0.5-4      2023-06-23 [1] CRAN (R 4.4.0)
-#>  modeldata  * 1.4.0.9000 2024-10-28 [1] Github (tidymodels/modeldata@487bd6a)
-#>  parsnip    * 1.2.1.9003 2024-10-28 [1] Github (tidymodels/parsnip@a4f9811)
-#>  purrr      * 1.0.2.9000 2024-10-28 [1] Github (tidyverse/purrr@700ce19)
-#>  recipes    * 1.1.0.9001 2024-10-28 [1] Github (tidymodels/recipes@e5952af)
-#>  rlang        1.1.4      2024-06-04 [1] CRAN (R 4.4.0)
-#>  rsample    * 1.2.1.9000 2024-10-28 [1] Github (tidymodels/rsample@f799dba)
-#>  tibble     * 3.2.1.9033 2024-10-28 [1] Github (tidyverse/tibble@0696fe5)
-#>  tidymodels * 1.2.0      2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1.9000 2024-10-28 [1] Github (tidymodels/tune@12faa6d)
-#>  workflows  * 1.1.4.9000 2024-10-28 [1] Github (tidymodels/workflows@580d6d4)
-#>  yardstick  * 1.3.1.9000 2024-10-28 [1] Github (tidymodels/yardstick@f560b94)
+#>  package    * version date (UTC) lib source
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.3.0   2024-07-30 [1] CRAN (R 4.4.0)
+#>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+#>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+#>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
+#>  mda        * 0.5-4   2023-06-23 [1] CRAN (R 4.4.0)
+#>  modeldata  * 1.4.0   2024-06-19 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
+#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+#>  recipes    * 1.1.0   2024-07-04 [1] CRAN (R 4.4.0)
+#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
+#>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
+#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
+#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
+#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
 #> 
 #>  [1] /Users/hannah/Library/R/arm64/4.4/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
