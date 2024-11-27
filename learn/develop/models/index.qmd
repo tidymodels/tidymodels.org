@@ -516,11 +516,7 @@ show_best(mda_tune_res, metric = "roc_auc")
 
 There are various things that came to mind while developing this resource.
 
-**Do I have to return a simple vector for `predict` and `predict_class`?**
-
-Previously, when discussing the `pred` information:
-
-> For numeric prediction, the model requires an unnamed numeric vector output **(usually)**.
+**Do I have to return a simple vector for `predict()`?**
 
 There are some models (e.g. `glmnet`, `plsr`, `Cubist`, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via `multi_predict()`, rather than `predict()`.
 
