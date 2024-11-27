@@ -172,8 +172,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.768    50 0.0214  Preprocessor1_Model1
-#> 2 roc_auc binary     0.950    50 0.00494 Preprocessor1_Model1
+#> 1 j_index binary     0.769    50 0.0221  Preprocessor1_Model1
+#> 2 roc_auc binary     0.948    50 0.00498 Preprocessor1_Model1
 ```
 :::
 
