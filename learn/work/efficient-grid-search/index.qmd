@@ -88,7 +88,7 @@ To evaluate these candidates, we could just loop through each row, train a pipel
 
 - Carry out the UMAP estimation process on the training set using a single nearest neighbor. 
 - Apply UMAP to the training set and save the transformed data. 
-- Estimate a random forest model with `mtry = 1` using the transformed training set. 
+- Estimate a random forest model with $m_{try} = 1$ using the transformed training set. 
 
 The first and third steps are two separate estimations.
 
@@ -96,9 +96,9 @@ The remaining tasks are to
 
 - Apply UMAP to the holdout data. 
 - Predict the holdout data with the fitted random forest model. 
-- Compute the performance statistic of interest (e.g., R<sup>2</sup>, accuracy, RMSE, etc.)
+- Compute the performance statistic of interest (e.g., $R^2$, accuracy, RMSE, etc.)
 
-For the second candidate, the process is exactly the same _except_ that the random forest model uses `mtry = 50` instead of `mtry = 1`. 
+For the second candidate, the process is exactly the same _except_ that the random forest model uses $m_{try} = 50$ instead of $m_{try} = 1$. 
 
 We _have_ to compute a new random forest model since it is a different model. However, the UMAP step is identical to the previous candidate’s preprocessor since it has the same values. Since UMAP is expensive, we end up spending a lot of time doing something that we have already done. 
 
@@ -141,11 +141,11 @@ A better solutions is _conditional execution_. In this case, we determine the un
   \State Apply UMAP to $\mathfrak{D}^{ho}$, creating $\widehat{\mathfrak{D}}^{ho}_k$  
   \For{$m \in \{1, 50, 100\}$}
     \State Train a random forest model with $m_{try} = m$ on $\mathfrak{D}^{tr}_k$ to produce $\widehat{f}_{km}$
-    \State Predict $\widehat{\mathfrak{D}}^{ho}_k$ with  $\widehat{f}_{km}$
-    \State Compute performance statistic $\widehat{Q}_{km}$. 
+    \State Predict $\widehat{\mathfrak{D}}^{ho}_k$ with  $\widehat{f}_{k,m}$
+    \State Compute performance statistic $\widehat{Q}_{k,m}$. 
   \EndFor
 \EndFor
-\State Determine the $k$ and $m$ calues corresponding to the best value of $\widehat{Q}_{km}$.
+\State Determine the $k$ and $m$ values corresponding to the best value of $\widehat{Q}_{k,m}$.
 \end{algorithmic}
 \end{algorithm}
 ```
@@ -164,11 +164,11 @@ In this way, we evaluated six candidates via two UMAP models and six random fore
 We can organize this data using a nested structure:
 
 ```{r}
-umap_rf_nested_grid <- 
+umap_rf_schedule <- 
   umap_rf_grid %>% 
   group_nest(neighbors, .key = "second_stage")
-umap_rf_nested_grid
-umap_rf_nested_grid$second_stage[[1]]
+umap_rf_schedule
+umap_rf_schedule$second_stage[[1]]
 ```
 
 In general, this is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in section TODO when we can run the computations in parallel. 
@@ -178,6 +178,7 @@ In general, this is a good idea. Even when the second grid is used, there is no 
 Since the type of grid mattered for this example, let’s go on a quick “side quest” to talk about the two major types of grids. 
 
 the effect of integers (max size etc) and also on duplicate computations
+
 
 ```{r}
 #| label: fig-two-grids
@@ -207,14 +208,111 @@ bind_rows(two_param_reg, two_param_sfd) %>%
   
 ```
 
+
 ## Sidebar: Parallel Processing
 
 
 
 ## What are Submodels?
 
+“Submodels” is a situation where a model can make predictions for different tuning parameter values _without_ retraining. Two examples: 
+
+- _Boosting_ ensembles take the same model and, using different case weights, create a sequential set of fits. For example, a tree ensemble created with 100 boosting iterations will contain 100 trees, each depending on the previous fits. For many implementations, you can fit the largest ensemble size (100 in this example) and, for free, make predictions on sizes 1 through 99. 
+- Some regularized models, such as glmnet, have a penalization parameter that attenuates the magnitude of the regression coefficients (think weight decay in neural networks). We often tune over this parameter. For glmnet, the model simultaneously creates a _path_ of possible penalty values. With a single model fit, you can predict on _any_ penalty values. 
+
+Not all models contain parameters that can use the “submodel trick.” However, when they do, there can be a massive efficient gain with grid search. 
+
+
 
 ## How Can we Exploit Submodels? 
+
+Let's use boosting as an example. We'll repeat our UMAP preprocessor and tune over: 
+
+ - The number of boosted trees in an ensemble with values 1 through 100. 
+ - The minimum number of data points required to keep splitting the tree (aka `min_n`) for values of 1, 20, and 40. 
+
+With the same UMAP grid, let’s use is $2 \times 100 \times 3 = 600$ grid points.
+
+```{r}
+#| label: full-boosting-grid
+umap_boost_param <- parameters(neighbors(c(1, 30)), min_n(c(1, 40)), trees(c(1, 100)))
+umap_boost_grid <- grid_regular(umap_boost_param, levels = c(2, 3, 100))
+umap_boost_grid
+```
+
+There are six unique combinations of the number of neighbors and `min_n`, so we can evaluate only six models using these parameters: 
+
+```{r}
+#| label: min-boosting-grid
+models_to_fit <- 
+  umap_boost_grid %>% 
+  summarize(trees = max(trees), .by = c(neighbors, min_n))
+models_to_fit
+```
+
+```{r}
+#| label: min-boosting-submodel-grid
+submodels <- 
+  umap_boost_grid %>% 
+  group_nest(neighbors, min_n, .key = "predict_with")
+
+submodel_schedule <- 
+  models_to_fit %>% 
+  full_join(submodels, by = c("neighbors", "min_n"))
+
+submodel_schedule
+submodel_schedule$predict_with[[1]]
+```
+
+
+
+With submodels, for efficiency, there are three loops to most efficiently evaluate this grid. 
+
+
+:::: {.columns}
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="80%"}
+
+
+```pseudocode
+#| html-line-number: true
+#| html-line-number-punc: ":"
+
+\begin{algorithm}
+\begin{algorithmic}
+\State $\mathfrak{D}^{tr}$: training set
+\State $\mathfrak{D}^{ho}$: holdout set
+\For{$k \in \{1, 30\}$}
+  \State Using $k$ neighbors, train UMAP on $\mathfrak{D}^{tr}$
+  \State Apply UMAP to $\mathfrak{D}^{tr}$, creating $\widehat{\mathfrak{D}}^{tr}_k$
+  \State Apply UMAP to $\mathfrak{D}^{ho}$, creating $\widehat{\mathfrak{D}}^{ho}_k$  
+  \For{$n \in \{1, 20, 40\}$}
+    \State Train a boosting model with $n_{min}= n$ and 100 trees on $\mathfrak{D}^{tr}_k$ to produce $\widehat{f}_{k,n,100}$
+    \For{$t \in \{1, 2, \ldots, 100\}$}
+      \State Predict $\widehat{\mathfrak{D}}^{ho}_k$ with  $\widehat{f}_{k,n,100}$ stopping at $t$ trees
+      \State Compute performance statistic $\widehat{Q}_{k,n,t}$. 
+    \EndFor
+  \EndFor
+\EndFor
+\State Determine the $k$, $n$, and $t$ values corresponding to the best value of $\widehat{Q}_{k,n,t}$.
+\end{algorithmic}
+\end{algorithm}
+```
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::::
+
+
+
 
 
 ## Types of Postprocessors
@@ -222,7 +320,70 @@ bind_rows(two_param_reg, two_param_sfd) %>%
 Those needing tuning and those that are just applied. 
 
 
+## Postprocessing Example: Probability Threshold Optimization
 
-## Postprocessing Example: PRobability Threshold Optimization
+```{r}
+#| label: full-umap-boosting-threshold-grid
+umap_boost_thrsh_grid <- crossing(umap_boost_grid, threshold = (5:10)/10)
 
+post_submodels <- 
+  umap_boost_thrsh_grid %>% 
+  group_nest(neighbors, min_n, .key = "predict_with") %>% 
+  mutate(
+    predict_with = map(predict_with, ~ .x %>% group_nest(trees, .key = "post"))
+  )
+
+post_schedule <- 
+  models_to_fit %>% 
+  full_join(post_submodels, by = c("neighbors", "min_n"))
+
+post_schedule
+post_schedule$predict_with[[1]]
+post_schedule$predict_with[[1]]$post[[1]]
+```
+
+:::: {.columns}
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="80%"}
+
+
+```pseudocode
+#| html-line-number: true
+#| html-line-number-punc: ":"
+
+\begin{algorithm}
+\begin{algorithmic}
+\State $\mathfrak{D}^{tr}$: training set
+\State $\mathfrak{D}^{ho}$: holdout set
+\For{$k \in \{1, 30\}$}
+  \State Using $k$ neighbors, train UMAP on $\mathfrak{D}^{tr}$
+  \State Apply UMAP to $\mathfrak{D}^{tr}$, creating $\widehat{\mathfrak{D}}^{tr}_k$
+  \State Apply UMAP to $\mathfrak{D}^{ho}$, creating $\widehat{\mathfrak{D}}^{ho}_k$  
+  \For{$n \in \{1, 20, 40\}$}
+    \State Train a boosting model with $n_{min}= n$ and 100 trees on $\mathfrak{D}^{tr}_k$ to produce $\widehat{f}_{k,n,100}$
+    \For{$t \in \{1, 2, \ldots, 100\}$}
+      \State Predict $\widehat{\mathfrak{D}}^{ho}_k$ with  $\widehat{f}_{k,n,100}$ stopping at $t$ trees
+      \For{$\pi \in \{0.5, 0.6, \ldots, 1.0\}$}
+        \State Recompute hard class predictions with threshold $\pi$.
+        \State Compute performance statistic $\widehat{Q}_{k,n,t,\pi}$. 
+      \EndFor
+    \EndFor
+  \EndFor
+\EndFor
+\State Determine the $k$, $n$, $t$, and $\pi$ values corresponding to the best value of $\widehat{Q}_{k,n,t,\pi}$.
+\end{algorithmic}
+\end{algorithm}
+```
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::::
 
