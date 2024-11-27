@@ -179,6 +179,34 @@ Since the type of grid mattered for this example, let’s go on a quick “side 
 
 the effect of integers (max size etc) and also on duplicate computations
 
+```{r}
+#| label: fig-two-grids
+#| echo: false
+#| fig-width: 7
+#| fig-height: 3.5
+#| fig-align: center
+#| out-width: 95%
+
+two_param <- parameters(penalty(), neighbors(c(1, 50)))
+two_param_reg <-
+  two_param %>% 
+  grid_regular(levels = c(5, 6)) %>% 
+  mutate(type = "Regular")
+  
+two_param_sfd <-
+  two_param %>% 
+  grid_space_filling(size = 5 * 6) %>% 
+  mutate(type = "Space-Filling")
+
+bind_rows(two_param_reg, two_param_sfd) %>% 
+  ggplot(aes(penalty, neighbors)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  facet_wrap(~ type) + 
+  coord_fixed(ratio = 1 / 5)
+  
+```
+
 ## Sidebar: Parallel Processing
 
 
