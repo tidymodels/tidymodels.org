@@ -68,7 +68,7 @@ On the other hand is nearly every other type of model. In most cases, preprocess
 
 Our focus is 100% on stagewise estimation. 
 
-## Stage-Wise Modeling and Conditional Execution
+## Stage-Wise Modeling and Conditional Execution {#sec-stagewise-exe}
 
 One important part of processing a grid of candidate values is to avoid repeating any computations wherever possible. This leads to the idea of conditional execution. Let’s think of an example. 
 
@@ -118,7 +118,7 @@ In this case, the UMAP step would be different for each candidate so there is no
 
 Once solution to avoiding redundant computations would be to cache the UMAP computations so that they could be reused later. 
 
-A better solution is _conditional execution_. In this case, we determine the unique set of candidate values associated with the preprocessor and loop over these. Within each loop, we we train and predict the random forest model across its candidate values. For the first grid of candidates contained in `umap_rf_grid`: 
+A better solution is _conditional execution_. In this case, we determine the unique set of candidate values associated with the preprocessor and loop over these. Within each loop, we we train and predict the random forest model across its candidate values. Here's a listing of this algorithm: 
 
 :::: {.columns}
 
@@ -169,13 +169,17 @@ We can organize this data using a nested structure:
 umap_rf_schedule <- 
   umap_rf_grid %>% 
   group_nest(neighbors, .key = "second_stage")
+
+# The training loop to iterate over:
 umap_rf_schedule
+
+# Within that loop, iterative over these:
 umap_rf_schedule$second_stage[[1]]
 ```
 
 In general, conditional execution is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in section TODO when we can run the computations in parallel. 
 
-## Sidebar: Types of Grids
+## Sidebar: Types of Grids  {#sec-grid-types}
 
 Since the type of grid mattered for this example, let’s go on a quick “side quest” to talk about the two major types of grids. 
 
@@ -214,7 +218,7 @@ Space-filling designs are, on average, the best approach for parameter tuning. T
 
 The choice of grid types is relevant here because it affects the tactics used to efficiently process the grid. Consider the two grids above. Our conditional execution approach works well for the regular grid; for each value of the number of neighbors, there is a nice vector of values for the other parameter. Conversely, for the space-filling design, there is only a single corresponding penalty value for each unique number of neighbors. No conditional execution is possible. 
 
-## There's Something We Didn't Tell You
+## There's Something We Didn't Tell You  {#sec-add-in-resampling}
 
 One important aspect of grid search that we have obfuscated in the algorithm is shown in the previous section. Line 10 says “Compute performance statistic $\widehat{Q}_{k,n,t}$” which left a lot out.  
 
@@ -246,7 +250,7 @@ When tuning models, a single holdout set (a.k.a. a validation set) or multiple h
     \State Apply UMAP to $\mathfrak{D}^{pred}_b$, creating $\widehat{\mathfrak{D}}^{pred}_{b,k}$  
     \For{$m \in \{1, 50, 100\}$}
       \State Train a random forest model with $m_{try} = m$ on $\mathfrak{D}^{fit}_{b,k}$ to produce $\widehat{f}_{b,k,m}$
-     \State Predict $\widehat{\mathfrak{D}}^{pred}_k$ with  $\widehat{f}_{b,k,m}$
+     \State Predict $\widehat{\mathfrak{D}}^{pred}_{b,k}$ with  $\widehat{f}_{b,k,m}$
       \State Compute performance statistic $\widehat{Q}_{b,k,m}$. 
    \EndFor
   \EndFor
@@ -267,9 +271,9 @@ When tuning models, a single holdout set (a.k.a. a validation set) or multiple h
 
 
 
-## Sidebar: Parallel Processing
+## Sidebar: Parallel Processing  {#sec-in-parallel}
 
-Another tool to increase computational efficiency is parallel processing. We have multiple computational cores on our computers that can perform calculations simultaneously. If we have $B$ resamples and $s$ candidates in our grid, there are $B \times s$ model fits to evaluate and none of them depend on the others^[That’s true but only kind of true; we’ll elaborate in the section on submodels below.]. We can split up these operations into chunks and send these chunks to different computer cores. 
+Another tool to increase computational efficiency is parallel processing. We have multiple computational cores on our computers that can perform calculations simultaneously. If we have $B$ resamples and $s$ candidates in our grid, there are $B \times s$ model fits to evaluate and none of them depend on the others^[That’s true but only _kind of true_; we’ll elaborate in @sec-submodels below.]. We can split up these operations into chunks and send these chunks to different computer cores. 
 
 This is discussed at leangth in Section 13.5.2 of [_Tidy Models with R_](https://www.tmwr.org/grid-search#parallel-processing). Here are the highlights: 
  
@@ -279,18 +283,18 @@ This is discussed at leangth in Section 13.5.2 of [_Tidy Models with R_](https:/
 - If your preprocessing (if any) is very fast, you may want to flatten the loops so that the computational tasks loop over each of the $B \times s$ resample/candidate combinations. This means that the preprocessing will be recalculated several times but, if they are cheap, this might be the fasted approach. 
 
 
-## What are Submodels?
+## What are Submodels? {#sec-submodels}
 
 “Submodels” is a situation where a model can make predictions for different tuning parameter values _without_ retraining. Two examples: 
 
 - _Boosting_ ensembles take the same model and, using different case weights, create a sequential set of fits. For example, a tree ensemble created with 100 boosting iterations will contain 100 trees, each depending on the previous fits. For many implementations, you can fit the largest ensemble size (100 in this example) and, for free, make predictions on sizes 1 through 99. 
 - Some regularized models, such as glmnet, have a penalization parameter that attenuates the magnitude of the regression coefficients (think weight decay in neural networks). We often tune over this parameter. For glmnet, the model simultaneously creates a _path_ of possible penalty values. With a single model fit, you can predict on _any_ penalty values. 
 
-Not all models contain parameters that can use the “submodel trick.” However, when they do, there can be a massive efficient gain with grid search. 
+Not all models contain parameters that can use the “submodel trick.” For example, the random forest model from @sec-stagewise-exe is also an ensemble of trees. However, those trees are not created in a sequence; they are all independent of one another. 
 
+However, when our model has submodel parameters, there can be a massive efficient gain with grid search. 
 
-
-## How Can we Exploit Submodels? 
+## How Can we Exploit Submodels?  {#sec-submodel-processing}
 
 Let's use boosting as an example. We'll repeat our UMAP preprocessor and tune over: 
 
@@ -316,24 +320,7 @@ models_to_fit <-
 models_to_fit
 ```
 
-```{r}
-#| label: min-boosting-submodel-grid
-submodels <- 
-  umap_boost_grid %>% 
-  group_nest(neighbors, min_n, .key = "predict_with")
-
-submodel_schedule <- 
-  models_to_fit %>% 
-  full_join(submodels, by = c("neighbors", "min_n"))
-
-submodel_schedule
-submodel_schedule$predict_with[[1]]
-```
-
-
-
-With submodels, for efficiency, there are three loops to most efficiently evaluate this grid. 
-
+With submodels, our algorithm has yet another nested loop in Lines 9-11:
 
 :::: {.columns}
 
@@ -350,20 +337,22 @@ With submodels, for efficiency, there are three loops to most efficiently evalua
 
 \begin{algorithm}
 \begin{algorithmic}
-\State $\mathfrak{D}^{fit}$: training set
-\State $\mathfrak{D}^{pred}$: holdout set
-\For{$k \in \{1, 30\}$}
-  \State Using $k$ neighbors, train UMAP on $\mathfrak{D}^{fit}$
-  \State Apply UMAP to $\mathfrak{D}^{fit}$, creating $\widehat{\mathfrak{D}}^{fit}_k$
-  \State Apply UMAP to $\mathfrak{D}^{pred}$, creating $\widehat{\mathfrak{D}}^{pred}_k$  
-  \For{$n \in \{1, 20, 40\}$}
-    \State Train a boosting model with $n_{min}= n$ and 100 trees on $\mathfrak{D}^{fit}_k$ to produce $\widehat{f}_{k,n,100}$
-    \For{$t \in \{1, 2, \ldots, 100\}$}
-      \State Predict $\widehat{\mathfrak{D}}^{pred}_k$ with  $\widehat{f}_{k,n,100}$ stopping at $t$ trees
-      \State Compute performance statistic $\widehat{Q}_{k,n,t}$. 
+\For{$b = 1, \ldots, B$}
+  \State Split the data into $\mathfrak{D}^{fit}_b$ and $\mathfrak{D}^{pred}_b$
+  \For{$k \in \{1, 30\}$}
+    \State Using $k$ neighbors, train UMAP on $\mathfrak{D}^{fit}_b$
+    \State Apply UMAP to $\mathfrak{D}^{fit}_b$, creating $\widehat{\mathfrak{D}}^{fit}_{b,k}$
+    \State Apply UMAP to $\mathfrak{D}^{pred}_b$, creating $\widehat{\mathfrak{D}}^{pred}_{b,k}$  
+    \For{$n \in \{1, 20, 40\}$}
+      \State Train a boosting model with $n_{min}= n$ and 100 trees on $\mathfrak{D}^{fit}_{b,k}$ to produce $\widehat{f}_{b,k,n,100}$
+      \For{$t \in \{1, 2, \ldots, 100\}$}
+        \State Predict $\widehat{\mathfrak{D}}^{pred}_{b,k}$ with  $\widehat{f}_{b,k,n,100}$ using at $t$ trees
+        \State Compute performance statistic $\widehat{Q}_{b,k,n,t}$. 
+      \EndFor
     \EndFor
   \EndFor
 \EndFor
+\State Compute the average performance metric $\widehat{Q}_{k,n,t} = 1/B\sum \widehat{Q}_{b,k,n,t}$
 \State Determine the $k$, $n$, and $t$ values corresponding to the best value of $\widehat{Q}_{k,n,t}$.
 \end{algorithmic}
 \end{algorithm}
@@ -377,16 +366,49 @@ With submodels, for efficiency, there are three loops to most efficiently evalua
 
 ::::
 
+This added complexity has huge benefits in efficiency since our loop for the number of trees ($t$) is for _predicting_ and not for _training_.
 
 
 
+```{r}
+#| label: min-boosting-submodel-grid
+submodel_schedule <- 
+  umap_boost_grid %>% 
+  # First collapse the submodel parameters
+  group_nest(neighbors, min_n, .key = "predict_stage") %>% 
+  # Now find the number of trees to fit
+  full_join(
+    umap_boost_grid %>% 
+      summarize(trees = max(trees), .by = c(neighbors, min_n)),
+    by = c("neighbors", "min_n")
+  ) %>% 
+  relocate(trees, .after = min_n) %>% 
+  # Now collapse over the preprocessor for conditional execution
+  group_nest(neighbors, .key = "second_stage")
 
-## Types of Postprocessors
+submodel_schedule
+```
+
+Let's look at one iteration of the loop. For the model with a single neighbor, what is the first boosted tree that we fit? 
+
+```{r}
+#| label: min-boosting-submodel-grid-2nd
+submodel_schedule$second_stage[[1]]
+```
+
+For the first of these, with `min_n` equal to `r submodel_schedule$second_stage[[1]]$min_n[1]` and 100 trees, what is the set of tree sizes that we should predict? 
+
+```{r}
+#| label: min-boosting-submodel-grid-predict
+submodel_schedule$second_stage[[1]]$predict_stage[[1]]
+```
+
+## Types of Postprocessors {#sec-postprocessors}
 
 Those needing tuning and those that are just applied. 
 
 
-## Postprocessing Example: Probability Threshold Optimization
+## Postprocessing Example: Probability Threshold Optimization {#sec-prob-thresholds}
 
 ```{r}
 #| label: full-umap-boosting-threshold-grid
@@ -423,23 +445,25 @@ post_schedule$predict_with[[1]]$post[[1]]
 
 \begin{algorithm}
 \begin{algorithmic}
-\State $\mathfrak{D}^{fit}$: training set
-\State $\mathfrak{D}^{pred}$: holdout set
-\For{$k \in \{1, 30\}$}
-  \State Using $k$ neighbors, train UMAP on $\mathfrak{D}^{fit}$
-  \State Apply UMAP to $\mathfrak{D}^{fit}$, creating $\widehat{\mathfrak{D}}^{fit}_k$
-  \State Apply UMAP to $\mathfrak{D}^{pred}$, creating $\widehat{\mathfrak{D}}^{pred}_k$  
-  \For{$n \in \{1, 20, 40\}$}
-    \State Train a boosting model with $n_{min}= n$ and 100 trees on $\mathfrak{D}^{fit}_k$ to produce $\widehat{f}_{k,n,100}$
-    \For{$t \in \{1, 2, \ldots, 100\}$}
-      \State Predict $\widehat{\mathfrak{D}}^{pred}_k$ with  $\widehat{f}_{k,n,100}$ stopping at $t$ trees
-      \For{$\pi \in \{0.5, 0.6, \ldots, 1.0\}$}
-        \State Recompute hard class predictions with threshold $\pi$.
-        \State Compute performance statistic $\widehat{Q}_{k,n,t,\pi}$. 
+\For{$b = 1, \ldots, B$}
+  \State Split the data into $\mathfrak{D}^{fit}_b$ and $\mathfrak{D}^{pred}_b$
+  \For{$k \in \{1, 30\}$}
+    \State Using $k$ neighbors, train UMAP on $\mathfrak{D}^{fit}_b$
+    \State Apply UMAP to $\mathfrak{D}^{fit}_b$, creating $\widehat{\mathfrak{D}}^{fit}_{b,k}$
+    \State Apply UMAP to $\mathfrak{D}^{pred}_b$, creating $\widehat{\mathfrak{D}}^{pred}_{b,k}$  
+    \For{$n \in \{1, 20, 40\}$}
+      \State Train a boosting model with $n_{min}= n$ and 100 trees on $\mathfrak{D}^{fit}_{b,k}$ to produce $\widehat{f}_{b,k,n,100}$
+      \For{$t \in \{1, 2, \ldots, 100\}$}
+        \State Predict $\widehat{\mathfrak{D}}^{pred}_{b,k}$ with  $\widehat{f}_{b,k,n,100}$ using at $t$ trees
+        \For{$\pi \in \{0.5, 0.6, \ldots, 1.0\}$}
+          \State Recompute hard class predictions with threshold $\pi$.
+          \State Compute performance statistic $\widehat{Q}_{b,k,n,t,\pi}$. 
+        \EndFor
       \EndFor
     \EndFor
   \EndFor
 \EndFor
+\State Compute the average performance metric $\widehat{Q}_{k,n,t,\pi} = 1/B\sum \widehat{Q}_{b,k,n,t,\pi}$
 \State Determine the $k$, $n$, $t$, and $\pi$ values corresponding to the best value of $\widehat{Q}_{k,n,t,\pi}$.
 \end{algorithmic}
 \end{algorithm}
