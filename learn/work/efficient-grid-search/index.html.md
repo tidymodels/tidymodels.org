@@ -16,6 +16,7 @@ include-after-body: ../../../resources.html
 
 
 
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: tidymodels.
@@ -73,6 +74,7 @@ For illustration, let’s use a grid of points with six candidates:
 
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -91,6 +93,7 @@ umap_rf_grid %>% arrange(neighbors, mtry)
 #> 6        30   100
 ```
 :::
+
 
 
 
@@ -116,6 +119,7 @@ This would not be the case if there were no connection between the preprocessing
 
 
 
+
 ::: {.cell layout-align="center"}
 
 ```
@@ -130,6 +134,7 @@ This would not be the case if there were no connection between the preprocessing
 #> 6        30   100
 ```
 :::
+
 
 
 
@@ -186,6 +191,7 @@ We can organize this data using a nested structure:
 
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -214,6 +220,7 @@ umap_rf_schedule$second_stage[[1]]
 
 
 
+
 In general, conditional execution is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in @sec-grid-types as well as in @sec-in-parallel when we can run the computations in parallel. 
 
 ## Sidebar: Types of Grids  {#sec-grid-types}
@@ -226,11 +233,13 @@ Here’s an example of a regular grid and a space-filling design where each has 
 
 
 
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/fig-two-grids-1.svg){#fig-two-grids fig-align='center' width=95%}
 :::
 :::
+
 
 
 
@@ -325,6 +334,7 @@ With the same UMAP grid, let’s use is $2 \times 100 \times 3 = 600$ grid point
 
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -350,7 +360,9 @@ umap_boost_grid
 
 
 
+
 There are six unique combinations of the number of neighbors and `min_n`, so we can evaluate only six models using these parameters: 
+
 
 
 
@@ -372,6 +384,7 @@ models_to_fit
 #> 6        30    40   100
 ```
 :::
+
 
 
 
@@ -427,6 +440,7 @@ This added complexity has huge benefits in efficiency since our loop for the num
 
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -455,7 +469,9 @@ submodel_schedule
 
 
 
+
 Let's look at one iteration of the loop. For the model with a single neighbor, what is the first boosted tree that we fit? 
+
 
 
 
@@ -474,7 +490,9 @@ submodel_schedule$second_stage[[1]]
 
 
 
+
 For the first of these, with `min_n` equal to 1 and 100 trees, what is the set of tree sizes that we should predict? 
+
 
 
 
@@ -498,6 +516,7 @@ submodel_schedule$second_stage[[1]]$predict_stage[[1]]
 #> # ℹ 90 more rows
 ```
 :::
+
 
 
 
@@ -563,6 +582,7 @@ Organizing the grid data to programmatically evaluate the models, we'll add anot
 
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -593,7 +613,9 @@ post_proc_schedule <-
 
 
 
+
 To start, the loop for postprocessing is defined here: 
+
 
 
 
@@ -611,7 +633,9 @@ post_proc_schedule
 
 
 
+
 Within the first iteration of that loop, we can see the non-submodel parameter(s) to iterate over (where $t=100$):
+
 
 
 
@@ -630,7 +654,9 @@ post_proc_schedule$second_stage[[1]]
 
 
 
+
 Once we fit the first combination of parameters for the boosted tree, we start predicting the sequence of submodels...
+
 
 
 
@@ -657,7 +683,9 @@ post_proc_schedule$second_stage[[1]]$predict_stage[[1]]
 
 
 
+
 but for each of these, we have a sequence of postprocessing adjustments to make: 
+
 
 
 
@@ -676,6 +704,7 @@ post_proc_schedule$second_stage[[1]]$predict_stage[[1]]$post_stage[[1]]
 #> 6       1
 ```
 :::
+
 
 
 
