@@ -56,7 +56,7 @@ For grid search, we evaluate each candidate in the grid by training the entire p
 
 This page outlines the general process and describes different constraints and approaches to efficiently evaluating a grid of candidate values. Unexpectedly, the tools that we use to increase efficiency often result in more and more complex routines to compute performance for the grid. 
 
-We’ll break down some of the complications and exploitations that are relevant for model tuning (via grid search). We’ll also start with very simple use-cases and steadily increase the complexity of the task as well as the complexity of the solutions. 
+We’ll break down some of the complications and exploitations that are relevant for model tuning (via grid search). We’ll also start with very simple use-cases and steadily increase the complexity of the task as well as the complexity of the solutions. The examples that we’ll work through are the most complicated. In many cases, none of these optimizations are required (or feasible). 
 
 ## How Does Training Occur in the Pipeline?
 
@@ -66,7 +66,7 @@ On one hand, there are deep neural networks. These are highly nonlinear models w
 
 On the other hand is nearly every other type of model. In most cases, preprocessing tasks are separate estimation procedures that are executed independently of the model fit. There are cases such as principal component regression that conducts PCA signal extraction before passing the results to a routine that executes ordinary least squares. However, there are still two separate estimation tasks that are carried out in sequence, not simultaneously. We’ll call this type of training “stagewise estimation” since there are multiple, distinct training steps that occur in sequence. 
 
-Our focus is 100% on stagewise estimation. 
+Our focus is 100% on stagewise estimation.
 
 ## Stage-Wise Modeling and Conditional Execution {#sec-stagewise-exe}
 
@@ -410,25 +410,6 @@ Those needing tuning and those that are just applied.
 
 ## Postprocessing Example: Probability Threshold Optimization {#sec-prob-thresholds}
 
-```{r}
-#| label: full-umap-boosting-threshold-grid
-umap_boost_thrsh_grid <- crossing(umap_boost_grid, threshold = (5:10)/10)
-
-post_submodels <- 
-  umap_boost_thrsh_grid %>% 
-  group_nest(neighbors, min_n, .key = "predict_with") %>% 
-  mutate(
-    predict_with = map(predict_with, ~ .x %>% group_nest(trees, .key = "post"))
-  )
-
-post_schedule <- 
-  models_to_fit %>% 
-  full_join(post_submodels, by = c("neighbors", "min_n"))
-
-post_schedule
-post_schedule$predict_with[[1]]
-post_schedule$predict_with[[1]]$post[[1]]
-```
 
 :::: {.columns}
 
@@ -476,4 +457,54 @@ post_schedule$predict_with[[1]]$post[[1]]
 :::
 
 ::::
+
+```{r}
+#| label: make-post-schedule
+
+umap_boost_post_grid <- crossing(umap_boost_grid, threshold = (5:10)/10)
+
+post_proc_schedule <- 
+  umap_boost_post_grid %>% 
+  # First collapse the submodel parameters
+  group_nest(neighbors, min_n, .key = "predict_stage") %>% 
+  # Second, collapse into postprocessing loop
+  mutate(
+    predict_stage = map(predict_stage, 
+                        ~ .x %>% group_nest(trees, .key = "post_stage"))
+  ) %>% 
+  # Now find the number of trees to fit
+  full_join(
+    umap_boost_grid %>% 
+      summarize(trees = max(trees), .by = c(neighbors, min_n)),
+    by = c("neighbors", "min_n")
+  ) %>% 
+  relocate(trees, .after = min_n) %>% 
+  # Now collapse over the preprocessor for conditional execution
+  group_nest(neighbors, .key = "second_stage")
+```
+
+
+Everything is the same as the submodel loop except for each submodel value, we have yet another nested structure to help use iterative over postprocessing parameters:
+
+```{r}
+#| label: post-predict
+post_proc_schedule %>% 
+  pluck("second_stage") %>% 
+  pluck(1) %>% 
+  pluck("predict_stage") %>% 
+  pluck(1)
+```
+
+and the postprocessing loop is contained in: 
+
+```{r}
+#| label: post-post
+post_proc_schedule %>% 
+  pluck("second_stage") %>% 
+  pluck(1) %>% 
+  pluck("predict_stage") %>% 
+  pluck(1)%>% 
+  pluck("post_stage") %>% 
+  pluck(1)
+```
 
