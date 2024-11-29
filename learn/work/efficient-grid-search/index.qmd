@@ -1,11 +1,11 @@
 ---
-title: "Efficient Grid Search"
+title: "Algorithms for Efficient Grid Search"
 categories:
   - tuning
 type: learn-subsection
 weight: 4
 description: | 
-  A general discussion on grids and how to efficiently estimate performance. .
+  A general discussion of tricks for making a seemingly inefficient process very efficient. 
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
@@ -32,7 +32,7 @@ This article demonstrates ....
 Consider it an expanded version of Section 13.5 of [_Tidy Models with R_](https://www.tmwr.org/grid-search#efficient-grids). 
 
 
-## The Overall Grid Tuning Procedure
+## The Overall Grid Tuning Procedure {#sec-overview}
 
 tidymodels has three phases of creating a model pipeline: 
 
@@ -177,7 +177,7 @@ umap_rf_schedule
 umap_rf_schedule$second_stage[[1]]
 ```
 
-In general, conditional execution is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in section TODO when we can run the computations in parallel. 
+In general, conditional execution is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in @sec-grid-types as well as in @sec-in-parallel when we can run the computations in parallel. 
 
 ## Sidebar: Types of Grids  {#sec-grid-types}
 
@@ -403,32 +403,16 @@ For the first of these, with `min_n` equal to `r submodel_schedule$second_stage[
 submodel_schedule$second_stage[[1]]$predict_stage[[1]]
 ```
 
-## Types of Postprocessors {#sec-postprocessors}
+## Adding Postprocessors {#sec-postprocessors}
 
-Those needing tuning and those that are just applied. 
+Postprocessors are tools that adjust the predicted values produced by models. For example, for a regression model, you might want to limit the range of the predicted values to specific values. Also, we've already mentioned how we might want to adjust probability thresholds for classification models in @sec-overview. 
+
+We can treat the probability threshold as a tuning parameter to enable the model to make the most appropriate tradeoff between false negatives and false positives.
+
+One important point about this example is that no estimation step occurs. We are simply choosing a different threshold for the probability and resetting the hard class predictions. Some postprocessing methods, specifically calibration methods, need some other data set to estimate other model parameters that will then be used to adjust the original model's predictions. 
 
 
-## Postprocessing Example: Probability Threshold Optimization {#sec-prob-thresholds}
-
-```{r}
-#| label: full-umap-boosting-threshold-grid
-umap_boost_thrsh_grid <- crossing(umap_boost_grid, threshold = (5:10)/10)
-
-post_submodels <- 
-  umap_boost_thrsh_grid %>% 
-  group_nest(neighbors, min_n, .key = "predict_with") %>% 
-  mutate(
-    predict_with = map(predict_with, ~ .x %>% group_nest(trees, .key = "post"))
-  )
-
-post_schedule <- 
-  models_to_fit %>% 
-  full_join(post_submodels, by = c("neighbors", "min_n"))
-
-post_schedule
-post_schedule$predict_with[[1]]
-post_schedule$predict_with[[1]]$post[[1]]
-```
+Let's further torture our UMAP/boosted tree pipeline to add an additional `threshold` parameter for the probability. Let's say that we want to evaluate thresholds of 0.5, 0.6, ..., to 1.0. Unsurprisingly, this adds an additional loop inside our submodel-prediction loop (Lines 11-13 below): 
 
 :::: {.columns}
 
@@ -476,4 +460,62 @@ post_schedule$predict_with[[1]]$post[[1]]
 :::
 
 ::::
+
+Organizing the grid data to programmatically evaluate the models, we'll add another level of nesting. 
+
+```{r}
+#| label: umap-boost-post-grid
+umap_boost_post_grid <-
+  crossing(umap_boost_grid, threshold = (5:10)/10)
+
+post_proc_schedule <-
+  umap_boost_post_grid %>%
+  # First collapse the submodel parameters
+  group_nest(neighbors, min_n, .key = "predict_stage") %>%
+  # Second, collapse into postprocessing loop
+  mutate(
+    predict_stage = map(predict_stage,
+                        ~ .x %>% group_nest(trees, .key = "post_stage"))
+  ) %>%
+  # Now find the number of trees to fit
+  full_join(
+    # This is in min_grid:
+    umap_boost_grid %>%
+      summarize(trees = max(trees), .by = c(neighbors, min_n)),
+    by = c("neighbors", "min_n")
+  ) %>%
+  relocate(trees, .after = min_n) %>% 
+  # Now collapse over the preprocessor for conditional execution
+  group_nest(neighbors, .key = "second_stage")
+```
+
+To start, the loop for postprocessing is defined here: 
+
+```{r}
+#| label: umap-boost-post-umap
+post_proc_schedule
+```
+
+Within the first iteration of that loop, we can see the non-submodel parameter(s) to iterate over (where $t=100$):
+
+```{r}
+#| label: umap-boost-post-fits
+post_proc_schedule$second_stage[[1]]
+```
+
+Once we fit the first combination of parameters for the boosted tree, we start predicting the sequence of submodels...
+
+```{r}
+#| label: umap-boost-post-submodels
+post_proc_schedule$second_stage[[1]]$predict_stage[[1]]
+```
+
+but for each of these, we have a sequence of postprocessing adjustments to make: 
+
+```{r}
+#| label: umap-boost-post-thresholds
+post_proc_schedule$second_stage[[1]]$predict_stage[[1]]$post_stage[[1]]
+```
+
+Looking at the _five nested loops_, it would be reasonable to question whether this approach is, in fact, efficient. First, keep in mind that we are evaluating `r format(nrow(umap_boost_post_grid), big.mark = ",")` tuning parameter candidates while only training `r nrow(models_to_fit)` models. Second, the most expensive steps in this process are those that training preprocessors and models (Lines 4 and 8 above). The other loops are making predictions or adjustments and these are already efficient (and are easily vectorized).
 
