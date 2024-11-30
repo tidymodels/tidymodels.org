@@ -98,7 +98,7 @@ The remaining tasks are to
 
 - Apply UMAP to the holdout data. 
 - Predict the holdout data with the fitted random forest model. 
-- Compute the performance statistic of interest (e.g., $R^2$, accuracy, RMSE, etc.)
+- Compute the performance statistic of interest (e.g., $R^2$ , accuracy, RMSE, etc.)
 
 For the second candidate, the process is exactly the same _except_ that the random forest model uses $m_{try} = 50$ instead of $m_{try} = 1$. 
 
@@ -108,7 +108,6 @@ This would not be the case if there were no connection between the preprocessing
 
 ```{r}
 #| label: umap-rf-grid-other
-#| echo: false
 umap_rf_grid_other <- umap_rf_grid
 umap_rf_grid_other$neighbors <- (1:6) * 5
 umap_rf_grid_other
@@ -118,16 +117,7 @@ In this case, the UMAP step would be different for each candidate so there is no
 
 Once solution to avoiding redundant computations would be to cache the UMAP computations so that they could be reused later. 
 
-A better solution is _conditional execution_. In this case, we determine the unique set of candidate values associated with the preprocessor and loop over these. Within each loop, we we train and predict the random forest model across its candidate values. Here's a listing of this algorithm: 
-
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
+A better solution is _conditional execution_. In this case, we determine the unique set of candidate values associated with the preprocessor and loop over these. Within each loop, we train and predict the random forest model across its candidate values. Here's a listing of this algorithm: 
 
 ```pseudocode
 #| html-line-number: true
@@ -142,7 +132,7 @@ A better solution is _conditional execution_. In this case, we determine the uni
   \State Apply UMAP to $\mathfrak{D}^{fit}$, creating $\widehat{\mathfrak{D}}^{fit}_k$
   \State Apply UMAP to $\mathfrak{D}^{pred}$, creating $\widehat{\mathfrak{D}}^{pred}_k$  
   \For{$m \in \{1, 50, 100\}$}
-    \State Train a random forest model with $m_{try} = m$ on $\mathfrak{D}^{fit}_k$ to produce $\widehat{f}_{km}$
+    \State Train a random forest model with $m_{try} = m$ on $\mathfrak{D}^{fit}_k$ to produce $\widehat{f}_{k,m}$
     \State Predict $\widehat{\mathfrak{D}}^{pred}_k$ with  $\widehat{f}_{k,m}$
     \State Compute performance statistic $\widehat{Q}_{k,m}$. 
   \EndFor
@@ -152,16 +142,8 @@ A better solution is _conditional execution_. In this case, we determine the uni
 \end{algorithm}
 ```
 
-:::
 
-::: {.column width="10%"}
-
-:::
-
-::::
-
-
-In this way, we evaluated six candidates via two UMAP models and six random forest models. We avoid four redundant and expensive UMAP fits.
+In this way, we evaluated six candidates via two UMAP fits and six random forest fits. We avoid four redundant and expensive UMAP fits.
 
 We can organize this data using a nested structure:
 
@@ -177,13 +159,13 @@ umap_rf_schedule
 umap_rf_schedule$second_stage[[1]]
 ```
 
-In general, conditional execution is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in @sec-grid-types as well as in @sec-in-parallel when we can run the computations in parallel. 
+In general, conditional execution is a good idea. Even when the second grid is used (as with `umap_rf_grid_other` above), there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see issues with conditional execution that comes up in @sec-grid-types as well as in @sec-in-parallel when we can run the computations in parallel. 
 
 ## Sidebar: Types of Grids  {#sec-grid-types}
 
-Since the type of grid mattered for this example, let’s go on a quick “side quest” to talk about the two major types of grids. 
+Since the type of grid mattered for this example, let’s go on a quick detour to talk about the two major types of grids. 
 
-When we think about parameter grids, there are two types: regular and irregular. A regular grid is one where we create a univariate sequence of values for each tuning parameter and then create all possible combinations. Irregular grids can be made in many different ways but cannot be combinatorial in nature. Examples are random grids (i.e., simulating random values across parameter ranges), latin hypercube designs, and others. The best irregular grids are _space-filling designs_; they attempt to cover the entire parameter space and try to distribute the points so that none are overly similar to the others.  
+When we think about parameter grids, there are two types: regular and irregular. A regular grid is one where we create a univariate sequence of values for each tuning parameter and then create all possible combinations. Irregular grids can be made in many different ways but cannot be combinatorial in nature. Examples are random grids (i.e., simulating random values across parameter ranges), Latin hypercube designs, and others. The best irregular grids are _space-filling designs_; they attempt to cover the entire parameter space and try to distribute the points so that none are overly similar to the others.  
 
 Here’s an example of a regular grid and a space-filling design where each has 15 candidate points: 
 
@@ -222,19 +204,9 @@ The choice of grid types is relevant here because it affects the tactics used to
 
 One important aspect of grid search that we have obfuscated in the algorithm is shown in the previous section. Line 10 says “Compute performance statistic $\widehat{Q}_{k,n,t}$” which left a lot out.  
 
-In that same algorithm, we had two data sets: a training set ($\mathfrak{D}^{fit}$) and a holdout set ($\mathfrak{D}^{pred}$) of data points that were not included in the training set. We said “holdout” instead of “test set” for generality. 
+In that same algorithm, we had two data sets: a training set ($\mathfrak{D}^{fit}$) and a holdout set ($\mathfrak{D}^{pred}$) of data points that were not included in the training set. We said “holdout” to avoid naming a specific data set, such as a test or validation set.
 
-When tuning models, a single holdout set (a.k.a. a validation set) or multiple holdout sets are used (via resampling). For example, with 10-fold cross-validation, there is _another_ loop over the number resamples. 
-
-
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
+When tuning models, a single holdout set (a.k.a. a validation set) or multiple holdout sets are used (via resampling) to accurately estimate performance. For example, with 10-fold cross-validation, there is _another_ loop over the $B = 10$ resamples. 
 
 ```pseudocode
 #| html-line-number: true
@@ -261,14 +233,7 @@ When tuning models, a single holdout set (a.k.a. a validation set) or multiple h
 \end{algorithm}
 ```
 
-:::
-
-::: {.column width="10%"}
-
-:::
-
-::::
-
+The major consequence of using multiple resamples is that we increase the computational load by $B$-fold^[We can mitigate this using [racing methods](https://aml4td.org/chapters/grid-search.html#sec-racing), but that is a separate topic.]. With a validation set, $B = 1$ so there is no real difference form our first algorithm.
 
 
 ## Sidebar: Parallel Processing  {#sec-in-parallel}
@@ -282,6 +247,7 @@ This is discussed at leangth in Section 13.5.2 of [_Tidy Models with R_](https:/
 	- If you have a lot of data and I/O is expensive, you might want to chunk the data so that all the computations use the same data. For example, for resampling, you might send all tasks for $\mathfrak{D}^{fit}_b$ and $\mathfrak{D}^{pred}_b$ are on the same computer core. 
 - If your preprocessing (if any) is very fast, you may want to flatten the loops so that the computational tasks loop over each of the $B \times s$ resample/candidate combinations. This means that the preprocessing will be recalculated several times but, if they are cheap, this might be the fasted approach. 
 
+There is tremendous benefit possible with parallel processing but we do have to think about how we should execute the tasks for different models. 
 
 ## What are Submodels? {#sec-submodels}
 
@@ -294,9 +260,7 @@ Not all models contain parameters that can use the “submodel trick.” For exa
 
 However, when our model has submodel parameters, there can be a massive efficient gain with grid search. 
 
-## How Can we Exploit Submodels?  {#sec-submodel-processing}
-
-Let's use boosting as an example. We'll repeat our UMAP preprocessor and tune over: 
+Let's use boosting as an example. We'll repeat our UMAP preprocessor and tune over two parameters assoicated with boosted trees: 
 
  - The number of boosted trees in an ensemble with values 1 through 100. 
  - The minimum number of data points required to keep splitting the tree (aka `min_n`) for values of 1, 20, and 40. 
@@ -321,15 +285,6 @@ models_to_fit
 ```
 
 With submodels, our algorithm has yet another nested loop in Lines 9-11:
-
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
 
 ```pseudocode
 #| html-line-number: true
@@ -358,17 +313,7 @@ With submodels, our algorithm has yet another nested loop in Lines 9-11:
 \end{algorithm}
 ```
 
-:::
-
-::: {.column width="10%"}
-
-:::
-
-::::
-
 This added complexity has huge benefits in efficiency since our loop for the number of trees ($t$) is for _predicting_ and not for _training_.
-
-
 
 ```{r}
 #| label: min-boosting-submodel-grid
@@ -414,15 +359,6 @@ One important point about this example is that no estimation step occurs. We are
 
 Let's further torture our UMAP/boosted tree pipeline to add an additional `threshold` parameter for the probability. Let's say that we want to evaluate thresholds of 0.5, 0.6, ..., to 1.0. Unsurprisingly, this adds an additional loop inside our submodel-prediction loop (Lines 11-13 below): 
 
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
-
 ```pseudocode
 #| html-line-number: true
 #| html-line-number-punc: ":"
@@ -452,14 +388,6 @@ Let's further torture our UMAP/boosted tree pipeline to add an additional `thres
 \end{algorithmic}
 \end{algorithm}
 ```
-
-:::
-
-::: {.column width="10%"}
-
-:::
-
-::::
 
 Organizing the grid data to programmatically evaluate the models, we'll add another level of nesting. 
 
