@@ -16,7 +16,6 @@ include-after-body: ../../../resources.html
 
 
 
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: tidymodels.
@@ -62,7 +61,7 @@ On the other hand is nearly every other type of model. In most cases, preprocess
 
 Our focus is 100% on stagewise estimation. 
 
-## Stage-Wise Modeling and Conditional Execution {#sec-stagewise-exe}
+## Stagewise Estimation and Conditional Execution {#sec-stagewise-exe}
 
 One important part of processing a grid of candidate values is to avoid repeating any computations wherever possible. This leads to the idea of conditional execution. Let’s think of an example. 
 
@@ -71,7 +70,6 @@ Suppose our pipeline consists of one preprocess and the model fit (i.e., no post
 For our model, we’ll choose a random forest model. This also has tuning parameters and we’ll choose to optimize “m-try”; the number of predictors to randomly select each time a split is created in any decision tree. 
 
 For illustration, let’s use a grid of points with six candidates: 
-
 
 
 
@@ -96,20 +94,17 @@ umap_rf_grid %>% arrange(neighbors, mtry)
 
 
 
+To evaluate these candidates, we could just loop through each row, train a pipeline with that row’s candidate values, predictor a holdout set, and then compute a performance statistic. What does “train a pipeline” mean though? For the first candidate, there are two separate estimations:
 
-To evaluate these candidates, we could just loop through each row, train a pipeline with that row’s candidate values, predictor a holdout set, and then compute a performance statistic. What does “train a pipeline” mean though? For the first candidate, it means 
-
-- Carry out the UMAP estimation process on the training set using a single nearest neighbor. 
+- Carry out the UMAP **estimation** process on the training set using a single nearest neighbor. 
 - Apply UMAP to the training set and save the transformed data. 
-- Estimate a random forest model with $m_{try} = 1$ using the transformed training set. 
+- **Estimate a** random forest model with $m_{try} = 1$ using the transformed training set. 
 
-The first and third steps are two separate estimations.
-
-The remaining tasks are to
+After this, the remaining tasks are to:
 
 - Apply UMAP to the holdout data. 
 - Predict the holdout data with the fitted random forest model. 
-- Compute the performance statistic of interest (e.g., $R^2$, accuracy, RMSE, etc.)
+- Compute the performance statistic of interest (e.g., $R^2$ , accuracy, RMSE, etc.)
 
 For the second candidate, the process is exactly the same _except_ that the random forest model uses $m_{try} = 50$ instead of $m_{try} = 1$. 
 
@@ -119,10 +114,12 @@ This would not be the case if there were no connection between the preprocessing
 
 
 
-
 ::: {.cell layout-align="center"}
 
-```
+```{.r .cell-code}
+umap_rf_grid_other <- umap_rf_grid
+umap_rf_grid_other$neighbors <- (1:6) * 5
+umap_rf_grid_other
 #> # A tibble: 6 × 2
 #>   neighbors  mtry
 #>       <dbl> <int>
@@ -137,21 +134,13 @@ This would not be the case if there were no connection between the preprocessing
 
 
 
-
 In this case, the UMAP step would be different for each candidate so there is no computational redundancy to eliminate. 
 
 Once solution to avoiding redundant computations would be to cache the UMAP computations so that they could be reused later. 
 
-A better solution is _conditional execution_. In this case, we determine the unique set of candidate values associated with the preprocessor and loop over these. Within each loop, we we train and predict the random forest model across its candidate values. Here's a listing of this algorithm: 
+A better solution is _conditional execution_. In this case, we determine the unique set of candidate values associated with the preprocessor and loop over these. Within each loop, we train and predict the random forest model across its candidate values. @alg-cond-exec shows a formalization of this concept for our specific example.
 
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
+::: {#alg-cond-exec}
 
 ```pseudocode
 #| html-line-number: true
@@ -166,7 +155,7 @@ A better solution is _conditional execution_. In this case, we determine the uni
   \State Apply UMAP to $\mathfrak{D}^{fit}$, creating $\widehat{\mathfrak{D}}^{fit}_k$
   \State Apply UMAP to $\mathfrak{D}^{pred}$, creating $\widehat{\mathfrak{D}}^{pred}_k$  
   \For{$m \in \{1, 50, 100\}$}
-    \State Train a random forest model with $m_{try} = m$ on $\mathfrak{D}^{fit}_k$ to produce $\widehat{f}_{km}$
+    \State Train a random forest model with $m_{try} = m$ on $\mathfrak{D}^{fit}_k$ to produce $\widehat{f}_{k,m}$
     \State Predict $\widehat{\mathfrak{D}}^{pred}_k$ with  $\widehat{f}_{k,m}$
     \State Compute performance statistic $\widehat{Q}_{k,m}$. 
   \EndFor
@@ -176,19 +165,13 @@ A better solution is _conditional execution_. In this case, we determine the uni
 \end{algorithm}
 ```
 
-:::
-
-::: {.column width="10%"}
+Conditional execution of different stages of fitting the entire pipeline.
 
 :::
 
-::::
-
-
-In this way, we evaluated six candidates via two UMAP models and six random forest models. We avoid four redundant and expensive UMAP fits.
+In this way, we evaluated six candidates via two UMAP fits and six random forest fits. We avoid four redundant and expensive UMAP fits.
 
 We can organize this data using a nested structure:
-
 
 
 
@@ -220,50 +203,41 @@ umap_rf_schedule$second_stage[[1]]
 
 
 
+In general, conditional execution is a good idea. Even when there are no preprocessing parameters associated with multiple supervised model parameters (as with `umap_rf_grid_other` above), there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is very inexpensive. 
 
-In general, conditional execution is a good idea. Even when the second grid is used, there is no computational loss incurred by conditional execution. This is also true if the preprocessing technique is inexpensive. We will see one issue with conditional execution that comes up in @sec-grid-types as well as in @sec-in-parallel when we can run the computations in parallel. 
+We will see issues with conditional execution that comes up in @sec-grid-types as well as in @sec-in-parallel when we can run the computations in parallel. 
 
 ## Sidebar: Types of Grids  {#sec-grid-types}
 
-Since the type of grid mattered for this example, let’s go on a quick “side quest” to talk about the two major types of grids. 
+Since the type of grid mattered for this example, let’s go on a quick detour to talk about the two major types of grids. 
 
-When we think about parameter grids, there are two types: regular and irregular. A regular grid is one where we create a univariate sequence of values for each tuning parameter and then create all possible combinations. Irregular grids can be made in many different ways but cannot be combinatorial in nature. Examples are random grids (i.e., simulating random values across parameter ranges), latin hypercube designs, and others. The best irregular grids are _space-filling designs_; they attempt to cover the entire parameter space and try to distribute the points so that none are overly similar to the others.  
+When we think about parameter grids, there are two types: regular and irregular. A regular grid is one where we create a univariate sequence of values for each tuning parameter and then create all possible combinations. Irregular grids can be made in many different ways but cannot be combinatorial in nature. Examples are random grids (i.e., simulating random values across parameter ranges), Latin hypercube designs, and others. The best irregular grids are _space-filling designs_; they attempt to cover the entire parameter space and try to distribute the points so that none are overly similar to the others.  
 
-Here’s an example of a regular grid and a space-filling design where each has 15 candidate points: 
-
+@fig-two-grids shows an example of a regular grid and a space-filling design where each has 15 candidate points: 
 
 
 
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
-![](figs/fig-two-grids-1.svg){#fig-two-grids fig-align='center' width=95%}
+![An example of regular and irregular grids for the same two tuning parameters.](figs/fig-two-grids-1.svg){#fig-two-grids fig-align='center' width=95%}
 :::
 :::
-
 
 
 
 Space-filling designs are, on average, the best approach for parameter tuning. They need far fewer grid points to cover the parameter space than regular grids. 
 
-The choice of grid types is relevant here because it affects the tactics used to efficiently process the grid. Consider the two grids above. Our conditional execution approach works well for the regular grid; for each value of the number of neighbors, there is a nice vector of values for the other parameter. Conversely, for the space-filling design, there is only a single corresponding penalty value for each unique number of neighbors. No conditional execution is possible. 
+The choice of grid types is relevant here because it affects the tactics used to efficiently process the grid. Consider @fig-two-grids. Our conditional execution approach works well for the regular grid; for each value of the number of neighbors, there is a nice vector of values for the other parameter. Conversely, for the space-filling design, there is only a single corresponding penalty value for each unique number of neighbors. No conditional execution is possible. 
 
 ## There's Something We Didn't Tell You  {#sec-add-in-resampling}
 
 One important aspect of grid search that we have obfuscated in the algorithm is shown in the previous section. Line 10 says “Compute performance statistic $\widehat{Q}_{k,n,t}$” which left a lot out.  
 
-In that same algorithm, we had two data sets: a training set ($\mathfrak{D}^{fit}$) and a holdout set ($\mathfrak{D}^{pred}$) of data points that were not included in the training set. We said “holdout” instead of “test set” for generality. 
+In that same algorithm, we had two data sets: a training set ($\mathfrak{D}^{fit}$) and a holdout set ($\mathfrak{D}^{pred}$) of data points that were not included in the training set. We said “holdout” to avoid naming a specific data set, such as a test or validation set.
 
-When tuning models, a single holdout set (a.k.a. a validation set) or multiple holdout sets are used (via resampling). For example, with 10-fold cross-validation, there is _another_ loop over the number resamples. 
+When tuning models, a single holdout set (a.k.a. a validation set) or multiple holdout sets are used (via resampling) to accurately estimate performance. For example, with 10-fold cross-validation, there is _another_ loop over the $B = 10$ resamples. @alg-resampling shows an updated version of our first algorithm.
 
-
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
+::: {#alg-resampling}
 
 ```pseudocode
 #| html-line-number: true
@@ -290,14 +264,11 @@ When tuning models, a single holdout set (a.k.a. a validation set) or multiple h
 \end{algorithm}
 ```
 
-:::
-
-::: {.column width="10%"}
+An added loop over $B$ resamples. 
 
 :::
 
-::::
-
+The major consequence of using multiple resamples is that we increase the computational load by $B$-fold^[We can mitigate this using [racing methods](https://aml4td.org/chapters/grid-search.html#sec-racing), but that is a separate topic.]. With a validation set, $B = 1$ so there is no real difference form our first algorithm.
 
 
 ## Sidebar: Parallel Processing  {#sec-in-parallel}
@@ -311,6 +282,7 @@ This is discussed at leangth in Section 13.5.2 of [_Tidy Models with R_](https:/
 	- If you have a lot of data and I/O is expensive, you might want to chunk the data so that all the computations use the same data. For example, for resampling, you might send all tasks for $\mathfrak{D}^{fit}_b$ and $\mathfrak{D}^{pred}_b$ are on the same computer core. 
 - If your preprocessing (if any) is very fast, you may want to flatten the loops so that the computational tasks loop over each of the $B \times s$ resample/candidate combinations. This means that the preprocessing will be recalculated several times but, if they are cheap, this might be the fasted approach. 
 
+There is tremendous benefit possible with parallel processing but we do have to think about how we should execute the tasks for different models. 
 
 ## What are Submodels? {#sec-submodels}
 
@@ -323,15 +295,12 @@ Not all models contain parameters that can use the “submodel trick.” For exa
 
 However, when our model has submodel parameters, there can be a massive efficient gain with grid search. 
 
-## How Can we Exploit Submodels?  {#sec-submodel-processing}
-
-Let's use boosting as an example. We'll repeat our UMAP preprocessor and tune over: 
+Let's use boosting as an example. We'll repeat our UMAP preprocessor and tune over two parameters assoicated with boosted trees: 
 
  - The number of boosted trees in an ensemble with values 1 through 100. 
  - The minimum number of data points required to keep splitting the tree (aka `min_n`) for values of 1, 20, and 40. 
 
 With the same UMAP grid, let’s use is $2 \times 100 \times 3 = 600$ grid points.
-
 
 
 
@@ -360,9 +329,7 @@ umap_boost_grid
 
 
 
-
 There are six unique combinations of the number of neighbors and `min_n`, so we can evaluate only six models using these parameters: 
-
 
 
 
@@ -387,17 +354,9 @@ models_to_fit
 
 
 
+With submodels, our algorithm has yet another nested loop shown in @alg-submodels (Lines 9-11):
 
-With submodels, our algorithm has yet another nested loop in Lines 9-11:
-
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
+::: {#alg-submodels}
 
 ```pseudocode
 #| html-line-number: true
@@ -426,18 +385,11 @@ With submodels, our algorithm has yet another nested loop in Lines 9-11:
 \end{algorithm}
 ```
 
-:::
-
-::: {.column width="10%"}
+Adding an additional loop to predict submodel parameter combinations. 
 
 :::
-
-::::
 
 This added complexity has huge benefits in efficiency since our loop for the number of trees ($t$) is for _predicting_ and not for _training_.
-
-
-
 
 
 
@@ -469,9 +421,7 @@ submodel_schedule
 
 
 
-
 Let's look at one iteration of the loop. For the model with a single neighbor, what is the first boosted tree that we fit? 
-
 
 
 
@@ -490,9 +440,7 @@ submodel_schedule$second_stage[[1]]
 
 
 
-
 For the first of these, with `min_n` equal to 1 and 100 trees, what is the set of tree sizes that we should predict? 
-
 
 
 
@@ -519,7 +467,6 @@ submodel_schedule$second_stage[[1]]$predict_stage[[1]]
 
 
 
-
 ## Adding Postprocessors {#sec-postprocessors}
 
 Postprocessors are tools that adjust the predicted values produced by models. For example, for a regression model, you might want to limit the range of the predicted values to specific values. Also, we've already mentioned how we might want to adjust probability thresholds for classification models in @sec-overview. 
@@ -529,16 +476,9 @@ We can treat the probability threshold as a tuning parameter to enable the model
 One important point about this example is that no estimation step occurs. We are simply choosing a different threshold for the probability and resetting the hard class predictions. Some postprocessing methods, specifically calibration methods, need some other data set to estimate other model parameters that will then be used to adjust the original model's predictions. 
 
 
-Let's further torture our UMAP/boosted tree pipeline to add an additional `threshold` parameter for the probability. Let's say that we want to evaluate thresholds of 0.5, 0.6, ..., to 1.0. Unsurprisingly, this adds an additional loop inside our submodel-prediction loop (Lines 11-13 below): 
+Let's further torture our UMAP/boosted tree pipeline to add an additional thresholding parameter ($\pi$) for the probability. Let's say that we want to evaluate thresholds of 0.5, 0.6, ..., to 1.0. Unsurprisingly, this adds an additional loop inside our submodel-prediction loop (in Lines 11-13 of @alg-postprocess). 
 
-:::: {.columns}
-
-::: {.column width="10%"}
-
-:::
-
-::: {.column width="80%"}
-
+::: {#alg-postprocess}
 
 ```pseudocode
 #| html-line-number: true
@@ -570,16 +510,11 @@ Let's further torture our UMAP/boosted tree pipeline to add an additional `thres
 \end{algorithm}
 ```
 
-:::
-
-::: {.column width="10%"}
+Updates to extend conditional execution to use postprocessors. 
 
 :::
-
-::::
 
 Organizing the grid data to programmatically evaluate the models, we'll add another level of nesting. 
-
 
 
 
@@ -613,9 +548,7 @@ post_proc_schedule <-
 
 
 
-
 To start, the loop for postprocessing is defined here: 
-
 
 
 
@@ -633,9 +566,7 @@ post_proc_schedule
 
 
 
-
 Within the first iteration of that loop, we can see the non-submodel parameter(s) to iterate over (where $t=100$):
-
 
 
 
@@ -654,9 +585,7 @@ post_proc_schedule$second_stage[[1]]
 
 
 
-
 Once we fit the first combination of parameters for the boosted tree, we start predicting the sequence of submodels...
-
 
 
 
@@ -683,9 +612,7 @@ post_proc_schedule$second_stage[[1]]$predict_stage[[1]]
 
 
 
-
 but for each of these, we have a sequence of postprocessing adjustments to make: 
-
 
 
 
@@ -704,7 +631,6 @@ post_proc_schedule$second_stage[[1]]$predict_stage[[1]]$post_stage[[1]]
 #> 6       1
 ```
 :::
-
 
 
 
