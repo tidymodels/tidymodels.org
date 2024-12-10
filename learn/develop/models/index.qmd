@@ -60,7 +60,7 @@ The main hyperparameter is the number of subclasses. We'll name our function `di
 
 Before proceeding, it helps to to review how parsnip categorizes models:
 
-* The model _type_ is related to the structural aspect of the model. For example, the model type `linear_reg` represents linear models (slopes and intercepts) that model a numeric outcome. Other model types in the package are `nearest_neighbor`, `decision_tree`, and so on. 
+* The model _type_ is related to the structural aspect of the model. For example, the model type `linear_reg()` represents linear models (slopes and intercepts) that model a numeric outcome. Other model types in the package are `nearest_neighbor()`, `decision_tree()`, and so on. 
 
 * Within a model type is the _mode_, related to the modeling goal. Currently the three modes in the package are regression, classification, and censored regression. Some models have methods for multiple modes (e.g. nearest neighbors) while others have only a single mode (e.g. logistic regression). 
 
@@ -76,7 +76,7 @@ If you are adding a new model from your own package, you can use these functions
 
 ### Step 1. Register the model, modes, and arguments
 
-We will add the MDA model using the model type `discrim_mixture`. Since this is a classification method, we only have to register a single mode:
+We will add the MDA model using the model type `discrim_mixture()`. Since this is a classification method, we only have to register a single mode:
 
 ```{r}
 #| label: "mda-reg"
@@ -518,7 +518,7 @@ There are various things that came to mind while developing this resource.
 
 **Do I have to return a simple vector for `predict()`?**
 
-There are some models (e.g. `glmnet`, `plsr`, `Cubist`, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via `multi_predict()`, rather than `predict()`.
+There are some models (e.g. glmnet, plsr, Cubist, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via `multi_predict()`, rather than `predict()`.
 
 For example, if we fit a linear regression model via `glmnet` and predict for 10 different penalty values:
 
