@@ -20,6 +20,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 To use code in this article,  you will need to install the following packages: discrim, klaR, probably, and tidymodels. The probably package should be version 1.0.0 or greater.
 
 There are essentially three different parts to a predictive model: 
@@ -33,6 +35,8 @@ This article demonstrates a post-processing tool called model calibration. After
 A classification model is well-calibrated if its probability estimate is consistent with the rate that the event occurs "in the wild." If you are not familiar with calibration, there are references at the end of this article.
 
 To get started, load some packages: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -50,11 +54,15 @@ options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
 
 
 
+
+
 ## An example: predicting cell segmentation quality
 
 The modeldata package contains a data set called `cells`. Initially distributed by [Hill and Haney (2007)](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340), they showed how to create models that predict the _quality_ of the image analysis of cells. The outcome has two levels `"PS"` (for poorly segmented images) or `"WS"` (well-segmented). There are 56 image features that can be used to build a classifier. 
 
 Let's load the data, remove an unwanted column, and look at the outcome frequencies: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -75,9 +83,13 @@ cells %>% count(class)
 :::
 
 
+
+
 There is a class imbalance but that will not affect our work here. 
 
 Let's make a 75% to 25% split of the data into training and testing using `initial_split()`. We'll also create a set of 10-fold cross-validation indices for model resampling. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -93,6 +105,8 @@ cells_rs <- vfold_cv(cells_tr, strata = class)
 :::
 
 
+
+
 Now that there are data to be modeled, let's get to it!
 
 ## A naive Bayes model
@@ -100,6 +114,8 @@ Now that there are data to be modeled, let's get to it!
 We'll show the utility of calibration tools by using a type of model that, in this instance, is likely to produce a poorly calibrated model. The naive Bayes classifier is a well-established model that assumes that the predictors are statistically _independent_ of one another (to simplify the calculations).  While that is certainly not the case for these data, the model can be effective at discriminating between the classes. Unfortunately, when there are many predictors in the model, it has a tendency to produce class probability distributions that are pathological. The predictions tend to gravitate to values near zero or one, producing distributions that are "U"-shaped ([Kuhn and Johnson, 2013](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Applied+Predictive+Modeling%22&btnG=)). 
 
 To demonstrate, let's set up the model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -113,7 +129,11 @@ bayes_wflow <-
 :::
 
 
+
+
 We'll resample the model first so that we can get a good assessment of the results. During the resampling process, two metrics are used to judge how well the model worked. First, the area under the ROC curve is used to measure the ability of the model to separate the classes (using probability predictions). Second, the Brier score can measure how close the probability estimates are to the actual outcome values (zero or one). The `collect_metrics()` function shows the resampling estimates: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -137,6 +157,8 @@ collect_metrics(bayes_res)
 :::
 
 
+
+
 The ROC score is impressive! However, the Brier value indicates that the probability values, while discriminating well, are not very realistic. A value of 0.25 is the "bad model" threshold when there are two classes (a value of zero being the best possible result). 
 
 ### But is it calibrated? 
@@ -144,6 +166,8 @@ The ROC score is impressive! However, the Brier value indicates that the probabi
 Spoilers: no. It is not. 
 
 The first clue is the extremely U-shaped distribution of the probability scores (facetted by the true class value): 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -163,11 +187,15 @@ collect_predictions(bayes_res) %>%
 :::
 
 
+
+
 There are almost no cells with moderate probability estimates. Furthermore, when the model is incorrect, it is "confidently incorrect". 
 
 The probably package has tools for visualizing and correcting models with poor calibration properties. 
 
 The most common plot is to break the predictions into about ten equally sized buckets and compute the actual event rate within each. For example, if a bin captures the samples predicted to be poorly segmented with probabilities between 20% and 30%, we should expect about a 25% event rate (i.e., the bin midpoint) within that partition. Here's a plot with ten bins: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -182,9 +210,13 @@ cal_plot_breaks(bayes_res)
 :::
 
 
+
+
 The probabilities are not showing very good accuracy. 
 
 There is also a similar function that can use moving windows with overlapping partitions. This provides a little more detail: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -199,9 +231,13 @@ cal_plot_windowed(bayes_res, step_size = 0.025)
 :::
 
 
+
+
 Bad. Still bad. 
 
 Finally, for two class outcomes, we can fit a logistic generalized additive model (GAM) and examine the trend. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -214,6 +250,8 @@ cal_plot_logistic(bayes_res)
 ![](figs/break-logistic-1.svg){fig-align='center' width=60%}
 :::
 :::
+
+
 
 
 Ooof. 
@@ -229,6 +267,8 @@ If effect, the GAM model estimates the probability regions where the model is of
 How do we know if this works? There are a set of `cal_validate_*()` functions that can use holdout data to resample the model with and without the calibration tool of choice. Since we already resampled the model, we'll use those results to estimate 10 more logistic regressions and use the out-of-sample data to estimate performance. 
 
 `collect_metrics()` can again be used to see the performance statistics. We'll also use `cal_plot_windowed()` on the calibrated holdout data to get a visual assessment:  
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -256,9 +296,13 @@ collect_predictions(logit_val) %>%
 :::
 
 
+
+
 That's a lot better but it is problematic that the calibrated predictions do not reach zero or one. 
 
 A different approach is to use isotonic regression. This method can result in very few unique probability estimates. The probably package has a version of isotonic regression that resamples the process to produce more unique probabilities: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -288,9 +332,13 @@ collect_predictions(iso_val) %>%
 :::
 
 
+
+
 Much better. However, there is a slight bias since the estimated points are consistently above the identity line on the 45-degree angle. 
 
 Finally, we can also test out [Beta calibration](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Beyond+sigmoids%22+calibration&btnG=): 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -318,11 +366,15 @@ collect_predictions(beta_val) %>%
 :::
 
 
+
+
 Also a big improvement but it does poorly at the lower end of the scale. 
 
 Beta calibration appears to have the best results. We'll save a model that is trained using all of the out-of-sample predictions from the original naive Bayes resampling results. 
 
 We can also fit the final naive Bayes model to predict the test set: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -334,11 +386,15 @@ bayes_fit <- bayes_wflow %>% fit(data = cells_tr)
 :::
 
 
+
+
 The `cell_cal` object can be used to enact the calibration for new predictions (as we'll see in a minute).
 
 ## Test set results
 
 First, we make our ordinary predictions: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -355,9 +411,13 @@ cell_test_pred %>% cls_met(class, .pred_PS)
 :::
 
 
+
+
 These metric estimates are very consistent with the resampled performance estimates. 
 
 We can then use our `cell_cal` object with the `cal_apply()` function:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -385,9 +445,13 @@ cell_test_cal_pred %>% dplyr::select(class, starts_with(".pred_"))
 :::
 
 
+
+
 Note that `cal_apply()` recomputed the hard class predictions in the `.pred_class` column. It is possible that the changes in the probability estimates could invalidate the original hard class estimates. 
 
 What do the calibrated test set results show? 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -409,6 +473,8 @@ cell_test_cal_pred %>%
 :::
 
 
+
+
 Much better. The test set results also agree with the results from `cal_validate_beta().` 
 
 ## Other model types
@@ -428,44 +494,49 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 ## Session information
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  discrim    * 1.0.1   2023-03-08 [1] CRAN (R 4.4.0)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
 #>  klaR       * 1.7-3   2023-12-13 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
 #>  probably   * 1.0.3   2024-02-23 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

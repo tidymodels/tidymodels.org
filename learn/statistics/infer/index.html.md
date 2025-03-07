@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 This article only requires the tidymodels package. 
@@ -44,6 +46,8 @@ The workflow of this package is designed around these ideas. Starting from some 
 + `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution.
 
 Throughout this vignette, we make use of `gss`, a data set available in infer containing a sample of 500 observations of 11 variables from the *General Social Survey*. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -73,11 +77,15 @@ dplyr::glimpse(gss)
 :::
 
 
+
+
 Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this data set is a representative sample of a population we want to learn about: American adults.
 
 ## Specify variables
 
 The `specify()` function can be used to specify which of the variables in the data set you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -104,7 +112,11 @@ gss %>%
 :::
 
 
+
+
 On the front end, the output of `specify()` just looks like it selects off the columns in the dataframe that you've specified. What do we see if we check the class of this object, though?
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -118,9 +130,13 @@ gss %>%
 :::
 
 
+
+
 We can see that the infer class has been appended on top of the dataframe classes; this new class stores some extra metadata.
 
 If you're interested in two variables (`age` and `partyid`, for example) you can `specify()` their relationship in one of two (equivalent) ways:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -169,7 +185,11 @@ gss %>%
 :::
 
 
+
+
 If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of the population with a college degree, you might use the following code:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -197,9 +217,13 @@ gss %>%
 :::
 
 
+
+
 ## Declare the hypothesis
 
 The next step in the infer pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -229,7 +253,11 @@ gss %>%
 :::
 
 
+
+
 If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -258,6 +286,8 @@ gss %>%
 :::
 
 
+
+
 Again, from the front-end, the dataframe outputted from `hypothesize()` looks almost exactly the same as it did when it came out of `specify()`, but infer now "knows" your null hypothesis.
 
 ## Generate the distribution
@@ -269,6 +299,8 @@ Once we've asserted our null hypothesis using `hypothesize()`, we can construct 
 * `simulate`: A value will be sampled from a theoretical distribution with parameters specified in `hypothesize()` for each replicate. (This option is currently only applicable for testing point estimates.)  
 
 Continuing on with our example above, about the average number of hours worked a week, we might write:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -284,24 +316,28 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1 13.6 
-#>  2         1  4.62
-#>  3         1 78.6 
-#>  4         1 33.6 
-#>  5         1 58.6 
-#>  6         1 23.6 
-#>  7         1 38.6 
-#>  8         1 38.6 
-#>  9         1 48.6 
-#> 10         1 78.6 
+#>  1         1  48.6
+#>  2         1  36.6
+#>  3         1  38.6
+#>  4         1  38.6
+#>  5         1  38.6
+#>  6         1  38.6
+#>  7         1  13.6
+#>  8         1  28.6
+#>  9         1  38.6
+#> 10         1  46.6
 #> # ℹ 2,499,990 more rows
 ```
 :::
 
 
+
+
 In the above example, we take 5000 bootstrap samples to form our null distribution.
 
 To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 5000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -318,24 +354,28 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
-#>  1 ind        36         1
-#>  2 ind        34         1
+#>  1 dem        36         1
+#>  2 rep        34         1
 #>  3 ind        24         1
 #>  4 ind        42         1
-#>  5 rep        31         1
-#>  6 rep        32         1
+#>  5 ind        31         1
+#>  6 ind        32         1
 #>  7 dem        48         1
-#>  8 ind        36         1
+#>  8 rep        36         1
 #>  9 rep        30         1
-#> 10 rep        33         1
+#> 10 ind        33         1
 #> # ℹ 2,499,990 more rows
 ```
 :::
 
 
+
+
 ## Calculate statistics
 
 Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize()`, respectively. The function, for one, takes in a `stat` argument, which is currently one of `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`, `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`, `"z"`, `"slope"`, or `"correlation"`. For example, continuing our example above to calculate the null distribution of mean hours worked per week:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -351,22 +391,26 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  39.7
-#>  2         2  41.0
-#>  3         3  40.5
-#>  4         4  40.8
-#>  5         5  39.9
-#>  6         6  39.2
-#>  7         7  39.2
-#>  8         8  40.9
-#>  9         9  41.1
-#> 10        10  39.7
+#>  1         1  40.3
+#>  2         2  39.7
+#>  3         3  39.3
+#>  4         4  39.6
+#>  5         5  40.0
+#>  6         6  41.0
+#>  7         7  39.5
+#>  8         8  39.5
+#>  9         9  39.0
+#> 10        10  39.4
 #> # ℹ 4,990 more rows
 ```
 :::
 
 
+
+
 The output of `calculate()` here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you're carrying out inference on differences in means, medians, or proportions, or $t$ and $z$ statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -381,21 +425,23 @@ gss %>%
 #> Explanatory: college (factor)
 #> Null Hypothesis: independence
 #> # A tibble: 5,000 × 2
-#>    replicate   stat
-#>        <int>  <dbl>
-#>  1         1 -0.593
-#>  2         2  0.280
-#>  3         3  1.97 
-#>  4         4 -2.00 
-#>  5         5  2.33 
-#>  6         6  2.21 
-#>  7         7 -0.928
-#>  8         8 -0.329
-#>  9         9 -2.07 
-#> 10        10  0.332
+#>    replicate    stat
+#>        <int>   <dbl>
+#>  1         1  2.38  
+#>  2         2 -1.17  
+#>  3         3 -1.21  
+#>  4         4  0.306 
+#>  5         5 -1.43  
+#>  6         6 -0.240 
+#>  7         7 -1.57  
+#>  8         8 -0.205 
+#>  9         9  0.0768
+#> 10        10  0.905 
 #> # ℹ 4,990 more rows
 ```
 :::
+
+
 
 
 ## Other utilities
@@ -403,6 +449,8 @@ gss %>%
 The infer package also offers several utilities to extract meaning out of summary statistics and null distributions; the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
 To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -423,11 +471,15 @@ null_dist <- gss %>%
 :::
 
 
+
+
 (Notice the warning: `Removed 1244 rows containing missing values.` This would be worth noting if you were actually carrying out this hypothesis test.)
 
 Our point estimate 41.382 seems *pretty* close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn't 40.
 
 We could initially just visualize the null distribution.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -443,7 +495,11 @@ null_dist %>%
 :::
 
 
+
+
 Where does our sample's observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -460,7 +516,11 @@ null_dist %>%
 :::
 
 
+
+
 Notice that infer has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value()` function. This is because `visualize()` outputs a plot object from ggplot2 instead of a dataframe, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -474,14 +534,18 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0296
+#> 1  0.0356
 ```
 :::
 
 
-It looks like the p-value is 0.0296, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0296. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+
+
+It looks like the p-value is 0.0356, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0356. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -503,6 +567,8 @@ null_dist %>%
 :::
 
 
+
+
 As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
 
 ## Theoretical methods
@@ -510,6 +576,8 @@ As you can see, 40 hours per week is not contained in this interval, which align
 The infer package also provides functionality to use theoretical methods for `"Chisq"`, `"F"` and `"t"` test statistics. 
 
 Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using randomization-based methods, but skip the `generate()` step. For example, if we wanted to find a null distribution for the relationship between age (`age`) and party identification (`partyid`) using randomization, we could write:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -524,7 +592,11 @@ null_f_distn <- gss %>%
 :::
 
 
+
+
 To find the null distribution using theory-based methods, instead, skip the `generate()` step entirely:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -538,7 +610,11 @@ null_f_distn_theoretical <- gss %>%
 :::
 
 
+
+
 We'll calculate the observed statistic to make use of in the following visualizations; this procedure is the same, regardless of the methods used to find the null distribution.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -551,7 +627,11 @@ F_hat <- gss %>%
 :::
 
 
+
+
 Now, instead of just piping the null distribution into `visualize()`, as we would do if we wanted to visualize the randomization-based null distribution, we also need to provide `method = "theoretical"` to `visualize()`.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -567,7 +647,11 @@ visualize(null_f_distn_theoretical, method = "theoretical") +
 :::
 
 
+
+
 To get a sense of how the theory-based and randomization-based null distributions relate, we can pipe the randomization-based null distribution into `visualize()` and also specify `method = "both"`
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -583,10 +667,14 @@ visualize(null_f_distn, method = "both") +
 :::
 
 
+
+
 That's it! This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.
 
 
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -594,36 +682,39 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

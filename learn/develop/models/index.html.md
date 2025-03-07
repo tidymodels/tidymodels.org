@@ -19,7 +19,6 @@ include-after-body: ../../../resources.html
 
 
 
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: mda, modeldata, and tidymodels.
@@ -40,7 +39,6 @@ As an example, we'll create a function for _mixture discriminant analysis_. Ther
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -52,7 +50,6 @@ str(mda::mda)
 #>     trace = FALSE, ...)
 ```
 :::
-
 
 
 
@@ -84,7 +81,6 @@ We will add the MDA model using the model type `discrim_mixture()`. Since this i
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -103,9 +99,7 @@ set_dependency("discrim_mixture", eng = "mda", pkg = "mda")
 
 
 
-
 These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip: 
-
 
 
 
@@ -120,7 +114,6 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mdaNA
 #> 
-#> ¹The model can use case weights.
 #> 
 #>  no registered arguments.
 #> 
@@ -129,7 +122,6 @@ show_model_info("discrim_mixture")
 #>  no registered prediction modules.
 ```
 :::
-
 
 
 
@@ -145,7 +137,6 @@ The next step is to declare the main arguments to the model. These are declared 
  * A logical value for whether the argument can be used to generate multiple predictions for a single R object. For example, for boosted trees, if a model is fit with 10 boosting iterations, many modeling packages allow the model object to make predictions for any iterations less than the one used to fit the model. In general this is not the case so one would use `has_submodels = FALSE`. 
  
 For `mda::mda()`, the main tuning parameter is `subclasses` which we will rewrite as `sub_classes`. 
-
 
 
 
@@ -168,7 +159,6 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mdaNA
 #> 
-#> ¹The model can use case weights.
 #> 
 #>  arguments: 
 #>    mda: 
@@ -183,7 +173,6 @@ show_model_info("discrim_mixture")
 
 
 
-
 ### Step 2. Create the model function
 
 This is a fairly simple function that can follow a basic template. The main arguments to our function will be:
@@ -193,7 +182,6 @@ This is a fairly simple function that can follow a basic template. The main argu
  * The argument names (`sub_classes` here). These should be defaulted to `NULL`.
 
 A basic version of the function is:
-
 
 
 
@@ -227,7 +215,6 @@ discrim_mixture <-
 
 
 
-
 This is pretty simple since the data are not exposed to this function. 
 
 ::: {.callout-warning}
@@ -247,7 +234,6 @@ Now that parsnip knows about the model, mode, and engine, we can give it the inf
  * `defaults` is an optional list of arguments to the fit function that the user can change, but whose defaults can be set here. This isn't needed in this case, but is described later in this document.
 
 For the first engine:
-
 
 
 
@@ -274,7 +260,6 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mda
 #> 
-#> ¹The model can use case weights.
 #> 
 #>  arguments: 
 #>    mda: 
@@ -291,7 +276,6 @@ show_model_info("discrim_mixture")
 
 
 
-
 We also set up the information on how the predictors should be handled. These options ensure that the data that parsnip gives to the underlying model allows for a model fit that is as similar as possible to what it would have produced directly.
 
  * `predictor_indicators` describes whether and how to create indicator/dummy variables from factor predictors. There are three options: `"none"` (do not expand factor predictors), `"traditional"` (apply the standard `model.matrix()` encodings), and `"one_hot"` (create the complete set including the baseline level for all factors). 
@@ -301,7 +285,6 @@ We also set up the information on how the predictors should be handled. These op
  * `remove_intercept` removes the intercept column *after* `model.matrix()` is finished. This can be useful if the model function (e.g. `lm()`) automatically generates an intercept.
 
 * `allow_sparse_x` specifies whether the model can accommodate a sparse representation for predictors during fitting and tuning.
-
 
 
 
@@ -327,7 +310,6 @@ set_encoding(
 
 
 
-
 ### Step 4. Add modules for prediction
 
 Similar to the fitting module, we specify the code for making different types of predictions. To make hard class predictions, the `class_info` object below contains the details. The elements of the list are:
@@ -339,7 +321,6 @@ Similar to the fitting module, we specify the code for making different types of
 The parsnip prediction code will expect the result to be an unnamed character string or factor. This will be coerced to a factor with the same levels as the original data.  
 
 To add this method to the model environment, a similar set function, `set_pred()`, is used:
-
 
 
 
@@ -378,13 +359,11 @@ set_pred(
 
 
 
-
 A similar call can be used to define the class probability module (if they can be computed). The format is identical to the `class` module but the output is expected to be a tibble with columns for each factor level. 
 
 As an example of the `post` function, the data frame created by `mda:::predict.mda()` will be converted to a tibble. The arguments are `x` (the raw results coming from the predict method) and `object` (the parsnip model fit object). The latter has a sub-object called `lvl` which is a character string of the outcome's factor levels (if any). 
 
 We register the probability module. There is a template function that makes it slightly easier to format the objects:
-
 
 
 
@@ -419,7 +398,6 @@ show_model_info("discrim_mixture")
 #>  engines: 
 #>    classification: mda
 #> 
-#> ¹The model can use case weights.
 #> 
 #>  arguments: 
 #>    mda: 
@@ -438,7 +416,6 @@ show_model_info("discrim_mixture")
 
 
 
-
 If this model could be used for regression situations, we could also add a `numeric` module. For these predictions, the model requires an unnamed numeric vector output. 
 
 Examples are [here](https://github.com/tidymodels/parsnip/blob/master/R/linear_reg_data.R) and [here](https://github.com/tidymodels/parsnip/blob/master/R/rand_forest_data.R). 
@@ -449,7 +426,6 @@ Examples are [here](https://github.com/tidymodels/parsnip/blob/master/R/linear_r
 As a developer, one thing that may come in handy is the `translate()` function. This will tell you what the model's eventual syntax will be. 
 
 For example:
-
 
 
 
@@ -474,9 +450,7 @@ discrim_mixture(sub_classes = 2) %>%
 
 
 
-
 Let's try it on a data set from the modeldata package:
-
 
 
 
@@ -547,11 +521,9 @@ predict(mda_fit, new_data = example_test) %>%
 
 
 
-
 ## Add an engine
 
 The process for adding an engine to an existing model is _almost_ the same as building a new model but simpler with fewer steps. You only need to add the engine-specific aspects of the model. For example, if we wanted to fit a linear regression model using M-estimation, we could only add a new engine. The code for the `rlm()` function in MASS is pretty similar to `lm()`, so we can copy that code and change the package/function names:
-
 
 
 
@@ -628,7 +600,6 @@ linear_reg() %>%
 
 
 
-
 ## Add parsnip models to another package
 
 The process here is almost the same. All of the previous functions are still required but their execution is a little different. 
@@ -636,7 +607,6 @@ The process here is almost the same. All of the previous functions are still req
 For parsnip to register them, that package must already be loaded. For this reason, it makes sense to have parsnip in the "Depends" category of the DESCRIPTION file of your package. 
 
 The first difference is that the functions that define the model must be inside of a wrapper function that is called when your package is loaded. For our example here, this might look like: 
-
 
 
 
@@ -657,9 +627,7 @@ make_discrim_mixture_mda <- function() {
 
 
 
-
 This function is then executed when your package is loaded: 
-
 
 
 
@@ -673,7 +641,6 @@ This function is then executed when your package is loaded:
 }
 ```
 :::
-
 
 
 
@@ -716,7 +683,6 @@ For example, for a nearest-neighbors `neighbors` parameter, this value is just:
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -733,9 +699,7 @@ rlang::eval_tidy(new_param_call)
 
 
 
-
 For `discrim_mixture()`, a dials object is needed that returns an integer that is the number of sub-classes that should be create. We can create a dials parameter function for this:
-
 
 
 
@@ -759,9 +723,7 @@ sub_classes <- function(range = c(1L, 10L), trans = NULL) {
 
 
 
-
 If this were in the same package as the other specifications for the parsnip engine, we could use: 
-
 
 
 
@@ -784,9 +746,7 @@ tunable.discrim_mixture <- function(x, ...) {
 
 
 
-
 Once this method is in place, the tuning functions can be used: 
-
 
 
 
@@ -806,13 +766,12 @@ show_best(mda_tune_res, metric = "roc_auc")
 #> # A tibble: 4 × 7
 #>   sub_classes .metric .estimator  mean     n std_err .config             
 #>         <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1           2 roc_auc binary     0.890    10  0.0143 Preprocessor1_Model3
-#> 2           3 roc_auc binary     0.889    10  0.0142 Preprocessor1_Model4
-#> 3           6 roc_auc binary     0.884    10  0.0147 Preprocessor1_Model2
-#> 4           8 roc_auc binary     0.881    10  0.0146 Preprocessor1_Model1
+#> 1           1 roc_auc binary     0.890    10  0.0149 Preprocessor1_Model2
+#> 2           4 roc_auc binary     0.887    10  0.0148 Preprocessor1_Model3
+#> 3          10 roc_auc binary     0.885    10  0.0141 Preprocessor1_Model4
+#> 4           7 roc_auc binary     0.884    10  0.0137 Preprocessor1_Model1
 ```
 :::
-
 
 
 
@@ -828,7 +787,6 @@ There are various things that came to mind while developing this resource.
 There are some models (e.g. glmnet, plsr, Cubist, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via `multi_predict()`, rather than `predict()`.
 
 For example, if we fit a linear regression model via `glmnet` and predict for 10 different penalty values:
-
 
 
 
@@ -869,13 +827,11 @@ preds$.pred[[1]]
 
 
 
-
 This gives a list column `.pred` which contains a tibble per row, each tibble corresponding to one row in `new_data`. Within each tibble are columns for the parameter we vary, here `penalty`, and the predictions themselves.
 
 **What do I do about how my model handles factors or categorical data?**
 
 Some modeling functions in R create indicator/dummy variables from categorical data when you use a model formula (typically using `model.matrix()`), and some do not. Some examples of models that do _not_ create indicator variables include tree-based models, naive Bayes models, and multilevel or hierarchical models. The tidymodels ecosystem assumes a `model.matrix()`-like default encoding for categorical data used in a model formula, but you can change this encoding using `set_encoding()`. For example, you can set predictor encodings that say, "leave my data alone," and keep factors as is:
-
 
 
 
@@ -899,7 +855,6 @@ set_encoding(
 
 
 
-
 ::: {.callout-note}
 There are three options for `predictor_indicators`: 
 
@@ -917,7 +872,6 @@ You might want to set defaults that can be overridden by the user. For example, 
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -928,9 +882,7 @@ defaults = list(family = expr(binomial))
 
 
 
-
 So that is the default:
-
 
 
 
@@ -967,7 +919,6 @@ logistic_reg() %>%
 
 
 
-
 That's what `defaults` are for. 
 
 **What if I want more complex defaults?**
@@ -975,7 +926,6 @@ That's what `defaults` are for.
 The `translate()` function can be used to check values or set defaults once the model's mode is known. To do this, you can create a model-specific S3 method that first calls the general method (`translate.model_spec()`) and then makes modifications or conducts error traps. 
 
 For example, the ranger and randomForest package functions have arguments for calculating importance. One is a logical and the other is a string. Since this is likely to lead to a bunch of frustration and GitHub issues, we can put in a check:
-
 
 
 
@@ -998,7 +948,6 @@ translate.rand_forest <- function (x, engine, ...){
 }
 ```
 :::
-
 
 
 
@@ -1035,45 +984,46 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.1.1
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
-#>  tz       Europe/London
-#>  date     2024-12-10
-#>  pandoc   3.5 @ /opt/homebrew/bin/ (via rmarkdown)
+#>  tz       America/Los_Angeles
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
 #>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials      * 1.3.0   2024-07-30 [1] CRAN (R 4.4.0)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  mda        * 0.5-4   2023-06-23 [1] CRAN (R 4.4.0)
+#>  mda        * 0.5-5   2024-11-07 [1] CRAN (R 4.4.1)
 #>  modeldata  * 1.4.0   2024-06-19 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.1.0   2024-07-04 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Users/hannah/Library/R/arm64/4.4/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

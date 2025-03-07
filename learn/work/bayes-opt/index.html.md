@@ -18,6 +18,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: kernlab, modeldata, themis, and tidymodels.
@@ -40,6 +42,8 @@ There are a variety of methods for iterative search and the focus in this articl
 To demonstrate this approach to tuning models, let's return to the cell segmentation data from the [Getting Started](/start/resampling/) article on resampling: 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -60,9 +64,13 @@ folds <- vfold_cv(cell_train, v = 10)
 :::
 
 
+
+
 ## The tuning scheme
 
 Since the predictors are highly correlated, we can used a recipe to convert the original predictors to principal component scores. There is also slight class imbalance in these data; about 64% of the data are poorly segmented. To mitigate this, the data will be down-sampled at the end of the pre-processing so that the number of poorly and well segmented cells occur with equal frequency. We can use a recipe for all this pre-processing, but the number of principal components will need to be _tuned_ so that we have enough (but not too many) representations of the data. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -80,7 +88,11 @@ cell_pre_proc <-
 :::
 
 
+
+
 In this analysis, we will use a support vector machine to model the data. Let's use a radial basis function (RBF) kernel and tune its main parameter ($\sigma$). Additionally, the main SVM parameter, the cost value, also needs optimization. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -93,7 +105,11 @@ svm_mod <-
 :::
 
 
+
+
 These two objects (the recipe and model) will be combined into a single object via the `workflow()` function from the [workflows](https://workflows.tidymodels.org/) package; this object will be used in the optimization process. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -107,7 +123,11 @@ svm_wflow <-
 :::
 
 
+
+
 From this object, we can derive information about what parameters are slated to be tuned. A parameter set is derived by: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -121,11 +141,16 @@ svm_set
 #>        cost      cost nparam[+]
 #>   rbf_sigma rbf_sigma nparam[+]
 #>    num_comp  num_comp nparam[+]
+#> 
 ```
 :::
 
 
+
+
 The default range for the number of PCA components is rather small for this data set. A member of the parameter set can be modified using the `update()` function. Let's constrain the search to one to twenty components by updating the `num_comp` parameter. Additionally, the lower bound of this parameter is set to zero which specifies that the original predictor set should also be evaluated (i.e., with no PCA step at all): 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -136,6 +161,8 @@ svm_set <-
   update(num_comp = num_comp(c(0L, 20L)))
 ```
 :::
+
+
 
 
 ## Sequential tuning 
@@ -151,6 +178,8 @@ For example, one approach for scoring new candidates is to use a confidence boun
 The variance predicted by the Bayesian model is mostly spatial variation; the value will be large for candidate values that are not close to values that have already been evaluated. If the standard error multiplier is high, the search process will be more likely to avoid areas without candidate values in the vicinity. 
 
 We'll use another acquisition function, _expected improvement_, that determines which candidates are likely to be helpful relative to the current best results. This is the default acquisition function. More information on these functions can be found in the [package vignette for acquisition functions](https://tune.tidymodels.org/articles/acquisition_functions.html). 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -172,6 +201,11 @@ search_res <-
   )
 #> 
 #> ❯  Generating a set of 5 initial parameter results
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Initialization complete
 #> 
 #> i Gaussian process model
@@ -179,247 +213,560 @@ search_res <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Estimating performance
-#> ! No improvement for 30 iterations; returning current results.
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
+#> i Gaussian process model
+#> ✓ Gaussian process model
+#> i Generating 5000 candidates
+#> i Predicted candidates
+#> i Estimating performance
+#> Warning: ! tune detected a parallel backend registered with foreach but no
+#>   backend registered with future.
+#> ℹ Support for parallel processing with foreach was soft-deprecated in
+#>   tune 1.2.1.
+#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> ✓ Estimating performance
 ```
 :::
 
 
+
+
 The resulting tibble is a stacked set of rows of the rsample object with an additional column for the iteration number:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -428,7 +775,7 @@ The resulting tibble is a stacked set of rows of the rsample object with an addi
 search_res
 #> # Tuning results
 #> # 10-fold cross-validation 
-#> # A tibble: 410 × 5
+#> # A tibble: 510 × 5
 #>    splits             id     .metrics         .notes           .iter
 #>    <list>             <chr>  <list>           <list>           <int>
 #>  1 <split [1362/152]> Fold01 <tibble [5 × 7]> <tibble [0 × 3]>     0
@@ -441,12 +788,16 @@ search_res
 #>  8 <split [1363/151]> Fold08 <tibble [5 × 7]> <tibble [0 × 3]>     0
 #>  9 <split [1363/151]> Fold09 <tibble [5 × 7]> <tibble [0 × 3]>     0
 #> 10 <split [1363/151]> Fold10 <tibble [5 × 7]> <tibble [0 × 3]>     0
-#> # ℹ 400 more rows
+#> # ℹ 500 more rows
 ```
 :::
 
 
+
+
 As with grid search, we can summarize the results over resamples:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -457,27 +808,31 @@ estimates <-
   arrange(.iter)
 
 estimates
-#> # A tibble: 45 × 10
-#>        cost    rbf_sigma num_comp .metric .estimator  mean     n std_err .config
-#>       <dbl>        <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>  
-#>  1  0.233        6.26e-7        6 roc_auc binary     0.346    10  0.115  Prepro…
-#>  2  2.74         3.06e-4       17 roc_auc binary     0.873    10  0.0128 Prepro…
-#>  3  0.00140      3.26e-9       14 roc_auc binary     0.237    10  0.0586 Prepro…
-#>  4  0.0185       4.40e-2        8 roc_auc binary     0.881    10  0.0119 Prepro…
-#>  5  4.36         7.49e-5        1 roc_auc binary     0.773    10  0.0106 Prepro…
-#>  6  0.114        3.39e-3        9 roc_auc binary     0.875    10  0.0122 Iter1  
-#>  7 31.8          3.82e-2       15 roc_auc binary     0.855    10  0.0137 Iter2  
-#>  8  0.00176      9.67e-1        5 roc_auc binary     0.872    10  0.0124 Iter3  
-#>  9  0.00115      1.20e-3       19 roc_auc binary     0.347    10  0.115  Iter4  
-#> 10  0.306        2.97e-1       13 roc_auc binary     0.868    10  0.0126 Iter5  
-#> # ℹ 35 more rows
+#> # A tibble: 55 × 10
+#>         cost   rbf_sigma num_comp .metric .estimator  mean     n std_err .config
+#>        <dbl>       <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>  
+#>  1  0.000977    3.16e- 3        5 roc_auc binary     0.346    10  0.114  Prepro…
+#>  2  0.0131      1   e- 5       20 roc_auc binary     0.347    10  0.116  Prepro…
+#>  3  0.177       1   e-10        0 roc_auc binary     0.357    10  0.112  Prepro…
+#>  4  2.38        1   e+ 0       10 roc_auc binary     0.821    10  0.0141 Prepro…
+#>  5 32           3.16e- 8       15 roc_auc binary     0.349    10  0.114  Prepro…
+#>  6 29.1         9.86e- 1        5 roc_auc binary     0.798    10  0.0144 Iter1  
+#>  7  0.00154     9.93e- 1       17 roc_auc binary     0.394    10  0.0819 Iter2  
+#>  8  5.26        9.99e- 1        8 roc_auc binary     0.833    10  0.0139 Iter3  
+#>  9  6.46        1.62e- 1        2 roc_auc binary     0.794    10  0.0104 Iter4  
+#> 10  8.73        8.67e- 1       12 roc_auc binary     0.804    10  0.0172 Iter5  
+#> # ℹ 45 more rows
 #> # ℹ 1 more variable: .iter <int>
 ```
 :::
 
 
 
-The best performance of the initial set of candidate values was `AUC = 0.8805091 `. The best results were achieved at iteration 10 with a corresponding AUC value of 0.8917785. The five best results are:
+
+
+The best performance of the initial set of candidate values was `AUC = 0.8214598 `. The best results were achieved at iteration 25 with a corresponding AUC value of 0.9008576. The five best results are:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -487,16 +842,20 @@ show_best(search_res, metric = "roc_auc")
 #> # A tibble: 5 × 10
 #>    cost rbf_sigma num_comp .metric .estimator  mean     n std_err .config .iter
 #>   <dbl>     <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>   <int>
-#> 1 0.935    0.0223       11 roc_auc binary     0.892    10  0.0103 Iter10     10
-#> 2 1.23     0.0213       13 roc_auc binary     0.892    10  0.0103 Iter22     22
-#> 3 0.806    0.0767       17 roc_auc binary     0.890    10  0.0101 Iter37     37
-#> 4 0.301    0.0892       13 roc_auc binary     0.889    10  0.0110 Iter40     40
-#> 5 0.141    0.0448        9 roc_auc binary     0.889    10  0.0112 Iter19     19
+#> 1  2.13    0.0389        9 roc_auc binary     0.901    10 0.00930 Iter25     25
+#> 2  1.80    0.0402        9 roc_auc binary     0.901    10 0.00935 Iter23     23
+#> 3  4.59    0.0253        9 roc_auc binary     0.901    10 0.00935 Iter43     43
+#> 4  3.42    0.0366        9 roc_auc binary     0.901    10 0.00944 Iter26     26
+#> 5  2.05    0.0520        9 roc_auc binary     0.901    10 0.00940 Iter17     17
 ```
 :::
 
 
+
+
 A plot of the search iterations can be created via:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -511,9 +870,13 @@ autoplot(search_res, type = "performance")
 :::
 
 
+
+
 There are many parameter combinations have roughly equivalent results. 
 
 How did the parameters change over iterations? 
+
+
 
 
 
@@ -533,7 +896,11 @@ autoplot(search_res, type = "parameters") +
 
 
 
+
+
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -541,39 +908,42 @@ autoplot(search_res, type = "parameters") +
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  kernlab    * 0.9-32  2023-01-31 [1] CRAN (R 4.4.0)
+#>  kernlab    * 0.9-33  2024-08-13 [1] CRAN (R 4.4.0)
 #>  modeldata  * 1.4.0   2024-06-19 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang      * 1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang      * 1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  themis     * 1.0.2   2023-08-14 [1] CRAN (R 4.4.0)
+#>  themis     * 1.0.3   2025-01-23 [1] CRAN (R 4.4.1)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

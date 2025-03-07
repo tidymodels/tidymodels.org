@@ -539,14 +539,14 @@ But, here we are using a single validation set, so parallelization isn't an opti
 ```{.r .cell-code}
 cores <- parallel::detectCores()
 cores
-#> [1] 10
+#> [1] 14
 ```
 :::
 
 
 
 
-We have 10 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
+We have 14 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
 
 
 
@@ -632,16 +632,6 @@ rf_mod
 
 # show what will be tuned
 extract_parameter_set_dials(rf_mod)
-#> Collection of 2 parameters for tuning
-#> 
-#>  identifier  type    object
-#>        mtry  mtry nparam[?]
-#>       min_n min_n nparam[+]
-#> 
-#> Model parameters needing finalization:
-#>    # Randomly Selected Predictors ('mtry')
-#> 
-#> See `?dials::finalize` or `?dials::update.parameters` for more information.
 ```
 :::
 
@@ -687,11 +677,11 @@ rf_res %>%
 #> # A tibble: 5 × 8
 #>    mtry min_n .metric .estimator  mean     n std_err .config              
 #>   <int> <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>                
-#> 1     8     7 roc_auc binary     0.926     1      NA Preprocessor1_Model13
-#> 2    12     7 roc_auc binary     0.926     1      NA Preprocessor1_Model01
-#> 3    13     4 roc_auc binary     0.925     1      NA Preprocessor1_Model05
-#> 4     9    12 roc_auc binary     0.925     1      NA Preprocessor1_Model19
-#> 5     6    18 roc_auc binary     0.924     1      NA Preprocessor1_Model24
+#> 1     9     3 roc_auc binary     0.927     1      NA Preprocessor1_Model09
+#> 2     4     5 roc_auc binary     0.925     1      NA Preprocessor1_Model04
+#> 3     8    11 roc_auc binary     0.925     1      NA Preprocessor1_Model08
+#> 4    14     8 roc_auc binary     0.925     1      NA Preprocessor1_Model13
+#> 5    18     2 roc_auc binary     0.924     1      NA Preprocessor1_Model17
 ```
 :::
 
@@ -734,7 +724,7 @@ rf_best
 #> # A tibble: 1 × 3
 #>    mtry min_n .config              
 #>   <int> <int> <chr>                
-#> 1     8     7 Preprocessor1_Model13
+#> 1     9     3 Preprocessor1_Model09
 ```
 :::
 
@@ -754,16 +744,16 @@ rf_res %>%
 #> # A tibble: 187,500 × 8
 #>    .pred_children .pred_none id          .row  mtry min_n children .config      
 #>             <dbl>      <dbl> <chr>      <int> <int> <int> <fct>    <chr>        
-#>  1        0.152        0.848 validation    13    12     7 none     Preprocessor…
-#>  2        0.0302       0.970 validation    20    12     7 none     Preprocessor…
-#>  3        0.513        0.487 validation    22    12     7 children Preprocessor…
-#>  4        0.0103       0.990 validation    23    12     7 none     Preprocessor…
-#>  5        0.0111       0.989 validation    31    12     7 none     Preprocessor…
-#>  6        0            1     validation    38    12     7 none     Preprocessor…
-#>  7        0            1     validation    39    12     7 none     Preprocessor…
-#>  8        0.00325      0.997 validation    50    12     7 none     Preprocessor…
-#>  9        0.0241       0.976 validation    54    12     7 none     Preprocessor…
-#> 10        0.0441       0.956 validation    57    12     7 children Preprocessor…
+#>  1         0.0660      0.934 validation    13     1    24 none     Preprocessor…
+#>  2         0.0520      0.948 validation    20     1    24 none     Preprocessor…
+#>  3         0.0698      0.930 validation    22     1    24 children Preprocessor…
+#>  4         0.0555      0.945 validation    23     1    24 none     Preprocessor…
+#>  5         0.0667      0.933 validation    31     1    24 none     Preprocessor…
+#>  6         0.0443      0.956 validation    38     1    24 none     Preprocessor…
+#>  7         0.0354      0.965 validation    39     1    24 none     Preprocessor…
+#>  8         0.0481      0.952 validation    50     1    24 none     Preprocessor…
+#>  9         0.0608      0.939 validation    54     1    24 none     Preprocessor…
+#> 10         0.0729      0.927 validation    57     1    24 children Preprocessor…
 #> # ℹ 187,490 more rows
 ```
 :::
@@ -957,40 +947,43 @@ Here are some more ideas for where to go next:
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS 15.0.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-10-28
-#>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.3.0   2024-07-30 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  glmnet     * 4.1-8   2023-08-22 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  ranger     * 0.16.0  2023-11-12 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  ranger     * 0.17.0  2024-11-08 [1] CRAN (R 4.4.1)
 #>  readr      * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.1.0   2024-07-04 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
 #>  vip        * 0.4.1   2023-08-21 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
