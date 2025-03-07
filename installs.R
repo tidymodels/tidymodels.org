@@ -4,6 +4,7 @@ packages <- c(
   "aorsf",
   "AppliedPredictiveModeling",
   "baguette",
+  "betacal",
   "blogdown",
   "broom.mixed",
   "brulee",
