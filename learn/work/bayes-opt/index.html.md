@@ -201,11 +201,6 @@ search_res <-
   )
 #> 
 #> ❯  Generating a set of 5 initial parameter results
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 #> ✓ Initialization complete
 #> 
 #> i Gaussian process model
@@ -213,550 +208,3300 @@ search_res <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Estimating performance
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
+#> i Fold01: preprocessor 1/1
+#> ✓ Fold01: preprocessor 1/1
+#> i Fold01: preprocessor 1/1, model 1/1
+#> ✓ Fold01: preprocessor 1/1, model 1/1
+#> i Fold01: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold01: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold02: preprocessor 1/1
+#> ✓ Fold02: preprocessor 1/1
+#> i Fold02: preprocessor 1/1, model 1/1
+#> ✓ Fold02: preprocessor 1/1, model 1/1
+#> i Fold02: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold02: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold03: preprocessor 1/1
+#> ✓ Fold03: preprocessor 1/1
+#> i Fold03: preprocessor 1/1, model 1/1
+#> ✓ Fold03: preprocessor 1/1, model 1/1
+#> i Fold03: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold03: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold04: preprocessor 1/1
+#> ✓ Fold04: preprocessor 1/1
+#> i Fold04: preprocessor 1/1, model 1/1
+#> ✓ Fold04: preprocessor 1/1, model 1/1
+#> i Fold04: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold04: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold05: preprocessor 1/1
+#> ✓ Fold05: preprocessor 1/1
+#> i Fold05: preprocessor 1/1, model 1/1
+#> ✓ Fold05: preprocessor 1/1, model 1/1
+#> i Fold05: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold05: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold06: preprocessor 1/1
+#> ✓ Fold06: preprocessor 1/1
+#> i Fold06: preprocessor 1/1, model 1/1
+#> ✓ Fold06: preprocessor 1/1, model 1/1
+#> i Fold06: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold06: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold07: preprocessor 1/1
+#> ✓ Fold07: preprocessor 1/1
+#> i Fold07: preprocessor 1/1, model 1/1
+#> ✓ Fold07: preprocessor 1/1, model 1/1
+#> i Fold07: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold08: preprocessor 1/1
+#> ✓ Fold08: preprocessor 1/1
+#> i Fold08: preprocessor 1/1, model 1/1
+#> ✓ Fold08: preprocessor 1/1, model 1/1
+#> i Fold08: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold08: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold09: preprocessor 1/1
+#> ✓ Fold09: preprocessor 1/1
+#> i Fold09: preprocessor 1/1, model 1/1
+#> ✓ Fold09: preprocessor 1/1, model 1/1
+#> i Fold09: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold09: preprocessor 1/1, model 1/1 (predictions)
+#> i Fold10: preprocessor 1/1
+#> ✓ Fold10: preprocessor 1/1
+#> i Fold10: preprocessor 1/1, model 1/1
+#> ✓ Fold10: preprocessor 1/1, model 1/1
+#> i Fold10: preprocessor 1/1, model 1/1 (extracts)
+#> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 ```
 :::

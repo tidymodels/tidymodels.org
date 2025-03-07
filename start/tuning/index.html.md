@@ -270,11 +270,6 @@ tree_res <-
     resamples = cell_folds,
     grid = tree_grid
     )
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 
 tree_res
 #> # Tuning results

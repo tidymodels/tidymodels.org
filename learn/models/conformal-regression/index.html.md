@@ -298,11 +298,6 @@ folds <- vfold_cv(train_data)
 nnet_rs <- 
   nnet_wflow %>% 
   fit_resamples(folds, control = ctrl)
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 
 collect_metrics(nnet_rs)
 #> # A tibble: 2 × 6
@@ -451,15 +446,6 @@ We can recreate the CV+ interval for this new version of the data:
 
 
 ::: {.cell layout-align="center"}
-
-```
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
-```
-
 ::: {.cell-output-display}
 ![](figs/cv-redux-1.svg){fig-align='center' width=70%}
 :::
@@ -644,7 +630,7 @@ If you are interested and would like to learn more, try these resources:
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  nnet       * 7.3-20  2025-01-01 [1] CRAN (R 4.4.1)
+#>  nnet         7.3-20  2025-01-01 [1] CRAN (R 4.4.1)
 #>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
 #>  probably   * 1.0.3   2024-02-23 [1] CRAN (R 4.4.0)
 #>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)

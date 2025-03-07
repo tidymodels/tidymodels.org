@@ -521,7 +521,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  klaR       * 1.7-3   2023-12-13 [1] CRAN (R 4.4.0)
+#>  klaR         1.7-3   2023-12-13 [1] CRAN (R 4.4.0)
 #>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
 #>  probably   * 1.0.3   2024-02-23 [1] CRAN (R 4.4.0)
 #>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)

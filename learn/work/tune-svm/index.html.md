@@ -222,11 +222,6 @@ formula_res <-
     metrics = roc_vals,
     control = ctrl
   )
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 formula_res
 #> # Tuning results
 #> # Bootstrap sampling 
@@ -353,11 +348,6 @@ recipe_res <-
     metrics = roc_vals,
     control = ctrl
   )
-#> Warning: ! tune detected a parallel backend registered with foreach but no
-#>   backend registered with future.
-#> ℹ Support for parallel processing with foreach was soft-deprecated in
-#>   tune 1.2.1.
-#> ℹ See ?parallelism (`?tune::parallelism()`) to learn more.
 recipe_res
 #> # Tuning results
 #> # Bootstrap sampling 

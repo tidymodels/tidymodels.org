@@ -26,11 +26,11 @@ source(here::here("common.R"))
 library(tidymodels)
 library(probably)
 library(patchwork)
-library(doParallel)
+library(future)
 library(sessioninfo)
 
-cl <- makePSOCKcluster(parallel::detectCores(logical = FALSE))
-registerDoParallel(cl)
+plan(multisession, workers = parallel::detectCores())
+
 
 pkgs <- c("tidymodels", "censored", "modeldatatoo")
 theme_set(theme_bw() + theme(legend.position = "top"))

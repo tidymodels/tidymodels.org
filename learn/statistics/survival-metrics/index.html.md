@@ -49,6 +49,11 @@ As an example, we'll use the building complaints data from the [case study](../s
 library(tidymodels)
 library(censored)
 #> Loading required package: survival
+#> 
+#> Attaching package: 'survival'
+#> The following object is masked from 'package:future':
+#> 
+#>     cluster
 
 building_complaints <- modeldatatoo::data_building_complaints()
 
