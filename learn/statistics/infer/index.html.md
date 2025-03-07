@@ -284,16 +284,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1  38.6
-#>  2         1  58.6
-#>  3         1  38.6
-#>  4         1  42.6
-#>  5         1  48.6
-#>  6         1  54.6
-#>  7         1  38.6
-#>  8         1  38.6
-#>  9         1  38.6
-#> 10         1  18.6
+#>  1         1 13.6 
+#>  2         1  4.62
+#>  3         1 78.6 
+#>  4         1 33.6 
+#>  5         1 58.6 
+#>  6         1 23.6 
+#>  7         1 38.6 
+#>  8         1 38.6 
+#>  9         1 48.6 
+#> 10         1 78.6 
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -318,15 +318,15 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
-#>  1 rep        36         1
+#>  1 ind        36         1
 #>  2 ind        34         1
-#>  3 other      24         1
-#>  4 dem        42         1
-#>  5 dem        31         1
+#>  3 ind        24         1
+#>  4 ind        42         1
+#>  5 rep        31         1
 #>  6 rep        32         1
 #>  7 dem        48         1
 #>  8 ind        36         1
-#>  9 ind        30         1
+#>  9 rep        30         1
 #> 10 rep        33         1
 #> # ℹ 2,499,990 more rows
 ```
@@ -351,16 +351,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  39.8
-#>  2         2  40.2
-#>  3         3  40.0
-#>  4         4  40.1
+#>  1         1  39.7
+#>  2         2  41.0
+#>  3         3  40.5
+#>  4         4  40.8
 #>  5         5  39.9
-#>  6         6  39.9
-#>  7         7  38.2
-#>  8         8  39.5
-#>  9         9  40.1
-#> 10        10  39.9
+#>  6         6  39.2
+#>  7         7  39.2
+#>  8         8  40.9
+#>  9         9  41.1
+#> 10        10  39.7
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -383,16 +383,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate   stat
 #>        <int>  <dbl>
-#>  1         1 -1.31 
-#>  2         2 -0.637
-#>  3         3 -0.240
-#>  4         4  0.429
-#>  5         5 -0.716
-#>  6         6 -0.769
-#>  7         7  0.623
-#>  8         8  0.535
-#>  9         9  1.04 
-#> 10        10 -0.337
+#>  1         1 -0.593
+#>  2         2  0.280
+#>  3         3  1.97 
+#>  4         4 -2.00 
+#>  5         5  2.33 
+#>  6         6  2.21 
+#>  7         7 -0.928
+#>  8         8 -0.329
+#>  9         9 -2.07 
+#> 10        10  0.332
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -474,12 +474,12 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0416
+#> 1  0.0296
 ```
 :::
 
 
-It looks like the p-value is 0.0416, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0416. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.0296, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0296. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
