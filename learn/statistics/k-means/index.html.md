@@ -18,6 +18,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 This article only requires the tidymodels package.
@@ -29,6 +31,8 @@ K-means clustering serves as a useful example of applying tidy data principles t
 - `glance()`
 
 Let's start by generating some random two-dimensional data with three clusters. Data in each cluster will come from a multivariate gaussian distribution, with different means for each cluster:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -64,6 +68,8 @@ ggplot(labelled_points, aes(x1, x2, color = cluster)) +
 :::
 
 
+
+
 This is an ideal case for k-means clustering. 
 
 ## How does K-means work?
@@ -71,14 +77,20 @@ This is an ideal case for k-means clustering.
 Rather than using equations, this short animation using the [artwork](https://github.com/allisonhorst/stats-illustrations) of Allison Horst explains the clustering process:
 
 
+
+
 ::: {.cell layout-align="center"}
 ![](kmeans.gif){fig-align='center'}
 :::
 
 
+
+
 ## Clustering in R
 
 We'll use the built-in `kmeans()` function, which accepts a data frame with all numeric columns as it's primary argument.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -132,6 +144,8 @@ summary(kclust)
 :::
 
 
+
+
 The output is a list of vectors, where each component has a different length. There's one of length 300, the same as our original data set. There are two elements of length 3 (`withinss` and `tot.withinss`) and `centers` is a matrix with 3 rows. And then there are the elements of length 1: `totss`, `tot.withinss`, `betweenss`, and `iter`. (The value `ifault` indicates possible algorithm problems.)
 
 These differing lengths have important meaning when we want to tidy our data set; they signify that each type of component communicates a *different kind* of information.
@@ -141,6 +155,8 @@ These differing lengths have important meaning when we want to tidy our data set
 - `totss`, `tot.withinss`, `betweenss`, and `iter` (1 value) contain information about the *full clustering*
 
 Which of these do we want to extract? There is no right answer; each of them may be interesting to an analyst. Because they communicate entirely different information (not to mention there's no straightforward way to combine them), they are extracted by separate functions. `augment` adds the point classifications to the original data set:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -165,7 +181,11 @@ augment(kclust, points)
 :::
 
 
+
+
 The `tidy()` function summarizes on a per-cluster level:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -182,7 +202,11 @@ tidy(kclust)
 :::
 
 
+
+
 And as it always does, the `glance()` function extracts a single-row summary:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -197,11 +221,15 @@ glance(kclust)
 :::
 
 
+
+
 ## Exploratory clustering
 
 While these summaries are useful, they would not have been too difficult to extract out from the data set yourself. The real power comes from combining these analyses with other tools like [dplyr](https://dplyr.tidyverse.org/).
 
 Let's say we want to explore the effect of different choices of `k`, from 1 to 9, on this clustering. First cluster the data 9 times, each using a different value of `k`, then create columns containing the tidied, glanced and augmented data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -233,7 +261,11 @@ kclusts
 :::
 
 
+
+
 We can turn these into three separate data sets each representing a different type of data: using `tidy()`, using `augment()`, and using `glance()`. Each of these goes into a separate data set as they represent different types of data.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -254,7 +286,11 @@ clusterings <-
 :::
 
 
+
+
 Now we can plot the original points using the data from `augment()`, with each point colored according to the predicted cluster.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -273,7 +309,11 @@ p1
 :::
 
 
+
+
 Already we get a good sense of the proper number of clusters (3), and how the k-means algorithm functions when `k` is too high or too low. We can then add the centers of the cluster using the data from `tidy()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -289,7 +329,11 @@ p2
 :::
 
 
+
+
 The data from `glance()` fills a different but equally important purpose; it lets us view trends of some summary statistics across values of `k`. Of particular interest is the total within sum of squares, saved in the `tot.withinss` column.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -306,9 +350,13 @@ ggplot(clusterings, aes(k, tot.withinss)) +
 :::
 
 
+
+
 This represents the variance within the clusters. It decreases as `k` increases, but notice a bend (or "elbow") around `k = 3`. This bend indicates that additional clusters beyond the third have little value. (See [here](https://web.stanford.edu/~hastie/Papers/gap.pdf) for a more mathematically rigorous interpretation and implementation of this method). Thus, all three methods of tidying data provided by broom are useful for summarizing clustering output.
 
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -316,36 +364,39 @@ This represents the variance within the clusters. It decreases as `k` increases,
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

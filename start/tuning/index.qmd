@@ -35,8 +35,12 @@ library(rpart)
 library(rpart.plot)
 library(kableExtra)
 library(vip)
+library(future)
+
 theme_set(theme_bw())
-doParallel::registerDoParallel()
+
+plan(multisession, workers = parallel::detectCores())
+
 pkgs <- c("tidymodels", "rpart", "rpart.plot", "vip")
 ```
 

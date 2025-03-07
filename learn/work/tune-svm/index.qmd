@@ -27,8 +27,8 @@ source(here::here("common.R"))
 library(tidymodels)
 library(mlbench)
 library(kernlab)
-library(doMC)
-registerDoMC(cores = parallel::detectCores())
+library(future)
+plan(multisession, workers = parallel::detectCores())
 
 pkgs <- c("tidymodels", "mlbench", "kernlab")
 

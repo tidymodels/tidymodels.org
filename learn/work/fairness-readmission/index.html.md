@@ -17,7 +17,13 @@ bibliography: refs.bib
 
 
 
+
+
 ------------------------------------------------------------------------
+
+
+
+
 
 
 
@@ -36,6 +42,8 @@ This article will demonstrate a fairness-oriented workflow for training a machin
 ## Setup
 
 The data we'll use in this analysis is a publicly available database containing information on 71,515 hospital stays from diabetes patients. The data comes from a study by @strack2014, where the authors model the effectiveness of a particular lab test in predicting readmission. A version of that data is available in the [readmission R package](https://simonpcouch.github.io/readmission/):
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -64,9 +72,13 @@ readmission
 :::
 
 
+
+
 The first variable in this data, `readmitted`, gives whether the patient was readmitted within 30 days of discharge. We'll use this variable as a proxy for "unmet need for additional care," in that readmission within one month indicates that the patient may have benefited from additional attention during their hospital stay; if a machine learning model consistently identifies lesser need (via prediction of non-readmission) in one subgroup than another, the subgroup allocated lesser need will go without care they'd benefit from. We'd like to train a model that is both fair with regard to how it treats `race` groups and is as performant as possible. The tidymodels framework provides the tools needed to identify such disparities.
 
 Loading needed packages:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -80,9 +92,13 @@ library(GGally)
 :::
 
 
+
+
 ## Exploratory Analysis
 
 Let's start off our analysis with some explanatory summarization and plotting. First, taking a look at our outcome variable:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -99,7 +115,11 @@ readmission %>%
 :::
 
 
+
+
 8.8% of patients were readmitted within 30 days after being discharged from the hospital. This is an example of a modeling problem with a _class imbalance_, where one value of the outcome variable is much more common than another. Now, taking a look at the counts of those in each protected class:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -120,11 +140,15 @@ readmission %>%
 :::
 
 
+
+
 ::: callout-note
 We'll refer to the `race` groups in this data by their actual value (e.g. `"Caucasian"` rather than Caucasian) so as to not take for granted the choices that the dataset authors made in choosing these categorizations. Racial categorizations are not stable across time and place---as you read on, consider how a change in the categories used in data collection might affect this analysis [@omi1994].
 :::
 
 A vast majority of patients are labeled `"Caucasian"` (74.8%) or `"African American"` (18%). The counts for the remaining racial categorizations are quite a bit smaller, and when we split the data up into resamples, those counts will reduce even further. As a result, the variability associated with the estimates `"Asian"`, `"Hispanic"`, `"Other"`, and `"Unknown"` will be larger than those for `"African American"` and `"Causasian"`. As an example:
+
+
 
 
 
@@ -154,6 +178,8 @@ readmission %>%
 :::
 
 
+
+
 The standard deviations `sd` are much larger for groups with a smaller number of observations `n`, even if the average proportions `mean` are similar. This variation will affect our analysis downstream in that fairness metrics measure variation across groups; the noise associated with proportions calculated for `race` groups with fewer values may overwhelm the signal associated with actual disparities in care for those groups.
 
 We have several options when considering how to address this:
@@ -169,6 +195,8 @@ While we won't construct custom fairness metrics in this example, you can do so 
 :::
 
 Recoding that data column:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -196,7 +224,11 @@ readmission_collapsed %>%
 :::
 
 
+
+
 Plotting distributions of remaining predictors:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -214,7 +246,11 @@ readmission_collapsed %>%
 :::
 
 
+
+
 Most patients in this data are in their 60s and 70s. Emergencies account for most admissions in this data, though many others are from referrals or other sources.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -231,11 +267,15 @@ readmission_collapsed %>%
 :::
 
 
+
+
 While payment information on most patients is missing, most patients in this data are covered under Medicare.
 
 ::: callout-tip
 The payment method is one way in which societal unfairness may be reflected in the source data besides the variables on protected groups themselves. Medicaid coverage is only available to people below a certain income, and many self-pay patients do not have medical insurance because they cannot afford it. Relatedly, poverty rates differ drastically among racial groups in the U.S.
 :::
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -254,6 +294,8 @@ readmission_collapsed %>%
 :::
 
 
+
+
 For many patients, this was their first inpatient visit to this hospital system. During their stay, many patients receive 10-20 medications and experience several procedures.
 
 With a sense for the distributions of variables in this dataset, we can move on to splitting data up for modeling.
@@ -261,6 +303,8 @@ With a sense for the distributions of variables in this dataset, we can move on 
 ## Resampling Data
 
 First, splitting data into training and testing:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -274,11 +318,15 @@ readmission_test   <- testing(readmission_splits)
 :::
 
 
+
+
 :::callout-note
 We've set `strata = readmitted` here to stratify our sample by the outcome variable in order to address the class imbalance. To learn more about class imbalances and stratification, see the ["Common Methods for Splitting Data"](https://www.tmwr.org/splitting#splitting-methods) chapter of [_Tidy Modeling with R_](https://www.tmwr.org/) [@kuhn2022].
 :::
 
 We'll set the 17,879-row `readmission_test` test set to the side for the remainder of the analysis until we compute a final estimate of our performance on the chosen model. Splitting the 53,636 rows of the training data into 10 resamples:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -305,6 +353,8 @@ readmission_folds
 :::
 
 
+
+
 Each split contains an analysis and assessment set: one for model fitting and the other for evaluation. Averaging performance estimates across resamples will give us a sense for how well the model performs on data it hasn't yet seen.
 
 ## Training and Evaluating Models
@@ -314,6 +364,8 @@ We'll define a diverse set of models and pre-processing strategies and then eval
 ### Model Workflows
 
 We'll first define a basic recipe that first sets a factor level for missing values and then centers and scales numeric data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -329,7 +381,11 @@ recipe_basic <-
 :::
 
 
+
+
 The other preprocessor that we'll try encodes the age as a numeric variable rather than the bins as in the source data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -359,7 +415,11 @@ recipe_age <-
 :::
 
 
+
+
 Both of these preprocessors will be combined with one of three models. Logistic regressions, XGBoost, and bagged neural networks make a diverse set of assumptions about the underlying data generating process. Defining model specifications for each:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -377,7 +437,11 @@ spec_nn <-
 :::
 
 
+
+
 We now combine each unique combination of recipe and preprocessor in a workflow set:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -403,6 +467,8 @@ wflow_set
 :::
 
 
+
+
 Each workflow in the workflow set is now ready to be evaluated. We now need to decide how to best evaluate these modeling workflows, though.
 
 ### Metrics
@@ -420,6 +486,8 @@ For each of the above metrics, values closer to zero indicate that a model is mo
 The above three metrics are defined specifically with fairness in mind. By another view of fairness, though, `accuracy()` and `roc_auc()` are _also_ fairness metrics. Some stakeholders may believe that the most performant model regardless of group membership---i.e. the model that predicts readmission most accurately across groups---is the most fair model. 
 
 To evaluate each of these metrics against the specified workflows, we create a metric set like so:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -448,6 +516,8 @@ m_set
 :::
 
 
+
+
 ::: callout-note
 The first two inputs, `accuracy()` and `roc_auc()`, are standard [yardstick](https://yardstick.tidymodels.org) metrics. The latter three are also yardstick metrics like any other, though are created using the [_metric factories_](https://yardstick.tidymodels.org/reference/new_groupwise_metric.html) `equal_opportunity()`, `equalized_odds()`, and `demographic_parity()`. When passed a data-column, metric factories output yardstick metrics. 
 :::
@@ -455,6 +525,8 @@ The first two inputs, `accuracy()` and `roc_auc()`, are standard [yardstick](htt
 ### Evaluation
 
 We can now evaluate the workflows we've defined against resamples using our metric set. The `workflow_map()` function will call `tune_grid()` on each workflow:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -475,7 +547,11 @@ wflow_set_fit <-
 
 
 
+
+
 A fitted workflow set looks just like the unfitted workflow set we saw previously, except that information on the tuning process is now stored in the `option` and `result` variables for each modeling workflow:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -495,9 +571,13 @@ wflow_set_fit
 :::
 
 
+
+
 ## Model Selection
 
 Now that we've evaluated a number of models with a variety of metrics, we can explore the results to determine our optimal model. Beginning with a quick exploratory plot of the distributions of our metrics:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -521,9 +601,13 @@ wflow_set_fit %>%
 :::
 
 
+
+
 The fairness metrics `demographic_parity()`, `equal_opportunity()`, and `equalized_odds()` all take values very close to zero for many models. Also, the metric values are highly correlated with each other, including correlations between fairness metrics and the more general-purpose performance metrics. That is, the most performant models also seem to be among the most fair.
 
 More concretely, we can rank the model configurations to examine only the most performant models:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -549,7 +633,11 @@ rank_results(wflow_set_fit, rank_metric = "roc_auc") %>%
 :::
 
 
+
+
 Almost all of the most performant model configurations arise from the boosted tree modeling workflow. Let's examine the results for specifically the modeling workflow that encodes age as a number more thoroughly:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -564,6 +652,8 @@ autoplot(wflow_set_fit, id = "age_bt")
 :::
 
 
+
+
 The learning rate `learn_rate` seems to have a more pronounced effect on the results metrics than the number of randomly selected predictors `mtry`. As before, we see that the most performant models with respect to `roc_auc()` also tend to be the most fair according to our fairness metrics. Further, the values of each of the fairness metrics plotted above seem highly correlated. 
 
 From the perspective of a practitioner hoping to satisfy various stakeholders, the fact that these metrics are highly correlated makes the model selection process much easier. We can choose one fairness metric that we'd like to optimize for, and likely end up with a near-optimal configuration for the other metrics as a byproduct.
@@ -573,6 +663,8 @@ In machine learning fairness, "impossibility theorems" show that fairness defini
 :::
 
 To choose a model that performs well both with respect to a typical performance metric like `roc_auc()` and the fairness metrics we've chosen, we will make use of [desirability functions](https://www.tidyverse.org/blog/2023/05/desirability2/), which allow us to optimize based on multiple metrics at once.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -603,7 +695,11 @@ best_params <-
 :::
 
 
+
+
 The result is a tibble giving the parameter values that resulted in the best model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -620,7 +716,11 @@ best_params
 :::
 
 
+
+
 We can use that tibble to finalize a workflow that we'll use to generate our final model fit:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -633,7 +733,11 @@ final_model_config <-
 :::
 
 
+
+
 Finally, generating our final model fit:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -647,7 +751,11 @@ final_model <-
 
 
 
+
+
 We can see the metrics associated with the final fit using `collect_metrics()`, just as with a tuning result:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -668,9 +776,13 @@ collect_metrics(final_model)
 
 
 
+
+
 The model we've selected has near-fairness with respect to the set of metrics we've chosen here. The accuracy of the model is 91.16%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The `roc_auc()` value 0.602 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class---as in, patients that did actually readmit---like [`sens()`](https://yardstick.tidymodels.org/reference/sens.html?q=sens#details).
 
 Extracting the model fit from the `last_fit` object:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -679,6 +791,8 @@ Extracting the model fit from the `last_fit` object:
 final_model_fit <- extract_workflow(final_model)
 ```
 :::
+
+
 
 
 The `final_model_fit` object is now ready to predict on new data! Models generated with tidymodels are easily versioned, deployed, and monitored using the vetiver framework; learn more about the framework on the [vetiver website](https://vetiver.rstudio.com/get-started/).
@@ -697,45 +811,50 @@ Machine learning models can both have significant positive impacts on our lives 
 ## Session information {#session-info}
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       * version date (UTC) lib source
-#>  baguette      * 1.0.2   2024-02-13 [1] CRAN (R 4.4.0)
-#>  broom         * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
+#>  baguette      * 1.1.0   2025-01-28 [1] CRAN (R 4.4.1)
+#>  broom         * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
 #>  desirability2 * 0.0.1   2023-05-11 [1] CRAN (R 4.4.0)
-#>  dials         * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  dials         * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr         * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  GGally        * 2.2.1   2024-02-14 [1] CRAN (R 4.4.0)
 #>  ggplot2       * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer         * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip       * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr         * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+#>  parsnip       * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr         * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
 #>  readmission   * 0.1.0   2023-12-07 [1] CRAN (R 4.4.0)
-#>  recipes       * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang           1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  recipes       * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang           1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample       * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble        * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels    * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune          * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows     * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick     * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels    * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune          * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows     * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick     * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

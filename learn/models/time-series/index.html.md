@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: forecast, sweep, tidymodels, timetk, and zoo.
@@ -28,6 +30,8 @@ To use code in this article,  you will need to install the following packages: f
 ## Example data
 
 The data for this article are sales of alcoholic beverages originally from [the Federal Reserve Bank of St. Louis website](https://fred.stlouisfed.org/series/S4248SM144NCEN).
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -45,11 +49,15 @@ glimpse(drinks)
 :::
 
 
+
+
 Each row represents one month of sales (in millions of US dollars). 
 
 ## Time series resampling
 
 Suppose that we need predictions for one year ahead and our model should use the most recent data from the last 20 years. To set up this resampling scheme:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -85,7 +93,11 @@ roll_rs
 :::
 
 
+
+
 Each `split` element contains the information about that resample:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -98,7 +110,11 @@ roll_rs$splits[[1]]
 :::
 
 
+
+
 For plotting, let's index each split by the first day of the assessment set:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -117,7 +133,11 @@ head(roll_rs$start_date)
 :::
 
 
+
+
 This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the `auto.arima()` function from the forecast package. The rsample functions `analysis()` and `assessment()` return a data frame, so another step converts the data to a `ts` object called `mod_dat` using a function in the timetk package.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -142,7 +162,11 @@ fit_model <- function(x, ...) {
 :::
 
 
+
+
 Save each model in a new column:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -166,6 +190,8 @@ roll_rs$arima[[1]]
 :::
 
 
+
+
 (There are some warnings produced by these regarding extra columns in the data that can be ignored.)
 
 ## Model performance
@@ -176,6 +202,8 @@ Using the model fits, let's measure performance in two ways:
  * _Extrapolation_ or _forecast_ error evaluates the performance of the model on the data from the following year (that were not used in the model fit).
  
 In each case, the mean absolute percent error (MAPE) is the statistic used to characterize the model fits. The interpolation error can be computed from the `Arima` object. To make things easy, let's use the sweep package's `sw_glance()` function:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -196,7 +224,11 @@ summary(roll_rs$interpolation)
 :::
 
 
+
+
 For the extrapolation error, the model and split objects are required. Using these:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -223,7 +255,11 @@ summary(roll_rs$extrapolation)
 :::
 
 
+
+
 What do these error estimates look like over time?
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -243,11 +279,15 @@ roll_rs %>%
 :::
 
 
+
+
 It is likely that the interpolation error is an underestimate to some degree, as mentioned above. 
 
 It is also worth noting that `rolling_origin()` can be used over calendar periods, rather than just over a fixed window size. This is especially useful for irregular series where a fixed window size might not make sense because of missing data points, or because of calendar features like different months having a different number of days.
 
 The example below demonstrates this idea by splitting `drinks` into a nested set of 26 years, and rolling over years rather than months. Note that the end result accomplishes a different task than the original example; in this new case, each slice moves forward an entire year, rather than just one month.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -292,8 +332,12 @@ analysis(roll_rs_annual$splits[[1]])
 :::
 
 
+
+
 The workflow to access these calendar slices is to use `bind_rows()` to join
 each analysis set together.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -318,7 +362,11 @@ mutate(
 
 
 
+
+
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -326,40 +374,43 @@ mutate(
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  forecast   * 8.23.0  2024-06-20 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  sweep      * 0.2.5   2023-07-06 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
 #>  timetk     * 2.9.0   2023-10-31 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
-#>  zoo        * 1.8-12  2023-04-13 [1] CRAN (R 4.4.0)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
+#>  zoo        * 1.8-13  2025-02-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

@@ -20,11 +20,15 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 To use code in this article,  you will need to install the following packages: nnet, probably, and tidymodels. The probably package should be version 1.0.2 or greater.
 
 What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction)? It is a collection of statistical methods that are mostly used to construct prediction intervals (or prediction sets) for any type of regression or classification model. The basic idea revolves around some Frequentist theory on how to construct probability statements about whether a new sample could have been from an existing reference distribution.
 
 Since this article is focused on regression problems, we'll motivate the methodology in the context of a numeric outcome. For example, suppose we have collected a set of 1,000 standard normal data points. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -47,9 +51,13 @@ reference_data %>%
 :::
 
 
+
+
 If we had a new observation that we thought might be from the same distribution, how would we say (probabilistically) whether we believe that it belongs to the original distribution? 
 
 If we thought that 1,000 were a sufficient sample size, we might compute some quantiles of these data to define "the mainstream of the data." Let's use the 5th and 95th quantiles to set boundaries that define what we would expect to see most of the time:   
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -69,6 +77,8 @@ reference_data %>%
 :::
 
 
+
+
 If we were to get a new sample beyond these boundaries, we would be able to say that we are about 90% sure that the new sample does not conform to the original distribution. This works under the assumption that the data are exchangeable. 
 
 We can apply this relatively simple idea to model predictions. Suppose we have a model created on a numeric outcome. If we make predictions on a data set we can compute the model residuals and create a sort of reference error distribution. If we compute a prediction on a new unknown sample, we could center this reference distribution around its predicted value. For some significance level, we now know the range of sample values that "conform" to the variance seen in the reference distribution. That range can define our prediction interval.
@@ -76,6 +86,8 @@ We can apply this relatively simple idea to model predictions. Suppose we have a
 There are a variety of ways to apply this concept (which is unsurprisingly more complex than the above description). The probably package has implemented a few of these.
 
 Let's make a simple example to illustrate the results. We'll simulate a data set with a single predictor along with some unknown samples: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -104,7 +116,11 @@ train_data %>%
 :::
 
 
+
+
 We'll use these data as a training set and fit a model: 
+
+
 
 
 
@@ -131,6 +147,8 @@ train_data %>%
 :::
 
 
+
+
 Let's examine three methods^[A fourth method is implemented for "full conformal prediction." It was developed mainly as a proof of concept. While it is effective, it is _very_ computationally expensive.] to produce prediction intervals: 
 
 ## Split Conformal Inference
@@ -138,6 +156,8 @@ Let's examine three methods^[A fourth method is implemented for "full conformal 
 The most straightforward approach is reserving some data for estimating the residual distribution. We know that simply re-predicting the training set is **a bad idea**; the residuals would be smaller than they should be since the same data are used to create and evaluate the model. 
 
 Let's simulate another data set containing 250 samples and call that the "calibration set". These data can be predicted and the corresponding residuals can be used to define what conforms to the model. We'll also create a large test set to see if we've done a good job. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -150,7 +170,11 @@ test_data <- make_data(10000)
 :::
 
 
+
+
 The probably package has a set of functions with the prefix `int_conformal` that can be used to create prediction intervals. One is: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -168,7 +192,11 @@ split_int
 :::
 
 
+
+
 To get predictions on new data, we use the standard `predict()` method on this object: 
+
+
 
 
 
@@ -193,7 +221,11 @@ test_split_res %>% slice(1:5)
 :::
 
 
+
+
 The results: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -203,7 +235,11 @@ The results:
 :::
 
 
+
+
 Since we know the outcome values, we can compute the coverage for this particular data set. Since we created a 90% prediction interval, about 90% of the outcomes should be within our bounds. Let's create a function and apply it to these data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -223,6 +259,8 @@ coverage(test_split_res)
 :::
 
 
+
+
 ## Using Resampling Results
 
 In a way, the calibration set serves a similar role as a traditional validation set. Since we can't just re-predict our training set, we need to evaluate our model on a separate collection of labeled data. 
@@ -234,6 +272,8 @@ The CV+ estimator ([Barber _et al._ (2021)](https://scholar.google.com/scholar?h
 The `control_*()` functions can be used for this purpose. We can set `save_pred = TRUE` to save the predicted values. For the resampled models, we can use the tools to [extract the models](https://tidymodels.github.io/tidymodels_dot_org/learn/index.html#category=extracting%20results) via the `extract` argument. We'll use the `I()` function to return the fitted workflows from each resample: 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -242,7 +282,11 @@ ctrl <- control_resamples(save_pred = TRUE, extract = I)
 :::
 
 
+
+
 Let's use 10-fold cross-validation to resample the neural network: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -265,9 +309,13 @@ collect_metrics(nnet_rs)
 :::
 
 
+
+
 The model has an estimated root mean squared error of 0.201 and an estimated R<sup>2</sup> of 0.95.
 
 We can create another object for computing the intervals:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -301,7 +349,11 @@ test_cv_res %>% slice(1:5)
 :::
 
 
+
+
 The results for this method are:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -311,9 +363,13 @@ The results for this method are:
 :::
 
 
+
+
 At each point, the interval length is 0.66; the previous split conformal interval width was 0.73. This is due to the training set being larger than the calibration set. 
 
 Note that the coverage is a little better since it is near 90%:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -328,11 +384,15 @@ coverage(test_cv_res)
 :::
 
 
+
+
 ## Adaptive width intervals
 
 The simulated data that we've been using has a constant error variance. That has worked for the two methods shown since their intervals are always the same width. Real data does not always have constant variation. 
 
 To demonstrate, we can take the previous simulation system and induce a variance that is dynamic over the predictor range:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -357,7 +417,11 @@ make_variable_data(1000) %>%
 :::
 
 
+
+
 Let's create new data sets and re-fit our model: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -374,7 +438,11 @@ nnet_variable_pred <- augment(nnet_variable_fit, train_variable_data)
 :::
 
 
+
+
 We can recreate the CV+ interval for this new version of the data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -384,7 +452,11 @@ We can recreate the CV+ interval for this new version of the data:
 :::
 
 
+
+
 The _average_ coverage is good: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -400,6 +472,8 @@ coverage(test_cv_variable_res)
 
 
 
+
+
 However, there are obvious areas where it is either too wide or too narrow. 
 
 Conformalized quantile regression ([Romano _et al_ (2019)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22Conformalized+quantile+regression%22)) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial [quantile regression](https://en.wikipedia.org/wiki/Quantile_regression) model to do so and also required a split data set, such as our calibration data. 
@@ -412,6 +486,8 @@ The function for this, `int_conformal_quantile()`, has a slightly different inte
 * The confidence level must be set in advance. 
 
 We'll also pass an argument to the `quantregForest()` function that we'll use 2,000 trees to make the forest: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -450,7 +526,11 @@ test_quant_res %>% slice(1:5)
 :::
 
 
+
+
 The results: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -460,9 +540,13 @@ The results:
 :::
 
 
+
+
 Minor downside: The bumpiness of the bound is the consequence of using a tree-based model for the quantiles. 
 
 Despite that, the intervals do adapt their widths to suit the data. The coverage is also close to the target: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -476,6 +560,8 @@ coverage(test_quant_res)
 ```
 :::
 
+
+
 ### The major downside
 
 When our predictions are extrapolating, the intervals can be very poor. Tree-based models can behave very differently than other models when predicting beyond the training set; they follow a static trend even as the predictor values move towards infinity. 
@@ -484,11 +570,15 @@ To illustrate this, we can simulate another point outside of the training set ra
 
 
 
+
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/extrapolation-1.svg){fig-align='center' width=70%}
 :::
 :::
+
+
 
 
 The neural network does fairly well but the quantile regression forest carries the same extract trend forward. In this case, the interval doesn't even include the predicted value (since two different models are used to compute both quantities). 
@@ -514,43 +604,48 @@ If you are interested and would like to learn more, try these resources:
 ## Session information
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  nnet       * 7.3-19  2023-05-03 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
+#>  nnet         7.3-20  2025-01-01 [1] CRAN (R 4.4.1)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
 #>  probably   * 1.0.3   2024-02-23 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

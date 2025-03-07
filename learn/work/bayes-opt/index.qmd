@@ -27,9 +27,10 @@ library(tidymodels)
 library(tune)
 library(kernlab)
 library(rlang)
-library(doMC)
+library(future)
 library(themis)
-registerDoMC(cores = parallel::detectCores())
+
+plan(multisession, workers = parallel::detectCores())
 
 pkgs <- c("modeldata", "kernlab", "tidymodels", "themis")
 
