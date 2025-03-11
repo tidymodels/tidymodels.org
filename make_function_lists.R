@@ -19,17 +19,25 @@ theme_set(theme_bw())
 options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
 
 # ------------------------------------------------------------------------------
-# Use the pkgdown package to parse the source files and put them into a usable format
+# Use the pkgdown package to parse the source files and put them into a usable 
+# format
 
-# TODO find a better way to figure out how to find the true "check_" recipe operations
-# from just the source files
+# TODO find a better way to figure out how to find the true "check_" recipe 
+# operations from just the source files
 
-get_pkg_info <- function(pkg, pth = tempdir(), keep_internal = FALSE, pattern = NULL) {
+get_pkg_info <- function(
+  pkg,
+  pth = tempdir(),
+  keep_internal = FALSE,
+  pattern = NULL
+) {
   src_file <-
-    download.packages(pkg,
-                      destdir = pth,
-                      repos = "https://cran.rstudio.com/",
-                      quiet = TRUE)
+    download.packages(
+      pkg,
+      destdir = pth,
+      repos = "https://cran.rstudio.com/",
+      quiet = TRUE
+    )
   if (nrow(src_file) != length(pkg)) {
     return(NULL)
     rlang::warn(glue::glue("package {pkg} was not downloaded"))
@@ -59,10 +67,10 @@ get_pkg_info <- function(pkg, pth = tempdir(), keep_internal = FALSE, pattern = 
   res
 }
 
-# See if any of the urls appear to correspond to the _standard_ pkgdown structure.
-# Is so, link to the specific pkgdown html package, otherwise link to the first
-# url or, if there are none listed, the canonical CRAN page link.
-# We use an internal function in urlchecker to essentially ping the potential url
+# See if any of the urls appear to correspond to the _standard_ pkgdown
+# structure. Is so, link to the specific pkgdown html package, otherwise link to
+# the first url or, if there are none listed, the canonical CRAN page link. We
+# use an internal function in urlchecker to essentially ping the potential url
 
 sort_out_urls <- function(x) {
   test_urls <-
@@ -90,15 +98,17 @@ sort_out_urls <- function(x) {
     left_join(pkgdown_urls, by = "package") %>%
     mutate(
       first_url = map_chr(all_urls, ~ .x[1]),
-      first_url = ifelse(is.na(first_url),
-                         glue("https://cran.r-project.org/package={package}"),
-                         first_url),
-      base_url = ifelse(is.na(pkgdown_url),
-                        first_url,
-                        pkgdown_url),
-      url = ifelse(!is.na(pkgdown_url),
-                   glue("{pkgdown_url}/reference/{file_out}"),
-                   base_url),
+      first_url = ifelse(
+        is.na(first_url),
+        glue("https://cran.r-project.org/package={package}"),
+        first_url
+      ),
+      base_url = ifelse(is.na(pkgdown_url), first_url, pkgdown_url),
+      url = ifelse(
+        !is.na(pkgdown_url),
+        glue("{pkgdown_url}/reference/{file_out}"),
+        base_url
+      ),
       topic = glue("<a href='{url}' target='_blank'><tt>{functions}</tt></a>")
     ) %>%
     dplyr::select(title, functions, topic, package) %>%
@@ -109,7 +119,10 @@ sort_out_urls <- function(x) {
 
 # ------------------------------------------------------------------------------
 
-broom_pkgs <- revdepcheck::cran_revdeps("broom",    dependencies = c("Depends", "Imports"))
+broom_pkgs <- revdepcheck::cran_revdeps(
+  "broom",
+  dependencies = c("Depends", "Imports")
+)
 generics_pkgs <- revdepcheck::cran_revdeps("generics", dependencies = "Imports")
 
 broom_pkgs <- sort(unique(c(broom_pkgs, generics_pkgs)))
@@ -133,7 +146,10 @@ write_csv(
 
 # ------------------------------------------------------------------------------
 
-recipe_pkgs <- revdepcheck::cran_revdeps("recipes", dependencies = c("Depends", "Imports"))
+recipe_pkgs <- revdepcheck::cran_revdeps(
+  "recipes",
+  dependencies = c("Depends", "Imports")
+)
 recipe_pkgs <- c(recipe_pkgs, "recipes")
 
 recipe_pkgs <- sort(unique(c(recipe_pkgs)))
@@ -146,7 +162,7 @@ recipe_functions <-
     get_pkg_info,
     pattern = "^step_",
     .progress = TRUE
-  )  %>%
+  ) %>%
   sort_out_urls() %>%
   select(-functions)
 
@@ -158,14 +174,47 @@ write_csv(
 # ------------------------------------------------------------------------------
 
 all_tm <-
-  c("agua", "applicable", "baguette", "brulee", "broom", "butcher",
-    "censored", "corrr", "dials", "discrim", "embed", "finetune",
-    "hardhat", "infer", "modeldata", "modeldb",
-    "modelenv", "multilevelmod", "parsnip", "plsmod", "poissonreg",
-    "probably", "recipes", "rsample", "rules", "shinymodels", "spatialsample",
-    "stacks", "textrecipes", "themis", "tidyclust", "tidymodels",
-    "tidyposterior", "tidypredict", "tune", "usemodels", "workflows",
-    "workflowsets", "yardstick")
+  c(
+    "agua",
+    "applicable",
+    "baguette",
+    "brulee",
+    "broom",
+    "butcher",
+    "censored",
+    "corrr",
+    "dials",
+    "discrim",
+    "embed",
+    "finetune",
+    "hardhat",
+    "infer",
+    "modeldata",
+    "modeldb",
+    "modelenv",
+    "multilevelmod",
+    "parsnip",
+    "plsmod",
+    "poissonreg",
+    "probably",
+    "recipes",
+    "rsample",
+    "rules",
+    "shinymodels",
+    "spatialsample",
+    "stacks",
+    "textrecipes",
+    "themis",
+    "tidyclust",
+    "tidymodels",
+    "tidyposterior",
+    "tidypredict",
+    "tune",
+    "usemodels",
+    "workflows",
+    "workflowsets",
+    "yardstick"
+  )
 
 tidymodels_functions <-
   map_dfr(
@@ -184,16 +233,32 @@ write_csv(
 
 # ------------------------------------------------------------------------------
 
-parsnip_pkgs <- revdepcheck::cran_revdeps("parsnip", dependencies = c("Depends", "Imports"))
+parsnip_pkgs <- revdepcheck::cran_revdeps(
+  "parsnip",
+  dependencies = c("Depends", "Imports")
+)
 parsnip_pkgs <- c(parsnip_pkgs, "parsnip")
-# These ignore the tidymodels design principles and/or don't work with the broader ecosystem
-# or we don't don't have any models in them
-excl <- c("additive", "bayesian", "cuda.ml", "SSLR", "workflowsets", "workflows",
-          "tune", "tidymodels", "shinymodels", "stacks")
+# These ignore the tidymodels design principles and/or don't work with the 
+# broader ecosystem or we don't don't have any models in them
+excl <- c(
+  "additive",
+  "bayesian",
+  "cuda.ml",
+  "SSLR",
+  "workflowsets",
+  "workflows",
+  "tune",
+  "tidymodels",
+  "shinymodels",
+  "stacks"
+)
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
 # Load them then get the model data base
-loaded <- map_lgl(parsnip_pkgs, ~ suppressPackageStartupMessages(require(.x, character.only = TRUE)))
+loaded <- map_lgl(
+  parsnip_pkgs,
+  ~ suppressPackageStartupMessages(require(.x, character.only = TRUE))
+)
 table(loaded)
 
 # h2o overwrites soooo many functions; this may take a few minutes
@@ -204,19 +269,27 @@ origin_pkg <- rlang::env_get_list(
   nms = ls(parsnip::get_model_env(), pattern = "_pkg")
 ) %>%
   purrr::list_rbind(names_to = "model") %>%
-  mutate(pkg = map_chr(pkg, ~ {
-    pkg <- intersect(.x, parsnip_pkgs)
-    if (length(pkg) == 0) {
-      pkg <- "parsnip"
-    }
-    pkg
-  })) %>%
+  mutate(
+    pkg = map_chr(
+      pkg,
+      ~ {
+        pkg <- intersect(.x, parsnip_pkgs)
+        if (length(pkg) == 0) {
+          pkg <- "parsnip"
+        }
+        pkg
+      }
+    )
+  ) %>%
   mutate(model = str_remove(model, "_pkgs$"))
 
 model_list <-
   map_dfr(get_from_env("models"), ~ get_from_env(.x) %>% mutate(model = .x)) %>%
   mutate(
-    mode = factor(mode, levels = c("classification", "regression", "censored regression"))
+    mode = factor(
+      mode,
+      levels = c("classification", "regression", "censored regression")
+    )
   ) %>%
   left_join(origin_pkg, by = c("engine", "mode", "model")) %>%
   mutate(
@@ -243,7 +316,10 @@ has_details <-
 
 no_details <-
   model_list %>%
-  anti_join(has_details %>% select(model, engine), by = c("model", "engine")) %>%
+  anti_join(
+    has_details %>% select(model, engine),
+    by = c("model", "engine")
+  ) %>%
   mutate(functions = model) %>%
   inner_join(parsnip_model_info, by = "functions")
 
@@ -255,8 +331,8 @@ parsnip_models <-
       select(title, model, engine, topic, mode, package = pkg)
   ) %>%
   mutate(
-    model = paste0("<code>",  model, "</code>"),
-    engine = paste0("<code>",  engine, "</code>"),
+    model = paste0("<code>", model, "</code>"),
+    engine = paste0("<code>", engine, "</code>"),
     title = gsub("General Interface for ", "", title)
   ) %>%
   arrange(model, engine) %>%
