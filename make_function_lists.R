@@ -19,10 +19,10 @@ theme_set(theme_bw())
 options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
 
 # ------------------------------------------------------------------------------
-# Use the pkgdown package to parse the source files and put them into a usable 
+# Use the pkgdown package to parse the source files and put them into a usable
 # format
 
-# TODO find a better way to figure out how to find the true "check_" recipe 
+# TODO find a better way to figure out how to find the true "check_" recipe
 # operations from just the source files
 
 get_pkg_info <- function(
@@ -197,7 +197,7 @@ parsnip_pkgs <- revdepcheck::cran_revdeps(
   dependencies = c("Depends", "Imports")
 )
 parsnip_pkgs <- c(parsnip_pkgs, "parsnip")
-# These ignore the tidymodels design principles and/or don't work with the 
+# These ignore the tidymodels design principles and/or don't work with the
 # broader ecosystem or we don't don't have any models in them
 excl <- c(
   "additive",
