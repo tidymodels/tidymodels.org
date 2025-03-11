@@ -10,6 +10,7 @@ library(fs)
 library(pkgdown)
 library(urlchecker)
 library(stringr)
+library(readr)
 
 # ------------------------------------------------------------------------------
 
@@ -125,10 +126,10 @@ broom_functions <-
   sort_out_urls() %>%
   select(-functions)
 
-save(
+write_csv(
   broom_functions,
-  file = "find/broom/broom_functions.RData",
-  compress = TRUE)
+  file = "find/broom/broom_functions.csv"
+)
 
 # ------------------------------------------------------------------------------
 
@@ -149,10 +150,10 @@ recipe_functions <-
   sort_out_urls() %>%
   select(-functions)
 
-save(
+write_csv(
   recipe_functions,
-  file = "find/recipes/recipe_functions.RData",
-  compress = TRUE)
+  file = "find/recipes/recipe_functions.csv"
+)
 
 # ------------------------------------------------------------------------------
 
@@ -166,7 +167,6 @@ all_tm <-
     "tidyposterior", "tidypredict", "tune", "usemodels", "workflows",
     "workflowsets", "yardstick")
 
-
 tidymodels_functions <-
   map_dfr(
     all_tm,
@@ -177,10 +177,10 @@ tidymodels_functions <-
   filter(!grepl("^\\.", functions)) %>%
   select(-functions)
 
-save(
+write_csv(
   tidymodels_functions,
-  file = "find/all/tidymodels_functions.RData",
-  compress = TRUE)
+  file = "find/all/tidymodels_functions.csv"
+)
 
 # ------------------------------------------------------------------------------
 
@@ -262,8 +262,7 @@ parsnip_models <-
   arrange(model, engine) %>%
   select(title, model, engine, topic, mode, package)
 
-save(
+write_csv(
   parsnip_models,
-  file = "find/parsnip/parsnip_models.RData",
-  compress = TRUE
+  file = "find/parsnip/parsnip_models.csv"
 )
