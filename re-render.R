@@ -9,5 +9,8 @@ dir_delete("site_libs")
 dir_ls(recurse = TRUE, type = "directory", regexp = "cache") |>
   dir_delete()
 
+# Update function lists
+source("make_function_lists.R")
+
 # Starts rerender
 quarto_render()
