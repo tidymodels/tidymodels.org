@@ -28,9 +28,9 @@ source(here::here("common.R"))
 library(tidymodels)
 library(probably)
 library(discrim)
-library(doMC)
+library(future)
 
-registerDoMC(cores = parallel::detectCores())
+plan(multisession, workers = parallel::detectCores())
 
 pkgs <- c("tidymodels", "probably", "discrim", "klaR")
 ```

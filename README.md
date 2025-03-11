@@ -81,3 +81,13 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 * The site is published via Netlify but rendered locally, so add those files to the PR. 
 
 * To do a complete rerender, run `re-render.R` script.
+
+## Rerender
+
+We try to do a rerender after a release of a main package.
+
+* Make sure that `all_packages.R` is up to date.
+
+* Run `installs.R` script. Make sure to check that dev versions aren't present.
+
+* Run `re-render.R` script.

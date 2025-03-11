@@ -11,5 +11,6 @@ team: true
 
 
 
+
 Davis Vaughan is a Software Engineer at RStudio. He is the author or maintainer of several R packages for finance and data analytics, including tidyquant, timetk, tibbletime, sweep, rray and hardhat. He is well-known for this work around creating modeling packages in R. 
 

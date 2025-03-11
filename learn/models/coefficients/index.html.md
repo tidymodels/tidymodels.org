@@ -18,6 +18,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction 
 
 There are many types of statistical models with diverse kinds of structure. Some models have coefficients (a.k.a. weights) for each term in the model. Familiar examples of such models are linear or logistic regression, but more complex models (e.g. neural networks, MARS) can also have model coefficients. When we work with models that use weights or coefficients, we often want to examine the estimated coefficients. 
@@ -37,6 +39,8 @@ Let's use the [Chicago train data](https://bookdown.org/max/FES/chicago-intro.ht
 The data are in the modeldata package:  
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -51,6 +55,8 @@ Chicago <- Chicago %>% select(ridership, Clark_Lake, Austin, Harlem)
 :::
 
 
+
+
 ### A single model
 
 Let's start by fitting only a single parsnip model object. We'll create a model specification using `linear_reg()`. 
@@ -60,6 +66,8 @@ The default engine is `"lm"` so no call to `set_engine()` is required.
 :::
 
 The `fit()` function estimates the model coefficients, given a formula and data set. 
+
+
 
 
 
@@ -82,7 +90,11 @@ lm_fit
 :::
 
 
+
+
 The best way to retrieve the fitted parameters is to use the `tidy()` method. This function, in the broom package, returns the coefficients and their associated statistics in a data frame with standardized column names: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -100,6 +112,8 @@ tidy(lm_fit)
 :::
 
 
+
+
 We'll use this function in subsequent sections. 
 
 ### Resampled or tuned models
@@ -109,6 +123,8 @@ The tidymodels framework emphasizes the use of resampling methods to evaluate an
 We'll use five bootstrap resamples of the data to simplify the plots and output (normally, we would use a larger number of resamples for more reliable estimates).
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -116,6 +132,8 @@ set.seed(123)
 bt <- bootstraps(Chicago, times = 5)
 ```
 :::
+
+
 
 
 With resampling, we fit the same model to the different simulated versions of the data set produced by resampling. The tidymodels function [`fit_resamples()`](https://www.tmwr.org/resampling.html#resampling-performance) is the recommended approach for doing so. 
@@ -135,6 +153,8 @@ From this, we can extract the model fit. There are two "levels" of model objects
 We'll use the latter option and then tidy this model object as we did in the previous section. Let's add this to the control function so that we can re-use it. 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -150,7 +170,11 @@ tidy_ctrl <- control_grid(extract = get_lm_coefs)
 :::
 
 
+
+
 This argument is then passed to `fit_resamples()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -174,7 +198,11 @@ lm_res
 :::
 
 
+
+
 Note that there is a `.extracts` column in our resampling results. This object contains the output of our `get_lm_coefs()` function for each resample. The structure of the elements of this column is a little complex. Let's start by looking at the first element (which corresponds to the first resample): 
+
+
 
 
 
@@ -190,7 +218,11 @@ lm_res$.extracts[[1]]
 :::
 
 
+
+
 There is _another_ column in this element called `.extracts` that has the results of the `tidy()` function call: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -208,7 +240,11 @@ lm_res$.extracts[[1]]$.extracts[[1]]
 :::
 
 
+
+
 These nested columns can be flattened via the purrr `unnest()` function: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -229,7 +265,11 @@ lm_res %>%
 :::
 
 
+
+
 We still have a column of nested tibbles, so we can run the same command again to get the data into a more useful format: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -269,7 +309,11 @@ lm_coefs %>% select(id, term, estimate, p.value)
 :::
 
 
+
+
 That's better! Now, let's plot the model coefficients for each resample: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -290,6 +334,8 @@ lm_coefs %>%
 :::
 
 
+
+
 There seems to be a lot of uncertainty in the coefficient for the Austin station data, but less for the other two. 
 
 Looking at the code for unnesting the results, you may find the double-nesting structure excessive or cumbersome. However, the extraction functionality is flexible, and a simpler structure would prevent many use cases. 
@@ -307,6 +353,8 @@ There are two types of penalization that this model uses:
 The glmnet model has two primary tuning parameters, the total amount of penalization and the mixture of the two penalty types. For example, this specification:
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -317,6 +365,8 @@ glmnet_spec <-
 :::
 
 
+
+
 has a penalty that is 95% lasso and 5% weight decay. The total amount of these two penalties is 0.1 (which is fairly high). 
 
 ::: {.callout-note}
@@ -324,6 +374,8 @@ Models with regularization require that predictors are all on the same scale. Th
 :::
 
 Let's combine the model specification with a formula in a model `workflow()` and then fit the model to the data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -401,6 +453,8 @@ glmnet_fit
 :::
 
 
+
+
 In this output, the term `lambda` is used to represent the penalty. 
 
 Note that the output shows many values of the penalty despite our specification of `penalty = 0.1`. It turns out that this model fits a "path" of penalty values.  Even though we are interested in a value of 0.1, we can get the model coefficients for many associated values of the penalty from the same model object. 
@@ -410,6 +464,8 @@ Let's look at two different approaches to obtaining the coefficients. Both will 
 ### Using glmnet penalty values
 
 This glmnet fit contains multiple penalty values which depend on the data set; changing the data (or the mixture amount) often produces a different set of values. For this data set, there are 55 penalties available. To get the set of penalties produced for this data set, we can extract the engine fit and tidy: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -438,11 +494,15 @@ glmnet_fit %>%
 :::
 
 
+
+
 This works well but, it turns out that our penalty value (0.1) is not in the list produced by the model! The underlying package has functions that use interpolation to produce coefficients for this specific value, but the `tidy()` method for glmnet objects does not use it. 
 
 ### Using specific penalty values
 
 If we run the `tidy()` method on the workflow or parsnip object, a different function is used that returns the coefficients for the penalty value that we specified: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -460,22 +520,21 @@ tidy(glmnet_fit)
 :::
 
 
+
+
 For any another (single) penalty, we can use an additional argument:
+
+
 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 tidy(glmnet_fit, penalty = 5.5620)  # A value from above
-#> # A tibble: 4 × 3
-#>   term        estimate penalty
-#>   <chr>          <dbl>   <dbl>
-#> 1 (Intercept)  12.6       5.56
-#> 2 Clark_Lake    0.0753    5.56
-#> 3 Austin        0         5.56
-#> 4 Harlem        0         5.56
 ```
 :::
+
+
 
 
 The reason for having two `tidy()` methods is that, with tidymodels, the focus is on using a specific penalty value. 
@@ -488,6 +547,8 @@ If we know a priori acceptable values for penalty and mixture, we can use the `f
 Let's tune our glmnet model over both parameters with this grid: 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -497,11 +558,15 @@ grid <- crossing(penalty = pen_vals, mixture = c(0.1, 1.0))
 :::
 
 
+
+
 Here is where more glmnet-related complexity comes in: we know that each resample and each value of `mixture` will probably produce a different set of penalty values contained in the model object. _How can we look at the coefficients at the specific penalty values that we are using to tune?_
 
 The approach that we suggest is to use the special `path_values` option for glmnet. Details are described in the [technical documentation about glmnet and tidymodels](https://parsnip.tidymodels.org/reference/glmnet-details.html#arguments) but in short, this parameter will assign the collection of penalty values used by each glmnet fit (regardless of the data or value of mixture). 
 
 We can pass these as an engine argument and then update our previous workflow object:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -518,7 +583,11 @@ glmnet_wflow <-
 :::
 
 
+
+
 Now we will use an extraction function similar to when we used ordinary least squares. We add an additional argument to retain coefficients that are shrunk to zero by the lasso penalty: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -554,7 +623,11 @@ glmnet_res
 :::
 
 
+
+
 As noted before, the elements of the main `.extracts` column have an embedded list column with the results of `get_glmnet_coefs()`:  
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -585,7 +658,11 @@ glmnet_res$.extracts[[1]]$.extracts[[1]] %>% head()
 :::
 
 
+
+
 As before, we'll have to use a double `unnest()`. Since the penalty value is in both the top-level and lower-level `.extracts`, we'll use `select()` to get rid of the first version (but keep `mixture`):
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -600,7 +677,11 @@ glmnet_res %>%
 :::
 
 
+
+
 But wait! We know that each glmnet fit contains all of the coefficients. This means, for a specific resample and value of `mixture`, the results are the same:  
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -617,7 +698,11 @@ all.equal(
 :::
 
 
+
+
 For this reason, we'll add a `slice(1)` when grouping by `id` and `mixture`. This will get rid of the replicated results. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -654,7 +739,11 @@ glmnet_coefs %>%
 :::
 
 
+
+
 Now we have the coefficients. Let's look at how they behave as more regularization is used: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -679,6 +768,8 @@ glmnet_coefs %>%
 :::
 
 
+
+
 Notice a couple of things: 
 
 * With a pure lasso model (i.e., `mixture = 1`), the Austin station predictor is selected out in each resample. With a mixture of both penalties, its influence increases. Also, as the penalty increases, the uncertainty in this coefficient decreases. 
@@ -688,42 +779,47 @@ Notice a couple of things:
 ## Session information {#session-info}
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  glmnet     * 4.1-8   2023-08-22 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

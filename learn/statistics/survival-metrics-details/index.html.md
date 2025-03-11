@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: censored, prodlim, and tidymodels.
@@ -38,6 +40,8 @@ To start, let's define the various types of times that will be mentioned:
 ## Example data
 
 As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -61,7 +65,11 @@ sim_val <- testing(split)
 :::
 
 
+
+
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -84,7 +92,11 @@ bag_tree_fit
 :::
 
 
+
+
 Using this model, we can make predictions of different types and `augment()` provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -112,7 +124,11 @@ val_pred
 :::
 
 
+
+
 The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column `.pred_survival`. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -137,6 +153,8 @@ val_pred$.pred[[1]]
 :::
 
 
+
+
 First, let's dive into how to convert the observed event time in `event_time` to a binary version. Then we will discuss the remaining columns as part of generating the required weights for the dynamic performance metrics.
 
 
@@ -151,11 +169,15 @@ To assess model performance at evaluation time $t$, we turn the observed event t
 We can use binary versions of the observations in the first two categories to compute binary performance metrics, but the observations in the third category are not used directly in these calculations. (They do influence the calculation of the weights, see next section.) So our usable sample size changes with the evaluation time.
 
 
+
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/plot-graf-categories-1.svg){fig-align='center' width=864}
 :::
 :::
+
+
 
 
 ## Censoring weights
@@ -169,11 +191,15 @@ Every time a censored regression model is created using tidymodels, the RKM is e
 For our simulated data, here is what the RKM curve looks like: 
 
 
+
+
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/RKM-1.svg){fig-align='center' width=672}
 :::
 :::
+
+
 
 
 The red rug on the bottom shows the training point event times and the blue values at the top represent the times for the censored training set observations. As (evaluation) time increases, we pass more and more observed time points, and the probability of being censored, i.e., the probability of an observation to fall into category 2, decreases.
@@ -189,6 +215,8 @@ First, when do we evaluate the probability of censoring? There are different app
 - If the evaluation time is greater than or equal to the observed censoring time, the observation falls into category 3 and is not used, i.e., also no weight is needed.
 
 We call this time at which to predict the probability of censoring the _weight time_. Here's an example using the first data point in the validation set: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -217,6 +245,8 @@ dyn_val_pred %>%
 
 
 
+
+
 This observation was an event, observed at time 4.832 The column `.weight_time` captures at which time the probability of censoring was calculated. Up until that event time, the probability of being censored is computed at the evaluation time. After that, it is based on the event time. 
 
 We add a slight modification to the weight time: If our evaluation time is today, we don't have today's data yet. In tidymodels, we calculate the probability of censoring just before the requested weight time. We are basically subtracting a small numerical value from the weight time used in the RKM model. You'll only really see a difference if there is a bulk of censored observations at the original evaluation time.
@@ -228,6 +258,8 @@ Finally, we use a simple RKM curve (i.e., no covariates or strata). This implies
 To illustrate how these two tools for accounting for censoring are used in calculating dynamic performance metrics, we'll take a look here at the 2x2 confusion matrices at a few evaluation time points. More details on performance metrics for censored data are in the aforementioned [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
 
 First, let's turn the observed event time data and the predictions into their binary versions.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -261,7 +293,11 @@ binary_encoding <-
 :::
 
 
+
+
 Remember how observations falling into category 3 are removed from the analysis? This means we'll likely have fewer data points to evaluate as the evaluation time increases. This implies that the variation in the metrics will be considerable as evaluation time goes on. For our simulated training set: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -282,6 +318,8 @@ dyn_val_pred %>%
 :::
 
 
+
+
 Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:
 
 ```r
@@ -291,6 +329,8 @@ binary_encoding %>%
 ```
 
 For censored regression problems, we need to additionally use the censoring weights so we'll include them via the `case_weights` argument:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -311,11 +351,15 @@ binary_encoding %>%
 
 
 
+
+
 The values in the cells are the sum of the censoring weights, There are 14 actual events (out of 492 usable observations) before this evaluation time, so there are empty cells. Also note that the cell values are close to the actual counts. This early, the predicted censoring probabilities are very close to one so their inverse values are also. 
 
 This early, performance looks very good but that is mostly because there are few events.
 
 Let's shift to an evaluation time of 5.0. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -336,9 +380,13 @@ binary_encoding %>%
 
 
 
+
+
 Now we have fewer total observations to consider (391 instead of 492 usable values) and more events (154 this time). Performance is fairly good; the sensitivity is 66.8% and the specificty is 82.3%.
 
 What happends when the evaluation time is 17?
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -355,6 +403,8 @@ binary_encoding %>%
 #>   non-event   0.0000    0.0000
 ```
 :::
+
+
 
 
 
@@ -376,43 +426,48 @@ When accounting for censoring in dynamic performance metrics, the main points to
 ## Session information {#session-info}
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version    date (UTC) lib source
-#>  broom      * 1.0.6      2024-05-17 [1] CRAN (R 4.4.0)
-#>  censored   * 0.3.2      2024-06-11 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1      2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7      2024-09-26 [1] CRAN (R 4.4.1)
+#>  censored   * 0.3.3      2025-02-14 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0      2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4      2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1      2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7      2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1      2024-03-22 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0      2025-02-14 [1] CRAN (R 4.4.2)
 #>  prodlim    * 2024.06.25 2024-06-24 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2      2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10     2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4      2024-06-04 [1] CRAN (R 4.4.0)
+#>  purrr      * 1.0.4      2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1      2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5      2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1      2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0      2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1      2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4      2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1      2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0      2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0      2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0      2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2      2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

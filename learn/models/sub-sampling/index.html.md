@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: discrim, klaR, readr, ROSE, themis, and tidymodels.
@@ -30,6 +32,8 @@ This article describes subsampling for dealing with class imbalances. For better
 ## Simulated data
 
 Consider a two-class problem where the first class has a very low rate of occurrence. The data were simulated and can be imported into R using the code below:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -47,6 +51,8 @@ table(imbal_data$Class)
 #>     60   1140
 ```
 :::
+
+
 
 
 If "Class1" is the event of interest, it is very likely that a classification model would be able to achieve very good _specificity_ since almost all of the data are of the second class. _Sensitivity_, however, would likely be poor since the models will optimize accuracy (or other loss functions) by predicting everything to be the majority class. 
@@ -67,6 +73,8 @@ In terms of workflow:
 Here is a simple recipe implementing oversampling: 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -79,7 +87,11 @@ imbal_rec <-
 :::
 
 
+
+
 For a model, let's use a [quadratic discriminant analysis](https://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis) (QDA) model. From the discrim package, this model can be specified using:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -93,7 +105,11 @@ qda_mod <-
 :::
 
 
+
+
 To keep these objects bound together, they can be combined in a [workflow](https://workflows.tidymodels.org/):
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -125,9 +141,13 @@ qda_rose_wflw
 :::
 
 
+
+
 ## Model performance
 
 Stratified, repeated 10-fold cross-validation is used to resample the model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -139,12 +159,16 @@ cv_folds <- vfold_cv(imbal_data, strata = "Class", repeats = 5)
 :::
 
 
+
+
 To measure model performance, let's use two metrics:
 
  * The area under the [ROC curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) is an overall assessment of performance across _all_ cutoffs. Values near one indicate very good results while values near 0.5 would imply that the model is very poor. 
  * The _J_ index (a.k.a. [Youden's _J_](https://en.wikipedia.org/wiki/Youden%27s_J_statistic) statistic) is `sensitivity + specificity - 1`. Values near one are once again best. 
 
 If a model is poorly calibrated, the ROC curve value might not show diminished performance. However, the _J_ index would be lower for models with pathological distributions for the class probabilities. The yardstick package will be used to compute these metrics. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -155,7 +179,11 @@ cls_metrics <- metric_set(roc_auc, j_index)
 :::
 
 
+
+
 Now, we train the models and generate the results using `tune::fit_resamples()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -172,13 +200,17 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.768    50 0.0214  Preprocessor1_Model1
-#> 2 roc_auc binary     0.950    50 0.00494 Preprocessor1_Model1
+#> 1 j_index binary     0.788    50 0.0202  Preprocessor1_Model1
+#> 2 roc_auc binary     0.954    50 0.00478 Preprocessor1_Model1
 ```
 :::
 
 
+
+
 What do the results look like without using ROSE? We can create another workflow and fit the QDA model along the same resamples:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -201,9 +233,13 @@ collect_metrics(qda_only_res)
 :::
 
 
+
+
 It looks like ROSE helped a lot, especially with the J-index. Class imbalance sampling methods tend to greatly improve metrics based on the hard class predictions (i.e., the categorical predictions) because the default cutoff tends to be a better balance of sensitivity and specificity. 
 
 Let's plot the metrics for each resample to see how the individual results changed. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -234,9 +270,13 @@ bind_rows(no_sampling, with_sampling) %>%
 :::
 
 
+
+
 This visually demonstrates that the subsampling mostly affects metrics that use the hard class predictions. 
 
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -244,41 +284,44 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  discrim    * 1.0.1   2023-03-08 [1] CRAN (R 4.4.0)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
 #>  klaR       * 1.7-3   2023-12-13 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
 #>  readr      * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  ROSE       * 0.0-4   2021-06-14 [1] CRAN (R 4.4.0)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  themis     * 1.0.2   2023-08-14 [1] CRAN (R 4.4.0)
+#>  themis     * 1.0.3   2025-01-23 [1] CRAN (R 4.4.1)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

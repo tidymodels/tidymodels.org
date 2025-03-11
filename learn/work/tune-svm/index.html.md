@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: kernlab, mlbench, and tidymodels.
@@ -28,6 +30,8 @@ This article demonstrates how to tune a model using grid search. Many models hav
 ## Example data
 
 To demonstrate model tuning, we'll use the Ionosphere data in the mlbench package:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -40,6 +44,8 @@ data(Ionosphere)
 :::
 
 
+
+
 From `?Ionosphere`:
 
 > This radar data was collected by a system in Goose Bay, Labrador. This system consists of a phased array of 16 high-frequency antennas with a total transmitted power on the order of 6.4 kilowatts. See the paper for more details. The targets were free electrons in the ionosphere. "good" radar returns are those showing evidence of some type of structure in the ionosphere. "bad" returns are those that do not; their signals pass through the ionosphere.
@@ -47,6 +53,8 @@ From `?Ionosphere`:
 > Received signals were processed using an autocorrelation function whose arguments are the time of a pulse and the pulse number. There were 17 pulse numbers for the Goose Bay system. Instances in this databse are described by 2 attributes per pulse number, corresponding to the complex values returned by the function resulting from the complex electromagnetic signal. See cited below for more details.
 
 There are 43 predictors and a factor outcome. Two of the predictors are factors (`V1` and `V2`) and the rest are numeric variables that have been scaled to a range of -1 to 1. Note that the two factor predictors have sparse distributions:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -64,7 +72,11 @@ table(Ionosphere$V2)
 :::
 
 
+
+
 There's no point of putting `V2` into any model since is is a zero-variance predictor. `V1` is not but it _could_ be if the resampling process ends up sampling all of the same value. Is this an issue? It might be since the standard R formula infrastructure fails when there is only a single observed value:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -79,7 +91,11 @@ glm(Class ~ . - V2, data = Ionosphere, family = binomial)
 :::
 
 
+
+
 Let's remove these two problematic variables:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -90,9 +106,13 @@ Ionosphere <- Ionosphere %>% select(-V1, -V2)
 :::
 
 
+
+
 ## Inputs for the search
 
 To demonstrate, we'll fit a radial basis function support vector machine to these data and tune the SVM cost parameter and the $\sigma$ parameter in the kernel function:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -106,12 +126,16 @@ svm_mod <-
 :::
 
 
+
+
 In this article, tuning will be demonstrated in two ways, using:
 
 - a standard R formula, and 
 - a recipe.
 
 Let's create a simple recipe here:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -127,7 +151,11 @@ iono_rec <-
 :::
 
 
+
+
 The only other required item for tuning is a resampling strategy as defined by an rsample object. Let's demonstrate using basic bootstrapping:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -139,9 +167,13 @@ iono_rs <- bootstraps(Ionosphere, times = 30)
 :::
 
 
+
+
 ## Optional inputs
 
 An _optional_ step for model tuning is to specify which metrics should be computed using the out-of-sample predictions. For classification, the default is to calculate the log-likelihood statistic and overall accuracy. Instead of the defaults, the area under the ROC curve will be used. To do this, a yardstick package function can be used to create a metric set:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -152,9 +184,13 @@ roc_vals <- metric_set(roc_auc)
 :::
 
 
+
+
 If no grid or parameters are provided, a set of 10 hyperparameters are created using a space-filling design (via a Latin hypercube). A grid can be given in a data frame where the parameters are in columns and parameter combinations are in rows. Here, the default will be used.
 
 Also, a control object can be passed that specifies different aspects of the search. Here, the verbose option is turned off and the option to save the out-of-sample predictions is turned on. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -165,9 +201,13 @@ ctrl <- control_grid(verbose = FALSE, save_pred = TRUE)
 :::
 
 
+
+
 ## Executing with a formula
 
 First, we can use the formula interface:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -203,7 +243,11 @@ formula_res
 :::
 
 
+
+
 The `.metrics` column contains tibbles of the performance metrics for each tuning parameter combination:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -215,23 +259,27 @@ formula_res %>%
   pull(1)
 #> [[1]]
 #> # A tibble: 10 × 6
-#>        cost rbf_sigma .metric .estimator .estimate .config              
-#>       <dbl>     <dbl> <chr>   <chr>          <dbl> <chr>                
-#>  1  0.00849  1.11e-10 roc_auc binary         0.815 Preprocessor1_Model01
-#>  2  0.176    7.28e- 8 roc_auc binary         0.839 Preprocessor1_Model02
-#>  3 14.9      3.93e- 4 roc_auc binary         0.870 Preprocessor1_Model03
-#>  4  5.51     2.10e- 3 roc_auc binary         0.919 Preprocessor1_Model04
-#>  5  1.87     3.53e- 7 roc_auc binary         0.838 Preprocessor1_Model05
-#>  6  0.00719  1.45e- 5 roc_auc binary         0.832 Preprocessor1_Model06
-#>  7  0.00114  8.41e- 2 roc_auc binary         0.969 Preprocessor1_Model07
-#>  8  0.950    1.74e- 1 roc_auc binary         0.984 Preprocessor1_Model08
-#>  9  0.189    3.13e- 6 roc_auc binary         0.832 Preprocessor1_Model09
-#> 10  0.0364   4.96e- 9 roc_auc binary         0.839 Preprocessor1_Model10
+#>         cost     rbf_sigma .metric .estimator .estimate .config              
+#>        <dbl>         <dbl> <chr>   <chr>          <dbl> <chr>                
+#>  1  0.000977 0.000000215   roc_auc binary         0.838 Preprocessor1_Model01
+#>  2  0.00310  0.00599       roc_auc binary         0.942 Preprocessor1_Model02
+#>  3  0.00984  0.0000000001  roc_auc binary         0.815 Preprocessor1_Model03
+#>  4  0.0312   0.00000278    roc_auc binary         0.832 Preprocessor1_Model04
+#>  5  0.0992   0.0774        roc_auc binary         0.968 Preprocessor1_Model05
+#>  6  0.315    0.00000000129 roc_auc binary         0.830 Preprocessor1_Model06
+#>  7  1        0.0000359     roc_auc binary         0.837 Preprocessor1_Model07
+#>  8  3.17     1             roc_auc binary         0.974 Preprocessor1_Model08
+#>  9 10.1      0.0000000167  roc_auc binary         0.832 Preprocessor1_Model09
+#> 10 32        0.000464      roc_auc binary         0.861 Preprocessor1_Model10
 ```
 :::
 
 
+
+
 To get the final resampling estimates, the `collect_metrics()` function can be used on the grid object:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -240,23 +288,27 @@ To get the final resampling estimates, the `collect_metrics()` function can be u
 estimates <- collect_metrics(formula_res)
 estimates
 #> # A tibble: 10 × 8
-#>        cost rbf_sigma .metric .estimator  mean     n std_err .config            
-#>       <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>              
-#>  1  0.00849  1.11e-10 roc_auc binary     0.822    30 0.00718 Preprocessor1_Mode…
-#>  2  0.176    7.28e- 8 roc_auc binary     0.871    30 0.00525 Preprocessor1_Mode…
-#>  3 14.9      3.93e- 4 roc_auc binary     0.916    30 0.00497 Preprocessor1_Mode…
-#>  4  5.51     2.10e- 3 roc_auc binary     0.960    30 0.00378 Preprocessor1_Mode…
-#>  5  1.87     3.53e- 7 roc_auc binary     0.871    30 0.00524 Preprocessor1_Mode…
-#>  6  0.00719  1.45e- 5 roc_auc binary     0.871    30 0.00534 Preprocessor1_Mode…
-#>  7  0.00114  8.41e- 2 roc_auc binary     0.966    30 0.00301 Preprocessor1_Mode…
-#>  8  0.950    1.74e- 1 roc_auc binary     0.979    30 0.00204 Preprocessor1_Mode…
-#>  9  0.189    3.13e- 6 roc_auc binary     0.871    30 0.00536 Preprocessor1_Mode…
-#> 10  0.0364   4.96e- 9 roc_auc binary     0.871    30 0.00537 Preprocessor1_Mode…
+#>         cost     rbf_sigma .metric .estimator  mean     n std_err .config       
+#>        <dbl>         <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>         
+#>  1  0.000977 0.000000215   roc_auc binary     0.871    30 0.00516 Preprocessor1…
+#>  2  0.00310  0.00599       roc_auc binary     0.959    30 0.00290 Preprocessor1…
+#>  3  0.00984  0.0000000001  roc_auc binary     0.822    30 0.00718 Preprocessor1…
+#>  4  0.0312   0.00000278    roc_auc binary     0.871    30 0.00531 Preprocessor1…
+#>  5  0.0992   0.0774        roc_auc binary     0.970    30 0.00261 Preprocessor1…
+#>  6  0.315    0.00000000129 roc_auc binary     0.857    30 0.00624 Preprocessor1…
+#>  7  1        0.0000359     roc_auc binary     0.873    30 0.00533 Preprocessor1…
+#>  8  3.17     1             roc_auc binary     0.971    30 0.00248 Preprocessor1…
+#>  9 10.1      0.0000000167  roc_auc binary     0.871    30 0.00534 Preprocessor1…
+#> 10 32        0.000464      roc_auc binary     0.927    30 0.00484 Preprocessor1…
 ```
 :::
 
 
+
+
 The top combinations are:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -266,18 +318,22 @@ show_best(formula_res, metric = "roc_auc")
 #> # A tibble: 5 × 8
 #>       cost rbf_sigma .metric .estimator  mean     n std_err .config             
 #>      <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1  0.950   0.174     roc_auc binary     0.979    30 0.00204 Preprocessor1_Model…
-#> 2  0.00114 0.0841    roc_auc binary     0.966    30 0.00301 Preprocessor1_Model…
-#> 3  5.51    0.00210   roc_auc binary     0.960    30 0.00378 Preprocessor1_Model…
-#> 4 14.9     0.000393  roc_auc binary     0.916    30 0.00497 Preprocessor1_Model…
-#> 5  0.00719 0.0000145 roc_auc binary     0.871    30 0.00534 Preprocessor1_Model…
+#> 1  3.17    1         roc_auc binary     0.971    30 0.00248 Preprocessor1_Model…
+#> 2  0.0992  0.0774    roc_auc binary     0.970    30 0.00261 Preprocessor1_Model…
+#> 3  0.00310 0.00599   roc_auc binary     0.959    30 0.00290 Preprocessor1_Model…
+#> 4 32       0.000464  roc_auc binary     0.927    30 0.00484 Preprocessor1_Model…
+#> 5  1       0.0000359 roc_auc binary     0.873    30 0.00533 Preprocessor1_Model…
 ```
 :::
+
+
 
 
 ##  Executing with a recipe
 
 Next, we can use the same syntax but pass a *recipe* in as the pre-processor argument:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -313,7 +369,11 @@ recipe_res
 :::
 
 
+
+
 The best setting here is:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -321,15 +381,17 @@ The best setting here is:
 ```{.r .cell-code}
 show_best(recipe_res, metric = "roc_auc")
 #> # A tibble: 5 × 8
-#>      cost rbf_sigma .metric .estimator  mean     n std_err .config              
-#>     <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>                
-#> 1 15.6    0.182     roc_auc binary     0.981    30 0.00213 Preprocessor1_Model04
-#> 2  0.385  0.0276    roc_auc binary     0.978    30 0.00222 Preprocessor1_Model03
-#> 3  0.143  0.00243   roc_auc binary     0.930    30 0.00443 Preprocessor1_Model06
-#> 4  0.841  0.000691  roc_auc binary     0.892    30 0.00504 Preprocessor1_Model07
-#> 5  0.0499 0.0000335 roc_auc binary     0.872    30 0.00521 Preprocessor1_Model08
+#>       cost rbf_sigma .metric .estimator  mean     n std_err .config             
+#>      <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
+#> 1  3.17    1         roc_auc binary     0.971    30 0.00248 Preprocessor1_Model…
+#> 2  0.0992  0.0774    roc_auc binary     0.970    30 0.00261 Preprocessor1_Model…
+#> 3  0.00310 0.00599   roc_auc binary     0.959    30 0.00290 Preprocessor1_Model…
+#> 4 32       0.000464  roc_auc binary     0.927    30 0.00484 Preprocessor1_Model…
+#> 5  1       0.0000359 roc_auc binary     0.873    30 0.00533 Preprocessor1_Model…
 ```
 :::
+
+
 
 
 ## Out-of-sample predictions
@@ -337,29 +399,35 @@ show_best(recipe_res, metric = "roc_auc")
 If we used `save_pred = TRUE` to keep the out-of-sample predictions for each resample during tuning, we can obtain those predictions, along with the tuning parameters and resample identifier, using `collect_predictions()`:
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 collect_predictions(recipe_res)
 #> # A tibble: 38,740 × 8
-#>    .pred_bad .pred_good id           .row    cost  rbf_sigma Class .config      
-#>        <dbl>      <dbl> <chr>       <int>   <dbl>      <dbl> <fct> <chr>        
-#>  1     0.333      0.667 Bootstrap01     1 0.00296 0.00000383 good  Preprocessor…
-#>  2     0.333      0.667 Bootstrap01     9 0.00296 0.00000383 good  Preprocessor…
-#>  3     0.333      0.667 Bootstrap01    10 0.00296 0.00000383 bad   Preprocessor…
-#>  4     0.333      0.667 Bootstrap01    12 0.00296 0.00000383 bad   Preprocessor…
-#>  5     0.333      0.667 Bootstrap01    14 0.00296 0.00000383 bad   Preprocessor…
-#>  6     0.333      0.667 Bootstrap01    15 0.00296 0.00000383 good  Preprocessor…
-#>  7     0.333      0.667 Bootstrap01    16 0.00296 0.00000383 bad   Preprocessor…
-#>  8     0.334      0.666 Bootstrap01    22 0.00296 0.00000383 bad   Preprocessor…
-#>  9     0.333      0.667 Bootstrap01    23 0.00296 0.00000383 good  Preprocessor…
-#> 10     0.334      0.666 Bootstrap01    24 0.00296 0.00000383 bad   Preprocessor…
+#>    .pred_bad .pred_good id           .row     cost   rbf_sigma Class .config    
+#>        <dbl>      <dbl> <chr>       <int>    <dbl>       <dbl> <fct> <chr>      
+#>  1     0.333      0.667 Bootstrap01     1 0.000977 0.000000215 good  Preprocess…
+#>  2     0.333      0.667 Bootstrap01     9 0.000977 0.000000215 good  Preprocess…
+#>  3     0.333      0.667 Bootstrap01    10 0.000977 0.000000215 bad   Preprocess…
+#>  4     0.333      0.667 Bootstrap01    12 0.000977 0.000000215 bad   Preprocess…
+#>  5     0.333      0.667 Bootstrap01    14 0.000977 0.000000215 bad   Preprocess…
+#>  6     0.333      0.667 Bootstrap01    15 0.000977 0.000000215 good  Preprocess…
+#>  7     0.333      0.667 Bootstrap01    16 0.000977 0.000000215 bad   Preprocess…
+#>  8     0.333      0.667 Bootstrap01    22 0.000977 0.000000215 bad   Preprocess…
+#>  9     0.333      0.667 Bootstrap01    23 0.000977 0.000000215 good  Preprocess…
+#> 10     0.333      0.667 Bootstrap01    24 0.000977 0.000000215 bad   Preprocess…
 #> # ℹ 38,730 more rows
 ```
 :::
 
 
+
+
 We can obtain the hold-out sets for all the resamples augmented with the predictions using `augment()`, which provides opportunities for flexible visualization of model results:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -377,7 +445,11 @@ augment(recipe_res) %>%
 :::
 
 
+
+
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -385,38 +457,41 @@ augment(recipe_res) %>%
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  kernlab    * 0.9-32  2023-01-31 [1] CRAN (R 4.4.0)
-#>  mlbench    * 2.1-5   2024-05-02 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  kernlab    * 0.9-33  2024-08-13 [1] CRAN (R 4.4.0)
+#>  mlbench    * 2.1-6   2024-12-30 [1] CRAN (R 4.4.1)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

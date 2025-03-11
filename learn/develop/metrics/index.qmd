@@ -60,7 +60,7 @@ All metrics should have a data frame version, and a vector version. The data fra
 To start, create the vector version. Generally, all metrics have the same arguments unless the metric requires an extra parameter (such as `beta` in `f_meas()`). To create the vector function, you need to do two things:
 
 1)  Create an internal implementation function, `mse_impl()`.
-2)  Pass on that implementation function to `metric_vec_template()`.
+2)  Use that implementation function with `check_class_metric()`/`check_numeric_metric()`/`check_prob_metric()`, `yardstick_remove_missing()`, and `and yardstick_any_missing()`.
 
 Below, `mse_impl()` contains the actual implementation of the metric, and takes `truth` and `estimate` as arguments along with any metric specific arguments. Optionally `case_weights` if the calculations supports it.
 

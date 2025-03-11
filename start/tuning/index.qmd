@@ -35,8 +35,12 @@ library(rpart)
 library(rpart.plot)
 library(kableExtra)
 library(vip)
+library(future)
+
 theme_set(theme_bw())
-doParallel::registerDoParallel()
+
+plan(multisession, workers = parallel::detectCores())
+
 pkgs <- c("tidymodels", "rpart", "rpart.plot", "vip")
 ```
 
@@ -55,7 +59,7 @@ library(rpart.plot)  # for visualizing a decision tree
 library(vip)         # for variable importance plots
 ```
 
-{{< test-drive url="https://rstudio.cloud/project/2674862" >}}
+[Test Drive](https://rstudio.cloud/project/2674862)
 
 ## The cell image data, revisited {#data}
 
