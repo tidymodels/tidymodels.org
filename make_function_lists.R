@@ -173,48 +173,7 @@ write_csv(
 
 # ------------------------------------------------------------------------------
 
-all_tm <-
-  c(
-    "agua",
-    "applicable",
-    "baguette",
-    "brulee",
-    "broom",
-    "butcher",
-    "censored",
-    "corrr",
-    "dials",
-    "discrim",
-    "embed",
-    "finetune",
-    "hardhat",
-    "infer",
-    "modeldata",
-    "modeldb",
-    "modelenv",
-    "multilevelmod",
-    "parsnip",
-    "plsmod",
-    "poissonreg",
-    "probably",
-    "recipes",
-    "rsample",
-    "rules",
-    "shinymodels",
-    "spatialsample",
-    "stacks",
-    "textrecipes",
-    "themis",
-    "tidyclust",
-    "tidymodels",
-    "tidyposterior",
-    "tidypredict",
-    "tune",
-    "usemodels",
-    "workflows",
-    "workflowsets",
-    "yardstick"
-  )
+all_tm <- read_csv("all_packages.csv", show_col_types = FALSE)$name
 
 tidymodels_functions <-
   map_dfr(
@@ -253,6 +212,8 @@ excl <- c(
   "stacks"
 )
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
+
+pak::pak(parsnip_pkgs)
 
 # Load them then get the model data base
 loaded <- map_lgl(

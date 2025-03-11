@@ -86,6 +86,8 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 We try to do a rerender after a release of a main package.
 
+* Make sure that `all_packages.R` is up to date.
+
 * Run `installs.R` script. Make sure to check that dev versions aren't present.
 
 * Run `re-render.R` script.
