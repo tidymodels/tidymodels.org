@@ -303,3 +303,61 @@ write_csv(
   parsnip_models,
   file = "find/parsnip/parsnip_models.csv"
 )
+
+# ------------------------------------------------------------------------------
+
+sparse_models <- rlang::env_get_list(
+  env = parsnip::get_model_env(),
+  nms = ls(parsnip::get_model_env(), pattern = "_encoding")
+) %>%
+  purrr::list_rbind(names_to = "model") %>%
+  dplyr::filter(allow_sparse_x) %>%
+  dplyr::distinct(model, engine) %>%
+  dplyr::filter(str_detect(engine, "_offset$", negate = TRUE)) %>%
+  dplyr::mutate(model = str_remove(model, "_encoding$")) %>%
+  left_join(
+    by = join_by(model, engine),
+    parsnip_models %>%
+      dplyr::mutate(dplyr::across(
+        c(model, engine),
+        \(x) stringr::str_remove_all(x, "(<code>|</code>)")
+      ))
+  ) %>%
+  dplyr::select(model, engine, topic) %>%
+  dplyr::distinct()
+
+write_csv(
+  sparse_models,
+  file = "find/sparse/models.csv"
+)
+
+recipe_functions_with_names <- recipe_functions %>%
+  mutate(
+    name = str_extract(topic, "<tt>.*"),
+    name = str_remove(name, "<tt>"),
+    name = str_remove(name, "</tt></a>")
+  )
+
+sparse_steps_generate <- .S3methods(".recipes_estimate_sparsity") %>%
+  as.character() %>%
+  str_remove(".recipes_estimate_sparsity.") %>%
+  setdiff(c("default", "recipe")) %>%
+  as_tibble() %>%
+  left_join(recipe_functions_with_names, by = c("value" = "name"))
+
+write_csv(
+  sparse_steps_generate,
+  file = "find/sparse/steps_generate.csv"
+)
+
+sparse_steps_preserve <- .S3methods(".recipes_preserve_sparsity") %>%
+  as.character() %>%
+  str_remove(".recipes_preserve_sparsity.") %>%
+  setdiff(c("default", "recipe")) %>%
+  as_tibble() %>%
+  left_join(recipe_functions_with_names, by = c("value" = "name"))
+
+write_csv(
+  sparse_steps_preserve,
+  file = "find/sparse/steps_preserve.csv"
+)
