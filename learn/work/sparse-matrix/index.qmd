@@ -126,9 +126,9 @@ We can now finalize the workflow and fit the final model on the training data se
 ```{r}
 #| label: "finalize-workflow"
 wf_final <- finalize_workflow(
- wf_spec, 
+  wf_spec, 
   select_best(tune_res, metric = "roc_auc")
- )
+)
 
 wf_fit <- fit(wf_final, review_train)
 ```
