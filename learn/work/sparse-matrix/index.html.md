@@ -20,17 +20,24 @@ include-after-body: ../../../resources.html
 
 
 
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: sparsevctrs and tidymodels.
 
 This article demonstrates how we can use a sparse matrix in tidymodels.
 
+We use the term **sparse data** to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors. 
+
+The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a **dense vector**.
+
+```r
+c(100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
+```
+The sparse representation of this vector only requires 5 values. 1 value for the length (25), 2 values for the locations of the non-zero values (1, 22), and 2 values for the non-zero values (100, 1). This idea can also be extended to matrices as is done in the Matrix package. Where we instead store the dimensions of the matrix, row indexes, colomn indexes, and the values for the non-zero entries.
+
 ## Example data
 
 The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. The [raw data](https://snap.stanford.edu/data/web-FineFoods.html) was sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and the code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R. This data set is encoded as a sparse matrix from the Matrix package; if we were to turn it into a dense matrix, it would take up 3GB.
-
 
 
 
@@ -56,11 +63,9 @@ reviews |> head()
 
 
 
-
 ## Modeling
 
 We start by loading tidymodels and the sparsevctrs package. The sparsevctrs package includes some helper functions that will allow us to more easily work with sparse matrices in tidymodels.
-
 
 
 
@@ -74,9 +79,7 @@ library(sparsevctrs)
 
 
 
-
 While sparse matrices now work in parsnip, recipes, and workflows directly, we can use rsample's sampling functions as well if we turn it into a tibble. The usual `as_tibble()` would turn the object to a dense representation, greatly expanding the object size. However, sparsevctrs' `coerce_to_sparse_tibble()` will create a tibble with sparse columns, which we call a **sparse tibble**.
-
 
 
 
@@ -110,9 +113,7 @@ reviews_tbl
 
 
 
-
 Despite this tibble containing 15,000 rows and a little under 25,000 columns, it only takes up marginally more space than the sparse matrix.
-
 
 
 
@@ -128,9 +129,7 @@ lobstr::obj_size(reviews_tbl)
 
 
 
-
-The outcome `SCORE` is currently encoded as a double, but we want it to be a factor for it to work well with tidymodels.
-
+The outcome `SCORE` is currently encoded as a double, but we want it to be a factor for it to work well with tidymodels, since tidymodels expects outcomes to be factors for classification.
 
 
 
@@ -144,9 +143,7 @@ reviews_tbl <- reviews_tbl |>
 
 
 
-
 Since `reviews_tbl` is now a tibble, we can use `initial_split()` as we usually do.
-
 
 
 
@@ -165,9 +162,11 @@ review_folds <- vfold_cv(review_train)
 
 
 
-
 Next, we will specify our workflow. Since we are showcasing how sparse data works in tidymodels, we will stick to a simple lasso regression model. These models tend to work well with sparse predictors. `penalty` has been set to be tuned.
 
+::: callout-tip
+All available models can be found at the [sparse models search](../../../find/sparse/index.qmd).
+:::
 
 
 
@@ -185,9 +184,7 @@ wf_spec <- workflow(rec_spec, lm_spec)
 
 
 
-
 With everything in order, we can now evaluate several different values of `penalty` with `tune_grid()`.
-
 
 
 
@@ -200,9 +197,7 @@ tune_res <- tune_grid(wf_spec, review_folds)
 
 
 
-
 Despite the size of the data, this code runs quite quickly due to the sparse encoding of the data. Once the tuning process is done, then we can look at the performance for different values of regularization.
-
 
 
 
@@ -219,9 +214,7 @@ autoplot(tune_res)
 
 
 
-
 We can now finalize the workflow and fit the final model on the training data set.
-
 
 
 
@@ -229,9 +222,9 @@ We can now finalize the workflow and fit the final model on the training data se
 
 ```{.r .cell-code}
 wf_final <- finalize_workflow(
- wf_spec, 
+  wf_spec, 
   select_best(tune_res, metric = "roc_auc")
- )
+)
 
 wf_fit <- fit(wf_final, review_train)
 ```
@@ -239,9 +232,7 @@ wf_fit <- fit(wf_final, review_train)
 
 
 
-
 With this fitted model, we can now predict with a sparse tibble.
-
 
 
 
@@ -268,9 +259,36 @@ predict(wf_fit, review_test)
 
 
 
+`fit()` and `predict()` both accept sparse matrices as input. However if you want to tune a model with the tune package or perform data splitting with rsample then you will need a tibble, which can be done with `coerce_to_sparse_tibble()`.
+
+This means that we could technically do predictions on our model directly on the sparse matrix using `predict()`.
+
+
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+predict(wf_fit, reviews)
+#> # A tibble: 15,000 × 1
+#>    .pred_class
+#>    <fct>      
+#>  1 great      
+#>  2 other      
+#>  3 great      
+#>  4 great      
+#>  5 great      
+#>  6 other      
+#>  7 great      
+#>  8 great      
+#>  9 great      
+#> 10 great      
+#> # ℹ 14,990 more rows
+```
+:::
+
+
 
 ## Session information {#session-info}
-
 
 
 
@@ -279,37 +297,40 @@ predict(wf_fit, review_test)
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS 15.0
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-10-14
-#>  pandoc   2.17.1.1 @ /opt/homebrew/bin/ (via rmarkdown)
+#>  date     2025-03-12
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     * version    date (UTC) lib source
-#>  broom       * 1.0.6      2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials       * 1.3.0.9000 2024-09-23 [1] local
+#>  broom       * 1.0.7      2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials       * 1.4.0      2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr       * 1.1.4      2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2     * 3.5.1      2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer       * 1.0.7      2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip     * 1.2.1.9002 2024-10-02 [1] local
-#>  purrr       * 1.0.2      2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes     * 1.1.0.9000 2024-10-04 [1] local
-#>  rlang         1.1.4      2024-06-04 [1] CRAN (R 4.4.0)
-#>  rsample     * 1.2.1.9000 2024-09-18 [1] Github (tidymodels/rsample@77fc1fe)
-#>  sparsevctrs * 0.1.0.9002 2024-09-30 [1] Github (r-lib/sparsevctrs@b29b723)
+#>  parsnip     * 1.3.0      2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr       * 1.0.4      2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes     * 1.1.1.9000 2025-03-10 [1] local
+#>  rlang         1.1.5      2025-01-17 [1] CRAN (R 4.4.2)
+#>  rsample     * 1.2.1      2024-03-25 [1] CRAN (R 4.4.0)
+#>  sparsevctrs * 0.3.0.9000 2025-03-10 [1] Github (r-lib/sparsevctrs@5362d60)
 #>  tibble      * 3.2.1      2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels  * 1.2.0      2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune        * 1.2.1      2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows   * 1.1.4.9000 2024-09-24 [1] local
-#>  yardstick   * 1.3.1      2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels  * 1.3.0      2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune        * 1.3.0      2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows   * 1.2.0      2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick   * 1.3.2.9000 2025-03-11 [1] local
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

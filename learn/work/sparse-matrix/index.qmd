@@ -38,6 +38,15 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 
 This article demonstrates how we can use a sparse matrix in tidymodels.
 
+We use the term **sparse data** to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors. 
+
+The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a **dense vector**.
+
+```r
+c(100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
+```
+The sparse representation of this vector only requires 5 values. 1 value for the length (25), 2 values for the locations of the non-zero values (1, 22), and 2 values for the non-zero values (100, 1). This idea can also be extended to matrices as is done in the Matrix package. Where we instead store the dimensions of the matrix, row indexes, colomn indexes, and the values for the non-zero entries.
+
 ## Example data
 
 The data we will be using in this article is a larger sample of the [small_fine_foods](https://modeldata.tidymodels.org/reference/small_fine_foods.html) data set from the [modeldata](https://modeldata.tidymodels.org) package. The [raw data](https://snap.stanford.edu/data/web-FineFoods.html) was sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as [reviews.rds](reviews.rds) and the code to generate this data set is found at [generate-data.R](generate-data.R). This file takes up around 1MB compressed, and around 12MB once loaded into R. This data set is encoded as a sparse matrix from the Matrix package; if we were to turn it into a dense matrix, it would take up 3GB.
@@ -74,7 +83,7 @@ lobstr::obj_size(reviews)
 lobstr::obj_size(reviews_tbl)
 ```
 
-The outcome `SCORE` is currently encoded as a double, but we want it to be a factor for it to work well with tidymodels.
+The outcome `SCORE` is currently encoded as a double, but we want it to be a factor for it to work well with tidymodels, since tidymodels expects outcomes to be factors for classification.
 
 ```{r}
 #| label: "outcome-factor"
@@ -96,6 +105,10 @@ review_folds <- vfold_cv(review_train)
 ```
 
 Next, we will specify our workflow. Since we are showcasing how sparse data works in tidymodels, we will stick to a simple lasso regression model. These models tend to work well with sparse predictors. `penalty` has been set to be tuned.
+
+::: callout-tip
+All available models can be found at the [sparse models search](../../../find/sparse/index.qmd).
+:::
 
 ```{r}
 #| label: "workflow"
@@ -138,6 +151,16 @@ With this fitted model, we can now predict with a sparse tibble.
 ```{r}
 #| label: "predict"
 predict(wf_fit, review_test)
+```
+
+`fit()` and `predict()` both accept sparse matrices as input. However if you want to tune a model with the tune package or perform data splitting with rsample then you will need a tibble, which can be done with `coerce_to_sparse_tibble()`.
+
+This means that we could technically do predictions on our model directly on the sparse matrix using `predict()`.
+
+```{r}
+#| label: "predict-with-matrix"
+#| warning: false
+predict(wf_fit, reviews)
 ```
 
 ## Session information {#session-info}
