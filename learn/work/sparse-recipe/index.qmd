@@ -1,0 +1,247 @@
+---
+title: "Model tuning using a recipe"
+categories:
+ - tuning
+ - classification
+ - sparse data
+type: learn-subsection
+weight: 1
+description: | 
+ Fitting a model using tidymodels where sparse data is created using a recipe.
+toc: true
+toc-depth: 2
+include-after-body: ../../../resources.html
+---
+
+```{r}
+#| label: "setup"
+#| include: false
+#| message: false
+#| warning: false
+source(here::here("common.R"))
+```
+
+  
+```{r}
+#| label: "load"
+#| include: false
+library(tidymodels)
+library(nycflights13)
+set.seed(1234)
+
+pkgs <- c("tidymodels", "nycflights13")
+
+theme_set(theme_bw() + theme(legend.position = "top"))
+```
+
+## Introduction
+
+`r article_req_pkgs(pkgs)`
+
+
+This article demonstrates how we can use a recipe to generate data sparsely in tidymodels.
+
+We use the term **sparse data** to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors. 
+
+The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a **dense vector**.
+
+Not all recipe steps can handle sparsity, we have a [list of compatible](../../../find/sparse/index.qmd) steps you can use to guide the recipe creation.
+
+## The data
+
+We will be using the [nycflights13](https://nycflights13.tidyverse.org/) data set for this demonstration. We are using this data specifically because it contains a number of categorical with a lot of levels, that when dummified will create a lot of sparse columns.
+
+```{r}
+library(nycflights13)
+glimpse(flights)
+```
+
+Our modeling objective for this post is to fit a model that predicts the arrival delay, doing it as a regression task. We could just as well have done a classification model on "Will plane land on time", but using the regression model we can hopefully say whether a plane will be a little or a lot delayed.
+
+We are furthermore assuming that this prediction will take place at the departure time. This means we have to exclude some variables as they contain information that is not available at departure time. 
+
+```{r}
+flights <- flights |>
+  select(-arr_time, -air_time)
+```
+
+This data set does contain a number of redundant information. We don't need to know the departure time `dep_time`, scheduled departure time `sched_dep_time`, and the departure delay `dep_delay` as they are a linear combination of each other `dep_delay = dep_time - sched_dep_time`. So we can remove one of them, we will choose `sched_dep_time`.
+
+Likewise, the `time_hour` variable is a datetime that contains data also located in `year`, `month`, `day`, `hour`, and `minute`. We will thus also remove that one.
+
+```{r}
+flights <- flights |>
+  select(-time_hour, -sched_dep_time)
+```
+
+You may or may not have noticed that `dep_time` and `sched_arr_time` have a weird encoding. What is happening is that `517` is actually `5:17` so 17 minutes past 5 AM. So we need to update that, which we will use a little helper function for.
+
+```{r}
+get_minutes <- function(x) {
+ minutes <- x %% 100
+ hours <- x %/% 100
+
+ hours * 60 + minutes
+}
+
+flights <- flights |>
+  mutate(across(c(dep_time, sched_arr_time), get_minutes))
+```
+
+We will fit a model using the first month of the year, and then try to assess how well it will generalize over the remaining years. We will also exclude any observations where `arr_delay` is NA.
+
+```{r}
+flights <- drop_na(flights, arr_delay)
+flights_train <- filter(flights, month == 1)
+flights_test <- filter(flights, month != 1)
+```
+
+## Creating a recipe
+
+The data is quite simple in terms of types. We have numeric variables and categorical variables. We will do some simple imputation of the numeric variables and create dummy variables on the categorical predictors.
+
+```{r}
+rec_spec <- recipe(arr_delay ~ ., data = flights_train) |>
+  step_impute_mean(all_numeric_predictors()) |>
+  step_zv(all_predictors()) |>
+  step_normalize(all_numeric_predictors()) |>
+  step_novel(all_nominal_predictors()) |>
+  step_unknown(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors())
+
+rec_spec
+```
+
+You will notice that we aren't doing anything special here to denote the recipe to produce sparsity. We will go into some details now, to explain how you the user should approach recipes when you suspect that sparsity will be produced.
+
+## How is sparsity handled in recipes
+
+There have been made two types of changes to recipes steps. The first being a number of steps have gained a `sparse` argument. This is used to toggle the creation of sparse vectors. `step_dummy()` that we used in our recipe is one of such steps.
+
+The second change is that a number of steps are now being used with sparse vectors as input while preserving sparsity. You can see a full [list of these steps](../../../find/sparse/index.qmd) at the link.
+
+Most of the changes with regard to sparsity are done to minimize the changes the user needs to make to benefit. This means that in many cases you don't need to change anything, the steps will know when to produce sparse data or not.
+
+When a recipe is used in a workflow and it is being `fit()`, an internal check is being done to figure out whether or not to produce sparse features. This check looks at the sparsity of the data itself, what model is being used, and the recipe. Since [only some models](../../../find/sparse/index.qmd) support sparsity this is the first check. 
+
+A rough estimate of the sparsity of the data that will come out of the recipe is calculated. This is done using the input data set, and the steps present in the recipe. But since this check has to happen before the recipe is prepped, it will be quite simple. What this means in practice is that it is fairly good at estimating the sparsity that is produced by sparsity-generating steps, but it isn't able to detect if those variables are passed to a different step that doesn't preserve it.
+
+The following recipe would be accurately estimated.
+
+```{r}
+#| eval: false
+recipe(outcome ~ ., data = data_train) |>
+  step_normalize(all_numeric_predictors()) |>
+  step_dummy(all_nominal_predictors())
+```
+
+But this recipe would have the same sparsity estimate despite not being able to produce any sparsity since `step_normalize()` can't preserve the sparsity as it subtracts a constant value.
+
+```{r}
+#| eval: false
+recipe(outcome ~ ., data = data_train) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_normalize(all_numeric_predictors())
+```
+
+If you were able to modify the above recipe to use `step_scale()` instead of `step_normalize()` it is one of the steps that preserves sparsity.
+
+```{r}
+#| eval: false
+recipe(outcome ~ ., data = data_train) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_scale(all_numeric_predictors())
+```
+
+Is it for this reason the steps that produce sparsity have the `sparse` argument. It defaults to `"auto"`, which means that the estimating process decides whether or not sparsity should be created. This argument can take two other values `"yes"` and `"no"`. So if you know for certain that the recipe should or shouldn't produce sparsity you can overwrite with this argument.
+
+This means that the below recipe is good again as it wouldn't try to produce sparse vectors that will immediately be turned into dense vectors again.
+
+```{r}
+#| eval: false
+recipe(outcome ~ ., data = data_train) |>
+  step_dummy(all_nominal_predictors(), sparse = "no") |>
+  step_normalize(all_numeric_predictors())
+```
+
+A lot of time went into trying to make `sparse = "auto"` work as well as possible, but since nothing is perfect you have the ability to overwrite.
+
+## Modeling
+
+We will finish the workflow using an engine that supports sparse data.
+
+```{r}
+mod_spec <- boost_tree() |>
+  set_mode("regression") |>
+  set_engine("xgboost")
+
+mod_spec
+```
+
+Then combine it in a workflow.
+
+```{r}
+wf_spec <- workflow(rec_spec, mod_spec)
+```
+
+And fit it like we usually do.
+
+```{r}
+wf_fit <- fit(wf_spec, flights_train)
+```
+
+Now that the model has been fit we can calculate the RMSE to see how well the model has performed.
+
+```{r}
+train_preds <- augment(wf_fit, flights_train)
+
+rmse(train_preds, arr_delay, .pred)
+```
+
+We can also take a visual look at the performance by plotting the predicted values against the real values.
+
+```{r}
+#| fig-alt: |
+#|   Scatter chart. Arrival delay along the x-axis and predictions along the 
+#|   y-axis. The majority of the points are along the diagonal, with a shift
+#|   down.
+
+train_preds |>
+  ggplot(aes(arr_delay, .pred)) +
+  geom_point(alpha = 0.2)
+```
+
+The model appears to work fairly well. We notice the shift down, which would suggest that the model has a bias towards underestimating the delay.
+
+Now we will see how well the model performs in the remaining months.
+
+```{r}
+test_preds <- augment(wf_fit, flights_test)
+
+rmse(test_preds, arr_delay, .pred)
+```
+
+And they see that the performance is quite a bit worse. Let's see how the performance goes on a month-by-month basis.
+
+```{r}
+#| fig-alt: |
+#|   Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
+#|   Starting on the second month with a value around 17, it goes up for each
+#|   month to 23 in July, afterward it does back down to 16 in September, 
+#|   with November having the same value and December having a value of 20.
+test_preds |>
+  group_by(month) |>
+  rmse(arr_delay, .pred) |>
+  ggplot(aes(month, .estimate)) +
+  geom_point()
+```
+
+We see the same result that the model doesn't generalize to the other months. This should not be that surprising as the model was only fit in January. Furthermore, it appears that there is a seasonal trend happening, further showing us that fitting this model in January alone was not the best idea.
+
+## Session information {#session-info}
+
+```{r}
+#| label: "si"
+#| echo: false
+small_session(pkgs)
+```
