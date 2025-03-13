@@ -39,33 +39,40 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 `r article_req_pkgs(pkgs)`
 
 
-This article demonstrates how we can use a recipe to generate data sparsely in tidymodels.
+This article demonstrates how we can use a recipe to generate data sparsity in tidymodels.
 
 We use the term **sparse data** to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors. 
 
 The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a **dense vector**.
 
-Not all recipe steps can handle sparsity, we have a [list of compatible](../../../find/sparse/index.qmd) steps you can use to guide the recipe creation.
+```r
+c(100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
+```
+The sparse representation of this vector only requires 5 values. 1 value for the length (25), 2 values for the locations of the non-zero values (1, 22), and 2 values for the non-zero values (100, 1). This idea can also be extended to matrices as is done in the Matrix package.
+
+Not all recipes steps can handle sparsity, we have a [list of compatible](../../../find/sparse/index.qmd) steps you can use to guide the recipe creation.
 
 ## The data
 
 We will be using the [nycflights13](https://nycflights13.tidyverse.org/) data set for this demonstration. We are using this data specifically because it contains a number of categorical with a lot of levels, that when dummified will create a lot of sparse columns.
 
 ```{r}
+library(tidymodels)
 library(nycflights13)
+
 glimpse(flights)
 ```
 
-Our modeling objective for this post is to fit a model that predicts the arrival delay, doing it as a regression task. We could just as well have done a classification model on "Will plane land on time", but using the regression model we can hopefully say whether a plane will be a little or a lot delayed.
+Our modeling objective is to fit a model that predicts the arrival delay, using a regression model. We could just as well have done a classification model on "Will plane land on time", but using the regression model we can hopefully be able to quantify how early or late the plane will be.
 
-We are furthermore assuming that this prediction will take place at the departure time. This means we have to exclude some variables as they contain information that is not available at departure time. 
+We are furthermore assuming that this prediction will take place at departure time. This means we have to exclude some variables as they contain information that is not yet available.
 
 ```{r}
 flights <- flights |>
   select(-arr_time, -air_time)
 ```
 
-This data set does contain a number of redundant information. We don't need to know the departure time `dep_time`, scheduled departure time `sched_dep_time`, and the departure delay `dep_delay` as they are a linear combination of each other `dep_delay = dep_time - sched_dep_time`. So we can remove one of them, we will choose `sched_dep_time`.
+This data set contains a number of redundant variables. We don't need to know the departure time `dep_time`, scheduled departure time `sched_dep_time`, and the departure delay `dep_delay` as they are a linear combination of each other `dep_delay = dep_time - sched_dep_time`. So we can remove one of them, we will choose `sched_dep_time`.
 
 Likewise, the `time_hour` variable is a datetime that contains data also located in `year`, `month`, `day`, `hour`, and `minute`. We will thus also remove that one.
 
@@ -74,7 +81,7 @@ flights <- flights |>
   select(-time_hour, -sched_dep_time)
 ```
 
-You may or may not have noticed that `dep_time` and `sched_arr_time` have a weird encoding. What is happening is that `517` is actually `5:17` so 17 minutes past 5 AM. So we need to update that, which we will use a little helper function for.
+You may or may not have noticed that `dep_time` and `sched_arr_time` have a weird encoding. What is happening is that `517` is actually `5:17` e.i. 17 minutes past 5 AM. So we need to update that, which we will use a little helper function for.
 
 ```{r}
 get_minutes <- function(x) {
@@ -88,7 +95,7 @@ flights <- flights |>
   mutate(across(c(dep_time, sched_arr_time), get_minutes))
 ```
 
-We will fit a model using the first month of the year, and then try to assess how well it will generalize over the remaining years. We will also exclude any observations where `arr_delay` is NA.
+We will fit a model using the first month of the year, and then try to assess how well it will generalize over the remaining years. We will also exclude any observations where `arr_delay` is `NA`.
 
 ```{r}
 flights <- drop_na(flights, arr_delay)
@@ -112,21 +119,21 @@ rec_spec <- recipe(arr_delay ~ ., data = flights_train) |>
 rec_spec
 ```
 
-You will notice that we aren't doing anything special here to denote the recipe to produce sparsity. We will go into some details now, to explain how you the user should approach recipes when you suspect that sparsity will be produced.
+You will notice that we aren't doing anything special here to denote the recipe to produce sparsity. Next will go into some details to explain how you the user should approach recipes when you suspect that sparsity will be produced.
 
 ## How is sparsity handled in recipes
 
-There have been made two types of changes to recipes steps. The first being a number of steps have gained a `sparse` argument. This is used to toggle the creation of sparse vectors. `step_dummy()` that we used in our recipe is one of such steps.
+There have been made two types of changes to recipes steps with regards to sparsity. First, a number of steps have gained a `sparse` argument. This is used to toggle the creation of sparse vectors. `step_dummy()` that we used in our recipe above is one of such steps.
 
-The second change is that a number of steps are now being used with sparse vectors as input while preserving sparsity. You can see a full [list of these steps](../../../find/sparse/index.qmd) at the link.
+The second change is that a number of steps are now able to take sparse vectors as input while preserving sparsity. You can see a full [list of these steps](../../../find/sparse/index.qmd) at the link.
 
-Most of the changes with regard to sparsity are done to minimize the changes the user needs to make to benefit. This means that in many cases you don't need to change anything, the steps will know when to produce sparse data or not.
+Most of the changes with regard to sparsity are done to minimize the changes the user needs to make to their code. This means that in many cases you don't need to change anything, the steps will know when to produce sparse data or not.
 
 When a recipe is used in a workflow and it is being `fit()`, an internal check is being done to figure out whether or not to produce sparse features. This check looks at the sparsity of the data itself, what model is being used, and the recipe. Since [only some models](../../../find/sparse/index.qmd) support sparsity this is the first check. 
 
 A rough estimate of the sparsity of the data that will come out of the recipe is calculated. This is done using the input data set, and the steps present in the recipe. But since this check has to happen before the recipe is prepped, it will be quite simple. What this means in practice is that it is fairly good at estimating the sparsity that is produced by sparsity-generating steps, but it isn't able to detect if those variables are passed to a different step that doesn't preserve it.
 
-The following recipe would be accurately estimated.
+The following recipe would be accurately estimated as the dummies produced by `step_dummy()` aren't passed to any other steps.
 
 ```{r}
 #| eval: false
@@ -135,7 +142,7 @@ recipe(outcome ~ ., data = data_train) |>
   step_dummy(all_nominal_predictors())
 ```
 
-But this recipe would have the same sparsity estimate despite not being able to produce any sparsity since `step_normalize()` can't preserve the sparsity as it subtracts a constant value.
+But the next recipe would have the same sparsity estimate despite not being able to produce any sparsity since `step_normalize()` can't preserve the sparsity as it subtracts a constant value.
 
 ```{r}
 #| eval: false
@@ -144,7 +151,7 @@ recipe(outcome ~ ., data = data_train) |>
   step_normalize(all_numeric_predictors())
 ```
 
-If you were able to modify the above recipe to use `step_scale()` instead of `step_normalize()` it is one of the steps that preserves sparsity.
+If you were able to modify the above recipe to use `step_scale()` instead of `step_normalize()` then the estimate is still valid as `step_scale()` is a sparsity-preserving step.
 
 ```{r}
 #| eval: false
@@ -153,7 +160,7 @@ recipe(outcome ~ ., data = data_train) |>
   step_scale(all_numeric_predictors())
 ```
 
-Is it for this reason the steps that produce sparsity have the `sparse` argument. It defaults to `"auto"`, which means that the estimating process decides whether or not sparsity should be created. This argument can take two other values `"yes"` and `"no"`. So if you know for certain that the recipe should or shouldn't produce sparsity you can overwrite with this argument.
+Is it for this reason the steps that produce sparsity have the `sparse` argument. It defaults to `"auto"`, which means that the estimating process in workflows decides whether or not sparsity should be created. This argument can take two other values `"yes"` and `"no"`. If you know for certain that the recipe should or shouldn't produce sparsity you can overwrite with this argument.
 
 This means that the below recipe is good again as it wouldn't try to produce sparse vectors that will immediately be turned into dense vectors again.
 
@@ -211,7 +218,7 @@ train_preds |>
   geom_point(alpha = 0.2)
 ```
 
-The model appears to work fairly well. We notice the shift down, which would suggest that the model has a bias towards underestimating the delay.
+The model appears to work fairly well on the training data set. We notice the shift down, which would suggest that the model has a bias towards underestimating the delay.
 
 Now we will see how well the model performs in the remaining months.
 
