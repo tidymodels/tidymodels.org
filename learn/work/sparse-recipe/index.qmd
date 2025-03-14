@@ -201,6 +201,10 @@ And fit it like we usually do.
 wf_fit <- fit(wf_spec, flights_train)
 ```
 
+::: {.callout-note}
+The above code chunk was run locally and timed. With sparsity enabled `sparse = "yes"` it took around 0.45 seconds, wit sparsity disabled `sparse = "no"` it took around 30 seconds.
+:::
+
 Now that the model has been fit we can calculate the RMSE to see how well the model has performed.
 
 ```{r}
@@ -208,6 +212,10 @@ train_preds <- augment(wf_fit, flights_train)
 
 rmse(train_preds, arr_delay, .pred)
 ```
+
+::: {.callout-note}
+The above code chunk was run locally and timed. With sparsity enabled `sparse = "yes"` it took around 0.1 seconds, wit sparsity disabled `sparse = "no"` it took around 5 seconds.
+:::
 
 We can also take a visual look at the performance by plotting the predicted values against the real values.
 
