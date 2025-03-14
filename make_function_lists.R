@@ -209,7 +209,8 @@ excl <- c(
   "tune",
   "tidymodels",
   "shinymodels",
-  "stacks"
+  "stacks",
+  "viruslearner"
 )
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
