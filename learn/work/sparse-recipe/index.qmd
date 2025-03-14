@@ -137,7 +137,7 @@ When a recipe is used in a workflow and it is being `fit()`, an internal check i
 
 A rough estimate of the sparsity of the data that will come out of the recipe is calculated. This is done using the input data set, and the steps present in the recipe. But since this check has to happen before the recipe is prepped, it will be quite simple. What this means in practice is that it is fairly good at estimating the sparsity that is produced by sparsity-generating steps, but it isn't able to detect if those variables are passed to a different step that doesn't preserve it.
 
-The following recipe would be accurately estimated as the dummies produced by `step_dummy()` aren't passed to any other steps.
+The following recipe would give an accurate estimate of how sparse the resulting data will be, as the dummy variables produced by `step_dummy()` aren't passed to any other steps. We want a good estimate of the resulting sparsity as it is key in determining whether the recipe should produce sparse data or not.
 
 ```{r}
 #| eval: false
@@ -175,7 +175,9 @@ recipe(outcome ~ ., data = data_train) |>
   step_normalize(all_numeric_predictors())
 ```
 
-A lot of time went into trying to make `sparse = "auto"` work as well as possible, but since nothing is perfect you have the ability to overwrite.
+A lot of time went into trying to make `sparse = "auto"` work as well as possible, but since nothing is perfect you have the ability to overwrite. Setting `sparse = "yes"` or `sparse = "no"` is done as a overwrite, meaning that the above mentioned check in workflows doesn't run. The check is only done if `sparse = "auto"` is present in any of the steps.
+
+The bad thing that happens if the check process is incorrect or you set the wrong value for `sparse` is that you get the speed and performance from previous versions before sparsity was enabled. Not worse speed and performance.
 
 ## Modeling
 
