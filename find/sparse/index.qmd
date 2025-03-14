@@ -1,0 +1,75 @@
+---
+title: Search sparse compatible models and steps
+weight: 4
+description: | 
+ Find recipe steps and model engines that work with sparse data.
+toc: true
+toc-depth: 0
+include-after-body: ../../resources.html
+css: ../styles-find.css
+---
+
+```{r}
+#| label: pkgs-and-data
+#| include: false
+library(tidymodels)
+library(htmltools)
+library(stringr)
+library(readr)
+library(DT)
+tidymodels_prefer()
+models <- read_csv("models.csv", show_col_types = FALSE)
+steps_generate <- read_csv("steps_generate.csv", show_col_types = FALSE)
+steps_preserve <- read_csv("steps_preserve.csv", show_col_types = FALSE)
+```
+
+## Models
+
+Below is all the model engine combinations that support sparse data. It is known that `ranger` supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn't much benefit to using sparse structures.
+
+```{r}
+#| label: list-models
+#| echo: false
+models <- models %>%
+  mutate(
+ url = str_remove(topic, "<a href='"),
+ url = str_remove(url, "' target=.*")
+ )
+
+model_split <- dplyr::group_split(models, model)
+
+print_one_model <- function(x) {
+  list(
+ tags$li(tags$code(x$model[[1]])),
+ tags$ul(
+      map2(x$engine, x$url, \(engine, url) tags$li(tags$a(engine, href = url)))
+ )
+ )
+}
+
+tags$ul(
+  map(model_split, print_one_model)
+)
+```
+
+## Steps
+
+Sparse data compatibility for steps comes in 2 flavors. The first kind generates sparse data from dense data. Often converting categorical variables to many sparse columns. This type of step is listed here:
+
+```{r}
+#| label: list-steps-generate
+#| echo: false
+tags$ul(
+  map(steps_generate$topic, \(x) tags$li(HTML(x)))
+)
+```
+
+The other type of sparse compatible steps are the ones that can take sparse data as input and operate on them while preserving the sparsity. These steps can thus safely be applied to columns that are produced by the above steps. This type of step is listed here:
+
+```{r}
+#| label: list-steps-preserve
+#| echo: false
+tags$ul(
+  map(steps_preserve$topic, \(x) tags$li(HTML(x)))
+)
+```
