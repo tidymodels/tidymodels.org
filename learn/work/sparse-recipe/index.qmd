@@ -50,11 +50,11 @@ c(100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 ```
 The sparse representation of this vector only requires 5 values. 1 value for the length (25), 2 values for the locations of the non-zero values (1, 22), and 2 values for the non-zero values (100, 1). This idea can also be extended to matrices as is done in the Matrix package.
 
-Not all recipes steps can handle sparsity, we have a [list of compatible](../../../find/sparse/index.qmd) steps you can use to guide the recipe creation.
+Not all modeling tasks can handle sparsity, we have a [list of compatible](../../../find/sparse/index.qmd) steps you can use to guide the recipe creation.
 
 ## The data
 
-We will be using the [nycflights13](https://nycflights13.tidyverse.org/) data set for this demonstration. We are using this data specifically because it contains a number of categorical with a lot of levels, that when dummified will create a lot of sparse columns.
+We will be using the [nycflights13](https://nycflights13.tidyverse.org/) data set for this demonstration. We are using this data specifically because it contains a number of categorical with a lot of levels, that when converted to binary indicator columns (a.k.a. "dummy variables") will create a lot of sparse columns.
 
 ```{r}
 library(tidymodels)
@@ -63,7 +63,7 @@ library(nycflights13)
 glimpse(flights)
 ```
 
-Our modeling objective is to fit a model that predicts the arrival delay, using a regression model. We could just as well have done a classification model on "Will plane land on time", but using the regression model we can hopefully be able to quantify how early or late the plane will be.
+Our modeling objective is to fit a model that predicts the arrival delay, using a regression model. We could just as well have done a classification model on "Will plane land on time?," but using the regression model we can hopefully be able to quantify how early or late the plane will be.
 
 We are furthermore assuming that this prediction will take place at departure time. This means we have to exclude some variables as they contain information that is not yet available.
 
@@ -72,7 +72,7 @@ flights <- flights |>
   select(-arr_time, -air_time)
 ```
 
-This data set contains a number of redundant variables. We don't need to know the departure time `dep_time`, scheduled departure time `sched_dep_time`, and the departure delay `dep_delay` as they are a linear combination of each other `dep_delay = dep_time - sched_dep_time`. So we can remove one of them, we will choose `sched_dep_time`.
+This data set contains a number of redundant variables. We don't need to know the departure time `dep_time`, scheduled departure time `sched_dep_time`, and the departure delay `dep_delay` as they are a linear combination of each other `dep_delay = dep_time - sched_dep_time`. So we can remove one of them and choose to get rid of `sched_dep_time`.
 
 Likewise, the `time_hour` variable is a datetime that contains data also located in `year`, `month`, `day`, `hour`, and `minute`. We will thus also remove that one.
 
@@ -107,6 +107,8 @@ flights_test <- filter(flights, month != 1)
 
 The data is quite simple in terms of types. We have numeric variables and categorical variables. We will do some simple imputation of the numeric variables and create dummy variables on the categorical predictors.
 
+We'll use a recipe to preprocess the data. If you have never seen a recipe, see Chapter 8 of [_Tidy Models with R_](https://www.tmwr.org/recipes). 
+
 ```{r}
 rec_spec <- recipe(arr_delay ~ ., data = flights_train) |>
   step_impute_mean(all_numeric_predictors()) |>
@@ -119,13 +121,15 @@ rec_spec <- recipe(arr_delay ~ ., data = flights_train) |>
 rec_spec
 ```
 
-You will notice that we aren't doing anything special here to denote the recipe to produce sparsity. Next will go into some details to explain how you the user should approach recipes when you suspect that sparsity will be produced.
+You will notice we aren't doing anything special here to denote the recipe that will acknowledge or produce sparsity. Next, we will go into some details to explain how you, the user, should approach recipes when you suspect that sparsity will be produced.
 
 ## How is sparsity handled in recipes
 
-There have been made two types of changes to recipes steps with regards to sparsity. First, a number of steps have gained a `sparse` argument. This is used to toggle the creation of sparse vectors. `step_dummy()` that we used in our recipe above is one of such steps.
+There have been made two types of changes to recipes steps regarding sparsity. 
 
-The second change is that a number of steps are now able to take sparse vectors as input while preserving sparsity. You can see a full [list of these steps](../../../find/sparse/index.qmd) at the link.
+First, some steps can augment the data set with many columns that are naturally sparse. Creating binary indicators from a factor predictor, via `step_dummy()`, is a good example. Because of this, a number of steps have gained a `sparse` argument, which toggles the creation of sparse vectors. 
+
+The second change is that a number of steps are now able to take sparse vectors as input and _preserve sparsity_. You can see a full [list of these steps](../../../find/sparse/index.qmd) at the link.
 
 Most of the changes with regard to sparsity are done to minimize the changes the user needs to make to their code. This means that in many cases you don't need to change anything, the steps will know when to produce sparse data or not.
 
@@ -162,7 +166,7 @@ recipe(outcome ~ ., data = data_train) |>
 
 Is it for this reason the steps that produce sparsity have the `sparse` argument. It defaults to `"auto"`, which means that the estimating process in workflows decides whether or not sparsity should be created. This argument can take two other values `"yes"` and `"no"`. If you know for certain that the recipe should or shouldn't produce sparsity you can overwrite with this argument.
 
-This means that the below recipe is good again as it wouldn't try to produce sparse vectors that will immediately be turned into dense vectors again.
+This means the recipe below wouldn't try to initially produce sparse vectors since they will immediately be turned into dense vectors by the next step.
 
 ```{r}
 #| eval: false
@@ -175,7 +179,7 @@ A lot of time went into trying to make `sparse = "auto"` work as well as possibl
 
 ## Modeling
 
-We will finish the workflow using an engine that supports sparse data.
+We will finish the workflow using a model/engine combination that supports sparse data.
 
 ```{r}
 mod_spec <- boost_tree() |>
