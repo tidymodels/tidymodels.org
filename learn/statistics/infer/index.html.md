@@ -316,16 +316,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1  48.6
-#>  2         1  36.6
-#>  3         1  38.6
+#>  1         1  49.6
+#>  2         1  38.6
+#>  3         1  46.6
 #>  4         1  38.6
 #>  5         1  38.6
-#>  6         1  38.6
-#>  7         1  13.6
-#>  8         1  28.6
-#>  9         1  38.6
-#> 10         1  46.6
+#>  6         1  78.6
+#>  7         1  38.6
+#>  8         1  38.6
+#>  9         1  46.6
+#> 10         1  38.6
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -355,14 +355,14 @@ gss %>%
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
 #>  1 dem        36         1
-#>  2 rep        34         1
+#>  2 dem        34         1
 #>  3 ind        24         1
-#>  4 ind        42         1
+#>  4 rep        42         1
 #>  5 ind        31         1
-#>  6 ind        32         1
-#>  7 dem        48         1
+#>  6 rep        32         1
+#>  7 rep        48         1
 #>  8 rep        36         1
-#>  9 rep        30         1
+#>  9 dem        30         1
 #> 10 ind        33         1
 #> # ℹ 2,499,990 more rows
 ```
@@ -391,16 +391,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  40.3
-#>  2         2  39.7
-#>  3         3  39.3
-#>  4         4  39.6
-#>  5         5  40.0
-#>  6         6  41.0
-#>  7         7  39.5
-#>  8         8  39.5
-#>  9         9  39.0
-#> 10        10  39.4
+#>  1         1  40.6
+#>  2         2  39.8
+#>  3         3  38.6
+#>  4         4  40.6
+#>  5         5  40.1
+#>  6         6  39.9
+#>  7         7  40.7
+#>  8         8  40.5
+#>  9         9  40.6
+#> 10        10  40.3
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -425,18 +425,18 @@ gss %>%
 #> Explanatory: college (factor)
 #> Null Hypothesis: independence
 #> # A tibble: 5,000 × 2
-#>    replicate    stat
-#>        <int>   <dbl>
-#>  1         1  2.38  
-#>  2         2 -1.17  
-#>  3         3 -1.21  
-#>  4         4  0.306 
-#>  5         5 -1.43  
-#>  6         6 -0.240 
-#>  7         7 -1.57  
-#>  8         8 -0.205 
-#>  9         9  0.0768
-#> 10        10  0.905 
+#>    replicate   stat
+#>        <int>  <dbl>
+#>  1         1 -0.487
+#>  2         2 -0.540
+#>  3         3  1.17 
+#>  4         4  0.579
+#>  5         5 -0.999
+#>  6         6 -0.223
+#>  7         7 -1.17 
+#>  8         8  0.130
+#>  9         9  1.28 
+#> 10        10  1.87 
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -534,14 +534,14 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0356
+#> 1    0.04
 ```
 :::
 
 
 
 
-It looks like the p-value is 0.0356, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0356. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.04, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.04. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
@@ -690,7 +690,7 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-07
+#>  date     2025-03-19
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
@@ -701,9 +701,9 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  parsnip    * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
 #>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)

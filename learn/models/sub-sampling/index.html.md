@@ -200,8 +200,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.788    50 0.0202  Preprocessor1_Model1
-#> 2 roc_auc binary     0.954    50 0.00478 Preprocessor1_Model1
+#> 1 j_index binary     0.764    50 0.0199  Preprocessor1_Model1
+#> 2 roc_auc binary     0.949    50 0.00521 Preprocessor1_Model1
 ```
 :::
 
@@ -292,7 +292,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-07
+#>  date     2025-03-19
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
@@ -305,10 +305,10 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
 #>  klaR       * 1.7-3   2023-12-13 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  parsnip    * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
 #>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
 #>  readr      * 2.1.5   2024-01-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  ROSE       * 0.0-4   2021-06-14 [1] CRAN (R 4.4.0)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)

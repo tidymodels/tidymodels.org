@@ -22,13 +22,11 @@ include-after-body: ../../../resources.html
 
 
 
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: modeldata, pls, and tidymodels.
 
 "Multivariate analysis" usually refers to multiple _outcomes_ being modeled, analyzed, and/or predicted. There are multivariate versions of many common statistical tools. For example, suppose there was a data set with columns `y1` and `y2` representing two outcomes to be predicted. The `lm()` function would look something like:
-
 
 
 
@@ -39,7 +37,6 @@ To use code in this article,  you will need to install the following packages: m
 lm(cbind(y1, y2) ~ ., data = dat)
 ```
 :::
-
 
 
 
@@ -59,7 +56,6 @@ To start, let's take the two data matrices (called `endpoints` and `absorp`) and
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -67,7 +63,6 @@ library(modeldata)
 data(meats)
 ```
 :::
-
 
 
 
@@ -87,7 +82,6 @@ Many base R functions that deal with multivariate outcomes using a formula requi
 
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -100,13 +94,11 @@ norm_rec <-
 
 
 
-
 Before we can finalize the PLS model, the number of PLS components to retain must be determined. This can be done using performance metrics such as the root mean squared error. However, we can also calculate the proportion of variance explained by the components for the _predictors and each of the outcomes_. This allows an informed choice to be made based on the level of evidence that the situation requires. 
 
 Since the data set isn't large, let's use resampling to measure these proportions. With ten repeats of 10-fold cross-validation, we build the PLS model on 90% of the data and evaluate on the heldout 10%. For each of the 100 models, we extract and save the proportions. 
 
 The folds can be created using the [rsample](https://rsample.tidymodels.org/) package and the recipe can be estimated for each resample using the [`prepper()`](https://rsample.tidymodels.org/reference/prepper.html) function: 
-
 
 
 
@@ -126,7 +118,6 @@ folds <-
 
 
 
-
 ## Partial least squares
 
 The complicated parts for moving forward are:
@@ -141,7 +132,6 @@ The pls package expects a simple formula to specify the model, but each side of 
 The calculation for the proportion of variance explained is straightforward for the predictors; the function `pls::explvar()` will compute that. For the outcomes, the process is more complicated. A ready-made function to compute these is not obvious but there is some code inside of the summary function to do the computation (see below). 
 
 The function `get_var_explained()` shown here will do all these computations and return a data frame with columns `components`, `source` (for the predictors, water, etc), and the `proportion` of variance that is explained by the components. 
-
 
 
 
@@ -196,9 +186,7 @@ get_var_explained <- function(recipe, ...) {
 
 
 
-
 We compute this data frame for each resample and save the results in the different columns. 
-
 
 
 
@@ -216,9 +204,7 @@ folds <-
 
 
 
-
 To extract and aggregate these data, simple row binding can be used to stack the data vertically. Most of the action happens in the first 15 components so let's filter the data and compute the _average_ proportion.
-
 
 
 
@@ -239,9 +225,7 @@ variance_data <-
 
 
 
-
 The plot below shows that, if the protein measurement is important, you might require 10 or so components to achieve a good representation of that outcome. Note that the predictor variance is captured extremely well using a single component. This is due to the high degree of correlation in those data. 
-
 
 
 
@@ -263,9 +247,7 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 
 
 
-
 ## Session information {#session-info}
-
 
 
 
@@ -283,29 +265,29 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-11
+#>  date     2025-03-19
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package    * version    date (UTC) lib source
-#>  broom      * 1.0.7      2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials      * 1.4.0      2025-02-13 [1] CRAN (R 4.4.2)
-#>  dplyr      * 1.1.4      2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2    * 3.5.1      2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer      * 1.0.7      2024-03-25 [1] CRAN (R 4.4.0)
-#>  modeldata  * 1.4.0      2024-06-19 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.3.0      2025-02-14 [1] CRAN (R 4.4.2)
-#>  pls        * 2.8-5      2024-09-15 [1] CRAN (R 4.4.1)
-#>  purrr      * 1.0.4      2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes    * 1.1.1.9000 2025-03-10 [1] local
-#>  rlang        1.1.5      2025-01-17 [1] CRAN (R 4.4.2)
-#>  rsample    * 1.2.1      2024-03-25 [1] CRAN (R 4.4.0)
-#>  tibble     * 3.2.1      2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.3.0      2025-02-21 [1] CRAN (R 4.4.1)
-#>  tune       * 1.3.0      2025-02-21 [1] CRAN (R 4.4.1)
-#>  workflows  * 1.2.0      2025-02-19 [1] CRAN (R 4.4.1)
-#>  yardstick  * 1.3.2.9000 2025-03-11 [1] local
+#>  package    * version date (UTC) lib source
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
+#>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+#>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+#>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
+#>  modeldata  * 1.4.0   2024-06-19 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
+#>  pls        * 2.8-5   2024-09-15 [1] CRAN (R 4.4.1)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
+#>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
+#>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
 #>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
 #>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library

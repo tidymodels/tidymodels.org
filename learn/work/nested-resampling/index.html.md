@@ -382,14 +382,14 @@ results <-
 
 summary(results$RMSE)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.574   2.095   2.663   2.686   3.265   4.297
+#>   1.574   2.095   2.688   2.684   3.252   4.254
 ```
 :::
 
 
 
 
-The estimated RMSE for the model tuning process is 2.69.
+The estimated RMSE for the model tuning process is 2.68.
 
 What is the RMSE estimate for the non-nested procedure when only the outer resampling method is used? For each cost value in the tuning grid, 50 SVM models are fit and their RMSE values are averaged. The table of cost values and mean RMSE estimates is used to determine the best cost value. The associated RMSE is the biased estimate.
 
@@ -478,7 +478,7 @@ The nested procedure produces a closer estimate to the approximate truth but the
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-07
+#>  date     2025-03-19
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
@@ -492,9 +492,9 @@ The nested procedure produces a closer estimate to the approximate truth but the
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
 #>  kernlab    * 0.9-33  2024-08-13 [1] CRAN (R 4.4.0)
 #>  mlbench    * 2.1-6   2024-12-30 [1] CRAN (R 4.4.1)
-#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  parsnip    * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
 #>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  scales     * 1.3.0   2023-11-28 [1] CRAN (R 4.4.0)
