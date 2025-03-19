@@ -5,10 +5,6 @@ authors: [Julia Silge, David Robinson]
 weight: 4
 ---
 
-
-
-
-
 ![](cover.png)
 
 This practical book provides an introduction to text mining using tidy data principles in R, focusing on exploratory data analysis for text. Using tidy data principles can make text mining task easier and more effective; in this book, learn how to manipulate, summarize, and visualize characteristics of text using these methods and R packages from the tidy tool ecosystem.

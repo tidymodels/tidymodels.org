@@ -9,22 +9,12 @@ include-after-body: ../../resources.html
 css: ../styles-find.css
 ---
 
-
-
-
-
-
-
 ## Models
 
 Below is all the model engine combinations that support sparse data. It is known that `ranger` supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn't much benefit to using sparse structures.
 
-
-
-
 ::: {.cell}
 ::: {.cell-output-display}
-
 
 ```{=html}
 <ul>
@@ -90,23 +80,15 @@ Below is all the model engine combinations that support sparse data. It is known
 </ul>
 ```
 
-
 :::
 :::
-
-
-
 
 ## Steps
 
 Sparse data compatibility for steps comes in 2 flavors. The first kind generates sparse data from dense data. Often converting categorical variables to many sparse columns. This type of step is listed here:
 
-
-
-
 ::: {.cell}
 ::: {.cell-output-display}
-
 
 ```{=html}
 <ul>
@@ -124,21 +106,13 @@ Sparse data compatibility for steps comes in 2 flavors. The first kind generates
 </ul>
 ```
 
-
 :::
 :::
-
-
-
 
 The other type of sparse compatible steps are the ones that can take sparse data as input and operate on them while preserving the sparsity. These steps can thus safely be applied to columns that are produced by the above steps. This type of step is listed here:
 
-
-
-
 ::: {.cell}
 ::: {.cell-output-display}
-
 
 ```{=html}
 <ul>
@@ -161,7 +135,6 @@ The other type of sparse compatible steps are the ones that can take sparse data
 <li><a href='https://recipes.tidymodels.org//reference/step_zv.html' target='_blank'><tt>step_zv</tt></a></li>
 </ul>
 ```
-
 
 :::
 :::

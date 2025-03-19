@@ -11,14 +11,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: rlang and tidymodels.
@@ -59,9 +51,6 @@ The `yardstick_remove_missing()` and `yardstick_any_missing()` yardstick functio
 
 You are required to supply a `case_weights` argument to `mse_vec()` for the functions to work with yardstick. If your metric in question doesn't support case weights, you can error if they are passed, or simply ignore it.
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -89,13 +78,7 @@ mse_vec <- function(truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
 ```
 :::
 
-
-
-
 At this point, you've created the vector version of the mean squared error metric.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -110,13 +93,7 @@ mse_vec(
 ```
 :::
 
-
-
-
 Intelligent error handling is immediately available.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -132,13 +109,7 @@ mse_vec(truth = 1, estimate = factor("xyz"))
 ```
 :::
 
-
-
-
 `NA` values are removed if `na_rm = TRUE` (the default). If `na_rm = FALSE` and any `NA` values are detected, then the metric automatically returns `NA`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -153,15 +124,9 @@ mse_vec(truth = c(NA, .5, .4), estimate = c(1, .6, .5), na_rm = FALSE)
 ```
 :::
 
-
-
-
 ### Data frame implementation
 
 The data frame version of the metric should be fairly simple. It is a generic function with a `data.frame` method that calls the yardstick helper, `numeric_metric_summarizer()`, and passes along the `mse_vec()` function to it along with versions of `truth` and `estimate` that have been wrapped in `rlang::enquo()` and then unquoted with `!!` so that non-standard evaluation can be supported.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -189,13 +154,7 @@ mse.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_weights = N
 ```
 :::
 
-
-
-
 And that's it. The yardstick package handles the rest.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -207,13 +166,7 @@ mse(solubility_test, truth = solubility, estimate = factor("xyz"))
 ```
 :::
 
-
-
-
 Let's test it out on a grouped data frame.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -253,9 +206,6 @@ solubility_resampled %>%
 ```
 :::
 
-
-
-
 ## Class example: miss rate
 
 Miss rate is another name for the false negative rate, and is a classification metric in the same family as `sens()` and `spec()`. It follows the formula:
@@ -269,9 +219,6 @@ Classification metrics are more complicated than numeric ones because you have t
 ### Vector implementation
 
 The vector implementation for classification metrics initially has a very similar setup as the numeric metrics. It used `check_class_metric()` instead of `check_numeric_metric()`. It has an additional argument, `estimator` that determines the type of estimator to use (binary or some kind of multiclass implementation or averaging). This argument is auto-selected for the user, so default it to  `NULL`. Additionally, pass it along to `check_class_metric()` so that it can check the provided `estimator` against the classes of `truth` and `estimate` to see if they are allowed.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -323,13 +270,7 @@ miss_rate_vec <- function(truth,
 ```
 :::
 
-
-
-
 Another change from the numeric metric is that a call to `finalize_estimator()` is made. This is the infrastructure that auto-selects the type of estimator to use.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -340,13 +281,7 @@ miss_rate_vec(two_class_example$truth, two_class_example$predicted)
 ```
 :::
 
-
-
-
 What happens if you try and pass in a multiclass result?
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -359,9 +294,6 @@ miss_rate_vec(fold1$obs, fold1$pred)
 ```
 :::
 
-
-
-
 This isn't great, as currently multiclass `miss_rate()` isn't supported and it would have been better to throw an error if the `estimator` was not `"binary"`. Currently, `finalize_estimator()` uses its default implementation which selected `"macro"` as the `estimator` since `truth` was a factor with more than 2 classes. When we implement multiclass averaging, this is what you want, but if your metric only works with a binary implementation (or has other specialized multiclass versions), you might want to guard against this.
 
 To fix this, a generic counterpart to `finalize_estimator()`, called `finalize_estimator_internal()`, exists that helps you restrict the input types. If you provide a method to `finalize_estimator_internal()` where the method name is the same as your metric name, and then set the `metric_class` argument in `finalize_estimator()` to be the same thing, you can control how the auto-selection of the `estimator` is handled.
@@ -369,9 +301,6 @@ To fix this, a generic counterpart to `finalize_estimator()`, called `finalize_e
 Don't worry about the `metric_dispatcher` argument. This is handled for you and just exists as a dummy argument to dispatch off of.
 
 It is also good practice to call `validate_estimator()` which handles the case where a user passed in the estimator themselves. This validates that the supplied `estimator` is one of the allowed types and error otherwise.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -423,9 +352,6 @@ miss_rate_vec <- function(truth,
 ```
 :::
 
-
-
-
 ### Supporting multiclass miss rate
 
 Like many other classification metrics such as `precision()` or `recall()`, miss rate does not have a natural multiclass extension, but one can be created using methods such as macro, weighted macro, and micro averaging. If you have not, I encourage you to read `vignette("multiclass", "yardstick")` for more information about how these methods work.
@@ -434,18 +360,12 @@ Generally, they require more effort to get right than the binary case, especiall
 
 Let's first remove the "binary" restriction we created earlier.
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 rm(finalize_estimator_internal.miss_rate)
 ```
 :::
-
-
-
 
 The main changes below are:
 
@@ -454,9 +374,6 @@ The main changes below are:
 -   `miss_rate_estimator_impl()` is a helper function for switching between binary and multiclass implementations. It also applies the weighting required for multiclass estimators. It is called from `miss_rate_impl()` and also accepts the `estimator` argument using R's function scoping rules.
 
 -   `miss_rate_multiclass()` provides the implementation for the multiclass case. It calculates the true positive and false negative values as vectors with one value per class. For the macro case, it returns a vector of miss rate calculations, and for micro, it first sums the individual pieces and returns a single miss rate calculation. In the macro case, the vector is then weighted appropriately in `miss_rate_estimator_impl()` depending on whether or not it was macro or weighted macro.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -506,7 +423,6 @@ miss_rate_estimator_impl <- function(data, estimator, event_level) {
   }
 }
 
-
 miss_rate_binary <- function(data, event_level) {
   col <- event_col(data, event_level)
   col2 <- setdiff(colnames(data), col)
@@ -539,15 +455,9 @@ miss_rate_multiclass <- function(data, estimator) {
 ```
 :::
 
-
-
-
 For the macro case, this separation of weighting from the core implementation might seem strange, but there is good reason for it. Some metrics are combinations of other metrics, and it is nice to be able to reuse code when calculating more complex metrics. For example, `f_meas()` is a combination of `recall()` and `precision()`. When calculating a macro averaged `f_meas()`, the weighting must be applied 1 time, at the very end of the calculation. `recall_multiclass()` and `precision_multiclass()` are defined similarly to how `miss_rate_multiclass()` is defined and returns the unweighted vector of calculations. This means we can directly use this in `f_meas()`, and then weight everything once at the end of that calculation.
 
 Let's try it out now:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -562,15 +472,9 @@ miss_rate_vec(fold1$obs, fold1$pred)
 ```
 :::
 
-
-
-
 #### Data frame implementation
 
 Luckily, the data frame implementation is as simple as the numeric case, we just need to add an extra `estimator` argument and pass that through.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -625,15 +529,9 @@ miss_rate(hpc_cv, obs, VF)
 ```
 :::
 
-
-
-
 ## Using custom metrics
 
 The `metric_set()` function validates that all metric functions are of the same metric type by checking the class of the function. If any metrics are not of the right class, `metric_set()` fails. By using `new_numeric_metric()` and `new_class_metric()` in the above custom metrics, they work out of the box without any additional adjustments.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -649,13 +547,7 @@ numeric_mets(solubility_test, solubility, prediction)
 ```
 :::
 
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

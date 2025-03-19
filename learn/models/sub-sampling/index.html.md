@@ -12,15 +12,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: discrim, klaR, readr, ROSE, themis, and tidymodels.
@@ -32,9 +23,6 @@ This article describes subsampling for dealing with class imbalances. For better
 ## Simulated data
 
 Consider a two-class problem where the first class has a very low rate of occurrence. The data were simulated and can be imported into R using the code below:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -51,9 +39,6 @@ table(imbal_data$Class)
 #>     60   1140
 ```
 :::
-
-
-
 
 If "Class1" is the event of interest, it is very likely that a classification model would be able to achieve very good _specificity_ since almost all of the data are of the second class. _Sensitivity_, however, would likely be poor since the models will optimize accuracy (or other loss functions) by predicting everything to be the majority class. 
 
@@ -72,9 +57,6 @@ In terms of workflow:
 
 Here is a simple recipe implementing oversampling: 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -86,13 +68,7 @@ imbal_rec <-
 ```
 :::
 
-
-
-
 For a model, let's use a [quadratic discriminant analysis](https://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis) (QDA) model. From the discrim package, this model can be specified using:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -104,13 +80,7 @@ qda_mod <-
 ```
 :::
 
-
-
-
 To keep these objects bound together, they can be combined in a [workflow](https://workflows.tidymodels.org/):
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -140,15 +110,9 @@ qda_rose_wflw
 ```
 :::
 
-
-
-
 ## Model performance
 
 Stratified, repeated 10-fold cross-validation is used to resample the model:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -158,18 +122,12 @@ cv_folds <- vfold_cv(imbal_data, strata = "Class", repeats = 5)
 ```
 :::
 
-
-
-
 To measure model performance, let's use two metrics:
 
  * The area under the [ROC curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) is an overall assessment of performance across _all_ cutoffs. Values near one indicate very good results while values near 0.5 would imply that the model is very poor. 
  * The _J_ index (a.k.a. [Youden's _J_](https://en.wikipedia.org/wiki/Youden%27s_J_statistic) statistic) is `sensitivity + specificity - 1`. Values near one are once again best. 
 
 If a model is poorly calibrated, the ROC curve value might not show diminished performance. However, the _J_ index would be lower for models with pathological distributions for the class probabilities. The yardstick package will be used to compute these metrics. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -178,13 +136,7 @@ cls_metrics <- metric_set(roc_auc, j_index)
 ```
 :::
 
-
-
-
 Now, we train the models and generate the results using `tune::fit_resamples()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -200,18 +152,12 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.764    50 0.0199  Preprocessor1_Model1
-#> 2 roc_auc binary     0.949    50 0.00521 Preprocessor1_Model1
+#> 1 j_index binary     0.779    50 0.0212  Preprocessor1_Model1
+#> 2 roc_auc binary     0.950    50 0.00491 Preprocessor1_Model1
 ```
 :::
 
-
-
-
 What do the results look like without using ROSE? We can create another workflow and fit the QDA model along the same resamples:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -232,15 +178,9 @@ collect_metrics(qda_only_res)
 ```
 :::
 
-
-
-
 It looks like ROSE helped a lot, especially with the J-index. Class imbalance sampling methods tend to greatly improve metrics based on the hard class predictions (i.e., the categorical predictions) because the default cutoff tends to be a better balance of sensitivity and specificity. 
 
 Let's plot the metrics for each resample to see how the individual results changed. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -269,15 +209,9 @@ bind_rows(no_sampling, with_sampling) %>%
 :::
 :::
 
-
-
-
 This visually demonstrates that the subsampling mostly affects metrics that use the hard class predictions. 
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

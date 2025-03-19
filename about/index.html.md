@@ -9,9 +9,5 @@ listing:
   template: template.ejs
 ---
 
-
-
-
-
 ::: {#team-listings}
 :::

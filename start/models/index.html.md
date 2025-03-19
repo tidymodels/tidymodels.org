@@ -14,24 +14,11 @@ css: ../styles.css
 include-after-body: ../repo-actions-delete.html
 ---
 
-
-
-
-
-
-
-
-
-
-
 ## Introduction {#intro}
 
 How do you create a statistical model using tidymodels? In this article, we will walk you through the steps. We start with data for modeling, learn how to specify and train models with different engines using the [parsnip package](https://parsnip.tidymodels.org/), and understand why these functions are designed this way.
 
 To use code in this article,  you will need to install the following packages: broom.mixed, dotwhisker, readr, rstanarm, and tidymodels.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -45,21 +32,13 @@ library(dotwhisker)  # for visualizing regression results
 ```
 :::
 
-
-
-
-
 [Test Drive](https://rstudio.cloud/project/2674862)
-
 
 ## The Sea Urchins Data {#data}
 
 Let's use the data from [Constable (1993)](https://link.springer.com/article/10.1007/BF00349318) to explore how three different feeding regimes affect the size of sea urchins over time. The initial size of the sea urchins at the beginning of the experiment probably affects how big they grow as they are fed. 
 
 To start, let's read our urchins data into R, which we'll do by providing [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) with a url where our CSV data is located ("<https://tidymodels.org/start/models/urchins.csv>"):
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -83,13 +62,7 @@ urchins <-
 ```
 :::
 
-
-
-
 Let's take a quick look at the data:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -112,9 +85,6 @@ urchins
 ```
 :::
 
-
-
-
 The urchins data is a [tibble](https://tibble.tidyverse.org/index.html). If you are new to tibbles, the best place to start is the [tibbles chapter](https://r4ds.had.co.nz/tibbles.html) in *R for Data Science*. For each of the 72 urchins, we know their:
 
 + experimental feeding regime group (`food_regime`: either `Initial`, `Low`, or `High`),
@@ -122,9 +92,6 @@ The urchins data is a [tibble](https://tibble.tidyverse.org/index.html). If you 
 + suture width at the end of the experiment (`width`).
 
 As a first step in modeling, it's always a good idea to plot the data: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -145,17 +112,11 @@ ggplot(urchins,
 :::
 :::
 
-
-
-
 We can see that urchins that were larger in volume at the start of the experiment tended to have wider sutures at the end, but the slopes of the lines look different so this effect may depend on the feeding regime condition.
 
 ## Build and fit a model {#build-model}
 
 A standard two-way analysis of variance ([ANOVA](https://www.itl.nist.gov/div898/handbook/prc/section4/prc43.htm)) model makes sense for this dataset because we have both a continuous predictor and a categorical predictor. Since the slopes appear to be different for at least two of the feeding regimes, let's build a model that allows for two-way interactions. Specifying an R formula with our variables in this way: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -164,16 +125,9 @@ width ~ initial_volume * food_regime
 ```
 :::
 
-
-
-
 allows our regression model depending on initial volume to have separate slopes and intercepts for each food regime. 
 
 For this kind of model, ordinary least squares is a good initial approach. With tidymodels, we start by specifying the _functional form_ of the model that we want using the [parsnip package](https://parsnip.tidymodels.org/). Since there is a numeric outcome and the model should be linear with slopes and intercepts, the model type is ["linear regression"](https://parsnip.tidymodels.org/reference/linear_reg.html). We can declare this with: 
-
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -185,13 +139,7 @@ linear_reg()
 ```
 :::
 
-
-
-
 That is pretty underwhelming since, on its own, it doesn't really do much. However, now that the type of model has been specified, we can think about a method for _fitting_ or training the model, the model **engine**. The engine value is often a mash-up of the software that can be used to fit or train the model as well as the estimation method. The default for `linear_reg()` is `"lm"` for ordinary least squares, as you can see above. We could set a non-default option instead:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -204,13 +152,7 @@ linear_reg() %>%
 ```
 :::
 
-
-
-
 The [documentation page for `linear_reg()`](https://parsnip.tidymodels.org/reference/linear_reg.html) lists all the possible engines. We'll save our model object using the default engine as `lm_mod`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -219,13 +161,7 @@ lm_mod <- linear_reg()
 ```
 :::
 
-
-
-
 From here, the model can be estimated or trained using the [`fit()`](https://parsnip.tidymodels.org/reference/fit.html) function:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -250,13 +186,7 @@ lm_fit
 ```
 :::
 
-
-
-
 Perhaps our analysis requires a description of the model parameter estimates and their statistical properties. Although the `summary()` function for `lm` objects can provide that, it gives the results back in an unwieldy format. Many models have a `tidy()` method that provides the summary results in a more predictable and useful format (e.g. a data frame with standard column names): 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -274,13 +204,7 @@ tidy(lm_fit)
 ```
 :::
 
-
-
-
 This kind of output can be used to generate a dot-and-whisker plot of our regression results using the dotwhisker package:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -296,18 +220,11 @@ tidy(lm_fit) %>%
 :::
 :::
 
-
-
-
-
 ## Use a model to predict {#predict-model}
 
 This fitted object `lm_fit` has the `lm` model output built-in, which you can access with `lm_fit$fit`, but there are some benefits to using the fitted parsnip model object when it comes to predicting.
 
 Suppose that, for a publication, it would be particularly interesting to make a plot of the mean body size for urchins that started the experiment with an initial volume of 20ml. To create such a graph, we start with some new example data that we will make predictions for, to show in our graph:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -322,9 +239,6 @@ new_points
 ```
 :::
 
-
-
-
 To get our predicted results, we can use the `predict()` function to find the mean values at 20ml. 
 
 It is also important to communicate the variability, so we also need to find the predicted confidence intervals. If we had used `lm()` to fit the model directly, a few minutes of reading the [documentation page](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/predict.lm.html) for `predict.lm()` would explain how to do this. However, if we decide to use a different model to estimate urchin size (_spoiler:_ we will!), it is likely that a completely different syntax would be required. 
@@ -332,9 +246,6 @@ It is also important to communicate the variability, so we also need to find the
 Instead, with tidymodels, the types of predicted values are standardized so that we can use the same syntax to get these values. 
 
 First, let's generate the mean body width values: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -350,13 +261,7 @@ mean_pred
 ```
 :::
 
-
-
-
 When making predictions, the tidymodels convention is to always produce a tibble of results with standardized column names. This makes it easy to combine the original data and the predictions in a usable format: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -392,17 +297,11 @@ ggplot(plot_data, aes(x = food_regime)) +
 :::
 :::
 
-
-
-
 ## Model with a different engine {#new-engine}
 
 Every one on your team is happy with that plot _except_ that one person who just read their first book on [Bayesian analysis](https://bayesian.org/what-is-bayesian-analysis/). They are interested in knowing if the results would be different if the model were estimated using a Bayesian approach. In such an analysis, a [_prior distribution_](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7) needs to be declared for each model parameter that represents the possible values of the parameters (before being exposed to the observed data). After some discussion, the group agrees that the priors should be bell-shaped but, since no one has any idea what the range of values should be, to take a conservative approach and make the priors _wide_ using a Cauchy distribution (which is the same as a t-distribution with a single degree of freedom).
 
 The [documentation](https://mc-stan.org/rstanarm/articles/priors.html) on the rstanarm package shows us that the `stan_glm()` function can be used to estimate this model, and that the function arguments that need to be specified are called `prior` and `prior_intercept`. It turns out that `linear_reg()` has a [`stan` engine](https://parsnip.tidymodels.org/reference/linear_reg.html#details). Since these prior distribution arguments are specific to the Stan software, they are passed as arguments to [`parsnip::set_engine()`](https://parsnip.tidymodels.org/reference/set_engine.html). After that, the same exact `fit()` call is used:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -451,15 +350,9 @@ print(bayes_fit, digits = 5)
 ```
 :::
 
-
-
-
 This kind of Bayesian analysis (like many models) involves randomly generated numbers in its fitting procedure. We can use `set.seed()` to ensure that the same (pseudo-)random numbers are generated each time we run this code. The number `123` isn't special or related to our data; it is just a "seed" used to choose random numbers.
 
 To update the parameter table, the `tidy()` method is once again used: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -477,13 +370,7 @@ tidy(bayes_fit, conf.int = TRUE)
 ```
 :::
 
-
-
-
 A goal of the tidymodels packages is that the **interfaces to common tasks are standardized** (as seen in the `tidy()` results above). The same is true for getting predictions; we can use the same code even though the underlying packages use very different syntax:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -505,9 +392,6 @@ ggplot(bayes_plot_data, aes(x = food_regime)) +
 :::
 :::
 
-
-
-
 This isn't very different from the non-Bayesian results (except in interpretation). 
 
 ::: {.callout-note}
@@ -521,9 +405,6 @@ The extra step of defining the model using a function like `linear_reg()` might 
 Also, using the tidymodels framework, we can do some interesting things by incrementally creating a model (instead of using single function call). [Model tuning](/start/tuning/) with tidymodels uses the specification of the model to declare what parts of the model should be tuned. That would be very difficult to do if `linear_reg()` immediately fit the model. 
 
 If you are familiar with the tidyverse, you may have noticed that our modeling code uses the magrittr pipe (`%>%`). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the _data_ as the first argument. For example: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -540,13 +421,7 @@ urchins %>%
 ```
 :::
 
-
-
-
 whereas the modeling code uses the pipe to pass around the _model object_:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -556,13 +431,7 @@ bayes_mod %>%
 ```
 :::
 
-
-
-
 This may seem jarring if you have used dplyr a lot, but it is extremely similar to how ggplot2 operates:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -575,13 +444,7 @@ ggplot(urchins,
 ```
 :::
 
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

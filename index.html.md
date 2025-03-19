@@ -2,9 +2,6 @@
 page-layout: custom
 ---
 
-
-
-
 ::::: {#FrontPage}
 
 :::: {.band .first}

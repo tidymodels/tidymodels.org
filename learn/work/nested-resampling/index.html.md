@@ -11,14 +11,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: furrr, kernlab, mlbench, scales, and tidymodels.
@@ -29,17 +21,11 @@ In this article, we discuss an alternative method for evaluating and tuning mode
 
 A typical scheme for splitting the data when developing a predictive model is to create an initial split of the data into a training and test set. If resampling is used, it is executed on the training set. A series of binary splits is created. In rsample, we use the term *analysis set* for the data that are used to fit the model and the term *assessment set* for the set used to compute performance:
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](img/resampling.svg){fig-align='center' width=70%}
 :::
 :::
-
-
-
 
 A common method for tuning models is [grid search](/learn/work/tune-svm/) where a candidate set of tuning parameters is created. The full set of models for every combination of the tuning parameter grid and the resamples is fitted. Each time, the assessment data are used to measure performance and the average value is determined for each tuning parameter.
 
@@ -50,9 +36,6 @@ Nested resampling uses an additional layer of resampling that separates the tuni
 Once the tuning results are complete, a model is fit to each of the outer resampling splits using the best parameter associated with that resample. The average of the outer method's assessment sets are a unbiased estimate of the model.
 
 We will simulate some regression data to illustrate the methods. The mlbench package has a function `mlbench::mlbench.friedman1()` that can simulate a complex regression data structure from the [original MARS publication](https://scholar.google.com/scholar?hl=en&q=%22Multivariate+adaptive+regression+splines%22&btnG=&as_sdt=1%2C7&as_sdtp=). A training set size of 100 data points are generated as well as a large set that will be used to characterize how well the resampling procedure performed.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -72,17 +55,11 @@ large_dat <- sim_data(10^5)
 ```
 :::
 
-
-
-
 ## Nested resampling
 
 To get started, the types of resampling methods need to be specified. This isn't a large data set, so 5 repeats of 10-fold cross validation will be used as the *outer* resampling method for generating the estimate of overall performance. To tune the model, it would be good to have precise estimates for each of the values of the tuning parameter so let's use 25 iterations of the bootstrap. This means that there will eventually be `5 * 10 * 25 = 1250` models that are fit to the data *per tuning parameter*. These models will be discarded once the performance of the model has been quantified.
 
 To create the tibble with the resampling specifications:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -112,13 +89,7 @@ results
 ```
 :::
 
-
-
-
 The splitting information for each resample is contained in the `split` objects. Focusing on the second fold of the first repeat:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -129,15 +100,9 @@ results$splits[[2]]
 ```
 :::
 
-
-
-
 `<90/10/100>` indicates the number of observations in the analysis set, assessment set, and the original data.
 
 Each element of `inner_resamples` has its own tibble with the bootstrapping splits.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -161,13 +126,7 @@ results$inner_resamples[[5]]
 ```
 :::
 
-
-
-
 These are self-contained, meaning that the bootstrap sample is aware that it is a sample of a specific 90% of the data:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -178,17 +137,11 @@ results$inner_resamples[[5]]$splits[[1]]
 ```
 :::
 
-
-
-
 To start, we need to define how the model will be created and measured. Let's use a radial basis support vector machine model via the function `kernlab::ksvm`. This model is generally considered to have *two* tuning parameters: the SVM cost value and the kernel parameter `sigma`. For illustration purposes here, only the cost value will be tuned and the function `kernlab::sigest` will be used to estimate `sigma` during each model fit. This is automatically done by `ksvm`.
 
 After the model is fit to the analysis set, the root-mean squared error (RMSE) is computed on the assessment set. **One important note:** for this model, it is critical to center and scale the predictors before computing dot products. We don't do this operation here because `mlbench.friedman1` simulates all of the predictors to be standardized uniform random variables.
 
 Our function to fit the model and compute the RMSE is:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -215,13 +168,7 @@ rmse_wrapper <- function(cost, object) svm_rmse(object, cost)
 ```
 :::
 
-
-
-
 For the nested resampling, a model needs to be fit for each tuning parameter and each bootstrap split. To do this, create a wrapper:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -234,13 +181,7 @@ tune_over_cost <- function(object) {
 ```
 :::
 
-
-
-
 Since this will be called across the set of outer cross-validation splits, another wrapper is required:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -259,13 +200,7 @@ summarize_tune_results <- function(object) {
 ```
 :::
 
-
-
-
 Now that those functions are defined, we can execute all the inner resampling loops:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -274,13 +209,7 @@ tuning_results <- map(results$inner_resamples, summarize_tune_results)
 ```
 :::
 
-
-
-
 Alternatively, since these computations can be run in parallel, we can use the furrr package. Instead of using `map()`, the function `future_map()` parallelizes the iterations using the [future package](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html). The `multisession` plan uses the local cores to process the inner resampling loop. The end results are the same as the sequential computations.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -292,15 +221,9 @@ tuning_results <- future_map(results$inner_resamples, summarize_tune_results)
 ```
 :::
 
-
-
-
 The object `tuning_results` is a list of data frames for each of the 50 outer resamples.
 
 Let's make a plot of the averaged results to see what the relationship is between the RMSE and the tuning parameters for each of the inner bootstrapping operations:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -330,15 +253,9 @@ p
 :::
 :::
 
-
-
-
 Each gray line is a separate bootstrap resampling curve created from a different 90% of the data. The blue line is a LOESS smooth of all the results pooled together.
 
 To determine the best parameter estimate for each of the outer resampling iterations:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -363,15 +280,9 @@ ggplot(results, aes(x = cost)) +
 :::
 :::
 
-
-
-
 Most of the resamples produced an optimal cost value of 2.0, but the distribution is right-skewed due to the flat trend in the resampling profile once the cost value becomes 10 or larger.
 
 Now that we have these estimates, we can compute the outer resampling results for each of the 50 splits using the corresponding tuning parameter value:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -382,19 +293,13 @@ results <-
 
 summary(results$RMSE)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.574   2.095   2.688   2.684   3.252   4.254
+#>   1.574   2.095   2.688   2.693   3.265   4.297
 ```
 :::
 
-
-
-
-The estimated RMSE for the model tuning process is 2.68.
+The estimated RMSE for the model tuning process is 2.69.
 
 What is the RMSE estimate for the non-nested procedure when only the outer resampling method is used? For each cost value in the tuning grid, 50 SVM models are fit and their RMSE values are averaged. The table of cost values and mean RMSE estimates is used to determine the best cost value. The associated RMSE is the biased estimate.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -435,15 +340,9 @@ ggplot(outer_summary, aes(x = cost, y = outer_RMSE)) +
 :::
 :::
 
-
-
-
 The non-nested procedure estimates the RMSE to be 2.62. Both estimates are fairly close.
 
 The approximately true RMSE for an SVM model with a cost value of 2.0 can be approximated with the large sample that was simulated at the beginning.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -455,15 +354,9 @@ sqrt(mean((large_dat$y - large_pred) ^ 2, na.rm = TRUE))
 ```
 :::
 
-
-
-
 The nested procedure produces a closer estimate to the approximate truth but the non-nested estimate is very similar.
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

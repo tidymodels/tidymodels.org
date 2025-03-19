@@ -11,14 +11,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: dials and scales.
@@ -37,9 +29,6 @@ We use the `new_quant_param()` function since this is a numeric parameter. The m
 
 The `range` specifies the possible values of the parameter. For our example, a minimal value might be one or two. What is the upper limit? The default in the earth package is
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -47,17 +36,11 @@ min(200, max(20, 2 * ncol(x))) + 1
 ```
 :::
 
-
-
-
 where `x` is the predictor matrix. We often put in values that are either sensible defaults or are minimal enough to work for the majority of data sets. For now, let's specify an upper limit of 10 but this will be discussed more in the next section.
 
 The other argument is `trans`, which represents a transformation that should be applied to the parameter values when working with them. For example, many regularization methods have a `penalty` parameter that tends to range between zero and some upper bound (let's say 1). The effect of going from a penalty value of 0.01 to 0.1 is much more impactful than going from 0.9 to 1.0. In such a case, it might make sense to work with this parameter in transformed units (such as the log, in this example). If new parameter values are generated at random, it helps if they are uniformly simulated in the transformed units and then converted back to the original units.
 
 The `trans` parameter accepts a transformation object from the scales package. For example:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -93,15 +76,9 @@ scales::log10_trans()
 ```
 :::
 
-
-
-
 A value of `NULL` means that no transformation should be used.
 
 A quantitative parameter function should have these two arguments and, in the function body, a call `new_quant_param()`. There are a few arguments to this function:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -115,9 +92,6 @@ args(new_quant_param)
 ```
 :::
 
-
-
-
 -   Possible types are double precision and integers. The value of `type` should agree with the values of `range` in the function definition.
 
 -   It's OK for our tuning to include the minimum or maximum, so we'll use `c(TRUE, TRUE)` for `inclusive`. If the value cannot include one end of the range, set one or both of these values to `FALSE`.
@@ -127,9 +101,6 @@ args(new_quant_param)
 -   `finalize` is an argument that can set parts of the range. This is discussed more below.
 
 Here's an example of a basic quantitative parameter object:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -156,15 +127,9 @@ num_initial_terms() %>% value_sample(5)
 ```
 :::
 
-
-
-
 ### Finalizing parameters
 
 It might be the case that the range of the parameter is unknown. For example, parameters that are related to the number of columns in a data set cannot be exactly specified in the absence of data. In those cases, a placeholder of `unknown()` can be added. This will force the user to "finalize" the parameter object for their particular data set. Let's redefine our function with an `unknown()` value:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -186,13 +151,7 @@ num_initial_terms() %>% value_sample(5)
 ```
 :::
 
-
-
-
 The `finalize` argument of `num_initial_terms()` can take a function that uses data to set the range. For example, the package already includes a few functions for finalization:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -208,13 +167,7 @@ lsf.str("package:dials", pattern = "^get_")
 ```
 :::
 
-
-
-
 These functions generally take a data frame of predictors (in an argument called `x`) and add the range of the parameter object. Using the formula in the earth package, we might use:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -234,13 +187,7 @@ num_initial_terms() %>% get_initial_mars_terms(x = mtcars[, -1])
 ```
 :::
 
-
-
-
 Once we add this function to the object, the general `finalize()` method can be used:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -262,15 +209,9 @@ num_initial_terms() %>% finalize(x = mtcars[, -1])
 ```
 :::
 
-
-
-
 ## Qualitative parameters
 
 Now let's look at an example of a qualitative parameter. If a model includes a data aggregation step, we want to allow users to tune how our parameters are aggregated. For example, in embedding methods, possible values might be `min`, `max`, `mean`, `sum`, or to not aggregate at all ("none"). Since these cannot be put on a numeric scale, they are possible values of a qualitative parameter. We'll take "character" input (not "logical"), and we must specify the allowed values. By default we won't aggregate.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -288,13 +229,7 @@ aggregation <- function(values = c("none", "min", "max", "mean", "sum")) {
 ```
 :::
 
-
-
-
 Within the dials package, the convention is to have the values contained in a separate vector whose name starts with `values_`. For example:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -312,15 +247,9 @@ aggregation <- function(values = values_aggregation) {
 ```
 :::
 
-
-
-
 This step may not make sense if you are using the function in a script and not keeping it within a package.
 
 We can use our `aggregation` parameters with dials functions.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -334,13 +263,7 @@ aggregation() %>% value_sample(3)
 ```
 :::
 
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

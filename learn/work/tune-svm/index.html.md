@@ -13,14 +13,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: kernlab, mlbench, and tidymodels.
@@ -31,9 +23,6 @@ This article demonstrates how to tune a model using grid search. Many models hav
 
 To demonstrate model tuning, we'll use the Ionosphere data in the mlbench package:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -43,9 +32,6 @@ data(Ionosphere)
 ```
 :::
 
-
-
-
 From `?Ionosphere`:
 
 > This radar data was collected by a system in Goose Bay, Labrador. This system consists of a phased array of 16 high-frequency antennas with a total transmitted power on the order of 6.4 kilowatts. See the paper for more details. The targets were free electrons in the ionosphere. "good" radar returns are those showing evidence of some type of structure in the ionosphere. "bad" returns are those that do not; their signals pass through the ionosphere.
@@ -53,9 +39,6 @@ From `?Ionosphere`:
 > Received signals were processed using an autocorrelation function whose arguments are the time of a pulse and the pulse number. There were 17 pulse numbers for the Goose Bay system. Instances in this databse are described by 2 attributes per pulse number, corresponding to the complex values returned by the function resulting from the complex electromagnetic signal. See cited below for more details.
 
 There are 43 predictors and a factor outcome. Two of the predictors are factors (`V1` and `V2`) and the rest are numeric variables that have been scaled to a range of -1 to 1. Note that the two factor predictors have sparse distributions:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -71,13 +54,7 @@ table(Ionosphere$V2)
 ```
 :::
 
-
-
-
 There's no point of putting `V2` into any model since is is a zero-variance predictor. `V1` is not but it _could_ be if the resampling process ends up sampling all of the same value. Is this an issue? It might be since the standard R formula infrastructure fails when there is only a single observed value:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -90,13 +67,7 @@ glm(Class ~ . - V2, data = Ionosphere, family = binomial)
 ```
 :::
 
-
-
-
 Let's remove these two problematic variables:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -105,15 +76,9 @@ Ionosphere <- Ionosphere %>% select(-V1, -V2)
 ```
 :::
 
-
-
-
 ## Inputs for the search
 
 To demonstrate, we'll fit a radial basis function support vector machine to these data and tune the SVM cost parameter and the $\sigma$ parameter in the kernel function:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -125,18 +90,12 @@ svm_mod <-
 ```
 :::
 
-
-
-
 In this article, tuning will be demonstrated in two ways, using:
 
 - a standard R formula, and 
 - a recipe.
 
 Let's create a simple recipe here:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -150,13 +109,7 @@ iono_rec <-
 ```
 :::
 
-
-
-
 The only other required item for tuning is a resampling strategy as defined by an rsample object. Let's demonstrate using basic bootstrapping:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -166,15 +119,9 @@ iono_rs <- bootstraps(Ionosphere, times = 30)
 ```
 :::
 
-
-
-
 ## Optional inputs
 
 An _optional_ step for model tuning is to specify which metrics should be computed using the out-of-sample predictions. For classification, the default is to calculate the log-likelihood statistic and overall accuracy. Instead of the defaults, the area under the ROC curve will be used. To do this, a yardstick package function can be used to create a metric set:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -183,15 +130,9 @@ roc_vals <- metric_set(roc_auc)
 ```
 :::
 
-
-
-
 If no grid or parameters are provided, a set of 10 hyperparameters are created using a space-filling design (via a Latin hypercube). A grid can be given in a data frame where the parameters are in columns and parameter combinations are in rows. Here, the default will be used.
 
 Also, a control object can be passed that specifies different aspects of the search. Here, the verbose option is turned off and the option to save the out-of-sample predictions is turned on. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -200,15 +141,9 @@ ctrl <- control_grid(verbose = FALSE, save_pred = TRUE)
 ```
 :::
 
-
-
-
 ## Executing with a formula
 
 First, we can use the formula interface:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -242,13 +177,7 @@ formula_res
 ```
 :::
 
-
-
-
 The `.metrics` column contains tibbles of the performance metrics for each tuning parameter combination:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -274,13 +203,7 @@ formula_res %>%
 ```
 :::
 
-
-
-
 To get the final resampling estimates, the `collect_metrics()` function can be used on the grid object:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -303,13 +226,7 @@ estimates
 ```
 :::
 
-
-
-
 The top combinations are:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -326,15 +243,9 @@ show_best(formula_res, metric = "roc_auc")
 ```
 :::
 
-
-
-
 ##  Executing with a recipe
 
 Next, we can use the same syntax but pass a *recipe* in as the pre-processor argument:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -368,13 +279,7 @@ recipe_res
 ```
 :::
 
-
-
-
 The best setting here is:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -391,15 +296,9 @@ show_best(recipe_res, metric = "roc_auc")
 ```
 :::
 
-
-
-
 ## Out-of-sample predictions
 
 If we used `save_pred = TRUE` to keep the out-of-sample predictions for each resample during tuning, we can obtain those predictions, along with the tuning parameters and resample identifier, using `collect_predictions()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -422,13 +321,7 @@ collect_predictions(recipe_res)
 ```
 :::
 
-
-
-
 We can obtain the hold-out sets for all the resamples augmented with the predictions using `augment()`, which provides opportunities for flexible visualization of model results:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -444,13 +337,7 @@ augment(recipe_res) %>%
 :::
 :::
 
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

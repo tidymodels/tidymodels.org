@@ -11,14 +11,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: modeldata and tidymodels.
@@ -41,9 +33,6 @@ As an example, we will create a step for converting data into percentiles.
 
 Let's create a step that replaces the value of a variable with its percentile from the training set. The example data we'll use is from the modeldata package:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -65,13 +54,7 @@ biomass_te <- biomass[biomass$dataset == "Testing",]
 ```
 :::
 
-
-
-
 To illustrate the transformation with the `carbon` variable, note the training set distribution of this variable with a vertical line below for the first value of the test set. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -88,9 +71,6 @@ ggplot(biomass_tr, aes(x = carbon)) +
 :::
 :::
 
-
-
-
 Based on the training set, 42.1% of the data are less than a value of 46.35. There are some applications where it might be advantageous to represent the predictor values as percentiles rather than their original values. 
 
 Our new step will do this computation for any numeric variables of interest. We will call this new recipe step `step_percentiles()`. The code below is designed for illustration and not speed or best practices. We've left out a lot of error trapping that we would want in a real implementation.  
@@ -104,9 +84,6 @@ The step `step_percentiles()` that will be created on this page, has been implem
 To start, there is a _user-facing_ function. Let's call that `step_percentiles()`. This is just a simple wrapper around a _constructor function_, which defines the rules for any step object that defines a percentile transformation. We'll call this constructor `step_percentiles_new()`. 
 
 The function `step_percentiles()` takes the same arguments as your function and simply adds it to a new recipe. The `...` signifies the variable selectors that can be used.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -137,9 +114,6 @@ step_percentiles <- function(
 }
 ```
 :::
-
-
-
 
 You should always keep the first four arguments (`recipe` though `trained`) the same as listed above. Some notes:
 
@@ -174,9 +148,6 @@ step_percentiles() calls recipes::add_step()
 
 `step()` is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using `subclass = "percentiles"` will set the class of new objects to `"step_percentiles"`. 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -195,9 +166,6 @@ step_percentiles_new <-
   }
 ```
 :::
-
-
-
 
 This constructor function should have no default argument values. Defaults should be set in the user-facing step object. 
 
@@ -223,9 +191,6 @@ The first thing that you might want to do in the `prep()` function is to transla
  The `recipes_eval_select()` function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps. 
 :::
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -236,15 +201,9 @@ prep.step_percentiles <- function(x, training, info = NULL, ...) {
 ```
 :::
 
-
-
-
 After this function call, it is a good idea to check that the selected columns have the appropriate type (e.g. numeric for this example). See `recipes::check_type()` to do this for basic types. 
 
 Once we have this, we can save the approximation grid. For the grid, we will use a helper function that enables us to run `rlang::exec()` to splice in any extra arguments contained in the `options` list to the call to `quantile()`: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -265,13 +224,7 @@ get_train_pctl(biomass_tr$carbon)
 ```
 :::
 
-
-
-
 Now, the `prep()` method can be created: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -310,9 +263,6 @@ prep.step_percentiles <- function(x, training, info = NULL, ...) {
 ```
 :::
 
-
-
-
 We suggest favoring `rlang::abort()` and `rlang::warn()` over `stop()` and `warning()`. The former can be used for better traceback results.
 
 ## Create the `bake` method
@@ -327,9 +277,6 @@ where `object` is the updated step function that has been through the correspond
 
 Here is the code to convert the new data to percentiles. The input data (`x` below) comes in as a numeric vector and the output is a vector of approximate percentiles: 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -342,13 +289,7 @@ pctl_by_approx <- function(x, ref) {
 ```
 :::
 
-
-
-
 We will loop over the variables one by and and apply the transformation. `check_new_data()` is used to make sure that the variables that are affected in this step are present.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -371,9 +312,6 @@ bake.step_percentiles <- function(object, new_data, ...) {
 ```
 :::
 
-
-
-
 ::: {.callout-note}
 You need to import `recipes::prep()` and `recipes::bake()` to create your own step function in a package. 
 :::
@@ -381,9 +319,6 @@ You need to import `recipes::prep()` and `recipes::bake()` to create your own st
 ## Run the example
 
 Let's use the example data to make sure that it works: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -412,13 +347,7 @@ mean(biomass_tr$oxygen   <= biomass_te$oxygen[1])
 ```
 :::
 
-
-
-
 The plot below shows how the original hydrogen percentiles line up with the estimated values:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -443,9 +372,6 @@ ggplot(biomass_tr, aes(x = hydrogen)) +
 :::
 :::
 
-
-
-
 These line up very nicely! 
 
 ## Custom check operations 
@@ -468,9 +394,6 @@ There are a few other S3 methods that can be created for your step function. The
 ### A print method
 
 If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `print_step()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -526,8 +449,6 @@ rec_obj
 ```
 :::
 
-
-
  
 ### Methods for declaring required packages
 
@@ -541,9 +462,6 @@ a clean R session then run: install.packages("some_package")
 
 There is an S3 method that can be used to declare what packages should be loaded when using the step. For a hypothetical step that relies on the `hypothetical` package, this might look like: 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -553,17 +471,12 @@ required_pkgs.step_hypothetical <- function(x, ...) {
 ```
 :::
 
-
-
-
 In this example, `myrecipespkg` is the package where the step resides (if it is in a package).
 
 The reason to declare what packages should be loaded is parallel processing. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a recipe step is not loaded in the worker processes, the `prep()` methods cannot be found and an error occurs. 
 
 If this S3 method is used for your step, you can rely on this for checking the installation: 
  
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -575,9 +488,6 @@ recipes::recipes_pkg_check(required_pkgs.step_hypothetical())
 ```
 :::
 
-
-
-
 If you'd like an example of this in a package, please take a look at the [embed](https://github.com/tidymodels/embed/) or [themis](https://github.com/tidymodels/themis/) package.
 
 ### A tidy method
@@ -585,9 +495,6 @@ If you'd like an example of this in a package, please take a look at the [embed]
 The `broom::tidy()` method is a means to return information about the step in a usable format. For our step, it would be helpful to know the reference values. 
 
 When the recipe has been prepped, those data are in the list `ref_dist`. A small function can be used to reformat that data into a tibble. It is customary to return the main values as `value`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -621,13 +528,7 @@ format_pctl(pctl_step_object$ref_dist[["hydrogen"]])
 ```
 :::
 
-
-
-
 The tidy method could return these values for each selected column. Before `prep()`, missing values can be used as placeholders. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -676,15 +577,9 @@ tidy(rec_obj, number = 1)
 ```
 :::
 
-
-
-
 ### Methods for tuning parameters
 
 The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn't really have any tunable parameters, so we will demonstrate using `step_poly()`, which returns a polynomial expansion of selected columns. Its function definition has the arguments: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -696,9 +591,6 @@ args(step_poly)
 #> NULL
 ```
 :::
-
-
-
 
 The argument `degree` is tunable.
 
@@ -720,9 +612,6 @@ The main piece of information that requires some detail is `call_info`. This is 
 
 For example, for a nearest-neighbors `neighbors` parameter, this value is just: 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -735,9 +624,6 @@ rlang::eval_tidy(new_param_call)
 #> Range: [1, 10]
 ```
 :::
-
-
-
 
 For `step_poly()`, a dials object is needed that returns an integer that is the number of new columns to create. It turns out that there are a few different types of tuning parameters related to degree: 
 
@@ -752,9 +638,6 @@ spline_degree : function (range = c(3L, 10L), trans = NULL)
 Looking at the `range` values, some return doubles and others return integers. For our problem, `degree_int()` would be a good choice. 
 
 For `step_poly()` the `tunable()` S3 method could be: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -771,13 +654,7 @@ tunable.step_poly <- function (x, ...) {
 ```
 :::
 
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

@@ -11,14 +11,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: mda, modeldata, and tidymodels.
@@ -36,9 +28,6 @@ This article describes the process of creating a new model function. Before proc
 
 As an example, we'll create a function for _mixture discriminant analysis_. There are [a few packages](http://search.r-project.org/cgi-bin/namazu.cgi?query=%22mixture+discriminant%22&max=100&result=normal&sort=score&idxname=functions) that implement this but we'll focus on `mda::mda()`:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -50,9 +39,6 @@ str(mda::mda)
 #>     trace = FALSE, ...)
 ```
 :::
-
-
-
 
 The main hyperparameter is the number of subclasses. We'll name our function `discrim_mixture()`. 
 
@@ -78,9 +64,6 @@ If you are adding a new model from your own package, you can use these functions
 
 We will add the MDA model using the model type `discrim_mixture()`. Since this is a classification method, we only have to register a single mode:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -96,13 +79,7 @@ set_dependency("discrim_mixture", eng = "mda", pkg = "mda")
 ```
 :::
 
-
-
-
 These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -123,9 +100,6 @@ show_model_info("discrim_mixture")
 ```
 :::
 
-
-
-
 The next step is to declare the main arguments to the model. These are declared independent of the mode.  To specify the argument, there are a few slots to fill in:
 
  * The name that parsnip uses for the argument. In general, we try to use non-jargony names for arguments (e.g. "penalty" instead of "lambda" for regularized regression). We recommend consulting [the model argument table available here](/find/parsnip/) to see if an existing argument name can be used before creating a new one. 
@@ -137,9 +111,6 @@ The next step is to declare the main arguments to the model. These are declared 
  * A logical value for whether the argument can be used to generate multiple predictions for a single R object. For example, for boosted trees, if a model is fit with 10 boosting iterations, many modeling packages allow the model object to make predictions for any iterations less than the one used to fit the model. In general this is not the case so one would use `has_submodels = FALSE`. 
  
 For `mda::mda()`, the main tuning parameter is `subclasses` which we will rewrite as `sub_classes`. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -170,9 +141,6 @@ show_model_info("discrim_mixture")
 ```
 :::
 
-
-
-
 ### Step 2. Create the model function
 
 This is a fairly simple function that can follow a basic template. The main arguments to our function will be:
@@ -182,9 +150,6 @@ This is a fairly simple function that can follow a basic template. The main argu
  * The argument names (`sub_classes` here). These should be defaulted to `NULL`.
 
 A basic version of the function is:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -212,9 +177,6 @@ discrim_mixture <-
 ```
 :::
 
-
-
-
 This is pretty simple since the data are not exposed to this function. 
 
 ::: {.callout-warning}
@@ -234,9 +196,6 @@ Now that parsnip knows about the model, mode, and engine, we can give it the inf
  * `defaults` is an optional list of arguments to the fit function that the user can change, but whose defaults can be set here. This isn't needed in this case, but is described later in this document.
 
 For the first engine:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -273,9 +232,6 @@ show_model_info("discrim_mixture")
 ```
 :::
 
-
-
-
 We also set up the information on how the predictors should be handled. These options ensure that the data that parsnip gives to the underlying model allows for a model fit that is as similar as possible to what it would have produced directly.
 
  * `predictor_indicators` describes whether and how to create indicator/dummy variables from factor predictors. There are three options: `"none"` (do not expand factor predictors), `"traditional"` (apply the standard `model.matrix()` encodings), and `"one_hot"` (create the complete set including the baseline level for all factors). 
@@ -285,9 +241,6 @@ We also set up the information on how the predictors should be handled. These op
  * `remove_intercept` removes the intercept column *after* `model.matrix()` is finished. This can be useful if the model function (e.g. `lm()`) automatically generates an intercept.
 
 * `allow_sparse_x` specifies whether the model can accommodate a sparse representation for predictors during fitting and tuning.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -306,10 +259,6 @@ set_encoding(
 ```
 :::
 
-
-
-
-
 ### Step 4. Add modules for prediction
 
 Similar to the fitting module, we specify the code for making different types of predictions. To make hard class predictions, the `class_info` object below contains the details. The elements of the list are:
@@ -321,9 +270,6 @@ Similar to the fitting module, we specify the code for making different types of
 The parsnip prediction code will expect the result to be an unnamed character string or factor. This will be coerced to a factor with the same levels as the original data.  
 
 To add this method to the model environment, a similar set function, `set_pred()`, is used:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -356,17 +302,11 @@ set_pred(
 ```
 :::
 
-
-
-
 A similar call can be used to define the class probability module (if they can be computed). The format is identical to the `class` module but the output is expected to be a tibble with columns for each factor level. 
 
 As an example of the `post` function, the data frame created by `mda:::predict.mda()` will be converted to a tibble. The arguments are `x` (the raw results coming from the predict method) and `object` (the parsnip model fit object). The latter has a sub-object called `lvl` which is a character string of the outcome's factor levels (if any). 
 
 We register the probability module. There is a template function that makes it slightly easier to format the objects:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -413,22 +353,15 @@ show_model_info("discrim_mixture")
 ```
 :::
 
-
-
-
 If this model could be used for regression situations, we could also add a `numeric` module. For these predictions, the model requires an unnamed numeric vector output. 
 
 Examples are [here](https://github.com/tidymodels/parsnip/blob/master/R/linear_reg_data.R) and [here](https://github.com/tidymodels/parsnip/blob/master/R/rand_forest_data.R). 
-
 
 ### Does it work? 
 
 As a developer, one thing that may come in handy is the `translate()` function. This will tell you what the model's eventual syntax will be. 
 
 For example:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -447,13 +380,7 @@ discrim_mixture(sub_classes = 2) %>%
 ```
 :::
 
-
-
-
 Let's try it on a data set from the modeldata package:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -517,16 +444,9 @@ predict(mda_fit, new_data = example_test) %>%
 ```
 :::
 
-
-
-
-
 ## Add an engine
 
 The process for adding an engine to an existing model is _almost_ the same as building a new model but simpler with fewer steps. You only need to add the engine-specific aspects of the model. For example, if we wanted to fit a linear regression model using M-estimation, we could only add a new engine. The code for the `rlm()` function in MASS is pretty similar to `lm()`, so we can copy that code and change the package/function names:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -597,9 +517,6 @@ linear_reg() %>%
 ```
 :::
 
-
-
-
 ## Add parsnip models to another package
 
 The process here is almost the same. All of the previous functions are still required but their execution is a little different. 
@@ -607,9 +524,6 @@ The process here is almost the same. All of the previous functions are still req
 For parsnip to register them, that package must already be loaded. For this reason, it makes sense to have parsnip in the "Depends" category of the DESCRIPTION file of your package. 
 
 The first difference is that the functions that define the model must be inside of a wrapper function that is called when your package is loaded. For our example here, this might look like: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -624,13 +538,7 @@ make_discrim_mixture_mda <- function() {
 ```
 :::
 
-
-
-
 This function is then executed when your package is loaded: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -641,9 +549,6 @@ This function is then executed when your package is loaded:
 }
 ```
 :::
-
-
-
 
 For an example package that uses parsnip definitions, take a look at the [discrim](https://github.com/tidymodels/discrim) package.
 
@@ -658,7 +563,6 @@ set_dependency("discrim_mixture", eng = "mda", pkg = "mixedup")
 ```
 
 Parallel processing requires this explicit dependency setting. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux will load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a parsnip model is not loaded in the worker processes, the model will not have an entry in parsnip's internal database (and produce an error). 
-
 
 ## Your model, tuning parameters, and you
 
@@ -680,9 +584,6 @@ The main piece of information that requires some detail is `call_info`. This is 
 
 For example, for a nearest-neighbors `neighbors` parameter, this value is just: 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -696,13 +597,7 @@ rlang::eval_tidy(new_param_call)
 ```
 :::
 
-
-
-
 For `discrim_mixture()`, a dials object is needed that returns an integer that is the number of sub-classes that should be create. We can create a dials parameter function for this:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -720,13 +615,7 @@ sub_classes <- function(range = c(1L, 10L), trans = NULL) {
 ```
 :::
 
-
-
-
 If this were in the same package as the other specifications for the parsnip engine, we could use: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -743,13 +632,7 @@ tunable.discrim_mixture <- function(x, ...) {
 ```
 :::
 
-
-
-
 Once this method is in place, the tuning functions can be used: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -773,11 +656,6 @@ show_best(mda_tune_res, metric = "roc_auc")
 ```
 :::
 
-
-
-
-
-
 ## Pro-tips, what-ifs, exceptions, FAQ, and minutiae
 
 There are various things that came to mind while developing this resource.
@@ -787,9 +665,6 @@ There are various things that came to mind while developing this resource.
 There are some models (e.g. glmnet, plsr, Cubist, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via `multi_predict()`, rather than `predict()`.
 
 For example, if we fit a linear regression model via `glmnet` and predict for 10 different penalty values:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -824,17 +699,11 @@ preds$.pred[[1]]
 ```
 :::
 
-
-
-
 This gives a list column `.pred` which contains a tibble per row, each tibble corresponding to one row in `new_data`. Within each tibble are columns for the parameter we vary, here `penalty`, and the predictions themselves.
 
 **What do I do about how my model handles factors or categorical data?**
 
 Some modeling functions in R create indicator/dummy variables from categorical data when you use a model formula (typically using `model.matrix()`), and some do not. Some examples of models that do _not_ create indicator variables include tree-based models, naive Bayes models, and multilevel or hierarchical models. The tidymodels ecosystem assumes a `model.matrix()`-like default encoding for categorical data used in a model formula, but you can change this encoding using `set_encoding()`. For example, you can set predictor encodings that say, "leave my data alone," and keep factors as is:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -852,9 +721,6 @@ set_encoding(
 ```
 :::
 
-
-
-
 ::: {.callout-note}
 There are three options for `predictor_indicators`: 
 
@@ -869,9 +735,6 @@ To learn more about encoding categorical predictors, check out [this blog post](
 
 You might want to set defaults that can be overridden by the user. For example, for logistic regression with `glm()`, it make sense to default to `family = binomial`. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -879,13 +742,7 @@ defaults = list(family = expr(binomial))
 ```
 :::
 
-
-
-
 So that is the default:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -916,9 +773,6 @@ logistic_reg() %>%
 ```
 :::
 
-
-
-
 That's what `defaults` are for. 
 
 **What if I want more complex defaults?**
@@ -926,9 +780,6 @@ That's what `defaults` are for.
 The `translate()` function can be used to check values or set defaults once the model's mode is known. To do this, you can create a model-specific S3 method that first calls the general method (`translate.model_spec()`) and then makes modifications or conducts error traps. 
 
 For example, the ranger and randomForest package functions have arguments for calculating importance. One is a logical and the other is a string. Since this is likely to lead to a bunch of frustration and GitHub issues, we can put in a check:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -949,11 +800,7 @@ translate.rand_forest <- function (x, engine, ...){
 ```
 :::
 
-
-
-
 As another example, `nnet::nnet()` has an option for the final layer to be linear (called `linout`). If `mode = "regression"`, that should probably be set to `TRUE`. You couldn't do this with the `args` (described above) since you need the function translated first. 
-
 
 **My model fit requires more than one function call. So....?**
 
@@ -964,7 +811,6 @@ The best course of action is to write wrapper so that it can be one call. This w
 There might be non-trivial transformations that the model prediction code requires (such as converting to a sparse matrix representation, etc.)
 
 This would **not** include making dummy variables and `model.matrix()` stuff. The parsnip infrastructure already does that for you. 
-
 
 **Why would I post-process my predictions?**
 
@@ -980,9 +826,6 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 
  
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

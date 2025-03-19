@@ -12,14 +12,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: tidymodels.
@@ -29,9 +21,6 @@ This article demonstrates how to create and use importance weights in a predicti
 ## Example Data
 
 To demonstrate we will use the Chicago data from the modeldata package.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -43,9 +32,6 @@ Chicago <- Chicago %>%
   select(ridership, date, one_of(stations))
 ```
 :::
-
-
-
 
 From `?Chicago`
 
@@ -67,9 +53,6 @@ $$ weight = base ^ x $$
 
 where `base` is some constant and `x` is the number of days. To make sure that we select a reasonable `base`, we need to do some manual testing, starting with looking at how old the oldest observation is.
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -78,13 +61,7 @@ difftime("2016-01-01", min(Chicago$date))
 ```
 :::
 
-
-
-
 Using this information we can visualize the weight curve, to see if we like the value of `base`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -101,15 +78,9 @@ tibble_days %>%
 :::
 :::
 
-
-
-
 setting `base` to 0.99 appears to be down weighted too much. Any observation more than a year old would have no influence.
 
 Let us try a few more values to find 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -127,13 +98,7 @@ map_dfr(
 :::
 :::
 
-
-
-
 From this, we could pick something around 0.999 since it gives a better balance. Let's create a small function to help us encode this weight. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -148,13 +113,7 @@ weights_from_dates <- function(x, ref) {
 ```
 :::
 
-
-
-
 We then modify `Chicago` to add a weight column, explicitly making it an importance weight with `importance_weight()`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -165,17 +124,11 @@ Chicago <- Chicago %>%
 ```
 :::
 
-
-
-
 This approach to creating importance weights from dates is not limited to cases where we have daily observations. You are free to create similar weights if you have gaps or repeated observations within the same day. Likewise, you don't need to use days as the unit. Seconds, weeks, or years could be used as well.
 
 ## Modeling
 
 We start by splitting up our data into a training and testing set based on the day `"2016-01-01"`. We added weights to the data set before splitting it so each set has weights.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -185,13 +138,7 @@ Chicago_test <- Chicago %>% filter(date >= "2016-01-01")
 ```
 :::
 
-
-
-
 Next, we are going to create a recipe. The weights won't have any influence on the preprocessing since none of these operations are supervised and we are using importance weights.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -210,13 +157,7 @@ base_recipe <-
 ```
 :::
 
-
-
-
 Next we need to build the rest of the workflow. We use a linear regression specification
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -227,13 +168,7 @@ lm_spec <-
 ```
 :::
 
-
-
-
 and we add these together in the workflow. To activate the case weights, we use the `add_case_weights()` function to specify the name of the case weights being used.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -268,13 +203,7 @@ lm_wflow
 ```
 :::
 
-
-
-
 With all that done we can fit the workflow with the usual syntax: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -316,13 +245,7 @@ lm_fit
 ```
 :::
 
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

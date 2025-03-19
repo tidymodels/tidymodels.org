@@ -13,12 +13,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
 ## Introduction 
 
 The tidymodels framework focuses on evaluating models via _empirical validation_: out-of-sample data are used to compute model accuracy/fitness measures. Because of this, data splitting and resampling are essential components of model development. 
@@ -35,18 +29,7 @@ This article discusses using [the bootstrap](https://en.wikipedia.org/wiki/Boots
 
 ## Example Data
 
-
-
-
-
-
-
-
-
 We'll use the [delivery time data](https://modeldata.tidymodels.org/reference/deliveries.html) and follow the analysis used in [_Applied Machine Learning for Tabular Data_](https://aml4td.org/chapters/whole-game.html#sec-delivery-times). The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with `item_`):
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -89,13 +72,7 @@ str(deliveries)
 ```
 :::
 
-
-
-
 Given the amount of data, a validation set was used _in lieu_ of multiple resamples. This means that we can fit models on the training set, evaluate/compare them with the validation set, and reserve the test set for a final performance assessment (after model development). The data splitting code is:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -114,15 +91,10 @@ delivery_rs    <- validation_set(delivery_split)
 ```
 :::
 
-
-
-
 ## Tuning a Model
 
 To demonstrate, we'll use a multivariate adaptive regression spline ([MARS](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22multivariate+adaptive+regression+splines%22&btnG=)) model produced by the earth package. The original analysis of these data shows some significant interactions between predictors, so we will specify a model that can estimate them using the argument `prod_degree = 2`. Let's create a model specification that tunes the number of terms to retain: 
  
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -133,13 +105,7 @@ mars_spec <-
 ```
 :::
 
-
-
-
 Let's use grid search to evaluate a grid of values between 2 and 50. We'll use `tune_grid()` with an option to save the out-of-sample (i.e., validation set) predictions for each candidate model in the grid. By default, for regression models, the function computes the root mean squared error (RMSE) and R<sup>2</sup>:  
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -158,13 +124,7 @@ mars_res <-
 ```
 :::
 
-
-
-
 How did the model look?
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -176,9 +136,6 @@ autoplot(mars_res)
 ![](figs/perf-plot-1.svg){fig-align='center' width=672}
 :::
 :::
-
-
-
 
 After about 20 retained terms, both statistics appear to plateau.  However, we have no sense of the noise around these values. Is a model with 20 terms just as good as a model using 40? In other words, is the slight improvement in RMSE that we see around 39 terms real or within the experimental noise? Forty is a lot of model terms, but that smidgeon of improvement might really be worth it for our application. 
 
@@ -193,9 +150,6 @@ There is [some theory](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%
 For our application, we'll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. Note that we are not refitting the model; we will be solely relying on the existing out-of-sample predictions from the validation set. 
 
 There's a tidymodels function called `int_pctl()` for this purpose. It has a method to work with objects produced by the tune package, such as our `mars_res` object. Let's compute 90% confidence intervals using 2,000 bootstrap samples:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -220,13 +174,7 @@ mars_boot
 ```
 :::
 
-
-
-
 The results have columns for the mean of the sampling distribution (`.estimate`) and the upper and lower confidence bounds (`.upper` and `.lower`, respectively). Let's visualize these results: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -245,17 +193,11 @@ mars_boot %>%
 :::
 :::
 
-
-
-
 Those are very tight! Maybe there is some credence to using many terms. Let's say that 40 terms seems like a reasonable value for that tuning parameter since the high degree of certainty indicates that the small drop in RMSE is likely to be real. 
 
 ## Test Set Intervals
 
 Suppose the MARS model was the best we could do for these data. We would then fit the model (with 40 terms) on the training set then finally evaluate the test set. tidymodels has a function called `last_fit()` that uses our original data splitting object (`delivery_split`) and the model specification. To get the test set predictions, we can use `collect_metrics()`: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -277,13 +219,7 @@ collect_metrics(mars_test_res)
 ```
 :::
 
-
-
-
 These values are pretty consistent with what the validation set (and its confidence intervals) produced: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -297,13 +233,7 @@ mars_boot %>% filter(num_terms == 40)
 ```
 :::
 
-
-
-
 `int_pctl()` also works on objects produced by `last_fit()`: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -318,9 +248,6 @@ mars_test_boot
 #> 2 rsq     bootstrap   0.883     0.892  0.900 Preprocessor1_Model1
 ```
 :::
-
-
-
 
 So, to sum up the main idea: If you're not getting multiple estimates of your performance metric from your resample procedure—like when using a validation set—you can still get interval estimates for your metrics. A metric-agnostic approach is to bootstrap your predictions and recalculate your metrics based on those.
 
@@ -339,9 +266,6 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
  
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 

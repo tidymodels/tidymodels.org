@@ -13,14 +13,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: censored, prodlim, and tidymodels.
@@ -40,9 +32,6 @@ To start, let's define the various types of times that will be mentioned:
 ## Example data
 
 As an example, we'll simulate some data with the prodlim package, using the methods of [Bender _et al_ (2005)](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Generating+survival+times+to+simulate+Cox+proportional+hazards+models.%22&btnG=). A training and a validation set are simulated. We'll also load the censored package so that we can fit a model to these time-to-event data:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -64,13 +53,7 @@ sim_val <- testing(split)
 ```
 :::
 
-
-
-
 We'll need a model to illustrate the code and concepts. Let's fit a bagged survival tree model to the training set:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -91,13 +74,7 @@ bag_tree_fit
 ```
 :::
 
-
-
-
 Using this model, we can make predictions of different types and `augment()` provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -123,13 +100,7 @@ val_pred
 ```
 :::
 
-
-
-
 The observed data are in the `event_time` column. The predicted survival probabilities are in the `.pred` column. This is a list column with a data frame for each observation, containing the predictions at the 85 evaluation time points in the (nested) column `.pred_survival`. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -152,11 +123,7 @@ val_pred$.pred[[1]]
 ```
 :::
 
-
-
-
 First, let's dive into how to convert the observed event time in `event_time` to a binary version. Then we will discuss the remaining columns as part of generating the required weights for the dynamic performance metrics.
-
 
 ## Converting censored data to binary data
 
@@ -168,17 +135,11 @@ To assess model performance at evaluation time $t$, we turn the observed event t
 
 We can use binary versions of the observations in the first two categories to compute binary performance metrics, but the observations in the third category are not used directly in these calculations. (They do influence the calculation of the weights, see next section.) So our usable sample size changes with the evaluation time.
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/plot-graf-categories-1.svg){fig-align='center' width=864}
 :::
 :::
-
-
-
 
 ## Censoring weights
 
@@ -190,17 +151,11 @@ Every time a censored regression model is created using tidymodels, the RKM is e
 
 For our simulated data, here is what the RKM curve looks like: 
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](figs/RKM-1.svg){fig-align='center' width=672}
 :::
 :::
-
-
-
 
 The red rug on the bottom shows the training point event times and the blue values at the top represent the times for the censored training set observations. As (evaluation) time increases, we pass more and more observed time points, and the probability of being censored, i.e., the probability of an observation to fall into category 2, decreases.
 
@@ -215,9 +170,6 @@ First, when do we evaluate the probability of censoring? There are different app
 - If the evaluation time is greater than or equal to the observed censoring time, the observation falls into category 3 and is not used, i.e., also no weight is needed.
 
 We call this time at which to predict the probability of censoring the _weight time_. Here's an example using the first data point in the validation set: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -242,11 +194,6 @@ dyn_val_pred %>%
 ```
 :::
 
-
-
-
-
-
 This observation was an event, observed at time 4.832 The column `.weight_time` captures at which time the probability of censoring was calculated. Up until that event time, the probability of being censored is computed at the evaluation time. After that, it is based on the event time. 
 
 We add a slight modification to the weight time: If our evaluation time is today, we don't have today's data yet. In tidymodels, we calculate the probability of censoring just before the requested weight time. We are basically subtracting a small numerical value from the weight time used in the RKM model. You'll only really see a difference if there is a bulk of censored observations at the original evaluation time.
@@ -258,9 +205,6 @@ Finally, we use a simple RKM curve (i.e., no covariates or strata). This implies
 To illustrate how these two tools for accounting for censoring are used in calculating dynamic performance metrics, we'll take a look here at the 2x2 confusion matrices at a few evaluation time points. More details on performance metrics for censored data are in the aforementioned [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
 
 First, let's turn the observed event time data and the predictions into their binary versions.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -292,13 +236,7 @@ binary_encoding <-
 ```
 :::
 
-
-
-
 Remember how observations falling into category 3 are removed from the analysis? This means we'll likely have fewer data points to evaluate as the evaluation time increases. This implies that the variation in the metrics will be considerable as evaluation time goes on. For our simulated training set: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -317,9 +255,6 @@ dyn_val_pred %>%
 :::
 :::
 
-
-
-
 Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:
 
 ```r
@@ -329,9 +264,6 @@ binary_encoding %>%
 ```
 
 For censored regression problems, we need to additionally use the censoring weights so we'll include them via the `case_weights` argument:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -348,19 +280,11 @@ binary_encoding %>%
 ```
 :::
 
-
-
-
-
-
 The values in the cells are the sum of the censoring weights, There are 14 actual events (out of 492 usable observations) before this evaluation time, so there are empty cells. Also note that the cell values are close to the actual counts. This early, the predicted censoring probabilities are very close to one so their inverse values are also. 
 
 This early, performance looks very good but that is mostly because there are few events.
 
 Let's shift to an evaluation time of 5.0. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -377,17 +301,9 @@ binary_encoding %>%
 ```
 :::
 
-
-
-
-
-
 Now we have fewer total observations to consider (391 instead of 492 usable values) and more events (154 this time). Performance is fairly good; the sensitivity is 66.8% and the specificty is 82.3%.
 
 What happends when the evaluation time is 17?
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -404,11 +320,6 @@ binary_encoding %>%
 ```
 :::
 
-
-
-
-
-
 The data are overwhelmingly events. Also, the censoring weights are larger now since the probability of being censored is very low. The mean censoring weight is 1.96.
 
 This concludes the illustration of how to account for censoring when using a confusion matrix for performance assessment. There's more on dynamic performance metrics in the [Dynamic Performance Metrics for Event Time Data](../survival-metrics/) article.
@@ -422,11 +333,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 * To properly estimate statistical quantities, we weight the computations by the inverse of the probability of being censored. 
 * tidymodels currently assumes non-informative censoring. 
 
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
