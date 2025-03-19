@@ -341,6 +341,10 @@ recipe_functions_with_names <- recipe_functions %>%
     name = stringr::str_remove(name, "</tt></a>")
   )
 
+library(textrecipes)
+library(embed)
+library(extrasteps)
+
 sparse_steps_generate <- .S3methods(".recipes_estimate_sparsity") %>%
   as.character() %>%
   stringr::str_remove(".recipes_estimate_sparsity.") %>%
