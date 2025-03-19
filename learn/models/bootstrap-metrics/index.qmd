@@ -44,12 +44,12 @@ This article discusses using [the bootstrap](https://en.wikipedia.org/wiki/Boots
 
 library(tidymodels)
 # quietly use parallel process
-library(doMC)
+library(future)
 
 tidymodels_prefer()
 theme_set(theme_bw())
 options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
-registerDoMC(cores = parallel::detectCores(logical = FALSE))
+plan(multisession, workers = parallel::detectCores(logical = FALSE))
 ```
 
 We'll use the [delivery time data](https://modeldata.tidymodels.org/reference/deliveries.html) and follow the analysis used in [_Applied Machine Learning for Tabular Data_](https://aml4td.org/chapters/whole-game.html#sec-delivery-times). The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with `item_`):

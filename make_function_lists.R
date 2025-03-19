@@ -10,6 +10,7 @@ library(fs)
 library(pkgdown)
 library(urlchecker)
 library(stringr)
+library(readr)
 
 # ------------------------------------------------------------------------------
 
@@ -18,17 +19,25 @@ theme_set(theme_bw())
 options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
 
 # ------------------------------------------------------------------------------
-# Use the pkgdown package to parse the source files and put them into a usable format
+# Use the pkgdown package to parse the source files and put them into a usable
+# format
 
-# TODO find a better way to figure out how to find the true "check_" recipe operations
-# from just the source files
+# TODO find a better way to figure out how to find the true "check_" recipe
+# operations from just the source files
 
-get_pkg_info <- function(pkg, pth = tempdir(), keep_internal = FALSE, pattern = NULL) {
+get_pkg_info <- function(
+  pkg,
+  pth = tempdir(),
+  keep_internal = FALSE,
+  pattern = NULL
+) {
   src_file <-
-    download.packages(pkg,
-                      destdir = pth,
-                      repos = "https://cran.rstudio.com/",
-                      quiet = TRUE)
+    download.packages(
+      pkg,
+      destdir = pth,
+      repos = "https://cran.rstudio.com/",
+      quiet = TRUE
+    )
   if (nrow(src_file) != length(pkg)) {
     return(NULL)
     rlang::warn(glue::glue("package {pkg} was not downloaded"))
@@ -50,65 +59,70 @@ get_pkg_info <- function(pkg, pth = tempdir(), keep_internal = FALSE, pattern = 
     res %>%
     dplyr::select(file_out, functions = alias, title) %>%
     tidyr::unnest(functions) %>%
-    mutate(package = pkg, all_urls = list(pkg_info$desc$get_urls())) %>%
-    relocate(package, all_urls)
+    dplyr::mutate(package = pkg, all_urls = list(pkg_info$desc$get_urls())) %>%
+    dplyr::relocate(package, all_urls)
   if (!is.null(pattern)) {
     res <- dplyr::filter(res, grepl(pattern, functions))
   }
   res
 }
 
-# See if any of the urls appear to correspond to the _standard_ pkgdown structure.
-# Is so, link to the specific pkgdown html package, otherwise link to the first
-# url or, if there are none listed, the canonical CRAN page link.
-# We use an internal function in urlchecker to essentially ping the potential url
+# See if any of the urls appear to correspond to the _standard_ pkgdown
+# structure. Is so, link to the specific pkgdown html package, otherwise link to
+# the first url or, if there are none listed, the canonical CRAN page link. We
+# use an internal function in urlchecker to essentially ping the potential url
 
 sort_out_urls <- function(x) {
   test_urls <-
     x %>%
-    group_by(package) %>%
-    slice(1) %>%
-    ungroup() %>%
-    unnest(all_urls) %>%
-    mutate(
-      URL = map_chr(all_urls, ~ glue("{.x[[1]]}/reference/index.html")),
+    dplyr::group_by(package) %>%
+    dplyr::slice(1) %>%
+    dplyr::ungroup() %>%
+    tidyr::unnest(all_urls) %>%
+    dplyr::mutate(
+      URL = purrr::map_chr(all_urls, ~ glue("{.x[[1]]}/reference/index.html")),
       URL = gsub("//", "/", URL, fixed = TRUE)
     ) %>%
-    select(URL, Parent = functions, package, all_urls)
+    dplyr::select(URL, Parent = functions, package, all_urls)
   url_check_fails <-
     urlchecker:::tools$check_url_db(test_urls) %>%
     dplyr::select(URL)
   pkgdown_urls <-
     test_urls %>%
-    anti_join(url_check_fails, by = "URL") %>%
-    select(package, pkgdown_url = all_urls) %>%
-    group_by(package) %>%
-    slice(1) %>%
-    ungroup()
+    dplyr::anti_join(url_check_fails, by = "URL") %>%
+    dplyr::select(package, pkgdown_url = all_urls) %>%
+    dplyr::group_by(package) %>%
+    dplyr::slice(1) %>%
+    dplyr::ungroup()
   x %>%
-    left_join(pkgdown_urls, by = "package") %>%
-    mutate(
-      first_url = map_chr(all_urls, ~ .x[1]),
-      first_url = ifelse(is.na(first_url),
-                         glue("https://cran.r-project.org/package={package}"),
-                         first_url),
-      base_url = ifelse(is.na(pkgdown_url),
-                        first_url,
-                        pkgdown_url),
-      url = ifelse(!is.na(pkgdown_url),
-                   glue("{pkgdown_url}/reference/{file_out}"),
-                   base_url),
+    dplyr::left_join(pkgdown_urls, by = "package") %>%
+    dplyr::mutate(
+      first_url = purrr::map_chr(all_urls, ~ .x[1]),
+      first_url = ifelse(
+        is.na(first_url),
+        glue("https://cran.r-project.org/package={package}"),
+        first_url
+      ),
+      base_url = ifelse(is.na(pkgdown_url), first_url, pkgdown_url),
+      url = ifelse(
+        !is.na(pkgdown_url),
+        glue("{pkgdown_url}/reference/{file_out}"),
+        base_url
+      ),
       topic = glue("<a href='{url}' target='_blank'><tt>{functions}</tt></a>")
     ) %>%
     dplyr::select(title, functions, topic, package) %>%
-    mutate(package = as.factor(package)) %>%
-    filter(!grepl("deprecated", tolower(title))) %>%
-    arrange(tolower(gsub("[[:punct:]]", "", title)))
+    dplyr::mutate(package = as.factor(package)) %>%
+    dplyr::filter(!grepl("deprecated", tolower(title))) %>%
+    dplyr::arrange(tolower(gsub("[[:punct:]]", "", title)))
 }
 
 # ------------------------------------------------------------------------------
 
-broom_pkgs <- revdepcheck::cran_revdeps("broom",    dependencies = c("Depends", "Imports"))
+broom_pkgs <- revdepcheck::cran_revdeps(
+  "broom",
+  dependencies = c("Depends", "Imports")
+)
 generics_pkgs <- revdepcheck::cran_revdeps("generics", dependencies = "Imports")
 
 broom_pkgs <- sort(unique(c(broom_pkgs, generics_pkgs)))
@@ -116,23 +130,26 @@ excl <- c("hydrorecipes", "healthcareai")
 broom_pkgs <- broom_pkgs[!(broom_pkgs %in% excl)]
 
 broom_functions <-
-  map_dfr(
+  purrr::map_dfr(
     broom_pkgs,
     get_pkg_info,
     pattern = "(^tidy\\.)|(^glance\\.)|(^augment\\.)",
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%
-  select(-functions)
+  dplyr::select(-functions)
 
-save(
+write_csv(
   broom_functions,
-  file = "find/broom/broom_functions.RData",
-  compress = TRUE)
+  file = "find/broom/broom_functions.csv"
+)
 
 # ------------------------------------------------------------------------------
 
-recipe_pkgs <- revdepcheck::cran_revdeps("recipes", dependencies = c("Depends", "Imports"))
+recipe_pkgs <- revdepcheck::cran_revdeps(
+  "recipes",
+  dependencies = c("Depends", "Imports")
+)
 recipe_pkgs <- c(recipe_pkgs, "recipes")
 
 recipe_pkgs <- sort(unique(c(recipe_pkgs)))
@@ -140,60 +157,70 @@ excl <- c("hydrorecipes", "healthcareai")
 recipe_pkgs <- recipe_pkgs[!(recipe_pkgs %in% excl)]
 
 recipe_functions <-
-  map_dfr(
+  purrr::map_dfr(
     recipe_pkgs,
     get_pkg_info,
     pattern = "^step_",
     .progress = TRUE
-  )  %>%
+  ) %>%
   sort_out_urls() %>%
-  select(-functions)
+  dplyr::select(-functions)
 
-save(
+write_csv(
   recipe_functions,
-  file = "find/recipes/recipe_functions.RData",
-  compress = TRUE)
+  file = "find/recipes/recipe_functions.csv"
+)
 
 # ------------------------------------------------------------------------------
 
-all_tm <-
-  c("agua", "applicable", "baguette", "brulee", "broom", "butcher",
-    "censored", "corrr", "dials", "discrim", "embed", "finetune",
-    "hardhat", "infer", "modeldata", "modeldb",
-    "modelenv", "multilevelmod", "parsnip", "plsmod", "poissonreg",
-    "probably", "recipes", "rsample", "rules", "shinymodels", "spatialsample",
-    "stacks", "textrecipes", "themis", "tidyclust", "tidymodels",
-    "tidyposterior", "tidypredict", "tune", "usemodels", "workflows",
-    "workflowsets", "yardstick")
-
+all_tm <- read_csv("all_packages.csv", show_col_types = FALSE)$name
 
 tidymodels_functions <-
-  map_dfr(
+  purrr::map_dfr(
     all_tm,
     get_pkg_info,
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%
-  filter(!grepl("^\\.", functions)) %>%
-  select(-functions)
+  dplyr::filter(!grepl("^\\.", functions)) %>%
+  dplyr::select(-functions)
 
-save(
+write_csv(
   tidymodels_functions,
-  file = "find/all/tidymodels_functions.RData",
-  compress = TRUE)
+  file = "find/all/tidymodels_functions.csv"
+)
 
 # ------------------------------------------------------------------------------
 
-parsnip_pkgs <- revdepcheck::cran_revdeps("parsnip", dependencies = c("Depends", "Imports"))
+parsnip_pkgs <- revdepcheck::cran_revdeps(
+  "parsnip",
+  dependencies = c("Depends", "Imports")
+)
 parsnip_pkgs <- c(parsnip_pkgs, "parsnip")
-# These ignore the tidymodels design principles and/or don't work with the broader ecosystem
-# or we don't don't have any models in them
-excl <- c("additive", "bayesian", "cuda.ml", "SSLR", "workflowsets", "workflows",
-          "tune", "tidymodels", "shinymodels", "stacks")
+# These ignore the tidymodels design principles and/or don't work with the
+# broader ecosystem or we don't don't have any models in them
+excl <- c(
+  "additive",
+  "bayesian",
+  "cuda.ml",
+  "SSLR",
+  "workflowsets",
+  "workflows",
+  "tune",
+  "tidymodels",
+  "shinymodels",
+  "stacks",
+  "viruslearner"
+)
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
+pak::pak(parsnip_pkgs)
+
 # Load them then get the model data base
-loaded <- map_lgl(parsnip_pkgs, ~ suppressPackageStartupMessages(require(.x, character.only = TRUE)))
+loaded <- purrr::map_lgl(
+  parsnip_pkgs,
+  ~ suppressPackageStartupMessages(require(.x, character.only = TRUE))
+)
 table(loaded)
 
 # h2o overwrites soooo many functions; this may take a few minutes
@@ -204,27 +231,35 @@ origin_pkg <- rlang::env_get_list(
   nms = ls(parsnip::get_model_env(), pattern = "_pkg")
 ) %>%
   purrr::list_rbind(names_to = "model") %>%
-  mutate(pkg = map_chr(pkg, ~ {
-    pkg <- intersect(.x, parsnip_pkgs)
-    if (length(pkg) == 0) {
-      pkg <- "parsnip"
-    }
-    pkg
-  })) %>%
-  mutate(model = str_remove(model, "_pkgs$"))
+  dplyr::mutate(
+    pkg = purrr::map_chr(
+      pkg,
+      ~ {
+        pkg <- intersect(.x, parsnip_pkgs)
+        if (length(pkg) == 0) {
+          pkg <- "parsnip"
+        }
+        pkg
+      }
+    )
+  ) %>%
+  dplyr::mutate(model = stringr::str_remove(model, "_pkgs$"))
 
 model_list <-
-  map_dfr(get_from_env("models"), ~ get_from_env(.x) %>% mutate(model = .x)) %>%
-  mutate(
-    mode = factor(mode, levels = c("classification", "regression", "censored regression"))
+  purrr::map_dfr(get_from_env("models"), ~ get_from_env(.x) %>% mutate(model = .x)) %>%
+  dplyr::mutate(
+    mode = factor(
+      mode,
+      levels = c("classification", "regression", "censored regression")
+    )
   ) %>%
-  left_join(origin_pkg, by = c("engine", "mode", "model")) %>%
-  mutate(
+  dplyr::left_join(origin_pkg, by = c("engine", "mode", "model")) %>%
+  dplyr::mutate(
     functions = glue("details_{model}_{engine}")
   )
 
 parsnip_model_info <-
-  map_dfr(
+  purrr::map_dfr(
     parsnip_pkgs,
     get_pkg_info,
     keep_internal = TRUE,
@@ -237,33 +272,99 @@ parsnip_model_info <-
 
 has_details <-
   parsnip_model_info %>%
-  filter(grepl("^details_", functions)) %>%
-  inner_join(model_list, by = "functions") %>%
-  mutate(topic = gsub("<tt>details_", "<tt>", topic))
+  dplyr::filter(grepl("^details_", functions)) %>%
+  dplyr::inner_join(model_list, by = "functions") %>%
+  dplyr::mutate(topic = gsub("<tt>details_", "<tt>", topic))
 
 no_details <-
   model_list %>%
-  anti_join(has_details %>% select(model, engine), by = c("model", "engine")) %>%
-  mutate(functions = model) %>%
-  inner_join(parsnip_model_info, by = "functions")
+  dplyr::anti_join(
+    has_details %>% dplyr::select(model, engine),
+    by = c("model", "engine")
+  ) %>%
+  dplyr::mutate(functions = model) %>%
+  dplyr::inner_join(parsnip_model_info, by = "functions")
 
 parsnip_models <-
   no_details %>%
-  select(title, model, engine, topic, mode, package = pkg) %>%
-  bind_rows(
+  dplyr::select(title, model, engine, topic, mode, package = pkg) %>%
+  dplyr::bind_rows(
     has_details %>%
-      select(title, model, engine, topic, mode, package = pkg)
+      dplyr::select(title, model, engine, topic, mode, package = pkg)
   ) %>%
-  mutate(
-    model = paste0("<code>",  model, "</code>"),
-    engine = paste0("<code>",  engine, "</code>"),
+  dplyr::mutate(
+    model = paste0("<code>", model, "</code>"),
+    engine = paste0("<code>", engine, "</code>"),
     title = gsub("General Interface for ", "", title)
   ) %>%
-  arrange(model, engine) %>%
-  select(title, model, engine, topic, mode, package)
+  dplyr::arrange(model, engine) %>%
+  dplyr::select(title, model, engine, topic, mode, package)
 
-save(
+write_csv(
   parsnip_models,
-  file = "find/parsnip/parsnip_models.RData",
-  compress = TRUE
+  file = "find/parsnip/parsnip_models.csv"
+)
+
+# ------------------------------------------------------------------------------
+
+sparse_models <- rlang::env_get_list(
+  env = parsnip::get_model_env(),
+  nms = ls(parsnip::get_model_env(), pattern = "_encoding")
+) %>%
+  purrr::list_rbind(names_to = "model") %>%
+  dplyr::filter(allow_sparse_x) %>%
+  dplyr::distinct(model, engine) %>%
+  dplyr::filter(stringr::str_detect(engine, "_offset$", negate = TRUE)) %>%
+  dplyr::mutate(model = stringr::str_remove(model, "_encoding$")) %>%
+  dplyr::left_join(
+    by = dplyr::join_by(model, engine),
+    parsnip_models %>%
+      dplyr::mutate(
+        dplyr::across(
+          c(model, engine),
+          \(x) stringr::str_remove_all(x, "(<code>|</code>)")
+        )
+      )
+  ) %>%
+  dplyr::select(model, engine, topic) %>%
+  dplyr::distinct()
+
+write_csv(
+  sparse_models,
+  file = "find/sparse/models.csv"
+)
+
+recipe_functions_with_names <- recipe_functions %>%
+  dplyr::mutate(
+    name = stringr::str_extract(topic, "<tt>.*"),
+    name = stringr::str_remove(name, "<tt>"),
+    name = stringr::str_remove(name, "</tt></a>")
+  )
+
+library(textrecipes)
+library(embed)
+library(extrasteps)
+
+sparse_steps_generate <- .S3methods(".recipes_estimate_sparsity") %>%
+  as.character() %>%
+  stringr::str_remove(".recipes_estimate_sparsity.") %>%
+  setdiff(c("default", "recipe")) %>%
+  dplyr::as_tibble() %>%
+  dplyr::left_join(recipe_functions_with_names, by = c("value" = "name"))
+
+write_csv(
+  sparse_steps_generate,
+  file = "find/sparse/steps_generate.csv"
+)
+
+sparse_steps_preserve <- .S3methods(".recipes_preserve_sparsity") %>%
+  as.character() %>%
+  stringr::str_remove(".recipes_preserve_sparsity.") %>%
+  setdiff(c("default", "recipe")) %>%
+  dplyr::as_tibble() %>%
+  dplyr::left_join(recipe_functions_with_names, by = c("value" = "name"))
+
+write_csv(
+  sparse_steps_preserve,
+  file = "find/sparse/steps_preserve.csv"
 )

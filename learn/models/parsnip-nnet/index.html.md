@@ -20,6 +20,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: AppliedPredictiveModeling, brulee, and tidymodels. You will also need the python torch library installed (see `?torch::install_torch()`).
@@ -30,6 +32,8 @@ We can create classification models with the tidymodels package [parsnip](https:
 
 
 Let's fit a model to a small, two predictor classification data set. The data are in the modeldata package (part of tidymodels) and have been split into training, validation, and test data sets. In this analysis, the test set is left untouched; this article tries to emulate a good data usage methodology where the test set would only be evaluated once at the end after a variety of models have been considered. 
+
+
 
 
 
@@ -46,7 +50,11 @@ cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
 :::
 
 
+
+
 A plot of the data shows two right-skewed predictors: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -63,7 +71,11 @@ ggplot(cls_train, aes(x = A, y = B, col = class)) +
 :::
 
 
+
+
 Let's use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the `step_BoxCox()` function) and on a common scale (using `step_normalize()`). We can use [recipes](https://recipes.tidymodels.org/) to do so:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -76,9 +88,13 @@ biv_rec <-
 :::
 
 
+
+
 This recipe is not directly executed; the steps will be estimated when the model is fit. 
 
 We can use the brulee package to fit a model with 10 hidden units and a 10% dropout rate, to regularize the model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -95,26 +111,30 @@ nnet_wflow <-
 
 set.seed(987)
 nnet_fit <- fit(nnet_wflow, cls_train)
-#> Warning: Current loss in NaN. Training wil be stopped.
 nnet_fit %>% extract_fit_engine()
 #> Multilayer perceptron
 #> 
-#> relu activation
-#> 10 hidden units,  52 model parameters
+#> relu activation,
+#> 10 hidden units,
+#> 52 model parameters
 #> 2,000 samples, 2 features, 2 classes 
 #> class weights Class1=1, Class2=1 
 #> weight decay: 0.01 
 #> dropout proportion: 0 
 #> batch size: 2000 
 #> learn rate: 0.1 
-#> training set loss after 8 epochs: 0.372
+#> training set loss after 23 epochs: 0.371
 ```
 :::
+
+
 
 
 ## Model performance
 
 In parsnip, the `predict()` function can be used to characterize performance on the validation set. Since parsnip always produces tibble outputs, these can just be column bound to the original data: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -128,11 +148,11 @@ val_results <-
   )
 val_results %>% slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
-#> 1 0.7632082 -0.04012164 Class2      Class2   0.06046339   0.93953657
-#> 2 0.9823745 -0.16911637 Class2      Class2   0.05948573   0.94051421
-#> 3 1.0558147  0.52817699 Class2      Class2   0.08121140   0.91878861
-#> 4 1.2424507  1.10902951 Class2      Class2   0.32322136   0.67677867
-#> 5 1.5889815  2.71047720 Class1      Class1   0.98467678   0.01532322
+#> 1 0.7632082 -0.04012164 Class2      Class2   0.05010979   0.94989026
+#> 2 0.9823745 -0.16911637 Class2      Class2   0.05164897   0.94835109
+#> 3 1.0558147  0.52817699 Class2      Class2   0.08610570   0.91389424
+#> 4 1.2424507  1.10902951 Class2      Class2   0.32576966   0.67423034
+#> 5 1.5889815  2.71047720 Class1      Class1   0.98509037   0.01490961
 
 val_results %>% roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
@@ -144,18 +164,22 @@ val_results %>% accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.906
+#> 1 accuracy binary         0.908
 
 val_results %>% conf_mat(truth = class, .pred_class)
 #>           Truth
 #> Prediction Class1 Class2
-#>     Class1    172     17
-#>     Class2     30    281
+#>     Class1    173     17
+#>     Class2     29    281
 ```
 :::
 
 
+
+
 Let's also create a grid to get a visual sense of the class boundary for the test set.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -188,7 +212,11 @@ ggplot(x_grid, aes(x = A, y = B)) +
 
 
 
+
+
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -196,38 +224,41 @@ ggplot(x_grid, aes(x = A, y = B)) +
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package                   * version date (UTC) lib source
 #>  AppliedPredictiveModeling * 1.1-7   2018-05-22 [1] CRAN (R 4.4.0)
-#>  broom                     * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  brulee                      0.3.0   2024-02-14 [1] CRAN (R 4.4.0)
-#>  dials                     * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom                     * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  brulee                      0.4.0   2025-01-30 [1] CRAN (R 4.4.1)
+#>  dials                     * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr                     * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2                   * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer                     * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip                   * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr                     * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes                   * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang                       1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip                   * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr                     * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes                   * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang                       1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample                   * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble                    * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels                * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune                      * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows                 * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick                 * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels                * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune                      * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows                 * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick                 * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

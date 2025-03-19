@@ -18,6 +18,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: tidymodels.
@@ -27,6 +29,8 @@ This article demonstrates how to create and use importance weights in a predicti
 ## Example Data
 
 To demonstrate we will use the Chicago data from the modeldata package.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -39,6 +43,8 @@ Chicago <- Chicago %>%
   select(ridership, date, one_of(stations))
 ```
 :::
+
+
 
 
 From `?Chicago`
@@ -62,6 +68,8 @@ $$ weight = base ^ x $$
 where `base` is some constant and `x` is the number of days. To make sure that we select a reasonable `base`, we need to do some manual testing, starting with looking at how old the oldest observation is.
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -71,7 +79,11 @@ difftime("2016-01-01", min(Chicago$date))
 :::
 
 
+
+
 Using this information we can visualize the weight curve, to see if we like the value of `base`.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -90,9 +102,13 @@ tibble_days %>%
 :::
 
 
+
+
 setting `base` to 0.99 appears to be down weighted too much. Any observation more than a year old would have no influence.
 
 Let us try a few more values to find 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -112,7 +128,11 @@ map_dfr(
 :::
 
 
+
+
 From this, we could pick something around 0.999 since it gives a better balance. Let's create a small function to help us encode this weight. 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -129,7 +149,11 @@ weights_from_dates <- function(x, ref) {
 :::
 
 
+
+
 We then modify `Chicago` to add a weight column, explicitly making it an importance weight with `importance_weight()`.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -142,11 +166,15 @@ Chicago <- Chicago %>%
 :::
 
 
+
+
 This approach to creating importance weights from dates is not limited to cases where we have daily observations. You are free to create similar weights if you have gaps or repeated observations within the same day. Likewise, you don't need to use days as the unit. Seconds, weeks, or years could be used as well.
 
 ## Modeling
 
 We start by splitting up our data into a training and testing set based on the day `"2016-01-01"`. We added weights to the data set before splitting it so each set has weights.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -158,7 +186,11 @@ Chicago_test <- Chicago %>% filter(date >= "2016-01-01")
 :::
 
 
+
+
 Next, we are going to create a recipe. The weights won't have any influence on the preprocessing since none of these operations are supervised and we are using importance weights.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -179,7 +211,11 @@ base_recipe <-
 :::
 
 
+
+
 Next we need to build the rest of the workflow. We use a linear regression specification
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -192,7 +228,11 @@ lm_spec <-
 :::
 
 
+
+
 and we add these together in the workflow. To activate the case weights, we use the `add_case_weights()` function to specify the name of the case weights being used.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -229,7 +269,11 @@ lm_wflow
 :::
 
 
+
+
 With all that done we can fit the workflow with the usual syntax: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -273,7 +317,11 @@ lm_fit
 :::
 
 
+
+
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -281,36 +329,39 @@ lm_fit
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

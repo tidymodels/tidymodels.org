@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 This article only requires the tidymodels package.
@@ -28,6 +30,8 @@ While the tidymodels package [broom](https://broom.tidyverse.org/) is useful for
 ## Correlation analysis
 
 Let's demonstrate this with a simple data set, the built-in `Orange`. We start by coercing `Orange` to a `tibble`. This gives a nicer print method that will be especially useful later on when we start working with list-columns.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -57,7 +61,11 @@ Orange
 :::
 
 
+
+
 This contains 35 observations of three variables: `Tree`, `age`, and `circumference`. `Tree` is a factor with five levels describing five trees. As might be expected, age and circumference are correlated:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -78,7 +86,11 @@ ggplot(Orange, aes(age, circumference, color = Tree)) +
 :::
 
 
+
+
 Suppose you want to test for correlations individually *within* each tree. You can do this with dplyr's `group_by`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -99,9 +111,13 @@ Orange %>%
 :::
 
 
+
+
 (Note that the correlations are much higher than the aggregated one, and also we can now see the correlation is similar across trees).
 
 Suppose that instead of simply estimating a correlation, we want to perform a hypothesis test with `cor.test()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -124,7 +140,11 @@ ct
 :::
 
 
+
+
 This test output contains multiple values we may be interested in. Some are vectors of length 1, such as the p-value and the estimate, and some are longer, such as the confidence interval. We can get this into a nicely organized tibble using the `tidy()` function:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -139,7 +159,11 @@ tidy(ct)
 :::
 
 
+
+
 Often, we want to perform multiple tests or fit multiple models, each on a different part of the data. In this case, we recommend a `nest-map-unnest` workflow. For example, suppose we want to perform correlation tests for each different tree. We start by `nest`ing our data based on the group of interest:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -152,7 +176,11 @@ nested <-
 :::
 
 
+
+
 Then we perform a correlation test for each nested tibble using `purrr::map()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -172,7 +200,11 @@ nested %>%
 :::
 
 
+
+
 This results in a list-column of S3 objects. We want to tidy each of the objects, which we can also do with `map()`.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -195,7 +227,11 @@ nested %>%
 :::
 
 
+
+
 Finally, we want to unnest the tidied data frames so we can see the results in a flat tibble. All together, this looks like:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -222,9 +258,13 @@ Orange %>%
 :::
 
 
+
+
 ## Regression models
 
 This type of workflow becomes even more useful when applied to regressions. Untidy output for a regression looks like:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -254,7 +294,11 @@ summary(lm_fit)
 :::
 
 
+
+
 When we tidy these results, we get multiple rows of output for each model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -270,7 +314,11 @@ tidy(lm_fit)
 :::
 
 
+
+
 Now we can handle multiple regressions at once using exactly the same workflow as before:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -301,7 +349,11 @@ Orange %>%
 :::
 
 
+
+
 You can just as easily use multiple predictors in the regressions, as shown here on the `mtcars` dataset. We nest the data into automatic vs. manual cars (the `am` column), then perform the regression within each nested tibble.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -348,7 +400,11 @@ mtcars %>%
 :::
 
 
+
+
 What if you want not just the `tidy()` output, but the `augment()` and `glance()` outputs as well, while still performing each regression only once? Since we're using list-columns, we can just fit the model once and use multiple list-columns to store the tidied, glanced and augmented outputs.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -410,6 +466,8 @@ regressions %>%
 :::
 
 
+
+
 By combining the estimates and p-values across all groups into the same tidy data frame (instead of a list of output model objects), a new class of analyses and visualizations becomes straightforward. This includes:
 
 - sorting by p-value or estimate to find the most significant terms across all tests,
@@ -422,41 +480,46 @@ In each of these cases, we can easily filter, facet, or distinguish based on the
 ## Session information {#session-info}
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package    * version date (UTC) lib source
-#>  broom      * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials      * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr      * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes    * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang        1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip    * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes    * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune       * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows  * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick  * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

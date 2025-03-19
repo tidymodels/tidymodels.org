@@ -19,6 +19,8 @@ include-after-body: ../../../resources.html
 
 
 
+
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: stopwords, textrecipes, and tidymodels.
@@ -35,6 +37,8 @@ The text data we'll use in this article are from Amazon:
 This article uses a small subset of the total reviews [available at the original source](https://snap.stanford.edu/data/web-FineFoods.html). We sampled a single review from 5,000 random products and allocated 80% of these data to the training set, with the remaining 1,000 reviews held out for the test set.   
 
 There is a column for the product, a column for the text of the review, and a factor column for the outcome variable. The outcome is whether the reviewer gave the product a five-star rating or not.
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -60,6 +64,8 @@ training_data
 #> # ℹ 3,990 more rows
 ```
 :::
+
+
 
 
 Our modeling goal is to create modeling features from the text of the reviews to predict whether the review was five-star or not.
@@ -97,6 +103,8 @@ Some of these preprocessing steps (such as stemming) may or may not be good idea
 Before we start building our preprocessing recipe, we need some helper objects. For example, for the Yeo-Johnson transformation, we need to know the set of count-based text features: 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -108,7 +116,11 @@ head(basics)
 :::
 
 
+
+
 Also, the implementation of feature hashes does not produce the binary values we need. This small function will help convert the scores to values of -1, 0, or 1:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -123,7 +135,11 @@ binary_hash <- function(x) {
 :::
 
 
+
+
 Now, let's put this all together in one recipe:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -161,11 +177,15 @@ pre_proc <-
 :::
 
 
+
+
 ::: {.callout-warning}
  Note that, when objects from the global environment are used, they are injected into the step objects via `!!`. For some parallel processing technologies, these objects may not be found by the worker processes. 
 :::
 
 The preprocessing recipe is long and complex (often typical for working with text data) but the model we'll use is more straightforward. Let's stick with a regularized logistic regression model: 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -178,6 +198,8 @@ lr_mod <-
 :::
 
 
+
+
 There are three tuning parameters for this data analysis:
 
 - `num_terms`, the number of feature hash variables to create
@@ -187,6 +209,8 @@ There are three tuning parameters for this data analysis:
 ## Resampling
 
 There is enough data here so that 5-fold resampling would hold out 800 reviews at a time to estimate performance. Performance estimates using this many observations have sufficiently low noise to measure and tune models.  
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -208,9 +232,13 @@ folds
 :::
 
 
+
+
 ## Grid search
 
 Let's begin our tuning with [grid search](https://www.tidymodels.org/learn/work/tune-svm/) and a regular grid. For glmnet models, evaluating penalty values is fairly cheap because of the use of the ["submodel-trick"](https://tune.tidymodels.org/articles/extras/optimizations.html#sub-model-speed-ups-1). The grid will use 20 penalty values, 5 mixture values, and 3 values for the number of hash features.  
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -241,9 +269,13 @@ five_star_grid
 :::
 
 
+
+
 Note that, for each resample, the (computationally expensive) text preprocessing recipe is only prepped 6 times. This increases the efficiency of the analysis by avoiding redundant work. 
 
 Let's save information on the number of predictors by penalty value for each glmnet model. This can help us understand how many features were used across the penalty values. Use an extraction function to do this:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -261,7 +293,11 @@ ctrl <- control_grid(extract = glmnet_vars, verbose = TRUE)
 :::
 
 
+
+
 Finally, let's run the grid search:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -295,7 +331,11 @@ five_star_glmnet
 :::
 
 
+
+
 This took a while to complete! What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -308,24 +348,28 @@ grid_roc
 #> # A tibble: 300 × 9
 #>    penalty mixture num_terms .metric .estimator  mean     n std_err .config     
 #>      <dbl>   <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>       
-#>  1 0.0379     0.25      4096 roc_auc binary     0.808     5 0.00493 Preprocesso…
-#>  2 0.695      0.01      4096 roc_auc binary     0.806     5 0.00688 Preprocesso…
-#>  3 0.0183     0.5       4096 roc_auc binary     0.805     5 0.00506 Preprocesso…
-#>  4 0.483      0.01      4096 roc_auc binary     0.804     5 0.00700 Preprocesso…
-#>  5 0.0546     0.25      4096 roc_auc binary     0.804     5 0.00532 Preprocesso…
-#>  6 0.0127     0.75      4096 roc_auc binary     0.804     5 0.00491 Preprocesso…
-#>  7 1          0.01      4096 roc_auc binary     0.803     5 0.00653 Preprocesso…
-#>  8 0.00886    1         4096 roc_auc binary     0.803     5 0.00527 Preprocesso…
-#>  9 0.0264     0.25      4096 roc_auc binary     0.802     5 0.00544 Preprocesso…
-#> 10 0.0264     0.5       4096 roc_auc binary     0.802     5 0.00490 Preprocesso…
+#>  1 0.0379     0.25      4096 roc_auc binary     0.808     5 0.00484 Preprocesso…
+#>  2 0.695      0.01      4096 roc_auc binary     0.806     5 0.00683 Preprocesso…
+#>  3 0.0183     0.5       4096 roc_auc binary     0.805     5 0.00499 Preprocesso…
+#>  4 0.483      0.01      4096 roc_auc binary     0.804     5 0.00691 Preprocesso…
+#>  5 0.0546     0.25      4096 roc_auc binary     0.804     5 0.00519 Preprocesso…
+#>  6 0.0127     0.75      4096 roc_auc binary     0.804     5 0.00479 Preprocesso…
+#>  7 1          0.01      4096 roc_auc binary     0.803     5 0.00639 Preprocesso…
+#>  8 0.00886    1         4096 roc_auc binary     0.802     5 0.00518 Preprocesso…
+#>  9 0.0264     0.25      4096 roc_auc binary     0.802     5 0.00541 Preprocesso…
+#> 10 0.0264     0.5       4096 roc_auc binary     0.802     5 0.00476 Preprocesso…
 #> # ℹ 290 more rows
 ```
 :::
 
 
+
+
 The best results have a fairly high penalty value and focus on the ridge penalty (i.e. no feature selection via the lasso's L1 penalty). The best solutions also use the largest number of hashing features. 
 
 What is the relationship between performance and the tuning parameters? 
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -338,6 +382,8 @@ autoplot(five_star_glmnet, metric = "roc_auc")
 ![](figs/grid-plot-1.svg){fig-align='center' width=960}
 :::
 :::
+
+
 
 
 - We can definitely see that performance improves with the number of features included. In this article, we've used a small sample of the overall data set available. When more data are used, an even larger feature set is optimal. 
@@ -358,6 +404,8 @@ Let's pretend that we haven't seen the grid search results. We'll initialize the
 It might be good to use a custom `dials` object for the number of hash terms. The default object, `num_terms()`, uses a linear range and tries to set the upper bound of the parameter using the data. Instead, let's create a parameter set, change the scale to be `log2`, and define the same range as was used in grid search. 
 
 
+
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -370,7 +418,11 @@ hash_range
 :::
 
 
+
+
 To use this, we have to merge the recipe and `parsnip` model object into a workflow:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -384,7 +436,11 @@ five_star_wflow <-
 :::
 
 
+
+
 Then we can extract and manipulate the corresponding parameter set:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -404,9 +460,13 @@ five_star_set <-
 :::
 
 
+
+
 This is passed to the search function via the `param_info` argument. 
 
 The initial rounds of search can be biased more towards exploration of the parameter space (as opposed to staying near the current best results). If expected improvement is used as the acquisition function, the trade-off value can be slowly moved from exploration to exploitation over iterations (see the tune vignette on [acquisition functions](https://tune.tidymodels.org/articles/acquisition_functions.html) for more details). The tune package has a built-in function called `expo_decay()` that can help accomplish this:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -419,7 +479,11 @@ trade_off_decay <- function(iter) {
 :::
 
 
+
+
 Using these values, let's run the search:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -448,10 +512,10 @@ five_star_search <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.01
-#> i penalty=0.0162, mixture=0.753, num_terms=310
+#> i penalty=0.00371, mixture=0.0503, num_terms=516
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7564 (+/-0.00502)
+#> ⓧ Newest results:	roc_auc=0.731 (+/-0.00972)
 #> 
 #> ── Iteration 2 ───────────────────────────────────────────────────────
 #> 
@@ -461,10 +525,10 @@ five_star_search <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.007788
-#> i penalty=0.0111, mixture=0.207, num_terms=426
+#> i penalty=0.001, mixture=0.411, num_terms=349
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7589 (+/-0.00965)
+#> ⓧ Newest results:	roc_auc=0.7291 (+/-0.00542)
 #> 
 #> ── Iteration 3 ───────────────────────────────────────────────────────
 #> 
@@ -474,10 +538,10 @@ five_star_search <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.006065
-#> i penalty=0.00372, mixture=0.512, num_terms=2339
+#> i penalty=0.0105, mixture=0.996, num_terms=543
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7515 (+/-0.00461)
+#> ⓧ Newest results:	roc_auc=0.7667 (+/-0.00755)
 #> 
 #> ── Iteration 4 ───────────────────────────────────────────────────────
 #> 
@@ -487,10 +551,10 @@ five_star_search <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.004724
-#> i penalty=0.999, mixture=0.225, num_terms=550
+#> i penalty=0.00415, mixture=0.999, num_terms=747
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.5
+#> ⓧ Newest results:	roc_auc=0.7493 (+/-0.00773)
 #> 
 #> ── Iteration 5 ───────────────────────────────────────────────────────
 #> 
@@ -500,75 +564,75 @@ five_star_search <-
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.003679
-#> i penalty=0.0196, mixture=0.97, num_terms=3985
+#> i penalty=0.00105, mixture=0.192, num_terms=4033
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:	roc_auc=0.7943 (+/-0.00611)
+#> ⓧ Newest results:	roc_auc=0.7551 (+/-0.00416)
 #> 
 #> ── Iteration 6 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.7943 (@iter 5)
+#> i Current best:		roc_auc=0.781 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.002865
-#> i penalty=0.00874, mixture=0.892, num_terms=3576
+#> i penalty=0.0124, mixture=0.105, num_terms=4001
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:	roc_auc=0.7957 (+/-0.00853)
+#> ⓧ Newest results:	roc_auc=0.7702 (+/-0.00496)
 #> 
 #> ── Iteration 7 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.7957 (@iter 6)
+#> i Current best:		roc_auc=0.781 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.002231
-#> i penalty=0.0124, mixture=0.92, num_terms=4016
+#> i penalty=0.00772, mixture=0.278, num_terms=2205
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:	roc_auc=0.801 (+/-0.00636)
+#> ⓧ Newest results:	roc_auc=0.7716 (+/-0.00567)
 #> 
 #> ── Iteration 8 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.801 (@iter 7)
+#> i Current best:		roc_auc=0.781 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001738
-#> i penalty=0.0129, mixture=0.995, num_terms=1710
+#> i penalty=0.00243, mixture=0.948, num_terms=4085
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7922 (+/-0.00664)
+#> ⓧ Newest results:	roc_auc=0.7728 (+/-0.00695)
 #> 
 #> ── Iteration 9 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.801 (@iter 7)
+#> i Current best:		roc_auc=0.781 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001353
-#> i penalty=0.0144, mixture=0.907, num_terms=3857
+#> i penalty=0.0059, mixture=0.94, num_terms=3992
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7939 (+/-0.00399)
+#> ♥ Newest results:	roc_auc=0.8065 (+/-0.00399)
 #> 
 #> ── Iteration 10 ──────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.801 (@iter 7)
+#> i Current best:		roc_auc=0.8065 (@iter 9)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001054
-#> i penalty=0.0105, mixture=0.842, num_terms=3782
+#> i penalty=0.0128, mixture=0.974, num_terms=3621
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:	roc_auc=0.8123 (+/-0.00338)
+#> ⓧ Newest results:	roc_auc=0.7983 (+/-0.00671)
 
 five_star_search
 #> # Tuning results
@@ -591,8 +655,12 @@ five_star_search
 :::
 
 
+
+
 These results show some improvement over the initial set. One issue is that so many settings are sub-optimal (as shown in the plot above for grid search) so there are poor results periodically. There are regions where the penalty parameter becomes too large and all of the predictors are removed from the model. These regions are also dependent on the number of terms. There is a fairly narrow ridge (sorry, pun intended!) where good performance can be achieved. Using more iterations would probably result in the search finding better results. 
 Let's look at a plot of model performance versus the search iterations:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -607,6 +675,8 @@ autoplot(five_star_search, type = "performance")
 :::
 
 
+
+
 ::: {.callout-note}
 What would we do if we knew about the grid search results and wanted to try directed, iterative search? We would restrict the range for the number of hash features to be larger (especially with more data). We might also restrict the penalty and mixture parameters to have a lower upper bound. 
 :::
@@ -614,6 +684,8 @@ What would we do if we knew about the grid search results and wanted to try dire
 ## Extracted results
 
 Let's return to the grid search results and examine the results of our `extract` function. For each _fitted model_, a tibble was saved that contains the relationship between the number of predictors and the penalty value. Let's look at these results for the best model:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -629,7 +701,11 @@ params
 :::
 
 
+
+
 Recall that we saved the glmnet results in a tibble. The column `five_star_glmnet$.extracts` is a list of tibbles. As an example, the first element of the list is:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -654,7 +730,11 @@ five_star_glmnet$.extracts[[1]]
 :::
 
 
+
+
 More nested tibbles! Let's `unnest()` the `five_star_glmnet$.extracts` column:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -684,7 +764,11 @@ extracted
 :::
 
 
+
+
 One thing to realize here is that `tune_grid()` [may not fit all of the models](https://tune.tidymodels.org/articles/extras/optimizations.html) that are evaluated. In this case, for each value of `mixture` and `num_terms`, the model is fit over _all_ penalty values (this is a feature of this particular model and is not generally true for other engines). To select the best parameter set, we can exclude the `penalty` column in `extracted`:
+
+
 
 
 
@@ -716,7 +800,11 @@ extracted
 :::
 
 
+
+
 Now we can get at the results that we want using another `unnest()`:
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -744,7 +832,11 @@ extracted
 :::
 
 
+
+
 Let's look at a plot of these results (per resample):
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -764,9 +856,13 @@ ggplot(extracted, aes(x = penalty, y = num_vars)) +
 :::
 
 
+
+
 These results might help guide the choice of the `penalty` range if more optimization was conducted. 
 
 ## Session information {#session-info}
+
+
 
 
 ::: {.cell layout-align="center"}
@@ -774,38 +870,41 @@ These results might help guide the choice of the `penalty` range if more optimiz
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.4.0 (2024-04-24)
-#>  os       macOS Sonoma 14.4.1
+#>  version  R version 4.4.2 (2024-10-31)
+#>  os       macOS Sequoia 15.3.1
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2024-06-26
-#>  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+#>  date     2025-03-07
+#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
+#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     * version date (UTC) lib source
-#>  broom       * 1.0.6   2024-05-17 [1] CRAN (R 4.4.0)
-#>  dials       * 1.2.1   2024-02-22 [1] CRAN (R 4.4.0)
+#>  broom       * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials       * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
 #>  dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
 #>  ggplot2     * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  infer       * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip     * 1.2.1   2024-03-22 [1] CRAN (R 4.4.0)
-#>  purrr       * 1.0.2   2023-08-10 [1] CRAN (R 4.4.0)
-#>  recipes     * 1.0.10  2024-02-18 [1] CRAN (R 4.4.0)
-#>  rlang         1.1.4   2024-06-04 [1] CRAN (R 4.4.0)
+#>  parsnip     * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  purrr       * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes     * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  rlang         1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  stopwords   * 2.3     2021-10-28 [1] CRAN (R 4.4.0)
-#>  textrecipes * 1.0.6   2023-11-15 [1] CRAN (R 4.4.0)
+#>  textrecipes * 1.0.7   2025-01-24 [1] CRAN (R 4.4.1)
 #>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels  * 1.2.0   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tune        * 1.2.1   2024-04-18 [1] CRAN (R 4.4.0)
-#>  workflows   * 1.1.4   2024-02-19 [1] CRAN (R 4.4.0)
-#>  yardstick   * 1.3.1   2024-03-21 [1] CRAN (R 4.4.0)
+#>  tidymodels  * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune        * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows   * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick   * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
-#>  [1] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
+#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
+#>  * ── Packages attached to the search path.
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

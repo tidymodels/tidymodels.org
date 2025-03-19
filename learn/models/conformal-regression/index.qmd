@@ -29,14 +29,14 @@ source(here::here("common.R"))
 #| cache: false
 library(tidymodels)
 library(probably)
-library(doMC)
+library(future)
 
 # -------------------------------------------------------------------------
 
 tidymodels_prefer()
 theme_set(theme_bw())
 options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
-registerDoMC(cores = parallel::detectCores())
+plan(multisession, workers = parallel::detectCores())
 
 # ------------------------------------------------------------------------------
 

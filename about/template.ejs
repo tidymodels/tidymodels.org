@@ -1,0 +1,27 @@
+<h2>Active Development Team Members</h2>
+<div style="display:flex; flex-wrap: wrap;">
+<% for (const item of items) { %>
+<% if (item.team == "active") { %>
+<div style="margin: 0.5rem;"><a href="<%- item.url %>"><img style="width: 150px;" src="<%- item.photo %>"></a><br><p><%= item.title %></p></div>
+<% } %>
+<% } %>
+</div>
+
+<h2>Former Development Team Members</h2>
+<div style="display:flex; flex-wrap: wrap;">
+<% for (const item of items) { %>
+<% if (item.team == "past") { %>
+<div style="margin: 0.5rem;"><a href="<%- item.url %>"><img style="width: 150px;" src="<%- item.photo %>"></a><br><p><%= item.title %></p></div>
+<% } %>
+<% } %>
+</div>
+
+
+<h2>Former Collaborators</h2>
+<div style="display:flex; flex-wrap: wrap;">
+<% for (const item of items) { %>
+<% if (item.team == "collaborators") { %>
+<div style="margin: 0.5rem;"><a href="<%- item.url %>"><img style="width: 150px;" src="<%- item.photo %>"></a><br><p><%= item.title %></p></div>
+<% } %>
+<% } %>
+</div>
