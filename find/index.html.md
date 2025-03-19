@@ -10,6 +10,7 @@ include-after-body: ../resources.html
 
 
 
+
 Below you'll find searchable tables to help you explore the tidymodels packages and functions. The tables also include links to the relevant reference page to help you navigate the package documentation. Use the following categories to guide you:
 
 * [Search all of tidymodels](all/index.qmd)
@@ -19,6 +20,8 @@ Below you'll find searchable tables to help you explore the tidymodels packages 
 * [Search recipe steps](recipes/index.qmd)
 
 * [Search broom methods](broom/index.qmd)
+
+* [Search sparse data compatible methods](sparse/index.qmd)
 
 # Books
 
