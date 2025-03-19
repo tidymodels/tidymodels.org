@@ -113,10 +113,14 @@ Sparse data compatibility for steps comes in 2 flavors. The first kind generates
 <li><a href='https://recipes.tidymodels.org//reference/step_count.html' target='_blank'><tt>step_count</tt></a></li>
 <li><a href='https://recipes.tidymodels.org//reference/step_dummy.html' target='_blank'><tt>step_dummy</tt></a></li>
 <li><a href='https://recipes.tidymodels.org//reference/step_dummy_extract.html' target='_blank'><tt>step_dummy_extract</tt></a></li>
+<li><a href='https://textrecipes.tidymodels.org//reference/step_dummy_hash.html' target='_blank'><tt>step_dummy_hash</tt></a></li>
 <li><a href='https://recipes.tidymodels.org//reference/step_dummy_multi_choice.html' target='_blank'><tt>step_dummy_multi_choice</tt></a></li>
 <li><a href='https://recipes.tidymodels.org//reference/step_holiday.html' target='_blank'><tt>step_holiday</tt></a></li>
 <li><a href='https://recipes.tidymodels.org//reference/step_indicate_na.html' target='_blank'><tt>step_indicate_na</tt></a></li>
 <li><a href='https://recipes.tidymodels.org//reference/step_regex.html' target='_blank'><tt>step_regex</tt></a></li>
+<li><a href='https://textrecipes.tidymodels.org//reference/step_texthash.html' target='_blank'><tt>step_texthash</tt></a></li>
+<li><a href='https://textrecipes.tidymodels.org//reference/step_tf.html' target='_blank'><tt>step_tf</tt></a></li>
+<li><a href='https://textrecipes.tidymodels.org//reference/step_tfidf.html' target='_blank'><tt>step_tfidf</tt></a></li>
 </ul>
 ```
 
