@@ -13,6 +13,5 @@ listing:
 
 
 
-
 ::: {#team-listings}
 :::

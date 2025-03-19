@@ -484,7 +484,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-07
+#>  date     2025-03-19
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
@@ -496,11 +496,11 @@ This final plot compares the performance of the random forest and regularized re
 #>  ggplot2      * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
 #>  glmnet       * 4.1-8   2023-08-22 [1] CRAN (R 4.4.0)
 #>  infer        * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip      * 1.3.0   2025-02-14 [1] CRAN (R 4.4.2)
+#>  parsnip      * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
 #>  purrr        * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
 #>  randomForest * 4.7-1.2 2024-09-22 [1] CRAN (R 4.4.1)
 #>  ranger       * 0.17.0  2024-11-08 [1] CRAN (R 4.4.1)
-#>  recipes      * 1.1.1   2025-02-12 [1] CRAN (R 4.4.1)
+#>  recipes      * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang          1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample      * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
 #>  tibble       * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
