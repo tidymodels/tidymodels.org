@@ -14,11 +14,9 @@ css: ../styles-find.css
 
 
 
-
 ## Models
 
 Below is all the model engine combinations that support sparse data. It is known that `ranger` supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn't much benefit to using sparse structures.
-
 
 
 
@@ -96,11 +94,9 @@ Below is all the model engine combinations that support sparse data. It is known
 
 
 
-
 ## Steps
 
 Sparse data compatibility for steps comes in 2 flavors. The first kind generates sparse data from dense data. Often converting categorical variables to many sparse columns. This type of step is listed here:
-
 
 
 
@@ -130,9 +126,7 @@ Sparse data compatibility for steps comes in 2 flavors. The first kind generates
 
 
 
-
 The other type of sparse compatible steps are the ones that can take sparse data as input and operate on them while preserving the sparsity. These steps can thus safely be applied to columns that are produced by the above steps. This type of step is listed here:
-
 
 
 
