@@ -13,20 +13,11 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: stopwords, textrecipes, and tidymodels.
 
 This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.
-
 
 ## Text as data
 
@@ -37,9 +28,6 @@ The text data we'll use in this article are from Amazon:
 This article uses a small subset of the total reviews [available at the original source](https://snap.stanford.edu/data/web-FineFoods.html). We sampled a single review from 5,000 random products and allocated 80% of these data to the training set, with the remaining 1,000 reviews held out for the test set.   
 
 There is a column for the product, a column for the text of the review, and a factor column for the outcome variable. The outcome is whether the reviewer gave the product a five-star rating or not.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -65,9 +53,6 @@ training_data
 ```
 :::
 
-
-
-
 Our modeling goal is to create modeling features from the text of the reviews to predict whether the review was five-star or not.
 
 ## Inputs for the search
@@ -90,7 +75,6 @@ Text, perhaps more so than tabular data we often deal with, must be heavily proc
 
 * Center and scale all predictors. 
 
-
 ::: {.callout-note}
  We will end up with two kinds of features:
 
@@ -102,9 +86,6 @@ Some of these preprocessing steps (such as stemming) may or may not be good idea
 
 Before we start building our preprocessing recipe, we need some helper objects. For example, for the Yeo-Johnson transformation, we need to know the set of count-based text features: 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -115,13 +96,7 @@ head(basics)
 ```
 :::
 
-
-
-
 Also, the implementation of feature hashes does not produce the binary values we need. This small function will help convert the scores to values of -1, 0, or 1:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -134,13 +109,7 @@ binary_hash <- function(x) {
 ```
 :::
 
-
-
-
 Now, let's put this all together in one recipe:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -176,17 +145,11 @@ pre_proc <-
 ```
 :::
 
-
-
-
 ::: {.callout-warning}
  Note that, when objects from the global environment are used, they are injected into the step objects via `!!`. For some parallel processing technologies, these objects may not be found by the worker processes. 
 :::
 
 The preprocessing recipe is long and complex (often typical for working with text data) but the model we'll use is more straightforward. Let's stick with a regularized logistic regression model: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -197,9 +160,6 @@ lr_mod <-
 ```
 :::
 
-
-
-
 There are three tuning parameters for this data analysis:
 
 - `num_terms`, the number of feature hash variables to create
@@ -209,9 +169,6 @@ There are three tuning parameters for this data analysis:
 ## Resampling
 
 There is enough data here so that 5-fold resampling would hold out 800 reviews at a time to estimate performance. Performance estimates using this many observations have sufficiently low noise to measure and tune models.  
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -231,15 +188,9 @@ folds
 ```
 :::
 
-
-
-
 ## Grid search
 
 Let's begin our tuning with [grid search](https://www.tidymodels.org/learn/work/tune-svm/) and a regular grid. For glmnet models, evaluating penalty values is fairly cheap because of the use of the ["submodel-trick"](https://tune.tidymodels.org/articles/extras/optimizations.html#sub-model-speed-ups-1). The grid will use 20 penalty values, 5 mixture values, and 3 values for the number of hash features.  
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -268,15 +219,9 @@ five_star_grid
 ```
 :::
 
-
-
-
 Note that, for each resample, the (computationally expensive) text preprocessing recipe is only prepped 6 times. This increases the efficiency of the analysis by avoiding redundant work. 
 
 Let's save information on the number of predictors by penalty value for each glmnet model. This can help us understand how many features were used across the penalty values. Use an extraction function to do this:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -292,13 +237,7 @@ ctrl <- control_grid(extract = glmnet_vars, verbose = TRUE)
 ```
 :::
 
-
-
-
 Finally, let's run the grid search:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -330,13 +269,7 @@ five_star_glmnet
 ```
 :::
 
-
-
-
 This took a while to complete! What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -362,15 +295,9 @@ grid_roc
 ```
 :::
 
-
-
-
 The best results have a fairly high penalty value and focus on the ridge penalty (i.e. no feature selection via the lasso's L1 penalty). The best solutions also use the largest number of hashing features. 
 
 What is the relationship between performance and the tuning parameters? 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -382,9 +309,6 @@ autoplot(five_star_glmnet, metric = "roc_auc")
 ![](figs/grid-plot-1.svg){fig-align='center' width=960}
 :::
 :::
-
-
-
 
 - We can definitely see that performance improves with the number of features included. In this article, we've used a small sample of the overall data set available. When more data are used, an even larger feature set is optimal. 
 
@@ -403,9 +327,6 @@ Let's pretend that we haven't seen the grid search results. We'll initialize the
 
 It might be good to use a custom `dials` object for the number of hash terms. The default object, `num_terms()`, uses a linear range and tries to set the upper bound of the parameter using the data. Instead, let's create a parameter set, change the scale to be `log2`, and define the same range as was used in grid search. 
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -417,13 +338,7 @@ hash_range
 ```
 :::
 
-
-
-
 To use this, we have to merge the recipe and `parsnip` model object into a workflow:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -435,13 +350,7 @@ five_star_wflow <-
 ```
 :::
 
-
-
-
 Then we can extract and manipulate the corresponding parameter set:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -459,15 +368,9 @@ five_star_set <-
 ```
 :::
 
-
-
-
 This is passed to the search function via the `param_info` argument. 
 
 The initial rounds of search can be biased more towards exploration of the parameter space (as opposed to staying near the current best results). If expected improvement is used as the acquisition function, the trade-off value can be slowly moved from exploration to exploitation over iterations (see the tune vignette on [acquisition functions](https://tune.tidymodels.org/articles/acquisition_functions.html) for more details). The tune package has a built-in function called `expo_decay()` that can help accomplish this:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -478,13 +381,7 @@ trade_off_decay <- function(iter) {
 ```
 :::
 
-
-
-
 Using these values, let's run the search:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -654,14 +551,8 @@ five_star_search
 ```
 :::
 
-
-
-
 These results show some improvement over the initial set. One issue is that so many settings are sub-optimal (as shown in the plot above for grid search) so there are poor results periodically. There are regions where the penalty parameter becomes too large and all of the predictors are removed from the model. These regions are also dependent on the number of terms. There is a fairly narrow ridge (sorry, pun intended!) where good performance can be achieved. Using more iterations would probably result in the search finding better results. 
 Let's look at a plot of model performance versus the search iterations:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -674,9 +565,6 @@ autoplot(five_star_search, type = "performance")
 :::
 :::
 
-
-
-
 ::: {.callout-note}
 What would we do if we knew about the grid search results and wanted to try directed, iterative search? We would restrict the range for the number of hash features to be larger (especially with more data). We might also restrict the penalty and mixture parameters to have a lower upper bound. 
 :::
@@ -684,9 +572,6 @@ What would we do if we knew about the grid search results and wanted to try dire
 ## Extracted results
 
 Let's return to the grid search results and examine the results of our `extract` function. For each _fitted model_, a tibble was saved that contains the relationship between the number of predictors and the penalty value. Let's look at these results for the best model:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -700,13 +585,7 @@ params
 ```
 :::
 
-
-
-
 Recall that we saved the glmnet results in a tibble. The column `five_star_glmnet$.extracts` is a list of tibbles. As an example, the first element of the list is:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -729,13 +608,7 @@ five_star_glmnet$.extracts[[1]]
 ```
 :::
 
-
-
-
 More nested tibbles! Let's `unnest()` the `five_star_glmnet$.extracts` column:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -763,14 +636,7 @@ extracted
 ```
 :::
 
-
-
-
 One thing to realize here is that `tune_grid()` [may not fit all of the models](https://tune.tidymodels.org/articles/extras/optimizations.html) that are evaluated. In this case, for each value of `mixture` and `num_terms`, the model is fit over _all_ penalty values (this is a feature of this particular model and is not generally true for other engines). To select the best parameter set, we can exclude the `penalty` column in `extracted`:
-
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -799,13 +665,7 @@ extracted
 ```
 :::
 
-
-
-
 Now we can get at the results that we want using another `unnest()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -831,13 +691,7 @@ extracted
 ```
 :::
 
-
-
-
 Let's look at a plot of these results (per resample):
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -855,15 +709,9 @@ ggplot(extracted, aes(x = penalty, y = num_vars)) +
 :::
 :::
 
-
-
-
 These results might help guide the choice of the `penalty` range if more optimization was conducted. 
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -871,14 +719,14 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

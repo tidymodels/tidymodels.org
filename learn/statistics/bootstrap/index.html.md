@@ -14,15 +14,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
-
 ## Introduction
 
 This article only requires the tidymodels package.
@@ -32,9 +23,6 @@ Combining fitted models in a tidy way is useful for performing bootstrapping or 
 Bootstrapping consists of randomly sampling a data set with replacement, then performing the analysis individually on each bootstrapped replicate. The variation in the resulting estimate is then a reasonable approximation of the variance in our estimate.
 
 Let's say we want to fit a nonlinear model to the weight/mileage relationship in the `mtcars` data set.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -50,13 +38,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 :::
 :::
 
-
-
-
 We might use the method of nonlinear least squares (via the `nls()` function) to fit a model.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -88,9 +70,6 @@ ggplot(mtcars, aes(wt, mpg)) +
 :::
 :::
 
-
-
-
 While this does provide a p-value and confidence intervals for the parameters, these are based on model assumptions that may not hold in real data. Bootstrapping is a popular method for providing confidence intervals and predictions that are more robust to the nature of the data.
 
 ## Bootstrapping models
@@ -98,9 +77,6 @@ While this does provide a p-value and confidence intervals for the parameters, t
 We can use the `bootstraps()` function in the rsample package to sample bootstrap replications. First, we construct 2000 bootstrap replicates of the data, each of which has been randomly sampled with replacement. The resulting object is an `rset`, which is a data frame with a column of `rsplit` objects.
 
 An `rsplit` object has two main components: an analysis data set and an assessment data set, accessible via `analysis(rsplit)` and `assessment(rsplit)` respectively. For bootstrap samples, the analysis data set is the bootstrap sample itself, and the assessment data set consists of all the out-of-bag samples.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -126,13 +102,7 @@ boots
 ```
 :::
 
-
-
-
 Let's create a helper function to fit an `nls()` model on each bootstrap sample, and then use `purrr::map()` to apply this function to all the bootstrap samples at once. Similarly, we create a column of tidy coefficient information by unnesting.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -152,13 +122,7 @@ boot_coefs <-
 ```
 :::
 
-
-
-
 The unnested coefficient information contains a summary of each replication combined in a single data frame:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -181,15 +145,9 @@ boot_coefs
 ```
 :::
 
-
-
-
 ## Confidence intervals
 
 We can then calculate confidence intervals (using what is called the [percentile method](https://www.uvm.edu/~dhowell/StatPages/Randomization%20Tests/ResamplingWithR/BootstMeans/bootstrapping_means.html)):
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -204,13 +162,7 @@ percentile_intervals
 ```
 :::
 
-
-
-
 Or we can use histograms to get a more detailed idea of the uncertainty in each estimate:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -227,17 +179,11 @@ ggplot(boot_coefs, aes(estimate)) +
 :::
 :::
 
-
-
-
 The rsample package also has functions for [other types of confidence intervals](https://rsample.tidymodels.org/reference/int_pctl.html). 
 
 ## Possible model fits
 
 We can use `augment()` to visualize the uncertainty in the fitted curve. Since there are so many bootstrap samples, we'll only show a sample of the model fits in our visualization:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -279,13 +225,7 @@ ggplot(boot_aug, aes(wt, mpg)) +
 :::
 :::
 
-
-
-
 With only a few small changes, we could easily perform bootstrapping with other kinds of predictive or hypothesis testing models, since the `tidy()` and `augment()` functions works for many statistical outputs. As another example, we could use `smooth.spline()`, which fits a cubic smoothing spline to data:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -315,15 +255,7 @@ ggplot(splines_aug, aes(x, y)) +
 :::
 :::
 
-
-
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -331,14 +263,14 @@ ggplot(splines_aug, aes(x, y)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

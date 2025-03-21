@@ -16,22 +16,11 @@ css: ../styles.css
 include-after-body: ../repo-actions-delete.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction {#intro}
 
 So far, we have [built a model](/start/models/) and [preprocessed data with a recipe](/start/recipes/). We also introduced [workflows](/start/recipes/#fit-workflow) as a way to bundle a [parsnip model](https://parsnip.tidymodels.org/) and [recipe](https://recipes.tidymodels.org/) together. Once we have a model trained, we need a way to measure how well that model predicts new data. This tutorial explains how to characterize model performance based on **resampling** statistics.
 
 To use code in this article,  you will need to install the following packages: modeldata, ranger, and tidymodels.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -43,17 +32,11 @@ library(modeldata)  # for the cells data
 ```
 :::
 
-
-
-
 [Test Drive](https://rstudio.cloud/project/2674862)
 
 ## The cell image data {#data}
 
 Let's use data from [Hill, LaPan, Li, and Haney (2007)](http://www.biomedcentral.com/1471-2105/8/340), available in the [modeldata package](https://cran.r-project.org/web/packages/modeldata/index.html), to predict cell image segmentation quality with resampling. To start, we load this data into R:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -83,9 +66,6 @@ cells
 ```
 :::
 
-
-
-
 We have data for 2019 cells, with 58 variables. The main outcome variable of interest for us here is called `class`, which you can see is a factor. But before we jump into predicting the `class` variable, we need to understand it better. Below is a brief primer on cell image segmentation.
 
 ### Predicting image segmentation quality
@@ -94,17 +74,11 @@ Some biologists conduct experiments on cells. In drug discovery, a particular ty
 
 For example, in top panel of this image of five cells, the green color is meant to define the boundary of the cell (coloring something called the cytoskeleton) while the blue color defines the nucleus of the cell.
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](img/cells.png){fig-align='center' width=70%}
 :::
 :::
-
-
-
 
 Using these colors, the cells in an image can be *segmented* so that we know which pixels belong to which cell. If this is done well, the cell can be measured in different ways that are important to the biology. Sometimes the shape of the cell matters and different mathematical tools are used to summarize characteristics like the size or "oblongness" of the cell.
 
@@ -115,9 +89,6 @@ A cell-based experiment might involve millions of cells so it is unfeasible to v
 ### Back to the cells data
 
 The `cells` data has `class` labels for 2019 cells --- each cell is labeled as either poorly segmented (`PS`) or well-segmented (`WS`). Each also has a total of 56 predictors based on automated image analysis measurements. For example, `avg_inten_ch_1` is the mean intensity of the data contained in the nucleus, `area_ch_1` is the total size of the cell, and so on (some predictors are fairly arcane in nature).
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -146,13 +117,7 @@ cells
 ```
 :::
 
-
-
-
 The rates of the classes are somewhat imbalanced; there are more poorly segmented cells than well-segmented cells:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -168,9 +133,6 @@ cells %>%
 ```
 :::
 
-
-
-
 ## Data splitting {#data-split}
 
 In our previous [*Preprocess your data with recipes*](/start/recipes/#data-split) article, we started by splitting our data. It is common when beginning a modeling project to [separate the data set](https://bookdown.org/max/FES/data-splitting.html) into two partitions:
@@ -185,9 +147,6 @@ Since random sampling uses random numbers, it is important to set the random num
 
 The function `rsample::initial_split()` takes the original data and saves the information on how to make the partitions. In the original analysis, the authors made their own training/test set and that information is contained in the column `case`. To demonstrate how to make a split, we'll remove this column before we make our own split:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -197,13 +156,7 @@ cell_split <- initial_split(cells %>% select(-case),
 ```
 :::
 
-
-
-
 Here we used the [`strata` argument](https://rsample.tidymodels.org/reference/initial_split.html), which conducts a stratified split. This ensures that, despite the imbalance we noticed in our `class` variable, our training and test data sets will keep roughly the same proportions of poorly and well-segmented cells as in the original data. After the `initial_split`, the `training()` and `testing()` functions return the actual data sets.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -238,9 +191,6 @@ cell_test %>%
 ```
 :::
 
-
-
-
 The majority of the modeling work is then conducted on the training set data.
 
 ## Modeling
@@ -253,9 +203,6 @@ At the same time, the number of trees in the ensemble should be large (in the th
 
 To fit a random forest model on the training set, let's use the [parsnip](https://parsnip.tidymodels.org/) package with the [ranger](https://cran.r-project.org/package=ranger) engine. We first define the model that we want to create:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -266,13 +213,7 @@ rf_mod <-
 ```
 :::
 
-
-
-
 Starting with this parsnip model object, the `fit()` function can be used with a model formula. Since random forest models use random numbers, we again set the seed prior to computing:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -301,9 +242,6 @@ rf_fit
 ```
 :::
 
-
-
-
 This new `rf_fit` object is our fitted model, trained on our training data set.
 
 ## Estimating performance {#performance}
@@ -320,9 +258,6 @@ The [yardstick package](https://yardstick.tidymodels.org/) has functions for com
 
 At first glance, it might seem like a good idea to use the training set data to compute these statistics. (This is actually a very bad idea.) Let's see what happens if we try this. To evaluate performance based on the training set, we call the `predict()` method to get both types of predictions (i.e. probabilities and hard class predictions).
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -335,13 +270,7 @@ rf_training_pred <-
 ```
 :::
 
-
-
-
 Using the yardstick functions, this model has spectacular results, so spectacular that you might be starting to get suspicious:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -361,13 +290,7 @@ rf_training_pred %>%                # training set predictions
 ```
 :::
 
-
-
-
 Now that we have this model with exceptional performance, we proceed to the test set. Unfortunately, we discover that, although our results aren't bad, they are certainly worse than what we initially thought based on predicting the training set:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -397,9 +320,6 @@ rf_testing_pred %>%                   # test set predictions
 ```
 :::
 
-
-
-
 ### What happened here?
 
 There are several reasons why training set statistics like the ones shown in this section can be unrealistically optimistic:
@@ -414,17 +334,11 @@ To understand that second point better, think about an analogy from teaching. Su
 
 Resampling methods, such as cross-validation and the bootstrap, are empirical simulation systems. They create a series of data sets similar to the training/testing split discussed previously; a subset of the data are used for creating the model and a different subset is used to measure performance. Resampling is always used with the *training set*. This schematic from [Kuhn and Johnson (2019)](https://bookdown.org/max/FES/resampling.html) illustrates data usage for resampling methods:
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
 ![](img/resampling.svg){fig-align='center' width=85%}
 :::
 :::
-
-
-
 
 In the first level of this diagram, you see what happens when you use `rsample::initial_split()`, which splits the original data into training and test sets. Then, the training set is chosen for resampling, and the test set is held out.
 
@@ -434,18 +348,7 @@ The other 90% of the data (about 1362 cells) are used to fit the model. Again, t
 
 In this example, 10-fold CV moves iteratively through the folds and leaves a different 10% out each time for model assessment. At the end of this process, there are 10 sets of performance statistics that were created on 10 data sets that were not used in the modeling process. For the cell example, this means 10 accuracies and 10 areas under the ROC curve. While 10 models were created, these are not used further; we do not keep the models themselves trained on these folds because their only purpose is calculating performance metrics.
 
-
-
-
-
-
-
-
-
 The final resampling estimates for the model are the **averages** of the performance statistics replicates. For example, suppose for our data the results were:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -538,9 +441,6 @@ The final resampling estimates for the model are the **averages** of the perform
 
 :::
 
-
-
-
 From these resampling statistics, the final estimate of performance for this random forest model would be 0.904 for the area under the ROC curve and 0.832 for accuracy.
 
 These resampling statistics are an effective method for measuring model performance *without* predicting the training set directly as a whole.
@@ -548,9 +448,6 @@ These resampling statistics are an effective method for measuring model performa
 ## Fit a model with resampling {#fit-resamples}
 
 To generate these results, the first step is to create a resampling object using rsample. There are [several resampling methods](https://rsample.tidymodels.org/reference/index.html#section-resampling-methods) implemented in rsample; cross-validation folds can be created using `vfold_cv()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -575,9 +472,6 @@ folds
 ```
 :::
 
-
-
-
 The list column for `splits` contains the information on which rows belong in the analysis and assessment sets. There are functions that can be used to extract the individual resampled data called `analysis()` and `assessment()`.
 
 However, the tune package contains high-level functions that can do the required computations to resample a model for the purpose of measuring performance. You have several options for building an object for resampling:
@@ -587,9 +481,6 @@ However, the tune package contains high-level functions that can do the required
 -   Resample a [`workflow()`](https://workflows.tidymodels.org/) that bundles together a model specification and formula/recipe.
 
 For this example, let's use a `workflow()` that bundles together the random forest model and a formula, since we are not using a recipe. Whichever of these options you use, the syntax to `fit_resamples()` is very similar to `fit()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -628,13 +519,7 @@ rf_fit_rs
 ```
 :::
 
-
-
-
 The results are similar to the `folds` results with some extra columns. The column `.metrics` contains the performance statistics created from the 10 assessment sets. These can be manually unnested but the tune package contains a number of simple functions that can extract these data:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -649,13 +534,7 @@ collect_metrics(rf_fit_rs)
 ```
 :::
 
-
-
-
 Think about these values we now have for accuracy and AUC. These performance metrics are now more realistic (i.e. lower) than our ill-advised first attempt at computing performance metrics in the section above. If we wanted to try different model types for this data set, we could more confidently compare performance metrics computed using resampling to choose between models. Also, remember that at the end of our project, we return to our test set to estimate final model performance. We have looked at this once already before we started using resampling, but let's remind ourselves of the results:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -675,15 +554,9 @@ rf_testing_pred %>%                   # test set predictions
 ```
 :::
 
-
-
-
 The performance metrics from the test set are much closer to the performance metrics computed using resampling than our first ("bad idea") attempt. Resampling allows us to simulate how well our model will perform on new data, and the test set acts as the final, unbiased check for our model's performance.
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -691,14 +564,14 @@ The performance metrics from the test set are much closer to the performance met
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

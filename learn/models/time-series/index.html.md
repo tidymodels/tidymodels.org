@@ -12,15 +12,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: forecast, sweep, tidymodels, timetk, and zoo.
@@ -30,9 +21,6 @@ To use code in this article,  you will need to install the following packages: f
 ## Example data
 
 The data for this article are sales of alcoholic beverages originally from [the Federal Reserve Bank of St. Louis website](https://fred.stlouisfed.org/series/S4248SM144NCEN).
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -48,17 +36,11 @@ glimpse(drinks)
 ```
 :::
 
-
-
-
 Each row represents one month of sales (in millions of US dollars). 
 
 ## Time series resampling
 
 Suppose that we need predictions for one year ahead and our model should use the most recent data from the last 20 years. To set up this resampling scheme:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -92,13 +74,7 @@ roll_rs
 ```
 :::
 
-
-
-
 Each `split` element contains the information about that resample:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -109,13 +85,7 @@ roll_rs$splits[[1]]
 ```
 :::
 
-
-
-
 For plotting, let's index each split by the first day of the assessment set:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -132,13 +102,7 @@ head(roll_rs$start_date)
 ```
 :::
 
-
-
-
 This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the `auto.arima()` function from the forecast package. The rsample functions `analysis()` and `assessment()` return a data frame, so another step converts the data to a `ts` object called `mod_dat` using a function in the timetk package.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -161,13 +125,7 @@ fit_model <- function(x, ...) {
 ```
 :::
 
-
-
-
 Save each model in a new column:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -189,9 +147,6 @@ roll_rs$arima[[1]]
 ```
 :::
 
-
-
-
 (There are some warnings produced by these regarding extra columns in the data that can be ignored.)
 
 ## Model performance
@@ -202,9 +157,6 @@ Using the model fits, let's measure performance in two ways:
  * _Extrapolation_ or _forecast_ error evaluates the performance of the model on the data from the following year (that were not used in the model fit).
  
 In each case, the mean absolute percent error (MAPE) is the statistic used to characterize the model fits. The interpolation error can be computed from the `Arima` object. To make things easy, let's use the sweep package's `sw_glance()` function:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -223,13 +175,7 @@ summary(roll_rs$interpolation)
 ```
 :::
 
-
-
-
 For the extrapolation error, the model and split objects are required. Using these:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -254,13 +200,7 @@ summary(roll_rs$extrapolation)
 ```
 :::
 
-
-
-
 What do these error estimates look like over time?
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -278,17 +218,11 @@ roll_rs %>%
 :::
 :::
 
-
-
-
 It is likely that the interpolation error is an underestimate to some degree, as mentioned above. 
 
 It is also worth noting that `rolling_origin()` can be used over calendar periods, rather than just over a fixed window size. This is especially useful for irregular series where a fixed window size might not make sense because of missing data points, or because of calendar features like different months having a different number of days.
 
 The example below demonstrates this idea by splitting `drinks` into a nested set of 26 years, and rolling over years rather than months. Note that the end result accomplishes a different task than the original example; in this new case, each slice moves forward an entire year, rather than just one month.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -331,14 +265,8 @@ analysis(roll_rs_annual$splits[[1]])
 ```
 :::
 
-
-
-
 The workflow to access these calendar slices is to use `bind_rows()` to join
 each analysis set together.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -360,14 +288,7 @@ mutate(
 ```
 :::
 
-
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -375,14 +296,14 @@ mutate(
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

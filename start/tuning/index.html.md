@@ -17,22 +17,11 @@ css: ../styles.css
 include-after-body: ../repo-actions-delete.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction {#intro}
 
 Some model parameters cannot be learned directly from a data set during model training; these kinds of parameters are called **hyperparameters**. Some examples of hyperparameters include the number of predictors that are sampled at splits in a tree-based model (we call this `mtry` in tidymodels) or the learning rate in a boosted tree model (we call this `learn_rate`). Instead of learning these kinds of hyperparameters during model training, we can *estimate* the best values for these values by training many models on resampled data sets and exploring how well all these models perform. This process is called **tuning**.
 
 To use code in this article,  you will need to install the following packages: rpart, rpart.plot, tidymodels, and vip.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -45,17 +34,11 @@ library(vip)         # for variable importance plots
 ```
 :::
 
-
-
-
 [Test Drive](https://rstudio.cloud/project/2674862)
 
 ## The cell image data, revisited {#data}
 
 In our previous [*Evaluate your model with resampling*](/start/resampling/) article, we introduced a data set of images of cells that were labeled by experts as well-segmented (`WS`) or poorly segmented (`PS`). We trained a [random forest model](/start/resampling/#modeling) to predict which images are segmented well vs. poorly, so that a biologist could filter out poorly segmented cell images in their analysis. We used [resampling](/start/resampling/#resampling) to estimate the performance of our model on this data.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -85,9 +68,6 @@ cells
 ```
 :::
 
-
-
-
 ## Predicting image segmentation, but better {#why-tune}
 
 Random forest models are a tree-based ensemble method, and typically perform well with [default hyperparameters](https://bradleyboehmke.github.io/HOML/random-forest.html#out-of-the-box-performance). However, the accuracy of some other tree-based models, such as [boosted tree models](https://en.wikipedia.org/wiki/Gradient_boosting#Gradient_tree_boosting) or [decision tree models](https://en.wikipedia.org/wiki/Decision_tree), can be sensitive to the values of hyperparameters. In this article, we will train a **decision tree** model. There are several hyperparameters for decision tree models that can be tuned for better performance. Let's explore:
@@ -101,9 +81,6 @@ We will tune the model hyperparameters to avoid overfitting. Tuning the value of
 
 Before we start the tuning process, we split our data into training and testing sets, just like when we trained the model with one default set of hyperparameters. As [before](/start/resampling/), we can use `strata = class` if we want our training and testing sets to be created using stratified sampling so that both have the same proportion of both kinds of segmentation.
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -115,17 +92,11 @@ cell_test  <- testing(cell_split)
 ```
 :::
 
-
-
-
 We use the training data for tuning the model.
 
 ## Tuning hyperparameters {#tuning}
 
 Let's start with the parsnip package, using a [`decision_tree()`](https://parsnip.tidymodels.org/reference/decision_tree.html) model with the [rpart](https://cran.r-project.org/web/packages/rpart/index.html) engine. To tune the decision tree hyperparameters `cost_complexity` and `tree_depth`, we create a model specification that identifies which hyperparameters we plan to tune.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -149,15 +120,9 @@ tune_spec
 ```
 :::
 
-
-
-
 Think of `tune()` here as a placeholder. After the tuning process, we will select a single numeric value for each of these hyperparameters. For now, we specify our parsnip model object and identify the hyperparameters we will `tune()`.
 
 We can't train this specification on a single data set (such as the entire training set) and learn what the hyperparameter values should be, but we *can* train many models using resampled data and see which models turn out best. We can create a regular grid of values to try using some convenience functions for each hyperparameter:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -168,13 +133,7 @@ tree_grid <- grid_regular(cost_complexity(),
 ```
 :::
 
-
-
-
 The function [`grid_regular()`](https://dials.tidymodels.org/reference/grid_regular.html) is from the [dials](https://dials.tidymodels.org/) package. It chooses sensible values to try for each hyperparameter; here, we asked for 5 of each. Since we have two to tune, `grid_regular()` returns 5 $\times$ 5 = 25 different possible tuning combinations to try in a tidy tibble format.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -197,13 +156,7 @@ tree_grid
 ```
 :::
 
-
-
-
 Here, you can see all 5 values of `cost_complexity` ranging up to 0.1. These values get repeated for each of the 5 values of `tree_depth`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -221,13 +174,7 @@ tree_grid %>%
 ```
 :::
 
-
-
-
 Armed with our grid filled with 25 candidate decision tree models, let's create [cross-validation folds](/start/resampling/) for tuning:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -236,9 +183,6 @@ set.seed(234)
 cell_folds <- vfold_cv(cell_train)
 ```
 :::
-
-
-
 
 Tuning in tidymodels requires a resampled object created with the [rsample](https://rsample.tidymodels.org/) package.
 
@@ -251,9 +195,6 @@ We are ready to tune! Let's use [`tune_grid()`](https://tune.tidymodels.org/refe
 -   Tune a [`workflow()`](https://workflows.tidymodels.org/) that bundles together a model specification and a recipe or model preprocessor.
 
 Here we use a `workflow()` with a straightforward formula; if this model required more involved data preprocessing, we could use `add_recipe()` instead of `add_formula()`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -290,13 +231,7 @@ tree_res
 ```
 :::
 
-
-
-
 Once we have our tuning results, we can both explore them through visualization and then select the best result. The function `collect_metrics()` gives us a tidy tibble with all the results. We had 25 candidate models and two metrics, `accuracy` and `roc_auc`, and we get a row for each `.metric` and model.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -320,13 +255,7 @@ tree_res %>%
 ```
 :::
 
-
-
-
 We might get more out of plotting these results:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -349,13 +278,7 @@ tree_res %>%
 :::
 :::
 
-
-
-
 We can see that our "stubbiest" tree, with a depth of 1, is the worst model according to both metrics and across all candidate values of `cost_complexity`. Our deepest tree, with a depth of 15, did better. However, the best tree seems to be between these values with a tree depth of 4. The [`show_best()`](https://tune.tidymodels.org/reference/show_best.html) function shows us the top 5 candidate models by default:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -373,13 +296,7 @@ tree_res %>%
 ```
 :::
 
-
-
-
 We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show_best.html) function to pull out the single set of hyperparameter values for our best decision tree model:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -395,17 +312,11 @@ best_tree
 ```
 :::
 
-
-
-
 These are the values for `tree_depth` and `cost_complexity` that maximize accuracy in this data set of cell images.
 
 ## Finalizing our model {#final-model}
 
 We can update (or "finalize") our workflow object `tree_wf` with the values from `select_best()`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -433,17 +344,11 @@ final_wf
 ```
 :::
 
-
-
-
 Our tuning is done!
 
 ### The last fit
 
 Finally, let's fit this final model to the training data and use our test data to estimate the model performance we expect to see with new data. We can use the function [`last_fit()`](https://tune.tidymodels.org/reference/last_fit.html) with our finalized model; this function *fits* the finalized model on the full training data set and *evaluates* the finalized model on the testing data.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -472,15 +377,9 @@ final_fit %>%
 :::
 :::
 
-
-
-
 The performance metrics from the test set indicate that we did not overfit during our tuning procedure.
 
 The `final_fit` object contains a finalized, fitted workflow that you can use for predicting on new data or further understanding the results. You may want to extract this object, using [one of the `extract_` helper functions](https://tune.tidymodels.org/reference/extract-tune.html).
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -518,13 +417,7 @@ final_tree
 ```
 :::
 
-
-
-
 We can create a visualization of the decision tree using another helper function to extract the underlying engine-specific fit.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -539,13 +432,7 @@ final_tree %>%
 :::
 :::
 
-
-
-
 Perhaps we would also like to understand what variables are important in this final model. We can use the [vip](https://koalaverse.github.io/vip/) package to estimate variable importance [based on the model's structure](https://koalaverse.github.io/vip/reference/vi_model.html#details).
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -562,15 +449,9 @@ final_tree %>%
 :::
 :::
 
-
-
-
 These are the automated image analysis measurements that are the most important in driving segmentation quality predictions.
 
 We leave it to the reader to explore whether you can tune a different decision tree hyperparameter. You can explore the [reference docs](/find/parsnip/#models), or use the `args()` function to see which parsnip object arguments are available:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -582,15 +463,9 @@ args(decision_tree)
 ```
 :::
 
-
-
-
 You could tune the other hyperparameter we didn't use here, `min_n`, which sets the minimum `n` to split at any node. This is another early stopping method for decision trees that can help prevent overfitting. Use this [searchable table](/find/parsnip/#model-args) to find the original argument for `min_n` in the rpart package ([hint](https://stat.ethz.ch/R-manual/R-devel/library/rpart/html/rpart.control.html)). See whether you can tune a different combination of hyperparameters and/or values to improve a tree's ability to predict cell segmentation quality.
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -598,14 +473,14 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

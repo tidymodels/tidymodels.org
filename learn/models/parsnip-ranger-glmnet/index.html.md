@@ -13,15 +13,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: glmnet, randomForest, ranger, and tidymodels.
@@ -33,9 +24,6 @@ Second, let's fit a regularized linear regression model to demonstrate how to mo
 ## The Ames housing data
 
 We'll use the Ames housing data set to demonstrate how to create regression models using parsnip. First, set up the data set and create a simple training/test set split:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -52,17 +40,11 @@ ames_test  <- testing(data_split)
 ```
 :::
 
-
-
-
 The use of the test set here is _only for illustration_; normally in a data analysis these data would be saved to the very end after many models have been evaluated. 
 
 ## Random forest
 
 We'll start by fitting a random forest model to a small set of parameters. Let's create a model with the predictors `Longitude`, `Latitude`, `Lot_Area`, `Neighborhood`, and `Year_Sold`. A simple random forest model can be specified via:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -75,9 +57,6 @@ rf_defaults
 ```
 :::
 
-
-
-
 The model will be fit with the ranger package by default. Since we didn't add any extra arguments to `fit`, _many_ of the arguments will be set to their defaults from the function  `ranger::ranger()`. The help pages for the model function describe the default parameters and you can also use the `translate()` function to check out such details. 
 
 The parsnip package provides two different interfaces to fit a model: 
@@ -86,10 +65,6 @@ The parsnip package provides two different interfaces to fit a model:
 - the non-formula interface (`fit_xy()`).
 
 Let's start with the non-formula interface:
-
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -125,15 +100,9 @@ rf_xy_fit
 ```
 :::
 
-
-
-
 The non-formula interface doesn't do anything to the predictors before passing them to the underlying model function. This particular model does _not_ require indicator variables (sometimes called "dummy variables") to be created prior to fitting the model. Note that the output shows "Number of independent variables:  5".
 
 For regression models, we can use the basic `predict()` method, which returns a tibble with a column named `.pred`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -166,18 +135,12 @@ test_results %>% metrics(truth = Sale_Price, estimate = .pred)
 ```
 :::
 
-
-
-
 Note that: 
 
  * If the model required indicator variables, we would have to create them manually prior to using `fit()` (perhaps using the recipes package).
  * We had to manually log the outcome prior to modeling. 
 
 Now, for illustration, let's use the formula method using some new parameter values:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -208,14 +171,8 @@ rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
 ```
 :::
 
-
-
  
 Suppose that we would like to use the randomForest package instead of ranger. To do so, the only part of the syntax that needs to change is the `set_engine()` argument:
-
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -240,9 +197,6 @@ rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
 ```
 :::
 
-
-
-
 Look at the formula code that was printed out; one function uses the argument name `ntree` and the other uses `num.trees`. The parsnip models don't require you to know the specific names of the main arguments. 
 
 Now suppose that we want to modify the value of `mtry` based on the number of predictors in the data. Usually, a good default value is `floor(sqrt(num_predictors))` but a pure bagging model requires an `mtry` value equal to the total number of parameters. There may be cases where you may not know how many predictors are going to be present when the model will be fit (perhaps due to the generation of indicator variables or a variable filter) so this might be difficult to know exactly ahead of time when you write your code. 
@@ -257,9 +211,6 @@ Two relevant data descriptors for our example model are:
 Since ranger won't create indicator values, `.preds()` would be appropriate for `mtry` for a bagging model. 
 
 For example, let's use an expression with the `.preds()` descriptor to fit a bagging model: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -290,18 +241,11 @@ rand_forest(mode = "regression", mtry = .preds(), trees = 1000) %>%
 ```
 :::
 
-
-
-
-
 ## Regularized regression
 
 A linear model might work for this data set as well. We can use the `linear_reg()` parsnip model. There are two engines that can perform regularization/penalization, the glmnet and sparklyr packages. Let's use the former here. The glmnet package only implements a non-formula method, but parsnip will allow either one to be used. 
 
 When regularization is used, the predictors should first be centered and scaled before being passed to the model. The formula method won't do that automatically so we will need to do this ourselves. We'll use the [recipes](https://recipes.tidymodels.org/) package for these steps. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -400,15 +344,9 @@ glmn_fit
 ```
 :::
 
-
-
-
 If `penalty` were not specified, all of the `lambda` values would be computed. 
 
 To get the predictions for this specific value of `lambda` (aka `penalty`):
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -461,15 +399,9 @@ test_results %>%
 :::
 :::
 
-
-
-
 This final plot compares the performance of the random forest and regularized regression models.
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -477,14 +409,14 @@ This final plot compares the performance of the random forest and regularized re
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

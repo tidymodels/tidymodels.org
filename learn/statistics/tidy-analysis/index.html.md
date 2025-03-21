@@ -13,14 +13,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 This article only requires the tidymodels package.
@@ -30,9 +22,6 @@ While the tidymodels package [broom](https://broom.tidyverse.org/) is useful for
 ## Correlation analysis
 
 Let's demonstrate this with a simple data set, the built-in `Orange`. We start by coercing `Orange` to a `tibble`. This gives a nicer print method that will be especially useful later on when we start working with list-columns.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -60,13 +49,7 @@ Orange
 ```
 :::
 
-
-
-
 This contains 35 observations of three variables: `Tree`, `age`, and `circumference`. `Tree` is a factor with five levels describing five trees. As might be expected, age and circumference are correlated:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -85,13 +68,7 @@ ggplot(Orange, aes(age, circumference, color = Tree)) +
 :::
 :::
 
-
-
-
 Suppose you want to test for correlations individually *within* each tree. You can do this with dplyr's `group_by`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -110,15 +87,9 @@ Orange %>%
 ```
 :::
 
-
-
-
 (Note that the correlations are much higher than the aggregated one, and also we can now see the correlation is similar across trees).
 
 Suppose that instead of simply estimating a correlation, we want to perform a hypothesis test with `cor.test()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -139,13 +110,7 @@ ct
 ```
 :::
 
-
-
-
 This test output contains multiple values we may be interested in. Some are vectors of length 1, such as the p-value and the estimate, and some are longer, such as the confidence interval. We can get this into a nicely organized tibble using the `tidy()` function:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -158,13 +123,7 @@ tidy(ct)
 ```
 :::
 
-
-
-
 Often, we want to perform multiple tests or fit multiple models, each on a different part of the data. In this case, we recommend a `nest-map-unnest` workflow. For example, suppose we want to perform correlation tests for each different tree. We start by `nest`ing our data based on the group of interest:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -175,13 +134,7 @@ nested <-
 ```
 :::
 
-
-
-
 Then we perform a correlation test for each nested tibble using `purrr::map()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -199,13 +152,7 @@ nested %>%
 ```
 :::
 
-
-
-
 This results in a list-column of S3 objects. We want to tidy each of the objects, which we can also do with `map()`.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -226,13 +173,7 @@ nested %>%
 ```
 :::
 
-
-
-
 Finally, we want to unnest the tidied data frames so we can see the results in a flat tibble. All together, this looks like:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -257,15 +198,9 @@ Orange %>%
 ```
 :::
 
-
-
-
 ## Regression models
 
 This type of workflow becomes even more useful when applied to regressions. Untidy output for a regression looks like:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -293,13 +228,7 @@ summary(lm_fit)
 ```
 :::
 
-
-
-
 When we tidy these results, we get multiple rows of output for each model:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -313,13 +242,7 @@ tidy(lm_fit)
 ```
 :::
 
-
-
-
 Now we can handle multiple regressions at once using exactly the same workflow as before:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -348,13 +271,7 @@ Orange %>%
 ```
 :::
 
-
-
-
 You can just as easily use multiple predictors in the regressions, as shown here on the `mtcars` dataset. We nest the data into automatic vs. manual cars (the `am` column), then perform the regression within each nested tibble.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -399,13 +316,7 @@ mtcars %>%
 ```
 :::
 
-
-
-
 What if you want not just the `tidy()` output, but the `augment()` and `glance()` outputs as well, while still performing each regression only once? Since we're using list-columns, we can just fit the model once and use multiple list-columns to store the tidied, glanced and augmented outputs.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -465,9 +376,6 @@ regressions %>%
 ```
 :::
 
-
-
-
 By combining the estimates and p-values across all groups into the same tidy data frame (instead of a list of output model objects), a new class of analyses and visualizations becomes straightforward. This includes:
 
 - sorting by p-value or estimate to find the most significant terms across all tests,
@@ -476,11 +384,7 @@ By combining the estimates and p-values across all groups into the same tidy dat
 
 In each of these cases, we can easily filter, facet, or distinguish based on the `term` column. In short, this makes the tools of tidy data analysis available for the *results* of data analysis and models, not just the inputs.
 
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -488,14 +392,14 @@ In each of these cases, we can easily filter, facet, or distinguish based on the
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

@@ -5,10 +5,6 @@ toc-depth: 0
 include-after-body: ../resources.html
 ---
 
-
-
-
-
 The ecosystem of tidymodels packages would not be possible without the contributions of the R community. No matter your current skills, it's possible to contribute back to tidymodels. Contributions are guided by our design goals.
 
 ## Design goals
@@ -44,7 +40,6 @@ The tidymodels team often focuses on one package at a time to reduce context swi
 ## Contribute documentation
 
 Documentation is a high priority for tidymodels, and pull requests to correct or improve documentation are welcome. The most important thing to know is that tidymodels packages use [roxygen2](https://roxygen2.r-lib.org/); this means that documentation is found in the R code close to the source of each function. There are some special tags, but most tidymodels packages now use markdown in the documentation. This makes it particularly easy to get started!
-
 
 ## Contribute code
 

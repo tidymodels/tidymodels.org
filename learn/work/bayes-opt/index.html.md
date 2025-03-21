@@ -12,14 +12,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: kernlab, modeldata, themis, and tidymodels.
@@ -36,13 +28,9 @@ There are a variety of methods for iterative search and the focus in this articl
 
 * [Other articles!](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q="Bayesian+Optimization"&btnG=)
 
-
 ## Cell segmenting revisited
 
 To demonstrate this approach to tuning models, let's return to the cell segmentation data from the [Getting Started](/start/resampling/) article on resampling: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -63,15 +51,9 @@ folds <- vfold_cv(cell_train, v = 10)
 ```
 :::
 
-
-
-
 ## The tuning scheme
 
 Since the predictors are highly correlated, we can used a recipe to convert the original predictors to principal component scores. There is also slight class imbalance in these data; about 64% of the data are poorly segmented. To mitigate this, the data will be down-sampled at the end of the pre-processing so that the number of poorly and well segmented cells occur with equal frequency. We can use a recipe for all this pre-processing, but the number of principal components will need to be _tuned_ so that we have enough (but not too many) representations of the data. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -87,13 +69,7 @@ cell_pre_proc <-
 ```
 :::
 
-
-
-
 In this analysis, we will use a support vector machine to model the data. Let's use a radial basis function (RBF) kernel and tune its main parameter ($\sigma$). Additionally, the main SVM parameter, the cost value, also needs optimization. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -104,13 +80,7 @@ svm_mod <-
 ```
 :::
 
-
-
-
 These two objects (the recipe and model) will be combined into a single object via the `workflow()` function from the [workflows](https://workflows.tidymodels.org/) package; this object will be used in the optimization process. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -122,13 +92,7 @@ svm_wflow <-
 ```
 :::
 
-
-
-
 From this object, we can derive information about what parameters are slated to be tuned. A parameter set is derived by: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -145,13 +109,7 @@ svm_set
 ```
 :::
 
-
-
-
 The default range for the number of PCA components is rather small for this data set. A member of the parameter set can be modified using the `update()` function. Let's constrain the search to one to twenty components by updating the `num_comp` parameter. Additionally, the lower bound of this parameter is set to zero which specifies that the original predictor set should also be evaluated (i.e., with no PCA step at all): 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -161,9 +119,6 @@ svm_set <-
   update(num_comp = num_comp(c(0L, 20L)))
 ```
 :::
-
-
-
 
 ## Sequential tuning 
 
@@ -178,9 +133,6 @@ For example, one approach for scoring new candidates is to use a confidence boun
 The variance predicted by the Bayesian model is mostly spatial variation; the value will be large for candidate values that are not close to values that have already been evaluated. If the standard error multiplier is high, the search process will be more likely to avoid areas without candidate values in the vicinity. 
 
 We'll use another acquisition function, _expected improvement_, that determines which candidates are likely to be helpful relative to the current best results. This is the default acquisition function. More information on these functions can be found in the [package vignette for acquisition functions](https://tune.tidymodels.org/articles/acquisition_functions.html). 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3506,13 +3458,7 @@ search_res <-
 ```
 :::
 
-
-
-
 The resulting tibble is a stacked set of rows of the rsample object with an additional column for the iteration number:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3537,13 +3483,7 @@ search_res
 ```
 :::
 
-
-
-
 As with grid search, we can summarize the results over resamples:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3571,14 +3511,7 @@ estimates
 ```
 :::
 
-
-
-
-
 The best performance of the initial set of candidate values was `AUC = 0.8214598 `. The best results were achieved at iteration 25 with a corresponding AUC value of 0.9008576. The five best results are:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3595,13 +3528,7 @@ show_best(search_res, metric = "roc_auc")
 ```
 :::
 
-
-
-
 A plot of the search iterations can be created via:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3614,16 +3541,9 @@ autoplot(search_res, type = "performance")
 :::
 :::
 
-
-
-
 There are many parameter combinations have roughly equivalent results. 
 
 How did the parameters change over iterations? 
-
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3637,16 +3557,7 @@ autoplot(search_res, type = "parameters") +
 :::
 :::
 
-
-
-
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -3654,14 +3565,14 @@ autoplot(search_res, type = "parameters") +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

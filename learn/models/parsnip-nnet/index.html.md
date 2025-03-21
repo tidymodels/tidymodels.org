@@ -13,15 +13,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: AppliedPredictiveModeling, brulee, and tidymodels. You will also need the python torch library installed (see `?torch::install_torch()`).
@@ -30,12 +21,7 @@ We can create classification models with the tidymodels package [parsnip](https:
 
 ## Fitting a neural network
 
-
 Let's fit a model to a small, two predictor classification data set. The data are in the modeldata package (part of tidymodels) and have been split into training, validation, and test data sets. In this analysis, the test set is left untouched; this article tries to emulate a good data usage methodology where the test set would only be evaluated once at the end after a variety of models have been considered. 
-
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -49,13 +35,7 @@ cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
 ```
 :::
 
-
-
-
 A plot of the data shows two right-skewed predictors: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -70,13 +50,7 @@ ggplot(cls_train, aes(x = A, y = B, col = class)) +
 :::
 :::
 
-
-
-
 Let's use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the `step_BoxCox()` function) and on a common scale (using `step_normalize()`). We can use [recipes](https://recipes.tidymodels.org/) to do so:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -87,15 +61,9 @@ biv_rec <-
 ```
 :::
 
-
-
-
 This recipe is not directly executed; the steps will be estimated when the model is fit. 
 
 We can use the brulee package to fit a model with 10 hidden units and a 10% dropout rate, to regularize the model:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -127,15 +95,9 @@ nnet_fit %>% extract_fit_engine()
 ```
 :::
 
-
-
-
 ## Model performance
 
 In parsnip, the `predict()` function can be used to characterize performance on the validation set. Since parsnip always produces tibble outputs, these can just be column bound to the original data: 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -174,13 +136,7 @@ val_results %>% conf_mat(truth = class, .pred_class)
 ```
 :::
 
-
-
-
 Let's also create a grid to get a visual sense of the class boundary for the test set.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -190,7 +146,6 @@ b_rng <- range(cls_train$B)
 x_grid <-
   expand.grid(A = seq(a_rng[1], a_rng[2], length.out = 100),
               B = seq(b_rng[1], b_rng[2], length.out = 100))
-
 
 # Make predictions using the transformed predictors but 
 # attach them to the predictors in the original units: 
@@ -209,15 +164,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 :::
 :::
 
-
-
-
-
-
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -225,14 +172,14 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

@@ -11,14 +11,6 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
-
-
-
-
-
-
-
-
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: generics, tidymodels, tidyverse, and usethis.
@@ -45,9 +37,6 @@ The first step is to re-export the generic functions for `tidy()`, `glance()`, a
 
 First you'll need to add the [generics](https://github.com/r-lib/generics) package to `Imports`. We recommend using the [usethis](https://github.com/r-lib/usethis) package for this:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -55,13 +44,7 @@ usethis::use_package("generics", "Imports")
 ```
 :::
 
-
-
-
 Next, you'll need to re-export the appropriate tidying methods. If you plan to implement a `glance()` method, for example, you can re-export the `glance()` generic by adding the following somewhere inside the `/R` folder of your package:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -71,9 +54,6 @@ Next, you'll need to re-export the appropriate tidying methods. If you plan to i
 generics::glance
 ```
 :::
-
-
-
 
 Oftentimes it doesn't make sense to define one or more of these methods for a particular model. In this case, only implement the methods that do make sense.
 
@@ -86,9 +66,6 @@ Oftentimes it doesn't make sense to define one or more of these methods for a pa
 You'll now need to implement specific tidying methods for each of the generics you've re-exported in the above step. For each of `tidy()`, `glance()`, and `augment()`, we'll walk through the big picture, an example, and helpful resources.
 
 In this article, we'll use the base R dataset `trees`, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R `lm()` function. 
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -108,13 +85,7 @@ trees_model <- lm(Volume ~ Girth + Height, data = trees)
 ```
 :::
 
-
-
-
 Let's take a look at the `summary()` of our `trees_model` fit.
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -142,9 +113,6 @@ summary(trees_model)
 ```
 :::
 
-
-
-
 This output gives some summary statistics on the residuals (which would be described more fully in an `augment()` output), model coefficients (which, in this case, make up the `tidy()` output), and some model-level summarizations such as RSE, $R^2$, etc. (which make up the `glance()` output.)
 
 ### Implementing the `tidy()` method
@@ -152,9 +120,6 @@ This output gives some summary statistics on the residuals (which would be descr
 The `tidy(x, ...)` method will return a tibble where each row contains information about a component of the model. The `x` input is a model object, and the dots (`...`) are an optional argument to supply additional information to any calls inside your method. New `tidy()` methods can take additional arguments, but _must_ include the `x` and `...` arguments to be compatible with the generic function. (For a glossary of currently acceptable additional arguments, see [the end of this article](#glossary).)  Examples of model components include regression coefficients (for regression models), clusters (for classification/clustering models), etc. These `tidy()` methods are useful for inspecting model details and creating custom model visualizations.
 
 Returning to the example of our linear model on timber volume, we'd like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its `summary()`, you might notice that you can extract the regression coefficients as follows:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -167,13 +132,7 @@ summary(trees_model)$coefficients
 ```
 :::
 
-
-
-
 This object contains the model coefficients as a table, where the information giving which coefficient is being described in each row is given in the row names. Converting to a tibble where the row names are contained in a column, you might write:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -191,13 +150,7 @@ trees_model_tidy
 ```
 :::
 
-
-
-
 The broom package standardizes common column names used to describe coefficients. In this case, the column names are:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -206,15 +159,9 @@ colnames(trees_model_tidy) <- c("term", "estimate", "std.error", "statistic", "p
 ```
 :::
 
-
-
-
 A glossary giving the currently acceptable column names outputted by `tidy()` methods can be found [at the end of this article](#glossary). As a rule of thumb, column names resulting from `tidy()` methods should be all lowercase and contain only alphanumerics or periods (though there are plenty of exceptions).
 
 Finally, it is common for `tidy()` methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the `confint()` function can be used to calculate confidence intervals from a model object resulting from `lm()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -227,13 +174,7 @@ confint(trees_model)
 ```
 :::
 
-
-
-
 With these considerations in mind, a reasonable `tidy()` method for `lm()` might look something like:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -257,9 +198,6 @@ tidy.lm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
 ```
 :::
 
-
-
-
 ::: {.callout-note}
  If you're interested, the actual `tidy.lm()` source can be found [here](https://github.com/tidymodels/broom/blob/master/R/stats-lm-tidiers.R)! It's not too different from the version above except for some argument checking and additional columns. 
 :::
@@ -270,9 +208,6 @@ Some things to keep in mind while writing your `tidy()` method:
 
 * Sometimes a model will have several different types of components. For example, in mixed models, there is different information associated with fixed effects and random effects. Since this information doesn't have the same interpretation, it doesn't make sense to summarize the fixed and random effects in the same table. In cases like this you should add an argument that allows the user to specify which type of information they want. For example, you might implement an interface along the lines of:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -281,9 +216,6 @@ tidy(model, effects = "fixed")
 tidy(model, effects = "random")
 ```
 :::
-
-
-
 
 * How are missing values encoded in the model object and its `summary()`? Ensure that rows are included even when the associated model component is missing or rank deficient.
 * Are there other measures specific to each component that could reasonably be expected to be included in their summarizations? Some common arguments to `tidy()` methods include:
@@ -297,9 +229,6 @@ tidy(model, effects = "random")
 
 Returning to the `trees_model` example, we could pull out the $R^2$ value with the following code:
 
-
-
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -308,13 +237,7 @@ summary(trees_model)$r.squared
 ```
 :::
 
-
-
-
 Similarly, for the adjusted $R^2$:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -324,13 +247,7 @@ summary(trees_model)$adj.r.squared
 ```
 :::
 
-
-
-
 Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a `tibble()` element-by-element by subsetting the `summary()` object repeatedly. The `with()` function, however, can help make this process a bit less tedious by evaluating expressions inside of the `summary(trees_model)` environment. To grab those those same two model elements from above using `with()`:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -345,13 +262,7 @@ with(summary(trees_model),
 ```
 :::
 
-
-
-
 A reasonable `glance()` method for `lm()`, then, might look something like:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -383,9 +294,6 @@ glance.lm <- function(x, ...) {
 ```
 :::
 
-
-
-
 ::: {.callout-note}
 This is the actual definition of `glance.lm()` provided by broom! 
 :::
@@ -402,9 +310,6 @@ Some things to keep in mind while writing `glance()` methods:
 If a `data` argument is not specified, `augment()` should try to reconstruct the original data as much as possible from the model object. This may not always be possible, and often it will not be possible to recover columns not used by the model.
 
 With this is mind, we can look back to our `trees_model` example. For one, the `model` element inside of the `trees_model` object will allow us to recover the original data:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -445,13 +350,7 @@ trees_model$model
 ```
 :::
 
-
-
-
 Similarly, the fitted values and residuals can be accessed with the following code:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -465,13 +364,7 @@ head(trees_model$residuals)
 ```
 :::
 
-
-
-
 As with `glance()` methods, it's fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -484,13 +377,7 @@ head(se.fit)
 ```
 :::
 
-
-
-
 Thus, a reasonable `augment()` method for `lm` might look something like this:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -513,9 +400,6 @@ augment.lm <- function(x, data = x$model, newdata = NULL, ...) {
 ```
 :::
 
-
-
-
 Some other things to keep in mind while writing `augment()` methods:
 * The `newdata` argument should default to `NULL`. Users should only ever specify one of `data` or `newdata`. Providing both `data` and `newdata` should result in an error. The `newdata` argument should accept both `data.frame`s and `tibble`s.
 * Data given to the `data` argument must have both the original predictors and the original response. Data given to the `newdata` argument only needs to have the original predictors. This is important because there may be important information associated with training data that is not associated with test data. This means that the `original_data` object in `augment(model, data = original_data)` should provide `.fitted` and `.resid` columns (in most cases), whereas `test_data` in `augment(model, data = test_data)` only needs a `.fitted` column, even if the response is present in `test_data`.
@@ -530,9 +414,6 @@ The recommended interface and functionality for `augment()` methods may change s
 ## Document the new methods
 
 The only remaining step is to integrate the new methods into the parent package! To do so, just drop the methods into a `.R` file inside of the `/R` folder and document them using roxygen2. If you're unfamiliar with the process of documenting objects, you can read more about it [here](http://r-pkgs.had.co.nz/man.html). Here's an example of how our `tidy.lm()` method might be documented:
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -567,74 +448,43 @@ tidy.lm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
 ```
 :::
 
-
-
-
 Once you've documented each of your new methods and executed `devtools::document()`, you're done! Congrats on implementing your own broom tidier methods for a new model object!
 
 ## Glossaries
-
-
-
-
-
-
-
-
-
 
 ### Arguments
 
 Tidier methods have a standardized set of acceptable argument and output column names. The currently acceptable argument names by tidier method are:
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
-
 
 ```{=html}
 <div class="datatables html-widget html-fill-item" id="htmlwidget-1b4ff99564eb6e8884a5" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-1b4ff99564eb6e8884a5">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment","augment"],["alpha","boot_se","by_class","col.names","component","conf.int","conf.level","conf.method","conf.type","diagonal","droppars","effects","ess","estimate.method","exponentiate","fe","include_studies","instruments","intervals","matrix","measure","na.rm","object","p.values","par_type","parameters","parametric","pars","prob","region","return_zeros","rhat","robust","scales","se.type","strata","test","trim","upper","deviance","diagnostics","looic","mcmc","test","x","conf.level","data","interval","newdata","se_fit","type.predict","type.residuals","weights"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Argument<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"name":"Method","targets":0},{"name":"Argument","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
-
 :::
 :::
-
-
-
 
 ### Column Names
 
 The currently acceptable column names by tidier method are:
 
-
-
-
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
-
 
 ```{=html}
 <div class="datatables html-widget html-fill-item" id="htmlwidget-8f836166d559454ecd73" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-8f836166d559454ecd73">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment","augment"],["acf","adj.p.value","alternative","at.value","at.variable","atmean","autocorrelation","bias","ci.width","class","cluster","coef.type","column1","column2","comp","comparison","component","conf.high","conf.low","contrast","cumulative","cutoff","delta","den.df","denominator","dev.ratio","df","distance","estimate","estimate1","estimate2","event","exp","expected","fpr","freq","GCV","group","group1","group2","index","item1","item2","kendall_score","lag","lambda","letters","lhs","logLik","mcmc.error","mean","meansq","method","n","N","n.censor","n.event","n.risk","null.value","num.df","nzero","obs","op","outcome","p","p.value","p.value.Sargan","p.value.weakinst","p.value.Wu.Hausman","parameter","PC","percent","power","proportion","pyears","response","rhs","robust.se","row","scale","sd","series","sig.level","size","spec","state","statistic","statistic.Sargan","statistic.weakinst","statistic.Wu.Hausman","std_estimate","std.all","std.dev","std.error","std.lv","std.nox","step","strata","stratum","study","sumsq","tau","term","time","tpr","type","uniqueness","value","var_kendall_score","variable","variance","withinss","y.level","y.value","z","adj.r.squared","agfi","AIC","AICc","alpha","alternative","autocorrelation","avg.silhouette.width","betweenss","BIC","cfi","chi.squared","chisq","cochran.qe","cochran.qm","conf.high","conf.low","converged","convergence","crit","cv.crit","den.df","deviance","df","df.null","df.residual","dw.original","dw.transformed","edf","estimator","events","finTol","function.count","G","g.squared","gamma","gradient.count","H","h.squared","hypvol","i.squared","independence","isConv","iter","iterations","kHKB","kLW","lag.order","lambda","lambda.1se","lambda.min","lambdaGCV","logLik","max.cluster.size","max.hazard","max.time","maxit","MCMC.burnin","MCMC.interval","MCMC.samplesize","measure","median","method","min.hazard","min.time","missing_method","model","n","n.clusters","n.factors","n.max","n.start","nevent","nexcluded","ngroups","nobs","norig","npar","npasses","null.deviance","nulldev","num.df","number.interaction","offtable","p.value","p.value.cochran.qe","p.value.cochran.qm","p.value.original","p.value.Sargan","p.value.transformed","p.value.weak.instr","p.value.Wu.Hausman","parameter","pen.crit","power","power.reached","pseudo.r.squared","r.squared","records","residual.deviance","rho","rho2","rho20","rmean","rmean.std.error","rmsea","rmsea.conf.high","rscore","score","sigma","sigma2_j","spar","srmr","statistic","statistic.Sargan","statistic.weak.instr","statistic.Wu.Hausman","tau","tau.squared","tau.squared.se","theta","timepoints","tli","tot.withinss","total","total.variance","totss","value","within.r.squared",".class",".cluster",".cochran.qe.loo",".col.prop",".conf.high",".conf.low",".cooksd",".cov.ratio",".cred.high",".cred.low",".dffits",".expected",".fitted",".fitted_j_0",".fitted_j_1",".hat",".lower",".moderator",".moderator.level",".observed",".probability",".prop",".remainder",".resid",".resid_j_0",".resid_j_1",".row.prop",".rownames",".se.fit",".seasadj",".seasonal",".sigma",".std.resid",".tau",".tau.squared.loo",".trend",".uncertainty",".upper",".weight"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Column<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"name":"Method","targets":0},{"name":"Column","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
-
 :::
 :::
-
-
-
 
 The [alexpghayes/modeltests](https://github.com/alexpghayes/modeltests) package provides unit testing infrastructure to check your new tidier methods. Please file an issue there to request new arguments/columns to be added to the glossaries!
 
 ## Session information {#session-info}
-
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -642,14 +492,14 @@ The [alexpghayes/modeltests](https://github.com/alexpghayes/modeltests) package 
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-20
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
