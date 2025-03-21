@@ -263,16 +263,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1 18.6 
-#>  2         1 23.6 
-#>  3         1 14.6 
-#>  4         1 33.6 
-#>  5         1  1.62
-#>  6         1 36.6 
-#>  7         1 38.6 
-#>  8         1 38.6 
-#>  9         1 16.6 
-#> 10         1 46.6 
+#>  1         1  38.6
+#>  2         1  38.6
+#>  3         1  38.6
+#>  4         1  38.6
+#>  5         1  38.6
+#>  6         1  20.6
+#>  7         1  38.6
+#>  8         1  28.6
+#>  9         1  38.6
+#> 10         1  38.6
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -296,15 +296,15 @@ gss %>%
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
 #>  1 rep        36         1
-#>  2 dem        34         1
+#>  2 rep        34         1
 #>  3 ind        24         1
-#>  4 ind        42         1
-#>  5 ind        31         1
-#>  6 rep        32         1
+#>  4 dem        42         1
+#>  5 dem        31         1
+#>  6 ind        32         1
 #>  7 ind        48         1
-#>  8 ind        36         1
-#>  9 rep        30         1
-#> 10 ind        33         1
+#>  8 dem        36         1
+#>  9 ind        30         1
+#> 10 dem        33         1
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -327,15 +327,15 @@ gss %>%
 #>    replicate  stat
 #>        <int> <dbl>
 #>  1         1  40.1
-#>  2         2  40.0
-#>  3         3  39.6
-#>  4         4  40.9
-#>  5         5  39.2
-#>  6         6  39.1
+#>  2         2  40.9
+#>  3         3  39.8
+#>  4         4  39.7
+#>  5         5  39.0
+#>  6         6  39.7
 #>  7         7  40.7
-#>  8         8  40.0
-#>  9         9  39.9
-#> 10        10  39.9
+#>  8         8  40.8
+#>  9         9  39.2
+#> 10        10  38.2
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -354,18 +354,18 @@ gss %>%
 #> Explanatory: college (factor)
 #> Null Hypothesis: independence
 #> # A tibble: 5,000 × 2
-#>    replicate   stat
-#>        <int>  <dbl>
-#>  1         1  0.791
-#>  2         2 -1.20 
-#>  3         3  0.703
-#>  4         4  2.14 
-#>  5         5 -1.41 
-#>  6         6  0.377
-#>  7         7 -0.408
-#>  8         8  1.57 
-#>  9         9 -0.452
-#> 10        10 -0.408
+#>    replicate     stat
+#>        <int>    <dbl>
+#>  1         1 -0.382  
+#>  2         2 -1.53   
+#>  3         3  2.39   
+#>  4         4  0.535  
+#>  5         5 -1.25   
+#>  6         6  0.139  
+#>  7         7  2.22   
+#>  8         8  1.30   
+#>  9         9 -0.364  
+#> 10        10 -0.00250
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -439,11 +439,11 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0436
+#> 1  0.0388
 ```
 :::
 
-It looks like the p-value is 0.0436, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0436. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.0388, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0388. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
@@ -545,14 +545,14 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 

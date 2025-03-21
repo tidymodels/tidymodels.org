@@ -241,14 +241,14 @@ predict(wf_fit, reviews)
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
@@ -264,7 +264,7 @@ predict(wf_fit, reviews)
 #>  recipes     * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang         1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
 #>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  sparsevctrs * 0.3.1   2025-03-17 [1] CRAN (R 4.4.1)
+#>  sparsevctrs * 0.3.2   2025-03-21 [1] CRAN (R 4.4.1)
 #>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
 #>  tidymodels  * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
 #>  tune        * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)

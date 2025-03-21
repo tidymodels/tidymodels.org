@@ -152,8 +152,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.779    50 0.0212  Preprocessor1_Model1
-#> 2 roc_auc binary     0.950    50 0.00491 Preprocessor1_Model1
+#> 1 j_index binary     0.805    50 0.0193  Preprocessor1_Model1
+#> 2 roc_auc binary     0.956    50 0.00481 Preprocessor1_Model1
 ```
 :::
 
@@ -219,14 +219,14 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.1
+#>  os       macOS Sequoia 15.3.2
 #>  system   aarch64, darwin20
 #>  ui       X11
 #>  language (EN)
 #>  collate  en_US.UTF-8
 #>  ctype    en_US.UTF-8
 #>  tz       America/Los_Angeles
-#>  date     2025-03-19
+#>  date     2025-03-21
 #>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
 #>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
 #> 
