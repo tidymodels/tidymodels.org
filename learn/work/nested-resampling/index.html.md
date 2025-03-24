@@ -151,6 +151,7 @@ library(kernlab)
 # `object` will be an `rsplit` object from our `results` tibble
 # `cost` is the tuning parameter
 svm_rmse <- function(object, cost = 1) {
+  set.seed(1234)
   y_col <- ncol(object$data)
   mod <- 
     svm_rbf(mode = "regression", cost = cost) %>% 
@@ -293,7 +294,7 @@ results <-
 
 summary(results$RMSE)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.574   2.095   2.668   2.683   3.252   4.350
+#>   1.676   2.090   2.589   2.682   3.220   4.228
 ```
 :::
 
@@ -318,15 +319,15 @@ outer_summary
 #>     <dbl>      <dbl> <int>
 #>  1   0.25       3.54    50
 #>  2   0.5        3.11    50
-#>  3   1          2.77    50
-#>  4   2          2.62    50
-#>  5   4          2.65    50
-#>  6   8          2.75    50
-#>  7  16          2.82    50
-#>  8  32          2.82    50
-#>  9  64          2.83    50
-#> 10 128          2.83    50
-#> 11 256          2.82    50
+#>  3   1          2.78    50
+#>  4   2          2.63    50
+#>  5   4          2.66    50
+#>  6   8          2.78    50
+#>  7  16          2.84    50
+#>  8  32          2.84    50
+#>  9  64          2.84    50
+#> 10 128          2.84    50
+#> 11 256          2.84    50
 
 ggplot(outer_summary, aes(x = cost, y = outer_RMSE)) + 
   geom_point() + 
@@ -340,7 +341,7 @@ ggplot(outer_summary, aes(x = cost, y = outer_RMSE)) +
 :::
 :::
 
-The non-nested procedure estimates the RMSE to be 2.62. Both estimates are fairly close.
+The non-nested procedure estimates the RMSE to be 2.63. Both estimates are fairly close.
 
 The approximately true RMSE for an SVM model with a cost value of 2.0 can be approximated with the large sample that was simulated at the beginning.
 
@@ -350,7 +351,7 @@ The approximately true RMSE for an SVM model with a cost value of 2.0 can be app
 finalModel <- ksvm(y ~ ., data = train_dat, C = 2)
 large_pred <- predict(finalModel, large_dat[, -ncol(large_dat)])
 sqrt(mean((large_dat$y - large_pred) ^ 2, na.rm = TRUE))
-#> [1] 2.712059
+#> [1] 2.695091
 ```
 :::
 
