@@ -24,6 +24,7 @@ Throughout this vignette, we'll make use of the `ad_data` data set (available in
 
 ```{.r .cell-code}
 library(tidymodels) # Includes the infer package
+set.seed(1234)
 
 data(ad_data, package = "modeldata")
 ad_data %>%
@@ -168,11 +169,11 @@ p_value_independence
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0002
+#> 1  0.0006
 ```
 :::
 
-Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 2\times 10^{-4}.
+Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 6\times 10^{-4}.
 
 Note that, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
 
@@ -276,11 +277,11 @@ p_value_gof
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0012
+#> 1   0.001
 ```
 :::
 
-Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 0.0012.
+Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 0.001.
 
 Again, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out chi-squared goodness of fit tests on tidy data. The syntax goes like this:
 
