@@ -44,6 +44,9 @@ Throughout this vignette, we make use of `gss`, a data set available in infer co
 ```{.r .cell-code}
 library(tidymodels) # Includes the infer package
 
+# Set seed
+set.seed(1234)
+
 # load in the data set
 data(gss)
 
@@ -263,15 +266,15 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1  53.6
-#>  2         1  38.6
-#>  3         1  48.6
-#>  4         1  39.6
-#>  5         1  53.6
+#>  1         1  58.6
+#>  2         1  35.6
+#>  3         1  28.6
+#>  4         1  38.6
+#>  5         1  28.6
 #>  6         1  38.6
 #>  7         1  38.6
-#>  8         1  46.6
-#>  9         1  28.6
+#>  8         1  57.6
+#>  9         1  58.6
 #> 10         1  38.6
 #> # ℹ 2,499,990 more rows
 ```
@@ -295,16 +298,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
-#>  1 dem        36         1
-#>  2 dem        34         1
-#>  3 dem        24         1
+#>  1 ind        36         1
+#>  2 ind        34         1
+#>  3 ind        24         1
 #>  4 rep        42         1
-#>  5 ind        31         1
+#>  5 dem        31         1
 #>  6 dem        32         1
-#>  7 ind        48         1
-#>  8 ind        36         1
-#>  9 rep        30         1
-#> 10 ind        33         1
+#>  7 dem        48         1
+#>  8 rep        36         1
+#>  9 ind        30         1
+#> 10 dem        33         1
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -326,16 +329,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  39.7
-#>  2         2  39.4
-#>  3         3  39.3
-#>  4         4  39.6
-#>  5         5  40.1
-#>  6         6  40.9
-#>  7         7  39.0
-#>  8         8  40.9
-#>  9         9  38.3
-#> 10        10  39.6
+#>  1         1  39.8
+#>  2         2  39.6
+#>  3         3  39.8
+#>  4         4  39.2
+#>  5         5  39.0
+#>  6         6  39.8
+#>  7         7  40.6
+#>  8         8  40.6
+#>  9         9  40.4
+#> 10        10  39.0
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -356,16 +359,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate    stat
 #>        <int>   <dbl>
-#>  1         1 -2.89  
-#>  2         2 -2.62  
-#>  3         3 -0.620 
-#>  4         4 -0.320 
-#>  5         5  0.0680
-#>  6         6  0.112 
-#>  7         7  1.47  
-#>  8         8 -1.47  
-#>  9         9  0.139 
-#> 10        10 -0.390 
+#>  1         1 -0.0378
+#>  2         2  1.55  
+#>  3         3  0.465 
+#>  4         4  1.39  
+#>  5         5 -0.161 
+#>  6         6 -0.179 
+#>  7         7  0.0151
+#>  8         8  0.914 
+#>  9         9 -1.32  
+#> 10        10 -0.426 
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -439,11 +442,11 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0292
+#> 1   0.046
 ```
 :::
 
-It looks like the p-value is 0.0292, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0292. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.046, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.046. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
