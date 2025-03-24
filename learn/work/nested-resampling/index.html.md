@@ -293,11 +293,11 @@ results <-
 
 summary(results$RMSE)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.574   2.095   2.688   2.697   3.265   4.350
+#>   1.574   2.095   2.668   2.683   3.252   4.350
 ```
 :::
 
-The estimated RMSE for the model tuning process is 2.7.
+The estimated RMSE for the model tuning process is 2.68.
 
 What is the RMSE estimate for the non-nested procedure when only the outer resampling method is used? For each cost value in the tuning grid, 50 SVM models are fit and their RMSE values are averaged. The table of cost values and mean RMSE estimates is used to determine the best cost value. The associated RMSE is the biased estimate.
 
