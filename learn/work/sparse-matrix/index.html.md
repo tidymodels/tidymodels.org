@@ -239,41 +239,30 @@ predict(wf_fit, reviews)
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.2
-#>  system   aarch64, darwin20
-#>  ui       X11
 #>  language (EN)
-#>  collate  en_US.UTF-8
-#>  ctype    en_US.UTF-8
-#>  tz       America/Los_Angeles
-#>  date     2025-03-21
-#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
-#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
+#>  date     2025-03-24
+#>  pandoc   3.6.1
+#>  quarto   1.6.42
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package     * version date (UTC) lib source
-#>  broom       * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials       * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
-#>  dplyr       * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2     * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer       * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip     * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
-#>  purrr       * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes     * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
+#>  package       version date (UTC) lib source
+#>  broom         1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials         1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
+#>  dplyr         1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+#>  ggplot2       3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+#>  infer         1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
+#>  parsnip       1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
+#>  purrr         1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes       1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang         1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
-#>  rsample     * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  sparsevctrs * 0.3.2   2025-03-21 [1] CRAN (R 4.4.1)
-#>  tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels  * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  tune        * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  workflows   * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
-#>  yardstick   * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
-#> 
-#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
-#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
-#>  * ── Packages attached to the search path.
+#>  rsample       1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
+#>  sparsevctrs   0.3.2   2025-03-21 [1] CRAN (R 4.4.1)
+#>  tibble        3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+#>  tidymodels    1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune          1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows     1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick     1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

@@ -263,16 +263,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1  38.6
-#>  2         1  38.6
+#>  1         1  43.6
+#>  2         1  25.6
 #>  3         1  38.6
 #>  4         1  38.6
-#>  5         1  38.6
-#>  6         1  20.6
+#>  5         1  33.6
+#>  6         1  38.6
 #>  7         1  38.6
-#>  8         1  28.6
+#>  8         1  38.6
 #>  9         1  38.6
-#> 10         1  38.6
+#> 10         1  48.6
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -296,15 +296,15 @@ gss %>%
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
 #>  1 rep        36         1
-#>  2 rep        34         1
+#>  2 dem        34         1
 #>  3 ind        24         1
-#>  4 dem        42         1
-#>  5 dem        31         1
-#>  6 ind        32         1
-#>  7 ind        48         1
-#>  8 dem        36         1
+#>  4 ind        42         1
+#>  5 ind        31         1
+#>  6 dem        32         1
+#>  7 rep        48         1
+#>  8 rep        36         1
 #>  9 ind        30         1
-#> 10 dem        33         1
+#> 10 ind        33         1
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -326,16 +326,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  40.1
-#>  2         2  40.9
-#>  3         3  39.8
-#>  4         4  39.7
-#>  5         5  39.0
-#>  6         6  39.7
-#>  7         7  40.7
-#>  8         8  40.8
-#>  9         9  39.2
-#> 10        10  38.2
+#>  1         1  40.4
+#>  2         2  40.1
+#>  3         3  39.9
+#>  4         4  38.7
+#>  5         5  40.0
+#>  6         6  39.5
+#>  7         7  40.3
+#>  8         8  40.7
+#>  9         9  39.0
+#> 10        10  40.5
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -354,18 +354,18 @@ gss %>%
 #> Explanatory: college (factor)
 #> Null Hypothesis: independence
 #> # A tibble: 5,000 × 2
-#>    replicate     stat
-#>        <int>    <dbl>
-#>  1         1 -0.382  
-#>  2         2 -1.53   
-#>  3         3  2.39   
-#>  4         4  0.535  
-#>  5         5 -1.25   
-#>  6         6  0.139  
-#>  7         7  2.22   
-#>  8         8  1.30   
-#>  9         9 -0.364  
-#> 10        10 -0.00250
+#>    replicate   stat
+#>        <int>  <dbl>
+#>  1         1  0.139
+#>  2         2 -0.849
+#>  3         3 -2.04 
+#>  4         4 -1.70 
+#>  5         5 -0.232
+#>  6         6 -1.30 
+#>  7         7  0.253
+#>  8         8  0.976
+#>  9         9  1.73 
+#> 10        10  1.18 
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -439,11 +439,11 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0388
+#> 1  0.0396
 ```
 :::
 
-It looks like the p-value is 0.0388, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0388. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.0396, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0396. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
@@ -543,40 +543,29 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  setting  value
 #>  version  R version 4.4.2 (2024-10-31)
-#>  os       macOS Sequoia 15.3.2
-#>  system   aarch64, darwin20
-#>  ui       X11
 #>  language (EN)
-#>  collate  en_US.UTF-8
-#>  ctype    en_US.UTF-8
-#>  tz       America/Los_Angeles
-#>  date     2025-03-21
-#>  pandoc   3.6.1 @ /usr/local/bin/ (via rmarkdown)
-#>  quarto   1.6.42 @ /Applications/quarto/bin/quarto
+#>  date     2025-03-24
+#>  pandoc   3.6.1
+#>  quarto   1.6.42
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package    * version date (UTC) lib source
-#>  broom      * 1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials      * 1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
-#>  dplyr      * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2    * 3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer      * 1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip    * 1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
-#>  purrr      * 1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes    * 1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
+#>  package      version date (UTC) lib source
+#>  broom        1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
+#>  dials        1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
+#>  dplyr        1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
+#>  ggplot2      3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
+#>  infer        1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
+#>  parsnip      1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
+#>  purrr        1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
+#>  recipes      1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
 #>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
-#>  rsample    * 1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tibble     * 3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  tune       * 1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  workflows  * 1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
-#>  yardstick  * 1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
-#> 
-#>  [1] /Users/emilhvitfeldt/Library/R/arm64/4.4/library
-#>  [2] /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library
-#>  * ── Packages attached to the search path.
+#>  rsample      1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
+#>  tibble       3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
+#>  tidymodels   1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  tune         1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
+#>  workflows    1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
+#>  yardstick    1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
