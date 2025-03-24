@@ -7,6 +7,9 @@ files <- stringr::str_remove(files, "_site/")
 files <- paste0(files, ".md")
 
 remove_double_newlines <- function(file) {
+  if (file == ".md") {
+    return(NULL)
+  }
   txt <- readr::read_lines(file)
   txt <- paste(txt, collapse = "\n")
   txt <- stringr::str_replace_all(txt, "\n{2,}", "\n\n")
