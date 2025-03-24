@@ -28,6 +28,8 @@ library(mlbench)
 library(kernlab)
 library(furrr)
 
+set.seed(1234)
+
 pkgs <- c("tidymodels", "scales", "mlbench", "kernlab", "furrr")
 
 theme_set(theme_bw() + theme(legend.position = "top"))
@@ -128,6 +130,7 @@ library(kernlab)
 # `object` will be an `rsplit` object from our `results` tibble
 # `cost` is the tuning parameter
 svm_rmse <- function(object, cost = 1) {
+  set.seed(1234)
   y_col <- ncol(object$data)
   mod <- 
     svm_rbf(mode = "regression", cost = cost) %>% 

@@ -28,7 +28,6 @@ Consider a two-class problem where the first class has a very low rate of occurr
 
 ```{.r .cell-code}
 imbal_data <- 
-  
   readr::read_csv("https://tidymodels.org/learn/models/sub-sampling/imbal_data.csv") %>% 
   mutate(Class = factor(Class))
 dim(imbal_data)
@@ -62,6 +61,8 @@ Here is a simple recipe implementing oversampling:
 ```{.r .cell-code}
 library(tidymodels)
 library(themis)
+set.seed(1234)
+
 imbal_rec <- 
   recipe(Class ~ ., data = imbal_data) %>%
   step_rose(Class)
@@ -152,8 +153,8 @@ collect_metrics(qda_rose_res)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config             
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 j_index binary     0.804    50 0.0178  Preprocessor1_Model1
-#> 2 roc_auc binary     0.953    50 0.00459 Preprocessor1_Model1
+#> 1 j_index binary     0.777    50 0.0199  Preprocessor1_Model1
+#> 2 roc_auc binary     0.949    50 0.00508 Preprocessor1_Model1
 ```
 :::
 
