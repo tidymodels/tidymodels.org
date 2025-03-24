@@ -168,11 +168,11 @@ p_value_independence
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0004
+#> 1  0.0002
 ```
 :::
 
-Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 4\times 10^{-4}.
+Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 2\times 10^{-4}.
 
 Note that, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
 
@@ -276,11 +276,11 @@ p_value_gof
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0014
+#> 1  0.0012
 ```
 :::
 
-Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 0.0014.
+Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 0.0012.
 
 Again, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out chi-squared goodness of fit tests on tidy data. The syntax goes like this:
 
@@ -308,22 +308,22 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 #>  quarto   1.6.42
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) lib source
-#>  broom        1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
+#>  package      version date (UTC) source
+#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
+#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
+#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
+#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
+#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
+#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
+#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
+#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
+#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
+#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
+#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
+#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
+#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
+#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

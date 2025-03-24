@@ -587,24 +587,24 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  quarto   1.6.42
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package        version date (UTC) lib source
-#>  broom          1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials          1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
-#>  dplyr          1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2        3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer          1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  nycflights13   1.0.2   2021-04-12 [1] CRAN (R 4.4.0)
-#>  parsnip        1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
-#>  purrr          1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes        1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
-#>  rlang          1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
-#>  rsample        1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  skimr          2.1.5   2022-12-23 [1] CRAN (R 4.4.0)
-#>  tibble         3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels     1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  tune           1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  workflows      1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
-#>  yardstick      1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
+#>  package        version date (UTC) source
+#>  broom          1.0.7   2024-09-26 CRAN (R 4.4.1)
+#>  dials          1.4.0   2025-02-13 CRAN (R 4.4.2)
+#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.4.0)
+#>  ggplot2        3.5.1   2024-04-23 CRAN (R 4.4.0)
+#>  infer          1.0.7   2024-03-25 CRAN (R 4.4.0)
+#>  nycflights13   1.0.2   2021-04-12 CRAN (R 4.4.0)
+#>  parsnip        1.3.1   2025-03-12 CRAN (R 4.4.1)
+#>  purrr          1.0.4   2025-02-05 CRAN (R 4.4.1)
+#>  recipes        1.2.0   2025-03-17 CRAN (R 4.4.1)
+#>  rlang          1.1.5   2025-01-17 CRAN (R 4.4.2)
+#>  rsample        1.2.1   2024-03-25 CRAN (R 4.4.0)
+#>  skimr          2.1.5   2022-12-23 CRAN (R 4.4.0)
+#>  tibble         3.2.1   2023-03-20 CRAN (R 4.4.0)
+#>  tidymodels     1.3.0   2025-02-21 CRAN (R 4.4.1)
+#>  tune           1.3.0   2025-02-21 CRAN (R 4.4.1)
+#>  workflows      1.2.0   2025-02-19 CRAN (R 4.4.1)
+#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.4.1)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

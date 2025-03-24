@@ -263,16 +263,16 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1  43.6
-#>  2         1  25.6
-#>  3         1  38.6
-#>  4         1  38.6
-#>  5         1  33.6
+#>  1         1  53.6
+#>  2         1  38.6
+#>  3         1  48.6
+#>  4         1  39.6
+#>  5         1  53.6
 #>  6         1  38.6
 #>  7         1  38.6
-#>  8         1  38.6
-#>  9         1  38.6
-#> 10         1  48.6
+#>  8         1  46.6
+#>  9         1  28.6
+#> 10         1  38.6
 #> # ℹ 2,499,990 more rows
 ```
 :::
@@ -295,15 +295,15 @@ gss %>%
 #> # Groups:   replicate [5,000]
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
-#>  1 rep        36         1
+#>  1 dem        36         1
 #>  2 dem        34         1
-#>  3 ind        24         1
-#>  4 ind        42         1
+#>  3 dem        24         1
+#>  4 rep        42         1
 #>  5 ind        31         1
 #>  6 dem        32         1
-#>  7 rep        48         1
-#>  8 rep        36         1
-#>  9 ind        30         1
+#>  7 ind        48         1
+#>  8 ind        36         1
+#>  9 rep        30         1
 #> 10 ind        33         1
 #> # ℹ 2,499,990 more rows
 ```
@@ -326,16 +326,16 @@ gss %>%
 #> # A tibble: 5,000 × 2
 #>    replicate  stat
 #>        <int> <dbl>
-#>  1         1  40.4
-#>  2         2  40.1
-#>  3         3  39.9
-#>  4         4  38.7
-#>  5         5  40.0
-#>  6         6  39.5
-#>  7         7  40.3
-#>  8         8  40.7
-#>  9         9  39.0
-#> 10        10  40.5
+#>  1         1  39.7
+#>  2         2  39.4
+#>  3         3  39.3
+#>  4         4  39.6
+#>  5         5  40.1
+#>  6         6  40.9
+#>  7         7  39.0
+#>  8         8  40.9
+#>  9         9  38.3
+#> 10        10  39.6
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -354,18 +354,18 @@ gss %>%
 #> Explanatory: college (factor)
 #> Null Hypothesis: independence
 #> # A tibble: 5,000 × 2
-#>    replicate   stat
-#>        <int>  <dbl>
-#>  1         1  0.139
-#>  2         2 -0.849
-#>  3         3 -2.04 
-#>  4         4 -1.70 
-#>  5         5 -0.232
-#>  6         6 -1.30 
-#>  7         7  0.253
-#>  8         8  0.976
-#>  9         9  1.73 
-#> 10        10  1.18 
+#>    replicate    stat
+#>        <int>   <dbl>
+#>  1         1 -2.89  
+#>  2         2 -2.62  
+#>  3         3 -0.620 
+#>  4         4 -0.320 
+#>  5         5  0.0680
+#>  6         6  0.112 
+#>  7         7  1.47  
+#>  8         8 -1.47  
+#>  9         9  0.139 
+#> 10        10 -0.390 
 #> # ℹ 4,990 more rows
 ```
 :::
@@ -439,11 +439,11 @@ p_value
 #> # A tibble: 1 × 1
 #>   p_value
 #>     <dbl>
-#> 1  0.0396
+#> 1  0.0292
 ```
 :::
 
-It looks like the p-value is 0.0396, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0396. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is 0.0292, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.0292. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
@@ -550,22 +550,22 @@ That's it! This vignette covers most all of the key functionality of infer. See 
 #>  quarto   1.6.42
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) lib source
-#>  broom        1.0.7   2024-09-26 [1] CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 [1] CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 [1] CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 [1] CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 [1] CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 [1] CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 [1] CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 [1] CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 [1] CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 [1] CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 [1] CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 [1] CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 [1] CRAN (R 4.4.1)
+#>  package      version date (UTC) source
+#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
+#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
+#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
+#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
+#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
+#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
+#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
+#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
+#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
+#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
+#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
+#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
+#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
+#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
+#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
