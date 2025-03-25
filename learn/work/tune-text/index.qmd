@@ -3,6 +3,7 @@ title: "Tuning text models"
 categories:
   - tuning
   - regression
+  - sparse data
 
 type: learn-subsection
 weight: 4
@@ -73,7 +74,7 @@ Text, perhaps more so than tabular data we often deal with, must be heavily proc
 
 * [Stem](https://smltar.com/stemming.html) tokens to a common root where possible.
 
-* Convert tokens to dummy variables via a [signed, binary hash function](https://bookdown.org/max/FES/encoding-predictors-with-many-categories.html).
+* Convert tokens to dummy variables via a [unsigned, binary hash function](https://bookdown.org/max/FES/encoding-predictors-with-many-categories.html).
 
 * Optionally transform non-token features (the count-based features like number of lowercase characters) to a more symmetric state using a [Yeo-Johnson transformation](https://bookdown.org/max/FES/numeric-one-to-one.html).
 
@@ -99,16 +100,9 @@ basics <- names(textrecipes::count_functions)
 head(basics)
 ```
 
-Also, the implementation of feature hashes does not produce the binary values we need. This small function will help convert the scores to values of -1, 0, or 1:
-
-```{r}
-#| label: "hash-func"
-binary_hash <- function(x) {
-  x <- ifelse(x < 0, -1, x)
-  x <- ifelse(x > 0,  1, x)
-  x
-}
-```
+::: {.callout-note}
+Since we will be using a glmnet model which is [sparse compatible](../../../find/sparse/index.qmd) then we will set `sparse = "yes"` in `step_texthash()` as we know it will produce plenty of sparse data. In this example, it will lead to a 4 times speed increase.
+:::
 
 Now, let's put this all together in one recipe:
 
@@ -133,15 +127,13 @@ pre_proc <-
   step_stopwords(review) %>%
   step_stem(review) %>%
   # Here is where the tuning parameter is declared
-  step_texthash(review, signed = TRUE, num_terms = tune()) %>%
+  step_texthash(review, signed = FALSE, num_terms = tune(), sparse = "yes") %>%
   # Simplify these names
   step_rename_at(starts_with("review_hash"), fn = ~ gsub("review_", "", .)) %>%
-  # Convert the features from counts to values of -1, 0, or 1
-  step_mutate_at(starts_with("hash"), fn = binary_hash) %>%
   # Transform the initial feature set
   step_YeoJohnson(one_of(!!basics)) %>%
   step_zv(all_predictors()) %>%
-  step_normalize(all_predictors())
+  step_scale(all_predictors())
 ```
 
 ::: {.callout-warning}
@@ -212,6 +204,7 @@ Finally, let's run the grid search:
 #| message: false
 roc_scores <- metric_set(roc_auc)
 
+tictoc::tic()
 set.seed(1559)
 five_star_glmnet <- 
   tune_grid(
@@ -222,11 +215,12 @@ five_star_glmnet <-
     metrics = roc_scores, 
     control = ctrl
   )
+tictoc::toc()
 
 five_star_glmnet
 ```
 
-This took a while to complete! What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
+What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
 
 ```{r}
 #| label: "grid-roc"

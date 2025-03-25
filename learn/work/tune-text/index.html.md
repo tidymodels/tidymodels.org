@@ -3,6 +3,7 @@ title: "Tuning text models"
 categories:
   - tuning
   - regression
+  - sparse data
 
 type: learn-subsection
 weight: 4
@@ -67,7 +68,7 @@ Text, perhaps more so than tabular data we often deal with, must be heavily proc
 
 * [Stem](https://smltar.com/stemming.html) tokens to a common root where possible.
 
-* Convert tokens to dummy variables via a [signed, binary hash function](https://bookdown.org/max/FES/encoding-predictors-with-many-categories.html).
+* Convert tokens to dummy variables via a [unsigned, binary hash function](https://bookdown.org/max/FES/encoding-predictors-with-many-categories.html).
 
 * Optionally transform non-token features (the count-based features like number of lowercase characters) to a more symmetric state using a [Yeo-Johnson transformation](https://bookdown.org/max/FES/numeric-one-to-one.html).
 
@@ -96,17 +97,8 @@ head(basics)
 ```
 :::
 
-Also, the implementation of feature hashes does not produce the binary values we need. This small function will help convert the scores to values of -1, 0, or 1:
-
-::: {.cell layout-align="center"}
-
-```{.r .cell-code}
-binary_hash <- function(x) {
-  x <- ifelse(x < 0, -1, x)
-  x <- ifelse(x > 0,  1, x)
-  x
-}
-```
+::: {.callout-note}
+Since we will be using a glmnet model which is [sparse compatible](../../../find/sparse/index.qmd) then we will set `sparse = "yes"` in `step_texthash()` as we know it will produce plenty of sparse data. In this example, it will lead to a 4 times speed increase.
 :::
 
 Now, let's put this all together in one recipe:
@@ -133,15 +125,13 @@ pre_proc <-
   step_stopwords(review) %>%
   step_stem(review) %>%
   # Here is where the tuning parameter is declared
-  step_texthash(review, signed = TRUE, num_terms = tune()) %>%
+  step_texthash(review, signed = FALSE, num_terms = tune(), sparse = "yes") %>%
   # Simplify these names
   step_rename_at(starts_with("review_hash"), fn = ~ gsub("review_", "", .)) %>%
-  # Convert the features from counts to values of -1, 0, or 1
-  step_mutate_at(starts_with("hash"), fn = binary_hash) %>%
   # Transform the initial feature set
   step_YeoJohnson(one_of(!!basics)) %>%
   step_zv(all_predictors()) %>%
-  step_normalize(all_predictors())
+  step_scale(all_predictors())
 ```
 :::
 
@@ -244,6 +234,7 @@ Finally, let's run the grid search:
 ```{.r .cell-code}
 roc_scores <- metric_set(roc_auc)
 
+tictoc::tic()
 set.seed(1559)
 five_star_glmnet <- 
   tune_grid(
@@ -254,6 +245,8 @@ five_star_glmnet <-
     metrics = roc_scores, 
     control = ctrl
   )
+tictoc::toc()
+#> 20.72 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -269,7 +262,7 @@ five_star_glmnet
 ```
 :::
 
-This took a while to complete! What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
+What do the results look like? Let's get the resampling estimates of the area under the ROC curve for each tuning parameter:
 
 ::: {.cell layout-align="center"}
 
@@ -281,16 +274,16 @@ grid_roc
 #> # A tibble: 300 × 9
 #>    penalty mixture num_terms .metric .estimator  mean     n std_err .config     
 #>      <dbl>   <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>       
-#>  1 0.0379     0.25      4096 roc_auc binary     0.808     5 0.00484 Preprocesso…
-#>  2 0.695      0.01      4096 roc_auc binary     0.806     5 0.00683 Preprocesso…
-#>  3 0.0183     0.5       4096 roc_auc binary     0.805     5 0.00499 Preprocesso…
-#>  4 0.483      0.01      4096 roc_auc binary     0.804     5 0.00691 Preprocesso…
-#>  5 0.0546     0.25      4096 roc_auc binary     0.804     5 0.00519 Preprocesso…
-#>  6 0.0127     0.75      4096 roc_auc binary     0.804     5 0.00479 Preprocesso…
-#>  7 1          0.01      4096 roc_auc binary     0.803     5 0.00639 Preprocesso…
-#>  8 0.00886    1         4096 roc_auc binary     0.802     5 0.00518 Preprocesso…
-#>  9 0.0264     0.25      4096 roc_auc binary     0.802     5 0.00541 Preprocesso…
-#> 10 0.0264     0.5       4096 roc_auc binary     0.802     5 0.00476 Preprocesso…
+#>  1 0.483      0.01      4096 roc_auc binary     0.800     5 0.00580 Preprocesso…
+#>  2 0.695      0.01      4096 roc_auc binary     0.799     5 0.00650 Preprocesso…
+#>  3 0.336      0.01      4096 roc_auc binary     0.798     5 0.00490 Preprocesso…
+#>  4 0.0264     0.25      4096 roc_auc binary     0.796     5 0.00221 Preprocesso…
+#>  5 0.234      0.01      4096 roc_auc binary     0.795     5 0.00459 Preprocesso…
+#>  6 0.0379     0.25      4096 roc_auc binary     0.794     5 0.00363 Preprocesso…
+#>  7 0.0546     0.25      4096 roc_auc binary     0.794     5 0.00621 Preprocesso…
+#>  8 0.0127     0.5       4096 roc_auc binary     0.794     5 0.00209 Preprocesso…
+#>  9 0.0183     0.5       4096 roc_auc binary     0.793     5 0.00316 Preprocesso…
+#> 10 0.00886    0.75      4096 roc_auc binary     0.793     5 0.00209 Preprocesso…
 #> # ℹ 290 more rows
 ```
 :::
@@ -403,133 +396,133 @@ five_star_search <-
 #> 
 #> ── Iteration 1 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.7822 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.01
-#> i penalty=0.00371, mixture=0.0503, num_terms=516
+#> i penalty=0.00474, mixture=0.0526, num_terms=1028
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.731 (+/-0.00972)
+#> ⓧ Newest results:	roc_auc=0.7292 (+/-0.00722)
 #> 
 #> ── Iteration 2 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.7822 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.007788
-#> i penalty=0.001, mixture=0.411, num_terms=349
+#> i penalty=0.0195, mixture=0.617, num_terms=1449
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7291 (+/-0.00542)
+#> ⓧ Newest results:	roc_auc=0.7818 (+/-0.00711)
 #> 
 #> ── Iteration 3 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.7822 (@iter 0)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.006065
-#> i penalty=0.0105, mixture=0.996, num_terms=543
+#> i penalty=0.014, mixture=0.567, num_terms=3242
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7667 (+/-0.00755)
+#> ♥ Newest results:	roc_auc=0.7996 (+/-0.00675)
 #> 
 #> ── Iteration 4 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.7996 (@iter 3)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.004724
-#> i penalty=0.00415, mixture=0.999, num_terms=747
+#> i penalty=0.00627, mixture=0.582, num_terms=856
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7493 (+/-0.00773)
+#> ⓧ Newest results:	roc_auc=0.7485 (+/-0.00868)
 #> 
 #> ── Iteration 5 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.7996 (@iter 3)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.003679
-#> i penalty=0.00105, mixture=0.192, num_terms=4033
+#> i penalty=0.0139, mixture=0.901, num_terms=3868
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7551 (+/-0.00416)
+#> ⓧ Newest results:	roc_auc=0.7932 (+/-0.00739)
 #> 
 #> ── Iteration 6 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.7996 (@iter 3)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.002865
-#> i penalty=0.0124, mixture=0.105, num_terms=4001
+#> i penalty=0.0192, mixture=0.204, num_terms=3944
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7702 (+/-0.00496)
+#> ♥ Newest results:	roc_auc=0.8002 (+/-0.00325)
 #> 
 #> ── Iteration 7 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.8002 (@iter 6)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.002231
-#> i penalty=0.00772, mixture=0.278, num_terms=2205
+#> i penalty=0.0124, mixture=0.309, num_terms=4046
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7716 (+/-0.00567)
+#> ♥ Newest results:	roc_auc=0.8022 (+/-0.00627)
 #> 
 #> ── Iteration 8 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.8022 (@iter 7)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001738
-#> i penalty=0.00243, mixture=0.948, num_terms=4085
+#> i penalty=0.00108, mixture=0.993, num_terms=3844
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7728 (+/-0.00695)
+#> ⓧ Newest results:	roc_auc=0.7627 (+/-0.00625)
 #> 
 #> ── Iteration 9 ───────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.781 (@iter 0)
+#> i Current best:		roc_auc=0.8022 (@iter 7)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001353
-#> i penalty=0.0059, mixture=0.94, num_terms=3992
+#> i penalty=0.0137, mixture=0.465, num_terms=3898
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:	roc_auc=0.8065 (+/-0.00399)
+#> ⓧ Newest results:	roc_auc=0.7957 (+/-0.00844)
 #> 
 #> ── Iteration 10 ──────────────────────────────────────────────────────
 #> 
-#> i Current best:		roc_auc=0.8065 (@iter 9)
+#> i Current best:		roc_auc=0.8022 (@iter 7)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001054
-#> i penalty=0.0128, mixture=0.974, num_terms=3621
+#> i penalty=0.0161, mixture=0.0983, num_terms=3184
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:	roc_auc=0.7983 (+/-0.00671)
+#> ⓧ Newest results:	roc_auc=0.7748 (+/-0.00516)
 
 five_star_search
 #> # Tuning results
@@ -581,7 +574,7 @@ params
 #> # A tibble: 1 × 4
 #>   penalty mixture num_terms .config               
 #>     <dbl>   <dbl>     <dbl> <chr>                 
-#> 1  0.0379    0.25      4096 Preprocessor3_Model031
+#> 1   0.483    0.01      4096 Preprocessor3_Model018
 ```
 :::
 
@@ -651,16 +644,16 @@ extracted
 #> # A tibble: 100 × 6
 #>    id    num_terms mixture .extracts          .config.x              .config.y  
 #>    <chr>     <dbl>   <dbl> <list>             <chr>                  <chr>      
-#>  1 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model021 Preprocess…
-#>  2 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model022 Preprocess…
-#>  3 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model023 Preprocess…
-#>  4 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model024 Preprocess…
-#>  5 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model025 Preprocess…
-#>  6 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model026 Preprocess…
-#>  7 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model027 Preprocess…
-#>  8 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model028 Preprocess…
-#>  9 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model029 Preprocess…
-#> 10 Fold1      4096    0.25 <tibble [100 × 2]> Preprocessor3_Model030 Preprocess…
+#>  1 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model001 Preprocess…
+#>  2 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model002 Preprocess…
+#>  3 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model003 Preprocess…
+#>  4 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model004 Preprocess…
+#>  5 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model005 Preprocess…
+#>  6 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model006 Preprocess…
+#>  7 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model007 Preprocess…
+#>  8 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model008 Preprocess…
+#>  9 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model009 Preprocess…
+#> 10 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model010 Preprocess…
 #> # ℹ 90 more rows
 ```
 :::
@@ -677,16 +670,16 @@ extracted
 #> # A tibble: 10,000 × 7
 #>    id    num_terms mixture penalty num_vars .config.x              .config.y    
 #>    <chr>     <dbl>   <dbl>   <dbl>    <int> <chr>                  <chr>        
-#>  1 Fold1      4096    0.25   0.352        0 Preprocessor3_Model021 Preprocessor…
-#>  2 Fold1      4096    0.25   0.336        2 Preprocessor3_Model021 Preprocessor…
-#>  3 Fold1      4096    0.25   0.321        2 Preprocessor3_Model021 Preprocessor…
-#>  4 Fold1      4096    0.25   0.306        2 Preprocessor3_Model021 Preprocessor…
-#>  5 Fold1      4096    0.25   0.292        2 Preprocessor3_Model021 Preprocessor…
-#>  6 Fold1      4096    0.25   0.279        2 Preprocessor3_Model021 Preprocessor…
-#>  7 Fold1      4096    0.25   0.266        3 Preprocessor3_Model021 Preprocessor…
-#>  8 Fold1      4096    0.25   0.254        5 Preprocessor3_Model021 Preprocessor…
-#>  9 Fold1      4096    0.25   0.243        7 Preprocessor3_Model021 Preprocessor…
-#> 10 Fold1      4096    0.25   0.232        7 Preprocessor3_Model021 Preprocessor…
+#>  1 Fold1      4096    0.01    8.80        0 Preprocessor3_Model001 Preprocessor…
+#>  2 Fold1      4096    0.01    8.40        2 Preprocessor3_Model001 Preprocessor…
+#>  3 Fold1      4096    0.01    8.02        2 Preprocessor3_Model001 Preprocessor…
+#>  4 Fold1      4096    0.01    7.66        2 Preprocessor3_Model001 Preprocessor…
+#>  5 Fold1      4096    0.01    7.31        2 Preprocessor3_Model001 Preprocessor…
+#>  6 Fold1      4096    0.01    6.98        3 Preprocessor3_Model001 Preprocessor…
+#>  7 Fold1      4096    0.01    6.66        3 Preprocessor3_Model001 Preprocessor…
+#>  8 Fold1      4096    0.01    6.36        6 Preprocessor3_Model001 Preprocessor…
+#>  9 Fold1      4096    0.01    6.07        6 Preprocessor3_Model001 Preprocessor…
+#> 10 Fold1      4096    0.01    5.79        7 Preprocessor3_Model001 Preprocessor…
 #> # ℹ 9,990 more rows
 ```
 :::
@@ -719,29 +712,29 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.4.2 (2024-10-31)
 #>  language (EN)
-#>  date     2025-03-24
+#>  date     2025-03-25
 #>  pandoc   3.6.1
 #>  quarto   1.6.42
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package       version date (UTC) source
-#>  broom         1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials         1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr         1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2       3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer         1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  parsnip       1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr         1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes       1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang         1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample       1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  stopwords     2.3     2021-10-28 CRAN (R 4.4.0)
-#>  textrecipes   1.1.0   2025-03-18 CRAN (R 4.4.1)
-#>  tibble        3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels    1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune          1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows     1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick     1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package       version    date (UTC) source
+#>  broom         1.0.7      2024-09-26 CRAN (R 4.4.1)
+#>  dials         1.4.0      2025-02-13 CRAN (R 4.4.2)
+#>  dplyr         1.1.4      2023-11-17 CRAN (R 4.4.0)
+#>  ggplot2       3.5.1      2024-04-23 CRAN (R 4.4.0)
+#>  infer         1.0.7      2024-03-25 CRAN (R 4.4.0)
+#>  parsnip       1.3.1      2025-03-12 CRAN (R 4.4.1)
+#>  purrr         1.0.4      2025-02-05 CRAN (R 4.4.1)
+#>  recipes       1.2.0.9000 2025-03-25 local
+#>  rlang         1.1.5      2025-01-17 CRAN (R 4.4.2)
+#>  rsample       1.2.1      2024-03-25 CRAN (R 4.4.0)
+#>  stopwords     2.3        2021-10-28 CRAN (R 4.4.0)
+#>  textrecipes   1.1.0      2025-03-18 CRAN (R 4.4.1)
+#>  tibble        3.2.1      2023-03-20 CRAN (R 4.4.0)
+#>  tidymodels    1.3.0      2025-02-21 CRAN (R 4.4.1)
+#>  tune          1.3.0      2025-02-21 CRAN (R 4.4.1)
+#>  workflows     1.2.0      2025-02-19 CRAN (R 4.4.1)
+#>  yardstick     1.3.2      2025-01-22 CRAN (R 4.4.1)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
