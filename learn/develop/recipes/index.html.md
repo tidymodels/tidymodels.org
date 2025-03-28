@@ -7,7 +7,7 @@ weight: 1
 description: | 
   Write a new recipe step for data preprocessing.
 toc: true
-toc-depth: 2
+toc-depth: 3
 include-after-body: ../../../resources.html
 ---
 
@@ -29,7 +29,7 @@ The general process to follow is to:
 
 As an example, we will create a step for converting data into percentiles. 
 
-## A new step definition
+## Creating a new step
 
 Let's create a step that replaces the value of a variable with its percentile from the training set. The example data we'll use is from the modeldata package:
 
@@ -79,7 +79,7 @@ Our new step will do this computation for any numeric variables of interest. We 
 The step `step_percentiles()` that will be created on this page, has been implemented in recipes as [step_percentile()](https://recipes.tidymodels.org/reference/step_percentile.html).
 :::
 
-## Create the function
+### Create the user function
 
 To start, there is a _user-facing_ function. Let's call that `step_percentiles()`. This is just a simple wrapper around a _constructor function_, which defines the rules for any step object that defines a percentile transformation. We'll call this constructor `step_percentiles_new()`. 
 
@@ -134,7 +134,7 @@ It is also important to consider if there are any _main arguments_ to the step. 
 
 There are benefits to following these principles (as shown below). 
 
-## Initialize a new object
+### Initialize a new object
 
 Now, the constructor function can be created.
 
@@ -169,7 +169,7 @@ step_percentiles_new <-
 
 This constructor function should have no default argument values. Defaults should be set in the user-facing step object. 
 
-## Create the `prep` method
+### Create the `prep()` method
 
 You will need to create a new `prep()` method for your step's class. To do this, three arguments that the method should have are:
 
@@ -265,7 +265,7 @@ prep.step_percentiles <- function(x, training, info = NULL, ...) {
 
 We suggest favoring `rlang::abort()` and `rlang::warn()` over `stop()` and `warning()`. The former can be used for better traceback results.
 
-## Create the `bake` method
+### Create the `bake()` method
 
 Remember that the `prep()` function does not _apply_ the step to the data; it only estimates any required values such as `ref_dist`. We will need to create a new method for our `step_percentiles()` class. The minimum arguments for this are
 
@@ -316,7 +316,7 @@ bake.step_percentiles <- function(object, new_data, ...) {
 You need to import `recipes::prep()` and `recipes::bake()` to create your own step function in a package. 
 :::
 
-## Run the example
+### Verify it works
 
 Let's use the example data to make sure that it works: 
 
@@ -374,11 +374,11 @@ ggplot(biomass_tr, aes(x = hydrogen)) +
 
 These line up very nicely! 
 
-## Custom check operations 
+## Creating a new check
 
 The process here is exactly the same as steps; the internal functions have a similar naming convention: 
 
- * `add_check()` instead of `add_step()`
+ * `add_check()` instead of `add_step()`.
  * `check()` instead of `step()`, and so on. 
  
 It is strongly recommended that:
@@ -391,7 +391,7 @@ It is strongly recommended that:
 
 There are a few other S3 methods that can be created for your step function. They are not required unless you plan on using your step in the broader tidymodels package set. 
 
-### A print method
+### A `print()` method
 
 If you don't add a print method for `step_percentiles`, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called `print_step()` that should be useful in most cases. We are using it here for the custom print method for `step_percentiles`. It requires the original terms specification and the column names this specification is evaluated to by `prep()`. For the former, our step object is structured so that the list object `ref_dist` has the names of the selected variables: 
 
@@ -449,7 +449,6 @@ rec_obj
 ```
 :::
 
- 
 ### Methods for declaring required packages
 
 Some recipe steps use functions from other packages. When this is the case, the `step_*()` function should check to see if the package is installed. The function `recipes::recipes_pkg_check()` will do this. For example: 
@@ -490,7 +489,7 @@ recipes::recipes_pkg_check(required_pkgs.step_hypothetical())
 
 If you'd like an example of this in a package, please take a look at the [embed](https://github.com/tidymodels/embed/) or [themis](https://github.com/tidymodels/themis/) package.
 
-### A tidy method
+### A `tidy()` method
 
 The `broom::tidy()` method is a means to return information about the step in a usable format. For our step, it would be helpful to know the reference values. 
 
@@ -662,7 +661,7 @@ tunable.step_poly <- function (x, ...) {
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.4.2 (2024-10-31)
 #>  language (EN)
-#>  date     2025-03-24
+#>  date     2025-03-27
 #>  pandoc   3.6.1
 #>  quarto   1.6.42
 #> 
@@ -676,7 +675,7 @@ tunable.step_poly <- function (x, ...) {
 #>  modeldata    1.4.0   2024-06-19 CRAN (R 4.4.0)
 #>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
 #>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
+#>  recipes      1.2.1   2025-03-25 CRAN (R 4.4.1)
 #>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
 #>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
 #>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
