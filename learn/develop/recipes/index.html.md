@@ -5,7 +5,7 @@ categories:
 type: learn-subsection
 weight: 1
 description: | 
- Write a new recipe step for data preprocessing.
+  Write a new recipe step for data preprocessing.
 toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
@@ -49,8 +49,8 @@ str(biomass)
 #>  $ sulfur  : num  0 0 0.02 0.16 0.02 0.1 0.2 0.2 0 0.1 ...
 #>  $ HHV     : num  20 19.2 18.3 18.2 18.4 ...
 
-biomass_tr <- biomass[biomass$dataset == "Training",]
-biomass_te <- biomass[biomass$dataset == "Testing",]
+biomass_tr <- biomass[biomass$dataset == "Training", ]
+biomass_te <- biomass[biomass$dataset == "Testing", ]
 ```
 :::
 
@@ -61,8 +61,8 @@ To illustrate the transformation with the `carbon` variable, note the training s
 ```{.r .cell-code}
 library(ggplot2)
 theme_set(theme_bw())
-ggplot(biomass_tr, aes(x = carbon)) + 
-  geom_histogram(binwidth = 5, col = "blue", fill = "blue", alpha = .5) + 
+ggplot(biomass_tr, aes(x = carbon)) +
+  geom_histogram(binwidth = 5, col = "blue", fill = "blue", alpha = .5) +
   geom_vline(xintercept = biomass_te$carbon[1], lty = 2)
 ```
 
@@ -89,28 +89,27 @@ The function `step_percentiles()` takes the same arguments as your function and 
 
 ```{.r .cell-code}
 step_percentiles <- function(
- recipe, 
- ..., 
- role = NA, 
- trained = FALSE, 
- ref_dist = NULL,
- options = list(probs = (0:100)/100, names = TRUE),
- skip = FALSE,
- id = rand_id("percentiles")
- ) {
-
+  recipe,
+  ...,
+  role = NA,
+  trained = FALSE,
+  ref_dist = NULL,
+  options = list(probs = (0:100) / 100, names = TRUE),
+  skip = FALSE,
+  id = rand_id("percentiles")
+) {
   add_step(
- recipe, 
+    recipe,
     step_percentiles_new(
- terms = enquos(...),
- trained = trained,
- role = role, 
- ref_dist = ref_dist,
- options = options,
- skip = skip,
- id = id
- )
- )
+      terms = enquos(...),
+      trained = trained,
+      role = role,
+      ref_dist = ref_dist,
+      options = options,
+      skip = skip,
+      id = id
+    )
+  )
 }
 ```
 :::
@@ -151,19 +150,19 @@ step_percentiles() calls recipes::add_step()
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-step_percentiles_new <- 
+step_percentiles_new <-
   function(terms, role, trained, ref_dist, options, skip, id) {
     step(
- subclass = "percentiles", 
- terms = terms,
- role = role,
- trained = trained,
- ref_dist = ref_dist,
- options = options,
- skip = skip,
- id = id
- )
- }
+      subclass = "percentiles",
+      terms = terms,
+      role = role,
+      trained = trained,
+      ref_dist = ref_dist,
+      options = options,
+      skip = skip,
+      id = id
+    )
+  }
 ```
 :::
 
@@ -195,7 +194,7 @@ The first thing that you might want to do in the `prep()` function is to transla
 
 ```{.r .cell-code}
 prep.step_percentiles <- function(x, training, info = NULL, ...) {
- col_names <- recipes_eval_select(x$terms, training, info)
+  col_names <- recipes_eval_select(x$terms, training, info)
   # TODO finish the rest of the function
 }
 ```
@@ -209,9 +208,9 @@ Once we have this, we can save the approximation grid. For the grid, we will use
 
 ```{.r .cell-code}
 get_train_pctl <- function(x, args = NULL) {
- res <- rlang::exec("quantile", x = x, !!!args)
+  res <- rlang::exec("quantile", x = x, !!!args)
   # Remove duplicate percentile values
- res[!duplicated(res)]
+  res[!duplicated(res)]
 }
 
 # For example:
@@ -230,35 +229,39 @@ Now, the `prep()` method can be created:
 
 ```{.r .cell-code}
 prep.step_percentiles <- function(x, training, info = NULL, ...) {
- col_names <- recipes_eval_select(x$terms, training, info)
+  col_names <- recipes_eval_select(x$terms, training, info)
   check_type(training[, col_names], types = c("double", "integer"))
 
-  ## We'll use the names later so make sure they are available
- if (x$options$names == FALSE) {
- rlang::abort("`names` should be set to TRUE")
- }
-  
- if (!any(names(x$options) == "probs")) {
- x$options$probs <- (0:100)/100
- } else {
- x$options$probs <- sort(unique(x$options$probs))
- }
-  
-  # Compute percentile grid
- ref_dist <- purrr::map(training[, col_names], get_train_pctl, args = x$options)
+  # We'll use the names later so make sure they are available
+  if (x$options$names == FALSE) {
+    rlang::abort("`names` should be set to TRUE")
+  }
 
-  ## Use the constructor function to return the updated object. 
-  ## Note that `trained` is now set to TRUE
-  
+  if (!any(names(x$options) == "probs")) {
+    x$options$probs <- (0:100) / 100
+  } else {
+    x$options$probs <- sort(unique(x$options$probs))
+  }
+
+  # Compute percentile grid
+  ref_dist <- purrr::map(
+    training[, col_names],
+    get_train_pctl,
+    args = x$options
+  )
+
+  # Use the constructor function to return the updated object.
+  # Note that `trained` is now set to TRUE
+
   step_percentiles_new(
- terms = x$terms, 
- trained = TRUE,
- role = x$role, 
- ref_dist = ref_dist,
- options = x$options,
- skip = x$skip,
- id = x$id
- )
+    terms = x$terms,
+    trained = TRUE,
+    role = x$role,
+    ref_dist = ref_dist,
+    options = x$options,
+    skip = x$skip,
+    id = x$id
+  )
 }
 ```
 :::
@@ -283,8 +286,8 @@ Here is the code to convert the new data to percentiles. The input data (`x` bel
 pctl_by_approx <- function(x, ref) {
   # In case duplicates were removed, get the percentiles from
   # the names of the reference object
- grid <- as.numeric(gsub("%$", "", names(ref))) 
-  approx(x = ref, y = grid, xout = x)$y/100
+  grid <- as.numeric(gsub("%$", "", names(ref)))
+  approx(x = ref, y = grid, xout = x)$y / 100
 }
 ```
 :::
@@ -295,19 +298,19 @@ We will loop over the variables one by and and apply the transformation. `check_
 
 ```{.r .cell-code}
 bake.step_percentiles <- function(object, new_data, ...) {
- col_names <- names(object$ref_dist)
+  col_names <- names(object$ref_dist)
   check_new_data(col_names, object, new_data)
 
- for (col_name in col_names) {
- new_data[[col_name]] <- pctl_by_approx(
- x = new_data[[col_name]],
- ref = object$ref_dist[[col_name]]
- )
- }
+  for (col_name in col_names) {
+    new_data[[col_name]] <- pctl_by_approx(
+      x = new_data[[col_name]],
+      ref = object$ref_dist[[col_name]]
+    )
+  }
 
   # new_data will be a tibble when passed to this function. It should also
   # be a tibble on the way out.
- new_data
+  new_data
 }
 ```
 :::
@@ -323,8 +326,7 @@ Let's use the example data to make sure that it works:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rec_obj <- 
-  recipe(HHV ~ ., data = biomass_tr) %>%
+rec_obj <- recipe(HHV ~ ., data = biomass_tr) %>%
   step_percentiles(ends_with("gen")) %>%
   prep(training = biomass_tr)
 
@@ -339,10 +341,10 @@ bake(rec_obj, biomass_te %>% slice(1:2), ends_with("gen"))
 #> 1     0.45  0.903    0.21 
 #> 2     0.38  0.922    0.928
 
-# Checking to get approximate results: 
+# Checking to get approximate results:
 mean(biomass_tr$hydrogen <= biomass_te$hydrogen[1])
 #> [1] 0.4517544
-mean(biomass_tr$oxygen   <= biomass_te$oxygen[1])
+mean(biomass_tr$oxygen <= biomass_te$oxygen[1])
 #> [1] 0.9013158
 ```
 :::
@@ -352,18 +354,21 @@ The plot below shows how the original hydrogen percentiles line up with the esti
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-hydrogen_values <- 
-  bake(rec_obj, biomass_te, hydrogen) %>% 
+hydrogen_values <- bake(rec_obj, biomass_te, hydrogen) %>%
   bind_cols(biomass_te %>% select(original = hydrogen))
 
-ggplot(biomass_tr, aes(x = hydrogen)) + 
-  # Plot the empirical distribution function of the 
+ggplot(biomass_tr, aes(x = hydrogen)) +
+  # Plot the empirical distribution function of the
   # hydrogen training set values as a black line
-  stat_ecdf() + 
-  # Overlay the estimated percentiles for the new data: 
-  geom_point(data = hydrogen_values, 
-             aes(x = original, y = hydrogen), 
- col = "red", alpha = .5, cex = 2) + 
+  stat_ecdf() +
+  # Overlay the estimated percentiles for the new data:
+  geom_point(
+    data = hydrogen_values,
+    aes(x = original, y = hydrogen),
+    col = "red",
+    alpha = .5,
+    cex = 2
+  ) +
   labs(x = "New Hydrogen Values", y = "Percentile Based on Training Set")
 ```
 
@@ -400,22 +405,22 @@ If you don't add a print method for `step_percentiles`, it will still print but 
 ```{.r .cell-code}
 print.step_percentiles <-
   function(x, width = max(20, options()$width - 35), ...) {
- title <- "Percentile transformation on "
+    title <- "Percentile transformation on "
 
     print_step(
       # Names after prep:
- tr_obj = names(x$ref_dist),
+      tr_obj = names(x$ref_dist),
       # Names before prep (could be selectors)
- untr_obj = x$terms,
-      # Has it been prepped? 
- trained = x$trained,
+      untr_obj = x$terms,
+      # Has it been prepped?
+      trained = x$trained,
       # What does this step do?
- title = title,
-      # An estimate of how many characters to print on a line: 
- width = width
- )
+      title = title,
+      # An estimate of how many characters to print on a line:
+      width = width
+    )
     invisible(x)
- }
+  }
 
 # Results before `prep()`:
 recipe(HHV ~ ., data = biomass_tr) %>%
@@ -431,7 +436,7 @@ recipe(HHV ~ ., data = biomass_tr) %>%
 #> ── Operations
 #> • Percentile transformation on: ends_with("gen")
 
-# Results after `prep()`: 
+# Results after `prep()`:
 rec_obj
 #> 
 #> ── Recipe ────────────────────────────────────────────────────────────
@@ -499,13 +504,13 @@ When the recipe has been prepped, those data are in the list `ref_dist`. A small
 
 ```{.r .cell-code}
 format_pctl <- function(x) {
- tibble::tibble(
- value = unname(x),
- percentile = as.numeric(gsub("%$", "", names(x))) 
- )
+  tibble::tibble(
+    value = unname(x),
+    percentile = as.numeric(gsub("%$", "", names(x)))
+  )
 }
 
-# For example: 
+# For example:
 pctl_step_object <- rec_obj$steps[[1]]
 pctl_step_object
 #> • Percentile transformation on: hydrogen and oxygen, ... | Trained
@@ -533,29 +538,29 @@ The tidy method could return these values for each selected column. Before `prep
 
 ```{.r .cell-code}
 tidy.step_percentiles <- function(x, ...) {
- if (is_trained(x)) {
- if (length(x$ref_dist) == 0) {
+  if (is_trained(x)) {
+    if (length(x$ref_dist) == 0) {
       # We need to create consistent output when no variables are selected
- res <- tibble(
- terms = character(),
- value = numeric(),
- percentile = numeric()
- )
- } else {
- res <- map_dfr(x$ref_dist, format_pctl, .id = "term")
- }
- } else {
- term_names <- sel2char(x$terms)
- res <-
+      res <- tibble(
+        terms = character(),
+        value = numeric(),
+        percentile = numeric()
+      )
+    } else {
+      res <- map_dfr(x$ref_dist, format_pctl, .id = "term")
+    }
+  } else {
+    term_names <- sel2char(x$terms)
+    res <-
       tibble(
- terms = term_names,
- value = rlang::na_dbl,
- percentile = rlang::na_dbl
- )
- }
-  # Always return the step id: 
- res$id <- x$id
- res
+        terms = term_names,
+        value = rlang::na_dbl,
+        percentile = rlang::na_dbl
+      )
+  }
+  # Always return the step id:
+  res$id <- x$id
+  res
 }
 
 tidy(rec_obj, number = 1)
@@ -616,7 +621,7 @@ For example, for a nearest-neighbors `neighbors` parameter, this value is just:
 ```{.r .cell-code}
 info <- list(pkg = "dials", fun = "neighbors")
 
-# FYI: how it is used under-the-hood: 
+# FYI: how it is used under-the-hood:
 new_param_call <- rlang::call2(.fn = info$fun, .ns = info$pkg)
 rlang::eval_tidy(new_param_call)
 #> # Nearest Neighbors (quantitative)
@@ -641,14 +646,14 @@ For `step_poly()` the `tunable()` S3 method could be:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tunable.step_poly <- function (x, ...) {
- tibble::tibble(
- name = c("degree"),
- call_info = list(list(pkg = "dials", fun = "degree_int")),
- source = "recipe",
- component = "step_poly",
- component_id = x$id
- )
+tunable.step_poly <- function(x, ...) {
+  tibble::tibble(
+    name = c("degree"),
+    call_info = list(list(pkg = "dials", fun = "degree_int")),
+    source = "recipe",
+    component = "step_poly",
+    component_id = x$id
+  )
 }
 ```
 :::
