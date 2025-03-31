@@ -27,7 +27,7 @@ These goals are guided by our [principles for creating modeling packages](https:
 
 ## Answer questions
 
-You can help others use and learn tidymodels by answering questions on the [RStudio community site](https://community.rstudio.com/tag/tidymodels), [Stack Overflow](https://stackoverflow.com/questions/tagged/tidymodels?sort=newest), and [Twitter](https://twitter.com/search?q=%23tidymodels&f=live). Many people asking for help with tidymodels don't know what a [reprex](https://www.tidyverse.org/help#reprex) is or how to craft one. Acknowledging an individual's problem, showing them how to build a reprex, and pointing them to helpful resources are all enormously beneficial, even if you don't immediately solve their problem.
+You can help others use and learn tidymodels by answering questions on the [RStudio community site](https://community.rstudio.com/tag/tidymodels), [Stack Overflow](https://stackoverflow.com/questions/tagged/tidymodels?sort=newest), and [Bluesky](https://bsky.app/search?q=%23tidymodels). Many people asking for help with tidymodels don't know what a [reprex](https://www.tidyverse.org/help#reprex) is or how to craft one. Acknowledging an individual's problem, showing them how to build a reprex, and pointing them to helpful resources are all enormously beneficial, even if you don't immediately solve their problem.
 
 Remember that while you might have seen a problem a hundred times before, it's new to the person asking it. Be patient, polite, and empathic.
 
