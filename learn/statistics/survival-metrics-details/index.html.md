@@ -166,7 +166,7 @@ The weights used in the calculation of the dynamic performance metrics are the i
 First, when do we evaluate the probability of censoring? There are different approaches used in the literature, and we follow what Graf _et al_ suggest (as it seems most appropriate):
 
 - If the evaluation time is less than the observed time (like in category 2), the evaluation time is used to predict the probability of censoring.
-- If the evaluation is greater than or equal to the event time (like in category 1), the event time is used to predict the probability of censoring.
+- If the evaluation time is greater than or equal to the event time (like in category 1), the event time is used to predict the probability of censoring.
 - If the evaluation time is greater than or equal to the observed censoring time, the observation falls into category 3 and is not used, i.e., also no weight is needed.
 
 We call this time at which to predict the probability of censoring the _weight time_. Here's an example using the first data point in the validation set: 
@@ -339,32 +339,34 @@ When accounting for censoring in dynamic performance metrics, the main points to
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.0 (2025-04-11)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-05-27
+#>  pandoc   NA (via rmarkdown)
+#>  quarto   1.7.31
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version    date (UTC) source
-#>  broom        1.0.7      2024-09-26 CRAN (R 4.4.1)
-#>  censored     0.3.3      2025-02-14 CRAN (R 4.4.1)
-#>  dials        1.4.0      2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1      2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7      2024-03-25 CRAN (R 4.4.0)
-#>  parsnip      1.3.1      2025-03-12 CRAN (R 4.4.1)
-#>  prodlim      2024.06.25 2024-06-24 CRAN (R 4.4.0)
-#>  purrr        1.0.4      2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0      2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5      2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1      2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1      2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0      2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0      2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0      2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.4.1)
+#>  broom        1.0.8      2025-03-28 CRAN (R 4.5.0)
+#>  censored     0.3.3      2025-02-14 CRAN (R 4.5.0)
+#>  dials        1.4.0      2025-02-13 CRAN (R 4.5.0)
+#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      3.5.2      2025-04-09 CRAN (R 4.5.0)
+#>  infer        1.0.8      2025-04-14 CRAN (R 4.5.0)
+#>  parsnip      1.3.1      2025-03-12 CRAN (R 4.5.0)
+#>  prodlim      2025.04.28 2025-04-28 CRAN (R 4.5.0)
+#>  purrr        1.0.4      2025-02-05 CRAN (R 4.5.0)
+#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.0      2025-04-02 CRAN (R 4.5.0)
+#>  tibble       3.2.1      2023-03-20 CRAN (R 4.5.0)
+#>  tidymodels   1.3.0      2025-02-21 CRAN (R 4.5.0)
+#>  tune         1.3.0      2025-02-21 CRAN (R 4.5.0)
+#>  workflows    1.2.0      2025-02-19 CRAN (R 4.5.0)
+#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
+ 
