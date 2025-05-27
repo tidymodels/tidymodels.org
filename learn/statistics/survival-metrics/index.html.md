@@ -160,10 +160,10 @@ $$
 For survival models, we transform the event time data into a binary version $y_{it}$: is there an event at evaluation time $t$^[Again, see the [Accounting for Censoring in Performance Metrics for Event Time Data](../survival-metrics-details) article for more on this.]. The survival function estimate $\hat{p}_{it}$ is the probability corresponding to non-events at time $t$. For example, if there has not been an event at the current evaluation time, our best model should estimate the survival probability near one. For observations that are events, the probability estimate is just one minus the survivor estimate. To account for censoring, we also weight each observation with $w_{it}$. The [time-dependent Brier score](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C7&q=%22Assessment+and+Comparison+of+Prognostic+Classification+Schemes+for+Survival+Data.%22&btnG=) is: 
 
 $$
-Brier_{surv}(t) = \frac{1}{W_t}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(y_{it} - \hat{p}_{it})^2}_\text{non-events} +  \underbrace{I(y_{it} = 1)(y_{it} - (1 - \hat{p}_{it}))^2}_\text{events}\right]
+Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)((1 - y_{it}) - \hat{p}_{it})^2}_\text{non-events} +  \underbrace{I(y_{it} = 1)(y_{it} - (1 - \hat{p}_{it}))^2}_\text{events}\right]
 $$
 
-where $W_t$ is the sum of the weights at time $t$.
+where $N$ is the number of non-missing rows in the data.
 
 For this score, a perfect model has a score of zero, while an uninformative model would have a score of around 1/4. 
 
@@ -388,32 +388,33 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.0 (2025-04-11)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-05-27
+#>  pandoc   NA (via rmarkdown)
+#>  quarto   1.7.31
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC) source
-#>  broom          1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  censored       0.3.3   2025-02-14 CRAN (R 4.4.1)
-#>  dials          1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2        3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer          1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.4.0)
-#>  parsnip        1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr          1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes        1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang          1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample        1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble         3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels     1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune           1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows      1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  broom          1.0.8   2025-03-28 CRAN (R 4.5.0)
+#>  censored       0.3.3   2025-02-14 CRAN (R 4.5.0)
+#>  dials          1.4.0   2025-02-13 CRAN (R 4.5.0)
+#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2        3.5.2   2025-04-09 CRAN (R 4.5.0)
+#>  infer          1.0.8   2025-04-14 CRAN (R 4.5.0)
+#>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.5.0)
+#>  parsnip        1.3.1   2025-03-12 CRAN (R 4.5.0)
+#>  purrr          1.0.4   2025-02-05 CRAN (R 4.5.0)
+#>  recipes        1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang          1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample        1.3.0   2025-04-02 CRAN (R 4.5.0)
+#>  tibble         3.2.1   2023-03-20 CRAN (R 4.5.0)
+#>  tidymodels     1.3.0   2025-02-21 CRAN (R 4.5.0)
+#>  tune           1.3.0   2025-02-21 CRAN (R 4.5.0)
+#>  workflows      1.2.0   2025-02-19 CRAN (R 4.5.0)
+#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
