@@ -307,7 +307,7 @@ pctl_by_approx <- function(x, ref) {
 ```
 :::
 
-We will loop over the variables one by and and apply the transformation. `check_new_data()` is used to make sure that the variables that are affected in this step are present.
+We will loop over the variables one by one and apply the transformation. `check_new_data()` is used to make sure that the variables that are affected in this step are present.
 
 ::: {.cell layout-align="center"}
 
@@ -679,31 +679,32 @@ tunable.step_poly <- function(x, ...) {
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.0 (2025-04-11)
 #>  language (EN)
-#>  date     2025-03-27
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-07-07
+#>  pandoc   3.6.3
+#>  quarto   1.7.32
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  modeldata    1.4.0   2024-06-19 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.1   2025-03-25 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  broom        1.0.8   2025-03-28 CRAN (R 4.5.0)
+#>  dials        1.4.0   2025-02-13 CRAN (R 4.5.0)
+#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      3.5.2   2025-04-09 CRAN (R 4.5.0)
+#>  infer        1.0.8   2025-04-14 CRAN (R 4.5.0)
+#>  modeldata    1.4.0   2024-06-19 CRAN (R 4.5.0)
+#>  parsnip      1.3.2   2025-05-28 CRAN (R 4.5.0)
+#>  purrr        1.0.4   2025-02-05 CRAN (R 4.5.0)
+#>  recipes      1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.0   2025-04-02 CRAN (R 4.5.0)
+#>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.5.0)
+#>  tune         1.3.0   2025-02-21 CRAN (R 4.5.0)
+#>  workflows    1.2.0   2025-02-19 CRAN (R 4.5.0)
+#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
