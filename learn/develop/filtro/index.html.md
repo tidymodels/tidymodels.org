@@ -19,7 +19,7 @@ You can construct new scoring objects using `class_score()`. This article is a g
 
 ## Scoring object
 
-The `class_score` is a parent class. There are a few properties to this object:
+The `class_score` is the parent class of all subclasses related to the scoring method. There are a few properties to this object:
 
 ::: {.cell layout-align="center"}
 
@@ -66,9 +66,11 @@ args(class_score)
 
 -   `results`: A slot for the results once the method is fitted.
 
-## Scoring object specific to filter method
+## Scoring object specific to the scoring method
 
-The `class_score_aov` is a subclass of `class_score`. This subclass allows additional properties to be introduced: 
+As an example, let’s consider the ANOVA F-test filter. 
+
+`class_score_aov` is a subclass of `class_score`. Because it inherits from the `class_score` parent class, all of the parent's properties are also inherited. The subclass can also include additional properties specific to their implementation. For example: 
 
 ::: {.cell layout-align="center"}
 
@@ -84,11 +86,14 @@ class_score_aov <- S7::new_class(
 ```
 :::
 
-`score_aov_pval` is an instance (i.e., object) of the `class_score_aov` subclass, created using its constructor function: 
+For this filter, users can use either p-value or the F-statistic. We will demonstrate how to create these instances (or objects).
+
+`score_aov_pval` is an instance (or object) of the `class_score_aov` subclass, created using its constructor function: 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+# ANOVA p-value
 score_aov_pval <-
   class_score_aov(
     outcome_type = c("numeric", "factor"),
@@ -103,28 +108,10 @@ score_aov_pval <-
     tuning = FALSE,
     label = "ANOVA p-values"
   )
-score_aov_pval
-#> <class_score_aov>
-#>  @ outcome_type  : chr [1:2] "numeric" "factor"
-#>  @ predictor_type: chr [1:2] "numeric" "factor"
-#>  @ case_weights  : logi TRUE
-#>  @ range         : num [1:2] 0 Inf
-#>  @ inclusive     : logi [1:2] FALSE FALSE
-#>  @ fallback_value: num Inf
-#>  @ score_type    : chr "aov_pval"
-#>  @ sorts         : function ()  
-#>  @ direction     : chr "maximize"
-#>  @ deterministic : logi TRUE
-#>  @ tuning        : logi FALSE
-#>  @ calculating_fn: function ()  
-#>  @ label         : chr "ANOVA p-values"
-#>  @ packages      : chr(0) 
-#>  @ results       :'data.frame':	0 obs. of  0 variables
-#>  @ neg_log10     : logi TRUE
 ```
 :::
 
-The properties can be accessed via `object@`. For examples: 
+Individual properties can be accessed via `object@`. For examples: 
 
 ::: {.cell layout-align="center"}
 
@@ -138,11 +125,12 @@ score_aov_pval@fallback_value
 ```
 :::
 
-`score_aov_fstat` is another instance (i.e., object) of the `class_score_aov` subclass:  
+`score_aov_fstat` is another instance (or object) of the `class_score_aov` subclass:  
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+# ANOVA F-statistic
 score_aov_fstat <-
   class_score_aov(
     outcome_type = c("numeric", "factor"),
@@ -162,5 +150,79 @@ score_aov_fstat <-
 
 ## Accessing Results After Fitting
 
-Once the method is fitted via `fit()`, results can be accessed via `object@results`. For examples: 
+Once the method is fitted via `fit()`, the data frame of results can be accessed via `object@results`. For examples: 
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+library(modeldata)
+ames_subset <- modeldata::ames |>
+  # Use a subset of data for demonstration
+  dplyr::select(
+    Sale_Price,
+    MS_SubClass,
+    MS_Zoning,
+    Lot_Frontage,
+    Lot_Area,
+    Street
+  )
+ames_subset <- ames_subset |>
+  dplyr::mutate(Sale_Price = log10(Sale_Price))
+```
+:::
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# # Specify ANOVA p-value and fit score
+# ames_aov_pval_res <-
+#   score_aov_pval |>
+#   fit(Sale_Price ~ ., data = ames_subset)
+# ames_aov_pval_res@results
+```
+:::
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# # Specify ANOVA F-statistic and fit score
+# ames_aov_fstat_res <-
+#   score_aov_fstat |>
+#   fit(Sale_Price ~ ., data = ames_subset)
+# ames_aov_fstat_res@results
+```
+:::
+
+## Session information {#session-info}
+
+::: {.cell layout-align="center"}
+
+```
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+#> ─ Session info ─────────────────────────────────────────────────────
+#>  version  R version 4.5.0 (2025-04-11)
+#>  language (EN)
+#>  date     2025-08-18
+#>  pandoc   3.6.3
+#>  quarto   1.7.32
+#> 
+#> ─ Packages ─────────────────────────────────────────────────────────
+#>  package     version    date (UTC) source
+#>  dplyr       1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  filtro      0.1.0.9000 2025-08-15 Github (tidymodels/filtro@81c7d85)
+#>  modeldata   1.4.0      2024-06-19 CRAN (R 4.5.0)
+#>  purrr       1.0.4      2025-02-05 CRAN (R 4.5.0)
+#>  rlang       1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  tibble      3.2.1      2023-03-20 CRAN (R 4.5.0)
+#> 
+#> ────────────────────────────────────────────────────────────────────
+```
+:::
 

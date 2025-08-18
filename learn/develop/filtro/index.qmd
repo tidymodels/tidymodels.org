@@ -38,7 +38,7 @@ You can construct new scoring objects using `class_score()`. This article is a g
 
 ## Scoring object
 
-The `class_score` is a parent class. There are a few properties to this object:
+The `class_score` is the parent class of all subclasses related to the scoring method. There are a few properties to this object:
 
 ```{r}
 #| label: "class_score"
@@ -76,9 +76,11 @@ args(class_score)
 
 -   `results`: A slot for the results once the method is fitted.
 
-## Scoring object specific to filter method
+## Scoring object specific to the scoring method
 
-The `class_score_aov` is a subclass of `class_score`. This subclass allows additional properties to be introduced: 
+As an example, let’s consider the ANOVA F-test filter. 
+
+`class_score_aov` is a subclass of `class_score`. Because it inherits from the `class_score` parent class, all of the parent's properties are also inherited. The subclass can also include additional properties specific to their implementation. For example: 
 
 ```{r}
 class_score_aov <- S7::new_class(
@@ -91,9 +93,12 @@ class_score_aov <- S7::new_class(
 )
 ```
 
-`score_aov_pval` is an instance (i.e., object) of the `class_score_aov` subclass, created using its constructor function: 
+For this filter, users can use either p-value or the F-statistic. We will demonstrate how to create these instances (or objects).
+
+`score_aov_pval` is an instance (or object) of the `class_score_aov` subclass, created using its constructor function: 
 
 ```{r}
+# ANOVA p-value
 score_aov_pval <-
   class_score_aov(
     outcome_type = c("numeric", "factor"),
@@ -108,10 +113,9 @@ score_aov_pval <-
     tuning = FALSE,
     label = "ANOVA p-values"
   )
-score_aov_pval
 ```
 
-The properties can be accessed via `object@`. For examples: 
+Individual properties can be accessed via `object@`. For examples: 
 
 ```{r}
 score_aov_pval@case_weights
@@ -119,9 +123,10 @@ score_aov_pval@range
 score_aov_pval@fallback_value
 ```
 
-`score_aov_fstat` is another instance (i.e., object) of the `class_score_aov` subclass:  
+`score_aov_fstat` is another instance (or object) of the `class_score_aov` subclass:  
 
 ```{r}
+# ANOVA F-statistic
 score_aov_fstat <-
   class_score_aov(
     outcome_type = c("numeric", "factor"),
@@ -140,7 +145,7 @@ score_aov_fstat <-
 
 ## Accessing Results After Fitting
 
-Once the method is fitted via `fit()`, results can be accessed via `object@results`. For examples: 
+Once the method is fitted via `fit()`, the data frame of results can be accessed via `object@results`. For examples: 
 
 ```{r}
 library(modeldata)
@@ -159,36 +164,25 @@ ames_subset <- ames_subset |>
 ```
 
 ```{r}
-library(modeldata)
-ames_subset <- modeldata::ames |>
-  # Use a subset of data for demonstration
-  dplyr::select(
-    Sale_Price,
-    MS_SubClass,
-    MS_Zoning,
-    Lot_Frontage,
-    Lot_Area,
-    Street
-  )
-ames_subset <- ames_subset |>
-  dplyr::mutate(Sale_Price = log10(Sale_Price))
+# # Specify ANOVA p-value and fit score
+# ames_aov_pval_res <-
+#   score_aov_pval |>
+#   fit(Sale_Price ~ ., data = ames_subset)
+# ames_aov_pval_res@results
 ```
 
 ```{r}
-library(filtro)
-# ANOVA p-value
-ames_aov_pval_res <-
-  score_aov_pval |>
-  fit(Sale_Price ~ ., data = ames_subset)
-ames_aov_pval_res@results
+# # Specify ANOVA F-statistic and fit score
+# ames_aov_fstat_res <-
+#   score_aov_fstat |>
+#   fit(Sale_Price ~ ., data = ames_subset)
+# ames_aov_fstat_res@results
 ```
+
+## Session information {#session-info}
 
 ```{r}
-library(filtro)
-# ANOVA F-statistic
-ames_aov_fstat_res <-
-  score_aov_fstat |>
-  fit(Sale_Price ~ ., data = ames_subset)
-ames_aov_fstat_res@results
+#| label: "si"
+#| echo: false
+small_session(pkgs)
 ```
-
