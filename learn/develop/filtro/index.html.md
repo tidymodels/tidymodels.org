@@ -19,7 +19,7 @@ You can construct new scoring objects using `class_score()`. This article is a g
 
 ## Scoring object
 
-The `class_score` is the parent class of all subclasses related to the scoring method. There are a few properties for this object:
+`class_score` is the parent class of all subclasses related to the scoring method. There are a few properties for this object:
 
 ::: {.cell layout-align="center"}
 
@@ -90,7 +90,7 @@ In addition to the properties inherited from the parent, `class_score_aov` also 
 
 - `neg_log10`: Represent the score as `-log10(p_value)`? `TRUE` or `FALSE`.
 
-For this filter, users can use either 
+For this filter, users can represent the score using either
 
 - p-value or 
 
@@ -155,6 +155,20 @@ score_aov_fstat <-
     tuning = FALSE,
     label = "ANOVA F-statistics"
   )
+```
+:::
+
+## Fitting or estimating score
+
+So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
+
+The `fit()` function is a generic used to fit or estimate score.
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+score_aov_pval |>
+  fit(Sale_Price ~ ., data = ames)
 ```
 :::
 
