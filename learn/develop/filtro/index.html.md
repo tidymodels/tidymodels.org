@@ -70,7 +70,7 @@ args(class_score)
 
 As an example, let’s consider the ANOVA F-test filter. 
 
-`class_score_aov` is a subclass of `class_score`. Because it inherits from the `class_score` parent class, all of the parent's properties are also inherited. The subclass can also include additional properties specific to its implementation. For example: 
+`class_score_aov` is a subclass of `class_score`. The subclass can also include additional properties specific to its implementation. For example: 
 
 ::: {.cell layout-align="center"}
 
@@ -86,7 +86,7 @@ class_score_aov <- S7::new_class(
 ```
 :::
 
-In addition to the properties inherited from the parent, `class_score_aov` also includes:
+In addition to the properties inherited from the parent class, `class_score_aov` also includes:
 
 - `neg_log10`: Represent the score as `-log10(p_value)`? `TRUE` or `FALSE`.
 
@@ -96,7 +96,7 @@ For this filter, users can represent the score using either
 
 - F-statistic. 
 
-Next, we demonstrate how to create these instances (or objects). 
+We demonstrate how to create these instances (or objects) accordingly. 
 
 `score_aov_pval` is an instance (or object) of the `class_score_aov` subclass, created using its constructor function: 
 
@@ -158,11 +158,11 @@ score_aov_fstat <-
 ```
 :::
 
-## Fitting or estimating score
+## Fitting (or estimating) score
 
 So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
 
-The `fit()` function is a generic used to fit or estimate score.
+The `fit()` function is a generic used to fit (or estimate) score.
 
 ::: {.cell layout-align="center"}
 
@@ -172,7 +172,7 @@ score_aov_pval |>
 ```
 :::
 
-## Accessing Results After Fitting
+## Accessing results after fitting
 
 Once the method is fitted via `fit()`, the data frame of results can be accessed via `object@results`. For examples: 
 
