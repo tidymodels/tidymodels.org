@@ -19,7 +19,7 @@ You can construct new scoring objects using `class_score()`. This article is a g
 
 ## Scoring object
 
-The `class_score` is the parent class of all subclasses related to the scoring method. There are a few properties to this object:
+The `class_score` is the parent class of all subclasses related to the scoring method. There are a few properties for this object:
 
 ::: {.cell layout-align="center"}
 
@@ -36,57 +36,59 @@ args(class_score)
 ```
 :::
 
--   `outcome_type`: What types of outcome can the method handle?
+-   `outcome_type`: What types of outcome can the method handle? The options are `numeric`, `factor`, or both. 
 
--   `predictor_type`: What types of predictor can the method handle?
+-   `predictor_type`: What types of predictor can the method handle? The options are `numeric`, `factor`, or both. 
 
--   `case_weights`: Does the method accpet case weights? 
+-   `case_weights`: Does the method accpet case weights? `TRUE` or `FALSE`.
 
--   `range`: Are there known ranges for the statistic?
+-   `range`: Are there known ranges for the statistic? For example, `c(0, Inf)`. 
 
--   `inclusive`: Are these ranges inclusive at the bounds?
+-   `inclusive`: Are these ranges inclusive at the bounds? For example, `c(FALSE, FALSE)`. 
 
--   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated?
+-   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For example, `0`, `Inf`.
 
--   `score_type`: What is the column name that will be used for the statistic values?
+-   `score_type`: What is the column name that will be used for the statistic values? For example, `aov_pval`, `aov_fstat`. 
 
 -   (Not used) `sorts`: How should the values be sorted (from most- to least-important)?
 
--   `direction`: What direction of values indicates the most important values?
+-   `direction`: What direction of values indicates the most important values? For example,  `maximum`, `minimize`.
 
--   `deterministic`: Does the fitting process use random numbers?
+-   `deterministic`: Does the fitting process use random numbers? `TRUE` or `FALSE`.
 
--   `tuning`: Does the method have tuning parameters?
+-   `tuning`: Does the method have tuning parameters? `TRUE` or `FALSE`.
 
--   `calculating_fn`: What function is used to estimate the values from data?
+-   `calculating_fn`: What function, if any, is used to estimate the values from data?
 
--   `label`: What label to use when printing?
+-   `label`: What label to use when printing? For example, `ANOVA p-values`, `ANOVA F-statistics`.
 
 -   `packages`: What packages, if any, are required to train the method?
 
--   `results`: A slot for the results once the method is fitted.
+-   `results`: A slot for the results once the method is fitted. Initially, this is an empty data frame.
 
 ## Scoring object specific to the scoring method
 
 As an example, let’s consider the ANOVA F-test filter. 
 
-`class_score_aov` is a subclass of `class_score`. Because it inherits from the `class_score` parent class, all of the parent's properties are also inherited. The subclass can also include additional properties specific to their implementation. For example: 
+`class_score_aov` is a subclass of `class_score`. Because it inherits from the `class_score` parent class, all of the parent's properties are also inherited. The subclass can also include additional properties specific to its implementation. For example: 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+# Create a subclass named 'class_score_aov'
 class_score_aov <- S7::new_class(
   "class_score_aov",
   parent = class_score,
   properties = list(
-    # Represent the score as -log10(p_value)?
     neg_log10 = S7::new_property(S7::class_logical, default = TRUE)
   )
 )
 ```
 :::
 
-For this filter, users can use either p-value or the F-statistic. We will demonstrate how to create these instances (or objects).
+- `neg_log10`: Represent the score as `-log10(p_value)`?
+
+For this filter, users can use either p-value or the F-statistic. We demonstrate how to create these instances (or objects) next.
 
 `score_aov_pval` is an instance (or object) of the `class_score_aov` subclass, created using its constructor function: 
 
@@ -118,10 +120,10 @@ Individual properties can be accessed via `object@`. For examples:
 ```{.r .cell-code}
 score_aov_pval@case_weights
 #> [1] TRUE
-score_aov_pval@range
-#> [1]   0 Inf
 score_aov_pval@fallback_value
 #> [1] Inf
+score_aov_pval@direction
+#> [1] "maximize"
 ```
 :::
 
