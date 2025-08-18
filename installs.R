@@ -18,6 +18,7 @@ packages <- c(
   "doParallel",
   "dotwhisker",
   "embed",
+  "filtro",
   "forecast",
   "fs",
   "furrr",
