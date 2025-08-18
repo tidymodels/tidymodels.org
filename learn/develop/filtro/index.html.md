@@ -13,7 +13,7 @@ include-after-body: ../../../resources.html
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: filtro.
+To use code in this article,  you will need to install the following packages: filtro and modeldata.
 
 You can construct new scoring objects using `class_score()`. This article is a guide to creating new scoring objects. 
 
@@ -66,7 +66,7 @@ args(class_score)
 
 -   `results`: A slot for the results once the method is fitted.
 
-## Scoring object for specific to filter method
+## Scoring object specific to filter method
 
 The `class_score_aov` is a subclass of `class_score`. This subclass allows additional properties to be introduced: 
 
@@ -103,6 +103,38 @@ score_aov_pval <-
     tuning = FALSE,
     label = "ANOVA p-values"
   )
+score_aov_pval
+#> <class_score_aov>
+#>  @ outcome_type  : chr [1:2] "numeric" "factor"
+#>  @ predictor_type: chr [1:2] "numeric" "factor"
+#>  @ case_weights  : logi TRUE
+#>  @ range         : num [1:2] 0 Inf
+#>  @ inclusive     : logi [1:2] FALSE FALSE
+#>  @ fallback_value: num Inf
+#>  @ score_type    : chr "aov_pval"
+#>  @ sorts         : function ()  
+#>  @ direction     : chr "maximize"
+#>  @ deterministic : logi TRUE
+#>  @ tuning        : logi FALSE
+#>  @ calculating_fn: function ()  
+#>  @ label         : chr "ANOVA p-values"
+#>  @ packages      : chr(0) 
+#>  @ results       :'data.frame':	0 obs. of  0 variables
+#>  @ neg_log10     : logi TRUE
+```
+:::
+
+The properties can be accessed via `object@`. For examples: 
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+score_aov_pval@case_weights
+#> [1] TRUE
+score_aov_pval@range
+#> [1]   0 Inf
+score_aov_pval@fallback_value
+#> [1] Inf
 ```
 :::
 
@@ -127,3 +159,8 @@ score_aov_fstat <-
   )
 ```
 :::
+
+## Accessing Results After Fitting
+
+Once the method is fitted via `fit()`, results can be accessed via `object@results`. For examples: 
+
