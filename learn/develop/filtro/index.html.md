@@ -342,7 +342,7 @@ Recall that individual properties of an object can be accessed using `object@`. 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     version    date (UTC) source
 #>  dplyr       1.1.4      2023-11-17 CRAN (R 4.5.0)
-#>  filtro      0.1.0.9000 2025-08-15 Github (tidymodels/filtro@81c7d85)
+#>  filtro      0.1.0.9000 2025-08-19 Github (tidymodels/filtro@441d235)
 #>  modeldata   1.4.0      2024-06-19 CRAN (R 4.5.0)
 #>  purrr       1.0.4      2025-02-05 CRAN (R 4.5.0)
 #>  rlang       1.1.6      2025-04-11 CRAN (R 4.5.0)
