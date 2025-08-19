@@ -42,17 +42,17 @@ args(class_score)
 
 -   `case_weights`: Does the method accpet case weights? It is `TRUE` or `FALSE`.
 
--   `range`: Are there known ranges for the statistic? For examples, `c(0, Inf)`, `c(0, 1)`. 
+-   `range`: Are there known ranges for the statistic? For example, `c(0, Inf)`, `c(0, 1)`. 
 
 -   `inclusive`: Are these ranges inclusive at the bounds? For example, `c(FALSE, FALSE)`, `c(TRUE, TRUE)`. 
 
--   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For examples, `0`, `Inf`.
+-   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For example, `0`, `Inf`.
 
--   `score_type`: What is the column name that will be used for the statistic values? For examples, `aov_pval`, `aov_fstat`. 
+-   `score_type`: What is the column name that will be used for the statistic values? For example, `aov_pval`, `aov_fstat`. 
 
 -   (Not used) `sorts`: How should the values be sorted (from most- to least-important)?
 
--   `direction`: What direction of values indicates the most important values? For examples,  `maximum`, `minimize`.
+-   `direction`: What direction of values indicates the most important values? For example,  `maximum`, `minimize`.
 
 -   `deterministic`: Does the fitting process use random numbers? It is `TRUE` or `FALSE`.
 
@@ -60,7 +60,7 @@ args(class_score)
 
 -   `calculating_fn`: What function, if any, is used to estimate the values from data?
 
--   `label`: What label to use when printing? For examples, `ANOVA p-values`, `ANOVA F-statistics`.
+-   `label`: What label to use when printing? For example, `ANOVA p-values`, `ANOVA F-statistics`.
 
 -   `packages`: What packages, if any, are required to train the method?
 
@@ -121,7 +121,7 @@ score_aov_pval <-
 ```
 :::
 
-Individual properties can be accessed via `object@`. For examples: 
+Individual properties can be accessed via `object@`. For example: 
 
 ::: {.cell layout-align="center"}
 
@@ -162,11 +162,11 @@ score_aov_fstat <-
 
 So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
 
-`fit()` is a generic but also a method used to fit (or estimate) score.
+`fit()` serves both as a generic and as method(s) used to fit (or estimate) score.
 
-When `fit()` is a generic, it dispatches to the appropriate method based on the class of the object that is passed. When `fit()` is a method, it performs he actual fitting or score estimation for that specific class of object. 
+We define a generic named `fit()` that dispatches to the appropriate method based on the class of the object that is passed. We also define multiple methods named `fit()`. Each of these methods performs the actual fitting or score estimation for a specific class of object. 
 
-The ANOVA F-test filters, for example: 
+The ANOVA F-test filter, for example: 
 
 ::: {.cell layout-align="center"}
 
@@ -179,6 +179,8 @@ class(score_aov_fstat)
 ```
 :::
 
+Both objects belong to the (sub)class `class_score_aov`. Therefore, when `fit()` is called, the method for `class_score_aov` is dispatched, performing the actual fitting using the ANOVA F-test filter:
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -190,7 +192,7 @@ score_aov_fstat |>
 ```
 :::
 
-The correlation filters, for another example: 
+The correlation filter, for another example: 
 
 ::: {.cell layout-align="center"}
 
@@ -205,10 +207,12 @@ class(score_cor_spearman)
 ```
 :::
 
+Both objects belong to the (sub)class `class_score_cor`. Therefore, when `fit()` is called, the method for `class_score_cor` is dispatched, performing the actual fitting using the correlation filter:
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# Method dispatch for objects of class `class_score_aov`
+# Method dispatch for objects of class `class_score_cor`
 score_cor_pearson |>
   fit(Sale_Price ~ ., data = ames)
 score_cor_spearman |>
@@ -216,11 +220,47 @@ score_cor_spearman |>
 ```
 :::
 
-## Documenting S7 generics and methods 
+## Documenting S7 methods 
+
+Documentation for S7 methods is still a work in progress, but here’s how we approached it. 
+
+Instead of documenting each individual `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
+
+The code below opens the help page for the `fit()` generic: 
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# Help page for `fit()` generic
+?fit
+```
+:::
+
+The code below opens the help pages for specific `fit()` methods: 
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# Help page for `fit()` method along with the documentation for the specific object
+?score_aov_pval
+?score_aov_fstat
+```
+:::
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# Help page for `fit()` method along with the documentation for the specific object
+?score_cor_pearson
+?score_cor_spearman
+```
+:::
 
 ## Accessing results after fitting
 
-Once the method is fitted via `fit()`, the data frame of results can be accessed via `object@results`. For examples: 
+Once the method has been fitted via `fit()`, the data frame of results can be accessed via `object@results`. 
+
+We use a subset of the Ames data set from the {modeldata} package for demonstration. The data set is used to predict housing sale price, and `Sale_Price` is the outcome and is numeric. 
 
 ::: {.cell layout-align="center"}
 
@@ -241,6 +281,8 @@ ames_subset <- ames_subset |>
 ```
 :::
 
+Next, we fit the score as we discuss before: 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -248,7 +290,6 @@ ames_subset <- ames_subset |>
 # ames_aov_pval_res <-
 #   score_aov_pval |>
 #   fit(Sale_Price ~ ., data = ames_subset)
-# ames_aov_pval_res@results
 ```
 :::
 
@@ -259,6 +300,21 @@ ames_subset <- ames_subset |>
 # ames_aov_fstat_res <-
 #   score_aov_fstat |>
 #   fit(Sale_Price ~ ., data = ames_subset)
+```
+:::
+
+Recall that individual properties of an object can be accessed using `object@`. Once the method has been fitted, the resulting data frame can be accessed via `object@results`:
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# ames_aov_pval_res@results
+```
+:::
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
 # ames_aov_fstat_res@results
 ```
 :::
