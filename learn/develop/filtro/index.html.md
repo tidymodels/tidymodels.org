@@ -50,8 +50,6 @@ args(class_score)
 
 -   `score_type`: What is the column name that will be used for the statistic values? For example, `aov_pval`, `aov_fstat`. 
 
--   (Not used) `sorts`: How should the values be sorted (from most- to least-important)?
-
 -   `direction`: What direction of values indicates the most important values? For example,  `maximum`, `minimize`.
 
 -   `deterministic`: Does the fitting process use random numbers? It is `TRUE` or `FALSE`.
@@ -236,7 +234,7 @@ The code below opens the help page for the `fit()` generic:
 ```
 :::
 
-The code below opens the help pages for specific `fit()` method: 
+The code below opens the help page for specific `fit()` method: 
 
 ::: {.cell layout-align="center"}
 
