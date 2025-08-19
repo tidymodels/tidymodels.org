@@ -157,9 +157,9 @@ score_aov_fstat <-
 
 So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
 
-`fit()` serves both as a generic and as method(s) used to fit (or estimate) score.
+`fit()` serves both as a generic and as methods used to fit (or estimate) score.
 
-We define a generic named `fit()` that dispatches to the appropriate method based on the class of the object that is passed. We also define multiple methods named `fit()`. Each of these methods performs the actual fitting or score estimation for a specific class of object. 
+The generic named `fit()` is re-exported and dispatches to the appropriate method based on the class of the object passed. We define multiple methods named `fit()`. Each of these methods performs the actual fitting or score estimation for a specific class of object. 
 
 The ANOVA F-test filter, for example: 
 
@@ -169,7 +169,7 @@ class(score_aov_pval)
 class(score_aov_fstat)
 ```
 
-Both objects belong to the (sub)class `class_score_aov`. Therefore, when `fit()` is called, the method for `class_score_aov` is dispatched, performing the actual fitting using the ANOVA F-test filter:
+Both objects belong to the class `class_score_aov`. Therefore, when `fit()` is called, the method for `class_score_aov` is dispatched, performing the actual fitting using the ANOVA F-test filter:
 
 ```{r}
 #| eval: false
@@ -188,7 +188,7 @@ class(score_cor_pearson)
 class(score_cor_spearman)
 ```
 
-Both objects belong to the (sub)class `class_score_cor`. Therefore, when `fit()` is called, the method for `class_score_cor` is dispatched, performing the actual fitting using the correlation filter:
+Both objects belong to the class `class_score_cor`. Therefore, when `fit()` is called, the method for `class_score_cor` is dispatched, performing the actual fitting using the correlation filter:
 
 ```{r}
 #| eval: false
@@ -201,9 +201,9 @@ score_cor_spearman |>
 
 ## Documenting S7 methods 
 
-Documentation for S7 methods is still a work in progress, but here’s how we approached it. 
+Documentation for S7 methods is still a work in progress, and it seems no one currently knows the correct approach. Here’s how we tackle it: 
 
-Instead of documenting each individual `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
+We re-export the `fit()` generic from another package. Instead of documenting each individual `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
 
 The code below opens the help page for the `fit()` generic: 
 
@@ -213,7 +213,7 @@ The code below opens the help page for the `fit()` generic:
 ?fit
 ```
 
-The code below opens the help pages for specific `fit()` methods: 
+The code below opens the help pages for specific `fit()` method: 
 
 ```{r}
 #| eval: false
