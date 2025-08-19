@@ -19,7 +19,7 @@ You can construct new scoring objects using `class_score()`. This article is a g
 
 ## Scoring object
 
-`class_score` is the parent class of all subclasses related to the scoring method. There are a few properties for this object:
+All subclasses specific to the scoring method have a parent class named `class_score`. There are a few properties (attributes) for this object:
 
 ::: {.cell layout-align="center"}
 
@@ -40,27 +40,27 @@ args(class_score)
 
 -   `predictor_type`: What types of predictor can the method handle? The options are `numeric`, `factor`, or both. 
 
--   `case_weights`: Does the method accpet case weights? `TRUE` or `FALSE`.
+-   `case_weights`: Does the method accpet case weights? It is `TRUE` or `FALSE`.
 
--   `range`: Are there known ranges for the statistic? For example, `c(0, Inf)`. 
+-   `range`: Are there known ranges for the statistic? For examples, `c(0, Inf)`, `c(0, 1)`. 
 
--   `inclusive`: Are these ranges inclusive at the bounds? For example, `c(FALSE, FALSE)`. 
+-   `inclusive`: Are these ranges inclusive at the bounds? For example, `c(FALSE, FALSE)`, `c(TRUE, TRUE)`. 
 
--   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For example, `0`, `Inf`.
+-   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For examples, `0`, `Inf`.
 
--   `score_type`: What is the column name that will be used for the statistic values? For example, `aov_pval`, `aov_fstat`. 
+-   `score_type`: What is the column name that will be used for the statistic values? For examples, `aov_pval`, `aov_fstat`. 
 
 -   (Not used) `sorts`: How should the values be sorted (from most- to least-important)?
 
--   `direction`: What direction of values indicates the most important values? For example,  `maximum`, `minimize`.
+-   `direction`: What direction of values indicates the most important values? For examples,  `maximum`, `minimize`.
 
--   `deterministic`: Does the fitting process use random numbers? `TRUE` or `FALSE`.
+-   `deterministic`: Does the fitting process use random numbers? It is `TRUE` or `FALSE`.
 
--   `tuning`: Does the method have tuning parameters? `TRUE` or `FALSE`.
+-   `tuning`: Does the method have tuning parameters? It is `TRUE` or `FALSE`.
 
 -   `calculating_fn`: What function, if any, is used to estimate the values from data?
 
--   `label`: What label to use when printing? For example, `ANOVA p-values`, `ANOVA F-statistics`.
+-   `label`: What label to use when printing? For examples, `ANOVA p-values`, `ANOVA F-statistics`.
 
 -   `packages`: What packages, if any, are required to train the method?
 
@@ -70,7 +70,7 @@ args(class_score)
 
 As an example, let’s consider the ANOVA F-test filter. 
 
-`class_score_aov` is a subclass of `class_score`. The subclass can also include additional properties specific to its implementation. For example: 
+`class_score_aov` is a subclass of `class_score`. Any additional properties specific to the implementation can be added in the subclass. For example: 
 
 ::: {.cell layout-align="center"}
 
@@ -88,17 +88,17 @@ class_score_aov <- S7::new_class(
 
 In addition to the properties inherited from the parent class, `class_score_aov` also includes:
 
-- `neg_log10`: Represent the score as `-log10(p_value)`? `TRUE` or `FALSE`.
+- `neg_log10`: Represent the score as `-log10(p_value)`? It is `TRUE` or `FALSE`.
 
-For this filter, users can represent the score using either
+For the ANOVA F-test filter, users can represent the score using either
 
 - p-value or 
 
 - F-statistic. 
 
-We demonstrate how to create these instances (or objects) accordingly. 
+We demonstrate how to create these instances (objects) accordingly. 
 
-`score_aov_pval` is an instance (or object) of the `class_score_aov` subclass, created using its constructor function: 
+We create `score_aov_pval` as an instance of the `class_score_aov` subclass by calling its constructor and specifying its properties:
 
 ::: {.cell layout-align="center"}
 
@@ -135,7 +135,7 @@ score_aov_pval@direction
 ```
 :::
 
-`score_aov_fstat` is another instance (or object) of the `class_score_aov` subclass:  
+`score_aov_fstat` is another instance of the `class_score_aov` subclass:  
 
 ::: {.cell layout-align="center"}
 
@@ -162,15 +162,61 @@ score_aov_fstat <-
 
 So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
 
-The `fit()` function is a generic used to fit (or estimate) score.
+`fit()` is a generic but also a method used to fit (or estimate) score.
+
+When `fit()` is a generic, it dispatches to the appropriate method based on the class of the object that is passed. When `fit()` is a method, it performs he actual fitting or score estimation for that specific class of object. 
+
+The ANOVA F-test filters, for example: 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+# Check the class of the object
+class(score_aov_pval)
+#> [1] "class_score_aov"     "filtro::class_score" "S7_object"
+class(score_aov_fstat)
+#> [1] "class_score_aov"     "filtro::class_score" "S7_object"
+```
+:::
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# Method dispatch for objects of class `class_score_aov`
 score_aov_pval |>
+  fit(Sale_Price ~ ., data = ames)
+score_aov_fstat |>
   fit(Sale_Price ~ ., data = ames)
 ```
 :::
+
+The correlation filters, for another example: 
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# Check the class of the object
+class(score_cor_pearson)
+#> [1] "filtro::class_score_cor" "filtro::class_score"    
+#> [3] "S7_object"
+class(score_cor_spearman)
+#> [1] "filtro::class_score_cor" "filtro::class_score"    
+#> [3] "S7_object"
+```
+:::
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+# Method dispatch for objects of class `class_score_aov`
+score_cor_pearson |>
+  fit(Sale_Price ~ ., data = ames)
+score_cor_spearman |>
+  fit(Sale_Price ~ ., data = ames)
+```
+:::
+
+## Documenting S7 generics and methods 
 
 ## Accessing results after fitting
 
@@ -233,7 +279,7 @@ ames_subset <- ames_subset |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.0 (2025-04-11)
 #>  language (EN)
-#>  date     2025-08-18
+#>  date     2025-08-19
 #>  pandoc   3.6.3
 #>  quarto   1.7.32
 #> 
