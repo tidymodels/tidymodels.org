@@ -76,11 +76,14 @@ args(class_score)
 
 ## Scoring object specific to the scoring method
 
+We demonstrate how to create a custom scoring object specific to a given feature selection method.
+
 As an example, let’s consider the ANOVA F-test filter. 
 
 `class_score_aov` is a subclass of `class_score`. Any additional properties specific to the implementation can be added in the subclass. For example: 
 
 ```{r}
+#| eval: false
 # Create a subclass named 'class_score_aov'
 class_score_aov <- S7::new_class(
   "class_score_aov",
@@ -106,6 +109,7 @@ We demonstrate how to create these instances (objects) accordingly.
 We create `score_aov_pval` as an instance of the `class_score_aov` subclass by calling its constructor and specifying its properties:
 
 ```{r}
+#| eval: false
 # ANOVA p-value
 score_aov_pval <-
   class_score_aov(
@@ -134,6 +138,7 @@ score_aov_pval@direction
 `score_aov_fstat` is another instance of the `class_score_aov` subclass:  
 
 ```{r}
+#| eval: false
 # ANOVA F-statistic
 score_aov_fstat <-
   class_score_aov(
@@ -155,7 +160,7 @@ score_aov_fstat <-
 
 So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
 
-`fit()` serves both as a generic and as methods used to fit (or estimate) score.
+We now discuss the dual role of `fit()`, both as a generic and as methods used to fit (or estimate) score.
 
 The generic named `fit()` is re-exported and dispatches to the appropriate method based on the class of the object passed. We define multiple methods named `fit()`. Each of these methods performs the actual fitting or score estimation for a specific class of object. 
 
@@ -199,7 +204,7 @@ score_cor_spearman |>
 
 ## Documenting S7 methods 
 
-Documentation for S7 methods is still a work in progress, and it seems no one currently knows the correct approach. Here’s how we tackle it: 
+Documentation for S7 methods is still a work in progress, and it seems no one currently knows the right approach. Here’s how we tackle it: 
 
 We re-export the `fit()` generic from another package. Instead of documenting each individual `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
 
@@ -231,7 +236,7 @@ The code below opens the help page for specific `fit()` method:
 
 Once the method has been fitted via `fit()`, the data frame of results can be accessed via `object@results`. 
 
-We use a subset of the Ames data set from the {modeldata} package for demonstration. The data set is used to predict housing sale price, and `Sale_Price` is the outcome and is numeric. 
+We use a subset of the Ames data set from the {modeldata} package for demonstration. The goal is to predict housing sale price. `Sale_Price` is the outcome and is numeric. 
 
 ```{r}
 library(modeldata)
@@ -252,27 +257,27 @@ ames_subset <- ames_subset |>
 Next, we fit the score as we discuss before: 
 
 ```{r}
-# # Specify ANOVA p-value and fit score
-# ames_aov_pval_res <-
-#   score_aov_pval |>
-#   fit(Sale_Price ~ ., data = ames_subset)
+# Specify ANOVA p-value and fit score
+ames_aov_pval_res <-
+  score_aov_pval |>
+  fit(Sale_Price ~ ., data = ames_subset)
 ```
 
 ```{r}
-# # Specify ANOVA F-statistic and fit score
-# ames_aov_fstat_res <-
-#   score_aov_fstat |>
-#   fit(Sale_Price ~ ., data = ames_subset)
+# Specify ANOVA F-statistic and fit score
+ames_aov_fstat_res <-
+  score_aov_fstat |>
+  fit(Sale_Price ~ ., data = ames_subset)
 ```
 
 Recall that individual properties of an object can be accessed using `object@`. Once the method has been fitted, the resulting data frame can be accessed via `object@results`:
 
 ```{r}
-# ames_aov_pval_res@results
+ames_aov_pval_res@results
 ```
 
 ```{r}
-# ames_aov_fstat_res@results
+ames_aov_fstat_res@results
 ```
 
 ## Session information {#session-info}

@@ -66,6 +66,8 @@ args(class_score)
 
 ## Scoring object specific to the scoring method
 
+We demonstrate how to create a custom scoring object specific to a given feature selection method.
+
 As an example, let’s consider the ANOVA F-test filter. 
 
 `class_score_aov` is a subclass of `class_score`. Any additional properties specific to the implementation can be added in the subclass. For example: 
@@ -160,7 +162,7 @@ score_aov_fstat <-
 
 So far, we have discussed how to create a subclass and construct instances (objects) for the ANOVA F-test filter. 
 
-`fit()` serves both as a generic and as methods used to fit (or estimate) score.
+We now discuss the dual role of `fit()`, both as a generic and as methods used to fit (or estimate) score.
 
 The generic named `fit()` is re-exported and dispatches to the appropriate method based on the class of the object passed. We define multiple methods named `fit()`. Each of these methods performs the actual fitting or score estimation for a specific class of object. 
 
@@ -171,9 +173,11 @@ The ANOVA F-test filter, for example:
 ```{.r .cell-code}
 # Check the class of the object
 class(score_aov_pval)
-#> [1] "class_score_aov"     "filtro::class_score" "S7_object"
+#> [1] "filtro::class_score_aov" "filtro::class_score"    
+#> [3] "S7_object"
 class(score_aov_fstat)
-#> [1] "class_score_aov"     "filtro::class_score" "S7_object"
+#> [1] "filtro::class_score_aov" "filtro::class_score"    
+#> [3] "S7_object"
 ```
 :::
 
@@ -220,7 +224,7 @@ score_cor_spearman |>
 
 ## Documenting S7 methods 
 
-Documentation for S7 methods is still a work in progress, and it seems no one currently knows the correct approach. Here’s how we tackle it: 
+Documentation for S7 methods is still a work in progress, and it seems no one currently knows the right approach. Here’s how we tackle it: 
 
 We re-export the `fit()` generic from another package. Instead of documenting each individual `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
 
@@ -258,7 +262,7 @@ The code below opens the help page for specific `fit()` method:
 
 Once the method has been fitted via `fit()`, the data frame of results can be accessed via `object@results`. 
 
-We use a subset of the Ames data set from the {modeldata} package for demonstration. The data set is used to predict housing sale price, and `Sale_Price` is the outcome and is numeric. 
+We use a subset of the Ames data set from the {modeldata} package for demonstration. The goal is to predict housing sale price. `Sale_Price` is the outcome and is numeric. 
 
 ::: {.cell layout-align="center"}
 
@@ -284,20 +288,20 @@ Next, we fit the score as we discuss before:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# # Specify ANOVA p-value and fit score
-# ames_aov_pval_res <-
-#   score_aov_pval |>
-#   fit(Sale_Price ~ ., data = ames_subset)
+# Specify ANOVA p-value and fit score
+ames_aov_pval_res <-
+  score_aov_pval |>
+  fit(Sale_Price ~ ., data = ames_subset)
 ```
 :::
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# # Specify ANOVA F-statistic and fit score
-# ames_aov_fstat_res <-
-#   score_aov_fstat |>
-#   fit(Sale_Price ~ ., data = ames_subset)
+# Specify ANOVA F-statistic and fit score
+ames_aov_fstat_res <-
+  score_aov_fstat |>
+  fit(Sale_Price ~ ., data = ames_subset)
 ```
 :::
 
@@ -306,14 +310,30 @@ Recall that individual properties of an object can be accessed using `object@`. 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# ames_aov_pval_res@results
+ames_aov_pval_res@results
+#> # A tibble: 5 × 4
+#>   name      score outcome    predictor   
+#>   <chr>     <dbl> <chr>      <chr>       
+#> 1 aov_pval 237.   Sale_Price MS_SubClass 
+#> 2 aov_pval 130.   Sale_Price MS_Zoning   
+#> 3 aov_pval  NA    Sale_Price Lot_Frontage
+#> 4 aov_pval  NA    Sale_Price Lot_Area    
+#> 5 aov_pval   5.75 Sale_Price Street
 ```
 :::
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# ames_aov_fstat_res@results
+ames_aov_fstat_res@results
+#> # A tibble: 5 × 4
+#>   name      score outcome    predictor   
+#>   <chr>     <dbl> <chr>      <chr>       
+#> 1 aov_fstat  94.5 Sale_Price MS_SubClass 
+#> 2 aov_fstat 115.  Sale_Price MS_Zoning   
+#> 3 aov_fstat  NA   Sale_Price Lot_Frontage
+#> 4 aov_fstat  NA   Sale_Price Lot_Area    
+#> 5 aov_fstat  22.9 Sale_Price Street
 ```
 :::
 
@@ -333,7 +353,7 @@ Recall that individual properties of an object can be accessed using `object@`. 
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.0 (2025-04-11)
 #>  language (EN)
-#>  date     2025-08-19
+#>  date     2025-08-20
 #>  pandoc   3.6.3
 #>  quarto   1.7.32
 #> 
