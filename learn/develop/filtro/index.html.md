@@ -89,7 +89,7 @@ class_score
 
 Next, we demonstrate how to create a custom scoring object `class_score_*`. 
 
-As an example, let’s create a custom scoring object for ANOVA F-test named `class_score_aov`. This filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by `lm()`. 
+As an example, let’s create a custom scoring object for ANOVA F-test named `class_score_aov`. This filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by `lm()`. The `lm()` function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance. 
 
 By setting `parent = class_score`, the subclass `class_score_aov` inherits all fixed properties from the parent class. Additional, implementation-specific properties can be added using the `properties = ` argument. For example:
 
@@ -111,7 +111,7 @@ In addition to the properties inherited from the parent class (discussed in the 
 
 - `neg_log10`: Represent the score as `-log10(p_value)`? It is `TRUE` or `FALSE`.
 
-For the ANOVA F-test filter, users can represent the score using either
+For the ANOVA F-test filter, users can represent the score using either the 
 
 - p-value or 
 
