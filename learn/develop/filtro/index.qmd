@@ -36,31 +36,41 @@ pkgs <- c("filtro", "modeldata")
 
 filtro is tidy tools to apply filter-based supervised feature selection methods. It provides functions to rank and select a specified proportion or a fixed number of features using built-in methods and the desirability function. 
 
-Currently, there are 6 filters in filtro and many existing score objects. A list of existing scoring objects [can be found here](https://filtro.tidymodels.org/articles/filtro.html#available-score-objects-and-filter-methods). 
-
-However, you might need to define your own scoring objects. 
-
-This article serves as a guide to creating new scoring objects and computing feature scores before performing ranking and selection. 
+Currently, there are 6 filters in filtro and many existing score objects. A list of existing scoring objects [can be found here](https://filtro.tidymodels.org/articles/filtro.html#available-score-objects-and-filter-methods). However, you might need to define your own scoring objects. This article serves as a guide to creating new scoring objects and computing feature scores before performing ranking and selection. 
 
 The general procedure is to:
 
-1. Construct a parent scoring object using `class_score()`, specifying fixed properties. 
+1. Create a parent scoring object `class_score`, specifying fixed properties that are shared across all custom scoring objects. 
 
-2. Construct a custom scoring object using `class_score_*()`, defining additional properties.
+2. Construct a custom scoring object `class_score_*`, adding additional, implementation-specific properties. 
 
-3. Define the scoring method in `fit()` to compute feature score. `fit()` refers to the custom scoring object from Step 2 to determine which method to dispatch.
+3. Define the scoring method in `fit()`, which computes feature score. `fit()` refers to the custom scoring object from step 2 to use the appropriate method.
+
+The hierarchy can be visualized as:
+
+```
+class_score
+└─> class_score_* 
+ └─> fit()
+```
 
 As an example, we will walk through the steps to create an ANOVA F-test filter.
 
 ## Scoring object
 
-All the custom scoring objects share the same parent class named `class_score`. Therefore, we start by constructing a new scoring object using `class_score()`. 
+All the custom scoring objects share the same parent class named `class_score`. Therefore, we start by creating a parent class:  
+
+```{r}
+#| eval: false
+# Create a parent class
+library(filtro) 
+class_score
+```
 
 These are the fixed properties (attributes) for this object:
 
 ```{r}
 #| label: "class_score"
-library(filtro)
 args(class_score)
 ```
 
@@ -74,15 +84,22 @@ For example:
 
 -   `results`: A slot for the results once the method is fitted. Initially, this is an empty data frame.
 
-For details on the remaining properties, please refer to the package documentation.
+For details on its constructor and its remaining properties, please refer to the package documentation.
 
 ## Custom scoring object
 
-Next, we demonstrate how to create a custom scoring object. 
+```
+class_score
+└─> class_score_aov (example shown)
+└─> class_score_cor
+└─> ... 
+```
+
+Next, we demonstrate how to create a custom scoring object `class_score_*`. 
 
 As an example, let’s create a custom scoring object for ANOVA F-test named `class_score_aov`. This filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by `lm()`. 
 
-`class_score_aov` is a subclass of `class_score`. It inherits all fixed properties from the parent class, while allowing additional implementation-specific properties to be added in the subclass. For example:
+By setting `parent = class_score`, the subclass `class_score_aov` inherits all fixed properties from the parent class. Additional, implementation-specific properties can be added using the `properties = ` argument. For example:
 
 ```{r}
 #| eval: false
@@ -96,7 +113,7 @@ class_score_aov <- S7::new_class(
 )
 ```
 
-In addition to the properties inherited from the parent class (discussed in the previous section), `class_score_aov` also includes: 
+In addition to the properties inherited from the parent class (discussed in the previous section), `class_score_aov` also includes the following property:
 
 - `neg_log10`: Represent the score as `-log10(p_value)`? It is `TRUE` or `FALSE`.
 
@@ -137,6 +154,8 @@ score_aov_pval@fallback_value
 score_aov_pval@direction
 ```
 
+Note that by default, the returned p-value is transformed to `-log10(p_value)`, which means larger values correspond to more important predictors. This is why the fallback value is set to `Inf` and the direction is set to `"maximize"`. 
+
 `score_aov_fstat` is another instance of the `class_score_aov` subclass:  
 
 ```{r}
@@ -160,15 +179,24 @@ score_aov_fstat <-
 
 ## Fitting (or estimating) feature score
 
+```
+class_score
+└─> class_score_aov (example shown)
+ └─> fit()
+└─> class_score_cor
+ └─> fit()
+└─> ... 
+```
+
 So far, we have covered how to construct a parent class, create a custom subclass, and instantiate objects for the ANOVA F-test filter. 
 
-We now discuss the dual role of `fit()`: it functions both as a generic and as the methods used to fit (or estimate) feature score. 
+We now discuss the dual role of `fit()`: it functions both as a *generic* and as the *methods* used to fit (or estimate) feature score. 
 
-1. The generic `fit()` is re-exported from generics. It inspects the class of the object passed and dispatches to the appropriate method. 
+1. The `fit()` generic is re-exported from generics. It inspects the class of the object passed and dispatches to the appropriate method. 
 
-2. We also define multiple methods named `fit()`. Each method `fit()` performs the actual fitting or score estimation for a specific class of object. 
+2. We also define multiple methods named `fit()`. Each `fit()` method performs the actual fitting or score estimation for a specific class of object. 
 
-In other words, when `fit()` is called, the generic refers to the custom scoring object (rather than the parent scoring object) to determine which method to dispatch. The actual scoring computation is performed within the dispatched method. 
+In other words, when `fit()` is called, the generic refers to the custom scoring object `class_score_*` to determine which method to dispatch. The actual scoring computation is performed within the dispatched method. 
 
 The ANOVA F-test filter, for example: 
 
@@ -191,12 +219,13 @@ score_aov_fstat |>
 
 ## Defining S7 methods 
 
-To use the `fit()` method, we need to define S7 method that implements the scoring logic: 
+To use the `fit()` method above, we need to define a S7 method that implements the scoring logic. 
+
+The following code defines the `fit()` method specifically for the `class_score_aov` subclass, specifying how feature score should be computed using ANOVA F-test:
 
 ```{r}
 #| eval: false
 # Define the scoring method for `class_score_aov`
-#' @export
 S7::method(fit, class_score_aov) <- function(
   object,
   formula,
@@ -204,18 +233,22 @@ S7::method(fit, class_score_aov) <- function(
   case_weights = NULL,
   ...
 ) {
-  # TODO finish the rest of the function
+  # TODO Finish the rest of the function
 
   object@results <- res
   object
 }
 ```
 
+We would want to do something similar for other `class_score_*` subclass. 
+
 ## Documenting S7 methods 
 
 Documentation for S7 methods is still a work in progress, and it seems no one currently knows the right approach. Here’s how we tackle it: 
 
-We re-export the `fit()` generic from generics. Instead of documenting each `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
+- We re-export the `fit()` generic from generics. 
+
+- Instead of documenting each `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
 
 The code below opens the help page for the `fit()` generic: 
 
@@ -232,6 +265,100 @@ The code below opens the help page for specific `fit()` method:
 # User-level example: Help page for `fit()` method along with the documentation for the specific object
 ?score_aov_pval
 ?score_aov_fstat
+```
+
+To enable the `?` help page above, the `fit()` method is exported so it can be called by the users, but it is not documented directly.
+
+```{r}
+#| eval: false
+#' @export
+S7::method(fit, class_score_aov) <- function(
+  object,
+  formula,
+  data,
+  case_weights = NULL,
+  ...
+) {
+  # TODO Finish the rest of the function using lm() and anova()
+
+  object@results <- res
+  object
+}
+```
+
+Instead, documentation is provided in the "Details" section and the "Estimating the scores" subsection of the documentation for the `score_aov_pval` object.  
+
+```{r}
+#| eval: false
+#' Scoring via analysis of variance hypothesis tests
+#'
+#' @description
+#' 
+#' @name score_aov_pval
+#' @family class score metrics
+#'
+#' @details
+#'
+#' These objects are used when either:
+#'
+#' ...
+#'
+#' ## Estimating the scores
+#'
+#' In \pkg{filtro}, the `score_*` objects define a scoring method (e.g., data
+#' input requirements, package dependencies, etc). To compute the scores for
+#' a specific data set, the `fit()` method is used. The main arguments for
+#' these functions are:
+#'
+#'   \describe{
+#'     \item{`object`}{A score class object (e.g., `score_aov_pval`).}
+#'     \item{`formula`}{A standard R formula with a single outcome on the right-hand side and one or more predictors (or `.`) on the left-hand side. The data are processed via [stats::model.frame()]}
+#'     \item{`data`}{A data frame containing the relevant columns defined by the formula.}
+#'     \item{`...`}{Further arguments passed to or from other methods.}
+#'     \item{`case_weights`}{A quantitative vector of case weights that is the same length as the number of rows in `data`. The default of `NULL` indicates that there are no case weights.}
+#'   }
+#'
+#' ...
+#' 
+#' @export
+score_aov_pval <-
+  class_score_aov(
+    outcome_type = c("numeric", "factor"),
+    predictor_type = c("numeric", "factor"),
+    case_weights = TRUE,
+    range = c(0, Inf),
+    inclusive = c(FALSE, FALSE),
+    fallback_value = Inf,
+    score_type = "aov_pval",
+    transform_fn = function(x) x,
+    direction = "maximize",
+    deterministic = TRUE,
+    tuning = FALSE,
+    label = "ANOVA p-values"
+  )
+```
+
+We can have the `score_aov_fstat` object share the same help page as `score_aov_pval` by using `#' @name`. This avoids repeated documentation for similar or related objects.
+
+```{r}
+#| eval: false
+#' @name score_aov_pval
+#' @export
+score_aov_fstat <-
+  class_score_aov(
+    outcome_type = c("numeric", "factor"),
+    predictor_type = c("numeric", "factor"),
+    case_weights = TRUE,
+    range = c(0, Inf),
+    inclusive = c(FALSE, FALSE),
+    fallback_value = Inf,
+    score_type = "aov_fstat",
+    transform_fn = function(x) x,
+    direction = "maximize",
+    deterministic = TRUE,
+    tuning = FALSE,
+    label = "ANOVA F-statistics"
+  )
 ```
 
 ## Accessing results after fitting
