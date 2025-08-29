@@ -19,13 +19,15 @@ Currently, there are 6 filters in filtro and many existing score objects. A list
 
 For reference, filtro is tidy tools to apply filter-based supervised feature selection methods. It provides functions to rank and select a specified proportion or a fixed number of features using built-in methods and the desirability function. 
 
-There is a parent class `class_score`, which defines the fixed properties that are shared across all subclasses. The parent class is already implemented, and serves as the infrastructure we build on when we make our own score class object.
+Regarding scoring objects: 
 
-The general procedure is to:
+There is a parent class `class_score`, which defines the fixed properties that are shared across all subclasses. The parent class is already implemented, and serves as the infrastructure we build on when we make our own scoring class object.
 
-1. Create a subclass `class_score_*` that inherts from `class_score`. This subclass introduces additional, method-specific properties, as opposed to the general characteristics already defined in the parent class. 
+Therefore, the general procedure is to:
 
-2. Implement the scoring method in `fit()`, which computes feature score. The `fit()` generic refers to the subclass from step 1 to use the appropriate `fit()` method .
+1. Create a subclass `class_score_*` that inherts from `class_score`. This subclass introduces additional, method- or score-specific properties, as opposed to the general characteristics already defined in the parent class. 
+
+2. Implement the scoring method in `fit()`, which computes feature score. The `fit()` generic refers to the subclass from step 1 to use the appropriate `fit()` method. 
 
 The hierarchy can be visualized as:
 
@@ -39,12 +41,12 @@ Additionally, we provide guidance on documenting an S7 method.
 
 ## Parent class (General scoring object)
 
-All the subclasses (custom scoring objects) share the same parent class named `class_score`. The parent class is already implemented: 
+All the subclasses (custom scoring objects) share the same parent class named `class_score`. The parent class is already implemented, and we need this to build our own scoring class object: 
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# Create a parent class
+# Call the parent class
 library(filtro) 
 class_score
 ```
@@ -70,9 +72,9 @@ For example:
 
 -   `case_weights`: Does the method accpet case weights? It is `TRUE` or `FALSE`.
 
--   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For example, `0`, `Inf`.
+-   `fallback_value`: What is a value that can be used for the statistic so that it will never be eliminated? For example, `0` or `Inf`.
 
--   `direction`: What direction of values indicates the most important values? For example, `minimize`, `maximum`.
+-   `direction`: What direction of values indicates the most important values? For example, `minimize` or `maximum`.
 
 -   `results`: A slot for the results once the method is fitted. Initially, this is an empty data frame.
 
@@ -89,7 +91,7 @@ class_score
 └─> ... 
 ```
 
-We demonstrate how to create a custom scoring object for ANOVA F-test named `class_score_aov`, as an example. 
+As an example, we demonstrate how to create a custom scoring object for ANOVA F-test named `class_score_aov`. 
 
 For reference, the ANOVA F-test filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by `lm()`. The `lm()` function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance. 
 
@@ -206,7 +208,7 @@ class_score
 └─> ... 
 ```
 
-The ANOVA F-test filter, for example: 
+Let’s use the ANOVA F-test filter again as an example: 
 
 ::: {.cell layout-align="center"}
 
@@ -251,7 +253,7 @@ S7::method(fit, class_score_aov) <- function(
   case_weights = NULL,
   ...
 ) {
-  # This is where you include the rest of the function 
+  # This is where you add the rest of the code for this implementation 
 
   object@results <- res
   object
