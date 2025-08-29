@@ -25,7 +25,7 @@ The general procedure is to:
 
 2. Construct a custom scoring object `class_score_*`, adding additional, implementation-specific properties. 
 
-3. Define the scoring method in `fit()`, which computes feature score. `fit()` refers to the custom scoring object from step 2 to use the appropriate method.
+3. Define the scoring method in `fit()`, which computes feature score. The `fit()` generic refers to the custom scoring object from step 2 to use the appropriate `fit()` method .
 
 The hierarchy can be visualized as:
 
@@ -35,11 +35,11 @@ class_score
  └─> fit()
 ```
 
-As an example, we will walk through the steps to create an ANOVA F-test filter.
+As an example, we will walk through the steps to create an ANOVA F-test filter. This filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by `lm()`. The `lm()` function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance. 
 
 ## Scoring object
 
-All the custom scoring objects share the same parent class named `class_score`. Therefore, we start by creating a parent class:  
+All the custom scoring objects share the same parent class named `class_score`. Therefore, we start by creating a parent class `class_score`:  
 
 ::: {.cell layout-align="center"}
 
@@ -87,11 +87,9 @@ class_score
 └─> ... 
 ```
 
-Next, we demonstrate how to create a custom scoring object `class_score_*`. 
+Next, we demonstrate how to create a custom scoring object for ANOVA F-test named `class_score_aov`. 
 
-As an example, let’s create a custom scoring object for ANOVA F-test named `class_score_aov`. This filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by `lm()`. The `lm()` function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance. 
-
-By setting `parent = class_score`, the subclass `class_score_aov` inherits all fixed properties from the parent class. Additional, implementation-specific properties can be added using the `properties = ` argument. For example:
+By setting `parent = class_score`, the subclass `class_score_aov` inherits all fixed properties from the parent class. Additional, implementation-specific properties can be added using the `properties =` argument. For example:
 
 ::: {.cell layout-align="center"}
 
@@ -142,7 +140,7 @@ score_aov_pval <-
 ```
 :::
 
-Individual properties can be accessed via `object@`. For example: 
+Once instantiated, individual properties can be accessed via `object@`. For example: 
 
 ::: {.cell layout-align="center"}
 
@@ -247,7 +245,7 @@ S7::method(fit, class_score_aov) <- function(
   case_weights = NULL,
   ...
 ) {
-  # TODO Finish the rest of the function
+  # TODO Finish the rest of the function using lm(), anova()
 
   object@results <- res
   object
@@ -255,7 +253,7 @@ S7::method(fit, class_score_aov) <- function(
 ```
 :::
 
-We would want to do something similar for other `class_score_*` subclass. 
+We would want to do something similar to define a S7 method for other `class_score_*` subclass. 
 
 ## Documenting S7 methods 
 
@@ -263,7 +261,7 @@ Documentation for S7 methods is still a work in progress, and it seems no one cu
 
 - We re-export the `fit()` generic from generics. 
 
-- Instead of documenting each `fit()` method, we provide the details in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object. 
+- Instead of documenting each `fit()` method, we document it in the "Details" section and the "Estimating the scores" subsection of the documentation for the corresponding object (instance) `score_*`. 
 
 The code below opens the help page for the `fit()` generic: 
 
@@ -481,7 +479,7 @@ ames_aov_fstat_res@results
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.0 (2025-04-11)
 #>  language (EN)
-#>  date     2025-08-28
+#>  date     2025-08-29
 #>  pandoc   3.6.3
 #>  quarto   1.7.32
 #> 
