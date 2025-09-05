@@ -1309,6 +1309,244 @@
     ]
   },
   {
+    "objectID": "learn/develop/filtro/index.html",
+    "href": "learn/develop/filtro/index.html",
+    "title": "Create your own score class object",
+    "section": "",
+    "text": "To use code in this article, you will need to install the following packages: filtro and modeldata.\nCurrently, there are 6 filters in filtro and many existing score objects. A list of existing scoring objects can be found here. However, you might need to define your own scoring objects. This article serves as a guide to creating new scoring objects and computing feature scores before performing ranking and selection.\nFor reference, filtro is tidy tools to apply filter-based supervised feature selection methods. It provides functions to rank and select a specified proportion or a fixed number of features using built-in methods and the desirability function.\nRegarding scoring objects:\nThere is a parent class class_score, which defines the fixed properties that are shared across all subclasses. The parent class is already implemented, and serves as the infrastructure we build on when we make our own scoring class object.\nTherefore, the general procedure is to:\n\nCreate a subclass class_score_* that inherts from class_score. This subclass introduces additional, method- or score-specific properties, as opposed to the general characteristics already defined in the parent class.\nImplement the scoring method in fit(), which computes feature score. The fit() generic refers to the subclass from step 1 to use the appropriate fit() method.\n\nThe hierarchy can be visualized as:\nclass_score\n└─&gt; class_score_* \n └─&gt; fit()\nAdditionally, we provide guidance on documenting an S7 method."
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#introduction",
+    "href": "learn/develop/filtro/index.html#introduction",
+    "title": "Create your own score class object",
+    "section": "",
+    "text": "To use code in this article, you will need to install the following packages: filtro and modeldata.\nCurrently, there are 6 filters in filtro and many existing score objects. A list of existing scoring objects can be found here. However, you might need to define your own scoring objects. This article serves as a guide to creating new scoring objects and computing feature scores before performing ranking and selection.\nFor reference, filtro is tidy tools to apply filter-based supervised feature selection methods. It provides functions to rank and select a specified proportion or a fixed number of features using built-in methods and the desirability function.\nRegarding scoring objects:\nThere is a parent class class_score, which defines the fixed properties that are shared across all subclasses. The parent class is already implemented, and serves as the infrastructure we build on when we make our own scoring class object.\nTherefore, the general procedure is to:\n\nCreate a subclass class_score_* that inherts from class_score. This subclass introduces additional, method- or score-specific properties, as opposed to the general characteristics already defined in the parent class.\nImplement the scoring method in fit(), which computes feature score. The fit() generic refers to the subclass from step 1 to use the appropriate fit() method.\n\nThe hierarchy can be visualized as:\nclass_score\n└─&gt; class_score_* \n └─&gt; fit()\nAdditionally, we provide guidance on documenting an S7 method."
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#parent-class-general-scoring-object",
+    "href": "learn/develop/filtro/index.html#parent-class-general-scoring-object",
+    "title": "Create your own score class object",
+    "section": "Parent class (General scoring object)",
+    "text": "Parent class (General scoring object)\nAll the subclasses (custom scoring objects) share the same parent class named class_score. The parent class is already implemented, and we need this to build our own scoring class object:\n\n# Call the parent class\nlibrary(filtro) \nclass_score\n\nThese are the fixed properties (attributes) for this object:\n\nargs(class_score)\n#&gt; function (outcome_type = c(\"numeric\", \"factor\"), predictor_type = c(\"numeric\", \n#&gt; \"factor\"), case_weights = logical(0), range = integer(0), inclusive = logical(0), \n#&gt;     fallback_value = integer(0), score_type = character(0), transform_fn = function() NULL, \n#&gt;     direction = character(0), deterministic = logical(0), tuning = logical(0), \n#&gt;     calculating_fn = function() NULL, label = character(0), packages = character(0), \n#&gt;     results = data.frame()) \n#&gt; NULL\n\nFor example:\n\ncase_weights: Does the method accpet case weights? It is TRUE or FALSE.\nfallback_value: What is a value that can be used for the statistic so that it will never be eliminated? For example, 0 or Inf.\ndirection: What direction of values indicates the most important values? For example, minimize or maximum.\nresults: A slot for the results once the method is fitted. Initially, this is an empty data frame.\n\nFor details on its constructor and its remaining properties, please refer to the package documentation or check it out here."
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#subclass-custom-scoring-object",
+    "href": "learn/develop/filtro/index.html#subclass-custom-scoring-object",
+    "title": "Create your own score class object",
+    "section": "Subclass (Custom scoring object)",
+    "text": "Subclass (Custom scoring object)\nAll custom scoring objects implemented in filtro are subclasses of the parent class class_score, meaning that they all inherit the parent class’s fixed properties. When creating a new scoring object, we do so by defining another subclass of this parent class.\nclass_score\n└─&gt; class_score_aov (example shown)\n└─&gt; class_score_cor\n└─&gt; ... \nAs an example, we demonstrate how to create a custom scoring object for ANOVA F-test named class_score_aov.\nFor reference, the ANOVA F-test filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by lm(). The lm() function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance.\nBy setting parent = class_score, the subclass class_score_aov inherits all of the fixed properties from the parent class. Additional, implementation-specific properties can be added using the properties = argument. For example:\n\n# Create a subclass named 'class_score_aov'\nclass_score_aov &lt;- S7::new_class(\n  \"class_score_aov\",\n  parent = class_score,\n  properties = list(\n    neg_log10 = S7::new_property(S7::class_logical, default = TRUE)\n  )\n)\n\nIn addition to the properties inherited from the parent class (discussed in the previous section), class_score_aov also includes the following property:\n\nneg_log10: Represent the score as -log10(p_value)? It is TRUE or FALSE.\n\nFor the ANOVA F-test filter, users can represent the score using either the\n\np-value or\nF-statistic.\n\nWe demonstrate how to create these instances (objects) accordingly.\nscore_aov_pval is created as an instance of the class_score_aov subclass by calling its constructor and specifying its properties:\n\n# ANOVA p-value\nscore_aov_pval &lt;-\n  class_score_aov(\n    outcome_type = c(\"numeric\", \"factor\"),\n    predictor_type = c(\"numeric\", \"factor\"),\n    case_weights = TRUE,\n    range = c(0, Inf),\n    inclusive = c(FALSE, FALSE),\n    fallback_value = Inf,\n    score_type = \"aov_pval\",\n    direction = \"maximize\",\n    deterministic = TRUE,\n    tuning = FALSE,\n    label = \"ANOVA p-values\"\n  )\n\nOnce instantiated, individual properties can be accessed via object@. For example:\n\nscore_aov_pval@case_weights\n#&gt; [1] TRUE\nscore_aov_pval@fallback_value\n#&gt; [1] Inf\nscore_aov_pval@direction\n#&gt; [1] \"maximize\"\n\nNote that by default, the returned p-value is transformed to -log10(p_value), which means larger values correspond to more important predictors. This is why the fallback value is set to Inf and the direction is set to \"maximize\".\nscore_aov_fstat is another instance of the class_score_aov subclass:\n\n# ANOVA F-statistic\nscore_aov_fstat &lt;-\n  class_score_aov(\n    outcome_type = c(\"numeric\", \"factor\"),\n    predictor_type = c(\"numeric\", \"factor\"),\n    case_weights = TRUE,\n    range = c(0, Inf),\n    inclusive = c(FALSE, FALSE),\n    fallback_value = Inf,\n    score_type = \"aov_fstat\",\n    direction = \"maximize\",\n    deterministic = TRUE,\n    tuning = FALSE,\n    label = \"ANOVA F-statistics\"\n  )\n\nThe F-statistic is not transformed, nor does it provide an option for transformation. Nevertheless, it also uses a fallback value of Inf with the direction set to \"maximize\", since larger F-statistic values indicate more important predictors."
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#fitting-or-estimating-feature-score",
+    "href": "learn/develop/filtro/index.html#fitting-or-estimating-feature-score",
+    "title": "Create your own score class object",
+    "section": "Fitting (or estimating) feature score",
+    "text": "Fitting (or estimating) feature score\nSo far, we have covered how to construct a parent class, create a custom subclass, and instantiate objects for the ANOVA F-test filter.\nWe now discuss the dual role of fit(): it functions both as a generic and as the methods used to fit (or estimate) feature score.\n\nThe fit() generic is re-exported from generics. It inspects the class of the object passed and dispatches to the appropriate method.\nWe also define multiple methods named fit(). Each fit() method performs the actual fitting or score estimation for a specific class of object.\n\nIn other words, when fit() is called, the generic refers to the custom scoring object class_score_* to determine which method to dispatch. The actual scoring computation is performed within the dispatched method.\nclass_score\n└─&gt; class_score_aov (example shown)\n └─&gt; fit()\n└─&gt; class_score_cor\n └─&gt; fit()\n└─&gt; ... \nLet’s use the ANOVA F-test filter again as an example:\n\n# User-level example: Check the class of the object\nclass(score_aov_pval)\n#&gt; [1] \"filtro::class_score_aov\" \"filtro::class_score\"    \n#&gt; [3] \"S7_object\"\nclass(score_aov_fstat)\n#&gt; [1] \"filtro::class_score_aov\" \"filtro::class_score\"    \n#&gt; [3] \"S7_object\"\n\nBoth instances (objects) belong to the custom scoring object class_score_aov. Therefore, when fit() is called, the method for class_score_aov is dispatched, performing the actual fitting using the ANOVA F-test:\n\n# User-level example: Method dispatch for objects of class `class_score_aov`\nscore_aov_pval |&gt;\n  fit(Sale_Price ~ ., data = ames)\nscore_aov_fstat |&gt;\n  fit(Sale_Price ~ ., data = ames)"
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#defining-s7-methods",
+    "href": "learn/develop/filtro/index.html#defining-s7-methods",
+    "title": "Create your own score class object",
+    "section": "Defining S7 methods",
+    "text": "Defining S7 methods\nFor users to use the fit() method described above, we need to define a S7 method that implements the scoring logic.\nThe following code defines the fit() method specifically for the class_score_aov subclass, specifying how feature score should be computed using ANOVA F-test:\n\n# Define the scoring method for `class_score_aov`\nS7::method(fit, class_score_aov) &lt;- function(\n  object,\n  formula,\n  data,\n  case_weights = NULL,\n  ...\n) {\n  # This is where you add the rest of the code for this implementation \n\n  object@results &lt;- res\n  object\n}\n\nWe would want to do something similar to define a S7 method for other class_score_* subclass."
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#documenting-s7-methods",
+    "href": "learn/develop/filtro/index.html#documenting-s7-methods",
+    "title": "Create your own score class object",
+    "section": "Documenting S7 methods",
+    "text": "Documenting S7 methods\nDocumentation for S7 methods is still a work in progress, but our current best approach is as follows:\n\nWe re-export the fit() generic from generics.\nInstead of documenting each fit() method, we document it in the “Details” section and the “Estimating the scores” subsection of the documentation for the corresponding object (instance) score_*.\n\nThe code below opens the help page for the fit() generic:\n\n# User-level example: Help page for `fit()` generic\n?fit\n\nThe code below opens the help page for specific fit() method:\n\n# User-level example: Help page for `fit()` method along with the documentation for the specific object\n?score_aov_pval\n?score_aov_fstat\n\nFor users to access the help page using ? as described above, the fit() method needs to be exported using #' @export, but it is not documented directly.\n\n#' @export\nS7::method(fit, class_score_aov) &lt;- function(\n  object,\n  ...\n) {\n  # Include the rest of the function here\n\n  object@results &lt;- res\n  object\n}\n\nInstead, documentation is provided in the “Details” section and the “Estimating the scores” subsection of the documentation for the score_aov_pval object.\n\n#' Scoring via analysis of variance hypothesis tests\n#'\n#' @description\n#' \n#' @name score_aov_pval\n#' @family class score metrics\n#'\n#' @details\n#'\n#' These objects are used when either:\n#'\n#' ...\n#'\n#' ## Estimating the scores\n#'\n#' In \\pkg{filtro}, the `score_*` objects define a scoring method (e.g., data\n#' input requirements, package dependencies, etc). To compute the scores for\n#' a specific data set, the `fit()` method is used. The main arguments for\n#' these functions are:\n#'\n#'   \\describe{\n#'     \\item{`object`}{A score class object (e.g., `score_aov_pval`).}\n#'     \\item{`formula`}{A standard R formula with a single outcome on the right-hand side and one or more predictors (or `.`) on the left-hand side. The data are processed via [stats::model.frame()]}\n#'     \\item{`data`}{A data frame containing the relevant columns defined by the formula.}\n#'     \\item{`...`}{Further arguments passed to or from other methods.}\n#'     \\item{`case_weights`}{A quantitative vector of case weights that is the same length as the number of rows in `data`. The default of `NULL` indicates that there are no case weights.}\n#'   }\n#'\n#' ...\n#' \n#' @export\nscore_aov_pval &lt;-\n  class_score_aov(\n    outcome_type = c(\"numeric\", \"factor\"),\n    predictor_type = c(\"numeric\", \"factor\"),\n    case_weights = TRUE,\n    range = c(0, Inf),\n    inclusive = c(FALSE, FALSE),\n    fallback_value = Inf,\n    score_type = \"aov_pval\",\n    transform_fn = function(x) x,\n    direction = \"maximize\",\n    deterministic = TRUE,\n    tuning = FALSE,\n    label = \"ANOVA p-values\"\n  )\n\nWe can have the score_aov_fstat object share the same help page as score_aov_pval by using #' @name. This avoids repeated documentation for similar or related objects.\n\n#' @name score_aov_pval\n#' @export\nscore_aov_fstat &lt;-\n  class_score_aov(\n    outcome_type = c(\"numeric\", \"factor\"),\n    predictor_type = c(\"numeric\", \"factor\"),\n    case_weights = TRUE,\n    range = c(0, Inf),\n    inclusive = c(FALSE, FALSE),\n    fallback_value = Inf,\n    score_type = \"aov_fstat\",\n    transform_fn = function(x) x,\n    direction = \"maximize\",\n    deterministic = TRUE,\n    tuning = FALSE,\n    label = \"ANOVA F-statistics\"\n  )"
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#accessing-results-after-fitting",
+    "href": "learn/develop/filtro/index.html#accessing-results-after-fitting",
+    "title": "Create your own score class object",
+    "section": "Accessing results after fitting",
+    "text": "Accessing results after fitting\nOnce the method has been fitted via fit(), the data frame of results can be accessed via object@results.\nWe use a subset of the Ames data set from the {modeldata} package for demonstration. The goal is to predict housing sale price. Sale_Price is the outcome and is numeric.\n\nlibrary(modeldata)\names_subset &lt;- modeldata::ames |&gt;\n  # Use a subset of data for demonstration\n  dplyr::select(\n    Sale_Price,\n    MS_SubClass,\n    MS_Zoning,\n    Lot_Frontage,\n    Lot_Area,\n    Street\n  )\names_subset &lt;- ames_subset |&gt;\n  dplyr::mutate(Sale_Price = log10(Sale_Price))\n\nNext, we fit the score as we discuss before:\n\n# Specify ANOVA p-value and fit score\names_aov_pval_res &lt;-\n  score_aov_pval |&gt;\n  fit(Sale_Price ~ ., data = ames_subset)\n\n\n# Specify ANOVA F-statistic and fit score\names_aov_fstat_res &lt;-\n  score_aov_fstat |&gt;\n  fit(Sale_Price ~ ., data = ames_subset)\n\nRecall that individual properties of an object can be accessed using object@. Once the method has been fitted, the resulting data frame can be accessed via object@results:\n\names_aov_pval_res@results\n#&gt; # A tibble: 5 × 4\n#&gt;   name      score outcome    predictor   \n#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;       \n#&gt; 1 aov_pval 237.   Sale_Price MS_SubClass \n#&gt; 2 aov_pval 130.   Sale_Price MS_Zoning   \n#&gt; 3 aov_pval  NA    Sale_Price Lot_Frontage\n#&gt; 4 aov_pval  NA    Sale_Price Lot_Area    \n#&gt; 5 aov_pval   5.75 Sale_Price Street\n\n\names_aov_fstat_res@results\n#&gt; # A tibble: 5 × 4\n#&gt;   name      score outcome    predictor   \n#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;       \n#&gt; 1 aov_fstat  94.5 Sale_Price MS_SubClass \n#&gt; 2 aov_fstat 115.  Sale_Price MS_Zoning   \n#&gt; 3 aov_fstat  NA   Sale_Price Lot_Frontage\n#&gt; 4 aov_fstat  NA   Sale_Price Lot_Area    \n#&gt; 5 aov_fstat  22.9 Sale_Price Street"
+  },
+  {
+    "objectID": "learn/develop/filtro/index.html#session-info",
+    "href": "learn/develop/filtro/index.html#session-info",
+    "title": "Create your own score class object",
+    "section": "Session information",
+    "text": "Session information\n\n#&gt; \n#&gt; Attaching package: 'dplyr'\n#&gt; The following objects are masked from 'package:stats':\n#&gt; \n#&gt;     filter, lag\n#&gt; The following objects are masked from 'package:base':\n#&gt; \n#&gt;     intersect, setdiff, setequal, union\n#&gt; ─ Session info ─────────────────────────────────────────────────────\n#&gt;  version  R version 4.5.0 (2025-04-11)\n#&gt;  language (EN)\n#&gt;  date     2025-08-29\n#&gt;  pandoc   3.6.3\n#&gt;  quarto   1.7.32\n#&gt; \n#&gt; ─ Packages ─────────────────────────────────────────────────────────\n#&gt;  package     version date (UTC) source\n#&gt;  dplyr       1.1.4   2023-11-17 CRAN (R 4.5.0)\n#&gt;  filtro      0.2.0   2025-08-26 CRAN (R 4.5.0)\n#&gt;  modeldata   1.5.1   2025-08-22 CRAN (R 4.5.0)\n#&gt;  purrr       1.1.0   2025-07-10 CRAN (R 4.5.0)\n#&gt;  rlang       1.1.6   2025-04-11 CRAN (R 4.5.0)\n#&gt;  tibble      3.3.0   2025-06-08 CRAN (R 4.5.0)\n#&gt; \n#&gt; ────────────────────────────────────────────────────────────────────"
+  },
+  {
+    "objectID": "find/sparse/index.html",
+    "href": "find/sparse/index.html",
+    "title": "Search sparse compatible models and steps",
+    "section": "",
+    "text": "Below is all the model engine combinations that support sparse data. It is known that ranger supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn’t much benefit to using sparse structures.\n\n\n\n\nboost_tree\n\n\n\nxgboost\n\n\n\nlinear_reg\n\n\n\nglmnet\n\n\n\nlogistic_reg\n\n\n\nglmnet\n\n\nLiblineaR\n\n\n\nmultinom_reg\n\n\n\nglmnet\n\n\n\npoisson_reg\n\n\n\nglmnet\n\n\n\nrand_forest\n\n\n\nranger\n\n\n\nsvm_linear\n\n\n\nLiblineaR"
+  },
+  {
+    "objectID": "find/sparse/index.html#models",
+    "href": "find/sparse/index.html#models",
+    "title": "Search sparse compatible models and steps",
+    "section": "",
+    "text": "Below is all the model engine combinations that support sparse data. It is known that ranger supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn’t much benefit to using sparse structures.\n\n\n\n\nboost_tree\n\n\n\nxgboost\n\n\n\nlinear_reg\n\n\n\nglmnet\n\n\n\nlogistic_reg\n\n\n\nglmnet\n\n\nLiblineaR\n\n\n\nmultinom_reg\n\n\n\nglmnet\n\n\n\npoisson_reg\n\n\n\nglmnet\n\n\n\nrand_forest\n\n\n\nranger\n\n\n\nsvm_linear\n\n\n\nLiblineaR"
+  },
+  {
+    "objectID": "find/sparse/index.html#steps",
+    "href": "find/sparse/index.html#steps",
+    "title": "Search sparse compatible models and steps",
+    "section": "Steps",
+    "text": "Steps\nSparse data compatibility for steps comes in 2 flavors. The first kind generates sparse data from dense data. Often converting categorical variables to many sparse columns. This type of step is listed here:\n\n\n\nstep_count\nstep_dummy\nstep_dummy_extract\nstep_dummy_hash\nstep_dummy_multi_choice\nstep_holiday\nstep_indicate_na\nstep_regex\nstep_texthash\nstep_tf\nstep_tfidf\n\n\n\nThe other type of sparse compatible steps are the ones that can take sparse data as input and operate on them while preserving the sparsity. These steps can thus safely be applied to columns that are produced by the above steps. This type of step is listed here:\n\n\n\nstep_arrange\nstep_filter\nstep_filter_missing\nstep_impute_mean\nstep_impute_median\nstep_lag\nstep_naomit\nstep_rename\nstep_rename_at\nstep_rm\nstep_sample\nstep_scale\nstep_select\nstep_shuffle\nstep_slice\nstep_sqrt\nstep_zv"
+  },
+  {
+    "objectID": "find/parsnip/index.html",
+    "href": "find/parsnip/index.html",
+    "title": "Search parsnip models",
+    "section": "",
+    "text": "To learn about the parsnip package, see Get Started: Build a Model. Use the tables below to find model types and engines."
+  },
+  {
+    "objectID": "find/broom/index.html",
+    "href": "find/broom/index.html",
+    "title": "Search broom methods",
+    "section": "",
+    "text": "Here are all the broom functions available across CRAN packages. Click on the link in the topic column to find more information."
+  },
+  {
+    "objectID": "contribute/index.html",
+    "href": "contribute/index.html",
+    "title": "How to contribute to tidymodels",
+    "section": "",
+    "text": "The ecosystem of tidymodels packages would not be possible without the contributions of the R community. No matter your current skills, it’s possible to contribute back to tidymodels. Contributions are guided by our design goals."
+  },
+  {
+    "objectID": "contribute/index.html#design-goals",
+    "href": "contribute/index.html#design-goals",
+    "title": "How to contribute to tidymodels",
+    "section": "Design goals",
+    "text": "Design goals\nThe goals of tidymodels packages are to:\n\nEncourage empirical validation and good statistical practice.\nSmooth out heterogeneous interfaces.\nEstablish highly reusable infrastructure.\nEnable a wider variety of methodologies.\nHelp package developers quickly build high quality model packages of their own.\n\nThese goals are guided by our principles for creating modeling packages.\nWhat are different ways you can contribute?"
+  },
+  {
+    "objectID": "contribute/index.html#answer-questions",
+    "href": "contribute/index.html#answer-questions",
+    "title": "How to contribute to tidymodels",
+    "section": "Answer questions",
+    "text": "Answer questions\nYou can help others use and learn tidymodels by answering questions on the RStudio community site, Stack Overflow, and Bluesky. Many people asking for help with tidymodels don’t know what a reprex is or how to craft one. Acknowledging an individual’s problem, showing them how to build a reprex, and pointing them to helpful resources are all enormously beneficial, even if you don’t immediately solve their problem.\nRemember that while you might have seen a problem a hundred times before, it’s new to the person asking it. Be patient, polite, and empathic."
+  },
+  {
+    "objectID": "contribute/index.html#file-issues",
+    "href": "contribute/index.html#file-issues",
+    "title": "How to contribute to tidymodels",
+    "section": "File issues",
+    "text": "File issues\nIf you’ve found a bug, first create a minimal reprex. Spend some time working to make it as minimal as possible; the more time you spend doing this, the easier it is to fix the bug. When your reprex is ready, file it on the GitHub repo of the appropriate package.\nThe tidymodels team often focuses on one package at a time to reduce context switching and be more efficient. We may not address each issue right away, but we will use the reprex you create to understand your problem when it is time to focus on that package."
+  },
+  {
+    "objectID": "contribute/index.html#contribute-documentation",
+    "href": "contribute/index.html#contribute-documentation",
+    "title": "How to contribute to tidymodels",
+    "section": "Contribute documentation",
+    "text": "Contribute documentation\nDocumentation is a high priority for tidymodels, and pull requests to correct or improve documentation are welcome. The most important thing to know is that tidymodels packages use roxygen2; this means that documentation is found in the R code close to the source of each function. There are some special tags, but most tidymodels packages now use markdown in the documentation. This makes it particularly easy to get started!"
+  },
+  {
+    "objectID": "contribute/index.html#contribute-code",
+    "href": "contribute/index.html#contribute-code",
+    "title": "How to contribute to tidymodels",
+    "section": "Contribute code",
+    "text": "Contribute code\nIf you are a more experienced R programmer, you may have the inclination, interest, and ability to contribute directly to package development. Before you submit a pull request on a tidymodels package, always file an issue and confirm the tidymodels team agrees with your idea and is happy with your basic proposal.\nIn tidymodels packages, we use the tidyverse style guide which will make sure that your new code and documentation matches the existing style. This makes the review process much smoother.\nThe tidymodels packages are explicitly built to support the creation of other modeling packages, and we would love to hear about what you build yourself! Check out our learning resources for developing custom modeling tools."
+  },
+  {
+    "objectID": "books/tidytext/index.html",
+    "href": "books/tidytext/index.html",
+    "title": "Text Mining with R",
+    "section": "",
+    "text": "This practical book provides an introduction to text mining using tidy data principles in R, focusing on exploratory data analysis for text. Using tidy data principles can make text mining task easier and more effective; in this book, learn how to manipulate, summarize, and visualize characteristics of text using these methods and R packages from the tidy tool ecosystem.\nAn HTML version of this text can be found at https://www.tidytextmining.com/.\nThe data sets and R code are available in the GitHub repository https://github.com/dgrtwo/tidy-text-mining.\nThe physical copies are sold by Amazon and O’Reilly."
+  },
+  {
+    "objectID": "books/moderndive/index.html",
+    "href": "books/moderndive/index.html",
+    "title": "Statistical Inference via Data Science",
+    "section": "",
+    "text": "This book is intended to be a gentle introduction to the practice of analyzing data and answering questions using data the way data scientists, statisticians, data journalists, and other researchers would. Over the course of this book, you will develop your “data science toolbox,” equipping yourself with tools such as data visualization, data formatting, data wrangling, data modeling using regression, and statistical inference via hypothesis testing and confidence intervals.\nAn HTML version of this text can be found at https://moderndive.com/.\nThe data sets and R code are available in the GitHub repository https://github.com/moderndive/ModernDive_book and also the accompanying moderndive R package on CRAN.\nThe physical copies are sold by Amazon and CRC Press."
+  },
+  {
+    "objectID": "books/fes/index.html",
+    "href": "books/fes/index.html",
+    "title": "Feature Engineering & Selection",
+    "section": "",
+    "text": "A primary goal of predictive modeling is to find a reliable and effective predictive relationship between an available set of features and an outcome. This book provides an extensive set of techniques for uncovering effective representations of the features for modeling the outcome and for finding an optimal subset of features to improve a model’s predictive performance.\nAn HTML version of this text can be found at https://bookdown.org/max/FES.\nThe data sets and R code are available in the GitHub repository https://github.com/topepo/FES.\nThe physical copies are sold by Amazon and Taylor & Francis."
+  },
+  {
+    "objectID": "about/index.html",
+    "href": "about/index.html",
+    "title": "Meet the Team",
+    "section": "",
+    "text": "Active Development Team Members\n\n\n\n\n\nMax Kuhn\n\n\n\n\n\nHannah Frick\n\n\n\n\n\nEmil Hvitfeldt\n\n\n\n\n\nSimon Couch\n\n\n\n\nFormer Development Team Members\n\n\n\n\n\nShisham Adhikari\n\n\n\n\n\nJoyce Cahoon\n\n\n\n\n\nFanny Chow\n\n\n\n\n\nMarly Gotti\n\n\n\n\n\nAlex Hayes\n\n\n\n\n\nMike Mahoney\n\n\n\n\n\nJulia Silge\n\n\n\n\n\nDavis Vaughan\n\n\n\n\n\nQiushi Yan\n\n\n\n\nFormer Collaborators\n\n\n\n\n\nDesirée De Leon\n\n\n\n\n\nAlison Presmanes Hill\n\n\n\n\n\nAllison Horst\n\n\n\n\n\nDavid Robinson\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "books/index.html",
+    "href": "books/index.html",
+    "title": "Books",
+    "section": "",
+    "text": "Feature Engineering & Selection\n\n\nA Practical Approach for Predictive Models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStatistical Inference via Data Science\n\n\nA ModernDive into R and the Tidyverse\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSupervised Machine Learning for Text Analysis in R\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nText Mining with R\n\n\nA Tidy Approach\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Modeling with R\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "books/smltar/index.html",
+    "href": "books/smltar/index.html",
+    "title": "Supervised Machine Learning for Text Analysis in R",
+    "section": "",
+    "text": "This book explains how to preprocess text data for modeling, train models, and evaluate model performance using tools from the tidyverse and tidymodels ecosystem. Models like these can be used to make predictions for new observations, to understand what natural language features or characteristics contribute to differences in the output, and more. If you are already familiar with the basics of predictive modeling, use the comprehensive, detailed examples in this book to extend your skills to the domain of natural language processing.\nThis book provides practical guidance and directly applicable knowledge for data scientists and analysts who want to integrate unstructured text data into their modeling pipelines. Learn how to use text data for both regression and classification tasks, and how to apply more straightforward algorithms like regularized regression or support vector machines as well as deep learning approaches. Natural language must be dramatically transformed to be ready for computation, so we explore typical text preprocessing and feature engineering steps like tokenization and word embeddings from the ground up. These steps influence model results in ways we can measure, both in terms of model metrics and other tangible consequences such as how fair or appropriate model results are.\nAn HTML version of this text can be found at https://smltar.com/.\nThe data sets and R code are available in the GitHub repository https://github.com/EmilHvitfeldt/smltar.\nThe physical copies are sold by Amazon and CRC Press."
+  },
+  {
+    "objectID": "books/tmwr/index.html",
+    "href": "books/tmwr/index.html",
+    "title": "Tidy Modeling with R",
+    "section": "",
+    "text": "Modeling of data is integral to science, business, politics, and many other aspects of our lives. The goals of this book are to:\n\nintroduce and demonstrate how to use the tidymodels packages, and\noutline good practices for the phases of the modeling process.\n\nAn HTML version of this text can be found at https://tmwr.org.\nThe sources to create the book are available in the GitHub repository https://github.com/tidymodels/TMwR."
+  },
+  {
+    "objectID": "find/all/index.html",
+    "href": "find/all/index.html",
+    "title": "Search all of tidymodels",
+    "section": "",
+    "text": "Here are all the functions available across all of the tidymodels packages. Click on the link in the topic column to find the relevant reference documentation."
+  },
+  {
+    "objectID": "find/index.html",
+    "href": "find/index.html",
+    "title": "Explore tidymodels",
+    "section": "",
+    "text": "Below you’ll find searchable tables to help you explore the tidymodels packages and functions. The tables also include links to the relevant reference page to help you navigate the package documentation. Use the following categories to guide you:\n\nSearch all of tidymodels\nSearch parsnip models\nSearch recipe steps\nSearch broom methods\nSearch sparse data compatible methods\n\n\nBooks\nIf you want to read more long form there are a number of books written about and using tidymodels\n\nList of books"
+  },
+  {
+    "objectID": "find/recipes/index.html",
+    "href": "find/recipes/index.html",
+    "title": "Search recipe steps",
+    "section": "",
+    "text": "To learn about the recipes package, see Get Started: Preprocess your data with recipes. The table below allows you to search for recipe steps across tidymodels packages."
+  },
+  {
+    "objectID": "help/index.html",
+    "href": "help/index.html",
+    "title": "Get Help",
+    "section": "",
+    "text": "If you’re asking for R help, reporting a bug, or requesting a new feature, you’re more likely to succeed if you include a good reproducible example, which is precisely what the reprex package is built for. You can learn more about reprex, along with other tips on how to help others help you in the tidyverse.org help section."
+  },
+  {
+    "objectID": "help/index.html#asking-for-help",
+    "href": "help/index.html#asking-for-help",
+    "title": "Get Help",
+    "section": "",
+    "text": "If you’re asking for R help, reporting a bug, or requesting a new feature, you’re more likely to succeed if you include a good reproducible example, which is precisely what the reprex package is built for. You can learn more about reprex, along with other tips on how to help others help you in the tidyverse.org help section."
+  },
+  {
+    "objectID": "help/index.html#where-to-ask",
+    "href": "help/index.html#where-to-ask",
+    "title": "Get Help",
+    "section": "Where to ask",
+    "text": "Where to ask\n\nNow that you’ve made a reprex, you need to share it in an appropriate forum. Here are some options:\n\nforum.posit.co: This is a warm and welcoming place to ask any questions you might have about tidymodels or more generally about modeling, machine learning, and deep learning. (You can also ask questions about the tidyverse and RStudio there, too!)\nStack Overflow. You’re probably already familiar with Stack Overflow from googling; it’s a frequent source of answers to coding related questions. Asking a question on Stack Overflow can be intimidating, but if you’ve taken the time to create a reprex, you’re much more likely to get a useful answer. Make sure to tag your question with r and tidymodels so that the right people are more likely to see it.\nBluesky and Mastodon. These sites are great places to share a link to your reprex that’s hosted elsewhere! The #rstats Bluesky and #rstats fosstodon communities are extremely friendly and active, and have great crowds to be a part of. Make sure you tag your tweet with #rstats and #tidymodels.\nIf you think you’ve found a bug, please follow the instructions for filing an issue on contributing to tidymodels."
+  },
+  {
+    "objectID": "help/index.html#resources",
+    "href": "help/index.html#resources",
+    "title": "Get Help",
+    "section": "Resources",
+    "text": "Resources\n\nSee what you need to know to get started with tidymodels, and learn more about using tidymodels for specific tasks.\nEach tidymodels package has its own documentation site, full of helpful information. Find links to all package documentation sites and explore them!\nSearch all tidymodels functions, and check out our books on these topics.\nStay up to date with the latest news about tidymodels through our posts on the tidyverse blog."
+  },
+  {
     "objectID": "learn/develop/broom/index.html",
     "href": "learn/develop/broom/index.html",
     "title": "Create your own broom tidier methods",
@@ -1391,181 +1629,6 @@
       "Develop custom modeling tools",
       "Create your own broom tidier methods"
     ]
-  },
-  {
-    "objectID": "help/index.html",
-    "href": "help/index.html",
-    "title": "Get Help",
-    "section": "",
-    "text": "If you’re asking for R help, reporting a bug, or requesting a new feature, you’re more likely to succeed if you include a good reproducible example, which is precisely what the reprex package is built for. You can learn more about reprex, along with other tips on how to help others help you in the tidyverse.org help section."
-  },
-  {
-    "objectID": "help/index.html#asking-for-help",
-    "href": "help/index.html#asking-for-help",
-    "title": "Get Help",
-    "section": "",
-    "text": "If you’re asking for R help, reporting a bug, or requesting a new feature, you’re more likely to succeed if you include a good reproducible example, which is precisely what the reprex package is built for. You can learn more about reprex, along with other tips on how to help others help you in the tidyverse.org help section."
-  },
-  {
-    "objectID": "help/index.html#where-to-ask",
-    "href": "help/index.html#where-to-ask",
-    "title": "Get Help",
-    "section": "Where to ask",
-    "text": "Where to ask\n\nNow that you’ve made a reprex, you need to share it in an appropriate forum. Here are some options:\n\nforum.posit.co: This is a warm and welcoming place to ask any questions you might have about tidymodels or more generally about modeling, machine learning, and deep learning. (You can also ask questions about the tidyverse and RStudio there, too!)\nStack Overflow. You’re probably already familiar with Stack Overflow from googling; it’s a frequent source of answers to coding related questions. Asking a question on Stack Overflow can be intimidating, but if you’ve taken the time to create a reprex, you’re much more likely to get a useful answer. Make sure to tag your question with r and tidymodels so that the right people are more likely to see it.\nBluesky and Mastodon. These sites are great places to share a link to your reprex that’s hosted elsewhere! The #rstats Bluesky and #rstats fosstodon communities are extremely friendly and active, and have great crowds to be a part of. Make sure you tag your tweet with #rstats and #tidymodels.\nIf you think you’ve found a bug, please follow the instructions for filing an issue on contributing to tidymodels."
-  },
-  {
-    "objectID": "help/index.html#resources",
-    "href": "help/index.html#resources",
-    "title": "Get Help",
-    "section": "Resources",
-    "text": "Resources\n\nSee what you need to know to get started with tidymodels, and learn more about using tidymodels for specific tasks.\nEach tidymodels package has its own documentation site, full of helpful information. Find links to all package documentation sites and explore them!\nSearch all tidymodels functions, and check out our books on these topics.\nStay up to date with the latest news about tidymodels through our posts on the tidyverse blog."
-  },
-  {
-    "objectID": "find/recipes/index.html",
-    "href": "find/recipes/index.html",
-    "title": "Search recipe steps",
-    "section": "",
-    "text": "To learn about the recipes package, see Get Started: Preprocess your data with recipes. The table below allows you to search for recipe steps across tidymodels packages."
-  },
-  {
-    "objectID": "find/index.html",
-    "href": "find/index.html",
-    "title": "Explore tidymodels",
-    "section": "",
-    "text": "Below you’ll find searchable tables to help you explore the tidymodels packages and functions. The tables also include links to the relevant reference page to help you navigate the package documentation. Use the following categories to guide you:\n\nSearch all of tidymodels\nSearch parsnip models\nSearch recipe steps\nSearch broom methods\nSearch sparse data compatible methods\n\n\nBooks\nIf you want to read more long form there are a number of books written about and using tidymodels\n\nList of books"
-  },
-  {
-    "objectID": "find/all/index.html",
-    "href": "find/all/index.html",
-    "title": "Search all of tidymodels",
-    "section": "",
-    "text": "Here are all the functions available across all of the tidymodels packages. Click on the link in the topic column to find the relevant reference documentation."
-  },
-  {
-    "objectID": "books/tmwr/index.html",
-    "href": "books/tmwr/index.html",
-    "title": "Tidy Modeling with R",
-    "section": "",
-    "text": "Modeling of data is integral to science, business, politics, and many other aspects of our lives. The goals of this book are to:\n\nintroduce and demonstrate how to use the tidymodels packages, and\noutline good practices for the phases of the modeling process.\n\nAn HTML version of this text can be found at https://tmwr.org.\nThe sources to create the book are available in the GitHub repository https://github.com/tidymodels/TMwR."
-  },
-  {
-    "objectID": "books/smltar/index.html",
-    "href": "books/smltar/index.html",
-    "title": "Supervised Machine Learning for Text Analysis in R",
-    "section": "",
-    "text": "This book explains how to preprocess text data for modeling, train models, and evaluate model performance using tools from the tidyverse and tidymodels ecosystem. Models like these can be used to make predictions for new observations, to understand what natural language features or characteristics contribute to differences in the output, and more. If you are already familiar with the basics of predictive modeling, use the comprehensive, detailed examples in this book to extend your skills to the domain of natural language processing.\nThis book provides practical guidance and directly applicable knowledge for data scientists and analysts who want to integrate unstructured text data into their modeling pipelines. Learn how to use text data for both regression and classification tasks, and how to apply more straightforward algorithms like regularized regression or support vector machines as well as deep learning approaches. Natural language must be dramatically transformed to be ready for computation, so we explore typical text preprocessing and feature engineering steps like tokenization and word embeddings from the ground up. These steps influence model results in ways we can measure, both in terms of model metrics and other tangible consequences such as how fair or appropriate model results are.\nAn HTML version of this text can be found at https://smltar.com/.\nThe data sets and R code are available in the GitHub repository https://github.com/EmilHvitfeldt/smltar.\nThe physical copies are sold by Amazon and CRC Press."
-  },
-  {
-    "objectID": "books/index.html",
-    "href": "books/index.html",
-    "title": "Books",
-    "section": "",
-    "text": "Feature Engineering & Selection\n\n\nA Practical Approach for Predictive Models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStatistical Inference via Data Science\n\n\nA ModernDive into R and the Tidyverse\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSupervised Machine Learning for Text Analysis in R\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nText Mining with R\n\n\nA Tidy Approach\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Modeling with R\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about/index.html",
-    "href": "about/index.html",
-    "title": "Meet the Team",
-    "section": "",
-    "text": "Active Development Team Members\n\n\n\n\n\nMax Kuhn\n\n\n\n\n\nHannah Frick\n\n\n\n\n\nEmil Hvitfeldt\n\n\n\n\n\nSimon Couch\n\n\n\n\nFormer Development Team Members\n\n\n\n\n\nShisham Adhikari\n\n\n\n\n\nJoyce Cahoon\n\n\n\n\n\nFanny Chow\n\n\n\n\n\nMarly Gotti\n\n\n\n\n\nAlex Hayes\n\n\n\n\n\nMike Mahoney\n\n\n\n\n\nJulia Silge\n\n\n\n\n\nDavis Vaughan\n\n\n\n\n\nQiushi Yan\n\n\n\n\nFormer Collaborators\n\n\n\n\n\nDesirée De Leon\n\n\n\n\n\nAlison Presmanes Hill\n\n\n\n\n\nAllison Horst\n\n\n\n\n\nDavid Robinson\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "books/fes/index.html",
-    "href": "books/fes/index.html",
-    "title": "Feature Engineering & Selection",
-    "section": "",
-    "text": "A primary goal of predictive modeling is to find a reliable and effective predictive relationship between an available set of features and an outcome. This book provides an extensive set of techniques for uncovering effective representations of the features for modeling the outcome and for finding an optimal subset of features to improve a model’s predictive performance.\nAn HTML version of this text can be found at https://bookdown.org/max/FES.\nThe data sets and R code are available in the GitHub repository https://github.com/topepo/FES.\nThe physical copies are sold by Amazon and Taylor & Francis."
-  },
-  {
-    "objectID": "books/moderndive/index.html",
-    "href": "books/moderndive/index.html",
-    "title": "Statistical Inference via Data Science",
-    "section": "",
-    "text": "This book is intended to be a gentle introduction to the practice of analyzing data and answering questions using data the way data scientists, statisticians, data journalists, and other researchers would. Over the course of this book, you will develop your “data science toolbox,” equipping yourself with tools such as data visualization, data formatting, data wrangling, data modeling using regression, and statistical inference via hypothesis testing and confidence intervals.\nAn HTML version of this text can be found at https://moderndive.com/.\nThe data sets and R code are available in the GitHub repository https://github.com/moderndive/ModernDive_book and also the accompanying moderndive R package on CRAN.\nThe physical copies are sold by Amazon and CRC Press."
-  },
-  {
-    "objectID": "books/tidytext/index.html",
-    "href": "books/tidytext/index.html",
-    "title": "Text Mining with R",
-    "section": "",
-    "text": "This practical book provides an introduction to text mining using tidy data principles in R, focusing on exploratory data analysis for text. Using tidy data principles can make text mining task easier and more effective; in this book, learn how to manipulate, summarize, and visualize characteristics of text using these methods and R packages from the tidy tool ecosystem.\nAn HTML version of this text can be found at https://www.tidytextmining.com/.\nThe data sets and R code are available in the GitHub repository https://github.com/dgrtwo/tidy-text-mining.\nThe physical copies are sold by Amazon and O’Reilly."
-  },
-  {
-    "objectID": "contribute/index.html",
-    "href": "contribute/index.html",
-    "title": "How to contribute to tidymodels",
-    "section": "",
-    "text": "The ecosystem of tidymodels packages would not be possible without the contributions of the R community. No matter your current skills, it’s possible to contribute back to tidymodels. Contributions are guided by our design goals."
-  },
-  {
-    "objectID": "contribute/index.html#design-goals",
-    "href": "contribute/index.html#design-goals",
-    "title": "How to contribute to tidymodels",
-    "section": "Design goals",
-    "text": "Design goals\nThe goals of tidymodels packages are to:\n\nEncourage empirical validation and good statistical practice.\nSmooth out heterogeneous interfaces.\nEstablish highly reusable infrastructure.\nEnable a wider variety of methodologies.\nHelp package developers quickly build high quality model packages of their own.\n\nThese goals are guided by our principles for creating modeling packages.\nWhat are different ways you can contribute?"
-  },
-  {
-    "objectID": "contribute/index.html#answer-questions",
-    "href": "contribute/index.html#answer-questions",
-    "title": "How to contribute to tidymodels",
-    "section": "Answer questions",
-    "text": "Answer questions\nYou can help others use and learn tidymodels by answering questions on the RStudio community site, Stack Overflow, and Bluesky. Many people asking for help with tidymodels don’t know what a reprex is or how to craft one. Acknowledging an individual’s problem, showing them how to build a reprex, and pointing them to helpful resources are all enormously beneficial, even if you don’t immediately solve their problem.\nRemember that while you might have seen a problem a hundred times before, it’s new to the person asking it. Be patient, polite, and empathic."
-  },
-  {
-    "objectID": "contribute/index.html#file-issues",
-    "href": "contribute/index.html#file-issues",
-    "title": "How to contribute to tidymodels",
-    "section": "File issues",
-    "text": "File issues\nIf you’ve found a bug, first create a minimal reprex. Spend some time working to make it as minimal as possible; the more time you spend doing this, the easier it is to fix the bug. When your reprex is ready, file it on the GitHub repo of the appropriate package.\nThe tidymodels team often focuses on one package at a time to reduce context switching and be more efficient. We may not address each issue right away, but we will use the reprex you create to understand your problem when it is time to focus on that package."
-  },
-  {
-    "objectID": "contribute/index.html#contribute-documentation",
-    "href": "contribute/index.html#contribute-documentation",
-    "title": "How to contribute to tidymodels",
-    "section": "Contribute documentation",
-    "text": "Contribute documentation\nDocumentation is a high priority for tidymodels, and pull requests to correct or improve documentation are welcome. The most important thing to know is that tidymodels packages use roxygen2; this means that documentation is found in the R code close to the source of each function. There are some special tags, but most tidymodels packages now use markdown in the documentation. This makes it particularly easy to get started!"
-  },
-  {
-    "objectID": "contribute/index.html#contribute-code",
-    "href": "contribute/index.html#contribute-code",
-    "title": "How to contribute to tidymodels",
-    "section": "Contribute code",
-    "text": "Contribute code\nIf you are a more experienced R programmer, you may have the inclination, interest, and ability to contribute directly to package development. Before you submit a pull request on a tidymodels package, always file an issue and confirm the tidymodels team agrees with your idea and is happy with your basic proposal.\nIn tidymodels packages, we use the tidyverse style guide which will make sure that your new code and documentation matches the existing style. This makes the review process much smoother.\nThe tidymodels packages are explicitly built to support the creation of other modeling packages, and we would love to hear about what you build yourself! Check out our learning resources for developing custom modeling tools."
-  },
-  {
-    "objectID": "find/broom/index.html",
-    "href": "find/broom/index.html",
-    "title": "Search broom methods",
-    "section": "",
-    "text": "Here are all the broom functions available across CRAN packages. Click on the link in the topic column to find more information."
-  },
-  {
-    "objectID": "find/parsnip/index.html",
-    "href": "find/parsnip/index.html",
-    "title": "Search parsnip models",
-    "section": "",
-    "text": "To learn about the parsnip package, see Get Started: Build a Model. Use the tables below to find model types and engines."
-  },
-  {
-    "objectID": "find/sparse/index.html",
-    "href": "find/sparse/index.html",
-    "title": "Search sparse compatible models and steps",
-    "section": "",
-    "text": "Below is all the model engine combinations that support sparse data. It is known that ranger supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn’t much benefit to using sparse structures.\n\n\n\n\nboost_tree\n\n\n\nxgboost\n\n\n\nlinear_reg\n\n\n\nglmnet\n\n\n\nlogistic_reg\n\n\n\nglmnet\n\n\nLiblineaR\n\n\n\nmultinom_reg\n\n\n\nglmnet\n\n\n\npoisson_reg\n\n\n\nglmnet\n\n\n\nrand_forest\n\n\n\nranger\n\n\n\nsvm_linear\n\n\n\nLiblineaR"
-  },
-  {
-    "objectID": "find/sparse/index.html#models",
-    "href": "find/sparse/index.html#models",
-    "title": "Search sparse compatible models and steps",
-    "section": "",
-    "text": "Below is all the model engine combinations that support sparse data. It is known that ranger supports sparse data as an input, it doesn’t use it any differently than dense data. Thus there isn’t much benefit to using sparse structures.\n\n\n\n\nboost_tree\n\n\n\nxgboost\n\n\n\nlinear_reg\n\n\n\nglmnet\n\n\n\nlogistic_reg\n\n\n\nglmnet\n\n\nLiblineaR\n\n\n\nmultinom_reg\n\n\n\nglmnet\n\n\n\npoisson_reg\n\n\n\nglmnet\n\n\n\nrand_forest\n\n\n\nranger\n\n\n\nsvm_linear\n\n\n\nLiblineaR"
-  },
-  {
-    "objectID": "find/sparse/index.html#steps",
-    "href": "find/sparse/index.html#steps",
-    "title": "Search sparse compatible models and steps",
-    "section": "Steps",
-    "text": "Steps\nSparse data compatibility for steps comes in 2 flavors. The first kind generates sparse data from dense data. Often converting categorical variables to many sparse columns. This type of step is listed here:\n\n\n\nstep_count\nstep_dummy\nstep_dummy_extract\nstep_dummy_hash\nstep_dummy_multi_choice\nstep_holiday\nstep_indicate_na\nstep_regex\nstep_texthash\nstep_tf\nstep_tfidf\n\n\n\nThe other type of sparse compatible steps are the ones that can take sparse data as input and operate on them while preserving the sparsity. These steps can thus safely be applied to columns that are produced by the above steps. This type of step is listed here:\n\n\n\nstep_arrange\nstep_filter\nstep_filter_missing\nstep_impute_mean\nstep_impute_median\nstep_lag\nstep_naomit\nstep_rename\nstep_rename_at\nstep_rm\nstep_sample\nstep_scale\nstep_select\nstep_shuffle\nstep_slice\nstep_sqrt\nstep_zv"
   },
   {
     "objectID": "learn/develop/metrics/index.html",
@@ -1704,7 +1767,7 @@
     "href": "learn/index.html",
     "title": "Learn",
     "section": "",
-    "text": "After you know what you need to get started with tidymodels, you can learn more and go further. Find articles here to help you solve specific problems using the tidymodels framework.\n\n\n\n\n\n\n\n\n\n\n\n\nA predictive modeling case study\n\n\n\nmodel fitting\n\ntuning\n\nparsnip\n\nrecipes\n\nrsample\n\nworkflows\n\ntuning\n\n\n\nDevelop, from beginning to end, a predictive model using best practices.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAccounting for Censoring in Performance Metrics for Event Time Data\n\n\n\nstatistical analysis\n\nsurvival analysis\n\n\n\nLearn how tidymodels uses causal inference tools to measure performance of survival models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAn introduction to calibration with tidymodels\n\n\n\nprobably\n\nyardstick\n\nclassification\n\n\n\nLearn how the probably package can improve classification and regression models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAre GPT detectors fair? A machine learning fairness case study\n\n\n\nyardstick\n\nfairness\n\nclassification\n\n\n\nReleases of language models are often soon followed up with detectors, claiming to detect whether text was written by a human or a given language model. A 2023 study argues…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBootstrap resampling and tidy regression models\n\n\n\nstatistical analysis\n\nbootstrapping\n\ntidying results\n\nconfidence intervals\n\n\n\nApply bootstrap resampling to estimate uncertainty in model parameters.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBuild a model\n\n\n\nmodel fitting\n\nparsnip\n\ntidying results\n\n\n\nGet started by learning how to specify and train a model using tidymodels.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClassification models using a neural network\n\n\n\nmodel fitting\n\nneural networks\n\nclassification\n\n\n\nTrain a classification model and evaluate its performance.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConfidence Intervals for Performance Metrics\n\n\n\nmodel fitting\n\nconfidence intervals\n\nbootstrapping\n\n\n\ntidymodels has high-level functions to produce bootstrap confidence intervals for performance statistics.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConformal inference for regression models\n\n\n\nprobably\n\nparsnip\n\ntuning\n\nregression\n\n\n\nThe probably package has functions to create prediction intervals for regression models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCorrelation and regression fundamentals with tidy data principles\n\n\n\nstatistical analysis\n\ncorrelation\n\ntidying results\n\n\n\nAnalyze the results of correlation tests and simple regression models for many data sets at once.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate your own broom tidier methods\n\n\n\ndeveloper tools\n\n\n\nWrite tidy(), glance(), and augment() methods for new model objects.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate your own recipe step function\n\n\n\ndeveloper tools\n\n\n\nWrite a new recipe step for data preprocessing.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreating case weights based on time\n\n\n\nmodel fitting\n\ntime series\n\n\n\nCreate models that use coefficients, extract them from fitted models, and visualize them.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCustom performance metrics\n\n\n\ndeveloper tools\n\n\n\nCreate a new performance metric and integrate it with yardstick functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDynamic Performance Metrics for Event Time Data\n\n\n\nstatistical analysis\n\nsurvival analysis\n\n\n\nLet’s discuss how to compute modern performance metrics for time-to-event models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEvaluate your model with resampling\n\n\n\nrsample\n\nparsnip\n\ntuning\n\nworkflows\n\nyardstick\n\n\n\nMeasure model performance by generating different versions of the training data through resampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFair prediction of hospital readmission: a machine learning fairness case study\n\n\n\nyardstick\n\nfairness\n\ntuning\n\nclassification\n\n\n\nWith information on a diabetes patient’s stay at a hospital like demographics, diagnostic results, payment, and medications, a hospital can train a machine learning model to…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHow long until building complaints are dispositioned? A survival analysis case study\n\n\n\nstatistical analysis\n\nsurvival analysis\n\n\n\nLearn how to use tidymodels for survival analysis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHow to build a parsnip model\n\n\n\ndeveloper tools\n\n\n\nCreate a parsnip model function from an existing model implementation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHow to create a tuning parameter function\n\n\n\ndeveloper tools\n\n\n\nBuild functions to use in tuning both quantitative and qualitative parameters.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHypothesis testing using resampling and tidy data\n\n\n\nstatistical analysis\n\nhypothesis testing\n\nbootstrapping\n\n\n\nPerform common hypothesis tests for statistical inference using flexible functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIterative Bayesian optimization of a classification model\n\n\n\ntuning\n\nSVMs\n\n\n\nIdentify the best hyperparameters for a model using Bayesian optimization of iterative search.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nK-means clustering with tidy data principles\n\n\n\nstatistical analysis\n\ntidying results\n\n\n\nSummarize clustering characteristics and estimate the best number of clusters for a data set.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModel tuning using a sparse matrix\n\n\n\ntuning\n\nclassification\n\nsparse data\n\n\n\nFitting a model using tidymodels with a sparse matrix as the data.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModel tuning via grid search\n\n\n\ntuning\n\nSVMs\n\nclassification\n\n\n\nChoose hyperparameters for a model by training on a grid of many possible parameter values.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModeling time series with tidy resampling\n\n\n\nmodel fitting\n\ntime series\n\n\n\nCalculate performance estimates for time series forecasts using resampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMultivariate analysis using partial least squares\n\n\n\npre-processing\n\nmultivariate analysis\n\ncorrelation\n\n\n\nBuild and fit a predictive model with more than one outcome.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNested resampling\n\n\n\nSVMs\n\n\n\nEstimate the best hyperparameters for a model using nested resampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPreprocess your data with recipes\n\n\n\npre-processing\n\nrecipes\n\nparsnip\n\nworkflows\n\nyardstick\n\ntidying results\n\n\n\nPrepare data for modeling with modular preprocessing steps.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRegression models two ways\n\n\n\nmodel fitting\n\nparsnip\n\nregression\n\n\n\nCreate and train different kinds of regression models with different computational engines.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStatistical analysis of contingency tables\n\n\n\nstatistical analysis\n\nhypothesis testing\n\n\n\nUse tests of independence and goodness of fit to analyze tables of counts.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSubsampling for class imbalances\n\n\n\nmodel fitting\n\npre-processing\n\n\n\nImprove model performance in imbalanced data sets through undersampling or oversampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTune model parameters\n\n\n\ntuning\n\nrsample\n\nparsnip\n\ntuning\n\nworkflows\n\nyardstick\n\n\n\nEstimate the best values for hyperparameters that cannot be learned directly during model training.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTuning text models\n\n\n\ntuning\n\nregression\n\nsparse data\n\n\n\nPrepare text data for predictive modeling and tune with both grid and iterative search.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing recipes to create sparse data\n\n\n\ntuning\n\nclassification\n\nsparse data\n\n\n\nFitting a model using tidymodels where sparse data is created using a recipe.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorking with model coefficients\n\n\n\nmodel fitting\n\ntidying results\n\nregression\n\ntuning\n\n\n\nCreate models that use coefficients, extract them from fitted models, and visualize them.\n\n\n\n\n\n\n\n\n\n\nNo matching items",
+    "text": "After you know what you need to get started with tidymodels, you can learn more and go further. Find articles here to help you solve specific problems using the tidymodels framework.\n\n\n\n\n\n\n\n\n\n\n\n\nA predictive modeling case study\n\n\n\nmodel fitting\n\ntuning\n\nparsnip\n\nrecipes\n\nrsample\n\nworkflows\n\ntuning\n\n\n\nDevelop, from beginning to end, a predictive model using best practices.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAccounting for Censoring in Performance Metrics for Event Time Data\n\n\n\nstatistical analysis\n\nsurvival analysis\n\n\n\nLearn how tidymodels uses causal inference tools to measure performance of survival models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAn introduction to calibration with tidymodels\n\n\n\nprobably\n\nyardstick\n\nclassification\n\n\n\nLearn how the probably package can improve classification and regression models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAre GPT detectors fair? A machine learning fairness case study\n\n\n\nyardstick\n\nfairness\n\nclassification\n\n\n\nReleases of language models are often soon followed up with detectors, claiming to detect whether text was written by a human or a given language model. A 2023 study argues…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBootstrap resampling and tidy regression models\n\n\n\nstatistical analysis\n\nbootstrapping\n\ntidying results\n\nconfidence intervals\n\n\n\nApply bootstrap resampling to estimate uncertainty in model parameters.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBuild a model\n\n\n\nmodel fitting\n\nparsnip\n\ntidying results\n\n\n\nGet started by learning how to specify and train a model using tidymodels.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClassification models using a neural network\n\n\n\nmodel fitting\n\nneural networks\n\nclassification\n\n\n\nTrain a classification model and evaluate its performance.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConfidence Intervals for Performance Metrics\n\n\n\nmodel fitting\n\nconfidence intervals\n\nbootstrapping\n\n\n\ntidymodels has high-level functions to produce bootstrap confidence intervals for performance statistics.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConformal inference for regression models\n\n\n\nprobably\n\nparsnip\n\ntuning\n\nregression\n\n\n\nThe probably package has functions to create prediction intervals for regression models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCorrelation and regression fundamentals with tidy data principles\n\n\n\nstatistical analysis\n\ncorrelation\n\ntidying results\n\n\n\nAnalyze the results of correlation tests and simple regression models for many data sets at once.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate your own broom tidier methods\n\n\n\ndeveloper tools\n\n\n\nWrite tidy(), glance(), and augment() methods for new model objects.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate your own recipe step function\n\n\n\ndeveloper tools\n\n\n\nWrite a new recipe step for data preprocessing.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate your own score class object\n\n\n\ndeveloper tools\n\n\n\nCreate a new score class object for feature selection.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreating case weights based on time\n\n\n\nmodel fitting\n\ntime series\n\n\n\nCreate models that use coefficients, extract them from fitted models, and visualize them.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCustom performance metrics\n\n\n\ndeveloper tools\n\n\n\nCreate a new performance metric and integrate it with yardstick functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDynamic Performance Metrics for Event Time Data\n\n\n\nstatistical analysis\n\nsurvival analysis\n\n\n\nLet’s discuss how to compute modern performance metrics for time-to-event models.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEvaluate your model with resampling\n\n\n\nrsample\n\nparsnip\n\ntuning\n\nworkflows\n\nyardstick\n\n\n\nMeasure model performance by generating different versions of the training data through resampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFair prediction of hospital readmission: a machine learning fairness case study\n\n\n\nyardstick\n\nfairness\n\ntuning\n\nclassification\n\n\n\nWith information on a diabetes patient’s stay at a hospital like demographics, diagnostic results, payment, and medications, a hospital can train a machine learning model to…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHow long until building complaints are dispositioned? A survival analysis case study\n\n\n\nstatistical analysis\n\nsurvival analysis\n\n\n\nLearn how to use tidymodels for survival analysis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHow to build a parsnip model\n\n\n\ndeveloper tools\n\n\n\nCreate a parsnip model function from an existing model implementation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHow to create a tuning parameter function\n\n\n\ndeveloper tools\n\n\n\nBuild functions to use in tuning both quantitative and qualitative parameters.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHypothesis testing using resampling and tidy data\n\n\n\nstatistical analysis\n\nhypothesis testing\n\nbootstrapping\n\n\n\nPerform common hypothesis tests for statistical inference using flexible functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIterative Bayesian optimization of a classification model\n\n\n\ntuning\n\nSVMs\n\n\n\nIdentify the best hyperparameters for a model using Bayesian optimization of iterative search.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nK-means clustering with tidy data principles\n\n\n\nstatistical analysis\n\ntidying results\n\n\n\nSummarize clustering characteristics and estimate the best number of clusters for a data set.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModel tuning using a sparse matrix\n\n\n\ntuning\n\nclassification\n\nsparse data\n\n\n\nFitting a model using tidymodels with a sparse matrix as the data.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModel tuning via grid search\n\n\n\ntuning\n\nSVMs\n\nclassification\n\n\n\nChoose hyperparameters for a model by training on a grid of many possible parameter values.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModeling time series with tidy resampling\n\n\n\nmodel fitting\n\ntime series\n\n\n\nCalculate performance estimates for time series forecasts using resampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMultivariate analysis using partial least squares\n\n\n\npre-processing\n\nmultivariate analysis\n\ncorrelation\n\n\n\nBuild and fit a predictive model with more than one outcome.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNested resampling\n\n\n\nSVMs\n\n\n\nEstimate the best hyperparameters for a model using nested resampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPreprocess your data with recipes\n\n\n\npre-processing\n\nrecipes\n\nparsnip\n\nworkflows\n\nyardstick\n\ntidying results\n\n\n\nPrepare data for modeling with modular preprocessing steps.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRegression models two ways\n\n\n\nmodel fitting\n\nparsnip\n\nregression\n\n\n\nCreate and train different kinds of regression models with different computational engines.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStatistical analysis of contingency tables\n\n\n\nstatistical analysis\n\nhypothesis testing\n\n\n\nUse tests of independence and goodness of fit to analyze tables of counts.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSubsampling for class imbalances\n\n\n\nmodel fitting\n\npre-processing\n\n\n\nImprove model performance in imbalanced data sets through undersampling or oversampling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTune model parameters\n\n\n\ntuning\n\nrsample\n\nparsnip\n\ntuning\n\nworkflows\n\nyardstick\n\n\n\nEstimate the best values for hyperparameters that cannot be learned directly during model training.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTuning text models\n\n\n\ntuning\n\nregression\n\nsparse data\n\n\n\nPrepare text data for predictive modeling and tune with both grid and iterative search.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing recipes to create sparse data\n\n\n\ntuning\n\nclassification\n\nsparse data\n\n\n\nFitting a model using tidymodels where sparse data is created using a recipe.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWorking with model coefficients\n\n\n\nmodel fitting\n\ntidying results\n\nregression\n\ntuning\n\n\n\nCreate models that use coefficients, extract them from fitted models, and visualize them.\n\n\n\n\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Learn"
     ]
