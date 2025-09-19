@@ -18,6 +18,8 @@ Below you'll find searchable tables to help you explore the tidymodels packages 
 
 * [Search sparse data compatible methods](sparse/index.qmd)
 
+* [Search tidyclust models](tidyclust/index.qmd)
+
 # Books
 
 If you want to read more long form there are a number of books written about and using tidymodels
