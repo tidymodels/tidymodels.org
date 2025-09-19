@@ -440,6 +440,6 @@ tidyclust_models <-
   dplyr::select(title, model, engine, topic, mode, package)
 
 write_csv(
-  parsnip_models,
+  tidyclust_models,
   file = "find/tidyclust/tidyclust_models.csv"
 )
