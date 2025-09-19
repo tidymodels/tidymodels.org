@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,14 +68,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-b68677912a57768c501172b743018c8b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-933c14d29d5c578a38b5020fa70fc493.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-de95c69192d43d50a9cc9ec44eff701e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-6e953fb46d383a6584a42e54b1fe3d93.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -116,6 +117,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">tidymodels</span>
     </a>
@@ -180,6 +183,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -442,7 +449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="creating-a-new-step">Creating a new step</h2>
 <p>Let’s create a step that replaces the value of a variable with its percentile from the training set. The example data we’ll use is from the modeldata package:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modeldata)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modeldata)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(biomass)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(biomass)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'data.frame':    536 obs. of  8 variables:</span></span>
@@ -456,15 +463,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ HHV     : num  20 19.2 18.3 18.2 18.4 ...</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>biomass_tr <span class="ot">&lt;-</span> biomass[biomass<span class="sc">$</span>dataset <span class="sc">==</span> <span class="st">"Training"</span>, ]</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>biomass_te <span class="ot">&lt;-</span> biomass[biomass<span class="sc">$</span>dataset <span class="sc">==</span> <span class="st">"Testing"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>biomass_te <span class="ot">&lt;-</span> biomass[biomass<span class="sc">$</span>dataset <span class="sc">==</span> <span class="st">"Testing"</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To illustrate the transformation with the <code>carbon</code> variable, note the training set distribution of this variable with a vertical line below for the first value of the test set.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(biomass_tr, <span class="fu">aes</span>(<span class="at">x =</span> carbon)) <span class="sc">+</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> biomass_te<span class="sc">$</span>carbon[<span class="dv">1</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> biomass_te<span class="sc">$</span>carbon[<span class="dv">1</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -493,7 +500,7 @@ Note
 <p>To start, there is a <em>user-facing</em> function. Let’s call that <code>step_percentiles()</code>. This is just a simple wrapper around a <em>constructor function</em>, which defines the rules for any step object that defines a percentile transformation. We’ll call this constructor <code>step_percentiles_new()</code>.</p>
 <p>The function <code>step_percentiles()</code> takes the same arguments as your function and simply adds it to a new recipe. The <code>...</code> signifies the variable selectors that can be used.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> recipe,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> ...,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="at">role =</span> <span class="cn">NA</span>,</span>
@@ -515,7 +522,7 @@ Note
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a> <span class="at">id =</span> id</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a> )</span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You should always keep the first four arguments (<code>recipe</code> though <code>trained</code>) the same as listed above. Additionally, you should have a <code>skip</code> and <code>id</code> argument as well, conventionally put as the last arguments. Some notes:</p>
 <ul>
@@ -542,7 +549,7 @@ Note
  └─&gt; step_percentiles_new() calls recipes::step()</code></pre>
 <p><code>step()</code> is a general constructor for recipes that mainly makes sure that the resulting step object is a list with an appropriate S3 class structure. Using <code>subclass = "percentiles"</code> will set the class of new objects to <code>"step_percentiles"</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>step_percentiles_new <span class="ot">&lt;-</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>step_percentiles_new <span class="ot">&lt;-</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(terms, role, trained, ref_dist, options, skip, id) {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">step</span>(</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> <span class="at">subclass =</span> <span class="st">"percentiles"</span>,</span>
@@ -554,14 +561,14 @@ Note
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a> <span class="at">skip =</span> skip,</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> <span class="at">id =</span> id</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This constructor function should have no default argument values. Defaults should be set in the user-facing step object.</p>
 </section>
 <section id="create-the-prep-method" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-prep-method">Create the <code>prep()</code> method</h3>
 <p>You will need to create a new <code>prep()</code> method for your step’s class. To do this, three arguments that the method should have are:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>where</p>
 <ul>
 <li><code>x</code> will be the <code>step_percentiles</code> object,</li>
@@ -584,23 +591,23 @@ Warning
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> col_names <span class="ot">&lt;-</span> <span class="fu">recipes_eval_select</span>(x<span class="sc">$</span>terms, training, info)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co"> finish the rest of the function</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After this function call, it is a good idea to check that the selected columns have the appropriate type (e.g.&nbsp;numeric for this example). See <code>recipes::check_type()</code> to do this for basic types.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> col_names <span class="ot">&lt;-</span> <span class="fu">recipes_eval_select</span>(x<span class="sc">$</span>terms, training, info)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_type</span>(training[, col_names], <span class="at">types =</span> <span class="fu">c</span>(<span class="st">"double"</span>, <span class="st">"integer"</span>))</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co"> finish the rest of the function</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once we have this then we are ready for the meat of the function. The purpose of the <code>prep()</code> method is to calculate and store the information needed to perform the transformations. <code>step_center()</code> stores the means of the selected variables, <code>step_pca()</code> stores the loadings, and <code>step_lincomb()</code> calculates which variables are linear combinations of each other and marks them for removal. Some steps don’t need to calculate anything in the <code>prep()</code> method, examples include <code>step_arrange()</code> and <code>step_date()</code>.</p>
 <p>For this step, we want to save the approximation grid. For the grid, we will use a helper function that enables us to run <code>rlang::exec()</code> to splice in any extra arguments contained in the <code>options</code> list to the call to <code>quantile()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>get_train_pctl <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">args =</span> <span class="cn">NULL</span>) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>get_train_pctl <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">args =</span> <span class="cn">NULL</span>) {</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> res <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">exec</span>(<span class="st">"quantile"</span>, <span class="at">x =</span> x, <span class="sc">!!!</span>args)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove duplicate percentile values</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> res[<span class="sc">!</span><span class="fu">duplicated</span>(res)]</span>
@@ -612,11 +619,11 @@ Warning
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14.61 97.18</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">get_train_pctl</span>(biomass_tr<span class="sc">$</span>carbon)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0%    25%    50%    75%   100% </span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14.610 44.715 47.100 49.725 97.180</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14.610 44.715 47.100 49.725 97.180</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, the <code>prep()</code> method can be created:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>prep.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> col_names <span class="ot">&lt;-</span> <span class="fu">recipes_eval_select</span>(x<span class="sc">$</span>terms, training, info)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_type</span>(training[, col_names], <span class="at">types =</span> <span class="fu">c</span>(<span class="st">"double"</span>, <span class="st">"integer"</span>))</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -649,7 +656,7 @@ Warning
 <span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a> <span class="at">skip =</span> x<span class="sc">$</span>skip,</span>
 <span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a> <span class="at">id =</span> x<span class="sc">$</span>id</span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -669,20 +676,20 @@ Tip
 <section id="create-the-bake-method" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-bake-method">Create the <code>bake()</code> method</h3>
 <p>Remember that the <code>prep()</code> function does not <em>apply</em> the step to the data; it only estimates any required values such as <code>ref_dist</code>. We will need to create a new method for our <code>step_percentiles()</code> class. The signature is as follows.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(object, new_data, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(object, new_data, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Where <code>object</code> is the updated step function that has been through the corresponding <code>prep()</code> code and <code>new_data</code> is a tibble of data to be processed.</p>
 <p>Here is the code to convert the new data to percentiles. The input data (<code>x</code> below) comes in as a numeric vector and the output is a vector of approximate percentiles:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pctl_by_approx <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ref) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pctl_by_approx <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ref) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># In case duplicates were removed, get the percentiles from</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the names of the reference object</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> grid <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"%$"</span>, <span class="st">""</span>, <span class="fu">names</span>(ref)))</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">approx</span>(<span class="at">x =</span> ref, <span class="at">y =</span> grid, <span class="at">xout =</span> x)<span class="sc">$</span>y <span class="sc">/</span> <span class="dv">100</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We will loop over the variables one by one and apply the transformation. <code>check_new_data()</code> is used to make sure that the variables that are affected in this step are present.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bake.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(object, new_data, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bake.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(object, new_data, ...) {</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> col_names <span class="ot">&lt;-</span> <span class="fu">names</span>(object<span class="sc">$</span>ref_dist)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_new_data</span>(col_names, object, new_data)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -696,7 +703,7 @@ Tip
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># new_data will be a tibble when passed to this function. It should also</span></span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># be a tibble on the way out.</span></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a> new_data</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -716,7 +723,7 @@ Note
 <h3 class="anchored" data-anchor-id="verify-it-works">Verify it works</h3>
 <p>Let’s use the example data to make sure that it works:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rec_obj <span class="ot">&lt;-</span> <span class="fu">recipe</span>(HHV <span class="sc">~</span> ., <span class="at">data =</span> biomass_tr) <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rec_obj <span class="ot">&lt;-</span> <span class="fu">recipe</span>(HHV <span class="sc">~</span> ., <span class="at">data =</span> biomass_tr) <span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_percentiles</span>(<span class="fu">ends_with</span>(<span class="st">"gen"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">training =</span> biomass_tr)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -735,11 +742,11 @@ Note
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(biomass_tr<span class="sc">$</span>hydrogen <span class="sc">&lt;=</span> biomass_te<span class="sc">$</span>hydrogen[<span class="dv">1</span>])</span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.4517544</span></span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(biomass_tr<span class="sc">$</span>oxygen <span class="sc">&lt;=</span> biomass_te<span class="sc">$</span>oxygen[<span class="dv">1</span>])</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9013158</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9013158</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The plot below shows how the original hydrogen percentiles line up with the estimated values:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>hydrogen_values <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec_obj, biomass_te, hydrogen) <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>hydrogen_values <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec_obj, biomass_te, hydrogen) <span class="sc">%&gt;%</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(biomass_te <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">original =</span> hydrogen))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(biomass_tr, <span class="fu">aes</span>(<span class="at">x =</span> hydrogen)) <span class="sc">+</span></span>
@@ -754,7 +761,7 @@ Note
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a> <span class="at">alpha =</span> .<span class="dv">5</span>,</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a> <span class="at">cex =</span> <span class="dv">2</span></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a> ) <span class="sc">+</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"New Hydrogen Values"</span>, <span class="at">y =</span> <span class="st">"Percentile Based on Training Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"New Hydrogen Values"</span>, <span class="at">y =</span> <span class="st">"Percentile Based on Training Set"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -787,7 +794,7 @@ Note
 <h3 class="anchored" data-anchor-id="a-print-method">A <code>print()</code> method</h3>
 <p>If you don’t add a print method for <code>step_percentiles()</code>, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called <code>print_step()</code> that should be useful in most cases. We are using it here for the custom print method for <code>step_percentiles()</code>. It requires the original terms specification and the column names this specification is evaluated to by <code>prep()</code>. For the former, our step object is structured so that the list object <code>ref_dist</code> has the names of the selected variables:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>print.step_percentiles <span class="ot">&lt;-</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>print.step_percentiles <span class="ot">&lt;-</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x, <span class="at">width =</span> <span class="fu">max</span>(<span class="dv">20</span>, <span class="fu">options</span>()<span class="sc">$</span>width <span class="sc">-</span> <span class="dv">35</span>), ...) {</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a> title <span class="ot">&lt;-</span> <span class="st">"Percentile transformation on "</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -834,7 +841,7 @@ Note
 <span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Training data contained 456 data points and no incomplete rows.</span></span>
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Operations</span></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Percentile transformation on: hydrogen oxygen, ... | Trained</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Percentile transformation on: hydrogen oxygen, ... | Trained</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="methods-for-declaring-required-packages" class="level3">
@@ -845,18 +852,18 @@ Note
 a clean R session then run: install.packages("some_package")</code></pre>
 <p>An S3 method can be used to declare what packages should be loaded when using the step. For a hypothetical step that relies on the <code>hypothetical</code> package, this might look like:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>required_pkgs.step_hypothetical <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>required_pkgs.step_hypothetical <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"hypothetical"</span>, <span class="st">"myrecipespkg"</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this example, <code>myrecipespkg</code> is the package where the step resides (if it is in a package).</p>
 <p>The reason to declare what packages should be loaded is parallel processing. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters has no additional packages loaded. If the home package for a recipe step is not loaded in the worker processes, the <code>prep()</code> methods cannot be found and an error occurs.</p>
 <p>If this S3 method is used for your step, you can rely on this for checking the installation:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>recipes<span class="sc">::</span><span class="fu">recipes_pkg_check</span>(<span class="fu">required_pkgs.step_hypothetical</span>())</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>recipes<span class="sc">::</span><span class="fu">recipes_pkg_check</span>(<span class="fu">required_pkgs.step_hypothetical</span>())</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 packages (hypothetical and myrecipespkg) are needed for this step</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; but are not installed.</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To install run: `install.packages(c("hypothetical", "myrecipespkg"))`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To install run: `install.packages(c("hypothetical", "myrecipespkg"))`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you’d like an example of this in a package, please take a look at the <a href="https://github.com/tidymodels/embed/">embed</a> or <a href="https://github.com/tidymodels/themis/">themis</a> package.</p>
 </section>
@@ -865,7 +872,7 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <p>The <code>broom::tidy()</code> method is a means to return information about the step in a usable format. For our step, it would be helpful to know the reference values.</p>
 <p>When the recipe has been prepped, those data are in the list <code>ref_dist</code>. A small function can be used to reformat that data into a tibble. It is customary to return the main values as <code>value</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>format_pctl <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>format_pctl <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a> <span class="at">value =</span> <span class="fu">unname</span>(x),</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> <span class="at">percentile =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"%$"</span>, <span class="st">""</span>, <span class="fu">names</span>(x)))</span>
@@ -890,11 +897,11 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 3.49           7</span></span>
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 3.71           8</span></span>
 <span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 3.99           9</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 77 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 77 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The tidy method could return these values for each selected column. Before <code>prep()</code>, missing values can be used as placeholders.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tidy.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tidy.step_percentiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (<span class="fu">is_trained</span>(x)) {</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (<span class="fu">length</span>(x<span class="sc">$</span>ref_dist) <span class="sc">==</span> <span class="dv">0</span>) {</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="co"># We need to create consistent output when no variables are selected</span></span>
@@ -934,18 +941,18 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 hydrogen 3.49           7 percentiles_Bp5vK</span></span>
 <span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 hydrogen 3.71           8 percentiles_Bp5vK</span></span>
 <span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 hydrogen 3.99           9 percentiles_Bp5vK</span></span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 264 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 264 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="methods-for-tuning-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="methods-for-tuning-parameters">Methods for tuning parameters</h3>
 <p>The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn’t really have any tunable parameters, so we will demonstrate using <code>step_poly()</code>, which returns a polynomial expansion of selected columns. Its function definition has the following arguments:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(step_poly)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(step_poly)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; function (recipe, ..., role = "predictor", trained = FALSE, objects = NULL, </span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     degree = 2L, options = list(), keep_original_cols = FALSE, </span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     skip = FALSE, id = rand_id("poly")) </span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The argument <code>degree</code> is tunable.</p>
 <p>To work with tune it is <em>helpful</em> (but not required) to use an S3 method called <code>tunable()</code> to define which arguments should be tuned and how the values of those arguments should be generated.</p>
@@ -960,24 +967,24 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <p>The main piece of information that requires some detail is <code>call_info</code>. This is a list column in the tibble. Each element of the list is a list that describes the package and function that can be used to create a dials parameter object.</p>
 <p>For example, for a nearest-neighbors <code>neighbors</code> parameter, this value is just:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">pkg =</span> <span class="st">"dials"</span>, <span class="at">fun =</span> <span class="st">"neighbors"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">pkg =</span> <span class="st">"dials"</span>, <span class="at">fun =</span> <span class="st">"neighbors"</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># FYI: how it is used under-the-hood:</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>new_param_call <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">call2</span>(<span class="at">.fn =</span> info<span class="sc">$</span>fun, <span class="at">.ns =</span> info<span class="sc">$</span>pkg)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>rlang<span class="sc">::</span><span class="fu">eval_tidy</span>(new_param_call)</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Nearest Neighbors (quantitative)</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 10]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 10]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For <code>step_poly()</code>, a dials object is needed that returns an integer that is the number of new columns to create. It turns out that there are a few different types of tuning parameters related to degree:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">lsf.str</span>(<span class="st">"package:dials"</span>, <span class="at">pattern =</span> <span class="st">"degree"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">lsf.str</span>(<span class="st">"package:dials"</span>, <span class="at">pattern =</span> <span class="st">"degree"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>degree <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>degree_int <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>prod_degree <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">2</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>spline_degree <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>L, <span class="dv">10</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>spline_degree <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>L, <span class="dv">10</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Looking at the <code>range</code> values, some return doubles, and others return integers. For our problem, <code>degree_int()</code> would be a good choice.</p>
 <p>For <code>step_poly()</code> the <code>tunable()</code> S3 method could be:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tunable.step_poly <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tunable.step_poly <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"degree"</span>),</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> <span class="at">call_info =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">pkg =</span> <span class="st">"dials"</span>, <span class="at">fun =</span> <span class="st">"degree_int"</span>)),</span>
@@ -985,7 +992,7 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a> <span class="at">component =</span> <span class="st">"step_poly"</span>,</span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a> <span class="at">component_id =</span> x<span class="sc">$</span>id</span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -1105,13 +1112,14 @@ a clean R session then run: install.packages("some_package")</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
