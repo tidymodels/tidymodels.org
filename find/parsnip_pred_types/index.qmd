@@ -1,0 +1,49 @@
+---
+subtitle: Parsnip
+title: Search parsnip prediction types
+weight: 3
+description: | 
+  Find parsnip prediction types for different models and engines.
+toc: true
+toc-depth: 0
+include-after-body: ../../resources.html
+css: ../styles-find.css
+message: FALSE
+warnings: FALSE
+---
+
+To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [prediction types for different models and engines](#models).
+
+```{r, echo=FALSE, message=FALSE}
+
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(parsnip)
+library(DT)
+
+yep <- cli::symbol$tick
+nope <- cli::symbol$cross
+
+mod_names <- get_from_env("models")
+model_info <-
+  map_dfr(mod_names, \(.x) {
+    get_from_env(paste0(.x, "_predict")) |> mutate(model = .x)
+  })
+
+model_info |>
+  select(model, engine, mode, type) |>
+  pivot_wider(
+    names_from = type,
+    values_from = mode,
+    values_fill = nope,
+    values_fn = function(x) yep
+  ) |>
+  datatable(
+    rownames = FALSE,
+    class = 'cell-border stripe',
+    filter = 'top',
+    escape = FALSE,
+    options = list(pageLength = 25)
+  )
+```
