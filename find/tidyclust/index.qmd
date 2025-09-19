@@ -1,0 +1,37 @@
+---
+title: Search tidyclust models
+weight: 2
+description: | 
+  Find model types and engines to fit and predict clustering methods in the tidymodels framework.
+toc: true
+toc-depth: 0
+include-after-body: ../../resources.html
+css: ../styles-find.css
+---
+
+To learn about the tidyclust package, click on the link in the topic column. Use the tables below to find [model types and engines](#models).
+
+```{r}
+#| include: false
+
+library(tidymodels)
+library(readr)
+library(DT)
+library(htmlwidgets)
+setWidgetIdSeed(1234)
+tidymodels_prefer()
+tidyclust_models <- read_csv("tidyclust_models.csv")
+```
+
+```{r}
+#| label: table-display
+#| echo: false
+tidyclust_models %>% 
+  mutate(package = factor(package)) %>%
+  mutate(mode = factor(mode)) %>%
+  datatable(rownames = FALSE,
+            class = 'cell-border stripe',
+            filter = 'top',
+            escape = FALSE,
+            options = list(pageLength = 25))
+```
