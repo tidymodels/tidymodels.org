@@ -149,11 +149,11 @@ lm_res
 #> # A tibble: 5 × 5
 #>   splits              id         .metrics         .notes           .extracts
 #>   <list>              <chr>      <list>           <list>           <list>   
-#> 1 <split [5698/2076]> Bootstrap1 <tibble [2 × 4]> <tibble [0 × 3]> <tibble> 
-#> 2 <split [5698/2098]> Bootstrap2 <tibble [2 × 4]> <tibble [0 × 3]> <tibble> 
-#> 3 <split [5698/2064]> Bootstrap3 <tibble [2 × 4]> <tibble [0 × 3]> <tibble> 
-#> 4 <split [5698/2082]> Bootstrap4 <tibble [2 × 4]> <tibble [0 × 3]> <tibble> 
-#> 5 <split [5698/2088]> Bootstrap5 <tibble [2 × 4]> <tibble [0 × 3]> <tibble>
+#> 1 <split [5698/2076]> Bootstrap1 <tibble [2 × 4]> <tibble [0 × 4]> <tibble> 
+#> 2 <split [5698/2098]> Bootstrap2 <tibble [2 × 4]> <tibble [0 × 4]> <tibble> 
+#> 3 <split [5698/2064]> Bootstrap3 <tibble [2 × 4]> <tibble [0 × 4]> <tibble> 
+#> 4 <split [5698/2082]> Bootstrap4 <tibble [2 × 4]> <tibble [0 × 4]> <tibble> 
+#> 5 <split [5698/2088]> Bootstrap5 <tibble [2 × 4]> <tibble [0 × 4]> <tibble>
 ```
 :::
 
@@ -164,9 +164,9 @@ Note that there is a `.extracts` column in our resampling results. This object c
 ```{.r .cell-code}
 lm_res$.extracts[[1]]
 #> # A tibble: 1 × 2
-#>   .extracts        .config             
-#>   <list>           <chr>               
-#> 1 <tibble [4 × 5]> Preprocessor1_Model1
+#>   .extracts        .config        
+#>   <list>           <chr>          
+#> 1 <tibble [4 × 5]> pre0_mod0_post0
 ```
 :::
 
@@ -195,13 +195,13 @@ lm_res %>%
   select(id, .extracts) %>% 
   unnest(.extracts) 
 #> # A tibble: 5 × 3
-#>   id         .extracts        .config             
-#>   <chr>      <list>           <chr>               
-#> 1 Bootstrap1 <tibble [4 × 5]> Preprocessor1_Model1
-#> 2 Bootstrap2 <tibble [4 × 5]> Preprocessor1_Model1
-#> 3 Bootstrap3 <tibble [4 × 5]> Preprocessor1_Model1
-#> 4 Bootstrap4 <tibble [4 × 5]> Preprocessor1_Model1
-#> 5 Bootstrap5 <tibble [4 × 5]> Preprocessor1_Model1
+#>   id         .extracts        .config        
+#>   <chr>      <list>           <chr>          
+#> 1 Bootstrap1 <tibble [4 × 5]> pre0_mod0_post0
+#> 2 Bootstrap2 <tibble [4 × 5]> pre0_mod0_post0
+#> 3 Bootstrap3 <tibble [4 × 5]> pre0_mod0_post0
+#> 4 Bootstrap4 <tibble [4 × 5]> pre0_mod0_post0
+#> 5 Bootstrap5 <tibble [4 × 5]> pre0_mod0_post0
 ```
 :::
 
@@ -501,11 +501,11 @@ glmnet_res
 #> # A tibble: 5 × 5
 #>   splits              id         .metrics          .notes           .extracts
 #>   <list>              <chr>      <list>            <list>           <list>   
-#> 1 <split [5698/2076]> Bootstrap1 <tibble [40 × 6]> <tibble [0 × 3]> <tibble> 
-#> 2 <split [5698/2098]> Bootstrap2 <tibble [40 × 6]> <tibble [0 × 3]> <tibble> 
-#> 3 <split [5698/2064]> Bootstrap3 <tibble [40 × 6]> <tibble [0 × 3]> <tibble> 
-#> 4 <split [5698/2082]> Bootstrap4 <tibble [40 × 6]> <tibble [0 × 3]> <tibble> 
-#> 5 <split [5698/2088]> Bootstrap5 <tibble [40 × 6]> <tibble [0 × 3]> <tibble>
+#> 1 <split [5698/2076]> Bootstrap1 <tibble [40 × 6]> <tibble [0 × 4]> <tibble> 
+#> 2 <split [5698/2098]> Bootstrap2 <tibble [40 × 6]> <tibble [0 × 4]> <tibble> 
+#> 3 <split [5698/2064]> Bootstrap3 <tibble [40 × 6]> <tibble [0 × 4]> <tibble> 
+#> 4 <split [5698/2082]> Bootstrap4 <tibble [40 × 6]> <tibble [0 × 4]> <tibble> 
+#> 5 <split [5698/2088]> Bootstrap5 <tibble [40 × 6]> <tibble [0 × 4]> <tibble>
 ```
 :::
 
@@ -516,14 +516,14 @@ As noted before, the elements of the main `.extracts` column have an embedded li
 ```{.r .cell-code}
 glmnet_res$.extracts[[1]] %>% head()
 #> # A tibble: 6 × 4
-#>   penalty mixture .extracts         .config              
-#>     <dbl>   <dbl> <list>            <chr>                
-#> 1       1     0.1 <tibble [40 × 5]> Preprocessor1_Model01
-#> 2       1     0.1 <tibble [40 × 5]> Preprocessor1_Model02
-#> 3       1     0.1 <tibble [40 × 5]> Preprocessor1_Model03
-#> 4       1     0.1 <tibble [40 × 5]> Preprocessor1_Model04
-#> 5       1     0.1 <tibble [40 × 5]> Preprocessor1_Model05
-#> 6       1     0.1 <tibble [40 × 5]> Preprocessor1_Model06
+#>   penalty mixture .extracts         .config         
+#>     <dbl>   <dbl> <list>            <chr>           
+#> 1 0.001       0.1 <tibble [40 × 5]> pre0_mod01_post0
+#> 2 0.001       1   <tibble [40 × 5]> pre0_mod02_post0
+#> 3 0.00215     0.1 <tibble [40 × 5]> pre0_mod03_post0
+#> 4 0.00215     1   <tibble [40 × 5]> pre0_mod04_post0
+#> 5 0.00464     0.1 <tibble [40 × 5]> pre0_mod05_post0
+#> 6 0.00464     1   <tibble [40 × 5]> pre0_mod06_post0
 
 glmnet_res$.extracts[[1]]$.extracts[[1]] %>% head()
 #> # A tibble: 6 × 5
@@ -562,7 +562,8 @@ all.equal(
   # First bootstrap, first `mixture`, second `penalty`
   glmnet_res$.extracts[[1]]$.extracts[[2]]
 )
-#> [1] TRUE
+#> [1] "Component \"estimate\": Mean relative difference: 0.530535"    
+#> [2] "Component \"dev.ratio\": Mean relative difference: 0.001948995"
 ```
 :::
 
@@ -636,31 +637,32 @@ Notice a couple of things:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  glmnet       4.1-8   2023-08-22 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package      version    date (UTC) source
+#>  broom        1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  glmnet       4.1-10     2025-07-17 CRAN (R 4.5.0)
+#>  infer        1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  parsnip      1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  purrr        1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0.9000 2025-10-07 local
+#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

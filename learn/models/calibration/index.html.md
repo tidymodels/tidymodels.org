@@ -112,10 +112,10 @@ bayes_res <-
 
 collect_metrics(bayes_res)
 #> # A tibble: 2 × 6
-#>   .metric     .estimator  mean     n std_err .config             
-#>   <chr>       <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 brier_class binary     0.202    10 0.0101  Preprocessor1_Model1
-#> 2 roc_auc     binary     0.853    10 0.00930 Preprocessor1_Model1
+#>   .metric     .estimator  mean     n std_err .config        
+#>   <chr>       <chr>      <dbl> <int>   <dbl> <chr>          
+#> 1 brier_class binary     0.202    10 0.00977 pre0_mod0_post0
+#> 2 roc_auc     binary     0.853    10 0.00835 pre0_mod0_post0
 ```
 :::
 
@@ -208,14 +208,17 @@ How do we know if this works? There are a set of `cal_validate_*()` functions th
 
 ```{.r .cell-code}
 logit_val <- cal_validate_logistic(bayes_res, metrics = cls_met, save_pred = TRUE)
+#> Registered S3 method overwritten by 'butcher':
+#>   method                 from    
+#>   as.character.dev_topic generics
 collect_metrics(logit_val)
 #> # A tibble: 4 × 7
 #>   .metric     .type        .estimator  mean     n std_err .config
 #>   <chr>       <chr>        <chr>      <dbl> <int>   <dbl> <chr>  
-#> 1 brier_class uncalibrated binary     0.202    10 0.0101  config 
-#> 2 roc_auc     uncalibrated binary     0.853    10 0.00929 config 
-#> 3 brier_class calibrated   binary     0.155    10 0.00603 config 
-#> 4 roc_auc     calibrated   binary     0.852    10 0.00956 config
+#> 1 brier_class uncalibrated binary     0.202    10 0.00977 config 
+#> 2 roc_auc     uncalibrated binary     0.853    10 0.00835 config 
+#> 3 brier_class calibrated   binary     0.154    10 0.00585 config 
+#> 4 roc_auc     calibrated   binary     0.852    10 0.00865 config
 
 collect_predictions(logit_val) %>%
   filter(.type == "calibrated") %>%
@@ -242,10 +245,10 @@ collect_metrics(iso_val)
 #> # A tibble: 4 × 7
 #>   .metric     .type        .estimator  mean     n std_err .config
 #>   <chr>       <chr>        <chr>      <dbl> <int>   <dbl> <chr>  
-#> 1 brier_class uncalibrated binary     0.202    10 0.0101  config 
-#> 2 roc_auc     uncalibrated binary     0.853    10 0.00929 config 
-#> 3 brier_class calibrated   binary     0.151    10 0.00530 config 
-#> 4 roc_auc     calibrated   binary     0.853    10 0.00920 config
+#> 1 brier_class uncalibrated binary     0.202    10 0.00977 config 
+#> 2 roc_auc     uncalibrated binary     0.853    10 0.00835 config 
+#> 3 brier_class calibrated   binary     0.151    10 0.00464 config 
+#> 4 roc_auc     calibrated   binary     0.853    10 0.00829 config
 
 collect_predictions(iso_val) %>%
   filter(.type == "calibrated") %>%
@@ -270,10 +273,10 @@ collect_metrics(beta_val)
 #> # A tibble: 4 × 7
 #>   .metric     .type        .estimator  mean     n std_err .config
 #>   <chr>       <chr>        <chr>      <dbl> <int>   <dbl> <chr>  
-#> 1 brier_class uncalibrated binary     0.202    10 0.0101  config 
-#> 2 roc_auc     uncalibrated binary     0.853    10 0.00929 config 
-#> 3 brier_class calibrated   binary     0.146    10 0.00438 config 
-#> 4 roc_auc     calibrated   binary     0.853    10 0.00931 config
+#> 1 brier_class uncalibrated binary     0.202    10 0.00977 config 
+#> 2 roc_auc     uncalibrated binary     0.853    10 0.00835 config 
+#> 3 brier_class calibrated   binary     0.146    10 0.00391 config 
+#> 4 roc_auc     calibrated   binary     0.853    10 0.00837 config
 
 collect_predictions(beta_val) %>%
   filter(.type == "calibrated") %>%
@@ -314,7 +317,7 @@ cell_test_pred %>% cls_met(class, .pred_PS)
 #> # A tibble: 2 × 3
 #>   .metric     .estimator .estimate
 #>   <chr>       <chr>          <dbl>
-#> 1 roc_auc     binary         0.839
+#> 1 roc_auc     binary         0.840
 #> 2 brier_class binary         0.225
 ```
 :::
@@ -333,16 +336,16 @@ cell_test_cal_pred %>% dplyr::select(class, starts_with(".pred_"))
 #> # A tibble: 505 × 4
 #>    class .pred_class .pred_PS .pred_WS
 #>    <fct> <fct>          <dbl>    <dbl>
-#>  1 PS    PS            0.881    0.119 
-#>  2 WS    WS            0.217    0.783 
-#>  3 WS    WS            0.0756   0.924 
-#>  4 PS    PS            0.832    0.168 
-#>  5 PS    PS            0.946    0.0545
-#>  6 WS    WS            0.211    0.789 
-#>  7 PS    PS            0.851    0.149 
-#>  8 PS    PS            0.723    0.277 
-#>  9 WS    WS            0.342    0.658 
-#> 10 WS    PS            0.603    0.397 
+#>  1 PS    PS            0.880    0.120 
+#>  2 WS    WS            0.218    0.782 
+#>  3 WS    WS            0.0755   0.924 
+#>  4 PS    PS            0.831    0.169 
+#>  5 PS    PS            0.944    0.0557
+#>  6 WS    WS            0.212    0.788 
+#>  7 PS    PS            0.850    0.150 
+#>  8 PS    PS            0.725    0.275 
+#>  9 WS    WS            0.345    0.655 
+#> 10 WS    PS            0.607    0.393 
 #> # ℹ 495 more rows
 ```
 :::
@@ -358,8 +361,8 @@ cell_test_cal_pred %>% cls_met(class, .pred_PS)
 #> # A tibble: 2 × 3
 #>   .metric     .estimator .estimate
 #>   <chr>       <chr>          <dbl>
-#> 1 roc_auc     binary         0.839
-#> 2 brier_class binary         0.154
+#> 1 roc_auc     binary         0.840
+#> 2 brier_class binary         0.153
 cell_test_cal_pred %>%
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025)
 ```
@@ -389,33 +392,34 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  discrim      1.0.1   2023-03-08 CRAN (R 4.4.0)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  klaR         1.7-3   2023-12-13 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  probably     1.0.3   2024-02-23 CRAN (R 4.4.0)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package      version    date (UTC) source
+#>  broom        1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  discrim      1.0.2      2025-08-23 CRAN (R 4.5.0)
+#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  infer        1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  klaR         1.7-3      2023-12-13 CRAN (R 4.5.0)
+#>  parsnip      1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  probably     1.1.1      2025-07-30 CRAN (R 4.5.0)
+#>  purrr        1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0.9000 2025-10-07 local
+#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

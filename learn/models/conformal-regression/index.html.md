@@ -164,10 +164,10 @@ test_split_res %>% slice(1:5)
 #>    .pred .pred_lower .pred_upper       x       y
 #>    <dbl>       <dbl>       <dbl>   <dbl>   <dbl>
 #> 1  1.30        0.933      1.67    0.621   1.17  
-#> 2 -0.298      -0.665      0.0692 -0.658  -0.302 
-#> 3  0.133      -0.234      0.501  -0.329   0.0970
+#> 2 -0.298      -0.665      0.0687 -0.658  -0.302 
+#> 3  0.133      -0.234      0.500  -0.329   0.0970
 #> 4  1.33        0.964      1.70    0.611   1.21  
-#> 5  1.24        0.873      1.61    0.0145  1.22
+#> 5  1.24        0.874      1.61    0.0145  1.22
 ```
 :::
 
@@ -228,14 +228,14 @@ nnet_rs <-
 
 collect_metrics(nnet_rs)
 #> # A tibble: 2 × 6
-#>   .metric .estimator  mean     n std_err .config             
-#>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1 rmse    standard   0.201    10 0.00524 Preprocessor1_Model1
-#> 2 rsq     standard   0.950    10 0.00447 Preprocessor1_Model1
+#>   .metric .estimator  mean     n std_err .config        
+#>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>          
+#> 1 rmse    standard   0.199    10 0.00476 pre0_mod0_post0
+#> 2 rsq     standard   0.951    10 0.00425 pre0_mod0_post0
 ```
 :::
 
-The model has an estimated root mean squared error of 0.201 and an estimated R<sup>2</sup> of 0.95.
+The model has an estimated root mean squared error of 0.199 and an estimated R<sup>2</sup> of 0.951.
 
 We can create another object for computing the intervals:
 
@@ -261,11 +261,11 @@ test_cv_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>   .pred_lower  .pred .pred_upper       x       y
 #>         <dbl>  <dbl>       <dbl>   <dbl>   <dbl>
-#> 1       0.964  1.29       1.62    0.621   1.17  
-#> 2      -0.640 -0.311      0.0177 -0.658  -0.302 
-#> 3      -0.184  0.145      0.474  -0.329   0.0970
-#> 4       0.992  1.32       1.65    0.611   1.21  
-#> 5       0.896  1.23       1.55    0.0145  1.22
+#> 1       0.960  1.29       1.62    0.621   1.17  
+#> 2      -0.631 -0.304      0.0240 -0.658  -0.302 
+#> 3      -0.190  0.138      0.466  -0.329   0.0970
+#> 4       0.991  1.32       1.65    0.611   1.21  
+#> 5       0.911  1.24       1.57    0.0145  1.22
 ```
 :::
 
@@ -351,7 +351,7 @@ coverage(test_cv_variable_res)
 #> # A tibble: 1 × 1
 #>   coverage
 #>      <dbl>
-#> 1     90.3
+#> 1     90.1
 ```
 :::
 
@@ -395,10 +395,10 @@ test_quant_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>    .pred .pred_lower .pred_upper      x      y
 #>    <dbl>       <dbl>       <dbl>  <dbl>  <dbl>
-#> 1  0.992       0.574      1.14    0.776  1.10 
-#> 2 -0.329      -0.546     -0.0904 -0.686 -0.180
-#> 3  0.269       0.161      0.459  -0.274  0.364
-#> 4  1.01        0.666      1.13    0.759  1.21 
+#> 1  0.988       0.574      1.14    0.776  1.10 
+#> 2 -0.327      -0.546     -0.0904 -0.686 -0.180
+#> 3  0.263       0.161      0.459  -0.274  0.364
+#> 4  1.01        0.666      1.23    0.759  1.21 
 #> 5  2.00        1.90       2.12    0.367  1.87
 ```
 :::
@@ -422,7 +422,7 @@ coverage(test_quant_res)
 #> # A tibble: 1 × 1
 #>   coverage
 #>      <dbl>
-#> 1     92.0
+#> 1     91.8
 ```
 :::
 
@@ -462,32 +462,33 @@ If you are interested and would like to learn more, try these resources:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  nnet         7.3-20  2025-01-01 CRAN (R 4.4.1)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  probably     1.0.3   2024-02-23 CRAN (R 4.4.0)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package      version    date (UTC) source
+#>  broom        1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  infer        1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  nnet         7.3-20     2025-01-01 CRAN (R 4.5.1)
+#>  parsnip      1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  probably     1.1.1      2025-07-30 CRAN (R 4.5.0)
+#>  purrr        1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0.9000 2025-10-07 local
+#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

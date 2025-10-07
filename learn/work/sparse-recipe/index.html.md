@@ -13,6 +13,8 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
+  
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: nycflights13 and tidymodels.
@@ -289,7 +291,7 @@ train_preds |>
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-17-1.svg){fig-align='center' fig-alt='Scatter chart. Arrival delay along the x-axis and predictions along the 
+![](figs/unnamed-chunk-15-1.svg){fig-align='center' fig-alt='Scatter chart. Arrival delay along the x-axis and predictions along the 
 y-axis. The majority of the points are along the diagonal, with a shift
 down.' width=672}
 :::
@@ -325,7 +327,7 @@ test_preds |>
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-19-1.svg){fig-align='center' fig-alt='Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
+![](figs/unnamed-chunk-17-1.svg){fig-align='center' fig-alt='Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
 Starting on the second month with a value around 17, it goes up for each
 month to 23 in July, afterward it does back down to 16 in September, 
 with November having the same value and December having a value of 20.' width=672}
@@ -340,31 +342,32 @@ We see the same result that the model doesn't generalize to the other months. Th
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package        version date (UTC) source
-#>  broom          1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials          1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2        3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer          1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  nycflights13   1.0.2   2021-04-12 CRAN (R 4.4.0)
-#>  parsnip        1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr          1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes        1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang          1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample        1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble         3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels     1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune           1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows      1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package        version    date (UTC) source
+#>  broom          1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  dials          1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  dplyr          1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2        4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  infer          1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  nycflights13   1.0.2      2021-04-12 CRAN (R 4.5.0)
+#>  parsnip        1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  purrr          1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  recipes        1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang          1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample        1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble         3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels     1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune           2.0.0.9000 2025-10-07 local
+#>  workflows      1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick      1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

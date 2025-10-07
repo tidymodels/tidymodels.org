@@ -482,11 +482,11 @@ ames_aov_fstat_res@results
 #> 
 #>     intersect, setdiff, setequal, union
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.0 (2025-04-11)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-08-29
+#>  date     2025-10-07
 #>  pandoc   3.6.3
-#>  quarto   1.7.32
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     version date (UTC) source

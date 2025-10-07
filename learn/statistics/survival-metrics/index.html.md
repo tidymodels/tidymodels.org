@@ -131,16 +131,16 @@ val_pred$.pred[[1]]
 #> # A tibble: 21 × 5
 #>    .eval_time .pred_survival .weight_time .pred_censored .weight_censored
 #>         <dbl>          <dbl>        <dbl>          <dbl>            <dbl>
-#>  1          0          1              0            1                 1   
-#>  2         10          0.847         10.0          0.988             1.01
-#>  3         20          0.750         20.0          0.976             1.02
-#>  4         30          0.673         30.0          0.963             1.04
-#>  5         40          0.608         NA           NA                NA   
-#>  6         50          0.552         NA           NA                NA   
-#>  7         60          0.504         NA           NA                NA   
-#>  8         70          0.461         NA           NA                NA   
-#>  9         80          0.423         NA           NA                NA   
-#> 10         90          0.388         NA           NA                NA   
+#>  1          0          1             0             1                 1   
+#>  2         10          0.847        10.00          0.988             1.01
+#>  3         20          0.750        20.0           0.976             1.02
+#>  4         30          0.673        30.0           0.963             1.04
+#>  5         40          0.608        NA            NA                NA   
+#>  6         50          0.552        NA            NA                NA   
+#>  7         60          0.504        NA            NA                NA   
+#>  8         70          0.461        NA            NA                NA   
+#>  9         80          0.423        NA            NA                NA   
+#> 10         90          0.388        NA            NA                NA   
 #> # ℹ 11 more rows
 ```
 :::
@@ -388,31 +388,31 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.0 (2025-04-11)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-05-27
-#>  pandoc   NA (via rmarkdown)
-#>  quarto   1.7.31
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package        version date (UTC) source
-#>  broom          1.0.8   2025-03-28 CRAN (R 4.5.0)
-#>  censored       0.3.3   2025-02-14 CRAN (R 4.5.0)
-#>  dials          1.4.0   2025-02-13 CRAN (R 4.5.0)
-#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.5.0)
-#>  ggplot2        3.5.2   2025-04-09 CRAN (R 4.5.0)
-#>  infer          1.0.8   2025-04-14 CRAN (R 4.5.0)
-#>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.5.0)
-#>  parsnip        1.3.1   2025-03-12 CRAN (R 4.5.0)
-#>  purrr          1.0.4   2025-02-05 CRAN (R 4.5.0)
-#>  recipes        1.3.1   2025-05-21 CRAN (R 4.5.0)
-#>  rlang          1.1.6   2025-04-11 CRAN (R 4.5.0)
-#>  rsample        1.3.0   2025-04-02 CRAN (R 4.5.0)
-#>  tibble         3.2.1   2023-03-20 CRAN (R 4.5.0)
-#>  tidymodels     1.3.0   2025-02-21 CRAN (R 4.5.0)
-#>  tune           1.3.0   2025-02-21 CRAN (R 4.5.0)
-#>  workflows      1.2.0   2025-02-19 CRAN (R 4.5.0)
-#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.5.0)
+#>  package        version    date (UTC) source
+#>  broom          1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  censored       0.3.3      2025-02-14 CRAN (R 4.5.0)
+#>  dials          1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  dplyr          1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2        4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  infer          1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  modeldatatoo   0.3.0      2024-03-29 CRAN (R 4.5.0)
+#>  parsnip        1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  purrr          1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  recipes        1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang          1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample        1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble         3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels     1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune           2.0.0.9000 2025-10-07 local
+#>  workflows      1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick      1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

@@ -340,23 +340,23 @@ top_models <-
   arrange(penalty) 
 top_models
 #> # A tibble: 15 × 7
-#>     penalty .metric .estimator  mean     n std_err .config              
-#>       <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>                
-#>  1 0.000127 roc_auc binary     0.872     1      NA Preprocessor1_Model02
-#>  2 0.000161 roc_auc binary     0.872     1      NA Preprocessor1_Model03
-#>  3 0.000204 roc_auc binary     0.873     1      NA Preprocessor1_Model04
-#>  4 0.000259 roc_auc binary     0.873     1      NA Preprocessor1_Model05
-#>  5 0.000329 roc_auc binary     0.874     1      NA Preprocessor1_Model06
-#>  6 0.000418 roc_auc binary     0.874     1      NA Preprocessor1_Model07
-#>  7 0.000530 roc_auc binary     0.875     1      NA Preprocessor1_Model08
-#>  8 0.000672 roc_auc binary     0.875     1      NA Preprocessor1_Model09
-#>  9 0.000853 roc_auc binary     0.876     1      NA Preprocessor1_Model10
-#> 10 0.00108  roc_auc binary     0.876     1      NA Preprocessor1_Model11
-#> 11 0.00137  roc_auc binary     0.876     1      NA Preprocessor1_Model12
-#> 12 0.00174  roc_auc binary     0.876     1      NA Preprocessor1_Model13
-#> 13 0.00221  roc_auc binary     0.876     1      NA Preprocessor1_Model14
-#> 14 0.00281  roc_auc binary     0.875     1      NA Preprocessor1_Model15
-#> 15 0.00356  roc_auc binary     0.873     1      NA Preprocessor1_Model16
+#>     penalty .metric .estimator  mean     n std_err .config         
+#>       <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
+#>  1 0.000127 roc_auc binary     0.872     1      NA pre0_mod02_post0
+#>  2 0.000161 roc_auc binary     0.872     1      NA pre0_mod03_post0
+#>  3 0.000204 roc_auc binary     0.873     1      NA pre0_mod04_post0
+#>  4 0.000259 roc_auc binary     0.873     1      NA pre0_mod05_post0
+#>  5 0.000329 roc_auc binary     0.874     1      NA pre0_mod06_post0
+#>  6 0.000418 roc_auc binary     0.874     1      NA pre0_mod07_post0
+#>  7 0.000530 roc_auc binary     0.875     1      NA pre0_mod08_post0
+#>  8 0.000672 roc_auc binary     0.875     1      NA pre0_mod09_post0
+#>  9 0.000853 roc_auc binary     0.876     1      NA pre0_mod10_post0
+#> 10 0.00108  roc_auc binary     0.876     1      NA pre0_mod11_post0
+#> 11 0.00137  roc_auc binary     0.876     1      NA pre0_mod12_post0
+#> 12 0.00174  roc_auc binary     0.876     1      NA pre0_mod13_post0
+#> 13 0.00221  roc_auc binary     0.876     1      NA pre0_mod14_post0
+#> 14 0.00281  roc_auc binary     0.875     1      NA pre0_mod15_post0
+#> 15 0.00356  roc_auc binary     0.873     1      NA pre0_mod16_post0
 ```
 :::
 
@@ -386,9 +386,9 @@ lr_best <-
   slice(12)
 lr_best
 #> # A tibble: 1 × 7
-#>   penalty .metric .estimator  mean     n std_err .config              
-#>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>                
-#> 1 0.00137 roc_auc binary     0.876     1      NA Preprocessor1_Model12
+#>   penalty .metric .estimator  mean     n std_err .config         
+#>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
+#> 1 0.00137 roc_auc binary     0.876     1      NA pre0_mod12_post0
 ```
 :::
 
@@ -512,7 +512,7 @@ rf_res <-
             grid = 25,
             control = control_grid(save_pred = TRUE),
             metrics = metric_set(roc_auc))
-#> i Creating pre-processing data to finalize unknown parameter: mtry
+#> i Creating pre-processing data to finalize 1 unknown parameter: "mtry"
 ```
 :::
 
@@ -526,13 +526,13 @@ Here are our top 5 random forest models, out of the 25 candidates:
 rf_res %>% 
   show_best(metric = "roc_auc")
 #> # A tibble: 5 × 8
-#>    mtry min_n .metric .estimator  mean     n std_err .config              
-#>   <int> <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>                
-#> 1     9     3 roc_auc binary     0.927     1      NA Preprocessor1_Model09
-#> 2     4     5 roc_auc binary     0.925     1      NA Preprocessor1_Model04
-#> 3     8    11 roc_auc binary     0.925     1      NA Preprocessor1_Model08
-#> 4    14     8 roc_auc binary     0.925     1      NA Preprocessor1_Model13
-#> 5    18     2 roc_auc binary     0.924     1      NA Preprocessor1_Model17
+#>    mtry min_n .metric .estimator  mean     n std_err .config         
+#>   <int> <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
+#> 1     9     3 roc_auc binary     0.926     1      NA pre0_mod09_post0
+#> 2     8    11 roc_auc binary     0.926     1      NA pre0_mod08_post0
+#> 3     4     5 roc_auc binary     0.924     1      NA pre0_mod04_post0
+#> 4    10    21 roc_auc binary     0.924     1      NA pre0_mod10_post0
+#> 5     5    19 roc_auc binary     0.924     1      NA pre0_mod05_post0
 ```
 :::
 
@@ -561,9 +561,9 @@ rf_best <-
   select_best(metric = "roc_auc")
 rf_best
 #> # A tibble: 1 × 3
-#>    mtry min_n .config              
-#>   <int> <int> <chr>                
-#> 1     9     3 Preprocessor1_Model09
+#>    mtry min_n .config         
+#>   <int> <int> <chr>           
+#> 1     9     3 pre0_mod09_post0
 ```
 :::
 
@@ -575,18 +575,18 @@ To calculate the data needed to plot the ROC curve, we use `collect_predictions(
 rf_res %>% 
   collect_predictions()
 #> # A tibble: 187,500 × 8
-#>    .pred_children .pred_none id          .row  mtry min_n children .config      
-#>             <dbl>      <dbl> <chr>      <int> <int> <int> <fct>    <chr>        
-#>  1         0.0660      0.934 validation    13     1    24 none     Preprocessor…
-#>  2         0.0520      0.948 validation    20     1    24 none     Preprocessor…
-#>  3         0.0698      0.930 validation    22     1    24 children Preprocessor…
-#>  4         0.0555      0.945 validation    23     1    24 none     Preprocessor…
-#>  5         0.0667      0.933 validation    31     1    24 none     Preprocessor…
-#>  6         0.0443      0.956 validation    38     1    24 none     Preprocessor…
-#>  7         0.0354      0.965 validation    39     1    24 none     Preprocessor…
-#>  8         0.0481      0.952 validation    50     1    24 none     Preprocessor…
-#>  9         0.0608      0.939 validation    54     1    24 none     Preprocessor…
-#> 10         0.0729      0.927 validation    57     1    24 children Preprocessor…
+#>    .pred_children .pred_none id         children  .row  mtry min_n .config      
+#>             <dbl>      <dbl> <chr>      <fct>    <int> <int> <int> <chr>        
+#>  1         0.0699      0.930 validation none        13     1    24 pre0_mod01_p…
+#>  2         0.0533      0.947 validation none        20     1    24 pre0_mod01_p…
+#>  3         0.0685      0.932 validation children    22     1    24 pre0_mod01_p…
+#>  4         0.0572      0.943 validation none        23     1    24 pre0_mod01_p…
+#>  5         0.0679      0.932 validation none        31     1    24 pre0_mod01_p…
+#>  6         0.0442      0.956 validation none        38     1    24 pre0_mod01_p…
+#>  7         0.0350      0.965 validation none        39     1    24 pre0_mod01_p…
+#>  8         0.0482      0.952 validation none        50     1    24 pre0_mod01_p…
+#>  9         0.0592      0.941 validation none        54     1    24 pre0_mod01_p…
+#> 10         0.0750      0.925 validation children    57     1    24 pre0_mod01_p…
 #> # ℹ 187,490 more rows
 ```
 :::
@@ -668,11 +668,11 @@ This fitted workflow contains *everything*, including our final metrics based on
 last_rf_fit %>% 
   collect_metrics()
 #> # A tibble: 3 × 4
-#>   .metric     .estimator .estimate .config             
-#>   <chr>       <chr>          <dbl> <chr>               
-#> 1 accuracy    binary        0.946  Preprocessor1_Model1
-#> 2 roc_auc     binary        0.923  Preprocessor1_Model1
-#> 3 brier_class binary        0.0423 Preprocessor1_Model1
+#>   .metric     .estimator .estimate .config        
+#>   <chr>       <chr>          <dbl> <chr>          
+#> 1 accuracy    binary        0.946  pre0_mod0_post0
+#> 2 roc_auc     binary        0.923  pre0_mod0_post0
+#> 3 brier_class binary        0.0423 pre0_mod0_post0
 ```
 :::
 
@@ -737,34 +737,35 @@ Here are some more ideas for where to go next:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  glmnet       4.1-8   2023-08-22 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  ranger       0.17.0  2024-11-08 CRAN (R 4.4.1)
-#>  readr        2.1.5   2024-01-10 CRAN (R 4.4.0)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  vip          0.4.1   2023-08-21 CRAN (R 4.4.0)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package      version    date (UTC) source
+#>  broom        1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  glmnet       4.1-10     2025-07-17 CRAN (R 4.5.0)
+#>  infer        1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  parsnip      1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  purrr        1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  ranger       0.17.0     2024-11-08 CRAN (R 4.5.0)
+#>  readr        2.1.5      2024-01-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0.9000 2025-10-07 local
+#>  vip          0.4.1      2023-08-21 CRAN (R 4.5.0)
+#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

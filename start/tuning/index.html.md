@@ -218,16 +218,16 @@ tree_res
 #> # A tibble: 10 × 4
 #>    splits             id     .metrics          .notes          
 #>    <list>             <chr>  <list>            <list>          
-#>  1 <split [1362/152]> Fold01 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  2 <split [1362/152]> Fold02 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  3 <split [1362/152]> Fold03 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  4 <split [1362/152]> Fold04 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  5 <split [1363/151]> Fold05 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  6 <split [1363/151]> Fold06 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  7 <split [1363/151]> Fold07 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  8 <split [1363/151]> Fold08 <tibble [75 × 6]> <tibble [0 × 3]>
-#>  9 <split [1363/151]> Fold09 <tibble [75 × 6]> <tibble [0 × 3]>
-#> 10 <split [1363/151]> Fold10 <tibble [75 × 6]> <tibble [0 × 3]>
+#>  1 <split [1362/152]> Fold01 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  2 <split [1362/152]> Fold02 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  3 <split [1362/152]> Fold03 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  4 <split [1362/152]> Fold04 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  5 <split [1363/151]> Fold05 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  6 <split [1363/151]> Fold06 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  7 <split [1363/151]> Fold07 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  8 <split [1363/151]> Fold08 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  9 <split [1363/151]> Fold09 <tibble [75 × 6]> <tibble [0 × 4]>
+#> 10 <split [1363/151]> Fold10 <tibble [75 × 6]> <tibble [0 × 4]>
 ```
 :::
 
@@ -241,16 +241,16 @@ tree_res %>%
 #> # A tibble: 75 × 8
 #>    cost_complexity tree_depth .metric     .estimator  mean     n std_err .config
 #>              <dbl>      <int> <chr>       <chr>      <dbl> <int>   <dbl> <chr>  
-#>  1    0.0000000001          1 accuracy    binary     0.732    10 0.0148  Prepro…
-#>  2    0.0000000001          1 brier_class binary     0.164    10 0.00455 Prepro…
-#>  3    0.0000000001          1 roc_auc     binary     0.777    10 0.0107  Prepro…
-#>  4    0.0000000178          1 accuracy    binary     0.732    10 0.0148  Prepro…
-#>  5    0.0000000178          1 brier_class binary     0.164    10 0.00455 Prepro…
-#>  6    0.0000000178          1 roc_auc     binary     0.777    10 0.0107  Prepro…
-#>  7    0.00000316            1 accuracy    binary     0.732    10 0.0148  Prepro…
-#>  8    0.00000316            1 brier_class binary     0.164    10 0.00455 Prepro…
-#>  9    0.00000316            1 roc_auc     binary     0.777    10 0.0107  Prepro…
-#> 10    0.000562              1 accuracy    binary     0.732    10 0.0148  Prepro…
+#>  1    0.0000000001          1 accuracy    binary     0.732    10 0.0148  pre0_m…
+#>  2    0.0000000001          1 brier_class binary     0.164    10 0.00455 pre0_m…
+#>  3    0.0000000001          1 roc_auc     binary     0.777    10 0.0107  pre0_m…
+#>  4    0.0000000001          4 accuracy    binary     0.807    10 0.0119  pre0_m…
+#>  5    0.0000000001          4 brier_class binary     0.143    10 0.00681 pre0_m…
+#>  6    0.0000000001          4 roc_auc     binary     0.852    10 0.0110  pre0_m…
+#>  7    0.0000000001          8 accuracy    binary     0.782    10 0.0121  pre0_m…
+#>  8    0.0000000001          8 brier_class binary     0.159    10 0.00884 pre0_m…
+#>  9    0.0000000001          8 roc_auc     binary     0.853    10 0.0144  pre0_m…
+#> 10    0.0000000001         11 accuracy    binary     0.777    10 0.0132  pre0_m…
 #> # ℹ 65 more rows
 ```
 :::
@@ -288,11 +288,11 @@ tree_res %>%
 #> # A tibble: 5 × 8
 #>   cost_complexity tree_depth .metric  .estimator  mean     n std_err .config    
 #>             <dbl>      <int> <chr>    <chr>      <dbl> <int>   <dbl> <chr>      
-#> 1    0.0000000001          4 accuracy binary     0.807    10  0.0119 Preprocess…
-#> 2    0.0000000178          4 accuracy binary     0.807    10  0.0119 Preprocess…
-#> 3    0.00000316            4 accuracy binary     0.807    10  0.0119 Preprocess…
-#> 4    0.000562              4 accuracy binary     0.807    10  0.0119 Preprocess…
-#> 5    0.1                   4 accuracy binary     0.786    10  0.0124 Preprocess…
+#> 1    0.0000000001          4 accuracy binary     0.807    10  0.0119 pre0_mod02…
+#> 2    0.0000000178          4 accuracy binary     0.807    10  0.0119 pre0_mod07…
+#> 3    0.00000316            4 accuracy binary     0.807    10  0.0119 pre0_mod12…
+#> 4    0.000562              4 accuracy binary     0.807    10  0.0119 pre0_mod17…
+#> 5    0.1                   4 accuracy binary     0.786    10  0.0124 pre0_mod22…
 ```
 :::
 
@@ -306,9 +306,9 @@ best_tree <- tree_res %>%
 
 best_tree
 #> # A tibble: 1 × 3
-#>   cost_complexity tree_depth .config              
-#>             <dbl>      <int> <chr>                
-#> 1    0.0000000001          4 Preprocessor1_Model06
+#>   cost_complexity tree_depth .config         
+#>             <dbl>      <int> <chr>           
+#> 1    0.0000000001          4 pre0_mod02_post0
 ```
 :::
 
@@ -360,11 +360,11 @@ final_fit <-
 final_fit %>%
   collect_metrics()
 #> # A tibble: 3 × 4
-#>   .metric     .estimator .estimate .config             
-#>   <chr>       <chr>          <dbl> <chr>               
-#> 1 accuracy    binary         0.802 Preprocessor1_Model1
-#> 2 roc_auc     binary         0.840 Preprocessor1_Model1
-#> 3 brier_class binary         0.148 Preprocessor1_Model1
+#>   .metric     .estimator .estimate .config        
+#>   <chr>       <chr>          <dbl> <chr>          
+#> 1 accuracy    binary         0.802 pre0_mod0_post0
+#> 2 roc_auc     binary         0.840 pre0_mod0_post0
+#> 3 brier_class binary         0.148 pre0_mod0_post0
 
 final_fit %>%
   collect_predictions() %>% 
@@ -471,33 +471,34 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-07
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rpart        4.1.24  2025-01-07 CRAN (R 4.4.1)
-#>  rpart.plot   3.1.2   2024-02-26 CRAN (R 4.4.1)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  vip          0.4.1   2023-08-21 CRAN (R 4.4.0)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  package      version    date (UTC) source
+#>  broom        1.0.9      2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0      2025-09-11 CRAN (R 4.5.0)
+#>  infer        1.0.9      2025-06-26 CRAN (R 4.5.0)
+#>  parsnip      1.3.3      2025-08-31 CRAN (R 4.5.0)
+#>  purrr        1.1.0      2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
+#>  rpart        4.1.24     2025-01-07 CRAN (R 4.5.0)
+#>  rpart.plot   3.1.3      2025-07-26 CRAN (R 4.5.0)
+#>  rsample      1.3.1      2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0      2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0.9000 2025-10-07 local
+#>  vip          0.4.1      2023-08-21 CRAN (R 4.5.0)
+#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
