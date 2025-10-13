@@ -2,6 +2,7 @@
 title: "Automatic calibration splits for resamples"
 categories:
   - post-processing
+  - calibration
   - rsample
 type: learn-subsection
 weight: 6
@@ -32,17 +33,15 @@ pkgs <- c("tidymodels", "rsample")
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 
-## Context
+While preprocessing is the transformation of the predictors prior to a model fit, post-processing is the transformation of the predictions after the model fit. This could be as straightforward as limiting predictions to a certain range of values to as complicated as transforming them based on a separate calibration model. 
 
-We are adding post-processing to tidymodels. One possible post-processing operation is calibration. 
-
-Calibration is a transformation of the predictions from our primary model, based on a separate calibration model. That calibration model is used to model the relationship between the predictions based on the primary model and the true outcomes.
-
-Crucial: To avoid overfitting, we cannot use the same data to fit our calibration model as we use to assess the combination of primary and calibration model. Using the same data to fit the primary model and the calibration model means the predictions used to fit the calibration model are re-predictions of the same observations used to fit the primary model. Hence they are closer to the true values than predictions on new data would be and the calibration model doesn't have accurate information to estimate the right trends (so that they then can be removed).
+A calibration model is used to model the relationship between the predictions based on the primary model and the true outcomes. An additional model means an additional chance to accidentially overfit. So when working with calibration, this is crucial: we cannot use the same data to fit our calibration model as we use to assess the combination of primary and calibration model. Using the same data to fit the primary model and the calibration model means the predictions used to fit the calibration model are re-predictions of the same observations used to fit the primary model. Hence they are closer to the true values than predictions on new data would be and the calibration model doesn't have accurate information to estimate the right trends (so that they then can be removed).
 
 rsample provides a collection of functions to make resamples for empirical validation of prediction models. So far, the assumption was that the prediction model is the only model that needs fitting, i.e., a resample consists of an analysis set and an assessment set.
 
-If we include calibration into our workflow (bundeling preprocessing, (primary) model, and post-processing), we want an analysis set, a calibration set, and an assessment set.
+If we include calibration into our workflow (bundeling preprocessing, (primary) model, and post-processing), we want an analysis set, a calibration set, and an assessment set. 
+
+Here we describe how we create these sets automatically when you resample or tune a workflow with calibration. Note that you currently cannot create manual calibration splits and supply them to the functions in tune, like `fit_resamples()` or `tune_grid()`. If you want to do this, leave us a [feature request](https://github.com/tidymodels/rsample/issues/new?template=feature_request.md).
 
 ## General principles
 
@@ -61,9 +60,11 @@ If you compare a model with calibration to one without, and you use the same res
 knitr::include_graphics("images/analysis-calibration-assessment.jpg")
 ```
 
-It is important to note that including calibration requires more data than fitting a workflow without calibration. For small datasets, you might run into situations where fitting either model (primary model or calibration model) is not particularly stable - or you might not even be able to construct a calibration set properly. In this case, our policy is to avoid erroring. We treat this situation as if no calibration model was used.
+It is important to note that including calibration requires more data than fitting a workflow without calibration. For small datasets, you might run into situations where fitting either model (primary model or calibration model) is not particularly stable - or you might not even be able to construct a calibration set properly.
 
 Second principle: we try to mimick the data splitting process used to create the (outer) analysis set and the assessment set.
+
+And lastly, the third principle: if we cannot make a calibration split, we fall back onto an empty calibration set rather than erroring.
 
 Let's look at v-fold cross-validation as an example.
 
@@ -74,7 +75,7 @@ For v-fold cross-validation, we split the data into `v` folds and create `v` res
 
 Since we want to have a calibration split similar in spirit, we are splitting the (outer) analysis set into (inner) analysis set and calibration set with the same proportion of observations going into the analysis set: 1 - 1/v.
 
-Note: the `internal_calibration_split()` methods are exported to be used by tune but not intended to be user-facing. 
+This tidymodels-internal split of the (outer) analysis set that happens automatically during resampling is implemented in `internal_calibration_split()`. This function has methods for various types of resamples. They are exported to be used by tune but not intended to be user-facing. We are showing them here for illustration purposes.
 
 ```{r}
 #| label: vfold
@@ -83,22 +84,25 @@ set.seed(11)
 r_set <- vfold_cv(warpbreaks, v = 5)
 r_split <- get_rsplit(r_set, 1)
 r_split
+
 # proportion of observations allocated for fitting the model in the outer split
 nrow(analysis(r_split)) / nrow(warpbreaks)
 
 split_cal <- internal_calibration_split(r_split, .get_split_args(r_set))
 split_cal
+
 # similar proportion of observations allocated for fitting the model in the inner split
 nrow(analysis(split_cal)) / nrow(analysis(r_split))
 ```
 
+For most types of resamples, these principles are straightforward to apply. However, for resamples of ordered observations (like time series data) and bootstrap samples, we need to consider additional aspects.
 
 ## Splits for ordered observations
 
 rsample's functions for creating resamples of ordered observations are the `sliding_*()` family: `sliding_window()`, `sliding_index()`, and `sliding_period()`.
 
 - `sliding_window()` operates on the ordered rows, allowing us to specify how far to look back to create an analysis set, how far to look ahead to create an assessment set and then sliding that across the data to create a set of resamples.
-- `sliding_index()` works much the same with the key difference being that what we are sliding over aren't the rows directly but rather an index. This is useful when dealing with irregular series of data: while the number of rows which fall into a window can vary, the window length is the same across all resamples.
+- `sliding_index()` works in much the same way, with the key difference being that what we are sliding over aren't the rows directly but rather an index. This is useful when dealing with irregular series of data: while the number of rows which fall into a window can vary, the window length is the same across all resamples.
 - `sliding_period()` takes the idea of the `sliding_index()` function one step further and aggregates the index into periods before sliding across. This is useful for aggregating, e.g., daily data into months and then defining the analysis and assessment set in terms of months rather than the daily index directly.
 
 ### Row-based splitting
@@ -125,7 +129,7 @@ r_split <- get_rsplit(r_set, 1)
 analysis(r_split)
 ```
 
-To mimick the split into (outer) analysis and assessment set, we'll calculate the proportion of the analysis set and apply it the observations available for fitting both the primary model and the calibration model, creating our (inner) analysis set. Since the remaining observations could be for the calibration model or a gap, we also calculate the proportion of the assessment set and use it to construct the calibration set. 
+To mimick the split into (outer) analysis and assessment set, we'll calculate the proportion of the analysis set and apply it to the observations available for fitting both the primary model and the calibration model, creating our (inner) analysis set. Since the remaining observations could be for the calibration model or a gap, we also calculate the proportion of the assessment set and use it to construct the calibration set. 
 
 ```{r}
 #| label: sliding_window_props
@@ -154,10 +158,6 @@ Calculating the length of the calibration set rather than the gap, together with
 
 However, rounding up for both (inner) analysis and calibration set when we don't have a gap could mean we end up allocating more observations than we actually have. So in that case, we try to take from the calibration set if possible and thus prioritzing fitting the prediction model over the calibration model.
 
-Keep in mind though that this example dataset is pathalogically small for illustration purposes. Of these details, the prioritization of analysis and calibration set over any gap in between them is most likely to be relevant. But even this should not be massively influential for amounts of data typically required for calibration.
-
-Note that we cannot create a calibration split if `lookback = 0`, as this means that we only have a single row to work with.
-
 ```{r}
 #| label: sliding_window_adjustments
 
@@ -169,6 +169,10 @@ if (length_analysis_inner + length_calibration > length_analysis_outer) {
   }
 }
 ```
+
+Keep in mind though that this example dataset is pathalogically small for illustration purposes. Of these details, the prioritization of analysis and calibration set over any gap in between them is most likely to be relevant. But even this should not be massively influential for amounts of data typically required for calibration.
+
+Note that we cannot create a calibration split if `lookback = 0`, as this means that we only have a single row to work with.
 
 From the `length_*`s, we can calculate the new `lookback`, `assess_start`, and `assess_stop` to be applied to the outer analysis set.
 
@@ -183,9 +187,9 @@ analysis(split_cal)
 calibration(split_cal)
 ```
 
-This is the basic principle. 
+This is the basic idea for how we split sliding resamples. 
 
-Apart from the arguments to define the look forwards and backwards, `sliding_window()`has a few more options: `step`, `skip`, `complete`. `step` and `skip` apply on the level of resamples, so we are not applying them to the (inner) split.  With `complete = FALSE`, `sliding_window()` allows you to create incomplete analysis sets (but not assessment sets).
+Apart from the arguments to define the look forwards and backwards, `sliding_window()` has a few more options: `step`, `skip`, and `complete`. The options `step` and `skip` apply on the level of resamples, so we are not applying them to the (inner) split.  With `complete = FALSE`, `sliding_window()` allows you to create incomplete analysis sets (but not assessment sets).
 
 ![](images/incomplete-window.jpg)
 
@@ -259,7 +263,7 @@ r_set <- sliding_index(
 r_set
 ```
 
-For the first resample, this is all well. We just skip over the missing row, both when constructing the split into analysis and assessment set and the split into analysis and calibration set.
+For the first resample, all works well. We just skip over the missing row, both when constructing the split into analysis and assessment set and the split into analysis and calibration set.
 
 ```{r}
 #| label: sliding_index_rsplit_1
@@ -273,13 +277,13 @@ analysis(split_cal)
 calibration(split_cal)
 ```
 
-#### When we can't split
+#### When we can't make a calibration split
 
-Abstracting away from observed rows to a theoretical index does pose two challenges for us though.
+Abstracting away from observed rows to an index does pose two challenges for us though.
 
 For the second resample, the theoretical window for the (outer) analysis set is 2-6. Because it fits within the boundaries of the observed rows (which is 1 to 11), we construct this set, even though we don't observe anything at an index of 2. 
 
-Based on `lookback`, `assess_start`, and `assess_stop`, we calculate the same allocation for the (inner) analysis set and the calibration set as in the previous example working on the rows directly with `sliding_window()`: three for the inner analysis set and two for the calibration set. However, the dataset we want to split only covers the range [3, 6].
+Based on `lookback`, `assess_start`, and `assess_stop`, we calculate the same allocation for the (inner) analysis set and the calibration set as in the previous example, when working on the rows directly with `sliding_window()`: three for the inner analysis set and two for the calibration set. However, the dataset we want to split only covers the range [3, 6].
 
 ```{r}
 #| label: sliding_index_rsplit_2
@@ -288,9 +292,15 @@ r_split <- get_rsplit(r_set, 2)
 analysis(r_split)
 ```
 
-The sliding splits slide over _the data_, meaning they slide over observed values of the index and they slide only within the boundaries of the observed index values. So here, we can only slide within [3, 6] and thus cannot fit an inner analysis set of three and a calibration set of two into it.
+The sliding splits slide over _the data_, meaning they slide over observed values of the index and they slide only within the boundaries of the observed index values. So here, we can only slide within [3, 6] and thus cannot fit an inner analysis set of three and a calibration set of two into it. As established earlier, we fall back onto an empty calibration set in such a situation.
 
-So while we do not observe the lower boundary of our theoretical [2, 6] window, we always observed the upper boundary. That is because "sliding over the observed instances" also means that we will skip over potential splits if we do not observe the value relative to which a split is defined.
+```{r}
+#| label: sliding_index_rsplit_2_fallback
+
+internal_calibration_split(r_split, .get_split_args(r_set))
+```
+
+So while we do not observe the lower boundary of our theoretical [2, 6] window from the (outer) analysis set, we always observed the upper boundary. That is because "sliding over the observed instances" also means that we will skip over potential splits if we do not observe the value relative to which a split is defined.
 
 In our example so far, we've been able to generate two resamples on an index running from 1 to 11. The first resample is defined relative to an index of 5, the second one on 6. If there is no observed index of 6, the windows can't be defined and there is no corresponding split and resample.
 
@@ -345,6 +355,13 @@ r_split <- get_rsplit(r_set, 1)
 internal_calibration_split(r_split, .get_split_args(r_set))
 ```
 
+Sliding over the observed index values means that we cannot make a calibration split in two situations:
+
+- We don't observe the index value at the lower boundary of the (outer) analysis set.
+- We don't observe the index value relative to which the calibration split would be defined.
+
+In these situations, we fall back onto an empty calibration set rather than erroring.
+
 We expect this to not be relevant in practice too often, as chances of this happening are lower with more observations and we assume you are only attempting calibration with sufficiently large datasets.
 
 
@@ -354,9 +371,9 @@ For the third sliding function in the family, we first aggregate the index to pe
 
 ![](images/calibration-split-period.jpg)
 
-The principle of how to contruct a calibration split on the (outer) analysis set remains the same. The challenges of abstracting away from the rows, i.e., the observations directly, as illustrated for sliding over an index also remain. We observe a period, if we observe an index within that period. 
+The principle of how to contruct a calibration split on the (outer) analysis set remains the same. The challenges of abstracting away from the rows, as illustrated for sliding over observed instances of an index also remain. Here, we slide over observed periods. We observe a period, if we observe an index within that period. 
 
-For `lookback = 0`, we remain unable to make a calibration split. However, it is possible to choose a smaller period when defining the resamples, e.g., using weeks instead of months when aggregating daily data. In that case, the calibration split is also defined in terms of weeks, rather than failing to split a single month on the scale of months.
+For `lookback = 0`, we remain unable to make a calibration split. However, it is possible to choose a smaller period when defining the resamples, e.g., using weeks instead of months when aggregating daily data. In that case, the calibration split is also defined in terms of weeks, rather than months, and thus failing to split a single month.
 
 Now that we've looked at the principles at play here on very small datasets, let's look at a dataset with a sufficient amount of observations to consider using calibration. The `Chicago` dataset has daily ridership numbers for over 15 years. Here we are constructing resamples which use 2 weeks worth of data for the assessment set, and roughly 15 years (52*15 weeks) for the analysis set. That's enough to use some of those observations for a calibration set!
 
@@ -404,21 +421,58 @@ range(chicago_cal$date)
 
 For bootstrap samples, our goal of avoiding overfitting means we need to refine our approach to making calibration splits a little further. 
 
-If our (outer) analysis set is a bootstrap sample of the training data, it likely contains several replications of an observation. 
+If our (outer) analysis set is a bootstrap sample of the training data, it likely contains several replications of an observation. In the illustration below, the first row of the original data is sampled twice into the (outer) analysis set, the second row three times, and the fourth row also twice.
 
-![](images/bootstrap-resample.jpg)
+```{r}
+#| label: bootstrap-resample
+#| echo: false
+#| out.width: 700
+#| fig.align: "center"
+knitr::include_graphics("images/bootstrap-resample.jpg")
+```
 
-We don't want those to be split up into the inner analysis and the calibration set. Simply creating another bootstrap resample from the (outer) analysis set makes it likely for this to happen. In the example illustration below, the third row (`2-1`) of the (outer) analysis set is sampled twice into the (inner) analysis set. The fourth (`2-2`) and fifth (`2-3`) row are not sampled and thus are put into the calibration set. However, all those rows are actually the same row, hence we have the same row in both the (inner) analysis set and the calibration set.
+We don't want those duplicates to be split up into the inner analysis and the calibration set. Simply creating another bootstrap resample from the (outer) analysis set makes it possible for this to happen. 
 
-![](images/bootstrap-regular.jpg)
+In the example illustration below, the third row of the (outer) analysis set is labeled `2-1`, as it is the first intance of row 2 from the original data. The other two instances of this row in the (outer) analysis set are labeled `2-2` and `2-3`. In the example, the `2-1` row gets sampled into the (inner) analysis set twice, while `2-2` and `2-3` are not sampled and thus end up in the calibration set. This means that row 2 from the original data is now in both the (inner) analysis set and the calibration set.
+
+```{r}
+#| label: bootstrap-regular
+#| echo: false
+#| out.width: 700
+#| fig.align: "center"
+knitr::include_graphics("images/bootstrap-regular.jpg")
+```
 
 To avoid this, we could do a grouped resampling with the row ID as the group. Then all replications of a row would end up in the same set, either (inner) analysis or calibration. However, this would mean that rows in the calibration set are potentially not unique, unlike the typical bootstrap OOB sample.
 
-![](images/bootstrap-grouped.jpg)
+```{r}
+#| label: bootstrap-grouped
+#| echo: false
+#| out.width: 700
+#| fig.align: "center"
+knitr::include_graphics("images/bootstrap-grouped.jpg")
+```
 
-To prevent both these potential issues, we create the calibration split by sampling the (inner) analysis set, with replacement, from the pool of unique rows in the (outer) analysis set. 
+To prevent both these potential issues, we create the calibration split by sampling the (inner) analysis set, with replacement, from the pool of unique rows in the (outer) analysis set. The calibration set then consists of the rows in the (outer) analysis set that were not sampled into the (inner) analysis set, like for a typicall OOB sample.
 
-![](images/bootstrap-modified.jpg)
+```{r}
+#| label: bootstrap-modified
+#| echo: false
+#| out.width: 700
+#| fig.align: "center"
+knitr::include_graphics("images/bootstrap-modified.jpg")
+```
 
+## Summary
 
+When using calibration, we typically need generous amounts of data because we need separate data for each of these tasks: fit the primary model, fit the calibration model, and assess performance. 
+When tuning or resampling a workflow with calibration, tidymodels will automatically turn classic resamples (consisting of an analysis and an assessment set) into resamples which include a calibration set in addition to the analysis and assessment set. This is done according to the following principles: 
 
+- The assessment set remains untouched, while the analysis set is split into an (inner) analysis set and a calibration set. 
+- The inner calibration split mimicks the outer split (into analysis and assesment set) as closely as possible.
+- If we can't make a calibration split based on these basic principles, we skip the calibration.
+
+For sliding splits of ordered data, applying those principles is a bit more complex than for other types of splits as the outer split into analysis and assessment is already a bit more complex. We've laid out the details of this here for reference.
+For bootstrap splits, we don't directly split the (outer) analysis set but rather sample the (inner) analysis set from the unique rows in the (outer) analysis set to avoid data leakage between (inner) analysis and calibration set.
+
+If you need to make manual calibration splits, please leave us a [feature request](https://github.com/tidymodels/rsample/issues/new?template=feature_request.md).
