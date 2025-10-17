@@ -13,6 +13,8 @@ toc-depth: 2
 include-after-body: ../../../resources.html
 ---
 
+  
+
 ## Introduction
 
 To use code in this article,  you will need to install the following packages: AppliedPredictiveModeling, brulee, and tidymodels. You will also need the python torch library installed (see `?torch::install_torch()`).
@@ -91,7 +93,7 @@ nnet_fit %>% extract_fit_engine()
 #> dropout proportion: 0 
 #> batch size: 2000 
 #> learn rate: 0.1 
-#> training set loss after 23 epochs: 0.371
+#> training set loss after 357 epochs: 0.273
 ```
 :::
 
@@ -110,29 +112,29 @@ val_results <-
   )
 val_results %>% slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
-#> 1 0.7632082 -0.04012164 Class2      Class2   0.05010979   0.94989026
-#> 2 0.9823745 -0.16911637 Class2      Class2   0.05164897   0.94835109
-#> 3 1.0558147  0.52817699 Class2      Class2   0.08610570   0.91389424
-#> 4 1.2424507  1.10902951 Class2      Class2   0.32576966   0.67423034
-#> 5 1.5889815  2.71047720 Class1      Class1   0.98509037   0.01490961
+#> 1 0.7632082 -0.04012164 Class2      Class2   0.08089217 9.191078e-01
+#> 2 0.9823745 -0.16911637 Class2      Class2   0.04854832 9.514517e-01
+#> 3 1.0558147  0.52817699 Class2      Class2   0.06738601 9.326140e-01
+#> 4 1.2424507  1.10902951 Class2      Class2   0.22854454 7.714555e-01
+#> 5 1.5889815  2.71047720 Class1      Class1   1.00000000 8.737970e-11
 
 val_results %>% roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 roc_auc binary         0.958
+#> 1 roc_auc binary         0.955
 
 val_results %>% accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.908
+#> 1 accuracy binary          0.91
 
 val_results %>% conf_mat(truth = class, .pred_class)
 #>           Truth
 #> Prediction Class1 Class2
-#>     Class1    173     17
-#>     Class2     29    281
+#>     Class1    173     16
+#>     Class2     29    282
 ```
 :::
 
@@ -170,32 +172,33 @@ ggplot(x_grid, aes(x = A, y = B)) +
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-17
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package                     version date (UTC) source
-#>  AppliedPredictiveModeling   1.1-7   2018-05-22 CRAN (R 4.4.0)
-#>  broom                       1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  brulee                      0.4.0   2025-01-30 CRAN (R 4.4.1)
-#>  dials                       1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr                       1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2                     3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer                       1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  parsnip                     1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr                       1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes                     1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang                       1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample                     1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble                      3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels                  1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune                        1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows                   1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick                   1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  AppliedPredictiveModeling   1.1-7   2018-05-22 CRAN (R 4.5.0)
+#>  broom                       1.0.9   2025-07-28 CRAN (R 4.5.0)
+#>  brulee                      0.6.0   2025-09-02 CRAN (R 4.5.0)
+#>  dials                       1.4.2   2025-09-04 CRAN (R 4.5.0)
+#>  dplyr                       1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2                     4.0.0   2025-09-11 CRAN (R 4.5.0)
+#>  infer                       1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  parsnip                     1.3.3   2025-08-31 CRAN (R 4.5.0)
+#>  purrr                       1.1.0   2025-07-10 CRAN (R 4.5.0)
+#>  recipes                     1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang                       1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample                     1.3.1   2025-07-29 CRAN (R 4.5.0)
+#>  tibble                      3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels                  1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune                        2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  workflows                   1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick                   1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

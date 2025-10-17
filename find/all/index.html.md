@@ -22,3 +22,4 @@ Here are all the functions available across all of the tidymodels packages. Clic
 
 :::
 :::
+

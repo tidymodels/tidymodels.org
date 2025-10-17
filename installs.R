@@ -84,7 +84,8 @@ pak::pak(packages)
 # Manually check for dev versions
 # sub("rstudio/", "", packages) |>
 #   setdiff(c()) |>
-#   sapply(packageVersion)
+#   sapply(packageVersion) |>
+#   purrr::keep(\(x) any(x >= 9000))
 
 # Running `library(brulee)` will trigger installation of torch
 library(brulee)

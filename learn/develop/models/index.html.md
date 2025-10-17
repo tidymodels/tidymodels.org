@@ -646,13 +646,6 @@ cv <- vfold_cv(example_train)
 mda_tune_res <- mda_spec %>%
   tune_grid(Class ~ ., cv, grid = 4)
 show_best(mda_tune_res, metric = "roc_auc")
-#> # A tibble: 4 × 7
-#>   sub_classes .metric .estimator  mean     n std_err .config             
-#>         <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-#> 1           1 roc_auc binary     0.890    10  0.0149 Preprocessor1_Model2
-#> 2           4 roc_auc binary     0.887    10  0.0148 Preprocessor1_Model3
-#> 3          10 roc_auc binary     0.885    10  0.0141 Preprocessor1_Model4
-#> 4           7 roc_auc binary     0.884    10  0.0137 Preprocessor1_Model1
 ```
 :::
 
@@ -831,32 +824,34 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-17
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  mda          0.5-5   2024-11-07 CRAN (R 4.4.1)
-#>  modeldata    1.4.0   2024-06-19 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  broom        1.0.9   2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2   2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0   2025-09-11 CRAN (R 4.5.0)
+#>  infer        1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  mda          0.5-5   2024-11-07 CRAN (R 4.5.0)
+#>  modeldata    1.5.1   2025-08-22 CRAN (R 4.5.0)
+#>  parsnip      1.3.3   2025-08-31 CRAN (R 4.5.0)
+#>  purrr        1.1.0   2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
+ 

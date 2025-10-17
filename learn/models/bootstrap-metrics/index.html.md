@@ -121,6 +121,11 @@ mars_res <-
     grid = grid,
     control = ctrl
   )
+#> 
+#> Attaching package: 'plotrix'
+#> The following object is masked from 'package:scales':
+#> 
+#>     rescale
 ```
 :::
 
@@ -156,20 +161,22 @@ There's a tidymodels function called `int_pctl()` for this purpose. It has a met
 ```{.r .cell-code}
 set.seed(140)
 mars_boot <- int_pctl(mars_res, alpha = 0.10)
+#> Warning: Too little data to stratify.
+#> • Resampling will be unstratified.
 mars_boot
 #> # A tibble: 98 × 7
-#>    .metric .estimator .lower .estimate .upper .config               num_terms
-#>    <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>                     <int>
-#>  1 rmse    bootstrap  6.57      6.79   7.02   Preprocessor1_Model01         2
-#>  2 rsq     bootstrap  0.0462    0.0599 0.0746 Preprocessor1_Model01         2
-#>  3 rmse    bootstrap  4.71      4.96   5.22   Preprocessor1_Model02         3
-#>  4 rsq     bootstrap  0.468     0.497  0.527  Preprocessor1_Model02         3
-#>  5 rmse    bootstrap  3.99      4.15   4.32   Preprocessor1_Model03         4
-#>  6 rsq     bootstrap  0.624     0.649  0.674  Preprocessor1_Model03         4
-#>  7 rmse    bootstrap  3.78      3.94   4.12   Preprocessor1_Model04         5
-#>  8 rsq     bootstrap  0.657     0.683  0.706  Preprocessor1_Model04         5
-#>  9 rmse    bootstrap  3.54      3.70   3.88   Preprocessor1_Model05         6
-#> 10 rsq     bootstrap  0.699     0.721  0.741  Preprocessor1_Model05         6
+#>    num_terms .metric .estimator .lower .estimate .upper .config         
+#>        <int> <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>           
+#>  1         2 rmse    bootstrap    6.56      6.79   7.01 pre0_mod01_post0
+#>  2         3 rmse    bootstrap    4.73      4.97   5.23 pre0_mod02_post0
+#>  3         4 rmse    bootstrap    3.99      4.15   4.31 pre0_mod03_post0
+#>  4         5 rmse    bootstrap    3.79      3.95   4.12 pre0_mod04_post0
+#>  5         6 rmse    bootstrap    3.53      3.70   3.89 pre0_mod05_post0
+#>  6         7 rmse    bootstrap    3.20      3.36   3.54 pre0_mod06_post0
+#>  7         8 rmse    bootstrap    3.20      3.36   3.54 pre0_mod07_post0
+#>  8         9 rmse    bootstrap    3.03      3.19   3.37 pre0_mod08_post0
+#>  9        10 rmse    bootstrap    3.01      3.18   3.37 pre0_mod09_post0
+#> 10        11 rmse    bootstrap    2.82      2.99   3.17 pre0_mod10_post0
 #> # ℹ 88 more rows
 ```
 :::
@@ -212,10 +219,10 @@ mars_test_res <-
 
 collect_metrics(mars_test_res)
 #> # A tibble: 2 × 4
-#>   .metric .estimator .estimate .config             
-#>   <chr>   <chr>          <dbl> <chr>               
-#> 1 rmse    standard       2.20  Preprocessor1_Model1
-#> 2 rsq     standard       0.892 Preprocessor1_Model1
+#>   .metric .estimator .estimate .config        
+#>   <chr>   <chr>          <dbl> <chr>          
+#> 1 rmse    standard       2.20  pre0_mod0_post0
+#> 2 rsq     standard       0.892 pre0_mod0_post0
 ```
 :::
 
@@ -226,10 +233,10 @@ These values are pretty consistent with what the validation set (and its confide
 ```{.r .cell-code}
 mars_boot %>% filter(num_terms == 40)
 #> # A tibble: 2 × 7
-#>   .metric .estimator .lower .estimate .upper .config               num_terms
-#>   <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>                     <int>
-#> 1 rmse    bootstrap   2.11      2.20   2.28  Preprocessor1_Model39        40
-#> 2 rsq     bootstrap   0.894     0.902  0.909 Preprocessor1_Model39        40
+#>   num_terms .metric .estimator .lower .estimate .upper .config         
+#>       <int> <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>           
+#> 1        40 rmse    bootstrap   2.11      2.19   2.29  pre0_mod39_post0
+#> 2        40 rsq     bootstrap   0.893     0.902  0.910 pre0_mod39_post0
 ```
 :::
 
@@ -242,10 +249,10 @@ set.seed(168)
 mars_test_boot <- int_pctl(mars_test_res, alpha = 0.10)
 mars_test_boot
 #> # A tibble: 2 × 6
-#>   .metric .estimator .lower .estimate .upper .config             
-#>   <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>               
-#> 1 rmse    bootstrap   2.12      2.20   2.28  Preprocessor1_Model1
-#> 2 rsq     bootstrap   0.883     0.892  0.900 Preprocessor1_Model1
+#>   .metric .estimator .lower .estimate .upper .config        
+#>   <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>          
+#> 1 rmse    bootstrap   2.11      2.20   2.27  pre0_mod0_post0
+#> 2 rsq     bootstrap   0.883     0.892  0.900 pre0_mod0_post0
 ```
 :::
 
@@ -271,31 +278,32 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-17
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC) source
-#>  broom        1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  dials        1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  earth        5.3.4   2024-10-05 CRAN (R 4.4.1)
-#>  ggplot2      3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  infer        1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  parsnip      1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr        1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes      1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang        1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample      1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble       3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune         1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows    1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  broom        1.0.9   2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2   2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  earth        5.3.4   2024-10-05 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0   2025-09-11 CRAN (R 4.5.0)
+#>  infer        1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  parsnip      1.3.3   2025-08-31 CRAN (R 4.5.0)
+#>  purrr        1.1.0   2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
