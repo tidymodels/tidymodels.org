@@ -349,29 +349,29 @@ augment(recipe_res) %>%
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-10-07
+#>  date     2025-10-17
 #>  pandoc   3.6.3
 #>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version    date (UTC) source
-#>  broom        1.0.9      2025-07-28 CRAN (R 4.5.0)
-#>  dials        1.4.2      2025-09-04 CRAN (R 4.5.0)
-#>  dplyr        1.1.4      2023-11-17 CRAN (R 4.5.0)
-#>  ggplot2      4.0.0      2025-09-11 CRAN (R 4.5.0)
-#>  infer        1.0.9      2025-06-26 CRAN (R 4.5.0)
-#>  kernlab      0.9-33     2024-08-13 CRAN (R 4.5.0)
-#>  mlbench      2.1-6      2024-12-30 CRAN (R 4.5.0)
-#>  parsnip      1.3.3      2025-08-31 CRAN (R 4.5.0)
-#>  purrr        1.1.0      2025-07-10 CRAN (R 4.5.0)
-#>  recipes      1.3.1      2025-05-21 CRAN (R 4.5.0)
-#>  rlang        1.1.6      2025-04-11 CRAN (R 4.5.0)
-#>  rsample      1.3.1      2025-07-29 CRAN (R 4.5.0)
-#>  tibble       3.3.0      2025-06-08 CRAN (R 4.5.0)
-#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
-#>  tune         2.0.0.9000 2025-10-07 local
-#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
-#>  yardstick    1.3.2      2025-01-22 CRAN (R 4.5.0)
+#>  package      version date (UTC) source
+#>  broom        1.0.9   2025-07-28 CRAN (R 4.5.0)
+#>  dials        1.4.2   2025-09-04 CRAN (R 4.5.0)
+#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2      4.0.0   2025-09-11 CRAN (R 4.5.0)
+#>  infer        1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  kernlab      0.9-33  2024-08-13 CRAN (R 4.5.0)
+#>  mlbench      2.1-6   2024-12-30 CRAN (R 4.5.0)
+#>  parsnip      1.3.3   2025-08-31 CRAN (R 4.5.0)
+#>  purrr        1.1.0   2025-07-10 CRAN (R 4.5.0)
+#>  recipes      1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
+#>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

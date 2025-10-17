@@ -484,7 +484,7 @@ ames_aov_fstat_res@results
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-10-07
+#>  date     2025-10-17
 #>  pandoc   3.6.3
 #>  quarto   1.8.25
 #> 
