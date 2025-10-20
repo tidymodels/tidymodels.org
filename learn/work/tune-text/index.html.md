@@ -246,7 +246,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 20.72 sec elapsed
+#> 149.651 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -254,11 +254,11 @@ five_star_glmnet
 #> # A tibble: 5 × 5
 #>   splits             id    .metrics           .notes           .extracts
 #>   <list>             <chr> <list>             <list>           <list>   
-#> 1 <split [3200/800]> Fold1 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
-#> 2 <split [3200/800]> Fold2 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
-#> 3 <split [3200/800]> Fold3 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
-#> 4 <split [3200/800]> Fold4 <tibble [300 × 7]> <tibble [0 × 3]> <tibble> 
-#> 5 <split [3200/800]> Fold5 <tibble [300 × 7]> <tibble [0 × 3]> <tibble>
+#> 1 <split [3200/800]> Fold1 <tibble [300 × 7]> <tibble [0 × 4]> <tibble> 
+#> 2 <split [3200/800]> Fold2 <tibble [300 × 7]> <tibble [0 × 4]> <tibble> 
+#> 3 <split [3200/800]> Fold3 <tibble [300 × 7]> <tibble [0 × 4]> <tibble> 
+#> 4 <split [3200/800]> Fold4 <tibble [300 × 7]> <tibble [0 × 4]> <tibble> 
+#> 5 <split [3200/800]> Fold5 <tibble [300 × 7]> <tibble [0 × 4]> <tibble>
 ```
 :::
 
@@ -274,16 +274,16 @@ grid_roc
 #> # A tibble: 300 × 9
 #>    penalty mixture num_terms .metric .estimator  mean     n std_err .config     
 #>      <dbl>   <dbl>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>       
-#>  1 0.483      0.01      4096 roc_auc binary     0.800     5 0.00580 Preprocesso…
-#>  2 0.695      0.01      4096 roc_auc binary     0.799     5 0.00650 Preprocesso…
-#>  3 0.336      0.01      4096 roc_auc binary     0.798     5 0.00490 Preprocesso…
-#>  4 0.0264     0.25      4096 roc_auc binary     0.796     5 0.00221 Preprocesso…
-#>  5 0.234      0.01      4096 roc_auc binary     0.795     5 0.00459 Preprocesso…
-#>  6 0.0379     0.25      4096 roc_auc binary     0.794     5 0.00363 Preprocesso…
-#>  7 0.0546     0.25      4096 roc_auc binary     0.794     5 0.00621 Preprocesso…
-#>  8 0.0127     0.5       4096 roc_auc binary     0.794     5 0.00209 Preprocesso…
-#>  9 0.0183     0.5       4096 roc_auc binary     0.793     5 0.00316 Preprocesso…
-#> 10 0.00886    0.75      4096 roc_auc binary     0.793     5 0.00209 Preprocesso…
+#>  1 0.483      0.01      4096 roc_auc binary     0.800     5 0.00580 pre3_mod086…
+#>  2 0.695      0.01      4096 roc_auc binary     0.799     5 0.00650 pre3_mod091…
+#>  3 0.336      0.01      4096 roc_auc binary     0.798     5 0.00490 pre3_mod081…
+#>  4 0.0264     0.25      4096 roc_auc binary     0.796     5 0.00221 pre3_mod047…
+#>  5 0.234      0.01      4096 roc_auc binary     0.795     5 0.00459 pre3_mod076…
+#>  6 0.0379     0.25      4096 roc_auc binary     0.794     5 0.00363 pre3_mod052…
+#>  7 0.0546     0.25      4096 roc_auc binary     0.794     5 0.00621 pre3_mod057…
+#>  8 0.0127     0.5       4096 roc_auc binary     0.794     5 0.00209 pre3_mod038…
+#>  9 0.0183     0.5       4096 roc_auc binary     0.793     5 0.00316 pre3_mod043…
+#> 10 0.00886    0.75      4096 roc_auc binary     0.793     5 0.00209 pre3_mod034…
 #> # ℹ 290 more rows
 ```
 :::
@@ -350,14 +350,12 @@ Then we can extract and manipulate the corresponding parameter set:
 ```{.r .cell-code}
 five_star_set <-
   five_star_wflow %>%
-  parameters() %>%
+  extract_parameter_set_dials() %>%
   update(
     num_terms = hash_range, 
     penalty = penalty(c(-3, 0)),
     mixture = mixture(c(0.05, 1.00))
   )
-#> Warning: `parameters.workflow()` was deprecated in tune 0.1.6.9003.
-#> ℹ Please use `hardhat::extract_parameter_set_dials()` instead.
 ```
 :::
 
@@ -398,7 +396,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.7822 (@iter 0)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.01
@@ -411,7 +408,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.7822 (@iter 0)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.007788
@@ -424,7 +420,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.7822 (@iter 0)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.006065
@@ -437,7 +432,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.7996 (@iter 3)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.004724
@@ -450,7 +444,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.7996 (@iter 3)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.003679
@@ -463,7 +456,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.7996 (@iter 3)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.002865
@@ -476,7 +468,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.8002 (@iter 6)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.002231
@@ -489,7 +480,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.8022 (@iter 7)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001738
@@ -502,7 +492,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.8022 (@iter 7)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001353
@@ -515,7 +504,6 @@ five_star_search <-
 #> 
 #> i Current best:		roc_auc=0.8022 (@iter 7)
 #> i Gaussian process model
-#> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
 #> i Trade-off value: 0.001054
@@ -530,16 +518,16 @@ five_star_search
 #> # A tibble: 55 × 5
 #>    splits             id    .metrics         .notes           .iter
 #>    <list>             <chr> <list>           <list>           <int>
-#>  1 <split [3200/800]> Fold1 <tibble [5 × 7]> <tibble [0 × 3]>     0
-#>  2 <split [3200/800]> Fold2 <tibble [5 × 7]> <tibble [0 × 3]>     0
-#>  3 <split [3200/800]> Fold3 <tibble [5 × 7]> <tibble [0 × 3]>     0
-#>  4 <split [3200/800]> Fold4 <tibble [5 × 7]> <tibble [0 × 3]>     0
-#>  5 <split [3200/800]> Fold5 <tibble [5 × 7]> <tibble [0 × 3]>     0
-#>  6 <split [3200/800]> Fold1 <tibble [1 × 7]> <tibble [0 × 3]>     1
-#>  7 <split [3200/800]> Fold2 <tibble [1 × 7]> <tibble [0 × 3]>     1
-#>  8 <split [3200/800]> Fold3 <tibble [1 × 7]> <tibble [0 × 3]>     1
-#>  9 <split [3200/800]> Fold4 <tibble [1 × 7]> <tibble [0 × 3]>     1
-#> 10 <split [3200/800]> Fold5 <tibble [1 × 7]> <tibble [0 × 3]>     1
+#>  1 <split [3200/800]> Fold1 <tibble [5 × 7]> <tibble [0 × 4]>     0
+#>  2 <split [3200/800]> Fold2 <tibble [5 × 7]> <tibble [0 × 4]>     0
+#>  3 <split [3200/800]> Fold3 <tibble [5 × 7]> <tibble [0 × 4]>     0
+#>  4 <split [3200/800]> Fold4 <tibble [5 × 7]> <tibble [0 × 4]>     0
+#>  5 <split [3200/800]> Fold5 <tibble [5 × 7]> <tibble [0 × 4]>     0
+#>  6 <split [3200/800]> Fold1 <tibble [1 × 7]> <tibble [0 × 4]>     1
+#>  7 <split [3200/800]> Fold2 <tibble [1 × 7]> <tibble [0 × 4]>     1
+#>  8 <split [3200/800]> Fold3 <tibble [1 × 7]> <tibble [0 × 4]>     1
+#>  9 <split [3200/800]> Fold4 <tibble [1 × 7]> <tibble [0 × 4]>     1
+#> 10 <split [3200/800]> Fold5 <tibble [1 × 7]> <tibble [0 × 4]>     1
 #> # ℹ 45 more rows
 ```
 :::
@@ -572,9 +560,9 @@ Let's return to the grid search results and examine the results of our `extract`
 params <- select_best(five_star_glmnet, metric = "roc_auc")
 params
 #> # A tibble: 1 × 4
-#>   penalty mixture num_terms .config               
-#>     <dbl>   <dbl>     <dbl> <chr>                 
-#> 1   0.483    0.01      4096 Preprocessor3_Model018
+#>   penalty mixture num_terms .config          
+#>     <dbl>   <dbl>     <dbl> <chr>            
+#> 1   0.483    0.01      4096 pre3_mod086_post0
 ```
 :::
 
@@ -585,18 +573,18 @@ Recall that we saved the glmnet results in a tibble. The column `five_star_glmne
 ```{.r .cell-code}
 five_star_glmnet$.extracts[[1]]
 #> # A tibble: 300 × 5
-#>    num_terms penalty mixture .extracts          .config               
-#>        <dbl>   <dbl>   <dbl> <list>             <chr>                 
-#>  1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model001
-#>  2       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model002
-#>  3       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model003
-#>  4       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model004
-#>  5       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model005
-#>  6       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model006
-#>  7       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model007
-#>  8       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model008
-#>  9       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model009
-#> 10       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model010
+#>    penalty mixture num_terms .extracts          .config          
+#>      <dbl>   <dbl>     <dbl> <list>             <chr>            
+#>  1 0.001      0.01       256 <tibble [100 × 2]> pre1_mod001_post0
+#>  2 0.001      0.25       256 <tibble [91 × 2]>  pre1_mod002_post0
+#>  3 0.001      0.5        256 <tibble [74 × 2]>  pre1_mod003_post0
+#>  4 0.001      0.75       256 <tibble [69 × 2]>  pre1_mod004_post0
+#>  5 0.001      1          256 <tibble [68 × 2]>  pre1_mod005_post0
+#>  6 0.00144    0.01       256 <tibble [100 × 2]> pre1_mod006_post0
+#>  7 0.00144    0.25       256 <tibble [91 × 2]>  pre1_mod007_post0
+#>  8 0.00144    0.5        256 <tibble [74 × 2]>  pre1_mod008_post0
+#>  9 0.00144    0.75       256 <tibble [69 × 2]>  pre1_mod009_post0
+#> 10 0.00144    1          256 <tibble [68 × 2]>  pre1_mod010_post0
 #> # ℹ 290 more rows
 ```
 :::
@@ -613,18 +601,18 @@ extracted <-
   unnest(cols = .extracts)
 extracted
 #> # A tibble: 1,500 × 6
-#>    id    num_terms penalty mixture .extracts          .config               
-#>    <chr>     <dbl>   <dbl>   <dbl> <list>             <chr>                 
-#>  1 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model001
-#>  2 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model002
-#>  3 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model003
-#>  4 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model004
-#>  5 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model005
-#>  6 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model006
-#>  7 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model007
-#>  8 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model008
-#>  9 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model009
-#> 10 Fold1       256       1    0.01 <tibble [100 × 2]> Preprocessor1_Model010
+#>    id    penalty mixture num_terms .extracts          .config          
+#>    <chr>   <dbl>   <dbl>     <dbl> <list>             <chr>            
+#>  1 Fold1 0.001      0.01       256 <tibble [100 × 2]> pre1_mod001_post0
+#>  2 Fold1 0.001      0.25       256 <tibble [91 × 2]>  pre1_mod002_post0
+#>  3 Fold1 0.001      0.5        256 <tibble [74 × 2]>  pre1_mod003_post0
+#>  4 Fold1 0.001      0.75       256 <tibble [69 × 2]>  pre1_mod004_post0
+#>  5 Fold1 0.001      1          256 <tibble [68 × 2]>  pre1_mod005_post0
+#>  6 Fold1 0.00144    0.01       256 <tibble [100 × 2]> pre1_mod006_post0
+#>  7 Fold1 0.00144    0.25       256 <tibble [91 × 2]>  pre1_mod007_post0
+#>  8 Fold1 0.00144    0.5        256 <tibble [74 × 2]>  pre1_mod008_post0
+#>  9 Fold1 0.00144    0.75       256 <tibble [69 × 2]>  pre1_mod009_post0
+#> 10 Fold1 0.00144    1          256 <tibble [68 × 2]>  pre1_mod010_post0
 #> # ℹ 1,490 more rows
 ```
 :::
@@ -642,18 +630,18 @@ extracted <-
   dplyr::select(-penalty)
 extracted
 #> # A tibble: 100 × 6
-#>    id    num_terms mixture .extracts          .config.x              .config.y  
-#>    <chr>     <dbl>   <dbl> <list>             <chr>                  <chr>      
-#>  1 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model001 Preprocess…
-#>  2 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model002 Preprocess…
-#>  3 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model003 Preprocess…
-#>  4 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model004 Preprocess…
-#>  5 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model005 Preprocess…
-#>  6 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model006 Preprocess…
-#>  7 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model007 Preprocess…
-#>  8 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model008 Preprocess…
-#>  9 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model009 Preprocess…
-#> 10 Fold1      4096    0.01 <tibble [100 × 2]> Preprocessor3_Model010 Preprocess…
+#>    id    mixture num_terms .extracts          .config.x         .config.y       
+#>    <chr>   <dbl>     <dbl> <list>             <chr>             <chr>           
+#>  1 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod001_post0 pre3_mod086_pos…
+#>  2 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod006_post0 pre3_mod086_pos…
+#>  3 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod011_post0 pre3_mod086_pos…
+#>  4 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod016_post0 pre3_mod086_pos…
+#>  5 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod021_post0 pre3_mod086_pos…
+#>  6 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod026_post0 pre3_mod086_pos…
+#>  7 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod031_post0 pre3_mod086_pos…
+#>  8 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod036_post0 pre3_mod086_pos…
+#>  9 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod041_post0 pre3_mod086_pos…
+#> 10 Fold1    0.01      4096 <tibble [100 × 2]> pre3_mod046_post0 pre3_mod086_pos…
 #> # ℹ 90 more rows
 ```
 :::
@@ -668,18 +656,18 @@ extracted <-
   unnest(col = .extracts) # <- these contain a `penalty` column
 extracted
 #> # A tibble: 10,000 × 7
-#>    id    num_terms mixture penalty num_vars .config.x              .config.y    
-#>    <chr>     <dbl>   <dbl>   <dbl>    <int> <chr>                  <chr>        
-#>  1 Fold1      4096    0.01    8.80        0 Preprocessor3_Model001 Preprocessor…
-#>  2 Fold1      4096    0.01    8.40        2 Preprocessor3_Model001 Preprocessor…
-#>  3 Fold1      4096    0.01    8.02        2 Preprocessor3_Model001 Preprocessor…
-#>  4 Fold1      4096    0.01    7.66        2 Preprocessor3_Model001 Preprocessor…
-#>  5 Fold1      4096    0.01    7.31        2 Preprocessor3_Model001 Preprocessor…
-#>  6 Fold1      4096    0.01    6.98        3 Preprocessor3_Model001 Preprocessor…
-#>  7 Fold1      4096    0.01    6.66        3 Preprocessor3_Model001 Preprocessor…
-#>  8 Fold1      4096    0.01    6.36        6 Preprocessor3_Model001 Preprocessor…
-#>  9 Fold1      4096    0.01    6.07        6 Preprocessor3_Model001 Preprocessor…
-#> 10 Fold1      4096    0.01    5.79        7 Preprocessor3_Model001 Preprocessor…
+#>    id    mixture num_terms penalty num_vars .config.x         .config.y        
+#>    <chr>   <dbl>     <dbl>   <dbl>    <int> <chr>             <chr>            
+#>  1 Fold1    0.01      4096    8.80        0 pre3_mod001_post0 pre3_mod086_post0
+#>  2 Fold1    0.01      4096    8.40        2 pre3_mod001_post0 pre3_mod086_post0
+#>  3 Fold1    0.01      4096    8.02        2 pre3_mod001_post0 pre3_mod086_post0
+#>  4 Fold1    0.01      4096    7.66        2 pre3_mod001_post0 pre3_mod086_post0
+#>  5 Fold1    0.01      4096    7.31        2 pre3_mod001_post0 pre3_mod086_post0
+#>  6 Fold1    0.01      4096    6.98        3 pre3_mod001_post0 pre3_mod086_post0
+#>  7 Fold1    0.01      4096    6.66        3 pre3_mod001_post0 pre3_mod086_post0
+#>  8 Fold1    0.01      4096    6.36        6 pre3_mod001_post0 pre3_mod086_post0
+#>  9 Fold1    0.01      4096    6.07        6 pre3_mod001_post0 pre3_mod086_post0
+#> 10 Fold1    0.01      4096    5.79        7 pre3_mod001_post0 pre3_mod086_post0
 #> # ℹ 9,990 more rows
 ```
 :::
@@ -710,32 +698,33 @@ These results might help guide the choice of the `penalty` range if more optimiz
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-25
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-17
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package       version    date (UTC) source
-#>  broom         1.0.7      2024-09-26 CRAN (R 4.4.1)
-#>  dials         1.4.0      2025-02-13 CRAN (R 4.4.2)
-#>  dplyr         1.1.4      2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2       3.5.1      2024-04-23 CRAN (R 4.4.0)
-#>  infer         1.0.7      2024-03-25 CRAN (R 4.4.0)
-#>  parsnip       1.3.1      2025-03-12 CRAN (R 4.4.1)
-#>  purrr         1.0.4      2025-02-05 CRAN (R 4.4.1)
-#>  recipes       1.2.0.9000 2025-03-25 local
-#>  rlang         1.1.5      2025-01-17 CRAN (R 4.4.2)
-#>  rsample       1.2.1      2024-03-25 CRAN (R 4.4.0)
-#>  stopwords     2.3        2021-10-28 CRAN (R 4.4.0)
-#>  textrecipes   1.1.0      2025-03-18 CRAN (R 4.4.1)
-#>  tibble        3.2.1      2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels    1.3.0      2025-02-21 CRAN (R 4.4.1)
-#>  tune          1.3.0      2025-02-21 CRAN (R 4.4.1)
-#>  workflows     1.2.0      2025-02-19 CRAN (R 4.4.1)
-#>  yardstick     1.3.2      2025-01-22 CRAN (R 4.4.1)
+#>  package       version date (UTC) source
+#>  broom         1.0.9   2025-07-28 CRAN (R 4.5.0)
+#>  dials         1.4.2   2025-09-04 CRAN (R 4.5.0)
+#>  dplyr         1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2       4.0.0   2025-09-11 CRAN (R 4.5.0)
+#>  infer         1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  parsnip       1.3.3   2025-08-31 CRAN (R 4.5.0)
+#>  purrr         1.1.0   2025-07-10 CRAN (R 4.5.0)
+#>  recipes       1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang         1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample       1.3.1   2025-07-29 CRAN (R 4.5.0)
+#>  stopwords     2.3     2021-10-28 CRAN (R 4.5.0)
+#>  textrecipes   1.1.0   2025-03-18 CRAN (R 4.5.0)
+#>  tibble        3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels    1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune          2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  workflows     1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick     1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

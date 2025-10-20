@@ -12,11 +12,15 @@ Below you'll find searchable tables to help you explore the tidymodels packages 
 
 * [Search parsnip models](parsnip/index.qmd)
 
+* [Search parsnip models prediction types](parsnip_pred_types/index.qmd)
+
 * [Search recipe steps](recipes/index.qmd)
 
 * [Search broom methods](broom/index.qmd)
 
 * [Search sparse data compatible methods](sparse/index.qmd)
+
+* [Search tidyclust models](tidyclust/index.qmd)
 
 # Books
 

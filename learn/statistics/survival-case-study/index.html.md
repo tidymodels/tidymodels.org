@@ -108,7 +108,7 @@ survfit(disposition_surv ~ 1, data = complaints_train) %>% plot()
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-7-1.svg){fig-align='center' fig-alt='A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days.' width=672}
+![](figs/unnamed-chunk-5-1.svg){fig-align='center' fig-alt='A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days.' width=672}
 :::
 :::
 
@@ -187,18 +187,18 @@ The structure of survival model predictions is slightly different from classific
 preds <- collect_predictions(survreg_res)
 preds
 #> # A tibble: 847 × 6
-#>    .pred             .pred_time id          .row disposition_surv .config       
-#>    <list>                 <dbl> <chr>      <int>           <Surv> <chr>         
-#>  1 <tibble [11 × 3]>       96.6 validation  2541              35+ Preprocessor1…
-#>  2 <tibble [11 × 3]>       18.7 validation  2542             129+ Preprocessor1…
-#>  3 <tibble [11 × 3]>       29.5 validation  2543               4+ Preprocessor1…
-#>  4 <tibble [11 × 3]>       29.8 validation  2544               5+ Preprocessor1…
-#>  5 <tibble [11 × 3]>       24.8 validation  2545               1+ Preprocessor1…
-#>  6 <tibble [11 × 3]>       58.4 validation  2546              76+ Preprocessor1…
-#>  7 <tibble [11 × 3]>       71.3 validation  2547              51+ Preprocessor1…
-#>  8 <tibble [11 × 3]>      102.  validation  2548              44+ Preprocessor1…
-#>  9 <tibble [11 × 3]>       47.1 validation  2549              15+ Preprocessor1…
-#> 10 <tibble [11 × 3]>       28.5 validation  2550              61+ Preprocessor1…
+#>    .pred_time .pred             id         disposition_surv  .row .config       
+#>         <dbl> <list>            <chr>                <Surv> <int> <chr>         
+#>  1       96.6 <tibble [11 × 3]> validation              35+  2541 pre0_mod0_pos…
+#>  2       18.7 <tibble [11 × 3]> validation             129+  2542 pre0_mod0_pos…
+#>  3       29.5 <tibble [11 × 3]> validation               4+  2543 pre0_mod0_pos…
+#>  4       29.8 <tibble [11 × 3]> validation               5+  2544 pre0_mod0_pos…
+#>  5       24.8 <tibble [11 × 3]> validation               1+  2545 pre0_mod0_pos…
+#>  6       58.4 <tibble [11 × 3]> validation              76+  2546 pre0_mod0_pos…
+#>  7       71.3 <tibble [11 × 3]> validation              51+  2547 pre0_mod0_pos…
+#>  8      102.  <tibble [11 × 3]> validation              44+  2548 pre0_mod0_pos…
+#>  9       47.1 <tibble [11 × 3]> validation              15+  2549 pre0_mod0_pos…
+#> 10       28.5 <tibble [11 × 3]> validation              61+  2550 pre0_mod0_pos…
 #> # ℹ 837 more rows
 ```
 :::
@@ -276,7 +276,7 @@ collect_metrics(survreg_res) %>%
 #> # A tibble: 1 × 7
 #>   .metric                   .estimator .eval_time   mean     n std_err .config  
 #>   <chr>                     <chr>           <dbl>  <dbl> <int>   <dbl> <chr>    
-#> 1 brier_survival_integrated standard           NA 0.0512     1      NA Preproce…
+#> 1 brier_survival_integrated standard           NA 0.0512     1      NA pre0_mod…
 ```
 :::
 
@@ -341,7 +341,7 @@ oblique_res <- tune_grid(
   eval_time = evaluation_time_points, 
   control = control_grid(save_workflow = TRUE)
 )
-#> i Creating pre-processing data to finalize unknown parameter: mtry
+#> i Creating pre-processing data to finalize 1 unknown parameter: "mtry"
 
 set.seed(1)
 coxnet_res <- tune_grid(
@@ -364,21 +364,21 @@ show_best(oblique_res, metric = "brier_survival_integrated", n = 5)
 #> # A tibble: 5 × 9
 #>    mtry min_n .metric         .estimator .eval_time   mean     n std_err .config
 #>   <int> <int> <chr>           <chr>           <dbl>  <dbl> <int>   <dbl> <chr>  
-#> 1     9    27 brier_survival… standard           NA 0.0469     1      NA Prepro…
-#> 2     6    23 brier_survival… standard           NA 0.0469     1      NA Prepro…
-#> 3     5     6 brier_survival… standard           NA 0.0471     1      NA Prepro…
-#> 4     8    10 brier_survival… standard           NA 0.0472     1      NA Prepro…
-#> 5     7    40 brier_survival… standard           NA 0.0475     1      NA Prepro…
+#> 1     9    27 brier_survival… standard           NA 0.0469     1      NA pre0_m…
+#> 2     6    23 brier_survival… standard           NA 0.0471     1      NA pre0_m…
+#> 3     5     6 brier_survival… standard           NA 0.0471     1      NA pre0_m…
+#> 4     8    10 brier_survival… standard           NA 0.0472     1      NA pre0_m…
+#> 5     7    40 brier_survival… standard           NA 0.0475     1      NA pre0_m…
 
 show_best(coxnet_res, metric = "brier_survival_integrated", n = 5)
 #> # A tibble: 5 × 8
-#>         penalty .metric       .estimator .eval_time   mean     n std_err .config
-#>           <dbl> <chr>         <chr>           <dbl>  <dbl> <int>   <dbl> <chr>  
-#> 1 0.00517       brier_surviv… standard           NA 0.0499     1      NA Prepro…
-#> 2 0.000000316   brier_surviv… standard           NA 0.0506     1      NA Prepro…
-#> 3 0.0000379     brier_surviv… standard           NA 0.0506     1      NA Prepro…
-#> 4 0.00000000240 brier_surviv… standard           NA 0.0506     1      NA Prepro…
-#> 5 0.0000000277  brier_surviv… standard           NA 0.0506     1      NA Prepro…
+#>    penalty .metric            .estimator .eval_time   mean     n std_err .config
+#>      <dbl> <chr>              <chr>           <dbl>  <dbl> <int>   <dbl> <chr>  
+#> 1 5.17e- 3 brier_survival_in… standard           NA 0.0499     1      NA pre0_m…
+#> 2 1.19e-10 brier_survival_in… standard           NA 0.0506     1      NA pre0_m…
+#> 3 2.40e- 9 brier_survival_in… standard           NA 0.0506     1      NA pre0_m…
+#> 4 2.77e- 8 brier_survival_in… standard           NA 0.0506     1      NA pre0_m…
+#> 5 3.16e- 7 brier_survival_in… standard           NA 0.0506     1      NA pre0_m…
 ```
 :::
 
@@ -417,9 +417,9 @@ last_oblique_fit <- last_fit(
 collect_metrics(last_oblique_fit) %>% 
   filter(.metric == "brier_survival_integrated")
 #> # A tibble: 1 × 5
-#>   .metric                   .estimator .estimate .eval_time .config             
-#>   <chr>                     <chr>          <dbl>      <dbl> <chr>               
-#> 1 brier_survival_integrated standard      0.0431         NA Preprocessor1_Model1
+#>   .metric                   .estimator .estimate .eval_time .config        
+#>   <chr>                     <chr>          <dbl>      <dbl> <chr>          
+#> 1 brier_survival_integrated standard      0.0431         NA pre0_mod0_post0
 ```
 :::
 
@@ -459,10 +459,10 @@ predict(complaints_model, new_data = complaints_5, type = "time")
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       81.1
-#> 2       47.4
-#> 3       96.4
-#> 4       79.9
+#> 1       81.3
+#> 2       47.5
+#> 3       96.5
+#> 4       80.0
 #> 5       77.7
 ```
 :::
@@ -475,34 +475,35 @@ For more information on survival analysis with tidymodels see the [`survival ana
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.4.2 (2024-10-31)
+#>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-03-24
-#>  pandoc   3.6.1
-#>  quarto   1.6.42
+#>  date     2025-10-17
+#>  pandoc   3.6.3
+#>  quarto   1.8.25
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC) source
-#>  aorsf          0.1.5   2024-05-30 CRAN (R 4.4.0)
-#>  broom          1.0.7   2024-09-26 CRAN (R 4.4.1)
-#>  censored       0.3.3   2025-02-14 CRAN (R 4.4.1)
-#>  dials          1.4.0   2025-02-13 CRAN (R 4.4.2)
-#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.4.0)
-#>  ggplot2        3.5.1   2024-04-23 CRAN (R 4.4.0)
-#>  glmnet         4.1-8   2023-08-22 CRAN (R 4.4.0)
-#>  infer          1.0.7   2024-03-25 CRAN (R 4.4.0)
-#>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.4.0)
-#>  parsnip        1.3.1   2025-03-12 CRAN (R 4.4.1)
-#>  purrr          1.0.4   2025-02-05 CRAN (R 4.4.1)
-#>  recipes        1.2.0   2025-03-17 CRAN (R 4.4.1)
-#>  rlang          1.1.5   2025-01-17 CRAN (R 4.4.2)
-#>  rsample        1.2.1   2024-03-25 CRAN (R 4.4.0)
-#>  tibble         3.2.1   2023-03-20 CRAN (R 4.4.0)
-#>  tidymodels     1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  tune           1.3.0   2025-02-21 CRAN (R 4.4.1)
-#>  workflows      1.2.0   2025-02-19 CRAN (R 4.4.1)
-#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.4.1)
+#>  aorsf          0.1.5   2024-05-30 CRAN (R 4.5.0)
+#>  broom          1.0.9   2025-07-28 CRAN (R 4.5.0)
+#>  censored       0.3.3   2025-02-14 CRAN (R 4.5.0)
+#>  dials          1.4.2   2025-09-04 CRAN (R 4.5.0)
+#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  ggplot2        4.0.0   2025-09-11 CRAN (R 4.5.0)
+#>  glmnet         4.1-10  2025-07-17 CRAN (R 4.5.0)
+#>  infer          1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.5.0)
+#>  parsnip        1.3.3   2025-08-31 CRAN (R 4.5.0)
+#>  purrr          1.1.0   2025-07-10 CRAN (R 4.5.0)
+#>  recipes        1.3.1   2025-05-21 CRAN (R 4.5.0)
+#>  rlang          1.1.6   2025-04-11 CRAN (R 4.5.0)
+#>  rsample        1.3.1   2025-07-29 CRAN (R 4.5.0)
+#>  tibble         3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  tidymodels     1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune           2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  workflows      1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
