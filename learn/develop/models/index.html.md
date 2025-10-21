@@ -102,7 +102,7 @@ show_model_info("discrim_mixture")
 
 The next step is to declare the main arguments to the model. These are declared independent of the mode.  To specify the argument, there are a few slots to fill in:
 
- * The name that parsnip uses for the argument. In general, we try to use non-jargony names for arguments (e.g. "penalty" instead of "lambda" for regularized regression). We recommend consulting [the model argument table available here](/find/parsnip/) to see if an existing argument name can be used before creating a new one. 
+ * The name that parsnip uses for the argument. In general, we try to use non-jargony names for arguments (e.g. "penalty" instead of "lambda" for regularized regression). We recommend consulting the model engine topics pages, linked from [the searchable table here](/find/parsnip/), to see if an existing argument name can be used before creating a new one. 
  
  * The argument name that is used by the underlying modeling function. 
  
@@ -826,7 +826,7 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-10-17
+#>  date     2025-10-21
 #>  pandoc   3.6.3
 #>  quarto   1.8.25
 #> 
@@ -845,8 +845,8 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 #>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
 #>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
 #>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
-#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune         2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.5.1)
+#>  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
 #>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
 #>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 
