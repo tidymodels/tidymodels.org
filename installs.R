@@ -76,7 +76,7 @@ packages <- c(
   "tune",
   "vip",
   "zoo",
-  "rstudio/DT"
+  "DT"
 )
 
 pak::pak(packages)
