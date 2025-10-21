@@ -246,7 +246,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 149.651 sec elapsed
+#> 147.101 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -700,7 +700,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-10-17
+#>  date     2025-10-21
 #>  pandoc   3.6.3
 #>  quarto   1.8.25
 #> 
@@ -720,7 +720,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  textrecipes   1.1.0   2025-03-18 CRAN (R 4.5.0)
 #>  tibble        3.3.0   2025-06-08 CRAN (R 4.5.0)
 #>  tidymodels    1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune          2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  tune          2.0.1   2025-10-17 CRAN (R 4.5.0)
 #>  workflows     1.3.0   2025-08-27 CRAN (R 4.5.0)
 #>  yardstick     1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 

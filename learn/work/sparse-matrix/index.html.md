@@ -243,7 +243,7 @@ predict(wf_fit, reviews)
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.1 (2025-06-13)
 #>  language (EN)
-#>  date     2025-10-17
+#>  date     2025-10-21
 #>  pandoc   3.6.3
 #>  quarto   1.8.25
 #> 
@@ -262,7 +262,7 @@ predict(wf_fit, reviews)
 #>  sparsevctrs   0.3.4   2025-05-25 CRAN (R 4.5.0)
 #>  tibble        3.3.0   2025-06-08 CRAN (R 4.5.0)
 #>  tidymodels    1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune          2.0.0   2025-09-01 CRAN (R 4.5.0)
+#>  tune          2.0.1   2025-10-17 CRAN (R 4.5.0)
 #>  workflows     1.3.0   2025-08-27 CRAN (R 4.5.0)
 #>  yardstick     1.3.2   2025-01-22 CRAN (R 4.5.0)
 #> 

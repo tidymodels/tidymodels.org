@@ -845,7 +845,7 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 #>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
 #>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
 #>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
-#>  tidymodels   1.3.0   2025-02-21 CRAN (R 4.5.1)
+#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
 #>  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
 #>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
 #>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
