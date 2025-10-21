@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-919c7ec90743d9b1e9761dff04b41dfc.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-c8556fa837183aa421a40362170eed19.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-3d6952508e68e6c69ff7c13c5fab5c62.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -493,7 +493,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The next step is to declare the main arguments to the model. These are declared independent of the mode. To specify the argument, there are a few slots to fill in:</p>
 <ul>
-<li><p>The name that parsnip uses for the argument. In general, we try to use non-jargony names for arguments (e.g.&nbsp;“penalty” instead of “lambda” for regularized regression). We recommend consulting <a href="../../../find/parsnip/">the model argument table available here</a> to see if an existing argument name can be used before creating a new one.</p></li>
+<li><p>The name that parsnip uses for the argument. In general, we try to use non-jargony names for arguments (e.g.&nbsp;“penalty” instead of “lambda” for regularized regression). We recommend consulting the model engine topics pages, linked from <a href="../../../find/parsnip/">the searchable table here</a>, to see if an existing argument name can be used before creating a new one.</p></li>
 <li><p>The argument name that is used by the underlying modeling function.</p></li>
 <li><p>A function reference for a <em>constructor</em> that will be used to generate tuning parameter values. This should be a character vector with a named element called <code>fun</code> that is the constructor function. There is an optional element <code>pkg</code> that can be used to call the function using its namespace. If referencing functions from the dials package, quantitative parameters can have additional arguments in the list for <code>trans</code> and <code>range</code> while qualitative parameters can pass <code>values</code> via this list.</p></li>
 <li><p>A logical value for whether the argument can be used to generate multiple predictions for a single R object. For example, for boosted trees, if a model is fit with 10 boosting iterations, many modeling packages allow the model object to make predictions for any iterations less than the one used to fit the model. In general this is not the case so one would use <code>has_submodels = FALSE</code>.</p></li>
@@ -1100,7 +1100,7 @@ Note
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.1 (2025-06-13)
 #&gt;  language (EN)
-#&gt;  date     2025-10-17
+#&gt;  date     2025-10-21
 #&gt;  pandoc   3.6.3
 #&gt;  quarto   1.8.25
 #&gt; 
@@ -1119,8 +1119,8 @@ Note
 #&gt;  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
 #&gt;  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
 #&gt;  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
-#&gt;  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
-#&gt;  tune         2.0.0   2025-09-01 CRAN (R 4.5.0)
+#&gt;  tidymodels   1.3.0   2025-02-21 CRAN (R 4.5.1)
+#&gt;  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
 #&gt;  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
 #&gt;  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
 #&gt; 
