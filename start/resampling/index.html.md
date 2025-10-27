@@ -351,7 +351,6 @@ In this example, 10-fold CV moves iteratively through the folds and leaves a dif
 The final resampling estimates for the model are the **averages** of the performance statistics replicates. For example, suppose for our data the results were:
 
 ::: {.cell layout-align="center"}
-
 `````{=html}
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
@@ -438,7 +437,6 @@ The final resampling estimates for the model are the **averages** of the perform
 </table>
 
 `````
-
 :::
 
 From these resampling statistics, the final estimate of performance for this random forest model would be 0.904 for the area under the ROC curve and 0.832 for accuracy.

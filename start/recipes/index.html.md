@@ -298,7 +298,6 @@ For factors like `dest` and `origin`, [standard practice](https://bookdown.org/m
 
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
-
 `````{=html}
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
@@ -328,7 +327,6 @@ For factors like `dest` and `origin`, [standard practice](https://bookdown.org/m
 </table>
 
 `````
-
 :::
 :::
 
