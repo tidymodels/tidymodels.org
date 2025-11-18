@@ -10,7 +10,7 @@ weight: 1
 description: | 
   Examples that show how to fit and predict with different combinations of model, mode, and engine.
 toc: true
-toc-depth: 2
+toc-depth: 3
 include-after-body: ../../../resources.html
 ---
 
@@ -88,7 +88,7 @@ bin_train <- bake(bin_rec, new_data = NULL)
 bin_test <- bake(bin_rec, new_data = testing(bin_split))
 ```
 
-For data sets that _only_ work for three or more classes, we'll simulate:
+For models that _only_ work for three or more classes, we'll simulate:
 
 ```{r}
 #| label: mtl-data
@@ -2276,7 +2276,7 @@ predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 # Regression Models
 
 
-To demonstrate regression, we'll subset some data. make a training/test split, and stanrdize the predictors: 
+To demonstrate regression, we'll subset some data. make a training/test split, and standardize the predictors: 
 
 ```{r}
 #| label: reg-data
@@ -4549,7 +4549,7 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
-## ParaMetric Survival Models (`survival_reg()`) 
+## Parametric Survival Models (`survival_reg()`) 
 
 ## `flexsurv` Engine 
 
