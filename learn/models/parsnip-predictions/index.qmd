@@ -13,7 +13,7 @@ toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
 execute: 
-  eval: false
+  eval: true
 ---
 
 ```{r}
@@ -23,6 +23,9 @@ execute:
 #| warning: false
 #| eval: true
 source(here::here("common.R"))
+
+# Indicates to enable or not running Spark code
+run_spark <- TRUE
 ```
 
 ```{r}
@@ -76,7 +79,7 @@ single-node Spark cluster running on a laptop:
 
 ```{r}
 #| label: spark-connect
-#| eval: true
+#| eval: !expr 'run_spark'
 library(sparklyr)
 sc <- spark_connect("local", version = "4.0.1")
 ```
@@ -132,7 +135,7 @@ and then use it to create the splits. For this article, we will copy the
 
 ```{r}
 #| label: spark-bin-data
-#| eval: true
+#| eval: !expr 'run_spark'
 tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
 
 tbl_bin <- sdf_random_split(tbl_two_class, training = 0.994, test = 1-0.994, seed = 100)
@@ -577,7 +580,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-boost-tree-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 boost_tree_spec <- boost_tree() |> 
   set_mode("classification") |> 
   set_engine("spark")
@@ -587,7 +590,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-boost-tree-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 boost_tree_fit <- boost_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
 boost_tree_fit
 ```
@@ -596,7 +599,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-boost-tree-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 predict(boost_tree_fit, type = "class", new_data = tbl_bin$test)
 predict(boost_tree_fit, type = "prob", new_data = tbl_bin$test)
 ```
@@ -738,7 +741,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-decision-tree-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 decision_tree_spec <- decision_tree() |>
   set_mode("classification")
 ```
@@ -747,7 +750,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-decision-tree-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 decision_tree_fit <- decision_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
 decision_tree_fit
 ```
@@ -756,7 +759,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-decision-tree-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 predict(decision_tree_fit, type = "class", new_data = tbl_bin$test)
 predict(decision_tree_fit, type = "prob", new_data = tbl_bin$test)
 ```
@@ -1405,7 +1408,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-logistic-reg-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 logistic_reg_spec <- logistic_reg() |> 
   set_engine("spark")
 ```
@@ -1414,7 +1417,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-logistic-reg-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 logistic_reg_fit <- logistic_reg_spec |> fit(Class ~ ., data = tbl_bin$training)
 logistic_reg_fit
 ```
@@ -1764,7 +1767,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-multinom-reg-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 multinom_reg_spec <- multinom_reg() |> 
   set_engine("spark")
 ```
@@ -1773,7 +1776,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-multinom-reg-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = tbl_mtl$training)
 multinom_reg_fit
 ```
@@ -1782,6 +1785,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-multinom-reg-classification
+#| eval: !expr 'run_spark'
 predict(multinom_reg_fit, type = "class", new_data = tbl_mtl$test)
 predict(multinom_reg_fit, type = "prob", new_data = tbl_mtl$test)
 ```
@@ -2204,7 +2208,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-rand-forest-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 rand_forest_spec <- rand_forest() |>
   set_mode("classification") |>
   set_engine("spark")
@@ -2214,7 +2218,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-rand-forest-classification
-#| eval: true
+#| eval: !expr 'run_spark'
 rand_forest_fit <- rand_forest_spec |> fit(Class ~ ., data = tbl_bin$training)
 rand_forest_fit
 ```
@@ -2222,7 +2226,7 @@ rand_forest_fit
 The holdout data can be predicted:
 
 ```{r}
-#| eval: true
+#| eval: !expr 'run_spark'
 #| label: predict-spark-rand-forest-classification
 predict(rand_forest_fit, type = "class", new_data = tbl_bin$test)
 predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
@@ -2507,7 +2511,7 @@ and then use it to create the splits. For this article, we will copy the
 
 ```{r}
 #| label: spark-reg-data
-#| eval: true
+#| eval: !expr 'run_spark'
 
 tbl_concrete <- copy_to(sc, modeldata::concrete)
 
@@ -2873,7 +2877,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-boost-tree-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 boost_tree_spec <- boost_tree() |>
   set_mode("regression") |>
   set_engine("spark")
@@ -2883,7 +2887,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-boost-tree-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 boost_tree_fit <- boost_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 boost_tree_fit
 ```
@@ -2892,7 +2896,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-boost-tree-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 predict(boost_tree_fit, new_data = tbl_reg$test)
 ```
 
@@ -3002,7 +3006,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-decision-tree-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 decision_tree_spec <- decision_tree() |>
   set_mode("regression") |> 
   set_engine("spark")
@@ -3012,7 +3016,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-decision-tree-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 decision_tree_fit <- decision_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 decision_tree_fit
 ```
@@ -3481,7 +3485,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-linear-reg-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 linear_reg_spec <- linear_reg() |> 
   set_engine("spark")
 ```
@@ -3490,7 +3494,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-linear-reg-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 linear_reg_fit <- linear_reg_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 linear_reg_fit
 ```
@@ -3499,7 +3503,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-linear-reg-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 predict(linear_reg_fit, new_data = tbl_reg$test)
 ```
 
@@ -4297,7 +4301,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-spark-rand-forest-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 rand_forest_spec <- rand_forest() |>
   set_engine("spark") |> 
   set_mode("regression")
@@ -4307,7 +4311,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-rand-forest-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 rand_forest_fit <- rand_forest_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 rand_forest_fit
 ```
@@ -4316,7 +4320,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-rand-forest-regression
-#| eval: true
+#| eval: !expr 'run_spark'
 predict(rand_forest_fit, new_data = tbl_reg$test)
 ```
 
@@ -5072,6 +5076,7 @@ predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
 ```{r}
 #| label: spark-disconnect
 #| include: false
+#| eval: !expr 'run_spark'
 spark_disconnect(sc)
 ```
 
