@@ -725,6 +725,35 @@ predict(decision_tree_fit, type = "class", new_data = bin_test)
 predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 
+## `sparklyr` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-decision-tree-classification
+#| eval: true
+decision_tree_spec <- decision_tree() |>
+  set_mode("classification")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-decision-tree-classification
+#| eval: true
+decision_tree_fit <- decision_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
+decision_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-decision-tree-classification
+#| eval: true
+predict(decision_tree_fit, type = "class", new_data = tbl_bin$test)
+predict(decision_tree_fit, type = "prob", new_data = tbl_bin$test)
+```
+
 ## Flexible Discriminant Analysis (`discrim_flexible()`) 
 
 ## `earth` Engine 
