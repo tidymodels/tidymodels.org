@@ -124,9 +124,9 @@ mtl_train <- training(mtl_split)
 mtl_test <- testing(mtl_split)
 ```
 
-If using the **Apache Spark** engine, wil will need to identify the data source 
-and use that to create the splits. For this article, we will copy the 
-`two_class_dat` dataset into the Spark session.
+If using the **Apache Spark** engine, we will need to identify the data source, 
+and then use it to create the splits. For this article, we will copy the 
+`two_class_dat` data set into the Spark session.
 
 
 ```{r}
@@ -2435,6 +2435,19 @@ count_train <- bake(count_rec, new_data = NULL)
 count_test <- bake(count_rec, new_data = testing(count_split))
 ```
 
+If using the **Apache Spark** engine, we will need to identify the data source, 
+and then use it to create the splits. For this article, we will copy the 
+`concrete` data set into the Spark session.
+
+```{r}
+#| label: spark-reg-data
+#| eval: true
+
+tbl_concrete <- copy_to(sc, modeldata::concrete)
+
+tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 100)
+```
+
 
 ## Auto Ml (`auto_ml()`) 
 
@@ -2786,6 +2799,35 @@ The holdout data can be predicted:
 ```{r}
 #| label: predict-xgboost-boost-tree-regression
 predict(boost_tree_fit, new_data = reg_test)
+```
+
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-boost-tree-regression
+#| eval: true
+boost_tree_spec <- boost_tree() |>
+  set_mode("regression") |>
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-boost-tree-regression
+#| eval: true
+boost_tree_fit <- boost_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+boost_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-boost-tree-regression
+#| eval: true
+predict(boost_tree_fit, new_data = tbl_reg$test)
 ```
 
 ## Cubist Rules (`cubist_rules()`) 
