@@ -564,6 +564,37 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-boost-tree-classification
+#| eval: true
+boost_tree_spec <- boost_tree() |> 
+  set_mode("classification") |> 
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-boost-tree-classification
+#| eval: true
+boost_tree_fit <- boost_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
+boost_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-boost-tree-classification
+#| eval: true
+predict(boost_tree_fit, type = "class", new_data = tbl_bin$test)
+predict(boost_tree_fit, type = "prob", new_data = tbl_bin$test)
+```
+
+
 ## C5 Rules (`C5_rules()`) 
 
 ## `C5.0` Engine 
