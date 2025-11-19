@@ -1392,6 +1392,36 @@ predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
 predict(logistic_reg_fit, type = "pred_int", new_data = bin_test)
 ```
 
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-logistic-reg-classification
+#| eval: true
+logistic_reg_spec <- logistic_reg() |> 
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-logistic-reg-classification
+#| eval: true
+logistic_reg_fit <- logistic_reg_spec |> fit(Class ~ ., data = tbl_bin$training)
+logistic_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-logistic-reg-classification
+#| eval: false
+predict(logistic_reg_fit, type = "class", new_data = tbl_bin$test)
+predict(logistic_reg_fit, type = "prob", new_data = tbl_bin$test)
+```
+
+
 ## Multivariate Adaptive Regression Splines (`mars()`) 
 
 ## `earth` Engine 
@@ -2930,6 +2960,37 @@ The holdout data can be predicted:
 predict(decision_tree_fit, new_data = reg_test)
 ```
 
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-decision-tree-regression
+#| eval: true
+decision_tree_spec <- decision_tree() |>
+  set_mode("regression") |> 
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-decision-tree-regression
+#| eval: true
+decision_tree_fit <- decision_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+decision_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-decision-tree-regression
+#| eval: false
+predict(decision_tree_fit, new_data = tbl_reg$test)
+```
+
+
+
 ## Generalized Additive Models (`gen_additive_mod()`) 
 
 ## `mgcv` Engine 
@@ -3376,6 +3437,34 @@ The holdout data can be predicted:
 #| eval: false
 predict(linear_reg_fit, new_data = reg_test)
 predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
+```
+
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-linear-reg-regression
+#| eval: true
+linear_reg_spec <- linear_reg() |> 
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-linear-reg-regression
+#| eval: true
+linear_reg_fit <- linear_reg_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+linear_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-linear-reg-regression
+#| eval: true
+predict(linear_reg_fit, new_data = tbl_reg$test)
 ```
 
 ## Multivariate Adaptive Regression Splines (`mars()`) 
