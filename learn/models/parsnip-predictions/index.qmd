@@ -108,6 +108,7 @@ For models that _only_ work for three or more classes, we'll simulate:
 
 ```{r}
 #| label: mtl-data
+#| eval: true
 set.seed(1752)
 mtl_data <-
  sim_multinomial(
@@ -1771,17 +1772,18 @@ multinom_reg_spec <- multinom_reg() |>
 Now we create the model fit object:
 
 ```{r}
-#| label: fit-brulee-multinom-reg-classification
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+#| label: fit-spark-multinom-reg-classification
+#| eval: true
+multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = tbl_mtl$training)
 multinom_reg_fit
 ```
 
 The holdout data can be predicted:
 
 ```{r}
-#| label: predict-brulee-multinom-reg-classification
-predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
+#| label: predict-spark-multinom-reg-classification
+predict(multinom_reg_fit, type = "class", new_data = tbl_mtl$test)
+predict(multinom_reg_fit, type = "prob", new_data = tbl_mtl$test)
 ```
 
 
@@ -4287,6 +4289,35 @@ The holdout data can be predicted:
 #| label: predict-ranger-rand-forest-regression
 predict(rand_forest_fit, new_data = reg_test)
 predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
+```
+
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-rand-forest-regression
+#| eval: true
+rand_forest_spec <- rand_forest() |>
+  set_engine("spark") |> 
+  set_mode("regression")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-rand-forest-regression
+#| eval: true
+rand_forest_fit <- rand_forest_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+rand_forest_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-spark-rand-forest-regression
+#| eval: true
+predict(rand_forest_fit, new_data = tbl_reg$test)
 ```
 
 ## Rule Fit (`rule_fit()`) 
