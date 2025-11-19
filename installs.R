@@ -76,7 +76,20 @@ packages <- c(
   "tune",
   "vip",
   "zoo",
-  "DT"
+  "DT",
+  "mars",
+  "earth",
+  "dbarts",
+  "catboost/catboost/catboost/R-package",
+  "sda",
+  "sparsediscrim",
+  "LiblineaR",
+  "naivebayes",
+  "xrf",
+  "pscl",
+  "coin",
+  "pec",
+  "flexsurv"
 )
 
 pak::pak(packages)
