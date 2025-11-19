@@ -126,7 +126,7 @@ mtl_test <- testing(mtl_split)
 
 If using the **Apache Spark** engine, we will need to identify the data source, 
 and then use it to create the splits. For this article, we will copy the 
-`two_class_dat` data set into the Spark session.
+`two_class_dat` and the `mtl_data` data sets into the Spark session.
 
 
 ```{r}
@@ -135,7 +135,13 @@ and then use it to create the splits. For this article, we will copy the
 tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
 
 tbl_bin <- sdf_random_split(tbl_two_class, training = 0.994, test = 1-0.994, seed = 100)
+
+tbl_sim_mtl <- copy_to(sc, mtl_data)
+
+tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed = 100)
 ```
+
+
 
 ## Auto Ml (`auto_ml()`) 
 
@@ -1750,6 +1756,34 @@ The holdout data can be predicted:
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
+
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-multinom-reg-classification
+#| eval: true
+multinom_reg_spec <- multinom_reg() |> 
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-brulee-multinom-reg-classification
+multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-brulee-multinom-reg-classification
+predict(multinom_reg_fit, type = "class", new_data = mtl_test)
+predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
+```
+
 
 ## Naive Bayes (`naive_Bayes()`) 
 
