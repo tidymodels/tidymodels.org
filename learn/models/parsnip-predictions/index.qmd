@@ -12,6 +12,8 @@ description: |
 toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
+execute: 
+  eval: false
 ---
 
 ```{r}
@@ -19,21 +21,21 @@ include-after-body: ../../../resources.html
 #| include: false
 #| message: false
 #| warning: false
+#| eval: true
 source(here::here("common.R"))
 ```
 
 ```{r}
 #| label: "load"
 #| include: false
+#| eval: true
 library(tidymodels)
-
+library(sparklyr)
 # Add everything here? 
 
 #' skip format
 pkgs <- c("tidymodels", "agua", "baguette", "bonsai", "censored", "discrim",
-          "multilevelmod", "plsmod", "poissonreg", "rules")
-
-
+          "multilevelmod", "plsmod", "poissonreg", "rules", "sparklyr")
 ```
 
 
@@ -65,6 +67,20 @@ todo
 library(tidymodels)
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
+
+### Apache Spark
+
+To use [Apache Spark](https://spark.apache.org/) as an engine, we will first 
+need a connection to a cluster. For this article, we will setup and use a 
+single-node Spark cluster running on a laptop:
+
+```{r}
+#| label: spark-connect
+#| eval: true
+library(sparklyr)
+sc <- spark_connect("local", version = "4.0.1")
+```
+
 
 # Classification Models
 
@@ -108,6 +124,18 @@ mtl_train <- training(mtl_split)
 mtl_test <- testing(mtl_split)
 ```
 
+If using the **Apache Spark** engine, wil will need to identify the data source 
+and use that to create the splits. For this article, we will copy the 
+`two_class_dat` dataset into the Spark session.
+
+
+```{r}
+#| label: spark-bin-data
+#| eval: true
+tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
+
+tbl_bin <- sdf_random_split(tbl_two_class, training = 0.994, test = 1-0.994, seed = 100)
+```
 
 ## Auto Ml (`auto_ml()`) 
 
@@ -2042,6 +2070,36 @@ The holdout data can be predicted:
 predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
+```
+
+## `spark` Engine 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-spark-rand-forest-classification
+#| eval: true
+rand_forest_spec <- rand_forest() |>
+  set_mode("classification") |>
+  set_engine("spark")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-spark-rand-forest-classification
+#| eval: true
+rand_forest_fit <- rand_forest_spec |> fit(Class ~ ., data = tbl_bin$training)
+rand_forest_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| eval: true
+#| label: predict-spark-rand-forest-classification
+predict(rand_forest_fit, type = "class", new_data = tbl_bin$test)
+predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
 ```
 
 ## Rule Fit (`rule_fit()`) 
@@ -4753,5 +4811,11 @@ The holdout data can be predicted:
 #| label: predict-grf-rand-forest-quantile-regression
 #| eval: false
 predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
+```
+
+```{r}
+#| label: spark-disconnect
+#| include: false
+spark_disconnect(sc)
 ```
 
