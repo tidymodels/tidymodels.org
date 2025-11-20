@@ -46,7 +46,7 @@ pkgs <- c("tidymodels", "agua", "baguette", "bonsai", "censored", "discrim",
 
 # Introduction
 
-`r article_req_pkgs(pkgs)`
+`r article_req_pkgs(pkgs)` There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them.
 
 These examples show how to *fit* and *predict* with different combinations of model, mode, and engine. As a reminder, in parsnip, 
 
@@ -62,7 +62,6 @@ todo
 
 - multielvel examples 
 - keras3 updates
-- avoid subsection titles capitalizing the engine name (e.g., "CATBOOST") and text within backticks
 
 ```{r}
 #| label: load-tm
@@ -181,6 +180,7 @@ The tidymodels [agua](https://agua.tidymodels.org/) package has some helpers and
 ```{r}
 #| label: h2o-init
 #| eval: !expr 'run_h2o'
+#| results: hide
 library(agua)
 h2o_start()
 ```
@@ -5586,17 +5586,15 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-grf-rand-forest-quantile-regression
-#| eval: false
-rand_forest_spec <- rand_forest() |> 
-  set_mode("quantile regression", quantile_levels = qnt_lvls) |>
-  set_engine("grf")
+rand_forest_spec <- rand_forest() |>
+  set_engine("grf") |> 
+  set_mode("quantile regression", quantile_levels = qnt_lvls)
 ```
 
 Now we create the model fit object:
 
 ```{r}
 #| label: fit-grf-rand-forest-quantile-regression
-#| eval: false
 # Set the random number seed to an integer for reproducibility: 
 set.seed(435)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = qnt_train)
@@ -5607,7 +5605,6 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-grf-rand-forest-quantile-regression
-#| eval: false
 predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
 ```
 
