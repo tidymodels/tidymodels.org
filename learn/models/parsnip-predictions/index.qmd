@@ -60,7 +60,6 @@ todo
 - multielvel examples 
 - keras3 updates
 - avoid subsection titles capitalizing the engine name (e.g., "CATBOOST") and text within backticks
-- set seeds when needed
 
 ```{r}
 #| label: load-tm
@@ -304,6 +303,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-earth-bag-mars-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(268)
 bag_mars_fit <- bag_mars_spec |> fit(class ~ ., data = bin_train)
 bag_mars_fit
 ```
@@ -346,6 +347,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-nnet-bag-mlp-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(318)
 bag_mlp_fit <- bag_mlp_spec |> fit(class ~ ., data = bin_train)
 bag_mlp_fit
 ```
@@ -388,6 +391,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-rpart-bag-tree-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(985)
 bag_tree_fit <- bag_tree_spec |> fit(class ~ ., data = bin_train)
 bag_tree_fit
 ```
@@ -423,6 +428,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-C5.0-bag-tree-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(937)
 bag_tree_fit <- bag_tree_spec |> fit(class ~ ., data = bin_train)
 bag_tree_fit
 ```
@@ -457,6 +464,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-dbarts-bart-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(217)
 bart_fit <- bart_spec |> fit(class ~ ., data = bin_train)
 bart_fit
 ```
@@ -493,6 +502,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-xgboost-boost-tree-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(738)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -520,6 +531,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-C5.0-boost-tree-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(984)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -556,6 +569,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-catboost-boost-tree-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(644)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -594,6 +609,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-boost-tree-classification
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(186)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -633,6 +650,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-gbm-boost-tree-classification
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(724)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -670,6 +689,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-lightgbm-boost-tree-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(906)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -699,6 +720,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-boost-tree-classification
 #| eval: !expr 'run_spark'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(285)
 boost_tree_fit <- boost_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
 boost_tree_fit
 ```
@@ -741,6 +764,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-C5.0-C5-rules-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(93)
 C5_rules_fit <- C5_rules_spec |> fit(class ~ ., data = bin_train)
 C5_rules_fit
 ```
@@ -1270,6 +1295,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-logistic-reg-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(466)
 logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
@@ -1437,6 +1464,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-keras-logistic-reg-classification
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(730)
 logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
@@ -1492,6 +1521,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-stan-logistic-reg-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(96)
 logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
@@ -1530,6 +1561,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-stan-glmer-logistic-reg-classification
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(484)
 logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
@@ -1630,6 +1663,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-nnet-mlp-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(839)
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
 mlp_fit
 ```
@@ -1658,6 +1693,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-mlp-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(38)
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
 mlp_fit
 ```
@@ -1686,6 +1723,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-two-layer-mlp-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(336)
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
 mlp_fit
 ```
@@ -1724,6 +1763,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-mlp-classification
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(306)
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
 mlp_fit
 ```
@@ -1754,6 +1795,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-keras-mlp-classification
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(216)
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
 mlp_fit
 ```
@@ -1788,6 +1831,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-nnet-multinom-reg-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(634)
 multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
@@ -1815,6 +1860,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-multinom-reg-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(837)
 multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
@@ -2198,6 +2245,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-ranger-rand-forest-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(841)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
@@ -2235,6 +2284,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-aorsf-rand-forest-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(923)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
@@ -2265,6 +2316,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-grf-rand-forest-classification
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(546)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
@@ -2305,6 +2358,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-rand-forest-classification
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(493)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
@@ -2342,6 +2397,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-partykit-rand-forest-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(252)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 ```
 
@@ -2378,6 +2435,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-randomForest-rand-forest-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(726)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
@@ -2407,6 +2466,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-rand-forest-classification
 #| eval: !expr 'run_spark'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(693)
 rand_forest_fit <- rand_forest_spec |> fit(Class ~ ., data = tbl_bin$training)
 rand_forest_fit
 ```
@@ -2450,6 +2511,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-xrf-rule-fit-classification
+# Set the random number seed to an integer for reproducibility: 
+set.seed(95)
 rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
 rule_fit_fit
 ```
@@ -2488,6 +2551,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-rule-fit-classification
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(536)
 rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
 rule_fit_fit
 ```
@@ -2758,6 +2823,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-earth-bag-mars-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(147)
 bag_mars_fit <- bag_mars_spec |> fit(strength ~ ., data = reg_train)
 bag_mars_fit
 ```
@@ -2799,6 +2866,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-nnet-bag-mlp-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(324)
 bag_mlp_fit <- bag_mlp_spec |> fit(strength ~ ., data = reg_train)
 bag_mlp_fit
 ```
@@ -2840,6 +2909,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-rpart-bag-tree-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(230)
 bag_tree_fit <- bag_tree_spec |> fit(strength ~ ., data = reg_train)
 bag_tree_fit
 ```
@@ -2873,6 +2944,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-dbarts-bart-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(134)
 bart_fit <- bart_spec |> fit(strength ~ ., data = reg_train)
 bart_fit
 ```
@@ -2908,6 +2981,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-xgboost-boost-tree-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(748)
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
@@ -2943,6 +3018,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-catboost-boost-tree-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(557)
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
@@ -2979,6 +3056,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-boost-tree-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(720)
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
@@ -3016,6 +3095,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-gbm-boost-tree-regression
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(90)
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
@@ -3051,6 +3132,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-lightgbm-boost-tree-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(570)
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
@@ -3079,6 +3162,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-boost-tree-regression
 #| eval: !expr 'run_spark'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(620)
 boost_tree_fit <- boost_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 boost_tree_fit
 ```
@@ -3120,6 +3205,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-Cubist-cubist-rules-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(188)
 cubist_rules_fit <- cubist_rules_spec |> fit(strength ~ ., data = reg_train)
 cubist_rules_fit
 ```
@@ -3313,6 +3400,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-linear-reg-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(1)
 linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
@@ -3538,6 +3627,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-keras-linear-reg-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(596)
 linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
@@ -3637,6 +3728,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-stan-linear-reg-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(357)
 linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
@@ -3674,6 +3767,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-stan-glmer-linear-reg-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(895)
 linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
@@ -3770,6 +3865,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-nnet-mlp-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(159)
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
@@ -3797,6 +3894,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-mlp-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(407)
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
@@ -3824,6 +3923,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-brulee-two-layer-mlp-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(585)
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
@@ -3861,6 +3962,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-mlp-regression
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(93)
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
@@ -3890,6 +3993,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-keras-mlp-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(879)
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
@@ -4105,6 +4210,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-glmer-poisson-reg-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(826)
 poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
 poisson_reg_fit
 ```
@@ -4246,6 +4353,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-stan-poisson-reg-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(213)
 poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
 poisson_reg_fit
 ```
@@ -4284,6 +4393,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-stan-glmer-poisson-reg-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(690)
 poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
 poisson_reg_fit
 ```
@@ -4356,6 +4467,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-ranger-rand-forest-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(860)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
@@ -4392,6 +4505,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-aorsf-rand-forest-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(47)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
@@ -4421,6 +4536,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-grf-rand-forest-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(130)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
@@ -4460,6 +4577,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-rand-forest-regression
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(211)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
@@ -4496,6 +4615,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-partykit-rand-forest-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(981)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 ```
 
@@ -4531,6 +4652,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-randomForest-rand-forest-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(793)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
@@ -4559,6 +4682,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-rand-forest-regression
 #| eval: !expr 'run_spark'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(157)
 rand_forest_fit <- rand_forest_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 rand_forest_fit
 ```
@@ -4601,6 +4726,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-xrf-rule-fit-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(431)
 rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
 rule_fit_fit
 ```
@@ -4638,6 +4765,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-rule-fit-regression
 #| eval: !expr 'run_h2o'
+# Set the random number seed to an integer for reproducibility: 
+set.seed(236)
 rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
 rule_fit_fit
 ```
@@ -4887,6 +5016,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-mboost-boost-tree-censored-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(852)
 boost_tree_fit <- boost_tree_spec |> fit(event_time ~ ., data = cns_train)
 boost_tree_fit
 ```
@@ -5136,6 +5267,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-aorsf-rand-forest-censored-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(2)
 rand_forest_fit <- rand_forest_spec |> fit(event_time ~ ., data = cns_train)
 rand_forest_fit
 ```
@@ -5182,6 +5315,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-partykit-rand-forest-censored-regression
+# Set the random number seed to an integer for reproducibility: 
+set.seed(89)
 rand_forest_fit <- rand_forest_spec |> fit(event_time ~ ., data = cns_train)
 ```
 
@@ -5459,6 +5594,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-grf-rand-forest-quantile-regression
 #| eval: false
+# Set the random number seed to an integer for reproducibility: 
+set.seed(435)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = qnt_train)
 rand_forest_fit
 ```
