@@ -4895,6 +4895,8 @@ The holdout data can be predicted:
 predict(svm_rbf_fit, new_data = reg_test)
 ```
 
+:::
+
 # Censored Regression Models
 
 Let's simulate a data set using the prodlim and survival packages: 
@@ -4923,7 +4925,6 @@ For some types of predictions, we need the _evaluation time(s)_ for the predicti
 eval_times <- c(1, 3, 5)
 ```
 
-:::
 
 ## Bagged Decision Trees (`bag_tree()`) 
 
@@ -5363,6 +5364,8 @@ predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
 predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 
+:::
+
 # Quantile Regression Models
 
 To demonstrate quantile regression, let's make a larger version of our regression data: 
@@ -5392,8 +5395,6 @@ We'll also predict these quantile levels:
 #| label: qnt-lvls
 qnt_lvls <- (1:3) / 4
 ```
-
-:::
 
 ## Linear Regression (`linear_reg()`) 
 
