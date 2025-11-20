@@ -25,7 +25,8 @@ execute:
 source(here::here("common.R"))
 
 # Indicates to enable or not running Spark code
-run_spark <- TRUE
+run_spark <- FALSE
+run_h2o <- TRUE
 ```
 
 ```{r}
@@ -42,7 +43,7 @@ pkgs <- c("tidymodels", "agua", "baguette", "bonsai", "censored", "discrim",
 ```
 
 
-## Introduction
+# Introduction
 
 `r article_req_pkgs(pkgs)`
 
@@ -64,6 +65,7 @@ todo
 - keras3 updates
 - use `<details>` for long model prints
 - avoid subsection titles capitalizing the engine name (e.g., "CATBOOST") and text within backticks
+- set seeds when needed
 
 ```{r}
 #| label: load-tm
@@ -71,11 +73,88 @@ library(tidymodels)
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 
+## External Dependencies
+
+Some models available in parsnip use other computational frameworks for computations. There may be some additional downloads for engines using **catboost**, **Spark**, **h2o**, **tensorflow**/**keras**, and **torch**. You can expand the sections below to get basic installation instructions.
+
+<details>
+
+### catboost
+
+catboost is a popular boosting framework. Unfortunately, the R package is not available on CRAN. First, go to [https://github.com/catboost/catboost/releases/]("https://github.com/catboost/catboost/releases/) and search for "`[R-package]`" to find the most recent release. 
+
+The following code and be used to install and test the package (which requires the glue package to be installed): 
+
+```{r}
+#| label: catboost-install
+#| eval: false
+library(glue)
+
+# Put the current version number in this variable: 
+version_number <- "#.##"
+
+template <- "https://github.com/catboost/catboost/releases/download/v{version}/catboost-R-darwin-universal2-{version}.tgz"
+
+target_url <- glue::glue(template)
+target_dest <- tempfile()
+download.file(target_url, target_dest)
+
+if (grepl("^mac", .Platform$pkgType)) {
+  options <- "--no-staged-install"
+} else {
+  options <- character(0)
+}
+
+inst <- glue::glue("R CMD INSTALL {options} {target_dest}")
+system(inst)
+```
+
+To test, fit an example model: 
+
+```{r}
+#| label: catboost-test
+#| eval: false
+library(catboost)
+
+train_pool_path <- system.file("extdata", "adult_train.1000", package = "catboost")
+test_pool_path <- system.file("extdata", "adult_test.1000", package = "catboost")
+cd_path <- system.file("extdata", "adult.cd", package = "catboost")
+train_pool <- catboost.load_pool(train_pool_path, column_description = cd_path)
+test_pool <- catboost.load_pool(test_pool_path, column_description = cd_path)
+fit_params <- list(
+  iterations = 100,
+  loss_function = 'Logloss',
+  ignored_features = c(4, 9),
+  border_count = 32,
+  depth = 5,
+  learning_rate = 0.03,
+  l2_leaf_reg = 3.5,
+  train_dir = tempdir())
+fit_params
+```
+
 ### Apache Spark
 
-To use [Apache Spark](https://spark.apache.org/) as an engine, we will first 
-need a connection to a cluster. For this article, we will setup and use a 
-single-node Spark cluster running on a laptop:
+To use [Apache Spark](https://spark.apache.org/) as an engine, we will first install Spark and then need a connection to a cluster. For this article, we will setup and use a single-node Spark cluster running on a laptop.
+
+To install, first install sparklyr:
+
+```{r}
+#| label: sparklyr-install
+#| eval: false
+install.packages("sparklyr")
+```
+
+and then install the Spark backend. For example, you might use: 
+
+```{r}
+#| label: spark-install
+#| eval: false
+library(sparklyr)
+spark_install(version = "4.0")
+```
+
+Once that is working, you can get ready to fit models using: 
 
 ```{r}
 #| label: spark-connect
@@ -84,6 +163,59 @@ library(sparklyr)
 sc <- spark_connect("local", version = "4.0.1")
 ```
 
+### h2o 
+
+h2o.ai offers a Java based high performance computing server for machine learning. This can be run locally or externally. There are general installation instructions at [https://docs.h2o.ai/](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html). There is a package on CRAN but you can also install directly from [h2o](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html#install-in-r) via:
+
+```{r}
+#| label: h2o-download
+#| eval: false
+install.packages(
+  "h2o",
+  type = "source",
+  repos = "http://h2o-release.s3.amazonaws.com/h2o/latest_stable_R"
+)
+```
+
+After installation is complete, you can start a local server via `h2o::h2o.init()`. 
+
+The tidymodels [agua](https://agua.tidymodels.org/) package has some helpers and will also need to be installed. You can use its function to start a server too:
+
+```{r}
+#| label: h2o-init
+#| eval: !expr 'run_h2o'
+library(agua)
+h2o_start()
+```
+
+### Tensorflow and Keras
+
+R's tensorflow and keras3 packages call Python directly. To enable this, you'll have to install two R packages: 
+
+```{r}
+#| label: keras-install
+#| eval: false
+install.packages("keras3")
+```
+
+Once that is done, use: 
+```{r}
+#| label: tf-install
+#| eval: false
+keras3::install_keras(backend = "tensorflow")
+```
+
+There are other options for installation. See [https://tensorflow.rstudio.com/install/index.html](https://tensorflow.rstudio.com/install/index.html) for more details. 
+
+### Torch
+
+R's torch package is the low-level package containing the framework. Once you have installed it, you will get this message the first time you load the package: 
+
+> Additional software needs to be downloaded and installed for torch to work correctly."
+
+Choosing "Yes" will do the _one-time_ installation. 
+
+</details>
 
 # Classification Models
 
@@ -136,6 +268,9 @@ and then use it to create the splits. For this article, we will copy the
 ```{r}
 #| label: spark-bin-data
 #| eval: !expr 'run_spark'
+library(sparklyr)
+sc <- spark_connect("local", version = "4.0.1")
+
 tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
 
 tbl_bin <- sdf_random_split(tbl_two_class, training = 0.994, test = 1-0.994, seed = 100)
@@ -452,6 +587,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-boost-tree-classification
+#| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("classification") |>
@@ -462,6 +598,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-boost-tree-classification
+#| eval: !expr 'run_h2o'
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -470,6 +607,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-boost-tree-classification
+#| eval: !expr 'run_h2o'
 predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
@@ -488,6 +626,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-gbm-boost-tree-classification
+#| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("classification") |>
@@ -498,6 +637,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-gbm-boost-tree-classification
+#| eval: !expr 'run_h2o'
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
@@ -506,6 +646,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-gbm-boost-tree-classification
+#| eval: !expr 'run_h2o'
 predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
@@ -1257,6 +1398,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-logistic-reg-classification
+#| eval: !expr 'run_h2o'
 logistic_reg_spec <- logistic_reg() |> 
   # This engine works with a single mode so no need to set that
   set_engine("h2o")
@@ -1266,6 +1408,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-logistic-reg-classification
+#| eval: !expr 'run_h2o'
 logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
@@ -1274,6 +1417,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-logistic-reg-classification
+#| eval: !expr 'run_h2o'
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
@@ -1534,6 +1678,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-mlp-classification
+#| eval: !expr 'run_h2o'
 mlp_spec <- mlp() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("classification") |>
@@ -1544,6 +1689,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-mlp-classification
+#| eval: !expr 'run_h2o'
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
 mlp_fit
 ```
@@ -1552,6 +1698,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-mlp-classification
+#| eval: !expr 'run_h2o'
 predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
@@ -1684,6 +1831,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-multinom-reg-classification
+#| eval: !expr 'run_h2o'
 multinom_reg_spec <- multinom_reg() |> 
   # This engine works with a single mode so no need to set that
   set_engine("h2o")
@@ -1693,6 +1841,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-multinom-reg-classification
+#| eval: !expr 'run_h2o'
 multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
@@ -1701,6 +1850,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-multinom-reg-classification
+#| eval: !expr 'run_h2o'
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
@@ -1807,6 +1957,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-naive-Bayes-classification
+#| eval: !expr 'run_h2o'
 naive_Bayes_spec <- naive_Bayes() |> 
   # This engine works with a single mode so no need to set that
   set_engine("h2o")
@@ -1816,6 +1967,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-naive-Bayes-classification
+#| eval: !expr 'run_h2o'
 naive_Bayes_fit <- naive_Bayes_spec |> fit(class ~ ., data = bin_train)
 naive_Bayes_fit
 ```
@@ -1824,6 +1976,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-naive-Bayes-classification
+#| eval: !expr 'run_h2o'
 predict(naive_Bayes_fit, type = "class", new_data = bin_test)
 predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
@@ -2082,6 +2235,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-rand-forest-classification
+#| eval: !expr 'run_h2o'
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("classification") |>
@@ -2092,6 +2246,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-rand-forest-classification
+#| eval: !expr 'run_h2o'
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
@@ -2100,6 +2255,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-rand-forest-classification
+#| eval: !expr 'run_h2o'
 predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
@@ -2248,6 +2404,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-rule-fit-classification
+#| eval: !expr 'run_h2o'
 rule_fit_spec <- rule_fit() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("classification") |>
@@ -2258,6 +2415,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-rule-fit-classification
+#| eval: !expr 'run_h2o'
 rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
 rule_fit_fit
 ```
@@ -2266,6 +2424,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-rule-fit-classification
+#| eval: !expr 'run_h2o'
 predict(rule_fit_fit, type = "class", new_data = bin_test)
 predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ```
@@ -2513,6 +2672,9 @@ and then use it to create the splits. For this article, we will copy the
 #| label: spark-reg-data
 #| eval: !expr 'run_spark'
 
+library(sparklyr)
+sc <- spark_connect("local", version = "4.0.1")
+
 tbl_concrete <- copy_to(sc, modeldata::concrete)
 
 tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 100)
@@ -2753,6 +2915,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-boost-tree-regression
+#| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("regression") |>
@@ -2788,6 +2951,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-gbm-boost-tree-regression
+#| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("regression") |>
@@ -2798,6 +2962,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-gbm-boost-tree-regression
+#| eval: !expr 'run_h2o'
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
@@ -3266,6 +3431,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-linear-reg-regression
+#| eval: !expr 'run_h2o'
 linear_reg_spec <- linear_reg() |> 
   # This engine works with a single mode so no need to set that
   set_engine("h2o")
@@ -3275,6 +3441,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-linear-reg-regression
+#| eval: !expr 'run_h2o'
 linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
@@ -3283,6 +3450,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-linear-reg-regression
+#| eval: !expr 'run_h2o'
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
@@ -3606,6 +3774,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-mlp-regression
+#| eval: !expr 'run_h2o'
 mlp_spec <- mlp() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("regression") |>
@@ -3616,6 +3785,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-mlp-regression
+#| eval: !expr 'run_h2o'
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
@@ -3624,6 +3794,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-mlp-regression
+#| eval: !expr 'run_h2o'
 predict(mlp_fit, new_data = reg_test)
 ```
 
@@ -3934,6 +4105,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-poisson-reg-regression
+#| eval: !expr 'run_h2o'
 poisson_reg_spec <- poisson_reg() |> 
   # This engine works with a single mode so no need to set that
   set_engine("h2o")
@@ -3943,6 +4115,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-poisson-reg-regression
+#| eval: !expr 'run_h2o'
 poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
 poisson_reg_fit
 ```
@@ -3951,6 +4124,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-poisson-reg-regression
+#| eval: !expr 'run_h2o'
 predict(poisson_reg_fit, new_data = count_test)
 ```
 
@@ -4179,6 +4353,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-rand-forest-regression
+#| eval: !expr 'run_h2o'
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("regression") |>
@@ -4189,6 +4364,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-rand-forest-regression
+#| eval: !expr 'run_h2o'
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
@@ -4197,6 +4373,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-rand-forest-regression
+#| eval: !expr 'run_h2o'
 predict(rand_forest_fit, new_data = reg_test)
 ```
 
@@ -4340,6 +4517,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-h2o-rule-fit-regression
+#| eval: !expr 'run_h2o'
 rule_fit_spec <- rule_fit() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("regression") |>
@@ -4350,6 +4528,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-h2o-rule-fit-regression
+#| eval: !expr 'run_h2o'
 rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
 rule_fit_fit
 ```
@@ -4358,6 +4537,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-h2o-rule-fit-regression
+#| eval: !expr 'run_h2o'
 predict(rule_fit_fit, new_data = reg_test)
 ```
 
