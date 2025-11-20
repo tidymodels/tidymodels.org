@@ -13,7 +13,7 @@ toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
 execute: 
-  eval: true
+  eval: false
 ---
 
 ```{r}
@@ -26,7 +26,7 @@ source(here::here("common.R"))
 
 # Indicates to enable or not running Spark code
 run_spark <- FALSE
-run_h2o <- TRUE
+run_h2o <- FALSE
 ```
 
 ```{r}
@@ -284,7 +284,9 @@ tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed 
 
 ## Auto Ml (`auto_ml()`) 
 
-## `h2o` Engine 
+:::{.panel-tabset}
+
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -327,9 +329,13 @@ predict(auto_ml_fit, type = "class", new_data = bin_test)
 predict(auto_ml_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Bagged MARS (`bag_mars()`) 
 
-## `earth` Engine 
+:::{.panel-tabset}
+
+## `earth` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -365,9 +371,13 @@ predict(bag_mars_fit, type = "class", new_data = bin_test)
 predict(bag_mars_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Bagged Neural Networks (`bag_mlp()`) 
 
-## `nnet` Engine 
+:::{.panel-tabset}
+
+## `nnet` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -403,9 +413,13 @@ predict(bag_mlp_fit, type = "class", new_data = bin_test)
 predict(bag_mlp_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Bagged Decision Trees (`bag_tree()`) 
 
-## `C5.0` Engine 
+:::{.panel-tabset}
+
+## `C5.0` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -440,7 +454,7 @@ predict(bag_tree_fit, type = "class", new_data = bin_test)
 predict(bag_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `rpart` Engine 
+## `rpart` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -476,9 +490,13 @@ predict(bag_tree_fit, type = "class", new_data = bin_test)
 predict(bag_tree_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Bayesian Additive Regression Trees (`bart()`) 
 
-## `dbarts` Engine 
+:::{.panel-tabset}
+
+## `dbarts` 
 
 We create a model specification via:
 
@@ -508,9 +526,13 @@ predict(bart_fit, type = "conf_int", new_data = bin_test)
 predict(bart_fit, type = "pred_int", new_data = bin_test)
 ```
 
+:::
+
 ## Boosted Decision Trees (`boost_tree()`) 
 
-## `C5.0` Engine 
+:::{.panel-tabset}
+
+## `C5.0` 
 
 We create a model specification via:
 
@@ -537,7 +559,7 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `catboost` Engine 
+## `catboost` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -573,7 +595,7 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -612,7 +634,7 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `h2o_gbm` Engine 
+## `h2o_gbm` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -651,7 +673,7 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `lightgbm` Engine 
+## `lightgbm` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -687,7 +709,7 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `xgboost` Engine 
+## `xgboost` 
 
 We create a model specification via:
 
@@ -715,7 +737,7 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -745,10 +767,13 @@ predict(boost_tree_fit, type = "class", new_data = tbl_bin$test)
 predict(boost_tree_fit, type = "prob", new_data = tbl_bin$test)
 ```
 
+:::
 
 ## C5 Rules (`C5_rules()`) 
 
-## `C5.0` Engine 
+:::{.panel-tabset}
+
+## `C5.0` 
 
 This engine requires the rules extension package, so let's load this first:
 
@@ -783,9 +808,13 @@ predict(C5_rules_fit, type = "class", new_data = bin_test)
 predict(C5_rules_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Decision Tree (`decision_tree()`) 
 
-## `C5.0` Engine 
+:::{.panel-tabset}
+
+## `C5.0` 
 
 We create a model specification via:
 
@@ -812,7 +841,7 @@ predict(decision_tree_fit, type = "class", new_data = bin_test)
 predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `partykit` Engine 
+## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -848,7 +877,7 @@ predict(decision_tree_fit, type = "class", new_data = bin_test)
 predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `rpart` Engine 
+## `rpart` 
 
 We create a model specification via:
 
@@ -876,7 +905,7 @@ predict(decision_tree_fit, type = "class", new_data = bin_test)
 predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `sparklyr` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -905,9 +934,13 @@ predict(decision_tree_fit, type = "class", new_data = tbl_bin$test)
 predict(decision_tree_fit, type = "prob", new_data = tbl_bin$test)
 ```
 
+:::
+
 ## Flexible Discriminant Analysis (`discrim_flexible()`) 
 
-## `earth` Engine 
+:::{.panel-tabset}
+
+## `earth` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -942,9 +975,13 @@ predict(discrim_flexible_fit, type = "class", new_data = bin_test)
 predict(discrim_flexible_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Linear Discriminant Analysis (`discrim_linear()`) 
 
-## `MASS` Engine 
+:::{.panel-tabset}
+
+## `MASS` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -979,7 +1016,7 @@ predict(discrim_linear_fit, type = "class", new_data = bin_test)
 predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 
-## `mda` Engine 
+## `mda` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -1014,7 +1051,7 @@ predict(discrim_linear_fit, type = "class", new_data = bin_test)
 predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 
-## `sda` Engine 
+## `sda` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -1049,7 +1086,7 @@ predict(discrim_linear_fit, type = "class", new_data = bin_test)
 predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 
-## `sparsediscrim` Engine 
+## `sparsediscrim` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -1084,9 +1121,13 @@ predict(discrim_linear_fit, type = "class", new_data = bin_test)
 predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Quandratic Discriminant Analysis (`discrim_quad()`) 
 
-## `MASS` Engine 
+:::{.panel-tabset}
+
+## `MASS` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -1121,7 +1162,7 @@ predict(discrim_quad_fit, type = "class", new_data = bin_test)
 predict(discrim_quad_fit, type = "prob", new_data = bin_test)
 ```
 
-## `sparsediscrim` Engine 
+## `sparsediscrim` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -1156,9 +1197,13 @@ predict(discrim_quad_fit, type = "class", new_data = bin_test)
 predict(discrim_quad_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Regularized Discriminant Analysis (`discrim_regularized()`) 
 
-## `klaR` Engine 
+:::{.panel-tabset}
+
+## `klaR` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -1193,9 +1238,13 @@ predict(discrim_regularized_fit, type = "class", new_data = bin_test)
 predict(discrim_regularized_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Generalized Additive Models (`gen_additive_mod()`) 
 
-## `mgcv` Engine 
+:::{.panel-tabset}
+
+## `mgcv` 
 
 We create a model specification via:
 
@@ -1226,9 +1275,13 @@ predict(gen_additive_mod_fit, type = "prob", new_data = bin_test)
 predict(gen_additive_mod_fit, type = "conf_int", new_data = bin_test)
 ```
 
+:::
+
 ## Logistic Regression (`logistic_reg()`) 
 
-## `brulee` Engine 
+:::{.panel-tabset}
+
+## `brulee` 
 
 We create a model specification via:
 
@@ -1255,7 +1308,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `gee` Engine 
+## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -1292,7 +1345,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `glm` Engine 
+## `glm` 
 
 We create a model specification via:
 
@@ -1320,7 +1373,7 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
 ```
 
-## `glmer` Engine 
+## `glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -1357,7 +1410,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `glmnet` Engine 
+## `glmnet` 
 
 We create a model specification via:
 
@@ -1384,7 +1437,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -1422,7 +1475,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `keras` Engine 
+## `keras` 
 
 We create a model specification via:
 
@@ -1451,7 +1504,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `LiblineaR` Engine 
+## `LiblineaR` 
 
 We create a model specification via:
 
@@ -1478,7 +1531,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 
-## `stan` Engine 
+## `stan` 
 
 We create a model specification via:
 
@@ -1507,7 +1560,7 @@ predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
 predict(logistic_reg_fit, type = "pred_int", new_data = bin_test)
 ```
 
-## `stan_glmer` Engine 
+## `stan_glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -1546,7 +1599,7 @@ predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
 predict(logistic_reg_fit, type = "pred_int", new_data = bin_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -1575,10 +1628,13 @@ predict(logistic_reg_fit, type = "class", new_data = tbl_bin$test)
 predict(logistic_reg_fit, type = "prob", new_data = tbl_bin$test)
 ```
 
+:::
 
 ## Multivariate Adaptive Regression Splines (`mars()`) 
 
-## `earth` Engine 
+:::{.panel-tabset}
+
+## `earth` 
 
 We create a model specification via:
 
@@ -1606,9 +1662,13 @@ predict(mars_fit, type = "class", new_data = bin_test)
 predict(mars_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Neural Networks (`mlp()`) 
 
-## `brulee` Engine 
+:::{.panel-tabset}
+
+## `brulee` 
 
 We create a model specification via:
 
@@ -1636,7 +1696,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 
-## `brulee_two_layer` Engine 
+## `brulee_two_layer` 
 
 We create a model specification via:
 
@@ -1664,7 +1724,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -1703,7 +1763,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 
-## `keras` Engine 
+## `keras` 
 
 We create a model specification via:
 
@@ -1733,7 +1793,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 
-## `nnet` Engine 
+## `nnet` 
 
 We create a model specification via:
 
@@ -1761,9 +1821,13 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Multinom Regression (`multinom_reg()`) 
 
-## `brulee` Engine 
+:::{.panel-tabset}
+
+## `brulee` 
 
 We create a model specification via:
 
@@ -1790,7 +1854,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 
-## `glmnet` Engine 
+## `glmnet` 
 
 We create a model specification via:
 
@@ -1817,7 +1881,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -1855,7 +1919,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 
-## `keras` Engine 
+## `keras` 
 
 We create a model specification via:
 
@@ -1884,7 +1948,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 
-## `nnet` Engine 
+## `nnet` 
 
 We create a model specification via:
 
@@ -1911,7 +1975,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -1940,10 +2004,13 @@ predict(multinom_reg_fit, type = "class", new_data = tbl_mtl$test)
 predict(multinom_reg_fit, type = "prob", new_data = tbl_mtl$test)
 ```
 
+:::
 
 ## Naive Bayes (`naive_Bayes()`) 
 
-## `h2o` Engine 
+:::{.panel-tabset}
+
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -1981,7 +2048,7 @@ predict(naive_Bayes_fit, type = "class", new_data = bin_test)
 predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
 
-## `klaR` Engine 
+## `klaR` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -2018,7 +2085,7 @@ predict(naive_Bayes_fit, type = "class", new_data = bin_test)
 predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
 
-## `naivebayes` Engine 
+## `naivebayes` 
 
 This engine requires the discrim extension package, so let's load this first:
 
@@ -2053,9 +2120,13 @@ predict(naive_Bayes_fit, type = "class", new_data = bin_test)
 predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## K-Nearest Neighbors (`nearest_neighbor()`) 
 
-## `kknn` Engine 
+:::{.panel-tabset}
+
+## `kknn` 
 
 We create a model specification via:
 
@@ -2083,9 +2154,13 @@ predict(nearest_neighbor_fit, type = "class", new_data = bin_test)
 predict(nearest_neighbor_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Null Model (`null_model()`) 
 
-## `parsnip` Engine 
+:::{.panel-tabset}
+
+## `parsnip` 
 
 We create a model specification via:
 
@@ -2113,9 +2188,13 @@ predict(null_model_fit, type = "class", new_data = bin_test)
 predict(null_model_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Partial Least Squares (`pls()`) 
 
-## `mixOmics` Engine 
+:::{.panel-tabset}
+
+## `mixOmics` 
 
 This engine requires the plsmod extension package, so let's load this first:
 
@@ -2151,9 +2230,13 @@ predict(pls_fit, type = "class", new_data = bin_test)
 predict(pls_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Random Forests (`rand_forest()`) 
 
-## `aorsf` Engine 
+:::{.panel-tabset}
+
+## `aorsf` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -2189,7 +2272,7 @@ predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
 
-## `grf` Engine 
+## `grf` 
 
 We create a model specification via:
 
@@ -2221,7 +2304,7 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -2260,7 +2343,7 @@ predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
 
-## `partykit` Engine 
+## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -2298,7 +2381,7 @@ predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
 
-## `randomForest` Engine 
+## `randomForest` 
 
 We create a model specification via:
 
@@ -2326,7 +2409,7 @@ predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
 
-## `ranger` Engine 
+## `ranger` 
 
 We create a model specification via:
 
@@ -2358,7 +2441,7 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -2388,9 +2471,13 @@ predict(rand_forest_fit, type = "class", new_data = tbl_bin$test)
 predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
 ```
 
+:::
+
 ## Rule Fit (`rule_fit()`) 
 
-## `h2o` Engine 
+:::{.panel-tabset}
+
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -2429,7 +2516,7 @@ predict(rule_fit_fit, type = "class", new_data = bin_test)
 predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ```
 
-## `xrf` Engine 
+## `xrf` 
 
 This engine requires the rules extension package, so let's load this first:
 
@@ -2467,7 +2554,7 @@ predict(rule_fit_fit, type = "prob", new_data = bin_test)
 
 ## Support Vector Machine (Linear Kernel) (`svm_linear()`) 
 
-## `kernlab` Engine 
+## `kernlab` 
 
 We create a model specification via:
 
@@ -2495,7 +2582,7 @@ predict(svm_linear_fit, type = "class", new_data = bin_test)
 predict(svm_linear_fit, type = "prob", new_data = bin_test)
 ```
 
-## `LiblineaR` Engine 
+## `LiblineaR` 
 
 We create a model specification via:
 
@@ -2522,9 +2609,13 @@ The holdout data can be predicted:
 predict(svm_linear_fit, type = "class", new_data = bin_test)
 ```
 
+:::
+
 ## Support Vector Machine (Polynomial Kernel) (`svm_poly()`) 
 
-## `kernlab` Engine 
+:::{.panel-tabset}
+
+## `kernlab` 
 
 We create a model specification via:
 
@@ -2552,9 +2643,13 @@ predict(svm_poly_fit, type = "class", new_data = bin_test)
 predict(svm_poly_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`) 
 
-## `kernlab` Engine 
+:::{.panel-tabset}
+
+## `kernlab` 
 
 We create a model specification via:
 
@@ -2582,7 +2677,7 @@ predict(svm_rbf_fit, type = "class", new_data = bin_test)
 predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 ```
 
-## `liquidSVM` Engine 
+## `liquidSVM` 
 
 Note that this package is not on CRAN. You can install it via its :
 
@@ -2619,6 +2714,8 @@ The holdout data can be predicted:
 predict(svm_rbf_fit, type = "class", new_data = bin_test)
 predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 ```
+
+:::
 
 # Regression Models
 
@@ -2683,7 +2780,7 @@ tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 1
 
 ## Auto Ml (`auto_ml()`) 
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -2724,7 +2821,7 @@ predict(auto_ml_fit, new_data = reg_test)
 
 ## Bagged MARS (`bag_mars()`) 
 
-## `earth` Engine 
+## `earth` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -2761,7 +2858,7 @@ predict(bag_mars_fit, new_data = reg_test)
 
 ## Bagged Neural Networks (`bag_mlp()`) 
 
-## `nnet` Engine 
+## `nnet` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -2798,7 +2895,7 @@ predict(bag_mlp_fit, new_data = reg_test)
 
 ## Bagged Decision Trees (`bag_tree()`) 
 
-## `rpart` Engine 
+## `rpart` 
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -2835,7 +2932,7 @@ predict(bag_tree_fit, new_data = reg_test)
 
 ## Bayesian Additive Regression Trees (`bart()`) 
 
-## `dbarts` Engine 
+## `dbarts` 
 
 We create a model specification via:
 
@@ -2866,7 +2963,7 @@ predict(bart_fit, type = "pred_int", new_data = reg_test)
 
 ## Boosted Decision Trees (`boost_tree()`) 
 
-## `catboost` Engine 
+## `catboost` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -2901,7 +2998,7 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -2937,7 +3034,7 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
-## `h2o_gbm` Engine 
+## `h2o_gbm` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -2974,7 +3071,7 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
-## `lightgbm` Engine 
+## `lightgbm` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -3009,7 +3106,7 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
-## `xgboost` Engine 
+## `xgboost` 
 
 We create a model specification via:
 
@@ -3036,7 +3133,7 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -3067,7 +3164,7 @@ predict(boost_tree_fit, new_data = tbl_reg$test)
 
 ## Cubist Rules (`cubist_rules()`) 
 
-## `Cubist` Engine 
+## `Cubist` 
 
 This engine requires the rules extension package, so let's load this first:
 
@@ -3103,7 +3200,7 @@ predict(cubist_rules_fit, new_data = reg_test)
 
 ## Decision Tree (`decision_tree()`) 
 
-## `partykit` Engine 
+## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -3138,7 +3235,7 @@ The holdout data can be predicted:
 predict(decision_tree_fit, new_data = reg_test)
 ```
 
-## `rpart` Engine 
+## `rpart` 
 
 We create a model specification via:
 
@@ -3165,7 +3262,7 @@ The holdout data can be predicted:
 predict(decision_tree_fit, new_data = reg_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -3198,7 +3295,7 @@ predict(decision_tree_fit, new_data = tbl_reg$test)
 
 ## Generalized Additive Models (`gen_additive_mod()`) 
 
-## `mgcv` Engine 
+## `mgcv` 
 
 We create a model specification via:
 
@@ -3230,7 +3327,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = reg_test)
 
 ## Linear Reg (`linear_reg()`) 
 
-## `brulee` Engine 
+## `brulee` 
 
 We create a model specification via:
 
@@ -3256,7 +3353,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `gee` Engine 
+## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3292,7 +3389,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `glm` Engine 
+## `glm` 
 
 We create a model specification via:
 
@@ -3319,7 +3416,7 @@ predict(linear_reg_fit, new_data = reg_test)
 predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
 ```
 
-## `glmer` Engine 
+## `glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3355,7 +3452,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `glmnet` Engine 
+## `glmnet` 
 
 We create a model specification via:
 
@@ -3381,7 +3478,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `gls` Engine 
+## `gls` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3417,7 +3514,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -3454,7 +3551,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `keras` Engine 
+## `keras` 
 
 We create a model specification via:
 
@@ -3482,7 +3579,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `lm` Engine 
+## `lm` 
 
 We create a model specification via:
 
@@ -3510,7 +3607,7 @@ predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
 predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
 ```
 
-## `lme` Engine 
+## `lme` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3546,7 +3643,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `lmer` Engine 
+## `lmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3582,7 +3679,7 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `stan` Engine 
+## `stan` 
 
 We create a model specification via:
 
@@ -3610,7 +3707,7 @@ predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
 predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
 ```
 
-## `stan_glmer` Engine 
+## `stan_glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3647,7 +3744,7 @@ predict(linear_reg_fit, new_data = reg_test)
 predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -3677,7 +3774,7 @@ predict(linear_reg_fit, new_data = tbl_reg$test)
 
 ## Multivariate Adaptive Regression Splines (`mars()`) 
 
-## `earth` Engine 
+## `earth` 
 
 We create a model specification via:
 
@@ -3706,7 +3803,7 @@ predict(mars_fit, new_data = reg_test)
 
 ## Neural Networks (`mlp()`) 
 
-## `brulee` Engine 
+## `brulee` 
 
 We create a model specification via:
 
@@ -3733,7 +3830,7 @@ The holdout data can be predicted:
 predict(mlp_fit, new_data = reg_test)
 ```
 
-## `brulee_two_layer` Engine 
+## `brulee_two_layer` 
 
 We create a model specification via:
 
@@ -3760,7 +3857,7 @@ The holdout data can be predicted:
 predict(mlp_fit, new_data = reg_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -3798,7 +3895,7 @@ The holdout data can be predicted:
 predict(mlp_fit, new_data = reg_test)
 ```
 
-## `keras` Engine 
+## `keras` 
 
 We create a model specification via:
 
@@ -3827,7 +3924,7 @@ The holdout data can be predicted:
 predict(mlp_fit, new_data = reg_test)
 ```
 
-## `nnet` Engine 
+## `nnet` 
 
 We create a model specification via:
 
@@ -3856,7 +3953,7 @@ predict(mlp_fit, new_data = reg_test)
 
 ## K-Nearest Neighbors (`nearest_neighbor()`) 
 
-## `kknn` Engine 
+## `kknn` 
 
 We create a model specification via:
 
@@ -3885,7 +3982,7 @@ predict(nearest_neighbor_fit, new_data = reg_test)
 
 ## Null Model (`null_model()`) 
 
-## `parsnip` Engine 
+## `parsnip` 
 
 We create a model specification via:
 
@@ -3914,7 +4011,7 @@ predict(null_model_fit, new_data = reg_test)
 
 ## Partial Least Squares (`pls()`) 
 
-## `mixOmics` Engine 
+## `mixOmics` 
 
 This engine requires the plsmod extension package, so let's load this first:
 
@@ -3951,7 +4048,7 @@ predict(pls_fit, new_data = reg_test)
 
 ## Poisson Reg (`poisson_reg()`) 
 
-## `gee` Engine 
+## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -3987,7 +4084,7 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = reg_test)
 ```
 
-## `glm` Engine 
+## `glm` 
 
 This engine requires the poissonreg extension package, so let's load this first:
 
@@ -4021,7 +4118,7 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = count_test)
 ```
 
-## `glmer` Engine 
+## `glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -4057,7 +4154,7 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = reg_test)
 ```
 
-## `glmnet` Engine 
+## `glmnet` 
 
 This engine requires the poissonreg extension package, so let's load this first:
 
@@ -4091,7 +4188,7 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = count_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -4128,7 +4225,7 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = count_test)
 ```
 
-## `hurdle` Engine 
+## `hurdle` 
 
 This engine requires the poissonreg extension package, so let's load this first:
 
@@ -4162,7 +4259,7 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = count_test)
 ```
 
-## `stan` Engine 
+## `stan` 
 
 This engine requires the poissonreg extension package, so let's load this first:
 
@@ -4200,7 +4297,7 @@ predict(poisson_reg_fit, type = "conf_int", new_data = reg_test)
 predict(poisson_reg_fit, type = "pred_int", new_data = reg_test)
 ```
 
-## `stan_glmer` Engine 
+## `stan_glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
 
@@ -4237,7 +4334,7 @@ predict(poisson_reg_fit, new_data = reg_test)
 predict(poisson_reg_fit, type = "pred_int", new_data = reg_test)
 ```
 
-## `zeroinfl` Engine 
+## `zeroinfl` 
 
 This engine requires the poissonreg extension package, so let's load this first:
 
@@ -4273,7 +4370,7 @@ predict(poisson_reg_fit, new_data = count_test)
 
 ## Random Forests (`rand_forest()`) 
 
-## `aorsf` Engine 
+## `aorsf` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -4308,7 +4405,7 @@ The holdout data can be predicted:
 predict(rand_forest_fit, new_data = reg_test)
 ```
 
-## `grf` Engine 
+## `grf` 
 
 We create a model specification via:
 
@@ -4339,7 +4436,7 @@ predict(rand_forest_fit, new_data = reg_test)
 predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 ```
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -4377,7 +4474,7 @@ The holdout data can be predicted:
 predict(rand_forest_fit, new_data = reg_test)
 ```
 
-## `partykit` Engine 
+## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
 
@@ -4414,7 +4511,7 @@ The holdout data can be predicted:
 predict(rand_forest_fit, new_data = reg_test)
 ```
 
-## `randomForest` Engine 
+## `randomForest` 
 
 We create a model specification via:
 
@@ -4441,7 +4538,7 @@ The holdout data can be predicted:
 predict(rand_forest_fit, new_data = reg_test)
 ```
 
-## `ranger` Engine 
+## `ranger` 
 
 We create a model specification via:
 
@@ -4472,7 +4569,7 @@ predict(rand_forest_fit, new_data = reg_test)
 predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 ```
 
-## `spark` Engine 
+## `spark` 
 
 We create a model specification via:
 
@@ -4503,7 +4600,7 @@ predict(rand_forest_fit, new_data = tbl_reg$test)
 
 ## Rule Fit (`rule_fit()`) 
 
-## `h2o` Engine 
+## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
 
@@ -4541,7 +4638,7 @@ The holdout data can be predicted:
 predict(rule_fit_fit, new_data = reg_test)
 ```
 
-## `xrf` Engine 
+## `xrf` 
 
 This engine requires the rules extension package, so let's load this first:
 
@@ -4578,7 +4675,7 @@ predict(rule_fit_fit, new_data = reg_test)
 
 ## Support Vector Machine (Linear Kernel) (`svm_linear()`) 
 
-## `kernlab` Engine 
+## `kernlab` 
 
 We create a model specification via:
 
@@ -4605,7 +4702,7 @@ The holdout data can be predicted:
 predict(svm_linear_fit, new_data = reg_test)
 ```
 
-## `LiblineaR` Engine 
+## `LiblineaR` 
 
 We create a model specification via:
 
@@ -4634,7 +4731,7 @@ predict(svm_linear_fit, new_data = reg_test)
 
 ## Support Vector Machine (Polynomial Kernel) (`svm_poly()`) 
 
-## `kernlab` Engine 
+## `kernlab` 
 
 We create a model specification via:
 
@@ -4663,7 +4760,7 @@ predict(svm_poly_fit, new_data = reg_test)
 
 ## Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`) 
 
-## `kernlab` Engine 
+## `kernlab` 
 
 We create a model specification via:
 
@@ -4690,7 +4787,7 @@ The holdout data can be predicted:
 predict(svm_rbf_fit, new_data = reg_test)
 ```
 
-## `liquidSVM` Engine 
+## `liquidSVM` 
 
 We create a model specification via:
 
@@ -4749,7 +4846,7 @@ eval_times <- c(1, 3, 5)
 
 ## Bagged Decision Trees (`bag_tree()`) 
 
-## `rpart` Engine 
+## `rpart` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -4787,7 +4884,7 @@ predict(bag_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_t
 
 ## Boosted Decision Trees (`boost_tree()`) 
 
-## `mboost` Engine 
+## `mboost` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -4825,7 +4922,7 @@ predict(boost_tree_fit, type = "linear_pred", new_data = cns_test)
 
 ## Decision Tree (`decision_tree()`) 
 
-## `partykit` Engine 
+## `partykit` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -4861,7 +4958,7 @@ predict(decision_tree_fit, type = "time", new_data = cns_test)
 predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
-## `rpart` Engine 
+## `rpart` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -4899,7 +4996,7 @@ predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = e
 
 ## Proportional Hazards (`proportional_hazards()`) 
 
-## `glmnet` Engine 
+## `glmnet` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -4935,7 +5032,7 @@ predict(proportional_hazards_fit, type = "survival", new_data = cns_test, eval_t
 predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
 ```
 
-## `survival` Engine 
+## `survival` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -4973,7 +5070,7 @@ predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
 
 ## Random Forests (`rand_forest()`) 
 
-## `aorsf` Engine 
+## `aorsf` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5009,7 +5106,7 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
-## `partykit` Engine 
+## `partykit` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5049,7 +5146,7 @@ predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eva
 
 ## Parametric Survival Models (`survival_reg()`) 
 
-## `flexsurv` Engine 
+## `flexsurv` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5087,7 +5184,7 @@ predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
 predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 
-## `flexsurvspline` Engine 
+## `flexsurvspline` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5125,7 +5222,7 @@ predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
 predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 
-## `survival` Engine 
+## `survival` 
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5196,7 +5293,7 @@ qnt_lvls <- (1:3) / 4
 
 ## Linear Regression (`linear_reg()`) 
 
-## `quantreg` Engine 
+## `quantreg` 
 
 We create a model specification via:
 
@@ -5224,7 +5321,7 @@ predict(linear_reg_fit, type = "quantile", new_data = qnt_test)
 
 ## Random Forests (`rand_forest()`) 
 
-## `grf` Engine 
+## `grf` 
 
 We create a model specification via:
 
