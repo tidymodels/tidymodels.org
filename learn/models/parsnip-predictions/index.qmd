@@ -12,8 +12,6 @@ description: |
 toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
-execute: 
-  eval: false
 ---
 
 ```{r}
@@ -25,8 +23,8 @@ execute:
 source(here::here("common.R"))
 
 # Indicates to enable or not running Spark code
-run_spark <- FALSE
-run_h2o <- FALSE
+run_spark <- TRUE
+run_h2o <- TRUE
 ```
 
 ```{r}
@@ -60,10 +58,7 @@ The following examples use consistent data sets throughout.
 todo 
 
 - multielvel examples 
-- get automl working
-- expand survival prediction tibbles
 - keras3 updates
-- use `<details>` for long model prints
 - avoid subsection titles capitalizing the engine name (e.g., "CATBOOST") and text within backticks
 - set seeds when needed
 
@@ -160,7 +155,7 @@ Once that is working, you can get ready to fit models using:
 #| label: spark-connect
 #| eval: !expr 'run_spark'
 library(sparklyr)
-sc <- spark_connect("local", version = "4.0.1")
+sc <- spark_connect("local")
 ```
 
 ### h2o 
@@ -269,7 +264,7 @@ and then use it to create the splits. For this article, we will copy the
 #| label: spark-bin-data
 #| eval: !expr 'run_spark'
 library(sparklyr)
-sc <- spark_connect("local", version = "4.0.1")
+sc <- spark_connect("local")
 
 tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
 
@@ -280,55 +275,6 @@ tbl_sim_mtl <- copy_to(sc, mtl_data)
 tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed = 100)
 ```
 
-
-## Auto Ml (`auto_ml()`) 
-
-:::{.panel-tabset}
-
-## `h2o` 
-
-This engine requires the agua extension package, so let's load this first:
-
-```{r}
-#| label: load-h2o-auto-ml-classification-agua
-#| output: false
-library(agua)
-
-# and initialize a server
-h20_server <- agua::h2o_start()
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-h2o-auto-ml-classification
-#| eval: false
-auto_ml_spec <- auto_ml() |>
-  # We dont need to set the engine (since there is only one) but we'll set
-  # a time limit
-  set_engine("h2o", max_runtime_secs = 60 * 3) |> 
-  set_mode("classification")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-h2o-auto-ml-classification
-#| eval: false
-auto_ml_fit <- auto_ml_spec |> fit(class ~ ., data = bin_train)
-auto_ml_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-h2o-auto-ml-classification
-#| eval: false
-predict(auto_ml_fit, type = "class", new_data = bin_test)
-predict(auto_ml_fit, type = "prob", new_data = bin_test)
-```
-
-:::
 
 ## Bagged MARS (`bag_mars()`) 
 
@@ -418,41 +364,6 @@ predict(bag_mlp_fit, type = "prob", new_data = bin_test)
 
 :::{.panel-tabset}
 
-## `C5.0` 
-
-This engine requires the baguette extension package, so let's load this first:
-
-```{r}
-#| label: load-C5.0-bag-tree-classification-baguette
-#| output: false
-library(baguette)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-C5.0-bag-tree-classification
-bag_tree_spec <- bag_tree() |> 
-  set_mode("classification") |> 
-  set_engine("C5.0")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-C5.0-bag-tree-classification
-bag_tree_fit <- bag_tree_spec |> fit(class ~ ., data = bin_train)
-bag_tree_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-C5.0-bag-tree-classification
-predict(bag_tree_fit, type = "class", new_data = bin_test)
-predict(bag_tree_fit, type = "prob", new_data = bin_test)
-```
-
 ## `rpart` 
 
 This engine requires the baguette extension package, so let's load this first:
@@ -485,6 +396,41 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-rpart-bag-tree-classification
+predict(bag_tree_fit, type = "class", new_data = bin_test)
+predict(bag_tree_fit, type = "prob", new_data = bin_test)
+```
+
+## `C5.0` 
+
+This engine requires the baguette extension package, so let's load this first:
+
+```{r}
+#| label: load-C5.0-bag-tree-classification-baguette
+#| output: false
+library(baguette)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-C5.0-bag-tree-classification
+bag_tree_spec <- bag_tree() |> 
+  set_mode("classification") |> 
+  set_engine("C5.0")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-C5.0-bag-tree-classification
+bag_tree_fit <- bag_tree_spec |> fit(class ~ ., data = bin_train)
+bag_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-C5.0-bag-tree-classification
 predict(bag_tree_fit, type = "class", new_data = bin_test)
 predict(bag_tree_fit, type = "prob", new_data = bin_test)
 ```
@@ -530,6 +476,34 @@ predict(bart_fit, type = "pred_int", new_data = bin_test)
 ## Boosted Decision Trees (`boost_tree()`) 
 
 :::{.panel-tabset}
+
+## `xgboost` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-xgboost-boost-tree-classification
+boost_tree_spec <- boost_tree() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and xgboost is the default engine so there is no need to set that either.
+  set_mode("classification")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-xgboost-boost-tree-classification
+boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-xgboost-boost-tree-classification
+predict(boost_tree_fit, type = "class", new_data = bin_test)
+predict(boost_tree_fit, type = "prob", new_data = bin_test)
+```
 
 ## `C5.0` 
 
@@ -708,34 +682,6 @@ predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `xgboost` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-xgboost-boost-tree-classification
-boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xgboost is the default engine so there is no need to set that either.
-  set_mode("classification")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-xgboost-boost-tree-classification
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
-boost_tree_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-xgboost-boost-tree-classification
-predict(boost_tree_fit, type = "class", new_data = bin_test)
-predict(boost_tree_fit, type = "prob", new_data = bin_test)
-```
-
 ## `spark` 
 
 We create a model specification via:
@@ -813,6 +759,34 @@ predict(C5_rules_fit, type = "prob", new_data = bin_test)
 
 :::{.panel-tabset}
 
+## `rpart` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-rpart-decision-tree-classification
+decision_tree_spec <- decision_tree() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and rpart is the default engine so there is no need to set that either.
+  set_mode("classification")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-rpart-decision-tree-classification
+decision_tree_fit <- decision_tree_spec |> fit(class ~ ., data = bin_train)
+decision_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-rpart-decision-tree-classification
+predict(decision_tree_fit, type = "class", new_data = bin_test)
+predict(decision_tree_fit, type = "prob", new_data = bin_test)
+```
+
 ## `C5.0` 
 
 We create a model specification via:
@@ -876,33 +850,6 @@ predict(decision_tree_fit, type = "class", new_data = bin_test)
 predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 
-## `rpart` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-rpart-decision-tree-classification
-decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
-  set_mode("classification")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-rpart-decision-tree-classification
-decision_tree_fit <- decision_tree_spec |> fit(class ~ ., data = bin_train)
-decision_tree_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-rpart-decision-tree-classification
-predict(decision_tree_fit, type = "class", new_data = bin_test)
-predict(decision_tree_fit, type = "prob", new_data = bin_test)
-```
 
 ## `spark` 
 
@@ -1280,6 +1227,34 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = bin_test)
 
 :::{.panel-tabset}
 
+## `glm` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-glm-logistic-reg-classification
+logistic_reg_spec <- logistic_reg()
+  # This engine works with a single mode so no need to set that
+  # and glm is the default engine so there is no need to set that either.
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-glm-logistic-reg-classification
+logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-glm-logistic-reg-classification
+predict(logistic_reg_fit, type = "class", new_data = bin_test)
+predict(logistic_reg_fit, type = "prob", new_data = bin_test)
+predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
+```
+
 ## `brulee` 
 
 We create a model specification via:
@@ -1342,34 +1317,6 @@ The holdout data can be predicted:
 #| eval: false
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-```
-
-## `glm` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-glm-logistic-reg-classification
-logistic_reg_spec <- logistic_reg()
-  # This engine works with a single mode so no need to set that
-  # and glm is the default engine so there is no need to set that either.
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-glm-logistic-reg-classification
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
-logistic_reg_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-glm-logistic-reg-classification
-predict(logistic_reg_fit, type = "class", new_data = bin_test)
-predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
 ```
 
 ## `glmer` 
@@ -1667,6 +1614,34 @@ predict(mars_fit, type = "prob", new_data = bin_test)
 
 :::{.panel-tabset}
 
+## `nnet` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-nnet-mlp-classification
+mlp_spec <- mlp() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and nnet is the default engine so there is no need to set that either.
+  set_mode("classification")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-nnet-mlp-classification
+mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+mlp_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-nnet-mlp-classification
+predict(mlp_fit, type = "class", new_data = bin_test)
+predict(mlp_fit, type = "prob", new_data = bin_test)
+```
+
 ## `brulee` 
 
 We create a model specification via:
@@ -1792,39 +1767,38 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 
-## `nnet` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-nnet-mlp-classification
-mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and nnet is the default engine so there is no need to set that either.
-  set_mode("classification")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-nnet-mlp-classification
-mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
-mlp_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-nnet-mlp-classification
-predict(mlp_fit, type = "class", new_data = bin_test)
-predict(mlp_fit, type = "prob", new_data = bin_test)
-```
-
 :::
 
 ## Multinom Regression (`multinom_reg()`) 
 
 :::{.panel-tabset}
+
+## `nnet` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-nnet-multinom-reg-classification
+# This engine works with a single mode so no need to set that
+# and nnet is the default engine so there is no need to set that either.
+multinom_reg_spec <- multinom_reg()
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-nnet-multinom-reg-classification
+multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-nnet-multinom-reg-classification
+predict(multinom_reg_fit, type = "class", new_data = mtl_test)
+predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
+```
 
 ## `brulee` 
 
@@ -1947,33 +1921,6 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 
-## `nnet` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-nnet-multinom-reg-classification
-# This engine works with a single mode so no need to set that
-# and nnet is the default engine so there is no need to set that either.
-multinom_reg_spec <- multinom_reg()
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-nnet-multinom-reg-classification
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
-multinom_reg_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-nnet-multinom-reg-classification
-predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-```
-
 ## `spark` 
 
 We create a model specification via:
@@ -2071,9 +2018,6 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-klaR-naive-Bayes-classification
 naive_Bayes_fit <- naive_Bayes_spec |> fit(class ~ ., data = bin_train)
-
-# No real print method
-# naive_Bayes_fit
 ```
 
 The holdout data can be predicted:
@@ -2235,6 +2179,38 @@ predict(pls_fit, type = "prob", new_data = bin_test)
 
 :::{.panel-tabset}
 
+## `ranger` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-ranger-rand-forest-classification
+rand_forest_spec <- rand_forest() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and ranger is the default engine so there is no need to set that either.
+  set_engine("ranger", keep.inbag = TRUE) |> 
+  # However, we'll set the engine and use the keep.inbag=TRUE option so that we 
+  # can produce interval predictions. This is not generally required. 
+  set_mode("classification")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-ranger-rand-forest-classification
+rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-ranger-rand-forest-classification
+predict(rand_forest_fit, type = "class", new_data = bin_test)
+predict(rand_forest_fit, type = "prob", new_data = bin_test)
+predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
+```
+
 ## `aorsf` 
 
 This engine requires the bonsai extension package, so let's load this first:
@@ -2367,10 +2343,16 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-partykit-rand-forest-classification
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
-
-# Too long to print
-# rand_forest_fit
 ```
+
+The print method has a lot of output: 
+
+<details>
+```{r}
+#| label: fit-partykit-rand-forest-classification-print
+capture.output(print(rand_forest_fit))[1:100] |> cat(sep = "\n")
+```
+</details>
 
 The holdout data can be predicted:
 
@@ -2406,38 +2388,6 @@ The holdout data can be predicted:
 #| label: predict-randomForest-rand-forest-classification
 predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
-```
-
-## `ranger` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-ranger-rand-forest-classification
-rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and ranger is the default engine so there is no need to set that either.
-  set_engine("ranger", keep.inbag = TRUE) |> 
-  # However, we'll set the engine and use the keep.inbag=TRUE option so that we 
-  # can produce interval predictions. This is not generally required. 
-  set_mode("classification")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-ranger-rand-forest-classification
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
-rand_forest_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-ranger-rand-forest-classification
-predict(rand_forest_fit, type = "class", new_data = bin_test)
-predict(rand_forest_fit, type = "prob", new_data = bin_test)
-predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 ```
 
 ## `spark` 
@@ -2476,6 +2426,42 @@ predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
 
 :::{.panel-tabset}
 
+## `xrf` 
+
+This engine requires the rules extension package, so let's load this first:
+
+```{r}
+#| label: load-xrf-rule-fit-classification-rules
+#| output: false
+library(rules)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-xrf-rule-fit-classification
+rule_fit_spec <- rule_fit() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and xrf is the default engine so there is no need to set that either.
+  set_mode("classification")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-xrf-rule-fit-classification
+rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
+rule_fit_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-xrf-rule-fit-classification
+predict(rule_fit_fit, type = "class", new_data = bin_test)
+predict(rule_fit_fit, type = "prob", new_data = bin_test)
+```
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
@@ -2511,42 +2497,6 @@ The holdout data can be predicted:
 ```{r}
 #| label: predict-h2o-rule-fit-classification
 #| eval: !expr 'run_h2o'
-predict(rule_fit_fit, type = "class", new_data = bin_test)
-predict(rule_fit_fit, type = "prob", new_data = bin_test)
-```
-
-## `xrf` 
-
-This engine requires the rules extension package, so let's load this first:
-
-```{r}
-#| label: load-xrf-rule-fit-classification-rules
-#| output: false
-library(rules)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-xrf-rule-fit-classification
-rule_fit_spec <- rule_fit() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xrf is the default engine so there is no need to set that either.
-  set_mode("classification")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-xrf-rule-fit-classification
-rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
-rule_fit_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-xrf-rule-fit-classification
 predict(rule_fit_fit, type = "class", new_data = bin_test)
 predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ```
@@ -2773,58 +2723,12 @@ and then use it to create the splits. For this article, we will copy the
 #| eval: !expr 'run_spark'
 
 library(sparklyr)
-sc <- spark_connect("local", version = "4.0.1")
+sc <- spark_connect("local")
 
 tbl_concrete <- copy_to(sc, modeldata::concrete)
 
 tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 100)
 ```
-
-
-## Auto Ml (`auto_ml()`) 
-
-:::{.panel-tabset}
-
-## `h2o` 
-
-This engine requires the agua extension package, so let's load this first:
-
-```{r}
-#| label: load-h2o-auto-ml-regression-agua
-#| output: false
-library(agua)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-h2o-auto-ml-regression
-#| eval: false
-auto_ml_spec <- auto_ml() |>
-  # We dont need to set the engine (since there is only one) but we'll set
-  # a time limit
-  set_engine("h2o", max_runtime_secs = 60 * 3) |> 
-  set_mode("regression")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-h2o-auto-ml-regression
-#| eval: false
-auto_ml_fit <- auto_ml_spec |> fit(strength ~ ., data = reg_train)
-auto_ml_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-h2o-auto-ml-regression
-#| eval: false
-predict(auto_ml_fit, new_data = reg_test)
-```
-
-:::
 
 ## Bagged MARS (`bag_mars()`) 
 
@@ -2988,6 +2892,33 @@ predict(bart_fit, type = "pred_int", new_data = reg_test)
 
 :::{.panel-tabset}
 
+## `xgboost` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-xgboost-boost-tree-regression
+boost_tree_spec <- boost_tree() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and xgboost is the default engine so there is no need to set that either.
+  set_mode("regression")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-xgboost-boost-tree-regression
+boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
+boost_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-xgboost-boost-tree-regression
+predict(boost_tree_fit, new_data = reg_test)
+```
+
 ## `catboost` 
 
 This engine requires the bonsai extension package, so let's load this first:
@@ -3131,33 +3062,6 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
-## `xgboost` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-xgboost-boost-tree-regression
-boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xgboost is the default engine so there is no need to set that either.
-  set_mode("regression")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-xgboost-boost-tree-regression
-boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
-boost_tree_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-xgboost-boost-tree-regression
-predict(boost_tree_fit, new_data = reg_test)
-```
-
 ## `spark` 
 
 We create a model specification via:
@@ -3233,6 +3137,33 @@ predict(cubist_rules_fit, new_data = reg_test)
 
 :::{.panel-tabset}
 
+## `rpart` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-rpart-decision-tree-regression
+decision_tree_spec <- decision_tree() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and rpart is the default engine so there is no need to set that either.
+  set_mode("regression")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-rpart-decision-tree-regression
+decision_tree_fit <- decision_tree_spec |> fit(strength ~ ., data = reg_train)
+decision_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-rpart-decision-tree-regression
+predict(decision_tree_fit, new_data = reg_test)
+```
+
 ## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
@@ -3265,33 +3196,6 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-partykit-decision-tree-regression
-predict(decision_tree_fit, new_data = reg_test)
-```
-
-## `rpart` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-rpart-decision-tree-regression
-decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
-  set_mode("regression")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-rpart-decision-tree-regression
-decision_tree_fit <- decision_tree_spec |> fit(strength ~ ., data = reg_train)
-decision_tree_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-rpart-decision-tree-regression
 predict(decision_tree_fit, new_data = reg_test)
 ```
 
@@ -3365,6 +3269,34 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = reg_test)
 ## Linear Reg (`linear_reg()`) 
 
 :::{.panel-tabset}
+
+## `lm` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-lm-linear-reg-regression
+# This engine works with a single mode so no need to set that
+# and lm is the default engine so there is no need to set that either.
+linear_reg_spec <- linear_reg()
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-lm-linear-reg-regression
+linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-lm-linear-reg-regression
+predict(linear_reg_fit, new_data = reg_test)
+predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
+predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
+```
 
 ## `brulee` 
 
@@ -3618,34 +3550,6 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
-## `lm` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-lm-linear-reg-regression
-# This engine works with a single mode so no need to set that
-# and lm is the default engine so there is no need to set that either.
-linear_reg_spec <- linear_reg()
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-lm-linear-reg-regression
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
-linear_reg_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-lm-linear-reg-regression
-predict(linear_reg_fit, new_data = reg_test)
-predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
-predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
-```
-
 ## `lme` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
@@ -3850,6 +3754,33 @@ predict(mars_fit, new_data = reg_test)
 
 :::{.panel-tabset}
 
+## `nnet` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-nnet-mlp-regression
+mlp_spec <- mlp() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and nnet is the default engine so there is no need to set that either.
+  set_mode("regression")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-nnet-mlp-regression
+mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
+mlp_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-nnet-mlp-regression
+predict(mlp_fit, new_data = reg_test)
+```
+
 ## `brulee` 
 
 We create a model specification via:
@@ -3971,33 +3902,6 @@ The holdout data can be predicted:
 predict(mlp_fit, new_data = reg_test)
 ```
 
-## `nnet` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-nnet-mlp-regression
-mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and nnet is the default engine so there is no need to set that either.
-  set_mode("regression")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-nnet-mlp-regression
-mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
-mlp_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-nnet-mlp-regression
-predict(mlp_fit, new_data = reg_test)
-```
-
 :::
 
 ## K-Nearest Neighbors (`nearest_neighbor()`) 
@@ -4107,6 +4011,40 @@ predict(pls_fit, new_data = reg_test)
 
 :::{.panel-tabset}
 
+## `glm` 
+
+This engine requires the poissonreg extension package, so let's load this first:
+
+```{r}
+#| label: load-glm-poisson-reg-regression-poissonreg
+#| output: false
+library(poissonreg)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-glm-poisson-reg-regression
+# This engine works with a single mode so no need to set that
+# and glm is the default engine so there is no need to set that either.
+poisson_reg_spec <- poisson_reg()
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-glm-poisson-reg-regression
+poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
+poisson_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-glm-poisson-reg-regression
+predict(poisson_reg_fit, new_data = count_test)
+```
+
 ## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
@@ -4141,40 +4079,6 @@ The holdout data can be predicted:
 #| label: predict-gee-poisson-reg-regression
 #| eval: false
 predict(poisson_reg_fit, new_data = reg_test)
-```
-
-## `glm` 
-
-This engine requires the poissonreg extension package, so let's load this first:
-
-```{r}
-#| label: load-glm-poisson-reg-regression-poissonreg
-#| output: false
-library(poissonreg)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-glm-poisson-reg-regression
-# This engine works with a single mode so no need to set that
-# and glm is the default engine so there is no need to set that either.
-poisson_reg_spec <- poisson_reg()
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-glm-poisson-reg-regression
-poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
-poisson_reg_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-glm-poisson-reg-regression
-predict(poisson_reg_fit, new_data = count_test)
 ```
 
 ## `glmer` 
@@ -4433,6 +4337,37 @@ predict(poisson_reg_fit, new_data = count_test)
 
 :::{.panel-tabset}
 
+## `ranger` 
+
+We create a model specification via:
+
+```{r}
+#| label: spec-ranger-rand-forest-regression
+rand_forest_spec <- rand_forest() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and ranger is the default engine so there is no need to set that either.
+  set_engine("ranger", keep.inbag = TRUE) |> 
+  # However, we'll set the engine and use the keep.inbag=TRUE option so that we 
+  # can produce interval predictions. This is not generally required. 
+  set_mode("regression")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-ranger-rand-forest-regression
+rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-ranger-rand-forest-regression
+predict(rand_forest_fit, new_data = reg_test)
+predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
+```
+
 ## `aorsf` 
 
 This engine requires the bonsai extension package, so let's load this first:
@@ -4562,10 +4497,16 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-partykit-rand-forest-regression
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
-
-# Too long to print
-# rand_forest_fit
 ```
+
+The print method has a lot of output: 
+
+<details>
+```{r}
+#| label: fit-partykit-rand-forest-regression-print
+capture.output(print(rand_forest_fit))[1:100] |> cat(sep = "\n")
+```
+</details>
 
 The holdout data can be predicted:
 
@@ -4599,37 +4540,6 @@ The holdout data can be predicted:
 ```{r}
 #| label: predict-randomForest-rand-forest-regression
 predict(rand_forest_fit, new_data = reg_test)
-```
-
-## `ranger` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-ranger-rand-forest-regression
-rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and ranger is the default engine so there is no need to set that either.
-  set_engine("ranger", keep.inbag = TRUE) |> 
-  # However, we'll set the engine and use the keep.inbag=TRUE option so that we 
-  # can produce interval predictions. This is not generally required. 
-  set_mode("regression")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-ranger-rand-forest-regression
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
-rand_forest_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-ranger-rand-forest-regression
-predict(rand_forest_fit, new_data = reg_test)
-predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 ```
 
 ## `spark` 
@@ -4667,6 +4577,41 @@ predict(rand_forest_fit, new_data = tbl_reg$test)
 
 :::{.panel-tabset}
 
+## `xrf` 
+
+This engine requires the rules extension package, so let's load this first:
+
+```{r}
+#| label: load-xrf-rule-fit-regression-rules
+#| output: false
+library(rules)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-xrf-rule-fit-regression
+rule_fit_spec <- rule_fit() |>
+  # We need to set the mode since this engine works with multiple modes
+  # and xrf is the default engine so there is no need to set that either.
+  set_mode("regression")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-xrf-rule-fit-regression
+rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
+rule_fit_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-xrf-rule-fit-regression
+predict(rule_fit_fit, new_data = reg_test)
+```
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
@@ -4702,41 +4647,6 @@ The holdout data can be predicted:
 ```{r}
 #| label: predict-h2o-rule-fit-regression
 #| eval: !expr 'run_h2o'
-predict(rule_fit_fit, new_data = reg_test)
-```
-
-## `xrf` 
-
-This engine requires the rules extension package, so let's load this first:
-
-```{r}
-#| label: load-xrf-rule-fit-regression-rules
-#| output: false
-library(rules)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-xrf-rule-fit-regression
-rule_fit_spec <- rule_fit() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xrf is the default engine so there is no need to set that either.
-  set_mode("regression")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-xrf-rule-fit-regression
-rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
-rule_fit_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-xrf-rule-fit-regression
 predict(rule_fit_fit, new_data = reg_test)
 ```
 
@@ -4866,34 +4776,6 @@ The holdout data can be predicted:
 predict(svm_rbf_fit, new_data = reg_test)
 ```
 
-## `liquidSVM` 
-
-We create a model specification via:
-
-```{r}
-#| label: spec-liquidSVM-svm-rbf-regression
-#| eval: false
-svm_rbf_spec <- svm_rbf() |>
-  # We need to set the mode since this engine works with multiple modes
-  set_mode("regression") |>
-  set_engine("liquidSVM")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-liquidSVM-svm-rbf-regression
-#| eval: false
-svm_rbf_fit <- svm_rbf_spec |> fit(strength ~ ., data = reg_train)
-svm_rbf_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-liquidSVM-svm-rbf-regression
-predict(svm_rbf_fit, new_data = reg_test)
-```
 
 :::
 
@@ -4966,6 +4848,16 @@ predict(bag_tree_fit, type = "time", new_data = cns_test)
 predict(bag_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-rpart-bag-tree-censored-regression-slice
+bag_tree_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
+
 :::
 
 ## Boosted Decision Trees (`boost_tree()`) 
@@ -5008,47 +4900,21 @@ predict(boost_tree_fit, type = "survival", new_data = cns_test, eval_time = eval
 predict(boost_tree_fit, type = "linear_pred", new_data = cns_test)
 ```
 
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-mboost-boost-tree-censored-regression-slice
+boost_tree_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
+
 :::
 
 ## Decision Tree (`decision_tree()`) 
 
 :::{.panel-tabset}
-
-## `partykit` 
-
-This engine requires the censored extension package, so let's load this first:
-
-```{r}
-#| label: load-partykit-decision-tree-censored-regression-censored
-#| output: false
-library(censored)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-partykit-decision-tree-censored-regression
-decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  set_mode("censored regression") |>
-  set_engine("partykit")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-partykit-decision-tree-censored-regression
-decision_tree_fit <- decision_tree_spec |> fit(event_time ~ ., data = cns_train)
-decision_tree_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-partykit-decision-tree-censored-regression
-predict(decision_tree_fit, type = "time", new_data = cns_test)
-predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
-```
 
 ## `rpart` 
 
@@ -5086,11 +4952,113 @@ predict(decision_tree_fit, type = "time", new_data = cns_test)
 predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-rpart-decision-tree-censored-regression-slice
+decision_tree_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
+
+## `partykit` 
+
+This engine requires the censored extension package, so let's load this first:
+
+```{r}
+#| label: load-partykit-decision-tree-censored-regression-censored
+#| output: false
+library(censored)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-partykit-decision-tree-censored-regression
+decision_tree_spec <- decision_tree() |>
+  # We need to set the mode since this engine works with multiple modes
+  set_mode("censored regression") |>
+  set_engine("partykit")
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-partykit-decision-tree-censored-regression
+decision_tree_fit <- decision_tree_spec |> fit(event_time ~ ., data = cns_train)
+decision_tree_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-partykit-decision-tree-censored-regression
+predict(decision_tree_fit, type = "time", new_data = cns_test)
+predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
+```
+
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-partykit-decision-tree-censored-regression-slice
+decision_tree_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
+
 :::
 
 ## Proportional Hazards (`proportional_hazards()`) 
 
 :::{.panel-tabset}
+
+## `survival` 
+
+This engine requires the censored extension package, so let's load this first:
+
+```{r}
+#| label: load-survival-proportional-hazards-censored-regression-censored
+#| output: false
+library(censored)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-survival-proportional-hazards-censored-regression
+# This engine works with a single mode so no need to set that
+# and survival is the default engine so there is no need to set that either.
+proportional_hazards_spec <- proportional_hazards()
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-survival-proportional-hazards-censored-regression
+proportional_hazards_fit <- proportional_hazards_spec |> fit(event_time ~ ., data = cns_train)
+proportional_hazards_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-survival-proportional-hazards-censored-regression
+predict(proportional_hazards_fit, type = "time", new_data = cns_test)
+predict(proportional_hazards_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
+predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
+```
+
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-survival-proportional-hazards-censored-regression-slice
+proportional_hazards_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
 
 ## `glmnet` 
 
@@ -5128,40 +5096,14 @@ predict(proportional_hazards_fit, type = "survival", new_data = cns_test, eval_t
 predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
 ```
 
-## `survival` 
-
-This engine requires the censored extension package, so let's load this first:
+Each row of the survival predictions has results for each evaluation time: 
 
 ```{r}
-#| label: load-survival-proportional-hazards-censored-regression-censored
-#| output: false
-library(censored)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-survival-proportional-hazards-censored-regression
-# This engine works with a single mode so no need to set that
-# and survival is the default engine so there is no need to set that either.
-proportional_hazards_spec <- proportional_hazards()
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-survival-proportional-hazards-censored-regression
-proportional_hazards_fit <- proportional_hazards_spec |> fit(event_time ~ ., data = cns_train)
-proportional_hazards_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-survival-proportional-hazards-censored-regression
-predict(proportional_hazards_fit, type = "time", new_data = cns_test)
-predict(proportional_hazards_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
-predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
+#| label: predict-glmnet-proportional-hazards-censored-regression-slice
+proportional_hazards_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
 ```
 
 :::
@@ -5206,6 +5148,16 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-aorsf-rand-forest-censored-regression-slice
+rand_forest_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
+
 ## `partykit` 
 
 This engine requires the censored extension package, so let's load this first:
@@ -5231,10 +5183,16 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-partykit-rand-forest-censored-regression
 rand_forest_fit <- rand_forest_spec |> fit(event_time ~ ., data = cns_train)
-
-# Too long to print
-# rand_forest_fit
 ```
+
+The print method has a lot of output: 
+
+<details>
+```{r}
+#| label: fit-partykit-rand-forest-censored-regression-print
+capture.output(print(rand_forest_fit))[1:100] |> cat(sep = "\n")
+```
+</details>
 
 The holdout data can be predicted:
 
@@ -5244,11 +5202,69 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-partykit-rand-forest-censored-regression-slice
+rand_forest_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
+
 :::
 
 ## Parametric Survival Models (`survival_reg()`) 
 
 :::{.panel-tabset}
+
+## `survival` 
+
+This engine requires the censored extension package, so let's load this first:
+
+```{r}
+#| label: load-survival-survival-reg-censored-regression-censored
+#| output: false
+library(censored)
+```
+
+We create a model specification via:
+
+```{r}
+#| label: spec-survival-survival-reg-censored-regression
+# This engine works with a single mode so no need to set that
+# and survival is the default engine so there is no need to set that either.
+survival_reg_spec <- survival_reg()
+```
+
+Now we create the model fit object:
+
+```{r}
+#| label: fit-survival-survival-reg-censored-regression
+survival_reg_fit <- survival_reg_spec |> fit(event_time ~ ., data = cns_train)
+survival_reg_fit
+```
+
+The holdout data can be predicted:
+
+```{r}
+#| label: predict-survival-survival-reg-censored-regression
+predict(survival_reg_fit, type = "time", new_data = cns_test)
+predict(survival_reg_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
+predict(survival_reg_fit, type = "hazard", new_data = cns_test, eval_time = eval_times)
+predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
+predict(survival_reg_fit, type = "quantile", new_data = cns_test)
+```
+
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-survival-survival-reg-censored-regression-slice
+survival_reg_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
+```
 
 ## `flexsurv` 
 
@@ -5286,6 +5302,16 @@ predict(survival_reg_fit, type = "survival", new_data = cns_test, eval_time = ev
 predict(survival_reg_fit, type = "hazard", new_data = cns_test, eval_time = eval_times)
 predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
 predict(survival_reg_fit, type = "quantile", new_data = cns_test)
+```
+
+Each row of the survival predictions has results for each evaluation time: 
+
+```{r}
+#| label: predict-flexsurv-survival-reg-censored-regression-slice
+survival_reg_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
 ```
 
 ## `flexsurvspline` 
@@ -5326,42 +5352,14 @@ predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
 predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 
-## `survival` 
-
-This engine requires the censored extension package, so let's load this first:
+Each row of the survival predictions has results for each evaluation time: 
 
 ```{r}
-#| label: load-survival-survival-reg-censored-regression-censored
-#| output: false
-library(censored)
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-survival-survival-reg-censored-regression
-# This engine works with a single mode so no need to set that
-# and survival is the default engine so there is no need to set that either.
-survival_reg_spec <- survival_reg()
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-survival-survival-reg-censored-regression
-survival_reg_fit <- survival_reg_spec |> fit(event_time ~ ., data = cns_train)
-survival_reg_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-survival-survival-reg-censored-regression
-predict(survival_reg_fit, type = "time", new_data = cns_test)
-predict(survival_reg_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
-predict(survival_reg_fit, type = "hazard", new_data = cns_test, eval_time = eval_times)
-predict(survival_reg_fit, type = "linear_pred", new_data = cns_test)
-predict(survival_reg_fit, type = "quantile", new_data = cns_test)
+#| label: predict-flexsurvspline-survival-reg-censored-regression-slice
+survival_reg_fit |> 
+  predict(type = "survival", new_data = cns_test, eval_time = eval_times) |> 
+  slice(1) |> 
+  pluck(".pred")
 ```
 
 :::
@@ -5426,6 +5424,18 @@ The holdout data can be predicted:
 predict(linear_reg_fit, type = "quantile", new_data = qnt_test)
 ```
 
+Each row of predictions has a special vector class containing all of the quantile predictions: 
+
+```{r}
+#| label: predict-quantreg-linear-reg-quantile-regression-expand
+linear_reg_fit |> 
+  predict(type = "quantile", new_data = qnt_test)|> 
+  slice(1) |> 
+  pluck(".pred_quantile") |> 
+  # Expand the results for each quantile level by converting to a tibble
+  as_tibble()
+```
+
 :::
 
 ## Random Forests (`rand_forest()`) 
@@ -5459,6 +5469,18 @@ The holdout data can be predicted:
 #| label: predict-grf-rand-forest-quantile-regression
 #| eval: false
 predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
+```
+
+Each row of predictions has a special vector class containing all of the quantile predictions: 
+
+```{r}
+#| label: predict-grf-rand-forest-quantile-regression-expand
+rand_forest_fit |> 
+  predict(type = "quantile", new_data = qnt_test)|> 
+  slice(1) |> 
+  pluck(".pred_quantile") |> 
+  # Expand the results for each quantile level by converting to a tibble
+  as_tibble()
 ```
 
 :::
