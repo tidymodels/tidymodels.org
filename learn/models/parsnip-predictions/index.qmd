@@ -281,7 +281,6 @@ tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed 
 ```
 
 
-
 ## Auto Ml (`auto_ml()`) 
 
 :::{.panel-tabset}
@@ -2552,7 +2551,11 @@ predict(rule_fit_fit, type = "class", new_data = bin_test)
 predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ```
 
+:::
+
 ## Support Vector Machine (Linear Kernel) (`svm_linear()`) 
+
+:::{.panel-tabset}
 
 ## `kernlab` 
 
@@ -2780,6 +2783,8 @@ tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 1
 
 ## Auto Ml (`auto_ml()`) 
 
+:::{.panel-tabset}
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
@@ -2819,7 +2824,11 @@ The holdout data can be predicted:
 predict(auto_ml_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Bagged MARS (`bag_mars()`) 
+
+:::{.panel-tabset}
 
 ## `earth` 
 
@@ -2856,7 +2865,11 @@ The holdout data can be predicted:
 predict(bag_mars_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Bagged Neural Networks (`bag_mlp()`) 
+
+:::{.panel-tabset}
 
 ## `nnet` 
 
@@ -2893,7 +2906,11 @@ The holdout data can be predicted:
 predict(bag_mlp_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Bagged Decision Trees (`bag_tree()`) 
+
+:::{.panel-tabset}
 
 ## `rpart` 
 
@@ -2930,7 +2947,11 @@ The holdout data can be predicted:
 predict(bag_tree_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Bayesian Additive Regression Trees (`bart()`) 
+
+:::{.panel-tabset}
 
 ## `dbarts` 
 
@@ -2961,7 +2982,11 @@ predict(bart_fit, type = "conf_int", new_data = reg_test)
 predict(bart_fit, type = "pred_int", new_data = reg_test)
 ```
 
+:::
+
 ## Boosted Decision Trees (`boost_tree()`) 
+
+:::{.panel-tabset}
 
 ## `catboost` 
 
@@ -3162,7 +3187,11 @@ The holdout data can be predicted:
 predict(boost_tree_fit, new_data = tbl_reg$test)
 ```
 
+:::
+
 ## Cubist Rules (`cubist_rules()`) 
+
+:::{.panel-tabset}
 
 ## `Cubist` 
 
@@ -3198,7 +3227,11 @@ The holdout data can be predicted:
 predict(cubist_rules_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Decision Tree (`decision_tree()`) 
+
+:::{.panel-tabset}
 
 ## `partykit` 
 
@@ -3291,9 +3324,11 @@ The holdout data can be predicted:
 predict(decision_tree_fit, new_data = tbl_reg$test)
 ```
 
-
+:::
 
 ## Generalized Additive Models (`gen_additive_mod()`) 
+
+:::{.panel-tabset}
 
 ## `mgcv` 
 
@@ -3325,7 +3360,11 @@ predict(gen_additive_mod_fit, new_data = reg_test)
 predict(gen_additive_mod_fit, type = "conf_int", new_data = reg_test)
 ```
 
+:::
+
 ## Linear Reg (`linear_reg()`) 
+
+:::{.panel-tabset}
 
 ## `brulee` 
 
@@ -3772,7 +3811,11 @@ The holdout data can be predicted:
 predict(linear_reg_fit, new_data = tbl_reg$test)
 ```
 
+:::
+
 ## Multivariate Adaptive Regression Splines (`mars()`) 
+
+:::{.panel-tabset}
 
 ## `earth` 
 
@@ -3801,7 +3844,11 @@ The holdout data can be predicted:
 predict(mars_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Neural Networks (`mlp()`) 
+
+:::{.panel-tabset}
 
 ## `brulee` 
 
@@ -3951,7 +3998,11 @@ The holdout data can be predicted:
 predict(mlp_fit, new_data = reg_test)
 ```
 
+:::
+
 ## K-Nearest Neighbors (`nearest_neighbor()`) 
+
+:::{.panel-tabset}
 
 ## `kknn` 
 
@@ -4009,7 +4060,11 @@ The holdout data can be predicted:
 predict(null_model_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Partial Least Squares (`pls()`) 
+
+:::{.panel-tabset}
 
 ## `mixOmics` 
 
@@ -4046,7 +4101,11 @@ The holdout data can be predicted:
 predict(pls_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Poisson Reg (`poisson_reg()`) 
+
+:::{.panel-tabset}
 
 ## `gee` 
 
@@ -4368,7 +4427,11 @@ The holdout data can be predicted:
 predict(poisson_reg_fit, new_data = count_test)
 ```
 
+:::
+
 ## Random Forests (`rand_forest()`) 
+
+:::{.panel-tabset}
 
 ## `aorsf` 
 
@@ -4598,7 +4661,11 @@ The holdout data can be predicted:
 predict(rand_forest_fit, new_data = tbl_reg$test)
 ```
 
+:::
+
 ## Rule Fit (`rule_fit()`) 
+
+:::{.panel-tabset}
 
 ## `h2o` 
 
@@ -4673,7 +4740,11 @@ The holdout data can be predicted:
 predict(rule_fit_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Support Vector Machine (Linear Kernel) (`svm_linear()`) 
+
+:::{.panel-tabset}
 
 ## `kernlab` 
 
@@ -4729,7 +4800,11 @@ The holdout data can be predicted:
 predict(svm_linear_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Support Vector Machine (Polynomial Kernel) (`svm_poly()`) 
+
+:::{.panel-tabset}
 
 ## `kernlab` 
 
@@ -4758,7 +4833,11 @@ The holdout data can be predicted:
 predict(svm_poly_fit, new_data = reg_test)
 ```
 
+:::
+
 ## Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`) 
+
+:::{.panel-tabset}
 
 ## `kernlab` 
 
@@ -4844,7 +4923,11 @@ For some types of predictions, we need the _evaluation time(s)_ for the predicti
 eval_times <- c(1, 3, 5)
 ```
 
+:::
+
 ## Bagged Decision Trees (`bag_tree()`) 
+
+:::{.panel-tabset}
 
 ## `rpart` 
 
@@ -4882,7 +4965,11 @@ predict(bag_tree_fit, type = "time", new_data = cns_test)
 predict(bag_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+:::
+
 ## Boosted Decision Trees (`boost_tree()`) 
+
+:::{.panel-tabset}
 
 ## `mboost` 
 
@@ -4920,7 +5007,11 @@ predict(boost_tree_fit, type = "survival", new_data = cns_test, eval_time = eval
 predict(boost_tree_fit, type = "linear_pred", new_data = cns_test)
 ```
 
+:::
+
 ## Decision Tree (`decision_tree()`) 
+
+:::{.panel-tabset}
 
 ## `partykit` 
 
@@ -4994,7 +5085,11 @@ predict(decision_tree_fit, type = "time", new_data = cns_test)
 predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+:::
+
 ## Proportional Hazards (`proportional_hazards()`) 
+
+:::{.panel-tabset}
 
 ## `glmnet` 
 
@@ -5068,7 +5163,11 @@ predict(proportional_hazards_fit, type = "survival", new_data = cns_test, eval_t
 predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
 ```
 
+:::
+
 ## Random Forests (`rand_forest()`) 
+
+:::{.panel-tabset}
 
 ## `aorsf` 
 
@@ -5144,7 +5243,11 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 ```
 
+:::
+
 ## Parametric Survival Models (`survival_reg()`) 
+
+:::{.panel-tabset}
 
 ## `flexsurv` 
 
@@ -5290,8 +5393,11 @@ We'll also predict these quantile levels:
 qnt_lvls <- (1:3) / 4
 ```
 
+:::
 
 ## Linear Regression (`linear_reg()`) 
+
+:::{.panel-tabset}
 
 ## `quantreg` 
 
@@ -5319,7 +5425,11 @@ The holdout data can be predicted:
 predict(linear_reg_fit, type = "quantile", new_data = qnt_test)
 ```
 
+:::
+
 ## Random Forests (`rand_forest()`) 
+
+:::{.panel-tabset}
 
 ## `grf` 
 
@@ -5349,6 +5459,8 @@ The holdout data can be predicted:
 #| eval: false
 predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
 ```
+
+:::
 
 ```{r}
 #| label: spark-disconnect
