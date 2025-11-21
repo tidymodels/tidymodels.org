@@ -60,7 +60,7 @@ This page shows examples of how to *fit* and *predict* with different combinatio
 
 We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-`r article_req_pkgs(pkgs)` There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll descrine these next. 
+`r article_req_pkgs(pkgs)` There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
 
 ## External Dependencies
 
@@ -124,7 +124,7 @@ fit_params
 
 ### Apache Spark
 
-To use [Apache Spark](https://spark.apache.org/) as an engine, we will first install Spark and then need a connection to a cluster. For this article, we will setup and use a single-node Spark cluster running on a laptop.
+To use [Apache Spark](https://spark.apache.org/) as an engine, we will first install Spark and then need a connection to a cluster. For this article, we will set up and use a single-node Spark cluster running on a laptop.
 
 To install, first install sparklyr:
 
@@ -154,7 +154,7 @@ sc <- spark_connect("local")
 
 ### h2o 
 
-h2o.ai offers a Java based high performance computing server for machine learning. This can be run locally or externally. There are general installation instructions at [https://docs.h2o.ai/](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html). There is a package on CRAN but you can also install directly from [h2o](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html#install-in-r) via:
+h2o.ai offers a Java-based high-performance computing server for machine learning. This can be run locally or externally. There are general installation instructions at [https://docs.h2o.ai/](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html). There is a package on CRAN, but you can also install directly from [h2o](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html#install-in-r) via:
 
 ```{r}
 #| label: h2o-download
@@ -168,7 +168,7 @@ install.packages(
 
 After installation is complete, you can start a local server via `h2o::h2o.init()`. 
 
-The tidymodels [agua](https://agua.tidymodels.org/) package has some helpers and will also need to be installed. You can use its function to start a server too:
+The tidymodels [agua](https://agua.tidymodels.org/) package contains some helpers and will also need to be installed. You can use its function to start a server too:
 
 ```{r}
 #| label: h2o-init
@@ -197,7 +197,6 @@ keras3::install_keras(backend = "tensorflow")
 
 There are other options for installation. See [https://tensorflow.rstudio.com/install/index.html](https://tensorflow.rstudio.com/install/index.html) for more details. 
 
-
 ```{r}
 #| label: setup-keras
 #| eval: !expr 'run_keras'
@@ -217,10 +216,6 @@ Choosing "Yes" will do the _one-time_ installation.
 </details>
 
 To get started, let's load the tidymodels package: 
-
-todo 
-
-- multielvel examples 
 
 ```{r}
 #| label: load-tm
@@ -271,10 +266,21 @@ mtl_train <- training(mtl_split)
 mtl_test <- testing(mtl_split)
 ```
 
-If using the **Apache Spark** engine, we will need to identify the data source, 
-and then use it to create the splits. For this article, we will copy the 
-`two_class_dat` and the `mtl_data` data sets into the Spark session.
+Finally, we have some models that handle hierarchical data, where some rows are statistically correlated with other rows. For these examples, we'll use data from a clinical trial where patients were followed over time. The outcome is binary. The data are in the HSAUR3 package. We'll split these data in a way where all rows for a specific subject are either in the training or test sets: 
 
+```{r}
+#| label: cls-hierarchical-data
+set.seed(72)
+cls_group_split <- 
+  HSAUR3::toenail |> 
+  group_initial_split(group = patientID)
+cls_group_train <- training(cls_group_split)
+cls_group_test <- testing(cls_group_split)
+```
+
+There are `r length(unique(cls_group_train$patientID))` subjects in the training set and `r length(unique(cls_group_test$patientID))` in the test set. 
+
+If using the **Apache Spark** engine, we will need to identify the data source and then use it to create the splits. For this article, we will copy the `two_class_dat` and the `mtl_data` data sets into the Spark session.
 
 ```{r}
 #| label: spark-bin-data
@@ -1337,6 +1343,7 @@ This engine requires the multilevelmod extension package, so let's load this fir
 #| label: load-gee-logistic-reg-classification-multilevelmod
 #| output: false
 library(multilevelmod)
+
 ```
 
 We create a model specification via:
@@ -1352,8 +1359,9 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-gee-logistic-reg-classification
-#| eval: false
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- 
+  logistic_reg_spec |> 
+  fit(outcome ~ treatment * visit + id_var(patientID), data = cls_group_train)
 logistic_reg_fit
 ```
 
@@ -1361,9 +1369,8 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-gee-logistic-reg-classification
-#| eval: false
-predict(logistic_reg_fit, type = "class", new_data = bin_test)
-predict(logistic_reg_fit, type = "prob", new_data = bin_test)
+predict(logistic_reg_fit, type = "class", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 ```
 
 ## `glmer` 
@@ -1380,7 +1387,6 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-glmer-logistic-reg-classification
-#| eval: false
 logistic_reg_spec <- logistic_reg() |> 
   # This engine works with a single mode so no need to set that
   set_engine("glmer")
@@ -1390,8 +1396,9 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmer-logistic-reg-classification
-#| eval: false
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- 
+  logistic_reg_spec |> 
+  fit(outcome ~ treatment * visit + (1 | patientID), data = cls_group_train)
 logistic_reg_fit
 ```
 
@@ -1399,8 +1406,8 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-glmer-logistic-reg-classification
-predict(logistic_reg_fit, type = "class", new_data = bin_test)
-predict(logistic_reg_fit, type = "prob", new_data = bin_test)
+predict(logistic_reg_fit, type = "class", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 ```
 
 ## `glmnet` 
@@ -1549,18 +1556,20 @@ Now we create the model fit object:
 #| label: fit-stan-logistic-reg-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(96)
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
-logistic_reg_fit
+logistic_reg_fit <- 
+  logistic_reg_spec |> 
+  fit(outcome ~ treatment * visit, data = cls_group_train)
+logistic_reg_fit |> print(digits = 3)
 ```
 
 The holdout data can be predicted:
 
 ```{r}
 #| label: predict-stan-logistic-reg-classification
-predict(logistic_reg_fit, type = "class", new_data = bin_test)
-predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
-predict(logistic_reg_fit, type = "pred_int", new_data = bin_test)
+predict(logistic_reg_fit, type = "class", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "conf_int", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "pred_int", new_data = cls_group_test)
 ```
 
 ## `stan_glmer` 
@@ -1586,22 +1595,22 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-stan-glmer-logistic-reg-classification
-#| eval: false
 # Set the random number seed to an integer for reproducibility: 
 set.seed(484)
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
-logistic_reg_fit
+logistic_reg_fit <- 
+  logistic_reg_spec |> 
+  fit(outcome ~ treatment * visit + (1 | patientID), data = cls_group_train)
+logistic_reg_fit |> print(digits = 3)
 ```
 
 The holdout data can be predicted:
 
 ```{r}
 #| label: predict-stan-glmer-logistic-reg-classification
-#| eval: false
-predict(logistic_reg_fit, type = "class", new_data = bin_test)
-predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
-predict(logistic_reg_fit, type = "pred_int", new_data = bin_test)
+predict(logistic_reg_fit, type = "class", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "conf_int", new_data = cls_group_test)
+predict(logistic_reg_fit, type = "pred_int", new_data = cls_group_test)
 ```
 
 ## `spark` 
@@ -1628,7 +1637,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-logistic-reg-classification
-#| eval: false
+#| eval: !expr 'run_spark'
 predict(logistic_reg_fit, type = "class", new_data = tbl_bin$test)
 predict(logistic_reg_fit, type = "prob", new_data = tbl_bin$test)
 ```
@@ -2733,48 +2742,9 @@ predict(svm_rbf_fit, type = "class", new_data = bin_test)
 predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 ```
 
-## `liquidSVM` 
-
-Note that this package is not on CRAN. You can install it via its :
-
-```{r}
-#| label: install-liquidSVM
-#| eval: false
-pak::pak("cran/liquidSVM") # fails
-```
-
-We create a model specification via:
-
-```{r}
-#| label: spec-liquidSVM-svm-rbf-classification
-svm_rbf_spec <- svm_rbf() |>
-  # We need to set the mode since this engine works with multiple modes
-  set_mode("classification") |>
-  set_engine("liquidSVM")
-```
-
-Now we create the model fit object:
-
-```{r}
-#| label: fit-liquidSVM-svm-rbf-classification
-#| eval: false
-svm_rbf_fit <- svm_rbf_spec |> fit(class ~ ., data = bin_train)
-svm_rbf_fit
-```
-
-The holdout data can be predicted:
-
-```{r}
-#| label: predict-liquidSVM-svm-rbf-classification
-#| eval: false
-predict(svm_rbf_fit, type = "class", new_data = bin_test)
-predict(svm_rbf_fit, type = "prob", new_data = bin_test)
-```
-
 :::
 
 # Regression Models
-
 
 To demonstrate regression, we'll subset some data. make a training/test split, and standardize the predictors: 
 
@@ -2797,7 +2767,7 @@ reg_train <- bake(reg_rec, new_data = NULL)
 reg_test <- bake(reg_rec, new_data = testing(reg_split))
 ```
 
-We also have some models that are specific to integer count outcomes. The data for these are:
+We also have models that are specifically designed for integer count outcomes. The data for these are:
 
 ```{r}
 #| label: count-data
@@ -2835,9 +2805,7 @@ reg_group_test <- testing(reg_group_split)
 
 There are `r length(unique(reg_group_train$Rat))` subjects in the training set and `r length(unique(reg_group_test$Rat))` in the test set. 
 
-If using the **Apache Spark** engine, we will need to identify the data source, 
-and then use it to create the splits. For this article, we will copy the 
-`concrete` data set into the Spark session.
+If using the **Apache Spark** engine, we will need to identify the data source, and then use it to create the splits. For this article, we will copy the `concrete` data set into the Spark session.
 
 ```{r}
 #| label: spark-reg-data
@@ -4245,7 +4213,6 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-gee-poisson-reg-regression
-#| eval: false
 poisson_reg_fit <- 
   poisson_reg_spec |> 
   fit(weight ~ Diet + Time + id_var(Rat), data = reg_group_train)
