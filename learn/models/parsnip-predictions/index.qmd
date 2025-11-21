@@ -28,6 +28,9 @@ source(here::here("common.R"))
 # Indicates to enable or not running Spark code
 run_spark <- TRUE
 run_h2o <- TRUE
+run_keras <- TRUE
+run_catboost <- rlang::is_installed("catboost")
+run_grf <- rlang::is_installed("parsnip", version = "1.3.3.9000")
 ```
 
 ```{r}
@@ -40,15 +43,14 @@ library(sparklyr)
 
 #' skip format
 pkgs <- c("tidymodels", "agua", "baguette", "bonsai", "censored", "discrim",
-          "multilevelmod", "plsmod", "poissonreg", "rules", "sparklyr")
+          "multilevelmod", "plsmod", "poissonreg", "rules", "sparklyr", 
+          "HSAUR3", "lme4", "prodlim", "survival")
 ```
 
 
 # Introduction
 
-`r article_req_pkgs(pkgs)` There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them.
-
-These examples show how to *fit* and *predict* with different combinations of model, mode, and engine. As a reminder, in parsnip, 
+This page shows examples of how to *fit* and *predict* with different combinations of model, mode, and engine. As a reminder, in parsnip, 
 
 - the **model type** differentiates basic modeling approaches, such as random forests, logistic regression, linear support vector machines, etc.,
 
@@ -56,18 +58,9 @@ These examples show how to *fit* and *predict* with different combinations of mo
 
 - the computational **engine** indicates how the model is fit, such as with a specific R package implementation or even methods outside of R like Keras or Stan.
 
-The following examples use consistent data sets throughout. 
+We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-todo 
-
-- multielvel examples 
-- keras3 updates
-
-```{r}
-#| label: load-tm
-library(tidymodels)
-theme_set(theme_bw() + theme(legend.position = "top"))
-```
+`r article_req_pkgs(pkgs)` There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll descrine these next. 
 
 ## External Dependencies
 
@@ -204,6 +197,15 @@ keras3::install_keras(backend = "tensorflow")
 
 There are other options for installation. See [https://tensorflow.rstudio.com/install/index.html](https://tensorflow.rstudio.com/install/index.html) for more details. 
 
+
+```{r}
+#| label: setup-keras
+#| eval: !expr 'run_keras'
+# Assumes you are going to use a virtual environment called 
+pve <- grep("tensorflow", reticulate::virtualenv_list(), value = TRUE)
+reticulate::use_virtualenv(pve)
+```
+
 ### Torch
 
 R's torch package is the low-level package containing the framework. Once you have installed it, you will get this message the first time you load the package: 
@@ -213,6 +215,18 @@ R's torch package is the low-level package containing the framework. Once you ha
 Choosing "Yes" will do the _one-time_ installation. 
 
 </details>
+
+To get started, let's load the tidymodels package: 
+
+todo 
+
+- multielvel examples 
+
+```{r}
+#| label: load-tm
+library(tidymodels)
+theme_set(theme_bw() + theme(legend.position = "top"))
+```
 
 # Classification Models
 
@@ -555,6 +569,7 @@ This engine requires the bonsai extension package, so let's load this first:
 ```{r}
 #| label: load-catboost-boost-tree-classification-bonsai
 #| output: false
+#| eval: !expr 'run_catboost'
 library(bonsai)
 ```
 
@@ -572,6 +587,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-catboost-boost-tree-classification
+#| eval: !expr 'run_catboost'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(644)
 boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
@@ -582,6 +598,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-catboost-boost-tree-classification
+#| eval: !expr 'run_catboost'
 predict(boost_tree_fit, type = "class", new_data = bin_test)
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
@@ -1466,10 +1483,16 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-keras-logistic-reg-classification
-#| eval: false
+#| eval: !expr 'run_keras'
+#| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(730)
 logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+```
+
+```{r}
+#| label: fit-keras-logistic-reg-classification-print
+#| eval: !expr 'run_keras'
 logistic_reg_fit
 ```
 
@@ -1477,7 +1500,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-keras-logistic-reg-classification
-#| eval: false
+#| eval: !expr 'run_keras'
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
@@ -1797,10 +1820,16 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-keras-mlp-classification
-#| eval: false
+#| eval: !expr 'run_keras'
+#| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(216)
 mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+```
+
+```{r}
+#| label: fit-keras-mlp-classification-print
+#| eval: !expr 'run_keras'
 mlp_fit
 ```
 
@@ -1808,7 +1837,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-keras-mlp-classification
-#| eval: false
+#| eval: !expr 'run_keras'
 predict(mlp_fit, type = "class", new_data = bin_test)
 predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
@@ -1957,8 +1986,14 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-keras-multinom-reg-classification
-#| eval: false
+#| eval: !expr 'run_keras'
+#| results: hide
 multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+```
+
+```{r}
+#| label: fit-keras-multinom-reg-classification-print
+#| eval: !expr 'run_keras'
 multinom_reg_fit
 ```
 
@@ -1966,7 +2001,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-keras-multinom-reg-classification
-#| eval: false
+#| eval: !expr 'run_keras'
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
@@ -2307,7 +2342,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-grf-rand-forest-classification
-#| eval: false
+#| eval: !expr 'run_grf'
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("classification") |>
@@ -2318,7 +2353,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-grf-rand-forest-classification
-#| eval: false
+#| eval: !expr 'run_grf'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(546)
 rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
@@ -2329,7 +2364,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-grf-rand-forest-classification
-#| eval: false
+#| eval: !expr 'run_grf'
 predict(rand_forest_fit, type = "class", new_data = bin_test)
 predict(rand_forest_fit, type = "prob", new_data = bin_test)
 predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
@@ -2782,6 +2817,24 @@ count_train <- bake(count_rec, new_data = NULL)
 count_test <- bake(count_rec, new_data = testing(count_split))
 ```
 
+Finally, we have some models that handle hierarchical data, where some rows are statistically correlated with other rows. For these examples, we'll use a data set that models body weights as a function of time for several "subjects" (rats, actually). We'll split these data in a way where all rows for a specific subject are either in the training or test sets: 
+
+```{r}
+#| label: reg-hierarchical-data
+set.seed(224)
+reg_group_split <- 
+  nlme::BodyWeight |> 
+  # Get rid of some extra attributes added by the nlme package
+  as_tibble() |> 
+  # Convert to an _unordered_ factor
+  mutate(Rat = factor(as.character(Rat))) |> 
+  group_initial_split(group = Rat)
+reg_group_train <- training(reg_group_split)
+reg_group_test <- testing(reg_group_split)
+```
+
+There are `r length(unique(reg_group_train$Rat))` subjects in the training set and `r length(unique(reg_group_test$Rat))` in the test set. 
+
 If using the **Apache Spark** engine, we will need to identify the data source, 
 and then use it to create the splits. For this article, we will copy the 
 `concrete` data set into the Spark session.
@@ -3004,6 +3057,7 @@ This engine requires the bonsai extension package, so let's load this first:
 ```{r}
 #| label: load-catboost-boost-tree-regression-bonsai
 #| output: false
+#| eval: !expr 'run_catboost'
 library(bonsai)
 ```
 
@@ -3021,6 +3075,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-catboost-boost-tree-regression
+#| eval: !expr 'run_catboost'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(557)
 boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
@@ -3031,6 +3086,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-catboost-boost-tree-regression
+#| eval: !expr 'run_catboost'
 predict(boost_tree_fit, new_data = reg_test)
 ```
 
@@ -3305,7 +3361,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-decision-tree-regression
-#| eval: !expr 'run_spark'
+#| eval: false
 decision_tree_fit <- decision_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 decision_tree_fit
 ```
@@ -3439,8 +3495,9 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-gee-linear-reg-regression
-#| eval: false
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- 
+  linear_reg_spec |> 
+  fit(weight ~ Time + Diet + id_var(Rat), data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3448,8 +3505,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-gee-linear-reg-regression
-#| eval: false
-predict(linear_reg_fit, new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
 ```
 
 ## `glm` 
@@ -3493,7 +3549,6 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-glmer-linear-reg-regression
-#| eval: false
 linear_reg_spec <- linear_reg() |> 
   # This engine works with a single mode so no need to set that
   set_engine("glmer")
@@ -3503,8 +3558,9 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmer-linear-reg-regression
-#| eval: false
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- 
+  linear_reg_spec |> 
+  fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3512,7 +3568,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-glmer-linear-reg-regression
-predict(linear_reg_fit, new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
 ```
 
 ## `glmnet` 
@@ -3557,15 +3613,16 @@ We create a model specification via:
 #| label: spec-gls-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
   # This engine works with a single mode so no need to set that
-  set_engine("gls")
+  # Also, nlme::gls() specifies the random effects outside of the formula so
+  # we set that as an engine parameter
+  set_engine("gls", correlation = nlme::corCompSymm(form = ~Time|Rat))
 ```
 
 Now we create the model fit object:
 
 ```{r}
 #| label: fit-gls-linear-reg-regression
-#| eval: false
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |> fit(weight ~ Time + Diet, data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3573,8 +3630,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-gls-linear-reg-regression
-#| eval: false
-predict(linear_reg_fit, new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
 ```
 
 ## `h2o` 
@@ -3629,10 +3685,17 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-keras-linear-reg-regression
-#| eval: false
+#| eval: !expr 'run_keras'
+#| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(596)
 linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit
+```
+
+```{r}
+#| label: t-keras-linear-reg-regression-print
+#| eval: !expr 'run_keras'
 linear_reg_fit
 ```
 
@@ -3640,7 +3703,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-keras-linear-reg-regression
-#| eval: false
+#| eval: !expr 'run_keras'
 predict(linear_reg_fit, new_data = reg_test)
 ```
 
@@ -3659,16 +3722,17 @@ We create a model specification via:
 ```{r}
 #| label: spec-lme-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
-  set_engine("lme")
+  # This engine works with a single mode so no need to set that. 
+  # nlme::lme() makes us set the random effects outside of the formula so we
+  # add it as an engine parameter. 
+  set_engine("lme", random = ~ Time | Rat)
 ```
 
 Now we create the model fit object:
 
 ```{r}
 #| label: fit-lme-linear-reg-regression
-#| eval: false
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |> fit(weight ~ Diet + Time, data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3676,8 +3740,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-lme-linear-reg-regression
-#| eval: false
-predict(linear_reg_fit, new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
 ```
 
 ## `lmer` 
@@ -3703,8 +3766,9 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-lmer-linear-reg-regression
-#| eval: false
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- 
+  linear_reg_spec |> 
+  fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3712,8 +3776,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-lmer-linear-reg-regression
-#| eval: false
-predict(linear_reg_fit, new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
 ```
 
 ## `stan` 
@@ -3733,7 +3796,7 @@ Now we create the model fit object:
 #| label: fit-stan-linear-reg-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(357)
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |> fit(weight ~ Diet + Time, data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3741,9 +3804,9 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-stan-linear-reg-regression
-predict(linear_reg_fit, new_data = reg_test)
-predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
-predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
+predict(linear_reg_fit, type = "conf_int", new_data = reg_group_test)
+predict(linear_reg_fit, type = "pred_int", new_data = reg_group_test)
 ```
 
 ## `stan_glmer` 
@@ -3769,10 +3832,11 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-stan-glmer-linear-reg-regression
-#| eval: false
 # Set the random number seed to an integer for reproducibility: 
 set.seed(895)
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- 
+  linear_reg_spec |> 
+  fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3780,9 +3844,8 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-stan-glmer-linear-reg-regression
-#| eval: false
-predict(linear_reg_fit, new_data = reg_test)
-predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
+predict(linear_reg_fit, new_data = reg_group_test)
+predict(linear_reg_fit, type = "pred_int", new_data = reg_group_test)
 ```
 
 ## `spark` 
@@ -3995,18 +4058,24 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-keras-mlp-regression
-#| eval: false
+#| eval: !expr 'run_keras'
+#| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(879)
 mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
-mlp_fit
+```
+
+```{r}
+#| label: fit-keras-mlp-regression-print
+#| eval: !expr 'run_keras'
+linear_reg_fit
 ```
 
 The holdout data can be predicted:
 
 ```{r}
 #| label: predict-keras-mlp-regression
-#| eval: false
+#| eval: !expr 'run_keras'
 predict(mlp_fit, new_data = reg_test)
 ```
 
@@ -4177,7 +4246,9 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-gee-poisson-reg-regression
 #| eval: false
-poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
+poisson_reg_fit <- 
+  poisson_reg_spec |> 
+  fit(weight ~ Diet + Time + id_var(Rat), data = reg_group_train)
 poisson_reg_fit
 ```
 
@@ -4185,8 +4256,8 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-gee-poisson-reg-regression
-#| eval: false
-predict(poisson_reg_fit, new_data = reg_test)
+# Can't reproduce this:
+# predict(poisson_reg_fit, new_data = reg_group_test)
 ```
 
 ## `glmer` 
@@ -4212,10 +4283,11 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmer-poisson-reg-regression
-#| eval: false
 # Set the random number seed to an integer for reproducibility: 
 set.seed(826)
-poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
+poisson_reg_fit <- 
+  poisson_reg_spec |> 
+  fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
 poisson_reg_fit
 ```
 
@@ -4223,8 +4295,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-glmer-poisson-reg-regression
-#| eval: false
-predict(poisson_reg_fit, new_data = reg_test)
+predict(poisson_reg_fit, new_data = reg_group_test)
 ```
 
 ## `glmnet` 
@@ -4355,10 +4426,11 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-stan-poisson-reg-regression
-#| eval: false
 # Set the random number seed to an integer for reproducibility: 
 set.seed(213)
-poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
+poisson_reg_fit <- 
+  poisson_reg_spec |> 
+  fit(weight ~ Diet + Time, data = reg_group_train)
 poisson_reg_fit
 ```
 
@@ -4366,10 +4438,9 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-stan-poisson-reg-regression
-#| eval: false
-predict(poisson_reg_fit, new_data = reg_test)
-predict(poisson_reg_fit, type = "conf_int", new_data = reg_test)
-predict(poisson_reg_fit, type = "pred_int", new_data = reg_test)
+predict(poisson_reg_fit, new_data = reg_group_test)
+predict(poisson_reg_fit, type = "conf_int", new_data = reg_group_test)
+predict(poisson_reg_fit, type = "pred_int", new_data = reg_group_test)
 ```
 
 ## `stan_glmer` 
@@ -4395,10 +4466,11 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-stan-glmer-poisson-reg-regression
-#| eval: false
 # Set the random number seed to an integer for reproducibility: 
 set.seed(690)
-poisson_reg_fit <- poisson_reg_spec |> fit(strength ~ ., data = reg_train)
+poisson_reg_fit <- 
+  poisson_reg_spec |> 
+  fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
 poisson_reg_fit
 ```
 
@@ -4406,9 +4478,8 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-stan-glmer-poisson-reg-regression
-#| eval: false
-predict(poisson_reg_fit, new_data = reg_test)
-predict(poisson_reg_fit, type = "pred_int", new_data = reg_test)
+predict(poisson_reg_fit, new_data = reg_group_test)
+predict(poisson_reg_fit, type = "pred_int", new_data = reg_group_test)
 ```
 
 ## `zeroinfl` 
@@ -4527,7 +4598,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-grf-rand-forest-regression
-#| eval: false
+#| eval: !expr 'run_grf'
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this engine works with multiple modes
   set_mode("regression") |>
@@ -4538,7 +4609,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-grf-rand-forest-regression
-#| eval: false
+#| eval: !expr 'run_grf'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(130)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
@@ -4549,7 +4620,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-grf-rand-forest-regression
-#| eval: false
+#| eval: !expr 'run_grf'
 predict(rand_forest_fit, new_data = reg_test)
 predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 ```
@@ -5586,6 +5657,7 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-grf-rand-forest-quantile-regression
+#| eval: !expr 'run_grf'
 rand_forest_spec <- rand_forest() |>
   set_engine("grf") |> 
   set_mode("quantile regression", quantile_levels = qnt_lvls)
@@ -5595,6 +5667,7 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-grf-rand-forest-quantile-regression
+#| eval: !expr 'run_grf'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(435)
 rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = qnt_train)
@@ -5605,6 +5678,7 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-grf-rand-forest-quantile-regression
+#| eval: !expr 'run_grf'
 predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
 ```
 
@@ -5612,6 +5686,7 @@ Each row of predictions has a special vector class containing all of the quantil
 
 ```{r}
 #| label: predict-grf-rand-forest-quantile-regression-expand
+#| eval: !expr 'run_grf'
 rand_forest_fit |> 
   predict(type = "quantile", new_data = qnt_test)|> 
   slice(1) |> 
