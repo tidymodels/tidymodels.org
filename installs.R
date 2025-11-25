@@ -89,7 +89,15 @@ packages <- c(
   "pscl",
   "coin",
   "pec",
-  "flexsurv"
+  "flexsurv",
+  "agua",
+  "bonsai",
+  "multilevelmod",
+  "sparklyr",
+  "HSAUR3",
+  "lme4",
+  "survival",
+  "gee"
 )
 
 pak::pak(packages)
