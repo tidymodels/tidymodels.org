@@ -25,6 +25,9 @@ format:
 #| eval: true
 source(here::here("common.R"))
 
+# Remove after parsnip merges this change
+pak::pak("tidymodels/parsnip@fix-1309")
+
 # Indicates to enable or not running Spark code
 run_spark <- TRUE
 run_h2o <- TRUE
@@ -910,7 +913,8 @@ We create a model specification via:
 #| label: spec-spark-decision-tree-classification
 #| eval: !expr 'run_spark'
 decision_tree_spec <- decision_tree() |>
-  set_mode("classification")
+  set_mode("classification") |> 
+  set_engine("spark")
 ```
 
 Now we create the model fit object:
@@ -3329,7 +3333,6 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-decision-tree-regression
-#| eval: false
 decision_tree_fit <- decision_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
 decision_tree_fit
 ```
@@ -3338,7 +3341,6 @@ The holdout data can be predicted:
 
 ```{r}
 #| label: predict-spark-decision-tree-regression
-#| eval: false
 predict(decision_tree_fit, new_data = tbl_reg$test)
 ```
 
