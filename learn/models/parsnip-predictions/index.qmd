@@ -70,7 +70,7 @@ Some models available in parsnip use other computational frameworks for computat
 
 <details>
 
-### catboost
+<summary>catboost installation instructions</summary>
 
 catboost is a popular boosting framework. Unfortunately, the R package is not available on CRAN. First, go to [https://github.com/catboost/catboost/releases/]("https://github.com/catboost/catboost/releases/) and search for "`[R-package]`" to find the most recent release. 
 
@@ -124,7 +124,11 @@ fit_params <- list(
 fit_params
 ```
 
-### Apache Spark
+</details>
+
+<details>
+
+<summary>Apache Spark installation instructions</summary>
 
 To use [Apache Spark](https://spark.apache.org/) as an engine, we will first install Spark and then need a connection to a cluster. For this article, we will set up and use a single-node Spark cluster running on a laptop.
 
@@ -154,7 +158,11 @@ library(sparklyr)
 sc <- spark_connect("local")
 ```
 
-### h2o 
+</details>
+
+<details>
+
+<summary>h2o installation instructions</summary>
 
 h2o.ai offers a Java-based high-performance computing server for machine learning. This can be run locally or externally. There are general installation instructions at [https://docs.h2o.ai/](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html). There is a package on CRAN, but you can also install directly from [h2o](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html#install-in-r) via:
 
@@ -180,7 +188,11 @@ library(agua)
 h2o_start()
 ```
 
-### Tensorflow and Keras
+</details>
+
+<details>
+
+<summary>Tensorflow and Keras installation instructions</summary>
 
 R's tensorflow and keras3 packages call Python directly. To enable this, you'll have to install both components: 
 
@@ -207,7 +219,11 @@ pve <- grep("tensorflow", reticulate::virtualenv_list(), value = TRUE)
 reticulate::use_virtualenv(pve)
 ```
 
-### Torch
+</details>
+
+<details>
+
+<summary>Torch installation instructions</summary>
 
 R's torch package is the low-level package containing the framework. Once you have installed it, you will get this message the first time you load the package: 
 
