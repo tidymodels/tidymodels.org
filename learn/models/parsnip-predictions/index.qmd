@@ -243,9 +243,9 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 
 # Classification Models
 
-To demonstrate classification, let's make a small training and test sets for a binary outcome. We'll center and scale the data since some models require the same units.
 ## Example data
 
+To demonstrate classification, let's make small training and test sets for a binary outcome. We'll center and scale the data since some models require the same units.
 
 ```{r}
 #| label: bin-data
@@ -274,9 +274,10 @@ set.seed(1752)
 mtl_data <-
  sim_multinomial(
     200,
-  ~  -0.5    +  0.6 * abs(A),
-  ~ ifelse(A > 0 & B > 0, 1.0 + 0.2 * A / B, - 2),
-  ~ A + B -  A * B)
+    ~  -0.5 + 0.6 * abs(A),
+    ~ ifelse(A > 0 & B > 0, 1.0 + 0.2 * A / B, - 2),
+    ~ A + B - A * B
+  )
 
 mtl_split <- initial_split(mtl_data, prop = 0.967, strata = class)
 mtl_split
@@ -338,8 +339,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-earth-bag-mars-classification
 bag_mars_spec <- bag_mars() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and earth is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because earth is the default.
   set_mode("classification")
 ```
 
@@ -349,7 +350,8 @@ Now we create the model fit object:
 #| label: fit-earth-bag-mars-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(268)
-bag_mars_fit <- bag_mars_spec |> fit(class ~ ., data = bin_train)
+bag_mars_fit <- bag_mars_spec |> 
+  fit(class ~ ., data = bin_train)
 bag_mars_fit
 ```
 
@@ -382,8 +384,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-nnet-bag-mlp-classification
 bag_mlp_spec <- bag_mlp() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and nnet is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because nnet is the default.
   set_mode("classification")
 ```
 
@@ -393,7 +395,8 @@ Now we create the model fit object:
 #| label: fit-nnet-bag-mlp-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(318)
-bag_mlp_fit <- bag_mlp_spec |> fit(class ~ ., data = bin_train)
+bag_mlp_fit <- bag_mlp_spec |>
+  fit(class ~ ., data = bin_train)
 bag_mlp_fit
 ```
 
@@ -426,8 +429,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-rpart-bag-tree-classification
 bag_tree_spec <- bag_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because rpart is the default.
   set_mode("classification")
 ```
 
@@ -437,7 +440,8 @@ Now we create the model fit object:
 #| label: fit-rpart-bag-tree-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(985)
-bag_tree_fit <- bag_tree_spec |> fit(class ~ ., data = bin_train)
+bag_tree_fit <- bag_tree_spec |>
+  fit(class ~ ., data = bin_train)
 bag_tree_fit
 ```
 
@@ -474,7 +478,8 @@ Now we create the model fit object:
 #| label: fit-C5.0-bag-tree-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(937)
-bag_tree_fit <- bag_tree_spec |> fit(class ~ ., data = bin_train)
+bag_tree_fit <- bag_tree_spec |>
+  fit(class ~ ., data = bin_train)
 bag_tree_fit
 ```
 
@@ -499,8 +504,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-dbarts-bart-classification
 bart_spec <- bart() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and dbarts is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because dbarts is the default.
   set_mode("classification")
 ```
 
@@ -510,7 +515,8 @@ Now we create the model fit object:
 #| label: fit-dbarts-bart-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(217)
-bart_fit <- bart_spec |> fit(class ~ ., data = bin_train)
+bart_fit <- bart_spec |>
+  fit(class ~ ., data = bin_train)
 bart_fit
 ```
 
@@ -537,8 +543,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-xgboost-boost-tree-classification
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xgboost is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because xgboost is the default.
   set_mode("classification")
 ```
 
@@ -548,7 +554,8 @@ Now we create the model fit object:
 #| label: fit-xgboost-boost-tree-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(738)
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
 
@@ -577,7 +584,8 @@ Now we create the model fit object:
 #| label: fit-C5.0-boost-tree-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(984)
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
 
@@ -605,7 +613,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-catboost-boost-tree-classification
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("catboost")
 ```
@@ -617,7 +625,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_catboost'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(644)
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
 
@@ -646,7 +655,7 @@ We create a model specification via:
 #| label: spec-h2o-boost-tree-classification
 #| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("h2o_gbm")
 ```
@@ -658,7 +667,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(186)
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
 
@@ -687,7 +697,7 @@ We create a model specification via:
 #| label: spec-h2o-gbm-boost-tree-classification
 #| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("h2o_gbm")
 ```
@@ -699,7 +709,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(724)
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
 
@@ -727,7 +738,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-lightgbm-boost-tree-classification
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("lightgbm")
 ```
@@ -738,7 +749,8 @@ Now we create the model fit object:
 #| label: fit-lightgbm-boost-tree-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(906)
-boost_tree_fit <- boost_tree_spec |> fit(class ~ ., data = bin_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(class ~ ., data = bin_train)
 boost_tree_fit
 ```
 
@@ -769,7 +781,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_spark'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(285)
-boost_tree_fit <- boost_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
+boost_tree_fit <- boost_tree_spec |>
+  fit(Class ~ ., data = tbl_bin$training)
 boost_tree_fit
 ```
 
@@ -802,8 +815,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-C5.0-C5-rules-classification
-# This engine works with a single mode so no need to set that
-# and C5.0 is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because C5.0 is the default.
 C5_rules_spec <- C5_rules()
 ```
 
@@ -813,7 +826,8 @@ Now we create the model fit object:
 #| label: fit-C5.0-C5-rules-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(93)
-C5_rules_fit <- C5_rules_spec |> fit(class ~ ., data = bin_train)
+C5_rules_fit <- C5_rules_spec |>
+  fit(class ~ ., data = bin_train)
 C5_rules_fit
 ```
 
@@ -838,8 +852,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-rpart-decision-tree-classification
 decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because rpart is the default.
   set_mode("classification")
 ```
 
@@ -847,7 +861,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-rpart-decision-tree-classification
-decision_tree_fit <- decision_tree_spec |> fit(class ~ ., data = bin_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(class ~ ., data = bin_train)
 decision_tree_fit
 ```
 
@@ -874,7 +889,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-C5.0-decision-tree-classification
-decision_tree_fit <- decision_tree_spec |> fit(class ~ ., data = bin_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(class ~ ., data = bin_train)
 decision_tree_fit
 ```
 
@@ -901,7 +917,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-partykit-decision-tree-classification
 decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("partykit")
 ```
@@ -910,7 +926,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-partykit-decision-tree-classification
-decision_tree_fit <- decision_tree_spec |> fit(class ~ ., data = bin_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(class ~ ., data = bin_train)
 decision_tree_fit
 ```
 
@@ -940,7 +957,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-decision-tree-classification
 #| eval: !expr 'run_spark'
-decision_tree_fit <- decision_tree_spec |> fit(Class ~ ., data = tbl_bin$training)
+decision_tree_fit <- decision_tree_spec |>
+  fit(Class ~ ., data = tbl_bin$training)
 decision_tree_fit
 ```
 
@@ -973,8 +991,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-earth-discrim-flexible-classification
-# This engine works with a single mode so no need to set that
-# and earth is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because earth is the default.
 discrim_flexible_spec <- discrim_flexible()
 ```
 
@@ -982,7 +1000,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-earth-discrim-flexible-classification
-discrim_flexible_fit <- discrim_flexible_spec |> fit(class ~ ., data = bin_train)
+discrim_flexible_fit <- discrim_flexible_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_flexible_fit
 ```
 
@@ -1014,8 +1033,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-MASS-discrim-linear-classification
-# This engine works with a single mode so no need to set that
-# and MASS is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because MASS is the default.
 discrim_linear_spec <- discrim_linear()
 ```
 
@@ -1023,7 +1042,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-MASS-discrim-linear-classification
-discrim_linear_fit <- discrim_linear_spec |> fit(class ~ ., data = bin_train)
+discrim_linear_fit <- discrim_linear_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_linear_fit
 ```
 
@@ -1050,7 +1070,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-mda-discrim-linear-classification
 discrim_linear_spec <- discrim_linear() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("mda")
 ```
 
@@ -1058,7 +1078,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-mda-discrim-linear-classification
-discrim_linear_fit <- discrim_linear_spec |> fit(class ~ ., data = bin_train)
+discrim_linear_fit <- discrim_linear_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_linear_fit
 ```
 
@@ -1085,7 +1106,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-sda-discrim-linear-classification
 discrim_linear_spec <- discrim_linear() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("sda")
 ```
 
@@ -1093,7 +1114,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-sda-discrim-linear-classification
-discrim_linear_fit <- discrim_linear_spec |> fit(class ~ ., data = bin_train)
+discrim_linear_fit <- discrim_linear_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_linear_fit
 ```
 
@@ -1120,7 +1142,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-sparsediscrim-discrim-linear-classification
 discrim_linear_spec <- discrim_linear() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("sparsediscrim")
 ```
 
@@ -1128,7 +1150,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-sparsediscrim-discrim-linear-classification
-discrim_linear_fit <- discrim_linear_spec |> fit(class ~ ., data = bin_train)
+discrim_linear_fit <- discrim_linear_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_linear_fit
 ```
 
@@ -1161,15 +1184,16 @@ We create a model specification via:
 ```{r}
 #| label: spec-MASS-discrim-quad-classification
 discrim_quad_spec <- discrim_quad()
-  # This engine works with a single mode so no need to set that
-  # and MASS is the default engine so there is no need to set that either.
+  # This model only works with a single mode, so we don't need to set the mode.
+  # We don't need to set the engine because MASS is the default.
 ```
 
 Now we create the model fit object:
 
 ```{r}
 #| label: fit-MASS-discrim-quad-classification
-discrim_quad_fit <- discrim_quad_spec |> fit(class ~ ., data = bin_train)
+discrim_quad_fit <- discrim_quad_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_quad_fit
 ```
 
@@ -1196,7 +1220,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-sparsediscrim-discrim-quad-classification
 discrim_quad_spec <- discrim_quad() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("sparsediscrim")
 ```
 
@@ -1204,7 +1228,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-sparsediscrim-discrim-quad-classification
-discrim_quad_fit <- discrim_quad_spec |> fit(class ~ ., data = bin_train)
+discrim_quad_fit <- discrim_quad_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_quad_fit
 ```
 
@@ -1236,8 +1261,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-klaR-discrim-regularized-classification
-# This engine works with a single mode so no need to set that
-# and klaR is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because klaR is the default.
 discrim_regularized_spec <- discrim_regularized()
 ```
 
@@ -1245,7 +1270,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-klaR-discrim-regularized-classification
-discrim_regularized_fit <- discrim_regularized_spec |> fit(class ~ ., data = bin_train)
+discrim_regularized_fit <- discrim_regularized_spec |>
+  fit(class ~ ., data = bin_train)
 discrim_regularized_fit
 ```
 
@@ -1270,8 +1296,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-mgcv-gen-additive-mod-classification
 gen_additive_mod_spec <- gen_additive_mod() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and mgcv is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because mgcv is the default.
   set_mode("classification")
 ```
 
@@ -1307,15 +1333,16 @@ We create a model specification via:
 ```{r}
 #| label: spec-glm-logistic-reg-classification
 logistic_reg_spec <- logistic_reg()
-  # This engine works with a single mode so no need to set that
-  # and glm is the default engine so there is no need to set that either.
+  # This model only works with a single mode, so we don't need to set the mode.
+  # We don't need to set the engine because glm is the default.
 ```
 
 Now we create the model fit object:
 
 ```{r}
 #| label: fit-glm-logistic-reg-classification
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
 
@@ -1335,7 +1362,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("brulee")
 ```
 
@@ -1345,7 +1372,8 @@ Now we create the model fit object:
 #| label: fit-brulee-logistic-reg-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(466)
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
 
@@ -1373,7 +1401,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-gee-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("gee")
 ```
 
@@ -1410,7 +1438,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmer-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmer")
 ```
 
@@ -1439,7 +1467,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmnet-logistic-reg-classification
 logistic_reg_spec <- logistic_reg(penalty = 0.01) |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmnet")
 ```
 
@@ -1447,7 +1475,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmnet-logistic-reg-classification
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
 
@@ -1475,7 +1504,7 @@ We create a model specification via:
 #| label: spec-h2o-logistic-reg-classification
 #| eval: !expr 'run_h2o'
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("h2o")
 ```
 
@@ -1484,7 +1513,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-logistic-reg-classification
 #| eval: !expr 'run_h2o'
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
 
@@ -1504,7 +1534,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-keras-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("keras")
 ```
 
@@ -1516,7 +1546,8 @@ Now we create the model fit object:
 #| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(730)
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(class ~ ., data = bin_train)
 ```
 
 ```{r}
@@ -1541,7 +1572,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-LiblineaR-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("LiblineaR")
 ```
 
@@ -1549,7 +1580,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-LiblineaR-logistic-reg-classification
-logistic_reg_fit <- logistic_reg_spec |> fit(class ~ ., data = bin_train)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(class ~ ., data = bin_train)
 logistic_reg_fit
 ```
 
@@ -1568,7 +1600,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-stan-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("stan")
 ```
 
@@ -1609,7 +1641,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-stan-glmer-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("stan_glmer")
 ```
 
@@ -1651,7 +1683,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-logistic-reg-classification
 #| eval: !expr 'run_spark'
-logistic_reg_fit <- logistic_reg_spec |> fit(Class ~ ., data = tbl_bin$training)
+logistic_reg_fit <- logistic_reg_spec |>
+  fit(Class ~ ., data = tbl_bin$training)
 logistic_reg_fit
 ```
 
@@ -1677,8 +1710,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-earth-mars-classification
 mars_spec <- mars() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and earth is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because earth is the default.
   set_mode("classification")
 ```
 
@@ -1686,7 +1719,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-earth-mars-classification
-mars_fit <- mars_spec |> fit(class ~ ., data = bin_train)
+mars_fit <- mars_spec |>
+  fit(class ~ ., data = bin_train)
 mars_fit
 ```
 
@@ -1711,8 +1745,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-nnet-mlp-classification
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and nnet is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because nnet is the default.
   set_mode("classification")
 ```
 
@@ -1722,7 +1756,8 @@ Now we create the model fit object:
 #| label: fit-nnet-mlp-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(839)
-mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+mlp_fit <- mlp_spec |>
+  fit(class ~ ., data = bin_train)
 mlp_fit
 ```
 
@@ -1741,7 +1776,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-mlp-classification
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("brulee")
 ```
@@ -1752,7 +1787,8 @@ Now we create the model fit object:
 #| label: fit-brulee-mlp-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(38)
-mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+mlp_fit <- mlp_spec |>
+  fit(class ~ ., data = bin_train)
 mlp_fit
 ```
 
@@ -1771,7 +1807,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-two-layer-mlp-classification
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("brulee_two_layer")
 ```
@@ -1782,7 +1818,8 @@ Now we create the model fit object:
 #| label: fit-brulee-two-layer-mlp-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(336)
-mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+mlp_fit <- mlp_spec |>
+  fit(class ~ ., data = bin_train)
 mlp_fit
 ```
 
@@ -1810,7 +1847,7 @@ We create a model specification via:
 #| label: spec-h2o-mlp-classification
 #| eval: !expr 'run_h2o'
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("h2o")
 ```
@@ -1822,7 +1859,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(306)
-mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+mlp_fit <- mlp_spec |>
+  fit(class ~ ., data = bin_train)
 mlp_fit
 ```
 
@@ -1842,7 +1880,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-keras-mlp-classification
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("keras")
 ```
@@ -1855,7 +1893,8 @@ Now we create the model fit object:
 #| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(216)
-mlp_fit <- mlp_spec |> fit(class ~ ., data = bin_train)
+mlp_fit <- mlp_spec |>
+  fit(class ~ ., data = bin_train)
 ```
 
 ```{r}
@@ -1885,8 +1924,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-nnet-multinom-reg-classification
-# This engine works with a single mode so no need to set that
-# and nnet is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because nnet is the default.
 multinom_reg_spec <- multinom_reg()
 ```
 
@@ -1896,7 +1935,8 @@ Now we create the model fit object:
 #| label: fit-nnet-multinom-reg-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(634)
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit <- multinom_reg_spec |>
+  fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
 
@@ -1915,7 +1955,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-multinom-reg-classification
 multinom_reg_spec <- multinom_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("brulee")
 ```
 
@@ -1925,7 +1965,8 @@ Now we create the model fit object:
 #| label: fit-brulee-multinom-reg-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(837)
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit <- multinom_reg_spec |>
+  fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
 
@@ -1944,7 +1985,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmnet-multinom-reg-classification
 multinom_reg_spec <- multinom_reg(penalty = 0.01) |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmnet")
 ```
 
@@ -1952,7 +1993,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmnet-multinom-reg-classification
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit <- multinom_reg_spec |>
+  fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
 
@@ -1980,7 +2022,7 @@ We create a model specification via:
 #| label: spec-h2o-multinom-reg-classification
 #| eval: !expr 'run_h2o'
 multinom_reg_spec <- multinom_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("h2o")
 ```
 
@@ -1989,7 +2031,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-multinom-reg-classification
 #| eval: !expr 'run_h2o'
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit <- multinom_reg_spec |>
+  fit(class ~ ., data = mtl_train)
 multinom_reg_fit
 ```
 
@@ -2009,7 +2052,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-keras-multinom-reg-classification
 multinom_reg_spec <- multinom_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("keras")
 ```
 
@@ -2019,7 +2062,8 @@ Now we create the model fit object:
 #| label: fit-keras-multinom-reg-classification
 #| eval: !expr 'run_keras'
 #| results: hide
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = mtl_train)
+multinom_reg_fit <- multinom_reg_spec |>
+  fit(class ~ ., data = mtl_train)
 ```
 
 ```{r}
@@ -2053,7 +2097,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-multinom-reg-classification
 #| eval: !expr 'run_spark'
-multinom_reg_fit <- multinom_reg_spec |> fit(class ~ ., data = tbl_mtl$training)
+multinom_reg_fit <- multinom_reg_spec |>
+  fit(class ~ ., data = tbl_mtl$training)
 multinom_reg_fit
 ```
 
@@ -2088,7 +2133,7 @@ We create a model specification via:
 #| label: spec-h2o-naive-Bayes-classification
 #| eval: !expr 'run_h2o'
 naive_Bayes_spec <- naive_Bayes() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("h2o")
 ```
 
@@ -2097,7 +2142,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-naive-Bayes-classification
 #| eval: !expr 'run_h2o'
-naive_Bayes_fit <- naive_Bayes_spec |> fit(class ~ ., data = bin_train)
+naive_Bayes_fit <- naive_Bayes_spec |>
+  fit(class ~ ., data = bin_train)
 naive_Bayes_fit
 ```
 
@@ -2124,8 +2170,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-klaR-naive-Bayes-classification
-# This engine works with a single mode so no need to set that
-# and klaR is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because klaR is the default.
 naive_Bayes_spec <- naive_Bayes()
 ```
 
@@ -2133,7 +2179,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-klaR-naive-Bayes-classification
-naive_Bayes_fit <- naive_Bayes_spec |> fit(class ~ ., data = bin_train)
+naive_Bayes_fit <- naive_Bayes_spec |>
+  fit(class ~ ., data = bin_train)
 ```
 
 The holdout data can be predicted:
@@ -2159,7 +2206,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-naivebayes-naive-Bayes-classification
 naive_Bayes_spec <- naive_Bayes() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("naivebayes")
 ```
 
@@ -2167,7 +2214,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-naivebayes-naive-Bayes-classification
-naive_Bayes_fit <- naive_Bayes_spec |> fit(class ~ ., data = bin_train)
+naive_Bayes_fit <- naive_Bayes_spec |>
+  fit(class ~ ., data = bin_train)
 naive_Bayes_fit
 ```
 
@@ -2192,8 +2240,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-kknn-nearest-neighbor-classification
 nearest_neighbor_spec <- nearest_neighbor() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and kknn is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because kknn is the default.
   set_mode("classification")
 ```
 
@@ -2201,7 +2249,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kknn-nearest-neighbor-classification
-nearest_neighbor_fit <- nearest_neighbor_spec |> fit(class ~ ., data = bin_train)
+nearest_neighbor_fit <- nearest_neighbor_spec |>
+  fit(class ~ ., data = bin_train)
 nearest_neighbor_fit
 ```
 
@@ -2226,8 +2275,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-parsnip-null-model-classification
 null_model_spec <- null_model() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and parsnip is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because parsnip is the default.
   set_mode("classification")
 ```
 
@@ -2235,7 +2284,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-parsnip-null-model-classification
-null_model_fit <- null_model_spec |> fit(class ~ ., data = bin_train)
+null_model_fit <- null_model_spec |>
+  fit(class ~ ., data = bin_train)
 null_model_fit
 ```
 
@@ -2268,8 +2318,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-mixOmics-pls-classification
 pls_spec <- pls() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and mixOmics is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because mixOmics is the default.
   set_mode("classification")
 ```
 
@@ -2277,7 +2327,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-mixOmics-pls-classification
-pls_fit <- pls_spec |> fit(class ~ ., data = bin_train)
+pls_fit <- pls_spec |>
+  fit(class ~ ., data = bin_train)
 pls_fit
 ```
 
@@ -2302,8 +2353,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-ranger-rand-forest-classification
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and ranger is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because ranger is the default.
   set_engine("ranger", keep.inbag = TRUE) |> 
   # However, we'll set the engine and use the keep.inbag=TRUE option so that we 
   # can produce interval predictions. This is not generally required. 
@@ -2316,7 +2367,8 @@ Now we create the model fit object:
 #| label: fit-ranger-rand-forest-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(841)
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
 
@@ -2344,7 +2396,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-aorsf-rand-forest-classification
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("aorsf")
 ```
@@ -2355,7 +2407,8 @@ Now we create the model fit object:
 #| label: fit-aorsf-rand-forest-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(923)
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
 
@@ -2375,7 +2428,7 @@ We create a model specification via:
 #| label: spec-grf-rand-forest-classification
 #| eval: !expr 'run_grf'
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("grf")
 ```
@@ -2387,7 +2440,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_grf'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(546)
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
 
@@ -2417,7 +2471,7 @@ We create a model specification via:
 #| label: spec-h2o-rand-forest-classification
 #| eval: !expr 'run_h2o'
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("h2o")
 ```
@@ -2429,7 +2483,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(493)
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
 
@@ -2457,7 +2512,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-partykit-rand-forest-classification
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("partykit")
 ```
@@ -2468,7 +2523,8 @@ Now we create the model fit object:
 #| label: fit-partykit-rand-forest-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(252)
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(class ~ ., data = bin_train)
 ```
 
 The print method has a lot of output: 
@@ -2495,7 +2551,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-randomForest-rand-forest-classification
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("randomForest")
 ```
@@ -2506,7 +2562,8 @@ Now we create the model fit object:
 #| label: fit-randomForest-rand-forest-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(726)
-rand_forest_fit <- rand_forest_spec |> fit(class ~ ., data = bin_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(class ~ ., data = bin_train)
 rand_forest_fit
 ```
 
@@ -2537,7 +2594,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_spark'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(693)
-rand_forest_fit <- rand_forest_spec |> fit(Class ~ ., data = tbl_bin$training)
+rand_forest_fit <- rand_forest_spec |>
+  fit(Class ~ ., data = tbl_bin$training)
 rand_forest_fit
 ```
 
@@ -2571,8 +2629,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-xrf-rule-fit-classification
 rule_fit_spec <- rule_fit() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xrf is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because xrf is the default.
   set_mode("classification")
 ```
 
@@ -2582,7 +2640,8 @@ Now we create the model fit object:
 #| label: fit-xrf-rule-fit-classification
 # Set the random number seed to an integer for reproducibility: 
 set.seed(95)
-rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
+rule_fit_fit <- rule_fit_spec |>
+  fit(class ~ ., data = bin_train)
 rule_fit_fit
 ```
 
@@ -2610,7 +2669,7 @@ We create a model specification via:
 #| label: spec-h2o-rule-fit-classification
 #| eval: !expr 'run_h2o'
 rule_fit_spec <- rule_fit() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("h2o")
 ```
@@ -2622,7 +2681,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(536)
-rule_fit_fit <- rule_fit_spec |> fit(class ~ ., data = bin_train)
+rule_fit_fit <- rule_fit_spec |>
+  fit(class ~ ., data = bin_train)
 rule_fit_fit
 ```
 
@@ -2648,7 +2708,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-kernlab-svm-linear-classification
 svm_linear_spec <- svm_linear() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
   set_engine("kernlab")
 ```
@@ -2657,7 +2717,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kernlab-svm-linear-classification
-svm_linear_fit <- svm_linear_spec |> fit(class ~ ., data = bin_train)
+svm_linear_fit <- svm_linear_spec |>
+  fit(class ~ ., data = bin_train)
 svm_linear_fit
 ```
 
@@ -2676,8 +2737,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-LiblineaR-svm-linear-classification
 svm_linear_spec <- svm_linear() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and LiblineaR is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because LiblineaR is the default.
   set_mode("classification")
 ```
 
@@ -2685,7 +2746,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-LiblineaR-svm-linear-classification
-svm_linear_fit <- svm_linear_spec |> fit(class ~ ., data = bin_train)
+svm_linear_fit <- svm_linear_spec |>
+  fit(class ~ ., data = bin_train)
 svm_linear_fit
 ```
 
@@ -2709,8 +2771,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-kernlab-svm-poly-classification
 svm_poly_spec <- svm_poly() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and kernlab is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because kernlab is the default.
   set_mode("classification")
 ```
 
@@ -2718,7 +2780,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kernlab-svm-poly-classification
-svm_poly_fit <- svm_poly_spec |> fit(class ~ ., data = bin_train)
+svm_poly_fit <- svm_poly_spec |>
+  fit(class ~ ., data = bin_train)
 svm_poly_fit
 ```
 
@@ -2743,8 +2806,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-kernlab-svm-rbf-classification
 svm_rbf_spec <- svm_rbf() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and kernlab is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because kernlab is the default.
   set_mode("classification")
 ```
 
@@ -2752,7 +2815,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kernlab-svm-rbf-classification
-svm_rbf_fit <- svm_rbf_spec |> fit(class ~ ., data = bin_train)
+svm_rbf_fit <- svm_rbf_spec |>
+  fit(class ~ ., data = bin_train)
 svm_rbf_fit
 ```
 
@@ -2768,9 +2832,9 @@ predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 
 # Regression Models
 
-To demonstrate regression, we'll subset some data. make a training/test split, and standardize the predictors: 
 ## Example data
 
+To demonstrate regression, we'll subset some data, make a training/test split, and standardize the predictors: 
 
 ```{r}
 #| label: reg-data
@@ -2811,7 +2875,7 @@ count_train <- bake(count_rec, new_data = NULL)
 count_test <- bake(count_rec, new_data = testing(count_split))
 ```
 
-Finally, we have some models that handle hierarchical data, where some rows are statistically correlated with other rows. For these examples, we'll use a data set that models body weights as a function of time for several "subjects" (rats, actually). We'll split these data in a way where all rows for a specific subject are either in the training or test sets: 
+Finally, we have some models that handle hierarchical data, where some rows are statistically correlated with other rows. For these examples, we'll use a data set that models body weights as a function of time for several "subjects" (rats, actually). We'll split these data in a way where all rows for a specific subject are either in the training or the test set: 
 
 ```{r}
 #| label: reg-hierarchical-data
@@ -2864,8 +2928,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-earth-bag-mars-regression
 bag_mars_spec <- bag_mars() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and earth is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because earth is the default.
   set_mode("regression")
 ```
 
@@ -2875,7 +2939,8 @@ Now we create the model fit object:
 #| label: fit-earth-bag-mars-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(147)
-bag_mars_fit <- bag_mars_spec |> fit(strength ~ ., data = reg_train)
+bag_mars_fit <- bag_mars_spec |> 
+  fit(strength ~ ., data = reg_train)
 bag_mars_fit
 ```
 
@@ -2907,8 +2972,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-nnet-bag-mlp-regression
 bag_mlp_spec <- bag_mlp() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and nnet is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because nnet is the default.
   set_mode("regression")
 ```
 
@@ -2918,7 +2983,8 @@ Now we create the model fit object:
 #| label: fit-nnet-bag-mlp-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(324)
-bag_mlp_fit <- bag_mlp_spec |> fit(strength ~ ., data = reg_train)
+bag_mlp_fit <- bag_mlp_spec |>
+  fit(strength ~ ., data = reg_train)
 bag_mlp_fit
 ```
 
@@ -2950,8 +3016,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-rpart-bag-tree-regression
 bag_tree_spec <- bag_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because rpart is the default.
   set_mode("regression")
 ```
 
@@ -2961,7 +3027,8 @@ Now we create the model fit object:
 #| label: fit-rpart-bag-tree-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(230)
-bag_tree_fit <- bag_tree_spec |> fit(strength ~ ., data = reg_train)
+bag_tree_fit <- bag_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 bag_tree_fit
 ```
 
@@ -2985,8 +3052,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-dbarts-bart-regression
 bart_spec <- bart() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and dbarts is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because dbarts is the default.
   set_mode("regression")
 ```
 
@@ -2996,7 +3063,8 @@ Now we create the model fit object:
 #| label: fit-dbarts-bart-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(134)
-bart_fit <- bart_spec |> fit(strength ~ ., data = reg_train)
+bart_fit <- bart_spec |>
+  fit(strength ~ ., data = reg_train)
 bart_fit
 ```
 
@@ -3022,8 +3090,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-xgboost-boost-tree-regression
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xgboost is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because xgboost is the default.
   set_mode("regression")
 ```
 
@@ -3033,7 +3101,8 @@ Now we create the model fit object:
 #| label: fit-xgboost-boost-tree-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(748)
-boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
 
@@ -3060,7 +3129,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-catboost-boost-tree-regression
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("catboost")
 ```
@@ -3072,7 +3141,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_catboost'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(557)
-boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
 
@@ -3100,7 +3170,7 @@ We create a model specification via:
 #| label: spec-h2o-boost-tree-regression
 #| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("h2o_gbm")
 ```
@@ -3111,7 +3181,8 @@ Now we create the model fit object:
 #| label: fit-h2o-boost-tree-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(720)
-boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
 
@@ -3138,7 +3209,7 @@ We create a model specification via:
 #| label: spec-h2o-gbm-boost-tree-regression
 #| eval: !expr 'run_h2o'
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("h2o_gbm")
 ```
@@ -3150,7 +3221,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(90)
-boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
 
@@ -3176,7 +3248,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-lightgbm-boost-tree-regression
 boost_tree_spec <- boost_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("lightgbm")
 ```
@@ -3187,7 +3259,8 @@ Now we create the model fit object:
 #| label: fit-lightgbm-boost-tree-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(570)
-boost_tree_fit <- boost_tree_spec |> fit(strength ~ ., data = reg_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 boost_tree_fit
 ```
 
@@ -3217,7 +3290,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_spark'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(620)
-boost_tree_fit <- boost_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+boost_tree_fit <- boost_tree_spec |>
+  fit(compressive_strength ~ ., data = tbl_reg$training)
 boost_tree_fit
 ```
 
@@ -3249,8 +3323,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-Cubist-cubist-rules-regression
-# This engine works with a single mode so no need to set that
-# and Cubist is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because Cubist is the default.
 cubist_rules_spec <- cubist_rules()
 ```
 
@@ -3260,7 +3334,8 @@ Now we create the model fit object:
 #| label: fit-Cubist-cubist-rules-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(188)
-cubist_rules_fit <- cubist_rules_spec |> fit(strength ~ ., data = reg_train)
+cubist_rules_fit <- cubist_rules_spec |>
+  fit(strength ~ ., data = reg_train)
 cubist_rules_fit
 ```
 
@@ -3284,8 +3359,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-rpart-decision-tree-regression
 decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because rpart is the default.
   set_mode("regression")
 ```
 
@@ -3293,7 +3368,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-rpart-decision-tree-regression
-decision_tree_fit <- decision_tree_spec |> fit(strength ~ ., data = reg_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 decision_tree_fit
 ```
 
@@ -3319,7 +3395,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-partykit-decision-tree-regression
 decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("partykit")
 ```
@@ -3328,7 +3404,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-partykit-decision-tree-regression
-decision_tree_fit <- decision_tree_spec |> fit(strength ~ ., data = reg_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(strength ~ ., data = reg_train)
 decision_tree_fit
 ```
 
@@ -3355,7 +3432,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-spark-decision-tree-regression
-decision_tree_fit <- decision_tree_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+decision_tree_fit <- decision_tree_spec |>
+  fit(compressive_strength ~ ., data = tbl_reg$training)
 decision_tree_fit
 ```
 
@@ -3379,8 +3457,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-mgcv-gen-additive-mod-regression
 gen_additive_mod_spec <- gen_additive_mod() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and mgcv is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because mgcv is the default.
   set_mode("regression")
 ```
 
@@ -3414,8 +3492,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-lm-linear-reg-regression
-# This engine works with a single mode so no need to set that
-# and lm is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because lm is the default.
 linear_reg_spec <- linear_reg()
 ```
 
@@ -3423,7 +3501,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-lm-linear-reg-regression
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
 
@@ -3443,7 +3522,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("brulee")
 ```
 
@@ -3453,7 +3532,8 @@ Now we create the model fit object:
 #| label: fit-brulee-linear-reg-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(1)
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
 
@@ -3479,7 +3559,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-gee-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("gee")
 ```
 
@@ -3507,7 +3587,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glm-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glm")
 ```
 
@@ -3515,7 +3595,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glm-linear-reg-regression
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
 
@@ -3542,7 +3623,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmer-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmer")
 ```
 
@@ -3570,7 +3651,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmnet-linear-reg-regression
 linear_reg_spec <- linear_reg(penalty = 0.01) |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmnet")
 ```
 
@@ -3578,7 +3659,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmnet-linear-reg-regression
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
 
@@ -3604,7 +3686,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-gls-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   # Also, nlme::gls() specifies the random effects outside of the formula so
   # we set that as an engine parameter
   set_engine("gls", correlation = nlme::corCompSymm(form = ~Time|Rat))
@@ -3614,7 +3696,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-gls-linear-reg-regression
-linear_reg_fit <- linear_reg_spec |> fit(weight ~ Time + Diet, data = reg_group_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(weight ~ Time + Diet, data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3641,7 +3724,7 @@ We create a model specification via:
 #| label: spec-h2o-linear-reg-regression
 #| eval: !expr 'run_h2o'
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("h2o")
 ```
 
@@ -3650,7 +3733,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-linear-reg-regression
 #| eval: !expr 'run_h2o'
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
 
@@ -3669,7 +3753,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-keras-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("keras")
 ```
 
@@ -3681,7 +3765,8 @@ Now we create the model fit object:
 #| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(596)
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = reg_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = reg_train)
 linear_reg_fit
 ```
 
@@ -3714,7 +3799,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-lme-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that. 
+  # This model only works with a single mode, so we don't need to set the mode.. 
   # nlme::lme() makes us set the random effects outside of the formula so we
   # add it as an engine parameter. 
   set_engine("lme", random = ~ Time | Rat)
@@ -3724,7 +3809,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-lme-linear-reg-regression
-linear_reg_fit <- linear_reg_spec |> fit(weight ~ Diet + Time, data = reg_group_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(weight ~ Diet + Time, data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3750,7 +3836,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-lmer-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("lmer")
 ```
 
@@ -3778,7 +3864,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-stan-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("stan")
 ```
 
@@ -3788,7 +3874,8 @@ Now we create the model fit object:
 #| label: fit-stan-linear-reg-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(357)
-linear_reg_fit <- linear_reg_spec |> fit(weight ~ Diet + Time, data = reg_group_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(weight ~ Diet + Time, data = reg_group_train)
 linear_reg_fit
 ```
 
@@ -3816,7 +3903,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-stan-glmer-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("stan_glmer")
 ```
 
@@ -3856,7 +3943,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-spark-linear-reg-regression
 #| eval: !expr 'run_spark'
-linear_reg_fit <- linear_reg_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+linear_reg_fit <- linear_reg_spec |>
+  fit(compressive_strength ~ ., data = tbl_reg$training)
 linear_reg_fit
 ```
 
@@ -3881,8 +3969,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-earth-mars-regression
 mars_spec <- mars() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and earth is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because earth is the default.
   set_mode("regression")
 ```
 
@@ -3890,7 +3978,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-earth-mars-regression
-mars_fit <- mars_spec |> fit(strength ~ ., data = reg_train)
+mars_fit <- mars_spec |>
+  fit(strength ~ ., data = reg_train)
 mars_fit
 ```
 
@@ -3914,8 +4003,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-nnet-mlp-regression
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and nnet is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because nnet is the default.
   set_mode("regression")
 ```
 
@@ -3925,7 +4014,8 @@ Now we create the model fit object:
 #| label: fit-nnet-mlp-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(159)
-mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
+mlp_fit <- mlp_spec |>
+  fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
 
@@ -3943,7 +4033,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-mlp-regression
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("brulee")
 ```
@@ -3954,7 +4044,8 @@ Now we create the model fit object:
 #| label: fit-brulee-mlp-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(407)
-mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
+mlp_fit <- mlp_spec |>
+  fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
 
@@ -3972,7 +4063,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-brulee-two-layer-mlp-regression
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("brulee_two_layer")
 ```
@@ -3983,7 +4074,8 @@ Now we create the model fit object:
 #| label: fit-brulee-two-layer-mlp-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(585)
-mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
+mlp_fit <- mlp_spec |>
+  fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
 
@@ -4010,7 +4102,7 @@ We create a model specification via:
 #| label: spec-h2o-mlp-regression
 #| eval: !expr 'run_h2o'
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("h2o")
 ```
@@ -4022,7 +4114,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(93)
-mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
+mlp_fit <- mlp_spec |>
+  fit(strength ~ ., data = reg_train)
 mlp_fit
 ```
 
@@ -4041,7 +4134,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-keras-mlp-regression
 mlp_spec <- mlp() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("keras")
 ```
@@ -4054,7 +4147,8 @@ Now we create the model fit object:
 #| results: hide
 # Set the random number seed to an integer for reproducibility: 
 set.seed(879)
-mlp_fit <- mlp_spec |> fit(strength ~ ., data = reg_train)
+mlp_fit <- mlp_spec |>
+  fit(strength ~ ., data = reg_train)
 ```
 
 ```{r}
@@ -4084,8 +4178,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-kknn-nearest-neighbor-regression
 nearest_neighbor_spec <- nearest_neighbor() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and kknn is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because kknn is the default.
   set_mode("regression")
 ```
 
@@ -4093,7 +4187,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kknn-nearest-neighbor-regression
-nearest_neighbor_fit <- nearest_neighbor_spec |> fit(strength ~ ., data = reg_train)
+nearest_neighbor_fit <- nearest_neighbor_spec |>
+  fit(strength ~ ., data = reg_train)
 nearest_neighbor_fit
 ```
 
@@ -4113,8 +4208,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-parsnip-null-model-regression
 null_model_spec <- null_model() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and parsnip is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because parsnip is the default.
   set_mode("regression")
 ```
 
@@ -4122,7 +4217,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-parsnip-null-model-regression
-null_model_fit <- null_model_spec |> fit(strength ~ ., data = reg_train)
+null_model_fit <- null_model_spec |>
+  fit(strength ~ ., data = reg_train)
 null_model_fit
 ```
 
@@ -4154,8 +4250,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-mixOmics-pls-regression
 pls_spec <- pls() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and mixOmics is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because mixOmics is the default.
   set_mode("regression")
 ```
 
@@ -4163,7 +4259,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-mixOmics-pls-regression
-pls_fit <- pls_spec |> fit(strength ~ ., data = reg_train)
+pls_fit <- pls_spec |>
+  fit(strength ~ ., data = reg_train)
 pls_fit
 ```
 
@@ -4194,8 +4291,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-glm-poisson-reg-regression
-# This engine works with a single mode so no need to set that
-# and glm is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because glm is the default.
 poisson_reg_spec <- poisson_reg()
 ```
 
@@ -4203,7 +4300,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glm-poisson-reg-regression
-poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
+poisson_reg_fit <- poisson_reg_spec |>
+  fit(num_years ~ ., data = count_train)
 poisson_reg_fit
 ```
 
@@ -4229,7 +4327,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-gee-poisson-reg-regression
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("gee")
 ```
 
@@ -4266,7 +4364,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmer-poisson-reg-regression
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmer")
 ```
 
@@ -4304,7 +4402,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmnet-poisson-reg-regression
 poisson_reg_spec <- poisson_reg(penalty = 0.01) |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmnet")
 ```
 
@@ -4312,7 +4410,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmnet-poisson-reg-regression
-poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
+poisson_reg_fit <- poisson_reg_spec |>
+  fit(num_years ~ ., data = count_train)
 poisson_reg_fit
 ```
 
@@ -4339,7 +4438,7 @@ We create a model specification via:
 #| label: spec-h2o-poisson-reg-regression
 #| eval: !expr 'run_h2o'
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("h2o")
 ```
 
@@ -4348,7 +4447,8 @@ Now we create the model fit object:
 ```{r}
 #| label: fit-h2o-poisson-reg-regression
 #| eval: !expr 'run_h2o'
-poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
+poisson_reg_fit <- poisson_reg_spec |>
+  fit(num_years ~ ., data = count_train)
 poisson_reg_fit
 ```
 
@@ -4375,7 +4475,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-hurdle-poisson-reg-regression
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("hurdle")
 ```
 
@@ -4383,7 +4483,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-hurdle-poisson-reg-regression
-poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
+poisson_reg_fit <- poisson_reg_spec |>
+  fit(num_years ~ ., data = count_train)
 poisson_reg_fit
 ```
 
@@ -4409,7 +4510,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-stan-poisson-reg-regression
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("stan")
 ```
 
@@ -4449,7 +4550,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-stan-glmer-poisson-reg-regression
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("stan_glmer")
 ```
 
@@ -4488,7 +4589,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-zeroinfl-poisson-reg-regression
 poisson_reg_spec <- poisson_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("zeroinfl")
 ```
 
@@ -4496,7 +4597,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-zeroinfl-poisson-reg-regression
-poisson_reg_fit <- poisson_reg_spec |> fit(num_years ~ ., data = count_train)
+poisson_reg_fit <- poisson_reg_spec |>
+  fit(num_years ~ ., data = count_train)
 poisson_reg_fit
 ```
 
@@ -4520,8 +4622,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-ranger-rand-forest-regression
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and ranger is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because ranger is the default.
   set_engine("ranger", keep.inbag = TRUE) |> 
   # However, we'll set the engine and use the keep.inbag=TRUE option so that we 
   # can produce interval predictions. This is not generally required. 
@@ -4534,7 +4636,8 @@ Now we create the model fit object:
 #| label: fit-ranger-rand-forest-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(860)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
 
@@ -4561,7 +4664,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-aorsf-rand-forest-regression
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("aorsf")
 ```
@@ -4572,7 +4675,8 @@ Now we create the model fit object:
 #| label: fit-aorsf-rand-forest-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(47)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
 
@@ -4591,7 +4695,7 @@ We create a model specification via:
 #| label: spec-grf-rand-forest-regression
 #| eval: !expr 'run_grf'
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("grf")
 ```
@@ -4603,7 +4707,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_grf'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(130)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
 
@@ -4632,7 +4737,7 @@ We create a model specification via:
 #| label: spec-h2o-rand-forest-regression
 #| eval: !expr 'run_h2o'
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("h2o")
 ```
@@ -4644,7 +4749,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(211)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
 
@@ -4671,7 +4777,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-partykit-rand-forest-regression
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("partykit")
 ```
@@ -4682,7 +4788,8 @@ Now we create the model fit object:
 #| label: fit-partykit-rand-forest-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(981)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = reg_train)
 ```
 
 The print method has a lot of output: 
@@ -4708,7 +4815,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-randomForest-rand-forest-regression
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("randomForest")
 ```
@@ -4719,7 +4826,8 @@ Now we create the model fit object:
 #| label: fit-randomForest-rand-forest-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(793)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = reg_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = reg_train)
 rand_forest_fit
 ```
 
@@ -4749,7 +4857,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_spark'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(157)
-rand_forest_fit <- rand_forest_spec |> fit(compressive_strength ~ ., data = tbl_reg$training)
+rand_forest_fit <- rand_forest_spec |>
+  fit(compressive_strength ~ ., data = tbl_reg$training)
 rand_forest_fit
 ```
 
@@ -4782,8 +4891,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-xrf-rule-fit-regression
 rule_fit_spec <- rule_fit() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and xrf is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because xrf is the default.
   set_mode("regression")
 ```
 
@@ -4793,7 +4902,8 @@ Now we create the model fit object:
 #| label: fit-xrf-rule-fit-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(431)
-rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
+rule_fit_fit <- rule_fit_spec |>
+  fit(strength ~ ., data = reg_train)
 rule_fit_fit
 ```
 
@@ -4820,7 +4930,7 @@ We create a model specification via:
 #| label: spec-h2o-rule-fit-regression
 #| eval: !expr 'run_h2o'
 rule_fit_spec <- rule_fit() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("h2o")
 ```
@@ -4832,7 +4942,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_h2o'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(236)
-rule_fit_fit <- rule_fit_spec |> fit(strength ~ ., data = reg_train)
+rule_fit_fit <- rule_fit_spec |>
+  fit(strength ~ ., data = reg_train)
 rule_fit_fit
 ```
 
@@ -4857,7 +4968,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-kernlab-svm-linear-regression
 svm_linear_spec <- svm_linear() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
   set_engine("kernlab")
 ```
@@ -4866,7 +4977,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kernlab-svm-linear-regression
-svm_linear_fit <- svm_linear_spec |> fit(strength ~ ., data = reg_train)
+svm_linear_fit <- svm_linear_spec |>
+  fit(strength ~ ., data = reg_train)
 svm_linear_fit
 ```
 
@@ -4884,8 +4996,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-LiblineaR-svm-linear-regression
 svm_linear_spec <- svm_linear() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and LiblineaR is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because LiblineaR is the default.
   set_mode("regression")
 ```
 
@@ -4893,7 +5005,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-LiblineaR-svm-linear-regression
-svm_linear_fit <- svm_linear_spec |> fit(strength ~ ., data = reg_train)
+svm_linear_fit <- svm_linear_spec |>
+  fit(strength ~ ., data = reg_train)
 svm_linear_fit
 ```
 
@@ -4917,8 +5030,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-kernlab-svm-poly-regression
 svm_poly_spec <- svm_poly() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and kernlab is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because kernlab is the default.
   set_mode("regression")
 ```
 
@@ -4926,7 +5039,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kernlab-svm-poly-regression
-svm_poly_fit <- svm_poly_spec |> fit(strength ~ ., data = reg_train)
+svm_poly_fit <- svm_poly_spec |>
+  fit(strength ~ ., data = reg_train)
 svm_poly_fit
 ```
 
@@ -4950,8 +5064,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-kernlab-svm-rbf-regression
 svm_rbf_spec <- svm_rbf() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and kernlab is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because kernlab is the default.
   set_mode("regression")
 ```
 
@@ -4959,7 +5073,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-kernlab-svm-rbf-regression
-svm_rbf_fit <- svm_rbf_spec |> fit(strength ~ ., data = reg_train)
+svm_rbf_fit <- svm_rbf_spec |>
+  fit(strength ~ ., data = reg_train)
 svm_rbf_fit
 ```
 
@@ -5024,8 +5139,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-rpart-bag-tree-censored-regression
 bag_tree_spec <- bag_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because rpart is the default.
   set_mode("censored regression")
 ```
 
@@ -5033,7 +5148,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-rpart-bag-tree-censored-regression
-bag_tree_fit <- bag_tree_spec |> fit(event_time ~ ., data = cns_train)
+bag_tree_fit <- bag_tree_spec |>
+  fit(event_time ~ ., data = cns_train)
 bag_tree_fit
 ```
 
@@ -5086,7 +5202,8 @@ Now we create the model fit object:
 #| label: fit-mboost-boost-tree-censored-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(852)
-boost_tree_fit <- boost_tree_spec |> fit(event_time ~ ., data = cns_train)
+boost_tree_fit <- boost_tree_spec |>
+  fit(event_time ~ ., data = cns_train)
 boost_tree_fit
 ```
 
@@ -5130,8 +5247,8 @@ We create a model specification via:
 ```{r}
 #| label: spec-rpart-decision-tree-censored-regression
 decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
-  # and rpart is the default engine so there is no need to set that either.
+  # We need to set the mode since this model works with multiple modes.
+  # We don't need to set the engine because rpart is the default.
   set_mode("censored regression")
 ```
 
@@ -5139,7 +5256,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-rpart-decision-tree-censored-regression
-decision_tree_fit <- decision_tree_spec |> fit(event_time ~ ., data = cns_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(event_time ~ ., data = cns_train)
 decision_tree_fit
 ```
 
@@ -5176,7 +5294,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-partykit-decision-tree-censored-regression
 decision_tree_spec <- decision_tree() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("censored regression") |>
   set_engine("partykit")
 ```
@@ -5185,7 +5303,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-partykit-decision-tree-censored-regression
-decision_tree_fit <- decision_tree_spec |> fit(event_time ~ ., data = cns_train)
+decision_tree_fit <- decision_tree_spec |>
+  fit(event_time ~ ., data = cns_train)
 decision_tree_fit
 ```
 
@@ -5227,8 +5346,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-survival-proportional-hazards-censored-regression
-# This engine works with a single mode so no need to set that
-# and survival is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because survival is the default.
 proportional_hazards_spec <- proportional_hazards()
 ```
 
@@ -5236,7 +5355,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-survival-proportional-hazards-censored-regression
-proportional_hazards_fit <- proportional_hazards_spec |> fit(event_time ~ ., data = cns_train)
+proportional_hazards_fit <- proportional_hazards_spec |>
+  fit(event_time ~ ., data = cns_train)
 proportional_hazards_fit
 ```
 
@@ -5274,7 +5394,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-glmnet-proportional-hazards-censored-regression
 proportional_hazards_spec <- proportional_hazards(penalty = 0.01) |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("glmnet")
 ```
 
@@ -5282,7 +5402,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-glmnet-proportional-hazards-censored-regression
-proportional_hazards_fit <- proportional_hazards_spec |> fit(event_time ~ ., data = cns_train)
+proportional_hazards_fit <- proportional_hazards_spec |>
+  fit(event_time ~ ., data = cns_train)
 proportional_hazards_fit
 ```
 
@@ -5326,7 +5447,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-aorsf-rand-forest-censored-regression
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("censored regression") |>
   set_engine("aorsf")
 ```
@@ -5337,7 +5458,8 @@ Now we create the model fit object:
 #| label: fit-aorsf-rand-forest-censored-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(2)
-rand_forest_fit <- rand_forest_spec |> fit(event_time ~ ., data = cns_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(event_time ~ ., data = cns_train)
 rand_forest_fit
 ```
 
@@ -5374,7 +5496,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-partykit-rand-forest-censored-regression
 rand_forest_spec <- rand_forest() |>
-  # We need to set the mode since this engine works with multiple modes
+  # We need to set the mode since this model works with multiple modes.
   set_mode("censored regression") |>
   set_engine("partykit")
 ```
@@ -5385,7 +5507,8 @@ Now we create the model fit object:
 #| label: fit-partykit-rand-forest-censored-regression
 # Set the random number seed to an integer for reproducibility: 
 set.seed(89)
-rand_forest_fit <- rand_forest_spec |> fit(event_time ~ ., data = cns_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(event_time ~ ., data = cns_train)
 ```
 
 The print method has a lot of output: 
@@ -5435,8 +5558,8 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-survival-survival-reg-censored-regression
-# This engine works with a single mode so no need to set that
-# and survival is the default engine so there is no need to set that either.
+# This model only works with a single mode, so we don't need to set the mode.
+# We don't need to set the engine because survival is the default.
 survival_reg_spec <- survival_reg()
 ```
 
@@ -5444,7 +5567,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-survival-survival-reg-censored-regression
-survival_reg_fit <- survival_reg_spec |> fit(event_time ~ ., data = cns_train)
+survival_reg_fit <- survival_reg_spec |>
+  fit(event_time ~ ., data = cns_train)
 survival_reg_fit
 ```
 
@@ -5484,7 +5608,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-flexsurv-survival-reg-censored-regression
 survival_reg_spec <- survival_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("flexsurv")
 ```
 
@@ -5492,7 +5616,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-flexsurv-survival-reg-censored-regression
-survival_reg_fit <- survival_reg_spec |> fit(event_time ~ ., data = cns_train)
+survival_reg_fit <- survival_reg_spec |>
+  fit(event_time ~ ., data = cns_train)
 survival_reg_fit
 ```
 
@@ -5532,7 +5657,7 @@ We create a model specification via:
 ```{r}
 #| label: spec-flexsurvspline-survival-reg-censored-regression
 survival_reg_spec <- survival_reg() |> 
-  # This engine works with a single mode so no need to set that
+  # This model only works with a single mode, so we don't need to set the mode.
   set_engine("flexsurvspline")
 ```
 
@@ -5540,7 +5665,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-flexsurvspline-survival-reg-censored-regression
-survival_reg_fit <- survival_reg_spec |> fit(event_time ~ ., data = cns_train)
+survival_reg_fit <- survival_reg_spec |>
+  fit(event_time ~ ., data = cns_train)
 survival_reg_fit
 ```
 
@@ -5620,7 +5746,8 @@ Now we create the model fit object:
 
 ```{r}
 #| label: fit-quantreg-linear-reg-quantile-regression
-linear_reg_fit <- linear_reg_spec |> fit(strength ~ ., data = qnt_train)
+linear_reg_fit <- linear_reg_spec |>
+  fit(strength ~ ., data = qnt_train)
 linear_reg_fit
 ```
 
@@ -5668,7 +5795,8 @@ Now we create the model fit object:
 #| eval: !expr 'run_grf'
 # Set the random number seed to an integer for reproducibility: 
 set.seed(435)
-rand_forest_fit <- rand_forest_spec |> fit(strength ~ ., data = qnt_train)
+rand_forest_fit <- rand_forest_spec |>
+  fit(strength ~ ., data = qnt_train)
 rand_forest_fit
 ```
 
