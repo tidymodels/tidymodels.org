@@ -60,7 +60,9 @@ This page shows examples of how to *fit* and *predict* with different combinatio
 
 We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-`r article_req_pkgs(pkgs)` There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
+`r article_req_pkgs(pkgs)` 
+
+There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
 
 ## External Dependencies
 
@@ -72,7 +74,7 @@ Some models available in parsnip use other computational frameworks for computat
 
 catboost is a popular boosting framework. Unfortunately, the R package is not available on CRAN. First, go to [https://github.com/catboost/catboost/releases/]("https://github.com/catboost/catboost/releases/) and search for "`[R-package]`" to find the most recent release. 
 
-The following code and be used to install and test the package (which requires the glue package to be installed): 
+The following code can be used to install and test the package (which requires the glue package to be installed): 
 
 ```{r}
 #| label: catboost-install
@@ -80,9 +82,9 @@ The following code and be used to install and test the package (which requires t
 library(glue)
 
 # Put the current version number in this variable: 
-version_number <- "#.##"
+version_number <- "#.#.#" 
 
-template <- "https://github.com/catboost/catboost/releases/download/v{version}/catboost-R-darwin-universal2-{version}.tgz"
+template <- "https://github.com/catboost/catboost/releases/download/v{version_number}/catboost-R-darwin-universal2-{version_number}.tgz"
 
 target_url <- glue::glue(template)
 target_dest <- tempfile()
@@ -180,7 +182,7 @@ h2o_start()
 
 ### Tensorflow and Keras
 
-R's tensorflow and keras3 packages call Python directly. To enable this, you'll have to install two R packages: 
+R's tensorflow and keras3 packages call Python directly. To enable this, you'll have to install both components: 
 
 ```{r}
 #| label: keras-install
@@ -209,7 +211,7 @@ reticulate::use_virtualenv(pve)
 
 R's torch package is the low-level package containing the framework. Once you have installed it, you will get this message the first time you load the package: 
 
-> Additional software needs to be downloaded and installed for torch to work correctly."
+> "Additional software needs to be downloaded and installed for torch to work correctly."
 
 Choosing "Yes" will do the _one-time_ installation. 
 
