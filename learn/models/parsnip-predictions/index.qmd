@@ -244,6 +244,8 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 # Classification Models
 
 To demonstrate classification, let's make a small training and test sets for a binary outcome. We'll center and scale the data since some models require the same units.
+## Example data
+
 
 ```{r}
 #| label: bin-data
@@ -315,8 +317,9 @@ tbl_sim_mtl <- copy_to(sc, mtl_data)
 tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed = 100)
 ```
 
+## Models
 
-## Bagged MARS (`bag_mars()`) 
+### Bagged MARS (`bag_mars()`) 
 
 :::{.panel-tabset}
 
@@ -360,7 +363,7 @@ predict(bag_mars_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Bagged Neural Networks (`bag_mlp()`) 
+### Bagged Neural Networks (`bag_mlp()`) 
 
 :::{.panel-tabset}
 
@@ -404,7 +407,7 @@ predict(bag_mlp_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Bagged Decision Trees (`bag_tree()`) 
+### Bagged Decision Trees (`bag_tree()`) 
 
 :::{.panel-tabset}
 
@@ -485,11 +488,11 @@ predict(bag_tree_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Bayesian Additive Regression Trees (`bart()`) 
+### Bayesian Additive Regression Trees (`bart()`)
 
 :::{.panel-tabset}
 
-## `dbarts` 
+## `dbarts`
 
 We create a model specification via:
 
@@ -523,11 +526,11 @@ predict(bart_fit, type = "pred_int", new_data = bin_test)
 
 :::
 
-## Boosted Decision Trees (`boost_tree()`) 
+### Boosted Decision Trees (`boost_tree()`)
 
 :::{.panel-tabset}
 
-## `xgboost` 
+## `xgboost`
 
 We create a model specification via:
 
@@ -781,7 +784,7 @@ predict(boost_tree_fit, type = "prob", new_data = tbl_bin$test)
 
 :::
 
-## C5 Rules (`C5_rules()`) 
+### C5 Rules (`C5_rules()`)
 
 :::{.panel-tabset}
 
@@ -824,11 +827,11 @@ predict(C5_rules_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Decision Tree (`decision_tree()`) 
+### Decision Tree (`decision_tree()`)
 
 :::{.panel-tabset}
 
-## `rpart` 
+## `rpart`
 
 We create a model specification via:
 
@@ -952,7 +955,7 @@ predict(decision_tree_fit, type = "prob", new_data = tbl_bin$test)
 
 :::
 
-## Flexible Discriminant Analysis (`discrim_flexible()`) 
+### Flexible Discriminant Analysis (`discrim_flexible()`)
 
 :::{.panel-tabset}
 
@@ -993,7 +996,7 @@ predict(discrim_flexible_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Linear Discriminant Analysis (`discrim_linear()`) 
+### Linear Discriminant Analysis (`discrim_linear()`)
 
 :::{.panel-tabset}
 
@@ -1139,7 +1142,7 @@ predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Quandratic Discriminant Analysis (`discrim_quad()`) 
+### Quandratic Discriminant Analysis (`discrim_quad()`)
 
 :::{.panel-tabset}
 
@@ -1215,7 +1218,7 @@ predict(discrim_quad_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Regularized Discriminant Analysis (`discrim_regularized()`) 
+### Regularized Discriminant Analysis (`discrim_regularized()`)
 
 :::{.panel-tabset}
 
@@ -1256,11 +1259,11 @@ predict(discrim_regularized_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Generalized Additive Models (`gen_additive_mod()`) 
+### Generalized Additive Models (`gen_additive_mod()`)
 
 :::{.panel-tabset}
 
-## `mgcv` 
+## `mgcv`
 
 We create a model specification via:
 
@@ -1293,7 +1296,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = bin_test)
 
 :::
 
-## Logistic Regression (`logistic_reg()`) 
+### Logistic Regression (`logistic_reg()`)
 
 :::{.panel-tabset}
 
@@ -1663,11 +1666,11 @@ predict(logistic_reg_fit, type = "prob", new_data = tbl_bin$test)
 
 :::
 
-## Multivariate Adaptive Regression Splines (`mars()`) 
+### Multivariate Adaptive Regression Splines (`mars()`)
 
 :::{.panel-tabset}
 
-## `earth` 
+## `earth`
 
 We create a model specification via:
 
@@ -1697,11 +1700,11 @@ predict(mars_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Neural Networks (`mlp()`) 
+### Neural Networks (`mlp()`)
 
 :::{.panel-tabset}
 
-## `nnet` 
+## `nnet`
 
 We create a model specification via:
 
@@ -1872,7 +1875,7 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Multinom Regression (`multinom_reg()`) 
+### Multinom Regression (`multinom_reg()`)
 
 :::{.panel-tabset}
 
@@ -2065,7 +2068,7 @@ predict(multinom_reg_fit, type = "prob", new_data = tbl_mtl$test)
 
 :::
 
-## Naive Bayes (`naive_Bayes()`) 
+### Naive Bayes (`naive_Bayes()`)
 
 :::{.panel-tabset}
 
@@ -2178,11 +2181,11 @@ predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## K-Nearest Neighbors (`nearest_neighbor()`) 
+### K-Nearest Neighbors (`nearest_neighbor()`)
 
 :::{.panel-tabset}
 
-## `kknn` 
+## `kknn`
 
 We create a model specification via:
 
@@ -2212,11 +2215,11 @@ predict(nearest_neighbor_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Null Model (`null_model()`) 
+### Null Model (`null_model()`)
 
 :::{.panel-tabset}
 
-## `parsnip` 
+## `parsnip`
 
 We create a model specification via:
 
@@ -2246,11 +2249,11 @@ predict(null_model_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Partial Least Squares (`pls()`) 
+### Partial Least Squares (`pls()`)
 
 :::{.panel-tabset}
 
-## `mixOmics` 
+## `mixOmics`
 
 This engine requires the plsmod extension package, so let's load this first:
 
@@ -2288,11 +2291,11 @@ predict(pls_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Random Forests (`rand_forest()`) 
+### Random Forests (`rand_forest()`)
 
 :::{.panel-tabset}
 
-## `ranger` 
+## `ranger`
 
 We create a model specification via:
 
@@ -2549,11 +2552,11 @@ predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
 
 :::
 
-## Rule Fit (`rule_fit()`) 
+### Rule Fit (`rule_fit()`)
 
 :::{.panel-tabset}
 
-## `xrf` 
+## `xrf`
 
 This engine requires the rules extension package, so let's load this first:
 
@@ -2634,11 +2637,11 @@ predict(rule_fit_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Support Vector Machine (Linear Kernel) (`svm_linear()`) 
+### Support Vector Machine (Linear Kernel) (`svm_linear()`)
 
 :::{.panel-tabset}
 
-## `kernlab` 
+## `kernlab`
 
 We create a model specification via:
 
@@ -2695,11 +2698,11 @@ predict(svm_linear_fit, type = "class", new_data = bin_test)
 
 :::
 
-## Support Vector Machine (Polynomial Kernel) (`svm_poly()`) 
+### Support Vector Machine (Polynomial Kernel) (`svm_poly()`)
 
 :::{.panel-tabset}
 
-## `kernlab` 
+## `kernlab`
 
 We create a model specification via:
 
@@ -2729,11 +2732,11 @@ predict(svm_poly_fit, type = "prob", new_data = bin_test)
 
 :::
 
-## Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`) 
+### Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`)
 
 :::{.panel-tabset}
 
-## `kernlab` 
+## `kernlab`
 
 We create a model specification via:
 
@@ -2766,6 +2769,8 @@ predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 # Regression Models
 
 To demonstrate regression, we'll subset some data. make a training/test split, and standardize the predictors: 
+## Example data
+
 
 ```{r}
 #| label: reg-data
@@ -2838,11 +2843,13 @@ tbl_concrete <- copy_to(sc, modeldata::concrete)
 tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 100)
 ```
 
-## Bagged MARS (`bag_mars()`) 
+## Models
+
+### Bagged MARS (`bag_mars()`)
 
 :::{.panel-tabset}
 
-## `earth` 
+## `earth`
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -2881,11 +2888,11 @@ predict(bag_mars_fit, new_data = reg_test)
 
 :::
 
-## Bagged Neural Networks (`bag_mlp()`) 
+### Bagged Neural Networks (`bag_mlp()`)
 
 :::{.panel-tabset}
 
-## `nnet` 
+## `nnet`
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -2924,11 +2931,11 @@ predict(bag_mlp_fit, new_data = reg_test)
 
 :::
 
-## Bagged Decision Trees (`bag_tree()`) 
+### Bagged Decision Trees (`bag_tree()`)
 
 :::{.panel-tabset}
 
-## `rpart` 
+## `rpart`
 
 This engine requires the baguette extension package, so let's load this first:
 
@@ -2967,11 +2974,11 @@ predict(bag_tree_fit, new_data = reg_test)
 
 :::
 
-## Bayesian Additive Regression Trees (`bart()`) 
+### Bayesian Additive Regression Trees (`bart()`)
 
 :::{.panel-tabset}
 
-## `dbarts` 
+## `dbarts`
 
 We create a model specification via:
 
@@ -3004,11 +3011,11 @@ predict(bart_fit, type = "pred_int", new_data = reg_test)
 
 :::
 
-## Boosted Decision Trees (`boost_tree()`) 
+### Boosted Decision Trees (`boost_tree()`)
 
 :::{.panel-tabset}
 
-## `xgboost` 
+## `xgboost`
 
 We create a model specification via:
 
@@ -3224,7 +3231,7 @@ predict(boost_tree_fit, new_data = tbl_reg$test)
 
 :::
 
-## Cubist Rules (`cubist_rules()`) 
+### Cubist Rules (`cubist_rules()`)
 
 :::{.panel-tabset}
 
@@ -3266,11 +3273,11 @@ predict(cubist_rules_fit, new_data = reg_test)
 
 :::
 
-## Decision Tree (`decision_tree()`) 
+### Decision Tree (`decision_tree()`)
 
 :::{.panel-tabset}
 
-## `rpart` 
+## `rpart`
 
 We create a model specification via:
 
@@ -3361,11 +3368,11 @@ predict(decision_tree_fit, new_data = tbl_reg$test)
 
 :::
 
-## Generalized Additive Models (`gen_additive_mod()`) 
+### Generalized Additive Models (`gen_additive_mod()`)
 
 :::{.panel-tabset}
 
-## `mgcv` 
+## `mgcv`
 
 We create a model specification via:
 
@@ -3397,7 +3404,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = reg_test)
 
 :::
 
-## Linear Reg (`linear_reg()`) 
+### Linear Reg (`linear_reg()`)
 
 :::{.panel-tabset}
 
@@ -3863,11 +3870,11 @@ predict(linear_reg_fit, new_data = tbl_reg$test)
 
 :::
 
-## Multivariate Adaptive Regression Splines (`mars()`) 
+### Multivariate Adaptive Regression Splines (`mars()`)
 
 :::{.panel-tabset}
 
-## `earth` 
+## `earth`
 
 We create a model specification via:
 
@@ -3896,11 +3903,11 @@ predict(mars_fit, new_data = reg_test)
 
 :::
 
-## Neural Networks (`mlp()`) 
+### Neural Networks (`mlp()`)
 
 :::{.panel-tabset}
 
-## `nnet` 
+## `nnet`
 
 We create a model specification via:
 
@@ -4066,11 +4073,11 @@ predict(mlp_fit, new_data = reg_test)
 
 :::
 
-## K-Nearest Neighbors (`nearest_neighbor()`) 
+### K-Nearest Neighbors (`nearest_neighbor()`)
 
 :::{.panel-tabset}
 
-## `kknn` 
+## `kknn`
 
 We create a model specification via:
 
@@ -4097,9 +4104,9 @@ The holdout data can be predicted:
 predict(nearest_neighbor_fit, new_data = reg_test)
 ```
 
-## Null Model (`null_model()`) 
+### Null Model (`null_model()`)
 
-## `parsnip` 
+## `parsnip`
 
 We create a model specification via:
 
@@ -4128,11 +4135,11 @@ predict(null_model_fit, new_data = reg_test)
 
 :::
 
-## Partial Least Squares (`pls()`) 
+### Partial Least Squares (`pls()`)
 
 :::{.panel-tabset}
 
-## `mixOmics` 
+## `mixOmics`
 
 This engine requires the plsmod extension package, so let's load this first:
 
@@ -4169,7 +4176,7 @@ predict(pls_fit, new_data = reg_test)
 
 :::
 
-## Poisson Reg (`poisson_reg()`) 
+### Poisson Reg (`poisson_reg()`)
 
 :::{.panel-tabset}
 
@@ -4502,11 +4509,11 @@ predict(poisson_reg_fit, new_data = count_test)
 
 :::
 
-## Random Forests (`rand_forest()`) 
+### Random Forests (`rand_forest()`)
 
 :::{.panel-tabset}
 
-## `ranger` 
+## `ranger`
 
 We create a model specification via:
 
@@ -4756,11 +4763,11 @@ predict(rand_forest_fit, new_data = tbl_reg$test)
 
 :::
 
-## Rule Fit (`rule_fit()`) 
+### Rule Fit (`rule_fit()`)
 
 :::{.panel-tabset}
 
-## `xrf` 
+## `xrf`
 
 This engine requires the rules extension package, so let's load this first:
 
@@ -4839,11 +4846,11 @@ predict(rule_fit_fit, new_data = reg_test)
 
 :::
 
-## Support Vector Machine (Linear Kernel) (`svm_linear()`) 
+### Support Vector Machine (Linear Kernel) (`svm_linear()`)
 
 :::{.panel-tabset}
 
-## `kernlab` 
+## `kernlab`
 
 We create a model specification via:
 
@@ -4899,11 +4906,11 @@ predict(svm_linear_fit, new_data = reg_test)
 
 :::
 
-## Support Vector Machine (Polynomial Kernel) (`svm_poly()`) 
+### Support Vector Machine (Polynomial Kernel) (`svm_poly()`)
 
 :::{.panel-tabset}
 
-## `kernlab` 
+## `kernlab`
 
 We create a model specification via:
 
@@ -4932,11 +4939,11 @@ predict(svm_poly_fit, new_data = reg_test)
 
 :::
 
-## Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`) 
+### Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`)
 
 :::{.panel-tabset}
 
-## `kernlab` 
+## `kernlab`
 
 We create a model specification via:
 
@@ -4968,6 +4975,8 @@ predict(svm_rbf_fit, new_data = reg_test)
 
 # Censored Regression Models
 
+## Example data
+
 Let's simulate a data set using the prodlim and survival packages: 
 
 ```{r}
@@ -4994,8 +5003,9 @@ For some types of predictions, we need the _evaluation time(s)_ for the predicti
 eval_times <- c(1, 3, 5)
 ```
 
+## Models
 
-## Bagged Decision Trees (`bag_tree()`) 
+### Bagged Decision Trees (`bag_tree()`) 
 
 :::{.panel-tabset}
 
@@ -5047,11 +5057,11 @@ bag_tree_fit |>
 
 :::
 
-## Boosted Decision Trees (`boost_tree()`) 
+### Boosted Decision Trees (`boost_tree()`)
 
 :::{.panel-tabset}
 
-## `mboost` 
+## `mboost`
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5101,11 +5111,11 @@ boost_tree_fit |>
 
 :::
 
-## Decision Tree (`decision_tree()`) 
+### Decision Tree (`decision_tree()`)
 
 :::{.panel-tabset}
 
-## `rpart` 
+## `rpart`
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5199,7 +5209,7 @@ decision_tree_fit |>
 
 :::
 
-## Proportional Hazards (`proportional_hazards()`) 
+### Proportional Hazards (`proportional_hazards()`)
 
 :::{.panel-tabset}
 
@@ -5297,11 +5307,11 @@ proportional_hazards_fit |>
 
 :::
 
-## Random Forests (`rand_forest()`) 
+### Random Forests (`rand_forest()`)
 
 :::{.panel-tabset}
 
-## `aorsf` 
+## `aorsf`
 
 This engine requires the censored extension package, so let's load this first:
 
@@ -5407,7 +5417,7 @@ rand_forest_fit |>
 
 :::
 
-## Parametric Survival Models (`survival_reg()`) 
+### Parametric Survival Models (`survival_reg()`)
 
 :::{.panel-tabset}
 
@@ -5559,6 +5569,8 @@ survival_reg_fit |>
 
 # Quantile Regression Models
 
+## Example data
+
 To demonstrate quantile regression, let's make a larger version of our regression data: 
 
 ```{r}
@@ -5587,7 +5599,9 @@ We'll also predict these quantile levels:
 qnt_lvls <- (1:3) / 4
 ```
 
-## Linear Regression (`linear_reg()`) 
+## Models
+
+### Linear Regression (`linear_reg()`) 
 
 :::{.panel-tabset}
 
@@ -5631,11 +5645,11 @@ linear_reg_fit |>
 
 :::
 
-## Random Forests (`rand_forest()`) 
+### Random Forests (`rand_forest()`)
 
 :::{.panel-tabset}
 
-## `grf` 
+## `grf`
 
 We create a model specification via:
 
