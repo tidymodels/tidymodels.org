@@ -8,10 +8,14 @@ source(here::here("make_function_lists/_utils.R"))
 
 all_tm <- read_csv(here::here("all_packages.csv"), show_col_types = FALSE)$name
 
+# Cache available packages to avoid repeated CRAN metadata fetches
+avail <- get_available_packages()
+
 tidymodels_functions <-
   purrr::map_dfr(
     all_tm,
     get_pkg_info,
+    available = avail,
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%

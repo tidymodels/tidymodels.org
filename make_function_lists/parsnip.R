@@ -78,11 +78,15 @@ model_list <-
     functions = glue("details_{model}_{engine}")
   )
 
+# Cache available packages to avoid repeated CRAN metadata fetches
+avail <- get_available_packages()
+
 parsnip_model_info <-
   purrr::map_dfr(
     parsnip_pkgs,
     get_pkg_info,
     keep_internal = TRUE,
+    available = avail,
     .progress = TRUE
   ) %>%
   sort_out_urls()

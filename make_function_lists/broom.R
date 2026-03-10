@@ -16,11 +16,15 @@ broom_pkgs <- sort(unique(c(broom_pkgs, generics_pkgs)))
 excl <- c("hydrorecipes", "healthcareai", "doBy", "nestedmodels", "skedastic")
 broom_pkgs <- broom_pkgs[!(broom_pkgs %in% excl)]
 
+# Cache available packages to avoid repeated CRAN metadata fetches
+avail <- get_available_packages()
+
 broom_functions <-
   purrr::map_dfr(
     broom_pkgs,
     get_pkg_info,
     pattern = "(^tidy\\.)|(^glance\\.)|(^augment\\.)",
+    available = avail,
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%

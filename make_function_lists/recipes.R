@@ -24,11 +24,15 @@ excl <- c(
 )
 recipe_pkgs <- recipe_pkgs[!(recipe_pkgs %in% excl)]
 
+# Cache available packages to avoid repeated CRAN metadata fetches
+avail <- get_available_packages()
+
 recipe_functions <-
   purrr::map_dfr(
     recipe_pkgs,
     get_pkg_info,
     pattern = "^step_",
+    available = avail,
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%

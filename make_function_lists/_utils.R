@@ -21,6 +21,13 @@ theme_set(theme_bw())
 options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
 
 # ------------------------------------------------------------------------------
+# Cache available packages to avoid repeated CRAN metadata fetches
+
+get_available_packages <- function() {
+  available.packages(repos = "https://cran.rstudio.com/")
+}
+
+# ------------------------------------------------------------------------------
 # Use the pkgdown package to parse the source files and put them into a usable
 # format
 
@@ -28,14 +35,16 @@ get_pkg_info <- function(
     pkg,
     pth = tempdir(),
     keep_internal = FALSE,
-    pattern = NULL
+    pattern = NULL,
+    available = NULL
 ) {
   src_file <-
     download.packages(
       pkg,
       destdir = pth,
       repos = "https://cran.rstudio.com/",
-      quiet = TRUE
+      quiet = TRUE,
+      available = available
     )
   if (nrow(src_file) != length(pkg)) {
     return(NULL)

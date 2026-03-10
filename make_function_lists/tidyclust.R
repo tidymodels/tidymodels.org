@@ -54,11 +54,15 @@ cluster_types <- c(
   "K-[M|m]eans"
 )
 
+# Cache available packages to avoid repeated CRAN metadata fetches
+avail <- get_available_packages()
+
 tidyclust_model_info <-
   purrr::map_dfr(
     tidyclust_pkgs,
     get_pkg_info,
     keep_internal = TRUE,
+    available = avail,
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%
