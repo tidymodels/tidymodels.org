@@ -19,7 +19,9 @@ loaded <- purrr::map_lgl(
   tidyclust_pkgs,
   ~ suppressPackageStartupMessages(require(.x, character.only = TRUE))
 )
-cli::cli_alert_info("Loaded {sum(loaded)}/{length(loaded)} packages")
+if (any(!loaded)) {
+  cli::cli_abort("Some tidyclust packages didn't load: {.pkg {tidyclust_pkgs[!loaded]}}.")
+}
 
 # h2o overwrites soooo many functions; this may take a few minutes
 conflicted::conflict_prefer_all("base", loser = "h2o", quiet = TRUE)

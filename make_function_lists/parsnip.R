@@ -21,12 +21,14 @@ excl <- c(
   "SSLR",
   "workflowsets",
   "workflows",
-
   "tune",
   "tidymodels",
   "shinymodels",
   "stacks",
-  "viruslearner"
+  "viruslearner",
+  "nestedmodels",
+  "viralmodels",
+  "viraldomain"
 )
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
@@ -37,7 +39,9 @@ loaded <- purrr::map_lgl(
   parsnip_pkgs,
   ~ suppressPackageStartupMessages(require(.x, character.only = TRUE))
 )
-cli::cli_alert_info("Loaded {sum(loaded)}/{length(loaded)} packages")
+if (any(!loaded)) {
+  cli::cli_abort("Some parsnip packages didn't load: {.pkg {parsnip_pkgs[!loaded]}}.")
+}
 
 # h2o overwrites soooo many functions; this may take a few minutes
 conflicted::conflict_prefer_all("base", loser = "h2o", quiet = TRUE)

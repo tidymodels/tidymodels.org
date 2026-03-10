@@ -2,6 +2,7 @@
 # Make data sets for function reference searches. Run this offline to refresh
 # data objects.
 
+suppressPackageStartupMessages({
 library(tidymodels)
 library(glue)
 library(utils)
@@ -11,6 +12,7 @@ library(pkgdown)
 library(urlchecker)
 library(stringr)
 library(readr)
+})
 
 # ------------------------------------------------------------------------------
 
@@ -126,7 +128,7 @@ broom_pkgs <- revdepcheck::cran_revdeps(
 generics_pkgs <- revdepcheck::cran_revdeps("generics", dependencies = "Imports")
 
 broom_pkgs <- sort(unique(c(broom_pkgs, generics_pkgs)))
-excl <- c("hydrorecipes", "healthcareai")
+excl <- c("hydrorecipes", "healthcareai", "doBy", "nestedmodels", "skedastic")
 broom_pkgs <- broom_pkgs[!(broom_pkgs %in% excl)]
 
 broom_functions <-
@@ -153,7 +155,15 @@ recipe_pkgs <- revdepcheck::cran_revdeps(
 recipe_pkgs <- c(recipe_pkgs, "recipes")
 
 recipe_pkgs <- sort(unique(c(recipe_pkgs)))
-excl <- c("hydrorecipes", "healthcareai")
+excl <- c(
+  "hydrorecipes",
+  "healthcareai",
+  "D2MCS",
+  "nestedmodels",
+  "tidytof",
+  "viraldomain",
+  "viralmodels"
+)
 recipe_pkgs <- recipe_pkgs[!(recipe_pkgs %in% excl)]
 
 recipe_functions <-
@@ -210,7 +220,10 @@ excl <- c(
   "tidymodels",
   "shinymodels",
   "stacks",
-  "viruslearner"
+  "viruslearner",
+  "nestedmodels",
+  "viralmodels",
+  "viraldomain"
 )
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
@@ -221,7 +234,9 @@ loaded <- purrr::map_lgl(
   parsnip_pkgs,
   ~ suppressPackageStartupMessages(require(.x, character.only = TRUE))
 )
-table(loaded)
+if (any(!loaded)) {
+  cli::cli_abort("Some parsnip packages didn't load: {.pkg {parsnip_pkgs[!loaded]}}.")
+}
 
 # h2o overwrites soooo many functions; this may take a few minutes
 conflicted::conflict_prefer_all("base", loser = "h2o", quiet = TRUE)
@@ -384,7 +399,11 @@ loaded <- purrr::map_lgl(
   tidyclust_pkgs,
   ~ suppressPackageStartupMessages(require(.x, character.only = TRUE))
 )
-table(loaded)
+
+if (any(!loaded)) {
+  cli::cli_abort("Some tidyclust packages didn't load: {.pkg {parsnip_pkgs[!loaded]}}.")
+}
+
 
 # h2o overwrites soooo many functions; this may take a few minutes
 conflicted::conflict_prefer_all("base", loser = "h2o", quiet = TRUE)

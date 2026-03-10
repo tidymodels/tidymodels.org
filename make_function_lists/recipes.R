@@ -13,7 +13,15 @@ recipe_pkgs <- revdepcheck::cran_revdeps(
 recipe_pkgs <- c(recipe_pkgs, "recipes")
 
 recipe_pkgs <- sort(unique(c(recipe_pkgs)))
-excl <- c("hydrorecipes", "healthcareai")
+excl <- c(
+  "hydrorecipes",
+  "healthcareai",
+  "D2MCS",
+  "nestedmodels",
+  "tidytof",
+  "viraldomain",
+  "viralmodels"
+)
 recipe_pkgs <- recipe_pkgs[!(recipe_pkgs %in% excl)]
 
 recipe_functions <-

@@ -13,7 +13,7 @@ broom_pkgs <- revdepcheck::cran_revdeps(
 generics_pkgs <- revdepcheck::cran_revdeps("generics", dependencies = "Imports")
 
 broom_pkgs <- sort(unique(c(broom_pkgs, generics_pkgs)))
-excl <- c("hydrorecipes", "healthcareai")
+excl <- c("hydrorecipes", "healthcareai", "doBy", "nestedmodels", "skedastic")
 broom_pkgs <- broom_pkgs[!(broom_pkgs %in% excl)]
 
 broom_functions <-

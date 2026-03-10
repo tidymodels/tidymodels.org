@@ -2,6 +2,7 @@
 # Shared utilities for generating function reference lists
 # Source this file before running any individual generator
 
+suppressPackageStartupMessages({
 library(tidymodels)
 library(glue)
 library(utils)
@@ -11,6 +12,7 @@ library(pkgdown)
 library(urlchecker)
 library(stringr)
 library(readr)
+})
 
 # ------------------------------------------------------------------------------
 
