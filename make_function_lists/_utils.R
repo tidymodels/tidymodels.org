@@ -28,7 +28,104 @@ get_available_packages <- function() {
 }
 
 # ------------------------------------------------------------------------------
+# Persistent cache for parsed package info (CSV for diff-friendly storage)
+# Single file stores all packages with their versions
+
+pkg_cache_file <- here::here("make_function_lists/.pkg_cache.csv")
+
+# In-memory cache (loaded once per session)
+pkg_cache <- NULL
+
+# Convert list column to/from pipe-separated string for CSV storage
+urls_to_string <- function(urls) {
+  purrr::map_chr(urls, ~ paste(.x, collapse = "|"))
+}
+
+string_to_urls <- function(s) {
+  purrr::map(s, ~ {
+    if (is.na(.x) || .x == "" || .x == "NA") {
+      NA_character_
+    } else {
+      strsplit(.x, "\\|")[[1]]
+    }
+  })
+}
+
+load_pkg_cache <- function() {
+  if (!is.null(pkg_cache)) return(pkg_cache)
+
+  if (fs::file_exists(pkg_cache_file)) {
+    pkg_cache <<- readr::read_csv(
+      pkg_cache_file,
+      col_types = readr::cols(
+        package = readr::col_character(),
+        version = readr::col_character(),
+        file_out = readr::col_character(),
+        functions = readr::col_character(),
+        title = readr::col_character(),
+        internal = readr::col_logical(),
+        all_urls = readr::col_character()
+      ),
+      show_col_types = FALSE
+    ) |>
+      dplyr::mutate(all_urls = string_to_urls(all_urls))
+  } else {
+    pkg_cache <<- tibble::tibble(
+      package = character(),
+      version = character(),
+      file_out = character(),
+      functions = character(),
+      title = character(),
+      internal = logical(),
+      all_urls = list()
+    )
+  }
+  pkg_cache
+}
+
+save_pkg_cache <- function() {
+  if (!is.null(pkg_cache)) {
+    pkg_cache |>
+      dplyr::mutate(all_urls = urls_to_string(all_urls)) |>
+      readr::write_csv(pkg_cache_file)
+  }
+}
+
+get_pkg_version <- function(pkg, available = NULL) {
+  if (is.null(available)) {
+    available <- get_available_packages()
+  }
+  idx <- match(pkg, available[, "Package"])
+  if (is.na(idx)) return(NA_character_)
+  available[idx, "Version"]
+}
+
+get_cached_pkg_info <- function(pkg, version) {
+  cache <- load_pkg_cache()
+  cached <- dplyr::filter(cache, package == !!pkg, version == !!version)
+  if (nrow(cached) > 0) return(cached)
+  NULL
+}
+
+set_cached_pkg_info <- function(pkg, version, result) {
+  load_pkg_cache()
+  # Remove old entries for this package
+  pkg_cache <<- dplyr::filter(pkg_cache, package != !!pkg)
+  # Add new entries
+  pkg_cache <<- dplyr::bind_rows(pkg_cache, result)
+  save_pkg_cache()
+}
+
+clear_pkg_cache <- function() {
+  pkg_cache <<- NULL
+  if (fs::file_exists(pkg_cache_file)) {
+    fs::file_delete(pkg_cache_file)
+  }
+}
+
+# ------------------------------------------------------------------------------
 # Parse source package Rd files directly (faster than pkgdown)
+# Uses caching to avoid re-downloading unchanged packages
 
 get_pkg_info <- function(
     pkg,
@@ -37,6 +134,29 @@ get_pkg_info <- function(
     pattern = NULL,
     available = NULL
 ) {
+  # Get current version from CRAN
+  version <- get_pkg_version(pkg, available)
+  if (is.na(version)) {
+    rlang::warn(glue::glue("package {pkg} not found in available packages"))
+    return(NULL)
+  }
+
+  # Check cache first
+  cached <- get_cached_pkg_info(pkg, version)
+  if (!is.null(cached)) {
+    # Apply keep_internal and pattern filters to cached result
+    res <- cached
+    if (!keep_internal) {
+      res <- dplyr::filter(res, !internal)
+    }
+    res <- dplyr::select(res, -internal, -version)
+    if (!is.null(pattern)) {
+      res <- dplyr::filter(res, grepl(pattern, functions))
+    }
+    return(res)
+  }
+
+  # Not cached - download and parse
   src_file <- download.packages(
     pkg,
     destdir = pth,
@@ -145,24 +265,33 @@ get_pkg_info <- function(
     purrr::list_rbind()
 
   if (nrow(res) == 0) {
-    return(tibble::tibble(
+    empty_result <- tibble::tibble(
       package = pkg,
-      all_urls = pkg_urls,
+      version = version,
       file_out = character(),
       functions = character(),
-      title = character()
-    ))
+      title = character(),
+      internal = logical(),
+      all_urls = pkg_urls
+    )
+    set_cached_pkg_info(pkg, version, empty_result)
+    return(dplyr::select(empty_result, -internal, -version))
   }
 
+  # Prepare full result with version and internal columns for caching
+  res <- res |>
+    tidyr::unnest(functions) |>
+    dplyr::mutate(package = pkg, version = version, all_urls = pkg_urls) |>
+    dplyr::relocate(package, version, all_urls)
+
+  # Cache full result before filtering
+  set_cached_pkg_info(pkg, version, res)
+
+  # Apply filters for this call
   if (!keep_internal) {
     res <- dplyr::filter(res, !internal)
   }
-
-  res <- res |>
-    tidyr::unnest(functions) |>
-    dplyr::mutate(package = pkg, all_urls = pkg_urls) |>
-    dplyr::relocate(package, all_urls) |>
-    dplyr::select(-internal)
+  res <- dplyr::select(res, -internal, -version)
 
   if (!is.null(pattern)) {
     res <- dplyr::filter(res, grepl(pattern, functions))
