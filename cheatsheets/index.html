@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Quick reference guides for tidymodels packages.">
 
-<title>Supervised Machine Learning for Text Analysis in R – tidymodels</title>
+<title>Cheatsheets – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +27,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<link href="../../favicon.ico" rel="icon">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -76,14 +77,14 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">tidymodels</span>
     </a>
   </div>
@@ -94,31 +95,31 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../packages/index.html"> 
+    <a class="nav-link" href="../packages/index.html"> 
 <span class="menu-text">Packages</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../start/index.html"> 
+    <a class="nav-link" href="../start/index.html"> 
 <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../learn/index.html"> 
+    <a class="nav-link" href="../learn/index.html"> 
 <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../help/index.html"> 
+    <a class="nav-link" href="../help/index.html"> 
 <span class="menu-text">Help</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../contribute/index.html"> 
+    <a class="nav-link" href="../contribute/index.html"> 
 <span class="menu-text">Contribute</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about/index.html"> 
+    <a class="nav-link" href="../about/index.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../find/index.html"> 
+    <a class="nav-link" href="../find/index.html"> 
 <span class="menu-text">Find</span></a>
   </li>  
   <li class="nav-item compact">
@@ -137,28 +138,24 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Supervised Machine Learning for Text Analysis in R</h1>
+<h1 class="title">Cheatsheets</h1>
 </div>
 
+<div>
+  <div class="description">
+    Quick reference guides for tidymodels packages.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Authors</div>
-    <div class="quarto-title-meta-contents">
-             <p>Emil Hvitfeldt </p>
-             <p>Julia Silge </p>
-          </div>
-  </div>
     
   
     
@@ -169,12 +166,30 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><img src="cover.png" class="img-fluid"></p>
-<p>This book explains how to preprocess text data for modeling, train models, and evaluate model performance using tools from the tidyverse and tidymodels ecosystem. Models like these can be used to make predictions for new observations, to understand what natural language features or characteristics contribute to differences in the output, and more. If you are already familiar with the basics of predictive modeling, use the comprehensive, detailed examples in this book to extend your skills to the domain of natural language processing.</p>
-<p>This book provides practical guidance and directly applicable knowledge for data scientists and analysts who want to integrate unstructured text data into their modeling pipelines. Learn how to use text data for both regression and classification tasks, and how to apply more straightforward algorithms like regularized regression or support vector machines as well as deep learning approaches. Natural language must be dramatically transformed to be ready for computation, so we explore typical text preprocessing and feature engineering steps like tokenization and word embeddings from the ground up. These steps influence model results in ways we can measure, both in terms of model metrics and other tangible consequences such as how fair or appropriate model results are.</p>
-<p>An <strong>HTML version</strong> of this text can be found at <a href="https://smltar.com/"><code>https://smltar.com/</code></a>.</p>
-<p>The data sets and R code are available in the GitHub repository <a href="https://github.com/EmilHvitfeldt/smltar"><code>https://github.com/EmilHvitfeldt/smltar</code></a>.</p>
-<p>The physical copies are sold by <a href="https://amzn.to/3EwcEOK"><strong>Amazon</strong></a> and <a href="https://www.routledge.com/Supervised-Machine-Learning-for-Text-Analysis-in-R/Hvitfeldt-Silge/p/book/9780367554194"><strong>CRC Press</strong></a>.</p>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right">
+<div class="thumbnail">
+<p><a href="https://rstudio.github.io/cheatsheets/ml-create-models.pdf" target="_blank"><img src="ml-create-models.png" class="thumbnail-image card-img img-fluid" alt="Creating Models cheatsheet"></a> <a href="https://rstudio.github.io/cheatsheets/ml-create-models.pdf" class="small text-muted" target="_blank">Link to PDF</a></p>
+</div>
+<section id="creating-models" class="level3 no-anchor listing-title body">
+<h3 class="no-anchor listing-title" data-anchor-id="creating-models"><a href="https://rstudio.github.io/cheatsheets/ml-create-models.pdf" target="_blank">Creating Models</a></h3>
+<div class="listing-description">
+<p>A guide to creating models with parsnip</p>
+</div>
+</section>
+</div>
+<div class="quarto-post image-right">
+<div class="thumbnail">
+<p><a href="https://rstudio.github.io/cheatsheets/ml-preprocessing-data.pdf" target="_blank"><img src="ml-preprocessing-data.png" class="thumbnail-image card-img img-fluid" alt="Preprocessing Data cheatsheet"></a> <a href="https://rstudio.github.io/cheatsheets/ml-preprocessing-data.pdf" class="small text-muted" target="_blank">Link to PDF</a></p>
+</div>
+<section id="preprocessing-data" class="level3 no-anchor listing-title body">
+<h3 class="no-anchor listing-title" data-anchor-id="preprocessing-data"><a href="https://rstudio.github.io/cheatsheets/ml-preprocessing-data.pdf" target="_blank">Preprocessing Data</a></h3>
+<div class="listing-description">
+<p>A guide to preprocessing data with recipes</p>
+</div>
+</section>
+</div>
+</div>
 
 
 
@@ -589,7 +604,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/books/smltar/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/cheatsheets/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>

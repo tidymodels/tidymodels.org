@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>Fair prediction of hospital readmission: a machine learning fairness case study – tidymodels</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -60,7 +63,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -88,15 +90,14 @@ div.csl-indent {
 <link href="../../../favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-d7fcc3ff7e490f12cb1c45aad4d93599.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-bc1025cac904ab28cdf086adbb6af069.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -247,7 +248,7 @@ div.csl-indent {
 <p>This article will demonstrate a fairness-oriented workflow for training a machine learning model to identify high-risk patients. Throughout the model development process, we’ll consider the social impacts that different modeling decisions may have when such a model is deployed in context.</p>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>The data we’ll use in this analysis is a publicly available database containing information on 71,515 hospital stays from diabetes patients. The data comes from a study by <span class="citation" data-cites="strack2014">Strack et al. (<a href="#ref-strack2014" role="doc-biblioref">2014</a>)</span>, where the authors model the effectiveness of a particular lab test in predicting readmission. A version of that data is available in the <a href="https://simonpcouch.github.io/readmission/">readmission R package</a>:</p>
+<p>The data we’ll use in this analysis is a publicly available database containing information on 71,515 hospital stays from diabetes patients. The data comes from a study by <span class="citation" data-cites="strack2014"><span class="nocase">Strack et al.</span> (<a href="#ref-strack2014" role="doc-biblioref">2014</a>)</span>, where the authors model the effectiveness of a particular lab test in predicting readmission. A version of that data is available in the <a href="https://simonpcouch.github.io/readmission/">readmission R package</a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readmission)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -760,7 +761,7 @@ Note
 <p>In this article, we’ve demonstrated a fairness-oriented modeling analysis. Modeling with fairness in mind is not simply a numerical optimization problem, but a holistic process of examining the moral meanings of fairness in our problem context and how they are represented—or not represented—by various mathematical notions of fairness.</p>
 <p>While this analysis allowed us to train models that are near-fair with respect to a limited set of fairness metrics, it leaves many questions to be answered about the impacts of using such a model. Among other things:</p>
 <ul>
-<li>We’ve only evaluated the fairness of the model with <code>race</code> in mind. We also have information on the patient’s <code>sex</code>. Could this model behave unfairly with respect to the patient’s <code>sex</code>? How about with respect to the intersections of <code>race</code> and <code>sex</code>? A growing body of research shows us that black women experience pronounced discrimination as patients <span class="citation" data-cites="johnson2019 okoro2020 gopal2021">(<a href="#ref-johnson2019" role="doc-biblioref">Johnson et al. 2019</a>; <a href="#ref-okoro2020" role="doc-biblioref">Okoro, Hillman, and Cernasev 2020</a>; <a href="#ref-gopal2021" role="doc-biblioref">Gopal et al. 2021</a>)</span>.</li>
+<li>We’ve only evaluated the fairness of the model with <code>race</code> in mind. We also have information on the patient’s <code>sex</code>. Could this model behave unfairly with respect to the patient’s <code>sex</code>? How about with respect to the intersections of <code>race</code> and <code>sex</code>? A growing body of research shows us that black women experience pronounced discrimination as patients <span class="citation" data-cites="johnson2019 okoro2020 gopal2021">(<a href="#ref-johnson2019" role="doc-biblioref">Johnson et al. 2019</a>; <a href="#ref-okoro2020" role="doc-biblioref">Okoro et al. 2020</a>; <a href="#ref-gopal2021" role="doc-biblioref">Gopal et al. 2021</a>)</span>.</li>
 <li>The categorizations of <code>race</code> and <code>sex</code> that we have access to are coarse. Race/ethnicity and sex/gender are richly and diversely experienced, and the limited set of categories that patients are presented with (or unknowingly assigned to) in healthcare contexts are only a proxy for how a patient may experience them.</li>
 <li>We’ve used <em>readmission</em> as a proxy for <em>need for additional care</em>. What factors might influence whether a patient willingly readmits? Or is admitted to the hospital in the first place? Note, especially, the disproportionate financial burden of healthcare for poorer patients.</li>
 <li>We don’t know how the predictions resulting from this model will be used by practitioners or trusted by patients. The outputs of the model, of course, should be evaluated in conjunction with other evidence collected by a healthcare team throughout a patient’s stay. Knowing this, though, will the model’s outputs be differently interpreted for different groups in the patient population? For example, would a positive prediction of readmission be considered more seriously as evidence for needed additional care for a white man than for others? Further, given historical exploitation and unethical practice, would protected groups believe that algorithmic recommendation for additional care is likely discriminatory and mistrust the recommendations offered to them? <span class="citation" data-cites="rajkomar2018">(See <a href="#ref-rajkomar2018" role="doc-biblioref">Rajkomar et al. 2018</a>.)</span></li>
@@ -806,18 +807,18 @@ Note
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-ecfr" class="csl-entry" role="listitem">
-1607.4, 29 CFR §. n.d. <span>“Information on Impact.”</span>
+1607.4, 29 CFR §. n.d. <em>Information on Impact</em>.
 </div>
 <div id="ref-bell2023" class="csl-entry" role="listitem">
-Bell, Andrew, Lucius Bynum, Nazarii Drushchak, Tetiana Zakharchenko, Lucas Rosenblatt, and Julia Stoyanovich. 2023. <span>“The Possibility of Fairness: Revisiting the Impossibility Theorem in Practice.”</span> In <em>Proceedings of the 2023 ACM Conference on Fairness, Accountability, and Transparency</em>, 400–422. FAccT ’23. New York, NY, USA: Association for Computing Machinery. <a href="https://doi.org/10.1145/3593013.3594007">https://doi.org/10.1145/3593013.3594007</a>.
+Bell, Andrew, Lucius Bynum, Nazarii Drushchak, Tetiana Zakharchenko, Lucas Rosenblatt, and Julia Stoyanovich. 2023. <span>“The Possibility of Fairness: Revisiting the Impossibility Theorem in Practice.”</span> <em>Proceedings of the 2023 ACM Conference on Fairness, Accountability, and Transparency</em> (New York, NY, USA), FAccT ’23, 400–422. <a href="https://doi.org/10.1145/3593013.3594007">https://doi.org/10.1145/3593013.3594007</a>.
 </div>
 <div id="ref-gopal2021" class="csl-entry" role="listitem">
 Gopal, Dipesh P, Ula Chetty, Patrick O’Donnell, Camille Gajria, and Jodie Blackadder-Weinstein. 2021. <span>“Implicit Bias in Healthcare: Clinical Practice, Research and Decision Making.”</span> <em>Future Healthcare Journal</em> 8 (1): 40.
 </div>
 <div id="ref-johnson2019" class="csl-entry" role="listitem">
-Johnson, Jasmine D, Ifeyinwa V Asiodu, Christine P McKenzie, Christine Tucker, Kristin P Tully, Katherine Bryant, Sarah Verbiest, and Alison M Stuebe. 2019. <span>“Racial and Ethnic Inequities in Postpartum Pain Evaluation and Management.”</span> <em>Obstetrics &amp; Gynecology</em> 134 (6): 1155–62.
+Johnson, Jasmine D, Ifeyinwa V Asiodu, Christine P McKenzie, et al. 2019. <span>“Racial and Ethnic Inequities in Postpartum Pain Evaluation and Management.”</span> <em>Obstetrics &amp; Gynecology</em> 134 (6): 1155–62.
 </div>
 <div id="ref-kuhn2022" class="csl-entry" role="listitem">
 Kuhn, Max, and Julia Silge. 2022. <em>Tidy Modeling with r</em>. "O’Reilly Media, Inc.".
@@ -838,7 +839,7 @@ Omi, Michael, and Howard Winant. 1994. <em>Racial Formation in the United States
 Rajkomar, Alvin, Michaela Hardt, Michael D Howell, Greg Corrado, and Marshall H Chin. 2018. <span>“Ensuring Fairness in Machine Learning to Advance Health Equity.”</span> <em>Annals of Internal Medicine</em> 169 (12): 866–72.
 </div>
 <div id="ref-strack2014" class="csl-entry" role="listitem">
-Strack, Beata, Jonathan P DeShazo, Chris Gennings, Juan L Olmo, Sebastian Ventura, Krzysztof J Cios, John N Clore, et al. 2014. <span>“Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 Clinical Database Patient Records.”</span> <em>BioMed Research International</em> 2014.
+<span class="nocase">Strack, Beata, Jonathan P DeShazo, Chris Gennings, et al.</span> 2014. <span>“Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 Clinical Database Patient Records.”</span> <em>BioMed Research International</em> 2014.
 </div>
 </div></section></div></main> <!-- /main -->
 <!-- plausible -->
@@ -856,6 +857,12 @@ Strack, Beata, Jonathan P DeShazo, Chris Gennings, Juan L Olmo, Sebastian Ventur
       <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+    </div>
+    <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
