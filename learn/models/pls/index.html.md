@@ -168,8 +168,12 @@ variance_data <-
   filter(components <= 15) %>%
   group_by(components, source) %>%
   summarize(proportion = mean(proportion))
-#> `summarise()` has grouped output by 'components'. You can override
-#> using the `.groups` argument.
+#> `summarise()` has regrouped the output.
+#> ℹ Summaries were computed grouped by components and source.
+#> ℹ Output is grouped by components.
+#> ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+#> ℹ Use `summarise(.by = c(components, source))` for per-operation
+#>   grouping (`?dplyr::dplyr_by`) instead.
 ```
 :::
 
@@ -194,31 +198,31 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.1 (2025-06-13)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2025-10-21
-#>  pandoc   3.6.3
-#>  quarto   1.8.25
+#>  date     2026-04-17
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.9   2025-07-28 CRAN (R 4.5.0)
-#>  dials        1.4.2   2025-09-04 CRAN (R 4.5.0)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.5.0)
-#>  ggplot2      4.0.0   2025-09-11 CRAN (R 4.5.0)
-#>  infer        1.0.9   2025-06-26 CRAN (R 4.5.0)
-#>  modeldata    1.5.1   2025-08-22 CRAN (R 4.5.0)
-#>  parsnip      1.3.3   2025-08-31 CRAN (R 4.5.0)
-#>  pls          2.8-5   2024-09-15 CRAN (R 4.5.0)
-#>  purrr        1.1.0   2025-07-10 CRAN (R 4.5.0)
-#>  recipes      1.3.1   2025-05-21 CRAN (R 4.5.0)
-#>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
-#>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
-#>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
-#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
-#>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
+#>  package      version    date (UTC) source
+#>  broom        1.0.12     2026-01-27 CRAN (R 4.5.2)
+#>  dials        1.4.3      2026-04-11 CRAN (R 4.5.2)
+#>  dplyr        1.2.1      2026-04-03 CRAN (R 4.5.2)
+#>  ggplot2      4.0.2      2026-02-03 CRAN (R 4.5.2)
+#>  infer        1.1.0      2025-12-18 CRAN (R 4.5.2)
+#>  modeldata    1.5.1      2025-08-22 CRAN (R 4.5.0)
+#>  parsnip      1.5.0      2026-04-09 CRAN (R 4.5.2)
+#>  pls          2.9-0      2026-02-21 CRAN (R 4.5.2)
+#>  purrr        1.2.2      2026-04-10 CRAN (R 4.5.2)
+#>  recipes      1.3.2      2026-04-02 CRAN (R 4.5.2)
+#>  rlang        1.2.0      2026-04-06 CRAN (R 4.5.2)
+#>  rsample      1.3.2      2026-01-30 CRAN (R 4.5.2)
+#>  tibble       3.3.1      2026-01-11 CRAN (R 4.5.2)
+#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune         2.0.1      2025-10-17 CRAN (R 4.5.0)
+#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick    1.4.0.9000 2026-04-14 Github (tidymodels/yardstick@fa91f90)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

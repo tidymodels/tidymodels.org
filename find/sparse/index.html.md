@@ -25,6 +25,9 @@ Below is all the model engine combinations that support sparse data. It is known
 <li>
 <a href="https://parsnip.tidymodels.org//reference/details_boost_tree_xgboost.html">xgboost</a>
 </li>
+<li>
+<a href="https://parsnip.tidymodels.org//reference/details_boost_tree_lightgbm.html">lightgbm</a>
+</li>
 </ul>
 <li>
 <code>linear_reg</code>
@@ -51,6 +54,14 @@ Below is all the model engine combinations that support sparse data. It is known
 <ul>
 <li>
 <a href="https://parsnip.tidymodels.org//reference/details_multinom_reg_glmnet.html">glmnet</a>
+</li>
+</ul>
+<li>
+<code>null_model</code>
+</li>
+<ul>
+<li>
+<a href="https://parsnip.tidymodels.org//reference/null_model.html">parsnip</a>
 </li>
 </ul>
 <li>
