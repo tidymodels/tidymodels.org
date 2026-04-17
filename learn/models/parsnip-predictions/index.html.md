@@ -988,10 +988,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_1 
+#> Model ID:  GBM_model_R_1776455818270_332 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               25381         6
+#> 1              50                       50               25379         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         21         55    35.70000
 #> 
@@ -1107,10 +1107,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_53 
+#> Model ID:  GBM_model_R_1776455818270_384 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               25381         6
+#> 1              50                       50               25382         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         21         55    35.70000
 #> 
@@ -1283,7 +1283,7 @@ boost_tree_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> GBTClassificationModel: uid = gradient_boosted_trees__a18c7bf4_afc6_43f3_aa25_5db4195b926a, numTrees=20, numClasses=2, numFeatures=2
+#> GBTClassificationModel: uid = gradient_boosted_trees__d0ec1756_9c27_4fa5_9c74_e0d95535c47a, numTrees=20, numClasses=2, numFeatures=2
 ```
 :::
 
@@ -1652,7 +1652,7 @@ decision_tree_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> DecisionTreeClassificationModel: uid=decision_tree_classifier__354b4d32_8708_4891_89a7_e8899515d57d, depth=5, numNodes=43, numClasses=2, numFeatures=2
+#> DecisionTreeClassificationModel: uid=decision_tree_classifier__ca313393_5e12_433e_babe_0bc751a7c384, depth=5, numNodes=43, numClasses=2, numFeatures=2
 ```
 :::
 
@@ -2902,7 +2902,7 @@ logistic_reg_fit
 #> ==============
 #> 
 #> H2OBinomialModel: glm
-#> Model ID:  GLM_model_R_1776455818270_105 
+#> Model ID:  GLM_model_R_1776455818270_436 
 #> GLM Model: summary
 #>     family  link                                regularization
 #> 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )
@@ -3729,56 +3729,56 @@ mlp_fit
 #> ==============
 #> 
 #> H2OBinomialModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1776455818270_107 
+#> Model ID:  DeepLearning_model_R_1776455818270_438 
 #> Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
-#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.010348 0.016187 0.000000
-#> 3     3     2   Softmax      NA 0.000000 0.000000  0.003976 0.000877 0.000000
+#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.006788 0.015306 0.000000
+#> 3     3     2   Softmax      NA 0.000000 0.000000  0.002786 0.000596 0.000000
 #>   mean_weight weight_rms mean_bias bias_rms
 #> 1          NA         NA        NA       NA
-#> 2    0.001889   0.103187  0.498257 0.019903
-#> 3    0.000405   0.404209  0.002316 0.019738
+#> 2    0.001276   0.104977  0.494340 0.014619
+#> 3   -0.000175   0.403763  0.017264 0.055242
 #> 
 #> 
 #> H2OBinomialMetrics: deeplearning
 #> ** Reported on training data. **
 #> ** Metrics reported on full training frame **
 #> 
-#> MSE:  0.1642146
-#> RMSE:  0.405234
-#> LogLoss:  0.5245447
-#> Mean Per-Class Error:  0.1774029
-#> AUC:  0.8891777
-#> AUCPR:  0.8512206
-#> Gini:  0.7783555
+#> MSE:  0.1306899
+#> RMSE:  0.3615106
+#> LogLoss:  0.4278887
+#> Mean Per-Class Error:  0.1768581
+#> AUC:  0.8896274
+#> AUCPR:  0.849044
+#> Gini:  0.7792548
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error      Rate
-#> Class1    327    107 0.246544  =107/434
-#> Class2     38    313 0.108262   =38/351
-#> Totals    365    420 0.184713  =145/785
+#> Class1    325    109 0.251152  =109/434
+#> Class2     36    315 0.102564   =36/351
+#> Totals    361    424 0.184713  =145/785
 #> 
 #> Maximum Metrics: Maximum metrics at their respective thresholds
 #>                         metric threshold      value idx
-#> 1                       max f1  0.122996   0.811933 287
-#> 2                       max f2  0.067608   0.869794 323
-#> 3                 max f0point5  0.320691   0.816327 210
-#> 4                 max accuracy  0.227450   0.826752 243
-#> 5                max precision  0.992165   1.000000   0
-#> 6                   max recall  0.001290   1.000000 398
-#> 7              max specificity  0.992165   1.000000   0
-#> 8             max absolute_mcc  0.211994   0.650002 249
-#> 9   max min_per_class_accuracy  0.197081   0.820513 253
-#> 10 max mean_per_class_accuracy  0.211994   0.825338 249
-#> 11                     max tns  0.992165 434.000000   0
-#> 12                     max fns  0.992165 349.000000   0
-#> 13                     max fps  0.000592 434.000000 399
-#> 14                     max tps  0.001290 351.000000 398
-#> 15                     max tnr  0.992165   1.000000   0
-#> 16                     max fnr  0.992165   0.994302   0
-#> 17                     max fpr  0.000592   1.000000 399
-#> 18                     max tpr  0.001290   1.000000 398
+#> 1                       max f1  0.294320   0.812903 254
+#> 2                       max f2  0.214173   0.871071 279
+#> 3                 max f0point5  0.469697   0.819042 194
+#> 4                 max accuracy  0.469697   0.831847 194
+#> 5                max precision  0.897316   0.944444  46
+#> 6                   max recall  0.004131   1.000000 396
+#> 7              max specificity  0.992264   0.997696   0
+#> 8             max absolute_mcc  0.459496   0.659290 199
+#> 9   max min_per_class_accuracy  0.415434   0.823362 215
+#> 10 max mean_per_class_accuracy  0.459496   0.828856 199
+#> 11                     max tns  0.992264 433.000000   0
+#> 12                     max fns  0.992264 349.000000   0
+#> 13                     max fps  0.000590 434.000000 399
+#> 14                     max tps  0.004131 351.000000 396
+#> 15                     max tnr  0.992264   0.997696   0
+#> 16                     max fnr  0.992264   0.994302   0
+#> 17                     max fpr  0.000590   1.000000 399
+#> 18                     max tpr  0.004131   1.000000 396
 #> 
 #> Gains/Lift Table: Extract with `h2o.gainsLift(<model>, <data>)` or `h2o.gainsLift(<model>, valid=<T/F>, xval=<T/F>)`
 ```
@@ -3803,12 +3803,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.702      0.298  
-#> 2        0.965      0.0346 
-#> 3        0.808      0.192  
-#> 4        0.995      0.00531
-#> 5        0.978      0.0225 
-#> 6        0.964      0.0364
+#> 1        0.470       0.530 
+#> 2        0.903       0.0970
+#> 3        0.593       0.407 
+#> 4        0.982       0.0180
+#> 5        0.928       0.0724
+#> 6        0.901       0.0989
 ```
 :::
 
@@ -4150,7 +4150,7 @@ multinom_reg_fit
 #> ==============
 #> 
 #> H2OMultinomialModel: glm
-#> Model ID:  GLM_model_R_1776455818270_111 
+#> Model ID:  GLM_model_R_1776455818270_441 
 #> GLM Model: summary
 #>        family        link                                regularization
 #> 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )
@@ -4383,7 +4383,7 @@ naive_Bayes_fit
 #> ==============
 #> 
 #> H2OBinomialModel: naivebayes
-#> Model ID:  NaiveBayes_model_R_1776455818270_112 
+#> Model ID:  NaiveBayes_model_R_1776455818270_442 
 #> Model Summary: 
 #>   number_of_response_levels min_apriori_probability max_apriori_probability
 #> 1                         2                 0.44713                 0.55287
@@ -5189,10 +5189,10 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2OBinomialModel: drf
-#> Model ID:  DRF_model_R_1776455818270_114 
+#> Model ID:  DRF_model_R_1776455818270_444 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               92619        12
+#> 1              50                       50               92622        12
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1        20   16.60000        126        166   143.08000
 #> 
@@ -5542,7 +5542,7 @@ rand_forest_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> RandomForestClassificationModel: uid=random_forest__14b39c87_33a1_49c0_884b_5a5c257164ae, numTrees=20, numClasses=2, numFeatures=2
+#> RandomForestClassificationModel: uid=random_forest__8d04372f_07bb_47a9_96b4_c02c5b6c0dd3, numTrees=20, numClasses=2, numFeatures=2
 ```
 :::
 
@@ -5694,7 +5694,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2OBinomialModel: rulefit
-#> Model ID:  RuleFit_model_R_1776455818270_165 
+#> Model ID:  RuleFit_model_R_1776455818270_495 
 #> Rulefit Model Summary: 
 #>     family  link            regularization number_of_predictors_total
 #> 1 binomial logit Lasso (lambda = 0.03081 )                       2329
@@ -6629,7 +6629,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_321 
+#> Model ID:  GBM_model_R_1776455818270_651 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20473         6
@@ -6707,10 +6707,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_322 
+#> Model ID:  GBM_model_R_1776455818270_652 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               20473         6
+#> 1              50                       50               20475         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         14         43    27.92000
 #> 
@@ -6834,7 +6834,7 @@ boost_tree_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> GBTRegressionModel: uid=gradient_boosted_trees__04afc5e0_6abb_4251_bdfe_2daee7103c6c, numTrees=20, numFeatures=8
+#> GBTRegressionModel: uid=gradient_boosted_trees__39f5f06d_0b7c_4a1d_8469_14b898ae2aff, numTrees=20, numFeatures=8
 ```
 :::
 
@@ -7105,7 +7105,7 @@ decision_tree_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> DecisionTreeRegressionModel: uid=decision_tree_regressor__ff4c27fd_aa65_4fe8_b320_0e41057504ed, depth=5, numNodes=63, numFeatures=8
+#> DecisionTreeRegressionModel: uid=decision_tree_regressor__f3a61602_1d31_41d1_8d01_f90e61fd0761, depth=5, numNodes=63, numFeatures=8
 ```
 :::
 
@@ -7804,7 +7804,7 @@ linear_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1776455818270_323 
+#> Model ID:  GLM_model_R_1776455818270_653 
 #> GLM Model: summary
 #>     family     link                               regularization
 #> 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )
@@ -8580,27 +8580,27 @@ mlp_fit
 #> ==============
 #> 
 #> H2ORegressionModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1776455818270_324 
+#> Model ID:  DeepLearning_model_R_1776455818270_654 
 #> Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
-#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.012692 0.023541 0.000000
-#> 3     3     1    Linear      NA 0.000000 0.000000  0.000937 0.000187 0.000000
+#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.010334 0.021254 0.000000
+#> 3     3     1    Linear      NA 0.000000 0.000000  0.000779 0.000198 0.000000
 #>   mean_weight weight_rms mean_bias bias_rms
 #> 1          NA         NA        NA       NA
-#> 2   -0.017886   0.119090  0.488935 0.021624
-#> 3   -0.003904   0.098932  0.003067 0.000000
+#> 2   -0.014844   0.118690  0.494805 0.011711
+#> 3   -0.001113   0.099429  0.007834 0.000000
 #> 
 #> 
 #> H2ORegressionMetrics: deeplearning
 #> ** Reported on training data. **
 #> ** Metrics reported on full training frame **
 #> 
-#> MSE:  159.5098
-#> RMSE:  12.62972
-#> MAE:  9.657462
-#> RMSLE:  0.3958181
-#> Mean Residual Deviance :  159.5098
+#> MSE:  136.3045
+#> RMSE:  11.67495
+#> MAE:  9.153672
+#> RMSLE:  0.4003868
+#> Mean Residual Deviance :  136.3045
 ```
 :::
 
@@ -8613,14 +8613,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  24.5
-#> 2  28.7
-#> 3  17.4
-#> 4  44.7
-#> 5  32.0
-#> 6  29.9
-#> 7  30.8
-#> 8  39.1
+#> 1  28.2
+#> 2  32.0
+#> 3  20.2
+#> 4  49.6
+#> 5  36.3
+#> 6  33.8
+#> 7  34.7
+#> 8  44.0
 ```
 :::
 
@@ -9249,7 +9249,7 @@ poisson_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1776455818270_325 
+#> Model ID:  GLM_model_R_1776455818270_655 
 #> GLM Model: summary
 #>    family link                               regularization
 #> 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )
@@ -9404,8 +9404,8 @@ poisson_reg_fit <-
 #> 
 #> SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 3.7e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.37 seconds.
+#> Chain 1: Gradient evaluation took 3.5e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.35 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -9422,15 +9422,15 @@ poisson_reg_fit <-
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.026 seconds (Warm-up)
-#> Chain 1:                0.027 seconds (Sampling)
-#> Chain 1:                0.053 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.025 seconds (Warm-up)
+#> Chain 1:                0.026 seconds (Sampling)
+#> Chain 1:                0.051 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 7e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+#> Chain 2: Gradient evaluation took 5e-06 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -9454,8 +9454,8 @@ poisson_reg_fit <-
 #> 
 #> SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
 #> Chain 3: 
-#> Chain 3: Gradient evaluation took 7e-06 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+#> Chain 3: Gradient evaluation took 6e-06 seconds
+#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
 #> Chain 3: Adjust your expectations accordingly!
 #> Chain 3: 
 #> Chain 3: 
@@ -9473,14 +9473,14 @@ poisson_reg_fit <-
 #> Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 3: 
 #> Chain 3:  Elapsed Time: 0.027 seconds (Warm-up)
-#> Chain 3:                0.027 seconds (Sampling)
-#> Chain 3:                0.054 seconds (Total)
+#> Chain 3:                0.026 seconds (Sampling)
+#> Chain 3:                0.053 seconds (Total)
 #> Chain 3: 
 #> 
 #> SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
 #> Chain 4: 
-#> Chain 4: Gradient evaluation took 5e-06 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+#> Chain 4: Gradient evaluation took 4e-06 seconds
+#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 #> Chain 4: Adjust your expectations accordingly!
 #> Chain 4: 
 #> Chain 4: 
@@ -10004,10 +10004,10 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2ORegressionModel: drf
-#> Model ID:  DRF_model_R_1776455818270_326 
+#> Model ID:  DRF_model_R_1776455818270_656 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               22319         7
+#> 1              50                       50               22315         7
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1        14    9.04000         14         43    30.86000
 #> 
@@ -10297,7 +10297,7 @@ rand_forest_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> RandomForestRegressionModel: uid=random_forest__06e09761_c977_442f_b6fd_15e7f8674674, numTrees=20, numFeatures=8
+#> RandomForestRegressionModel: uid=random_forest__c0bbade0_7cc4_4e83_b768_54417a4e39ac, numTrees=20, numFeatures=8
 ```
 :::
 
@@ -10433,7 +10433,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2ORegressionModel: rulefit
-#> Model ID:  RuleFit_model_R_1776455818270_327 
+#> Model ID:  RuleFit_model_R_1776455818270_657 
 #> Rulefit Model Summary: 
 #>     family     link           regularization number_of_predictors_total
 #> 1 gaussian identity Lasso (lambda = 0.9516 )                       1917
