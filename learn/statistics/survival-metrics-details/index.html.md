@@ -363,7 +363,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
 #>  tune         2.0.1      2025-10-17 CRAN (R 4.5.0)
 #>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
-#>  yardstick    1.4.0.9000 2026-04-14 Github (tidymodels/yardstick@fa91f90)
+#>  yardstick    1.4.0      2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

@@ -637,26 +637,26 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package         version    date (UTC) source
-#>  baguette        1.1.0      2025-01-28 CRAN (R 4.5.0)
-#>  broom           1.0.12     2026-01-27 CRAN (R 4.5.2)
-#>  desirability2   0.2.0      2025-08-22 CRAN (R 4.5.0)
-#>  dials           1.4.3      2026-04-11 CRAN (R 4.5.2)
-#>  dplyr           1.2.1      2026-04-03 CRAN (R 4.5.2)
-#>  GGally          2.4.0      2025-08-23 CRAN (R 4.5.0)
-#>  ggplot2         4.0.2      2026-02-03 CRAN (R 4.5.2)
-#>  infer           1.1.0      2025-12-18 CRAN (R 4.5.2)
-#>  parsnip         1.5.0      2026-04-09 CRAN (R 4.5.2)
-#>  purrr           1.2.2      2026-04-10 CRAN (R 4.5.2)
-#>  readmission     0.1.0      2023-12-07 CRAN (R 4.5.0)
-#>  recipes         1.3.2      2026-04-02 CRAN (R 4.5.2)
-#>  rlang           1.2.0      2026-04-06 CRAN (R 4.5.2)
-#>  rsample         1.3.2      2026-01-30 CRAN (R 4.5.2)
-#>  tibble          3.3.1      2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels      1.4.1      2025-09-08 CRAN (R 4.5.0)
-#>  tune            2.0.1      2025-10-17 CRAN (R 4.5.0)
-#>  workflows       1.3.0      2025-08-27 CRAN (R 4.5.0)
-#>  yardstick       1.4.0.9000 2026-04-14 Github (tidymodels/yardstick@fa91f90)
+#>  package         version date (UTC) source
+#>  baguette        1.1.0   2025-01-28 CRAN (R 4.5.0)
+#>  broom           1.0.12  2026-01-27 CRAN (R 4.5.2)
+#>  desirability2   0.2.0   2025-08-22 CRAN (R 4.5.0)
+#>  dials           1.4.3   2026-04-11 CRAN (R 4.5.2)
+#>  dplyr           1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  GGally          2.4.0   2025-08-23 CRAN (R 4.5.0)
+#>  ggplot2         4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  infer           1.1.0   2025-12-18 CRAN (R 4.5.2)
+#>  parsnip         1.5.0   2026-04-09 CRAN (R 4.5.2)
+#>  purrr           1.2.2   2026-04-10 CRAN (R 4.5.2)
+#>  readmission     0.1.0   2023-12-07 CRAN (R 4.5.0)
+#>  recipes         1.3.2   2026-04-02 CRAN (R 4.5.2)
+#>  rlang           1.2.0   2026-04-06 CRAN (R 4.5.2)
+#>  rsample         1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  tibble          3.3.1   2026-01-11 CRAN (R 4.5.2)
+#>  tidymodels      1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tune            2.0.1   2025-10-17 CRAN (R 4.5.0)
+#>  workflows       1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick       1.4.0   2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
