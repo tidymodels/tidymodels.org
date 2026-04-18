@@ -1599,9 +1599,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-logistic-reg-classification
-logistic_reg_spec <- logistic_reg() |> 
+logistic_reg_spec <- logistic_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -1640,9 +1640,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-glmer-logistic-reg-classification
-logistic_reg_spec <- logistic_reg() |> 
+logistic_reg_spec <- logistic_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -3863,9 +3863,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-linear-reg-regression
-linear_reg_spec <- linear_reg() |> 
+linear_reg_spec <- linear_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -3902,9 +3902,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-glmer-linear-reg-regression
-linear_reg_spec <- linear_reg() |> 
+linear_reg_spec <- linear_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -4509,9 +4509,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-poisson-reg-regression
-poisson_reg_spec <- poisson_reg() |> 
+poisson_reg_spec <- poisson_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -4549,9 +4549,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-glmer-poisson-reg-regression
-poisson_reg_spec <- poisson_reg() |> 
+poisson_reg_spec <- poisson_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 
 Now we create the model fit object:

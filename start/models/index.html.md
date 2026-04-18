@@ -320,9 +320,10 @@ set.seed(123)
 # make the parsnip model
 bayes_mod <-   
   linear_reg() %>% 
-  set_engine("stan", 
-             prior_intercept = prior_dist, 
-             prior = prior_dist) 
+  set_engine("stan",
+             prior_intercept = prior_dist,
+             prior = prior_dist,
+             refresh = 0)
 
 # train the model
 bayes_fit <- 
