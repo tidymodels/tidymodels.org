@@ -246,7 +246,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 140.297 sec elapsed
+#> 147.832 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
