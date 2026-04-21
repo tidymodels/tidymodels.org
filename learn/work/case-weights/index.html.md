@@ -76,7 +76,7 @@ tibble_days %>%
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-3-1.svg){fig-align='center' width=672}
+![](figs/plot-single-decay-curve-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -96,7 +96,7 @@ map_dfr(
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-4-1.svg){fig-align='center' width=672}
+![](figs/plot-compare-decay-bases-1.svg){fig-align='center' width=672}
 :::
 :::
 

@@ -34,7 +34,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-1-1.svg){fig-align='center' width=672}
+![](figs/plot-mtcars-scatter-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -66,7 +66,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-2-1.svg){fig-align='center' width=672}
+![](figs/fit-nls-model-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -175,7 +175,7 @@ ggplot(boot_coefs, aes(estimate)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-6-1.svg){fig-align='center' width=672}
+![](figs/plot-coefficient-distributions-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -221,7 +221,7 @@ ggplot(boot_aug, aes(wt, mpg)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-8-1.svg){fig-align='center' width=672}
+![](figs/plot-bootstrap-curves-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -251,7 +251,7 @@ ggplot(splines_aug, aes(x, y)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-9-1.svg){fig-align='center' width=672}
+![](figs/define-fit-spline-bootstrap-1.svg){fig-align='center' width=672}
 :::
 :::
 

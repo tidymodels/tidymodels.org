@@ -64,7 +64,7 @@ ggplot(Orange, aes(age, circumference, color = Tree)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-2-1.svg){fig-align='center' width=672}
+![](figs/plot-age-circumference-1.svg){fig-align='center' width=672}
 :::
 :::
 

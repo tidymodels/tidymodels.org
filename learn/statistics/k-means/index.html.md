@@ -52,7 +52,7 @@ ggplot(labelled_points, aes(x1, x2, color = cluster)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-1-1.svg){fig-align='center' width=672}
+![](figs/simulate-cluster-data-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -245,7 +245,7 @@ p1
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-8-1.svg){fig-align='center' width=672}
+![](figs/plot-assignments-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -259,7 +259,7 @@ p2
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-9-1.svg){fig-align='center' width=672}
+![](figs/plot-with-centers-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -274,7 +274,7 @@ ggplot(clusterings, aes(k, tot.withinss)) +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-10-1.svg){fig-align='center' width=672}
+![](figs/plot-total-within-ss-1.svg){fig-align='center' width=672}
 :::
 :::
 

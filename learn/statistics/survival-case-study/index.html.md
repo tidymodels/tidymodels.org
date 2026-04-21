@@ -108,7 +108,7 @@ survfit(disposition_surv ~ 1, data = complaints_train) %>% plot()
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-5-1.svg){fig-align='center' fig-alt='A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days.' width=672}
+![](figs/plot-kaplan-meier-1.svg){fig-align='center' fig-alt='A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days.' width=672}
 :::
 :::
 
