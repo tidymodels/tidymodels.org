@@ -77,9 +77,15 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 This repo uses two Quarto profiles to split behavior between local and CI rendering:
 
 - `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `post-render.R`.
-- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Disables post-render scripts since CI serves pages from the freeze cache.
+- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Runs post-render scripts that need to apply to all HTML files (e.g. `post-render-downlit.R`).
 
 When adding a script that should only run locally, add it to `_quarto-local.yml`. If it should run in CI, add it to `_quarto-production.yml` and ensure the workflow installs the needed dependencies.
+
+## Code linking
+
+R functions in code blocks are hyperlinked to their documentation via the [downlit](https://downlit.r-lib.org/) package, enabled with `code-link: true` in `_quarto.yml`.
+
+Because `library(tidymodels)` is not automatically expanded by downlit (unlike `library(tidyverse)`), the tidymodels member packages are explicitly listed in the `tidymodels_pkgs` vector in `post-render-downlit.R`. This must be kept in sync with `tidymodels::tidymodels_packages()` when tidymodels adds or removes member packages.
 
 ## Workflow
 
