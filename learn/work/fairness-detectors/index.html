@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
@@ -76,26 +77,15 @@ div.csl-right-inline {
 div.csl-indent {
   margin-left: 2em;
 }</style>
-
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -200,8 +190,12 @@ div.csl-indent {
 <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/fairness-detectors/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+  </ul>
+<div class="toc-actions"><ul class="collapse">
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/fairness-detectors/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div></nav>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Are GPT detectors fair? A machine learning fairness case study</h1>
@@ -251,16 +245,22 @@ Note
 <li>GPT detector models behave unfairly</li>
 </ol>
 <p>are only equivalent, though, given a shared set of social values surrounding what <em>fairness</em> means.</p>
-<p>Perhaps the core question that machine learning fairness as a research field has tried to address is exactly what a machine learning model acting fairly entails. As a recent primer notes, “[t]he rapid growth of this new field has led to wildly inconsistent motivations, terminology, and notation, presenting a serious challenge for cataloging and comparing definitions” <span class="citation" data-cites="mitchell2021">(<a href="#ref-mitchell2021" role="doc-biblioref">Mitchell et al. 2021</a>)</span>. Fairness is a social construct, and means different things to different people; the operationalization of fairness as a quantitative metric is not at all trivial. The aim of evaluating a machine learning system’s fairness is thus to state clearly one’s definition of fairness, critique what that definition means in the problem context, and assess fairness under the chosen definition rigorously. The tidymodels packages in R provide a suite of functionality to support this kind of analysis, and we’ll use the data from Liang et al.&nbsp;as an example to demonstrate a fairness-oriented analysis of model performance.</p>
+<p>Perhaps the core question that machine learning fairness as a research field has tried to address is exactly what a machine learning model acting fairly entails. As a recent primer notes, “[t]he rapid growth of this new field has led to wildly inconsistent motivations, terminology, and notation, presenting a serious challenge for cataloging and comparing definitions” <span class="citation" data-cites="mitchell2021">(<a href="#ref-mitchell2021" role="doc-biblioref">Mitchell et al. 2021</a>)</span>. Fairness is a social construct, and means different things to different people; the operationalization of fairness as a quantitative metric is not at all trivial. The aim of evaluating a machine learning system’s fairness is thus to state clearly one’s definition of fairness, critique what that definition means in the problem context, and assess fairness under the chosen definition rigorously. The tidymodels packages in R provide a suite of functionality to support this kind of analysis, and we’ll use the data from Liang et al. as an example to demonstrate a fairness-oriented analysis of model performance.</p>
 <p>After loading needed packages, we’ll conduct an exploratory analysis of the study’s data. Once we have a sense for the distributions of relevant variables, we’ll explore the different ways that we could try to measure fairness in this problem context. We will see that different ways of measuring fairness encode social values held by different stakeholders.</p>
 <section id="getting-set-up" class="level1"><h1>Getting set up</h1>
 <p>Loading the tidymodels meta-package will load all of the functionality we need:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>A tidied version of the study’s data is available in the detectors R package. Loading the package and taking a look at the data:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://simonpcouch.github.io/detectors/">detectors</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://simonpcouch.github.io/detectors/">detectors</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">detectors</span><span class="op">)</span></span>
 <span><span class="co">#&gt; tibble [6,185 × 9] (S3: tbl_df/tbl/data.frame)</span></span>
@@ -272,14 +272,18 @@ Note
 <span><span class="co">#&gt;  $ name       : chr [1:6185] "Real TOEFL" "Real TOEFL" "Real College Essays" "Fake CS224N - GPT3" ...</span></span>
 <span><span class="co">#&gt;  $ model      : chr [1:6185] "Human" "Human" "Human" "GPT3" ...</span></span>
 <span><span class="co">#&gt;  $ document_id: num [1:6185] 497 278 294 671 717 855 533 484 781 460 ...</span></span>
-<span><span class="co">#&gt;  $ prompt     : chr [1:6185] NA NA NA "Plain" ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt;  $ prompt     : chr [1:6185] NA NA NA "Plain" ...</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Each row in this data corresponds to an essay (<code>document_id</code>) passed to a given GPT detector. For each row, we have the predicted probability <code>.pred_AI</code> from the <code>detector</code> giving whether the essay was written by AI. Notably, for the essays written by humans, we also have whether the author was a <code>native</code> English writer.</p>
 </section><section id="exploratory-analysis" class="level1"><h1>Exploratory Analysis</h1>
 <p>This analysis will focus on the <code>kind</code>, <code>.pred_AI</code>, <code>.pred_class</code>, and <code>native</code> variables.</p>
 <p>Initially, we can tabulate the observed and predicted classes:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">count</span><span class="op">(</span><span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
 <span><span class="co">#&gt;   kind  .pred_class     n</span></span>
@@ -287,12 +291,16 @@ Note
 <span><span class="co">#&gt; 1 AI    AI           1158</span></span>
 <span><span class="co">#&gt; 2 AI    Human        2559</span></span>
 <span><span class="co">#&gt; 3 Human AI            449</span></span>
-<span><span class="co">#&gt; 4 Human Human        2019</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 4 Human Human        2019</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>A perfect detector would predict that all essays written by AI were written by AI, the converse for humans, and zeroes elsewhere. Perhaps these models would perform better with <a href="https://probably.tidymodels.org/articles/where-to-use.html">calibration</a>, but as-is, they have a long way to go. For example, of the 3717 essays written by AI in this data, 2559 were predicted to be written by humans. Of the 2468 essays written by humans in this data, 449 were predicted to be written by AI.</p>
 <p>Adding <code>native</code> into the tabulation:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">count</span><span class="op">(</span><span class="va">native</span>, <span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
 <span><span class="co">#&gt;   native kind  .pred_class     n</span></span>
@@ -302,16 +310,22 @@ Note
 <span><span class="co">#&gt; 3 Yes    Human AI             59</span></span>
 <span><span class="co">#&gt; 4 Yes    Human Human        1772</span></span>
 <span><span class="co">#&gt; 5 &lt;NA&gt;   AI    AI           1158</span></span>
-<span><span class="co">#&gt; 6 &lt;NA&gt;   AI    Human        2559</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 6 &lt;NA&gt;   AI    Human        2559</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Note that, for essays written by AI (<code>kind == "AI"</code>), the <code>native</code> variable isn’t well-defined. Those entries thus match the numbers from the above table.</p>
 <p>For essays written by <code>Human</code>s, a plot perhaps better demonstrates the disparity:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">native</span>, fill <span class="op">=</span> <span class="va">.pred_class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Native English Writer"</span>, fill <span class="op">=</span> <span class="st">"Predicted Class"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Native English Writer"</span>, fill <span class="op">=</span> <span class="st">"Predicted Class"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/plot-human-preds-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -321,14 +335,18 @@ Note
 </div>
 <p>Most of the essays written by non-native English writers are incorrectly classified as written by AI, while nearly all of the essays written by native English writers are correctly classified as written by humans. The same effect can be seen in the underlying probability distributions:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>native <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
 <span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/plot-human-preds-by-native-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -339,7 +357,9 @@ Note
 <p>Again, note that <em>all of the plotted essays were written by humans</em>. An effective detector would thus predict a probability near zero for all of these observations. In this plot, we see that the evidence in our initial table showing these detectors weren’t performing well didn’t tell the whole story. They perform <em>quite</em> well for native English writers, actually. For non-native English writers, though, they perform terribly.</p>
 <p>The above plots aggregate observations across several <code>detectors</code>, though. Do some GPT detectors classify essays written by non-native English writers just as well as those from native English writers? We can recreate the above plot to examine this question by faceting across <code>detectors</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>native <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
 <span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -348,7 +368,9 @@ Note
 <span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, <span class="fu">vars</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/plot-human-preds-by-native-detector-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -381,7 +403,9 @@ Note
 </ul>
 <p>In this case, we calculate a chosen performance metric for each detector, across all of the data, and then consider the most performant detectors:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -391,7 +415,9 @@ Note
 <span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 GPTZero       roc_auc binary         0.750</span></span>
 <span><span class="co">#&gt; 2 OriginalityAI roc_auc binary         0.682</span></span>
-<span><span class="co">#&gt; 3 HFOpenAI      roc_auc binary         0.614</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 3 HFOpenAI      roc_auc binary         0.614</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -431,14 +457,20 @@ Note
 </div>
 <p>To calculate equal opportunity with yardstick, we use <code>equal_opportunity()</code> to create a metric function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">equal_opportunity_by_native</span> <span class="op">&lt;-</span> <span class="fu">equal_opportunity</span><span class="op">(</span>by <span class="op">=</span> <span class="va">native</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">equal_opportunity_by_native</span> <span class="op">&lt;-</span> <span class="fu">equal_opportunity</span><span class="op">(</span>by <span class="op">=</span> <span class="va">native</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">equal_opportunity_by_native</span></span>
-<span><span class="co">#&gt; A class metric | direction: minimize, group-wise on: native</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; A class metric | direction: minimize, group-wise on: native</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The function <code>equal_opportunity_by_native()</code> is a yardstick metric function like any other, except it knows to temporarily group by and summarize across a data-column called <code>native</code>. Applying it:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
@@ -453,7 +485,9 @@ Note
 <span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 Crossplag equal_opportunity native binary         0.464</span></span>
 <span><span class="co">#&gt; 2 ZeroGPT   equal_opportunity native binary         0.477</span></span>
-<span><span class="co">#&gt; 3 GPTZero   equal_opportunity native binary         0.510</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 3 GPTZero   equal_opportunity native binary         0.510</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The detectors with estimates closest to zero are most fair, by this definition of fairness.</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -477,7 +511,9 @@ Important
 </ul>
 <p>In this case, we could <em>first</em> ensure that a model detects GPT-generated work with some threshold of performance, and then choose the model among that set that predicts most fairly on human-written essays. This reflects the belief that it is more unfair to fail to detect GPT-generated work than it is to disproportionately classify human-written work from non-native English writers as GPT-generated, as it is possible that the model that most proportionately classifies human-written work from native and non-native English writers as GPT-generated is not among the recommended models.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">performant_detectors</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">performant_detectors</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -498,11 +534,15 @@ Important
 <span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 GPTZero       equal_opportunity native binary         0.510</span></span>
 <span><span class="co">#&gt; 2 HFOpenAI      equal_opportunity native binary         0.549</span></span>
-<span><span class="co">#&gt; 3 OriginalityAI equal_opportunity native binary         0.709</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 3 OriginalityAI equal_opportunity native binary         0.709</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>We could also reverse the process, reflecting the belief that it is more unfair to disproportionately classify human-written work from non-native English writers as GPT-generated than it is to pass on output from GPTs as one’s own work. We first set a threshold based on <code>equal_opportunity()</code>, then choose the most performant model by <code>roc_auc()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">equal_opportunity_detectors</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">equal_opportunity_detectors</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">detectors</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -524,7 +564,9 @@ Important
 <span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 GPTZero   roc_auc binary         0.750</span></span>
 <span><span class="co">#&gt; 2 Crossplag roc_auc binary         0.613</span></span>
-<span><span class="co">#&gt; 3 ZeroGPT   roc_auc binary         0.603</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 3 ZeroGPT   roc_auc binary         0.603</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>In this example, changing the prioritization of the criteria results in a different set of recommended models.</p>
 </section></section><section id="choosing-a-detector" class="level1"><h1>Choosing a detector</h1>
@@ -574,29 +616,29 @@ Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian L
 </div>
 
 
-</section></section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+</section></section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
     </div>
     <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
     </div>
     <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
     </div>
     <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
   </div>
@@ -1012,13 +1054,16 @@ Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian L
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/fairness-detectors/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+       
+    <div class="toc-actions d-sm-block d-md-none"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/fairness-detectors/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div>
+</div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>
   </div>
 </footer>
-
-
-</body></html>
+</body>
+</html>

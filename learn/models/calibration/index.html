@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
@@ -57,26 +58,15 @@ div.sourceCode
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
-
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -171,8 +161,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#other-model-types" id="toc-other-model-types" class="nav-link" data-scroll-target="#other-model-types">Other model types</a></li>
   <li><a href="#some-background-references" id="toc-some-background-references" class="nav-link" data-scroll-target="#some-background-references">Some background references</a></li>
   <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
-  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/calibration/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+  </ul>
+<div class="toc-actions"><ul class="collapse">
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/calibration/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div></nav>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">An introduction to calibration with tidymodels</h1>
@@ -210,19 +204,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A classification model is well-calibrated if its probability estimate is consistent with the rate that the event occurs “in the wild.” If you are not familiar with calibration, there are references at the end of this article.</p>
 <p>To get started, load some packages:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/probably">probably</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/discrim">discrim</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tidymodels_prefer</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">theme_set</span><span class="op">(</span><span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>pillar.advice <span class="op">=</span> <span class="cn">FALSE</span>, pillar.min_title_chars <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>pillar.advice <span class="op">=</span> <span class="cn">FALSE</span>, pillar.min_title_chars <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <section id="an-example-predicting-cell-segmentation-quality" class="level2"><h2 class="anchored" data-anchor-id="an-example-predicting-cell-segmentation-quality">An example: predicting cell segmentation quality</h2>
 <p>The modeldata package contains a data set called <code>cells</code>. Initially distributed by <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340">Hill and Haney (2007)</a>, they showed how to create models that predict the <em>quality</em> of the image analysis of cells. The outcome has two levels <code>"PS"</code> (for poorly segmented images) or <code>"WS"</code> (well-segmented). There are 56 image features that can be used to build a classifier.</p>
 <p>Let’s load the data, remove an unwanted column, and look at the outcome frequencies:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">cells</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">cells</span><span class="op">)</span></span>
 <span><span class="va">cells</span><span class="op">$</span><span class="va">case</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">cells</span><span class="op">)</span></span>
@@ -232,31 +232,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;   class     n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 PS     1300</span></span>
-<span><span class="co">#&gt; 2 WS      719</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 2 WS      719</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>There is a class imbalance but that will not affect our work here.</p>
 <p>Let’s make a 75% to 25% split of the data into training and testing using <code>initial_split()</code>. We’ll also create a set of 10-fold cross-validation indices for model resampling.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">8928</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">8928</span><span class="op">)</span></span>
 <span><span class="va">split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">cells</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span>
 <span><span class="va">cells_tr</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
 <span><span class="va">cells_te</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cells_rs</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">cells_tr</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">cells_rs</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">cells_tr</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Now that there are data to be modeled, let’s get to it!</p>
 </section><section id="a-naive-bayes-model" class="level2"><h2 class="anchored" data-anchor-id="a-naive-bayes-model">A naive Bayes model</h2>
 <p>We’ll show the utility of calibration tools by using a type of model that, in this instance, is likely to produce a poorly calibrated model. The naive Bayes classifier is a well-established model that assumes that the predictors are statistically <em>independent</em> of one another (to simplify the calculations). While that is certainly not the case for these data, the model can be effective at discriminating between the classes. Unfortunately, when there are many predictors in the model, it has a tendency to produce class probability distributions that are pathological. The predictions tend to gravitate to values near zero or one, producing distributions that are “U”-shaped (<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22Applied+Predictive+Modeling%22&amp;btnG=">Kuhn and Johnson, 2013</a>).</p>
 <p>To demonstrate, let’s set up the model:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bayes_wflow</span> <span class="op">&lt;-</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bayes_wflow</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_model</span><span class="op">(</span><span class="fu">naive_Bayes</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="fu">naive_Bayes</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>We’ll resample the model first so that we can get a good assessment of the results. During the resampling process, two metrics are used to judge how well the model worked. First, the area under the ROC curve is used to measure the ability of the model to separate the classes (using probability predictions). Second, the Brier score can measure how close the probability estimates are to the actual outcome values (zero or one). The <code>collect_metrics()</code> function shows the resampling estimates:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cls_met</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span>, <span class="va">brier_class</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cls_met</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span>, <span class="va">brier_class</span><span class="op">)</span></span>
 <span><span class="co"># We'll save the out-of-sample predictions to visualize them. </span></span>
 <span><span class="va">ctrl</span> <span class="op">&lt;-</span> <span class="fu">control_resamples</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -269,19 +281,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;   .metric     .estimator  mean     n std_err .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          </span></span>
 <span><span class="co">#&gt; 1 brier_class binary     0.202    10 0.00977 pre0_mod0_post0</span></span>
-<span><span class="co">#&gt; 2 roc_auc     binary     0.853    10 0.00835 pre0_mod0_post0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 2 roc_auc     binary     0.853    10 0.00835 pre0_mod0_post0</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The ROC score is impressive! However, the Brier value indicates that the probability values, while discriminating well, are not very realistic. A value of 0.25 is the “bad model” threshold when there are two classes (a value of zero being the best possible result).</p>
 <section id="but-is-it-calibrated" class="level3"><h3 class="anchored" data-anchor-id="but-is-it-calibrated">But is it calibrated?</h3>
 <p>Spoilers: no. It is not.</p>
 <p>The first clue is the extremely U-shaped distribution of the probability scores (facetted by the true class value):</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_PS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"white"</span>, bins <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">class</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_rug</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Probability Estimate of PS"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Probability Estimate of PS"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/prob-hist-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -293,7 +311,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The probably package has tools for visualizing and correcting models with poor calibration properties.</p>
 <p>The most common plot is to break the predictions into about ten equally sized buckets and compute the actual event rate within each. For example, if a bin captures the samples predicted to be poorly segmented with probabilities between 20% and 30%, we should expect about a 25% event rate (i.e., the bin midpoint) within that partition. Here’s a plot with ten bins:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">cal_plot_breaks</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cal_plot_breaks</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/break-plot-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -304,7 +326,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The probabilities are not showing very good accuracy.</p>
 <p>There is also a similar function that can use moving windows with overlapping partitions. This provides a little more detail:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">cal_plot_windowed</span><span class="op">(</span><span class="va">bayes_res</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cal_plot_windowed</span><span class="op">(</span><span class="va">bayes_res</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/break-windowed-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -315,7 +341,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Bad. Still bad.</p>
 <p>Finally, for two class outcomes, we can fit a logistic generalized additive model (GAM) and examine the trend.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">cal_plot_logistic</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cal_plot_logistic</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/break-logistic-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -331,7 +361,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>How do we know if this works? There are a set of <code>cal_validate_*()</code> functions that can use holdout data to resample the model with and without the calibration tool of choice. Since we already resampled the model, we’ll use those results to estimate 10 more logistic regressions and use the out-of-sample data to estimate performance.</p>
 <p><code>collect_metrics()</code> can again be used to see the performance statistics. We’ll also use <code>cal_plot_windowed()</code> on the calibrated holdout data to get a visual assessment:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_logistic</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">logit_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_logistic</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'butcher':</span></span>
 <span><span class="co">#&gt;   method                 from    </span></span>
 <span><span class="co">#&gt;   as.character.dev_topic generics</span></span>
@@ -347,7 +379,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">logit_val</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Logistic calibration via GAM"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Logistic calibration via GAM"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/logistic-cal-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -358,7 +392,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>That’s a lot better but it is problematic that the calibrated predictions do not reach zero or one.</p>
 <p>A different approach is to use isotonic regression. This method can result in very few unique probability estimates. The probably package has a version of isotonic regression that resamples the process to produce more unique probabilities:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1212</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1212</span><span class="op">)</span></span>
 <span><span class="va">iso_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_isotonic_boot</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, </span>
 <span>                                      save_pred <span class="op">=</span> <span class="cn">TRUE</span>, times <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span>
 <span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">iso_val</span><span class="op">)</span></span>
@@ -373,7 +409,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">iso_val</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Isotonic regression calibration"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Isotonic regression calibration"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/isoreg-cal-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -384,7 +422,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Much better. However, there is a slight bias since the estimated points are consistently above the identity line on the 45-degree angle.</p>
 <p>Finally, we can also test out <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22Beyond+sigmoids%22+calibration&amp;btnG=">Beta calibration</a>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">beta_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_beta</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">beta_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_beta</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">beta_val</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 7</span></span>
 <span><span class="co">#&gt;   .metric     .type        .estimator  mean     n std_err .config</span></span>
@@ -397,7 +437,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">beta_val</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Beta calibration"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Beta calibration"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/beta-cal-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -409,25 +451,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Beta calibration appears to have the best results. We’ll save a model that is trained using all of the out-of-sample predictions from the original naive Bayes resampling results.</p>
 <p>We can also fit the final naive Bayes model to predict the test set:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_cal</span> <span class="op">&lt;-</span> <span class="fu">cal_estimate_beta</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span>
-<span><span class="va">bayes_fit</span> <span class="op">&lt;-</span> <span class="va">bayes_wflow</span> <span class="op">%&gt;%</span> <span class="fu">fit</span><span class="op">(</span>data <span class="op">=</span> <span class="va">cells_tr</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cell_cal</span> <span class="op">&lt;-</span> <span class="fu">cal_estimate_beta</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span>
+<span><span class="va">bayes_fit</span> <span class="op">&lt;-</span> <span class="va">bayes_wflow</span> <span class="op">%&gt;%</span> <span class="fu">fit</span><span class="op">(</span>data <span class="op">=</span> <span class="va">cells_tr</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The <code>cell_cal</code> object can be used to enact the calibration for new predictions (as we’ll see in a minute).</p>
 </section><section id="test-set-results" class="level2"><h2 class="anchored" data-anchor-id="test-set-results">Test set results</h2>
 <p>First, we make our ordinary predictions:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_test_pred</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">cells_te</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cell_test_pred</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">cells_te</span><span class="op">)</span></span>
 <span><span class="va">cell_test_pred</span> <span class="op">%&gt;%</span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   .metric     .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 roc_auc     binary         0.840</span></span>
-<span><span class="co">#&gt; 2 brier_class binary         0.225</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 2 brier_class binary         0.225</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>These metric estimates are very consistent with the resampled performance estimates.</p>
 <p>We can then use our <code>cell_cal</code> object with the <code>cal_apply()</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op">&lt;-</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">cell_test_pred</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">cal_apply</span><span class="op">(</span><span class="va">cell_cal</span><span class="op">)</span></span>
 <span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">select</span><span class="op">(</span><span class="va">class</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">".pred_"</span><span class="op">)</span><span class="op">)</span></span>
@@ -444,19 +496,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;  8 PS    PS            0.725    0.275 </span></span>
 <span><span class="co">#&gt;  9 WS    WS            0.345    0.655 </span></span>
 <span><span class="co">#&gt; 10 WS    PS            0.607    0.393 </span></span>
-<span><span class="co">#&gt; # ℹ 495 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; # ℹ 495 more rows</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Note that <code>cal_apply()</code> recomputed the hard class predictions in the <code>.pred_class</code> column. It is possible that the changes in the probability estimates could invalidate the original hard class estimates.</p>
 <p>What do the calibrated test set results show?</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   .metric     .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 roc_auc     binary         0.840</span></span>
 <span><span class="co">#&gt; 2 brier_class binary         0.153</span></span>
 <span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/calibrated-res-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
@@ -471,7 +529,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="some-background-references" class="level2"><h2 class="anchored" data-anchor-id="some-background-references">Some background references</h2>
 <ul>
 <li><p>Kull, Meelis, Telmo M. Silva Filho, and Peter Flach. “<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22Beyond+sigmoids%22+calibration&amp;btnG=">Beyond sigmoids: How to obtain well-calibrated probabilities from binary classifiers with beta calibration.</a>” (2017): 5052-5080</p></li>
-<li><p>Niculescu-Mizil, Alexandru, and Rich Caruana. “<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%E2%80%9CPredicting+Good+Probabilities+with+Supervised+Learning%E2%80%9D&amp;btnG=">Predicting good probabilities with supervised learning</a>.” In <em>Proceedings of the 22nd international conference on Machine learning</em>, pp.&nbsp;625-632. 2005.</p></li>
+<li><p>Niculescu-Mizil, Alexandru, and Rich Caruana. “<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%E2%80%9CPredicting+Good+Probabilities+with+Supervised+Learning%E2%80%9D&amp;btnG=">Predicting good probabilities with supervised learning</a>.” In <em>Proceedings of the 22nd international conference on Machine learning</em>, pp. 625-632. 2005.</p></li>
 </ul></section><section id="session-information" class="level2"><h2 class="anchored" data-anchor-id="session-information">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
@@ -506,29 +564,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
     </div>
     <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
     </div>
     <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
     </div>
     <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
   </div>
@@ -944,13 +1002,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/calibration/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+       
+    <div class="toc-actions d-sm-block d-md-none"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/calibration/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div>
+</div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>
   </div>
 </footer>
-
-
-</body></html>
+</body>
+</html>

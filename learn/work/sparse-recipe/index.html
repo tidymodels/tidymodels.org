@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
@@ -57,26 +58,15 @@ div.sourceCode
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
-
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -170,8 +160,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#how-is-sparsity-handled-in-recipes" id="toc-how-is-sparsity-handled-in-recipes" class="nav-link" data-scroll-target="#how-is-sparsity-handled-in-recipes">How is sparsity handled in recipes</a></li>
   <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">Modeling</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-recipe/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+  </ul>
+<div class="toc-actions"><ul class="collapse">
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-recipe/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div></nav>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Using recipes to create sparse data</h1>
@@ -203,13 +197,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This article demonstrates how we can use a recipe to generate data sparsity in tidymodels.</p>
 <p>We use the term <strong>sparse data</strong> to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors.</p>
 <p>The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a <strong>dense vector</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <p>The sparse representation of this vector only requires 5 values. 1 value for the length (25), 2 values for the locations of the non-zero values (1, 22), and 2 values for the non-zero values (100, 1). This idea can also be extended to matrices as is done in the Matrix package.</p>
 <p>Not all modeling tasks can handle sparsity, we have a <a href="../../../find/sparse/index.html">list of compatible</a> steps you can use to guide the recipe creation.</p>
 </section><section id="the-data" class="level2"><h2 class="anchored" data-anchor-id="the-data">The data</h2>
 <p>We will be using the <a href="https://nycflights13.tidyverse.org/">nycflights13</a> data set for this demonstration. We are using this data specifically because it contains a number of categorical with a lot of levels, that when converted to binary indicator columns (a.k.a. “dummy variables”) will create a lot of sparse columns.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">glimpse</span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
@@ -233,23 +233,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; $ distance       &lt;dbl&gt; 1400, 1416, 1089, 1576, 762, 719, 1065, 229, 944, 733, …</span></span>
 <span><span class="co">#&gt; $ hour           &lt;dbl&gt; 5, 5, 5, 5, 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 6…</span></span>
 <span><span class="co">#&gt; $ minute         &lt;dbl&gt; 15, 29, 40, 45, 0, 58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 0…</span></span>
-<span><span class="co">#&gt; $ time_hour      &lt;dttm&gt; 2013-01-01 05:00:00, 2013-01-01 05:00:00, 2013-01-01 0…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; $ time_hour      &lt;dttm&gt; 2013-01-01 05:00:00, 2013-01-01 05:00:00, 2013-01-01 0…</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Our modeling objective is to fit a model that predicts the arrival delay, using a regression model. We could just as well have done a classification model on “Will plane land on time?,” but using the regression model we can hopefully be able to quantify how early or late the plane will be.</p>
 <p>We are furthermore assuming that this prediction will take place at departure time. This means we have to exclude some variables as they contain information that is not yet available.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">arr_time</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">arr_time</span>, <span class="op">-</span><span class="va">air_time</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>This data set contains a number of redundant variables. We don’t need to know the departure time <code>dep_time</code>, scheduled departure time <code>sched_dep_time</code>, and the departure delay <code>dep_delay</code> as they are a linear combination of each other <code>dep_delay = dep_time - sched_dep_time</code>. So we can remove one of them and choose to get rid of <code>sched_dep_time</code>.</p>
 <p>Likewise, the <code>time_hour</code> variable is a datetime that contains data also located in <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, and <code>minute</code>. We will thus also remove that one.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">time_hour</span>, <span class="op">-</span><span class="va">sched_dep_time</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">time_hour</span>, <span class="op">-</span><span class="va">sched_dep_time</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>You may or may not have noticed that <code>dep_time</code> and <code>sched_arr_time</code> have a weird encoding. What is happening is that <code>517</code> is actually <code>5:17</code> e.i. 17 minutes past 5 AM. So we need to update that, which we will use a little helper function for.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">get_minutes</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">get_minutes</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="va">minutes</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">100</span></span>
 <span> <span class="va">hours</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></span> <span class="fl">100</span></span>
 <span></span>
@@ -257,19 +269,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dep_time</span>, <span class="va">sched_arr_time</span><span class="op">)</span>, <span class="va">get_minutes</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dep_time</span>, <span class="va">sched_arr_time</span><span class="op">)</span>, <span class="va">get_minutes</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>We will fit a model using the first month of the year, and then try to assess how well it will generalize over the remaining years. We will also exclude any observations where <code>arr_delay</code> is <code>NA</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="fu">drop_na</span><span class="op">(</span><span class="va">flights</span>, <span class="va">arr_delay</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="fu">drop_na</span><span class="op">(</span><span class="va">flights</span>, <span class="va">arr_delay</span><span class="op">)</span></span>
 <span><span class="va">flights_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">flights_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">flights_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">month</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="creating-a-recipe" class="level2"><h2 class="anchored" data-anchor-id="creating-a-recipe">Creating a recipe</h2>
 <p>The data is quite simple in terms of types. We have numeric variables and categorical variables. We will do some simple imputation of the numeric variables and create dummy variables on the categorical predictors.</p>
 <p>We’ll use a recipe to preprocess the data. If you have never seen a recipe, see Chapter 8 of <a href="https://www.tmwr.org/recipes"><em>Tidy Models with R</em></a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rec_spec</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">flights_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rec_spec</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">flights_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_impute_mean</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -292,7 +312,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; • Centering and scaling for: all_numeric_predictors()</span></span>
 <span><span class="co">#&gt; • Novel factor level assignment for: all_nominal_predictors()</span></span>
 <span><span class="co">#&gt; • Unknown factor level assignment for: all_nominal_predictors()</span></span>
-<span><span class="co">#&gt; • Dummy variables from: all_nominal_predictors()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; • Dummy variables from: all_nominal_predictors()</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>You will notice we aren’t doing anything special here to denote the recipe that will acknowledge or produce sparsity. Next, we will go into some details to explain how you, the user, should approach recipes when you suspect that sparsity will be produced.</p>
 </section><section id="how-is-sparsity-handled-in-recipes" class="level2"><h2 class="anchored" data-anchor-id="how-is-sparsity-handled-in-recipes">How is sparsity handled in recipes</h2>
@@ -304,50 +326,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A rough estimate of the sparsity of the data that will come out of the recipe is calculated. This is done using the input data set, and the steps present in the recipe. But since this check has to happen before the recipe is prepped, it will be quite simple. What this means in practice is that it is fairly good at estimating the sparsity that is produced by sparsity-generating steps, but it isn’t able to detect if those variables are passed to a different step that doesn’t preserve it.</p>
 <p>The following recipe would give an accurate estimate of how sparse the resulting data will be, as the dummy variables produced by <code>step_dummy()</code> aren’t passed to any other steps. We want a good estimate of the resulting sparsity as it is key in determining whether the recipe should produce sparse data or not.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>But the next recipe would have the same sparsity estimate despite not being able to produce any sparsity since <code>step_normalize()</code> can’t preserve the sparsity as it subtracts a constant value.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>If you were able to modify the above recipe to use <code>step_scale()</code> instead of <code>step_normalize()</code> then the estimate is still valid as <code>step_scale()</code> is a sparsity-preserving step.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">step_scale</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">step_scale</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Is it for this reason the steps that produce sparsity have the <code>sparse</code> argument. It defaults to <code>"auto"</code>, which means that the estimating process in workflows decides whether or not sparsity should be created. This argument can take two other values <code>"yes"</code> and <code>"no"</code>. If you know for certain that the recipe should or shouldn’t produce sparsity you can overwrite with this argument.</p>
 <p>This means the recipe below wouldn’t try to initially produce sparse vectors since they will immediately be turned into dense vectors by the next step.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">outcome</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data_train</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span>, sparse <span class="op">=</span> <span class="st">"no"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>A lot of time went into trying to make <code>sparse = "auto"</code> work as well as possible, but since nothing is perfect you have the ability to overwrite. Setting <code>sparse = "yes"</code> or <code>sparse = "no"</code> is done as a overwrite, meaning that the above mentioned check in workflows doesn’t run. The check is only done if <code>sparse = "auto"</code> is present in any of the steps.</p>
 <p>The bad thing that happens if the check process is incorrect or you set the wrong value for <code>sparse</code> is that you get the speed and performance from previous versions before sparsity was enabled. Not worse speed and performance.</p>
 </section><section id="modeling" class="level2"><h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
 <p>We will finish the workflow using a model/engine combination that supports sparse data.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_spec</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mod_spec</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mod_spec</span></span>
 <span><span class="co">#&gt; Boosted Tree Model Specification (regression)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Computational engine: xgboost</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; Computational engine: xgboost</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Then combine it in a workflow.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wf_spec</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="va">rec_spec</span>, <span class="va">mod_spec</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wf_spec</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="va">rec_spec</span>, <span class="va">mod_spec</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>And fit it like we usually do.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wf_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">wf_spec</span>, <span class="va">flights_train</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wf_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">wf_spec</span>, <span class="va">flights_train</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -364,13 +414,17 @@ Note
 </div>
 <p>Now that the model has been fit we can calculate the RMSE to see how well the model has performed.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">train_preds</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">flights_train</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">train_preds</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">flights_train</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">rmse</span><span class="op">(</span><span class="va">train_preds</span>, <span class="va">arr_delay</span>, <span class="va">.pred</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 rmse    standard        14.2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 1 rmse    standard        14.2</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -387,9 +441,13 @@ Note
 </div>
 <p>We can also take a visual look at the performance by plotting the predicted values against the real values.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">train_preds</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">train_preds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">.pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/unnamed-chunk-15-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Scatter chart. Arrival delay along the x-axis and predictions along the  y-axis. The majority of the points are along the diagonal, with a shift down." width="672"></p>
@@ -400,21 +458,29 @@ Note
 <p>The model appears to work fairly well on the training data set. We notice the shift down, which would suggest that the model has a bias towards underestimating the delay.</p>
 <p>Now we will see how well the model performs in the remaining months.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test_preds</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">flights_test</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_preds</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">flights_test</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">rmse</span><span class="op">(</span><span class="va">test_preds</span>, <span class="va">arr_delay</span>, <span class="va">.pred</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 rmse    standard        20.9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 1 rmse    standard        20.9</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>And they see that the performance is quite a bit worse. Let’s see how the performance goes on a month-by-month basis.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test_preds</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_preds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmse</span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">.pred</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">month</span>, <span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/unnamed-chunk-17-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Scatter chart. Month along the x-axis, estimate of RSME along the y-axis. Starting on the second month with a value around 17, it goes up for each month to 23 in July, afterward it does back down to 16 in September,  with November having the same value and December having a value of 20." width="672"></p>
@@ -455,29 +521,29 @@ Note
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
     </div>
     <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
     </div>
     <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
     </div>
     <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
   </div>
@@ -893,13 +959,16 @@ Note
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-recipe/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+       
+    <div class="toc-actions d-sm-block d-md-none"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-recipe/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div>
+</div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>
   </div>
 </footer>
-
-
-</body></html>
+</body>
+</html>

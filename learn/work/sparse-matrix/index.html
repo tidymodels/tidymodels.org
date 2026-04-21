@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
@@ -57,26 +58,15 @@ div.sourceCode
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
-
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -168,8 +158,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data">Example data</a></li>
   <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">Modeling</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-matrix/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+  </ul>
+<div class="toc-actions"><ul class="collapse">
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-matrix/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div></nav>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Model tuning using a sparse matrix</h1>
@@ -201,12 +195,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This article demonstrates how we can use a sparse matrix in tidymodels.</p>
 <p>We use the term <strong>sparse data</strong> to denote a data set that contains a lot of 0s. Such data is commonly seen as a result of dealing with categorical variables, text tokenization, or graph data sets. The word sparse describes how the information is packed. Namely, it represents the presence of a lot of zeroes. For some tasks, we can easily get above 99% percent of 0s in the predictors.</p>
 <p>The reason we use sparse data as a construct is that it is a lot more memory efficient to store the positions and values of the non-zero entries than to encode all the values. One could think of this as a compression, but one that is done such that data tasks are still fast. The following vector requires 25 values to store it normally (dense representation). This representation will be referred to as a <strong>dense vector</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <p>The sparse representation of this vector only requires 5 values. 1 value for the length (25), 2 values for the locations of the non-zero values (1, 22), and 2 values for the non-zero values (100, 1). This idea can also be extended to matrices as is done in the Matrix package. Where we instead store the dimensions of the matrix, row indexes, colomn indexes, and the values for the non-zero entries.</p>
 </section><section id="example-data" class="level2"><h2 class="anchored" data-anchor-id="example-data">Example data</h2>
 <p>The data we will be using in this article is a larger sample of the <a href="https://modeldata.tidymodels.org/reference/small_fine_foods.html">small_fine_foods</a> data set from the <a href="https://modeldata.tidymodels.org">modeldata</a> package. The <a href="https://snap.stanford.edu/data/web-FineFoods.html">raw data</a> was sliced down to 100,000 rows, tokenized, and saved as a sparse matrix. Data has been saved as <a href="reviews.rds">reviews.rds</a> and the code to generate this data set is found at <a href="generate-data.R">generate-data.R</a>. This file takes up around 1MB compressed, and around 12MB once loaded into R. This data set is encoded as a sparse matrix from the Matrix package; if we were to turn it into a dense matrix, it would take up 3GB.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reviews</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">read_rds</span><span class="op">(</span><span class="st">"reviews.rds"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reviews</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">read_rds</span><span class="op">(</span><span class="st">"reviews.rds"</span><span class="op">)</span></span>
 <span><span class="va">reviews</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 6 x 24818 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">#&gt;   [[ suppressing 34 column names 'SCORE', 'a', 'all' ... ]]</span></span>
@@ -219,17 +219,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 6 . 3 1 2 . . . . . . . . . . . 2 1 1 . . . . . . 4 1 . . . . . . . . ......</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  .....suppressing 24784 columns in show(); maybe adjust options(max.print=, width=)</span></span>
-<span><span class="co">#&gt;  ..............................</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt;  ..............................</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="modeling" class="level2"><h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
 <p>We start by loading tidymodels and the sparsevctrs package. The sparsevctrs package includes some helper functions that will allow us to more easily work with sparse matrices in tidymodels.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/sparsevctrs">sparsevctrs</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/sparsevctrs">sparsevctrs</a></span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>While sparse matrices now work in parsnip, recipes, and workflows directly, we can use rsample’s sampling functions as well if we turn it into a tibble. The usual <code>as_tibble()</code> would turn the object to a dense representation, greatly expanding the object size. However, sparsevctrs’ <code>coerce_to_sparse_tibble()</code> will create a tibble with sparse columns, which we call a <strong>sparse tibble</strong>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reviews_tbl</span> <span class="op">&lt;-</span> <span class="fu">coerce_to_sparse_tibble</span><span class="op">(</span><span class="va">reviews</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reviews_tbl</span> <span class="op">&lt;-</span> <span class="fu">coerce_to_sparse_tibble</span><span class="op">(</span><span class="va">reviews</span><span class="op">)</span></span>
 <span><span class="va">reviews_tbl</span></span>
 <span><span class="co">#&gt; # A tibble: 15,000 × 24,818</span></span>
 <span><span class="co">#&gt;    SCORE     a   all   and appreciates    be better bought canned   dog finicky</span></span>
@@ -250,29 +258,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; #   meat &lt;dbl&gt;, more &lt;dbl&gt;, most &lt;dbl&gt;, my &lt;dbl&gt;, of &lt;dbl&gt;, processed &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   product &lt;dbl&gt;, products &lt;dbl&gt;, quality &lt;dbl&gt;, several &lt;dbl&gt;, she &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   smells &lt;dbl&gt;, stew &lt;dbl&gt;, than &lt;dbl&gt;, the &lt;dbl&gt;, them &lt;dbl&gt;, this &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   to &lt;dbl&gt;, vitality &lt;dbl&gt;, actually &lt;dbl&gt;, an &lt;dbl&gt;, arrived &lt;dbl&gt;, …</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; #   to &lt;dbl&gt;, vitality &lt;dbl&gt;, actually &lt;dbl&gt;, an &lt;dbl&gt;, arrived &lt;dbl&gt;, …</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Despite this tibble containing 15,000 rows and a little under 25,000 columns, it only takes up marginally more space than the sparse matrix.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu">obj_size</span><span class="op">(</span><span class="va">reviews</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu">obj_size</span><span class="op">(</span><span class="va">reviews</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 12.75 MB</span></span>
 <span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu">obj_size</span><span class="op">(</span><span class="va">reviews_tbl</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 18.27 MB</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 18.27 MB</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The outcome <code>SCORE</code> is currently encoded as a double, but we want it to be a factor for it to work well with tidymodels, since tidymodels expects outcomes to be factors for classification.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reviews_tbl</span> <span class="op">&lt;-</span> <span class="va">reviews_tbl</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>SCORE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">SCORE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"great"</span>, <span class="st">"other"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reviews_tbl</span> <span class="op">&lt;-</span> <span class="va">reviews_tbl</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>SCORE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">SCORE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"great"</span>, <span class="st">"other"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Since <code>reviews_tbl</code> is now a tibble, we can use <code>initial_split()</code> as we usually do.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">review_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">reviews_tbl</span><span class="op">)</span></span>
 <span><span class="va">review_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">review_split</span><span class="op">)</span></span>
 <span><span class="va">review_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">review_split</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">review_folds</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">review_train</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">review_folds</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">review_train</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Next, we will specify our workflow. Since we are showcasing how sparse data works in tidymodels, we will stick to a simple lasso regression model. These models tend to work well with sparse predictors. <code>penalty</code> has been set to be tuned.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -289,20 +311,32 @@ Tip
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rec_spec</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">SCORE</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">review_train</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rec_spec</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">SCORE</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">review_train</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lm_spec</span> <span class="op">&lt;-</span> <span class="fu">logistic_reg</span><span class="op">(</span>penalty <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">wf_spec</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="va">rec_spec</span>, <span class="va">lm_spec</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">wf_spec</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="va">rec_spec</span>, <span class="va">lm_spec</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>With everything in order, we can now evaluate several different values of <code>penalty</code> with <code>tune_grid()</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tune_res</span> <span class="op">&lt;-</span> <span class="fu">tune_grid</span><span class="op">(</span><span class="va">wf_spec</span>, <span class="va">review_folds</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tune_res</span> <span class="op">&lt;-</span> <span class="fu">tune_grid</span><span class="op">(</span><span class="va">wf_spec</span>, <span class="va">review_folds</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Despite the size of the data, this code runs quite quickly due to the sparse encoding of the data. Once the tuning process is done, then we can look at the performance for different values of regularization.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">tune_res</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">tune_res</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/autoplot-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -312,16 +346,22 @@ Tip
 </div>
 <p>We can now finalize the workflow and fit the final model on the training data set.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wf_final</span> <span class="op">&lt;-</span> <span class="fu">finalize_workflow</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wf_final</span> <span class="op">&lt;-</span> <span class="fu">finalize_workflow</span><span class="op">(</span></span>
 <span>  <span class="va">wf_spec</span>, </span>
 <span>  <span class="fu">select_best</span><span class="op">(</span><span class="va">tune_res</span>, metric <span class="op">=</span> <span class="st">"roc_auc"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">wf_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">wf_final</span>, <span class="va">review_train</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">wf_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">wf_final</span>, <span class="va">review_train</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>With this fitted model, we can now predict with a sparse tibble.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">review_test</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">review_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3,750 × 1</span></span>
 <span><span class="co">#&gt;    .pred_class</span></span>
 <span><span class="co">#&gt;    &lt;fct&gt;      </span></span>
@@ -335,12 +375,16 @@ Tip
 <span><span class="co">#&gt;  8 great      </span></span>
 <span><span class="co">#&gt;  9 great      </span></span>
 <span><span class="co">#&gt; 10 great      </span></span>
-<span><span class="co">#&gt; # ℹ 3,740 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; # ℹ 3,740 more rows</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p><code>fit()</code> and <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> both accept sparse matrices as input. However if you want to tune a model with the tune package or perform data splitting with rsample then you will need a tibble, which can be done with <code>coerce_to_sparse_tibble()</code>.</p>
 <p>This means that we could technically do predictions on our model directly on the sparse matrix using <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">reviews</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">reviews</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 15,000 × 1</span></span>
 <span><span class="co">#&gt;    .pred_class</span></span>
 <span><span class="co">#&gt;    &lt;fct&gt;      </span></span>
@@ -354,7 +398,9 @@ Tip
 <span><span class="co">#&gt;  8 great      </span></span>
 <span><span class="co">#&gt;  9 great      </span></span>
 <span><span class="co">#&gt; 10 great      </span></span>
-<span><span class="co">#&gt; # ℹ 14,990 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; # ℹ 14,990 more rows</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
@@ -388,29 +434,29 @@ Tip
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
     </div>
     <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
     </div>
     <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
     </div>
     <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
   </div>
@@ -826,13 +872,16 @@ Tip
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-matrix/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+       
+    <div class="toc-actions d-sm-block d-md-none"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/sparse-matrix/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div>
+</div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>
   </div>
 </footer>
-
-
-</body></html>
+</body>
+</html>

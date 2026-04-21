@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
@@ -57,26 +58,15 @@ div.sourceCode
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
-
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -172,8 +162,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#documenting-s7-methods" id="toc-documenting-s7-methods" class="nav-link" data-scroll-target="#documenting-s7-methods">Documenting S7 methods</a></li>
   <li><a href="#accessing-results-after-fitting" id="toc-accessing-results-after-fitting" class="nav-link" data-scroll-target="#accessing-results-after-fitting">Accessing results after fitting</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/filtro/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+  </ul>
+<div class="toc-actions"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/filtro/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div></nav>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Create your own score class object</h1>
@@ -217,20 +211,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="parent-class-general-scoring-object" class="level2"><h2 class="anchored" data-anchor-id="parent-class-general-scoring-object">Parent class (General scoring object)</h2>
 <p>All the subclasses (custom scoring objects) share the same parent class named <code>class_score</code>. The parent class is already implemented, and we need this to build our own scoring class object:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Call the parent class</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Call the parent class</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/filtro">filtro</a></span><span class="op">)</span> </span>
-<span><span class="va">class_score</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">class_score</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>These are the fixed properties (attributes) for this object:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">class_score</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">class_score</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (outcome_type = c("numeric", "factor"), predictor_type = c("numeric", </span></span>
 <span><span class="co">#&gt; "factor"), case_weights = logical(0), range = integer(0), inclusive = logical(0), </span></span>
 <span><span class="co">#&gt;     fallback_value = integer(0), score_type = character(0), transform_fn = function() NULL, </span></span>
 <span><span class="co">#&gt;     direction = character(0), deterministic = logical(0), tuning = logical(0), </span></span>
 <span><span class="co">#&gt;     calculating_fn = function() NULL, label = character(0), packages = character(0), </span></span>
 <span><span class="co">#&gt;     results = data.frame()) </span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>For example:</p>
 <ul>
@@ -250,14 +252,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For reference, the ANOVA F-test filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. The <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance.</p>
 <p>By setting <code>parent = class_score</code>, the subclass <code>class_score_aov</code> inherits all of the fixed properties from the parent class. Additional, implementation-specific properties can be added using the <code>properties =</code> argument. For example:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create a subclass named 'class_score_aov'</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a subclass named 'class_score_aov'</span></span>
 <span><span class="va">class_score_aov</span> <span class="op">&lt;-</span> <span class="fu">S7</span><span class="fu">::</span><span class="fu">new_class</span><span class="op">(</span></span>
 <span>  <span class="st">"class_score_aov"</span>,</span>
 <span>  parent <span class="op">=</span> <span class="va">class_score</span>,</span>
 <span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>    neg_log10 <span class="op">=</span> <span class="fu">S7</span><span class="fu">::</span><span class="fu">new_property</span><span class="op">(</span><span class="fu">S7</span><span class="fu">::</span><span class="va">class_logical</span>, default <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>In addition to the properties inherited from the parent class (discussed in the previous section), <code>class_score_aov</code> also includes the following property:</p>
 <ul>
@@ -272,7 +278,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We demonstrate how to create these instances (objects) accordingly.</p>
 <p><code>score_aov_pval</code> is created as an instance of the <code>class_score_aov</code> subclass by calling its constructor and specifying its properties:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ANOVA p-value</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ANOVA p-value</span></span>
 <span><span class="va">score_aov_pval</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">class_score_aov</span><span class="op">(</span></span>
 <span>    outcome_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
@@ -286,21 +294,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"ANOVA p-values"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Once instantiated, individual properties can be accessed via <code>object@</code>. For example:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">case_weights</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">case_weights</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">fallback_value</span></span>
 <span><span class="co">#&gt; [1] Inf</span></span>
 <span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">direction</span></span>
-<span><span class="co">#&gt; [1] "maximize"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; [1] "maximize"</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Note that by default, the returned p-value is transformed to <code>-log10(p_value)</code>, which means larger values correspond to more important predictors. This is why the fallback value is set to <code>Inf</code> and the direction is set to <code>"maximize"</code>.</p>
 <p><code>score_aov_fstat</code> is another instance of the <code>class_score_aov</code> subclass:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ANOVA F-statistic</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ANOVA F-statistic</span></span>
 <span><span class="va">score_aov_fstat</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">class_score_aov</span><span class="op">(</span></span>
 <span>    outcome_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
@@ -314,7 +330,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"ANOVA F-statistics"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The F-statistic is not transformed, nor does it provide an option for transformation. Nevertheless, it also uses a fallback value of <code>Inf</code> with the direction set to <code>"maximize"</code>, since larger F-statistic values indicate more important predictors.</p>
 </section><section id="fitting-or-estimating-feature-score" class="level2"><h2 class="anchored" data-anchor-id="fitting-or-estimating-feature-score">Fitting (or estimating) feature score</h2>
@@ -333,27 +351,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 └─&gt; ... </code></pre>
 <p>Let’s use the ANOVA F-test filter again as an example:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># User-level example: Check the class of the object</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># User-level example: Check the class of the object</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">score_aov_pval</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "filtro::class_score_aov" "filtro::class_score"    </span></span>
 <span><span class="co">#&gt; [3] "S7_object"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">score_aov_fstat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "filtro::class_score_aov" "filtro::class_score"    </span></span>
-<span><span class="co">#&gt; [3] "S7_object"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; [3] "S7_object"</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Both instances (objects) belong to the custom scoring object <code>class_score_aov</code>. Therefore, when <code>fit()</code> is called, the method for <code>class_score_aov</code> is dispatched, performing the actual fitting using the ANOVA F-test:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># User-level example: Method dispatch for objects of class `class_score_aov`</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># User-level example: Method dispatch for objects of class `class_score_aov`</span></span>
 <span><span class="va">score_aov_pval</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames</span><span class="op">)</span></span>
 <span><span class="va">score_aov_fstat</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="defining-s7-methods" class="level2"><h2 class="anchored" data-anchor-id="defining-s7-methods">Defining S7 methods</h2>
 <p>For users to use the <code>fit()</code> method described above, we need to define a S7 method that implements the scoring logic.</p>
 <p>The following code defines the <code>fit()</code> method specifically for the <code>class_score_aov</code> subclass, specifying how feature score should be computed using ANOVA F-test:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Define the scoring method for `class_score_aov`</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Define the scoring method for `class_score_aov`</span></span>
 <span><span class="fu">S7</span><span class="fu">::</span><span class="fu">method</span><span class="op">(</span><span class="va">fit</span>, <span class="va">class_score_aov</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">formula</span>,</span>
@@ -365,7 +393,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span>  <span class="va">object</span><span class="op">@</span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">res</span></span>
 <span>  <span class="va">object</span></span>
-<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="op">}</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>We would want to do something similar to define a S7 method for other <code>class_score_*</code> subclass.</p>
 </section><section id="documenting-s7-methods" class="level2"><h2 class="anchored" data-anchor-id="documenting-s7-methods">Documenting S7 methods</h2>
@@ -376,18 +406,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>The code below opens the help page for the <code>fit()</code> generic:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># User-level example: Help page for `fit()` generic</span></span>
-<span><span class="op">?</span><span class="va">fit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># User-level example: Help page for `fit()` generic</span></span>
+<span><span class="op">?</span><span class="va">fit</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The code below opens the help page for specific <code>fit()</code> method:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># User-level example: Help page for `fit()` method along with the documentation for the specific object</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># User-level example: Help page for `fit()` method along with the documentation for the specific object</span></span>
 <span><span class="op">?</span><span class="va">score_aov_pval</span></span>
-<span><span class="op">?</span><span class="va">score_aov_fstat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="op">?</span><span class="va">score_aov_fstat</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>For users to access the help page using <code>?</code> as described above, the <code>fit()</code> method needs to be exported using <code>#' @export</code>, but it is not documented directly.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @export</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' @export</span></span>
 <span><span class="fu">S7</span><span class="fu">::</span><span class="fu">method</span><span class="op">(</span><span class="va">fit</span>, <span class="va">class_score_aov</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -396,11 +436,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span>  <span class="va">object</span><span class="op">@</span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">res</span></span>
 <span>  <span class="va">object</span></span>
-<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="op">}</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Instead, documentation is provided in the “Details” section and the “Estimating the scores” subsection of the documentation for the <code>score_aov_pval</code> object.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' Scoring via analysis of variance hypothesis tests</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Scoring via analysis of variance hypothesis tests</span></span>
 <span><span class="co">#'</span></span>
 <span><span class="co">#' @description</span></span>
 <span><span class="co">#' </span></span>
@@ -445,11 +489,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"ANOVA p-values"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>We can have the <code>score_aov_fstat</code> object share the same help page as <code>score_aov_pval</code> by using <code>#' @name</code>. This avoids repeated documentation for similar or related objects.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @name score_aov_pval</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' @name score_aov_pval</span></span>
 <span><span class="co">#' @export</span></span>
 <span><span class="va">score_aov_fstat</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">class_score_aov</span><span class="op">(</span></span>
@@ -465,13 +513,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"ANOVA F-statistics"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="accessing-results-after-fitting" class="level2"><h2 class="anchored" data-anchor-id="accessing-results-after-fitting">Accessing results after fitting</h2>
 <p>Once the method has been fitted via <code>fit()</code>, the data frame of results can be accessed via <code>object@results</code>.</p>
 <p>We use a subset of the Ames data set from the {modeldata} package for demonstration. The goal is to predict housing sale price. <code>Sale_Price</code> is the outcome and is numeric.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span></span>
 <span><span class="va">ames_subset</span> <span class="op">&lt;-</span> <span class="fu">modeldata</span><span class="fu">::</span><span class="va">ames</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Use a subset of data for demonstration</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">select</span><span class="op">(</span></span>
@@ -483,24 +535,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">Street</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">ames_subset</span> <span class="op">&lt;-</span> <span class="va">ames_subset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Next, we fit the score as we discuss before:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify ANOVA p-value and fit score</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Specify ANOVA p-value and fit score</span></span>
 <span><span class="va">ames_aov_pval_res</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">score_aov_pval</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_subset</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_subset</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify ANOVA F-statistic and fit score</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Specify ANOVA F-statistic and fit score</span></span>
 <span><span class="va">ames_aov_fstat_res</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">score_aov_fstat</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_subset</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_subset</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Recall that individual properties of an object can be accessed using <code>object@</code>. Once the method has been fitted, the resulting data frame can be accessed via <code>object@results</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_aov_pval_res</span><span class="op">@</span><span class="va">results</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ames_aov_pval_res</span><span class="op">@</span><span class="va">results</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
 <span><span class="co">#&gt;   name      score outcome    predictor   </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;       </span></span>
@@ -508,10 +572,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 2 aov_pval 130.   Sale_Price MS_Zoning   </span></span>
 <span><span class="co">#&gt; 3 aov_pval  NA    Sale_Price Lot_Frontage</span></span>
 <span><span class="co">#&gt; 4 aov_pval  NA    Sale_Price Lot_Area    </span></span>
-<span><span class="co">#&gt; 5 aov_pval   5.75 Sale_Price Street</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 5 aov_pval   5.75 Sale_Price Street</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_aov_fstat_res</span><span class="op">@</span><span class="va">results</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ames_aov_fstat_res</span><span class="op">@</span><span class="va">results</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
 <span><span class="co">#&gt;   name      score outcome    predictor   </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;       </span></span>
@@ -519,7 +587,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 2 aov_fstat 115.  Sale_Price MS_Zoning   </span></span>
 <span><span class="co">#&gt; 3 aov_fstat  NA   Sale_Price Lot_Frontage</span></span>
 <span><span class="co">#&gt; 4 aov_fstat  NA   Sale_Price Lot_Area    </span></span>
-<span><span class="co">#&gt; 5 aov_fstat  22.9 Sale_Price Street</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 5 aov_fstat  22.9 Sale_Price Street</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
@@ -551,29 +621,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
     </div>
     <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
     </div>
     <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
     </div>
     <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
   </div>
@@ -989,13 +1059,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/filtro/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+       
+    <div class="toc-actions d-sm-block d-md-none"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/filtro/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div>
+</div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>
   </div>
 </footer>
-
-
-</body></html>
+</body>
+</html>

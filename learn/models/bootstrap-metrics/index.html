@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
@@ -57,26 +58,15 @@ div.sourceCode
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
-
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../favicon.ico" rel="icon">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -171,8 +161,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#test-set-intervals" id="toc-test-set-intervals" class="nav-link" data-scroll-target="#test-set-intervals">Test Set Intervals</a></li>
   <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/bootstrap-metrics/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
+  </ul>
+<div class="toc-actions"><ul class="collapse">
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/bootstrap-metrics/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div></nav>
+</div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Confidence Intervals for Performance Metrics</h1>
@@ -211,7 +205,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="example-data" class="level2"><h2 class="anchored" data-anchor-id="example-data">Example Data</h2>
 <p>We’ll use the <a href="https://modeldata.tidymodels.org/reference/deliveries.html">delivery time data</a> and follow the analysis used in <a href="https://aml4td.org/chapters/whole-game.html#sec-delivery-times"><em>Applied Machine Learning for Tabular Data</em></a>. The outcome is the time for food to be delivered, and the predictors include the day/hour of the order, the distance, and what was included in the order (columns starting with <code>item_</code>):</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">deliveries</span><span class="op">)</span></span>
 <span><span class="co">#&gt; tibble [10,012 × 31] (S3: tbl_df/tbl/data.frame)</span></span>
@@ -245,11 +241,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;  $ item_24         : int [1:10012] 0 0 1 0 0 1 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  $ item_25         : int [1:10012] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  $ item_26         : int [1:10012] 0 0 0 0 0 0 0 0 1 0 ...</span></span>
-<span><span class="co">#&gt;  $ item_27         : int [1:10012] 0 0 0 1 1 0 0 0 0 0 ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt;  $ item_27         : int [1:10012] 0 0 0 1 1 0 0 0 0 0 ...</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Given the amount of data, a validation set was used <em>in lieu</em> of multiple resamples. This means that we can fit models on the training set, evaluate/compare them with the validation set, and reserve the test set for a final performance assessment (after model development). The data splitting code is:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">991</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">991</span><span class="op">)</span></span>
 <span><span class="va">delivery_split</span> <span class="op">&lt;-</span> <span class="fu">initial_validation_split</span><span class="op">(</span><span class="va">deliveries</span>, prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span><span class="op">)</span>, </span>
 <span>                                           strata <span class="op">=</span> <span class="va">time_to_delivery</span><span class="op">)</span></span>
 <span></span>
@@ -259,18 +259,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">delivery_val</span>   <span class="op">&lt;-</span> <span class="fu">validation</span><span class="op">(</span><span class="va">delivery_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create an object that bundle training and validation set as a resample object</span></span>
-<span><span class="va">delivery_rs</span>    <span class="op">&lt;-</span> <span class="fu">validation_set</span><span class="op">(</span><span class="va">delivery_split</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">delivery_rs</span>    <span class="op">&lt;-</span> <span class="fu">validation_set</span><span class="op">(</span><span class="va">delivery_split</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 </section><section id="tuning-a-model" class="level2"><h2 class="anchored" data-anchor-id="tuning-a-model">Tuning a Model</h2>
 <p>To demonstrate, we’ll use a multivariate adaptive regression spline (<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C7&amp;q=%22multivariate+adaptive+regression+splines%22&amp;btnG=">MARS</a>) model produced by the earth package. The original analysis of these data shows some significant interactions between predictors, so we will specify a model that can estimate them using the argument <code>prod_degree = 2</code>. Let’s create a model specification that tunes the number of terms to retain:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mars_spec</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mars_spec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">mars</span><span class="op">(</span>num_terms <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span>, prod_degree <span class="op">=</span> <span class="fl">2</span>, prune_method <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>Let’s use grid search to evaluate a grid of values between 2 and 50. We’ll use <code>tune_grid()</code> with an option to save the out-of-sample (i.e., validation set) predictions for each candidate model in the grid. By default, for regression models, the function computes the root mean squared error (RMSE) and R<sup>2</sup>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>num_terms <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>num_terms <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">ctrl</span> <span class="op">&lt;-</span> <span class="fu">control_grid</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mars_res</span> <span class="op">&lt;-</span> </span>
@@ -285,11 +293,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Attaching package: 'plotrix'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:scales':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     rescale</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt;     rescale</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>How did the model look?</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">mars_res</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">mars_res</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/perf-plot-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -305,7 +319,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For our application, we’ll take the validation set predictions for each candidate model in the grid, bootstrap them, and then compute confidence intervals using the percentile method. Note that we are not refitting the model; we will be solely relying on the existing out-of-sample predictions from the validation set.</p>
 <p>There’s a tidymodels function called <code>int_pctl()</code> for this purpose. It has a method to work with objects produced by the tune package, such as our <code>mars_res</code> object. Let’s compute 90% confidence intervals using 2,000 bootstrap samples:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">140</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">140</span><span class="op">)</span></span>
 <span><span class="va">mars_boot</span> <span class="op">&lt;-</span> <span class="fu">int_pctl</span><span class="op">(</span><span class="va">mars_res</span>, alpha <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Too little data to stratify.</span></span>
 <span><span class="co">#&gt; • Resampling will be unstratified.</span></span>
@@ -323,17 +339,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;  8         9 rmse    bootstrap    3.03      3.19   3.37 pre0_mod08_post0</span></span>
 <span><span class="co">#&gt;  9        10 rmse    bootstrap    3.01      3.18   3.37 pre0_mod09_post0</span></span>
 <span><span class="co">#&gt; 10        11 rmse    bootstrap    2.82      2.99   3.17 pre0_mod10_post0</span></span>
-<span><span class="co">#&gt; # ℹ 88 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; # ℹ 88 more rows</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>The results have columns for the mean of the sampling distribution (<code>.estimate</code>) and the upper and lower confidence bounds (<code>.upper</code> and <code>.lower</code>, respectively). Let’s visualize these results:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mars_boot</span> <span class="op">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mars_boot</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">num_terms</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">.estimate</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">geom_ribbon</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>ymin <span class="op">=</span> <span class="va">.lower</span>, ymax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, fill <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">.metric</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"# Retained Terms"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>    <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"# Retained Terms"</span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/int-plot-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -345,7 +367,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="test-set-intervals" class="level2"><h2 class="anchored" data-anchor-id="test-set-intervals">Test Set Intervals</h2>
 <p>Suppose the MARS model was the best we could do for these data. We would then fit the model (with 40 terms) on the training set then finally evaluate the test set. tidymodels has a function called <code>last_fit()</code> that uses our original data splitting object (<code>delivery_split</code>) and the model specification. To get the test set predictions, we can use <code>collect_metrics()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mars_final_spec</span> <span class="op">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mars_final_spec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">mars</span><span class="op">(</span>num_terms <span class="op">=</span> <span class="fl">40</span>, prod_degree <span class="op">=</span> <span class="fl">2</span>, prune_method <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span></span>
 <span></span>
@@ -358,27 +382,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;   .metric .estimator .estimate .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;          </span></span>
 <span><span class="co">#&gt; 1 rmse    standard       2.20  pre0_mod0_post0</span></span>
-<span><span class="co">#&gt; 2 rsq     standard       0.892 pre0_mod0_post0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 2 rsq     standard       0.892 pre0_mod0_post0</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>These values are pretty consistent with what the validation set (and its confidence intervals) produced:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mars_boot</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">num_terms</span> <span class="op">==</span> <span class="fl">40</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mars_boot</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">num_terms</span> <span class="op">==</span> <span class="fl">40</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 7</span></span>
 <span><span class="co">#&gt;   num_terms .metric .estimator .lower .estimate .upper .config         </span></span>
 <span><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span></span>
 <span><span class="co">#&gt; 1        40 rmse    bootstrap   2.11      2.19   2.29  pre0_mod39_post0</span></span>
-<span><span class="co">#&gt; 2        40 rsq     bootstrap   0.893     0.902  0.910 pre0_mod39_post0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 2        40 rsq     bootstrap   0.893     0.902  0.910 pre0_mod39_post0</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p><code>int_pctl()</code> also works on objects produced by <code>last_fit()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">168</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">168</span><span class="op">)</span></span>
 <span><span class="va">mars_test_boot</span> <span class="op">&lt;-</span> <span class="fu">int_pctl</span><span class="op">(</span><span class="va">mars_test_res</span>, alpha <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span></span>
 <span><span class="va">mars_test_boot</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
 <span><span class="co">#&gt;   .metric .estimator .lower .estimate .upper .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;          </span></span>
 <span><span class="co">#&gt; 1 rmse    bootstrap   2.11      2.20   2.27  pre0_mod0_post0</span></span>
-<span><span class="co">#&gt; 2 rsq     bootstrap   0.883     0.892  0.900 pre0_mod0_post0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 2 rsq     bootstrap   0.883     0.892  0.900 pre0_mod0_post0</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
 </div>
 <p>So, to sum up the main idea: If you’re not getting multiple estimates of your performance metric from your resample procedure—like when using a validation set—you can still get interval estimates for your metrics. A metric-agnostic approach is to bootstrap your predictions and recalculate your metrics based on those.</p>
 </section><section id="notes" class="level2"><h2 class="anchored" data-anchor-id="notes">Notes</h2>
@@ -420,29 +454,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>&nbsp;&nbsp;Find</a>
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
     </div>
     <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>&nbsp;&nbsp;Books</a>
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
     </div>
     <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>&nbsp;&nbsp;Cheatsheets</a>
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
     </div>
     <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
   </div>
   <div class="event">
     <div class="eventTitle">
-      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>&nbsp;&nbsp;News</a>
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
     </div>
     <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
   </div>
@@ -858,13 +892,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/bootstrap-metrics/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+       
+    <div class="toc-actions d-sm-block d-md-none"><ul>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/bootstrap-metrics/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
+</ul></div>
+</div>
     <div class="nav-footer-right">
 <p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
 </div>
   </div>
 </footer>
-
-
-</body></html>
+</body>
+</html>
