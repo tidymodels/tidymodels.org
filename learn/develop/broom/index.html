@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="Write tidy(), glance(), and augment() methods for new model objects.">
-
 <title>Create your own broom tidier methods – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
@@ -61,7 +58,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -80,8 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -107,26 +102,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<link href="../../../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
-<script src="../../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<link href="../../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="../../../site_libs/datatables-binding-0.34.0/datatables.js"></script>
-<script src="../../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="../../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+}</script><link href="../../../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="../../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="../../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="../../../site_libs/datatables-binding-0.34.0/datatables.js"></script><script src="../../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><link href="../../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="../../../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="../../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet">
-<script src="../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="../../../site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet">
-<script src="../../../site_libs/selectize-0.12.0/selectize.min.js"></script>
-<link href="../../../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
-<script src="../../../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+<script src="../../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet">
+<script src="../../../site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script><link href="../../../site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet">
+<script src="../../../site_libs/selectize-0.12.0/selectize.min.js"></script><link href="../../../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -152,15 +135,11 @@ window.Quarto = {
   typesetMath
 };
 </script>
-
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">tidymodels</span>
@@ -172,7 +151,7 @@ window.Quarto = {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../../packages/index.html"> 
 <span class="menu-text">Packages</span></a>
   </li>  
@@ -206,13 +185,11 @@ window.Quarto = {
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -220,15 +197,11 @@ window.Quarto = {
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Learn</span></a>
@@ -242,8 +215,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/statistics/bootstrap/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Bootstrap resampling and tidy regression models</span></a>
@@ -274,7 +247,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
@@ -283,8 +256,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/models/coefficients/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Working with model coefficients</span></a>
@@ -327,7 +300,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
@@ -336,8 +309,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/develop/broom/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Create your own broom tidier methods</span></a>
@@ -368,7 +341,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -377,8 +350,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/work/bayes-opt/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Iterative Bayesian optimization of a classification model</span></a>
@@ -409,31 +382,25 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#re-export-the-tidier-generics" id="toc-re-export-the-tidier-generics" class="nav-link" data-scroll-target="#re-export-the-tidier-generics">Re-export the tidier generics</a></li>
   <li><a href="#implement-tidying-methods" id="toc-implement-tidying-methods" class="nav-link" data-scroll-target="#implement-tidying-methods">Implement tidying methods</a></li>
   <li><a href="#document-the-new-methods" id="toc-document-the-new-methods" class="nav-link" data-scroll-target="#document-the-new-methods">Document the new methods</a></li>
   <li><a href="#glossaries" id="toc-glossaries" class="nav-link" data-scroll-target="#glossaries">Glossaries</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/broom/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/broom/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Create your own broom tidier methods</a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Create your own broom tidier methods</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">Create your own broom tidier methods</h1>
   <div class="quarto-categories">
     <div class="quarto-category">developer tools</div>
@@ -456,17 +423,16 @@ window.Quarto = {
   
 
 
-</header>
-
-
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: generics, tidymodels, tidyverse, and usethis.</p>
 <p>The broom package provides tools to summarize key information about models in tidy <code>tibble()</code>s. The package provides three verbs, or “tidiers,” to help make model objects easier to work with:</p>
 <ul>
-<li><code>tidy()</code> summarizes information about model components</li>
-<li><code>glance()</code> reports information about the entire model</li>
-<li><code>augment()</code> adds information about observations to a dataset</li>
+<li>
+<code>tidy()</code> summarizes information about model components</li>
+<li>
+<code>glance()</code> reports information about the entire model</li>
+<li>
+<code>augment()</code> adds information about observations to a dataset</li>
 </ul>
 <p>Each of the three verbs above are <em>generic</em>, in that they do not define a procedure to tidy a given model object, but instead redirect to the relevant <em>method</em> implemented to tidy a specific type of model object. The broom package provides methods for model objects from over 100 modeling packages along with nearly all of the model objects in the stats package that comes with base R. However, for maintainability purposes, the broom package authors now ask that requests for new methods be first directed to the parent package (i.e.&nbsp;the package that supplies the model object) rather than to broom. New methods will generally only be integrated into broom in the case that the requester has already asked the maintainers of the model-owning package to implement tidier methods in the parent package.</p>
 <p>We’d like to make implementing external tidier methods as painless as possible. The general process for doing so is:</p>
@@ -476,19 +442,17 @@ window.Quarto = {
 <li>document the new methods</li>
 </ul>
 <p>In this article, we’ll walk through each of the above steps in detail, giving examples and pointing out helpful functions when possible.</p>
-</section>
-<section id="re-export-the-tidier-generics" class="level2">
-<h2 class="anchored" data-anchor-id="re-export-the-tidier-generics">Re-export the tidier generics</h2>
+</section><section id="re-export-the-tidier-generics" class="level2"><h2 class="anchored" data-anchor-id="re-export-the-tidier-generics">Re-export the tidier generics</h2>
 <p>The first step is to re-export the generic functions for <code>tidy()</code>, <code>glance()</code>, and/or <code>augment()</code>. You could do so from <code>broom</code> itself, but we’ve provided an alternative, much lighter dependency called <code>generics</code>.</p>
 <p>First you’ll need to add the <a href="https://github.com/r-lib/generics">generics</a> package to <code>Imports</code>. We recommend using the <a href="https://github.com/r-lib/usethis">usethis</a> package for this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_package</span>(<span class="st">"generics"</span>, <span class="st">"Imports"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_package</span><span class="op">(</span><span class="st">"generics"</span>, <span class="st">"Imports"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next, you’ll need to re-export the appropriate tidying methods. If you plan to implement a <code>glance()</code> method, for example, you can re-export the <code>glance()</code> generic by adding the following somewhere inside the <code>/R</code> folder of your package:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' @importFrom generics glance</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>generics<span class="sc">::</span>glance</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @importFrom generics glance</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="fu">generics</span><span class="fu">::</span><span class="va">glance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Oftentimes it doesn’t make sense to define one or more of these methods for a particular model. In this case, only implement the methods that do make sense.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -504,104 +468,101 @@ Warning
 <p>Please do not define <code>tidy()</code>, <code>glance()</code>, or <code>augment()</code> generics in your package. This will result in namespace conflicts whenever your package is used along other packages that also export tidying methods.</p>
 </div>
 </div>
-</section>
-<section id="implement-tidying-methods" class="level2">
-<h2 class="anchored" data-anchor-id="implement-tidying-methods">Implement tidying methods</h2>
+</section><section id="implement-tidying-methods" class="level2"><h2 class="anchored" data-anchor-id="implement-tidying-methods">Implement tidying methods</h2>
 <p>You’ll now need to implement specific tidying methods for each of the generics you’ve re-exported in the above step. For each of <code>tidy()</code>, <code>glance()</code>, and <code>augment()</code>, we’ll walk through the big picture, an example, and helpful resources.</p>
-<p>In this article, we’ll use the base R dataset <code>trees</code>, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R <code>lm()</code> function.</p>
+<p>In this article, we’ll use the base R dataset <code>trees</code>, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in the trees dataset</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(trees)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># take a look!</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(trees)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'data.frame':    31 obs. of  3 variables:</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the timber volume as a function of girth and height</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>trees_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Volume <span class="sc">~</span> Girth <span class="sc">+</span> Height, <span class="at">data =</span> trees)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load in the trees dataset</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">trees</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># take a look!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">trees</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    31 obs. of  3 variables:</span></span>
+<span><span class="co">#&gt;  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...</span></span>
+<span><span class="co">#&gt;  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...</span></span>
+<span><span class="co">#&gt;  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</span></span>
+<span></span>
+<span><span class="co"># fit the timber volume as a function of girth and height</span></span>
+<span><span class="va">trees_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Volume</span> <span class="op">~</span> <span class="va">Girth</span> <span class="op">+</span> <span class="va">Height</span>, data <span class="op">=</span> <span class="va">trees</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Let’s take a look at the <code>summary()</code> of our <code>trees_model</code> fit.</p>
+<p>Let’s take a look at the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> of our <code>trees_model</code> fit.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = Volume ~ Girth + Height, data = trees)</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -6.4065 -2.6493 -0.2876  2.2003  8.4847 </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -57.9877     8.6382  -6.713 2.75e-07 ***</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Girth         4.7082     0.2643  17.816  &lt; 2e-16 ***</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Height        0.3393     0.1302   2.607   0.0145 *  </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 3.882 on 28 degrees of freedom</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.948,  Adjusted R-squared:  0.9442 </span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:   255 on 2 and 28 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = Volume ~ Girth + Height, data = trees)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residuals:</span></span>
+<span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">#&gt; -6.4065 -2.6493 -0.2876  2.2003  8.4847 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -57.9877     8.6382  -6.713 2.75e-07 ***</span></span>
+<span><span class="co">#&gt; Girth         4.7082     0.2643  17.816  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; Height        0.3393     0.1302   2.607   0.0145 *  </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residual standard error: 3.882 on 28 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.948,  Adjusted R-squared:  0.9442 </span></span>
+<span><span class="co">#&gt; F-statistic:   255 on 2 and 28 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This output gives some summary statistics on the residuals (which would be described more fully in an <code>augment()</code> output), model coefficients (which, in this case, make up the <code>tidy()</code> output), and some model-level summarizations such as RSE, <span class="math inline">\(R^2\)</span>, etc. (which make up the <code>glance()</code> output.)</p>
-<section id="implementing-the-tidy-method" class="level3">
-<h3 class="anchored" data-anchor-id="implementing-the-tidy-method">Implementing the <code>tidy()</code> method</h3>
+<section id="implementing-the-tidy-method" class="level3"><h3 class="anchored" data-anchor-id="implementing-the-tidy-method">Implementing the <code>tidy()</code> method</h3>
 <p>The <code>tidy(x, ...)</code> method will return a tibble where each row contains information about a component of the model. The <code>x</code> input is a model object, and the dots (<code>...</code>) are an optional argument to supply additional information to any calls inside your method. New <code>tidy()</code> methods can take additional arguments, but <em>must</em> include the <code>x</code> and <code>...</code> arguments to be compatible with the generic function. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.) Examples of model components include regression coefficients (for regression models), clusters (for classification/clustering models), etc. These <code>tidy()</code> methods are useful for inspecting model details and creating custom model visualizations.</p>
-<p>Returning to the example of our linear model on timber volume, we’d like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its <code>summary()</code>, you might notice that you can extract the regression coefficients as follows:</p>
+<p>Returning to the example of our linear model on timber volume, we’d like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, you might notice that you can extract the regression coefficients as follows:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)<span class="sc">$</span>coefficients</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error   t value     Pr(&gt;|t|)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -57.9876589  8.6382259 -6.712913 2.749507e-07</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Girth         4.7081605  0.2642646 17.816084 8.223304e-17</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Height        0.3392512  0.1301512  2.606594 1.449097e-02</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span></span>
+<span><span class="co">#&gt;                Estimate Std. Error   t value     Pr(&gt;|t|)</span></span>
+<span><span class="co">#&gt; (Intercept) -57.9876589  8.6382259 -6.712913 2.749507e-07</span></span>
+<span><span class="co">#&gt; Girth         4.7081605  0.2642646 17.816084 8.223304e-17</span></span>
+<span><span class="co">#&gt; Height        0.3392512  0.1301512  2.606594 1.449097e-02</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This object contains the model coefficients as a table, where the information giving which coefficient is being described in each row is given in the row names. Converting to a tibble where the row names are contained in a column, you might write:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trees_model_tidy <span class="ot">&lt;-</span> <span class="fu">summary</span>(trees_model)<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"term"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>trees_model_tidy</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 5</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   term        Estimate `Std. Error` `t value` `Pr(&gt;|t|)`</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 (Intercept)  -58.0          8.64      -6.71   2.75e- 7</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Girth          4.71         0.264     17.8    8.22e-17</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Height         0.339        0.130      2.61   1.45e- 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trees_model_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">as_tibble</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">trees_model_tidy</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt;   term        Estimate `Std. Error` `t value` `Pr(&gt;|t|)`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 (Intercept)  -58.0          8.64      -6.71   2.75e- 7</span></span>
+<span><span class="co">#&gt; 2 Girth          4.71         0.264     17.8    8.22e-17</span></span>
+<span><span class="co">#&gt; 3 Height         0.339        0.130      2.61   1.45e- 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The broom package standardizes common column names used to describe coefficients. In this case, the column names are:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(trees_model_tidy) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"estimate"</span>, <span class="st">"std.error"</span>, <span class="st">"statistic"</span>, <span class="st">"p.value"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">trees_model_tidy</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"term"</span>, <span class="st">"estimate"</span>, <span class="st">"std.error"</span>, <span class="st">"statistic"</span>, <span class="st">"p.value"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A glossary giving the currently acceptable column names outputted by <code>tidy()</code> methods can be found <a href="#glossary">at the end of this article</a>. As a rule of thumb, column names resulting from <code>tidy()</code> methods should be all lowercase and contain only alphanumerics or periods (though there are plenty of exceptions).</p>
-<p>Finally, it is common for <code>tidy()</code> methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the <code>confint()</code> function can be used to calculate confidence intervals from a model object resulting from <code>lm()</code>:</p>
+<p>Finally, it is common for <code>tidy()</code> methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code> function can be used to calculate confidence intervals from a model object resulting from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(trees_model)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    2.5 %      97.5 %</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -75.68226247 -40.2930554</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Girth         4.16683899   5.2494820</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Height        0.07264863   0.6058538</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                    2.5 %      97.5 %</span></span>
+<span><span class="co">#&gt; (Intercept) -75.68226247 -40.2930554</span></span>
+<span><span class="co">#&gt; Girth         4.16683899   5.2494820</span></span>
+<span><span class="co">#&gt; Height        0.07264863   0.6058538</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>With these considerations in mind, a reasonable <code>tidy()</code> method for <code>lm()</code> might look something like:</p>
+<p>With these considerations in mind, a reasonable <code>tidy()</code> method for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> might look something like:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tidy.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">conf.int =</span> <span class="cn">FALSE</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>, ...) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">summary</span>(x)<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"term"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">estimate =</span> Estimate,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">std.error =</span> <span class="st">`</span><span class="at">Std. Error</span><span class="st">`</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">statistic =</span> <span class="st">`</span><span class="at">t value</span><span class="st">`</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">p.value =</span> <span class="st">`</span><span class="at">Pr(&gt;|t|)</span><span class="st">`</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (conf.int) {</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(x, <span class="at">level =</span> conf.level)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(result, ci, <span class="at">by =</span> <span class="st">"term"</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  result</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy.lm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">conf.int</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">conf.level</span> <span class="op">=</span> <span class="fl">0.95</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">rename</span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">Estimate</span>,</span>
+<span>                  std.error <span class="op">=</span> <span class="va">`Std. Error`</span>,</span>
+<span>                  statistic <span class="op">=</span> <span class="va">`t value`</span>,</span>
+<span>                  p.value <span class="op">=</span> <span class="va">`Pr(&gt;|t|)`</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">conf.int</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">x</span>, level <span class="op">=</span> <span class="va">conf.level</span><span class="op">)</span></span>
+<span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">left_join</span><span class="op">(</span><span class="va">result</span>, <span class="va">ci</span>, by <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="va">result</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -616,75 +577,76 @@ Note
 <p>If you’re interested, the actual <code>tidy.lm()</code> source can be found <a href="https://github.com/tidymodels/broom/blob/master/R/stats-lm-tidiers.R">here</a>! It’s not too different from the version above except for some argument checking and additional columns.</p>
 </div>
 </div>
-<p>With this method exported, then, if a user calls <code>tidy(fit)</code>, where <code>fit</code> is an output from <code>lm()</code>, the <code>tidy()</code> generic would “redirect” the call to the <code>tidy.lm()</code> function above.</p>
+<p>With this method exported, then, if a user calls <code>tidy(fit)</code>, where <code>fit</code> is an output from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, the <code>tidy()</code> generic would “redirect” the call to the <code>tidy.lm()</code> function above.</p>
 <p>Some things to keep in mind while writing your <code>tidy()</code> method:</p>
 <ul>
 <li>Sometimes a model will have several different types of components. For example, in mixed models, there is different information associated with fixed effects and random effects. Since this information doesn’t have the same interpretation, it doesn’t make sense to summarize the fixed and random effects in the same table. In cases like this you should add an argument that allows the user to specify which type of information they want. For example, you might implement an interface along the lines of:</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">mixed_model</span>(...)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model, <span class="at">effects =</span> <span class="st">"fixed"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model, <span class="at">effects =</span> <span class="st">"random"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">mixed_model</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">tidy</span><span class="op">(</span><span class="va">model</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span>
+<span><span class="fu">tidy</span><span class="op">(</span><span class="va">model</span>, effects <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
-<li>How are missing values encoded in the model object and its <code>summary()</code>? Ensure that rows are included even when the associated model component is missing or rank deficient.</li>
+<li>How are missing values encoded in the model object and its <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>? Ensure that rows are included even when the associated model component is missing or rank deficient.</li>
 <li>Are there other measures specific to each component that could reasonably be expected to be included in their summarizations? Some common arguments to <code>tidy()</code> methods include:
 <ul>
-<li><code>conf.int</code>: A logical indicating whether or not to calculate confidence/credible intervals. This should default to <code>FALSE</code>.</li>
-<li><code>conf.level</code>: The confidence level to use for the interval when <code>conf.int = TRUE</code>. Typically defaults to <code>.95</code>.</li>
-<li><code>exponentiate</code>: A logical indicating whether or not model terms should be presented on an exponential scale (typical for logistic regression).</li>
-</ul></li>
+<li>
+<code>conf.int</code>: A logical indicating whether or not to calculate confidence/credible intervals. This should default to <code>FALSE</code>.</li>
+<li>
+<code>conf.level</code>: The confidence level to use for the interval when <code>conf.int = TRUE</code>. Typically defaults to <code>.95</code>.</li>
+<li>
+<code>exponentiate</code>: A logical indicating whether or not model terms should be presented on an exponential scale (typical for logistic regression).</li>
 </ul>
-</section>
-<section id="implementing-the-glance-method" class="level3">
-<h3 class="anchored" data-anchor-id="implementing-the-glance-method">Implementing the <code>glance()</code> method</h3>
+</li>
+</ul></section><section id="implementing-the-glance-method" class="level3"><h3 class="anchored" data-anchor-id="implementing-the-glance-method">Implementing the <code>glance()</code> method</h3>
 <p><code>glance()</code> returns a one-row tibble providing model-level summarizations (e.g.&nbsp;goodness of fit measures and related statistics). This is useful to check for model misspecification and to compare many models. Again, the <code>x</code> input is a model object, and the <code>...</code> is an optional argument to supply additional information to any calls inside your method. New <code>glance()</code> methods can also take additional arguments and <em>must</em> include the <code>x</code> and <code>...</code> arguments. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.)</p>
 <p>Returning to the <code>trees_model</code> example, we could pull out the <span class="math inline">\(R^2\)</span> value with the following code:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)<span class="sc">$</span>r.squared</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.94795</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span><span class="op">$</span><span class="va">r.squared</span></span>
+<span><span class="co">#&gt; [1] 0.94795</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Similarly, for the adjusted <span class="math inline">\(R^2\)</span>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trees_model)<span class="sc">$</span>adj.r.squared</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9442322</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span><span class="op">$</span><span class="va">adj.r.squared</span></span>
+<span><span class="co">#&gt; [1] 0.9442322</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a <code>tibble()</code> element-by-element by subsetting the <code>summary()</code> object repeatedly. The <code>with()</code> function, however, can help make this process a bit less tedious by evaluating expressions inside of the <code>summary(trees_model)</code> environment. To grab those those same two model elements from above using <code>with()</code>:</p>
+<p>Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a <code>tibble()</code> element-by-element by subsetting the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> object repeatedly. The <code><a href="https://rdrr.io/r/base/with.html">with()</a></code> function, however, can help make this process a bit less tedious by evaluating expressions inside of the <code>summary(trees_model)</code> environment. To grab those those same two model elements from above using <code><a href="https://rdrr.io/r/base/with.html">with()</a></code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">summary</span>(trees_model),</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>     tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">r.squared =</span> r.squared,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">adj.r.squared =</span> adj.r.squared))</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 2</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   r.squared adj.r.squared</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       &lt;dbl&gt;         &lt;dbl&gt;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0.948         0.944</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span>,</span>
+<span>     <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span>r.squared <span class="op">=</span> <span class="va">r.squared</span>,</span>
+<span>                    adj.r.squared <span class="op">=</span> <span class="va">adj.r.squared</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;   r.squared adj.r.squared</span></span>
+<span><span class="co">#&gt;       &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     0.948         0.944</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>A reasonable <code>glance()</code> method for <code>lm()</code>, then, might look something like:</p>
+<p>A reasonable <code>glance()</code> method for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, then, might look something like:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>glance.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(x),</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">r.squared =</span> r.squared,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">adj.r.squared =</span> adj.r.squared,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">sigma =</span> sigma,</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">statistic =</span> fstatistic[<span class="st">"value"</span>],</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">p.value =</span> <span class="fu">pf</span>(</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        fstatistic[<span class="st">"value"</span>],</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        fstatistic[<span class="st">"numdf"</span>],</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        fstatistic[<span class="st">"dendf"</span>],</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower.tail =</span> <span class="cn">FALSE</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">df =</span> fstatistic[<span class="st">"numdf"</span>],</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">logLik =</span> <span class="fu">as.numeric</span>(stats<span class="sc">::</span><span class="fu">logLik</span>(x)),</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">AIC =</span> stats<span class="sc">::</span><span class="fu">AIC</span>(x),</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">BIC =</span> stats<span class="sc">::</span><span class="fu">BIC</span>(x),</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">deviance =</span> stats<span class="sc">::</span><span class="fu">deviance</span>(x),</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">df.residual =</span> <span class="fu">df.residual</span>(x),</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">nobs =</span> stats<span class="sc">::</span><span class="fu">nobs</span>(x)</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glance.lm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span></span>
+<span>      r.squared <span class="op">=</span> <span class="va">r.squared</span>,</span>
+<span>      adj.r.squared <span class="op">=</span> <span class="va">adj.r.squared</span>,</span>
+<span>      sigma <span class="op">=</span> <span class="va">sigma</span>,</span>
+<span>      statistic <span class="op">=</span> <span class="va">fstatistic</span><span class="op">[</span><span class="st">"value"</span><span class="op">]</span>,</span>
+<span>      p.value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span></span>
+<span>        <span class="va">fstatistic</span><span class="op">[</span><span class="st">"value"</span><span class="op">]</span>,</span>
+<span>        <span class="va">fstatistic</span><span class="op">[</span><span class="st">"numdf"</span><span class="op">]</span>,</span>
+<span>        <span class="va">fstatistic</span><span class="op">[</span><span class="st">"dendf"</span><span class="op">]</span>,</span>
+<span>        lower.tail <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      df <span class="op">=</span> <span class="va">fstatistic</span><span class="op">[</span><span class="st">"numdf"</span><span class="op">]</span>,</span>
+<span>      logLik <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      AIC <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>      BIC <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">BIC</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>      deviance <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/deviance.html">deviance</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>      df.residual <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>      nobs <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html">nobs</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -700,81 +662,79 @@ Note
 </div>
 </div>
 <p>Some things to keep in mind while writing <code>glance()</code> methods: * Output should not include the name of the modeling function or any arguments given to the modeling function. * In some cases, you may wish to provide model-level diagnostics not returned by the original object. For example, the above <code>glance.lm()</code> calculates <code>AIC</code> and <code>BIC</code> from the model fit. If these are easy to compute, feel free to add them. However, tidier methods are generally not an appropriate place to implement complex or time consuming calculations. * The <code>glance</code> method should always return the same columns in the same order when given an object of a given model class. If a summary metric (such as <code>AIC</code>) is not defined in certain circumstances, use <code>NA</code>.</p>
-</section>
-<section id="implementing-the-augment-method" class="level3">
-<h3 class="anchored" data-anchor-id="implementing-the-augment-method">Implementing the <code>augment()</code> method</h3>
+</section><section id="implementing-the-augment-method" class="level3"><h3 class="anchored" data-anchor-id="implementing-the-augment-method">Implementing the <code>augment()</code> method</h3>
 <p><code>augment()</code> methods add columns to a dataset containing information such as fitted values, residuals or cluster assignments. All columns added to a dataset have a <code>.</code> prefix to prevent existing columns from being overwritten. (Currently acceptable column names are given in <a href="#glossary">the glossary</a>.) The <code>x</code> and <code>...</code> arguments share their meaning with the two functions described above. <code>augment</code> methods also optionally accept a <code>data</code> argument that is a <code>data.frame</code> (or <code>tibble</code>) to add observation-level information to, returning a <code>tibble</code> object with the same number of rows as <code>data</code>. Many <code>augment()</code> methods also accept a <code>newdata</code> argument, following the same conventions as the <code>data</code> argument, except with the underlying assumption that the model has not “seen” the data yet. As a result, <code>newdata</code> arguments need not contain the response columns in <code>data</code>. Only one of <code>data</code> or <code>newdata</code> should be supplied. A full glossary of acceptable arguments to <code>augment()</code> methods can be found at <a href="#glossary">the end of this article</a>.</p>
 <p>If a <code>data</code> argument is not specified, <code>augment()</code> should try to reconstruct the original data as much as possible from the model object. This may not always be possible, and often it will not be possible to recover columns not used by the model.</p>
 <p>With this is mind, we can look back to our <code>trees_model</code> example. For one, the <code>model</code> element inside of the <code>trees_model</code> object will allow us to recover the original data:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>trees_model<span class="sc">$</span>model</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Volume Girth Height</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    10.3   8.3     70</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    10.3   8.6     65</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    10.2   8.8     63</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    16.4  10.5     72</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    18.8  10.7     81</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    19.7  10.8     83</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    15.6  11.0     66</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    18.2  11.0     75</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9    22.6  11.1     80</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10   19.9  11.2     75</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11   24.2  11.3     79</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12   21.0  11.4     76</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13   21.4  11.4     76</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14   21.3  11.7     69</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15   19.1  12.0     75</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16   22.2  12.9     74</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17   33.8  12.9     85</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18   27.4  13.3     86</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19   25.7  13.7     71</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 20   24.9  13.8     64</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 21   34.5  14.0     78</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 22   31.7  14.2     80</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 23   36.3  14.5     74</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 24   38.3  16.0     72</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 25   42.6  16.3     77</span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 26   55.4  17.3     81</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 27   55.7  17.5     82</span></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 28   58.3  17.9     80</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 29   51.5  18.0     80</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 30   51.0  18.0     80</span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 31   77.0  20.6     87</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trees_model</span><span class="op">$</span><span class="va">model</span></span>
+<span><span class="co">#&gt;    Volume Girth Height</span></span>
+<span><span class="co">#&gt; 1    10.3   8.3     70</span></span>
+<span><span class="co">#&gt; 2    10.3   8.6     65</span></span>
+<span><span class="co">#&gt; 3    10.2   8.8     63</span></span>
+<span><span class="co">#&gt; 4    16.4  10.5     72</span></span>
+<span><span class="co">#&gt; 5    18.8  10.7     81</span></span>
+<span><span class="co">#&gt; 6    19.7  10.8     83</span></span>
+<span><span class="co">#&gt; 7    15.6  11.0     66</span></span>
+<span><span class="co">#&gt; 8    18.2  11.0     75</span></span>
+<span><span class="co">#&gt; 9    22.6  11.1     80</span></span>
+<span><span class="co">#&gt; 10   19.9  11.2     75</span></span>
+<span><span class="co">#&gt; 11   24.2  11.3     79</span></span>
+<span><span class="co">#&gt; 12   21.0  11.4     76</span></span>
+<span><span class="co">#&gt; 13   21.4  11.4     76</span></span>
+<span><span class="co">#&gt; 14   21.3  11.7     69</span></span>
+<span><span class="co">#&gt; 15   19.1  12.0     75</span></span>
+<span><span class="co">#&gt; 16   22.2  12.9     74</span></span>
+<span><span class="co">#&gt; 17   33.8  12.9     85</span></span>
+<span><span class="co">#&gt; 18   27.4  13.3     86</span></span>
+<span><span class="co">#&gt; 19   25.7  13.7     71</span></span>
+<span><span class="co">#&gt; 20   24.9  13.8     64</span></span>
+<span><span class="co">#&gt; 21   34.5  14.0     78</span></span>
+<span><span class="co">#&gt; 22   31.7  14.2     80</span></span>
+<span><span class="co">#&gt; 23   36.3  14.5     74</span></span>
+<span><span class="co">#&gt; 24   38.3  16.0     72</span></span>
+<span><span class="co">#&gt; 25   42.6  16.3     77</span></span>
+<span><span class="co">#&gt; 26   55.4  17.3     81</span></span>
+<span><span class="co">#&gt; 27   55.7  17.5     82</span></span>
+<span><span class="co">#&gt; 28   58.3  17.9     80</span></span>
+<span><span class="co">#&gt; 29   51.5  18.0     80</span></span>
+<span><span class="co">#&gt; 30   51.0  18.0     80</span></span>
+<span><span class="co">#&gt; 31   77.0  20.6     87</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Similarly, the fitted values and residuals can be accessed with the following code:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trees_model<span class="sc">$</span>fitted.values)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         1         2         3         4         5         6 </span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4.837660  4.553852  4.816981 15.874115 19.869008 21.018327</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trees_model<span class="sc">$</span>residuals)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          1          2          3          4          5          6 </span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5.4623403  5.7461484  5.3830187  0.5258848 -1.0690084 -1.3183270</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">$</span><span class="va">fitted.values</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         1         2         3         4         5         6 </span></span>
+<span><span class="co">#&gt;  4.837660  4.553852  4.816981 15.874115 19.869008 21.018327</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          1          2          3          4          5          6 </span></span>
+<span><span class="co">#&gt;  5.4623403  5.7461484  5.3830187  0.5258848 -1.0690084 -1.3183270</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As with <code>glance()</code> methods, it’s fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>se.fit <span class="ot">&lt;-</span> <span class="fu">predict</span>(trees_model, <span class="at">newdata =</span> trees, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>se.fit <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>()</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(se.fit)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.3211285 1.4893775 1.6325024 0.9444212 1.3484251 1.5319772</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">se.fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">trees_model</span>, newdata <span class="op">=</span> <span class="va">trees</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">se.fit</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html">unname</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">se.fit</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.3211285 1.4893775 1.6325024 0.9444212 1.3484251 1.5319772</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Thus, a reasonable <code>augment()</code> method for <code>lm</code> might look something like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>augment.lm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">data =</span> x<span class="sc">$</span>model, <span class="at">newdata =</span> <span class="cn">NULL</span>, ...) {</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(newdata)) {</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(tibble<span class="sc">::</span><span class="fu">as_tibble</span>(data),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                     tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">.fitted =</span> x<span class="sc">$</span>fitted.values,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">.se.fit =</span> <span class="fu">predict</span>(x, </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                                                      <span class="at">newdata =</span> data, </span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                                                      <span class="at">se.fit =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>se.fit,</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">.resid =</span>  x<span class="sc">$</span>residuals))</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(x, <span class="at">newdata =</span> newdata, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(tibble<span class="sc">::</span><span class="fu">as_tibble</span>(newdata),</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                     tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">.fitted =</span> predictions<span class="sc">$</span>fit,</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">.se.fit =</span> predictions<span class="sc">$</span>se.fit))</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment.lm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">data</span> <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">model</span>, <span class="va">newdata</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">bind_cols</span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>                     <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span>.fitted <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">fitted.values</span>,</span>
+<span>                                    .se.fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">x</span>, </span>
+<span>                                                      newdata <span class="op">=</span> <span class="va">data</span>, </span>
+<span>                                                      se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">se.fit</span>,</span>
+<span>                                   .resid <span class="op">=</span>  <span class="va">x</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">x</span>, newdata <span class="op">=</span> <span class="va">newdata</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">bind_cols</span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span>,</span>
+<span>                     <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span>.fitted <span class="op">=</span> <span class="va">predictions</span><span class="op">$</span><span class="va">fit</span>,</span>
+<span>                                    .se.fit <span class="op">=</span> <span class="va">predictions</span><span class="op">$</span><span class="va">se.fit</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Some other things to keep in mind while writing <code>augment()</code> methods: * The <code>newdata</code> argument should default to <code>NULL</code>. Users should only ever specify one of <code>data</code> or <code>newdata</code>. Providing both <code>data</code> and <code>newdata</code> should result in an error. The <code>newdata</code> argument should accept both <code>data.frame</code>s and <code>tibble</code>s. * Data given to the <code>data</code> argument must have both the original predictors and the original response. Data given to the <code>newdata</code> argument only needs to have the original predictors. This is important because there may be important information associated with training data that is not associated with test data. This means that the <code>original_data</code> object in <code>augment(model, data = original_data)</code> should provide <code>.fitted</code> and <code>.resid</code> columns (in most cases), whereas <code>test_data</code> in <code>augment(model, data = test_data)</code> only needs a <code>.fitted</code> column, even if the response is present in <code>test_data</code>. * If the <code>data</code> or <code>newdata</code> is specified as a <code>data.frame</code> with rownames, <code>augment</code> should return them in a column called <code>.rownames</code>. * For observations where no fitted values or summaries are available (where there’s missing data, for example), return <code>NA</code>. * <em>The <code>augment()</code> method should always return as many rows as were in <code>data</code> or <code>newdata</code></em>, depending on which is supplied</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -790,10 +750,7 @@ Note
 <p>The recommended interface and functionality for <code>augment()</code> methods may change soon.</p>
 </div>
 </div>
-</section>
-</section>
-<section id="document-the-new-methods" class="level2">
-<h2 class="anchored" data-anchor-id="document-the-new-methods">Document the new methods</h2>
+</section></section><section id="document-the-new-methods" class="level2"><h2 class="anchored" data-anchor-id="document-the-new-methods">Document the new methods</h2>
 <p>The only remaining step is to integrate the new methods into the parent package! To do so, just drop the methods into a <code>.R</code> file inside of the <code>/R</code> folder and document them using roxygen2. If you’re unfamiliar with the process of documenting objects, you can read more about it <a href="http://r-pkgs.had.co.nz/man.html">here</a>. Here’s an example of how our <code>tidy.lm()</code> method might be documented:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Tidy a(n) lm object</span></span>
@@ -825,11 +782,8 @@ Note
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ... the rest of the function definition goes here!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once you’ve documented each of your new methods and executed <code>devtools::document()</code>, you’re done! Congrats on implementing your own broom tidier methods for a new model object!</p>
-</section>
-<section id="glossaries" class="level2">
-<h2 class="anchored" data-anchor-id="glossaries">Glossaries</h2>
-<section id="arguments" class="level3">
-<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section><section id="glossaries" class="level2"><h2 class="anchored" data-anchor-id="glossaries">Glossaries</h2>
+<section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <p>Tidier methods have a standardized set of acceptable argument and output column names. The currently acceptable argument names by tidier method are:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -837,9 +791,7 @@ Note
 <script type="application/json" data-for="htmlwidget-1b4ff99564eb6e8884a5">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;augment&quot;,&quot;glance&quot;,&quot;tidy&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","tidy","glance","glance","glance","glance","glance","glance","augment","augment","augment","augment","augment","augment","augment","augment"],["alpha","boot_se","by_class","col.names","component","conf.int","conf.level","conf.method","conf.type","diagonal","droppars","effects","ess","estimate.method","exponentiate","fe","include_studies","instruments","intervals","matrix","measure","na.rm","object","p.values","par_type","parameters","parametric","pars","prob","region","return_zeros","rhat","robust","scales","se.type","strata","test","trim","upper","deviance","diagnostics","looic","mcmc","test","x","conf.level","data","interval","newdata","se_fit","type.predict","type.residuals","weights"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Method<\/th>\n      <th>Argument<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"name":"Method","targets":0},{"name":"Argument","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</section>
-<section id="column-names" class="level3">
-<h3 class="anchored" data-anchor-id="column-names">Column Names</h3>
+</section><section id="column-names" class="level3"><h3 class="anchored" data-anchor-id="column-names">Column Names</h3>
 <p>The currently acceptable column names by tidier method are:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -848,10 +800,7 @@ Note
 </div>
 </div>
 <p>The <a href="https://github.com/alexpghayes/modeltests">alexpghayes/modeltests</a> package provides unit testing infrastructure to check your new tidier methods. Please file an issue there to request new arguments/columns to be added to the glossaries!</p>
-</section>
-</section>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+</section></section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.2 (2025-10-31)
@@ -884,12 +833,7 @@ Note
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<!-- plausible -->
-<script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
-<div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
@@ -921,8 +865,7 @@ Note
   sidebar = document.querySelector('#quarto-margin-sidebar');
   resources = document.querySelector('.resources');
   sidebar.appendChild(resources);
-</script>
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1323,8 +1266,7 @@ Note
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
@@ -1336,8 +1278,6 @@ Note
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

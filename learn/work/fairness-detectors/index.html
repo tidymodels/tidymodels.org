@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="Releases of language models are often soon followed up with detectors, claiming to detect whether text was written by a human or a given language model. A 2023 study argues that GPT detectors disproportionately classify real writing from non-native English writers as AI-generated.">
-
 <title>Are GPT detectors fair? A machine learning fairness case study – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
@@ -80,7 +77,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -99,8 +95,7 @@ div.csl-indent {
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -127,16 +122,11 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">tidymodels</span>
@@ -148,7 +138,7 @@ div.csl-indent {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../../packages/index.html"> 
 <span class="menu-text">Packages</span></a>
   </li>  
@@ -182,42 +172,38 @@ div.csl-indent {
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#getting-set-up" id="toc-getting-set-up" class="nav-link active" data-scroll-target="#getting-set-up">Getting set up</a></li>
+<li><a href="#getting-set-up" id="toc-getting-set-up" class="nav-link active" data-scroll-target="#getting-set-up">Getting set up</a></li>
   <li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis">Exploratory Analysis</a></li>
-  <li><a href="#fairness-assessment" id="toc-fairness-assessment" class="nav-link" data-scroll-target="#fairness-assessment">Fairness assessment</a>
+  <li>
+<a href="#fairness-assessment" id="toc-fairness-assessment" class="nav-link" data-scroll-target="#fairness-assessment">Fairness assessment</a>
   <ul class="collapse">
-  <li><a href="#effective-detection-group-blind" id="toc-effective-detection-group-blind" class="nav-link" data-scroll-target="#effective-detection-group-blind">Effective detection, group-blind</a></li>
+<li><a href="#effective-detection-group-blind" id="toc-effective-detection-group-blind" class="nav-link" data-scroll-target="#effective-detection-group-blind">Effective detection, group-blind</a></li>
   <li><a href="#fair-prediction-on-human-written-essays" id="toc-fair-prediction-on-human-written-essays" class="nav-link" data-scroll-target="#fair-prediction-on-human-written-essays">Fair prediction on human-written essays</a></li>
   <li><a href="#balancing-two-notions-of-fairness" id="toc-balancing-two-notions-of-fairness" class="nav-link" data-scroll-target="#balancing-two-notions-of-fairness">Balancing two notions of fairness</a></li>
-  </ul></li>
-  <li><a href="#choosing-a-detector" id="toc-choosing-a-detector" class="nav-link" data-scroll-target="#choosing-a-detector">Choosing a detector</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
-  <ul class="collapse">
-  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul></li>
   </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/fairness-detectors/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</li>
+  <li><a href="#choosing-a-detector" id="toc-choosing-a-detector" class="nav-link" data-scroll-target="#choosing-a-detector">Choosing a detector</a></li>
+  <li>
+<a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
+  <ul class="collapse">
+<li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/work/fairness-detectors/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Are GPT detectors fair? A machine learning fairness case study</h1>
   <div class="quarto-categories">
     <div class="quarto-category">yardstick</div>
@@ -242,10 +228,7 @@ div.csl-indent {
   
 
 
-</header>
-
-
-<hr>
+</header><hr>
 <p>The popularity and capability of large language models like <a href="https://openai.com/research/gpt-4">Generative Pre-trained Transformer 4</a> (GPT-4), which generate human-like text based on simple prompts, has rapidly increased in recent years. The releases of more powerful next-generation models are often accompanied by the development of GPT <em>detectors</em>, which are machine learning models intended to estimate the probability that inputted text was generated by a GPT.</p>
 <p>In 2023, a group of researchers collected a corpus of essays, some of which were written by real humans and others that were generated using various language models. Notably, some of the essays from real humans were written by people who did not write in English natively, while others were written by people who did.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -270,90 +253,85 @@ Note
 <p>are only equivalent, though, given a shared set of social values surrounding what <em>fairness</em> means.</p>
 <p>Perhaps the core question that machine learning fairness as a research field has tried to address is exactly what a machine learning model acting fairly entails. As a recent primer notes, “[t]he rapid growth of this new field has led to wildly inconsistent motivations, terminology, and notation, presenting a serious challenge for cataloging and comparing definitions” <span class="citation" data-cites="mitchell2021">(<a href="#ref-mitchell2021" role="doc-biblioref">Mitchell et al. 2021</a>)</span>. Fairness is a social construct, and means different things to different people; the operationalization of fairness as a quantitative metric is not at all trivial. The aim of evaluating a machine learning system’s fairness is thus to state clearly one’s definition of fairness, critique what that definition means in the problem context, and assess fairness under the chosen definition rigorously. The tidymodels packages in R provide a suite of functionality to support this kind of analysis, and we’ll use the data from Liang et al.&nbsp;as an example to demonstrate a fairness-oriented analysis of model performance.</p>
 <p>After loading needed packages, we’ll conduct an exploratory analysis of the study’s data. Once we have a sense for the distributions of relevant variables, we’ll explore the different ways that we could try to measure fairness in this problem context. We will see that different ways of measuring fairness encode social values held by different stakeholders.</p>
-<section id="getting-set-up" class="level1">
-<h1>Getting set up</h1>
+<section id="getting-set-up" class="level1"><h1>Getting set up</h1>
 <p>Loading the tidymodels meta-package will load all of the functionality we need:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A tidied version of the study’s data is available in the detectors R package. Loading the package and taking a look at the data:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(detectors)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(detectors)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tibble [6,185 × 9] (S3: tbl_df/tbl/data.frame)</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ kind       : Factor w/ 2 levels "AI","Human": 2 2 2 1 1 2 1 1 2 2 ...</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ .pred_AI   : num [1:6185] 0.999994 0.828145 0.000214 0 0.001784 ...</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ .pred_class: Factor w/ 2 levels "AI","Human": 1 1 2 2 2 2 1 2 2 1 ...</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ detector   : chr [1:6185] "Sapling" "Crossplag" "Crossplag" "ZeroGPT" ...</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ native     : chr [1:6185] "No" "No" "Yes" NA ...</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ name       : chr [1:6185] "Real TOEFL" "Real TOEFL" "Real College Essays" "Fake CS224N - GPT3" ...</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ model      : chr [1:6185] "Human" "Human" "Human" "GPT3" ...</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ document_id: num [1:6185] 497 278 294 671 717 855 533 484 781 460 ...</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ prompt     : chr [1:6185] NA NA NA "Plain" ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://simonpcouch.github.io/detectors/">detectors</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">detectors</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tibble [6,185 × 9] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ kind       : Factor w/ 2 levels "AI","Human": 2 2 2 1 1 2 1 1 2 2 ...</span></span>
+<span><span class="co">#&gt;  $ .pred_AI   : num [1:6185] 0.999994 0.828145 0.000214 0 0.001784 ...</span></span>
+<span><span class="co">#&gt;  $ .pred_class: Factor w/ 2 levels "AI","Human": 1 1 2 2 2 2 1 2 2 1 ...</span></span>
+<span><span class="co">#&gt;  $ detector   : chr [1:6185] "Sapling" "Crossplag" "Crossplag" "ZeroGPT" ...</span></span>
+<span><span class="co">#&gt;  $ native     : chr [1:6185] "No" "No" "Yes" NA ...</span></span>
+<span><span class="co">#&gt;  $ name       : chr [1:6185] "Real TOEFL" "Real TOEFL" "Real College Essays" "Fake CS224N - GPT3" ...</span></span>
+<span><span class="co">#&gt;  $ model      : chr [1:6185] "Human" "Human" "Human" "GPT3" ...</span></span>
+<span><span class="co">#&gt;  $ document_id: num [1:6185] 497 278 294 671 717 855 533 484 781 460 ...</span></span>
+<span><span class="co">#&gt;  $ prompt     : chr [1:6185] NA NA NA "Plain" ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Each row in this data corresponds to an essay (<code>document_id</code>) passed to a given GPT detector. For each row, we have the predicted probability <code>.pred_AI</code> from the <code>detector</code> giving whether the essay was written by AI. Notably, for the essays written by humans, we also have whether the author was a <code>native</code> English writer.</p>
-</section>
-<section id="exploratory-analysis" class="level1">
-<h1>Exploratory Analysis</h1>
+</section><section id="exploratory-analysis" class="level1"><h1>Exploratory Analysis</h1>
 <p>This analysis will focus on the <code>kind</code>, <code>.pred_AI</code>, <code>.pred_class</code>, and <code>native</code> variables.</p>
 <p>Initially, we can tabulate the observed and predicted classes:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(kind, .pred_class)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   kind  .pred_class     n</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 AI    AI           1158</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 AI    Human        2559</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Human AI            449</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Human Human        2019</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">count</span><span class="op">(</span><span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span><span class="co">#&gt;   kind  .pred_class     n</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 AI    AI           1158</span></span>
+<span><span class="co">#&gt; 2 AI    Human        2559</span></span>
+<span><span class="co">#&gt; 3 Human AI            449</span></span>
+<span><span class="co">#&gt; 4 Human Human        2019</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A perfect detector would predict that all essays written by AI were written by AI, the converse for humans, and zeroes elsewhere. Perhaps these models would perform better with <a href="https://probably.tidymodels.org/articles/where-to-use.html">calibration</a>, but as-is, they have a long way to go. For example, of the 3717 essays written by AI in this data, 2559 were predicted to be written by humans. Of the 2468 essays written by humans in this data, 449 were predicted to be written by AI.</p>
 <p>Adding <code>native</code> into the tabulation:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(native, kind, .pred_class)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 4</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   native kind  .pred_class     n</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 No     Human AI            390</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 No     Human Human         247</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Yes    Human AI             59</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Yes    Human Human        1772</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 &lt;NA&gt;   AI    AI           1158</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 &lt;NA&gt;   AI    Human        2559</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">count</span><span class="op">(</span><span class="va">native</span>, <span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   native kind  .pred_class     n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 No     Human AI            390</span></span>
+<span><span class="co">#&gt; 2 No     Human Human         247</span></span>
+<span><span class="co">#&gt; 3 Yes    Human AI             59</span></span>
+<span><span class="co">#&gt; 4 Yes    Human Human        1772</span></span>
+<span><span class="co">#&gt; 5 &lt;NA&gt;   AI    AI           1158</span></span>
+<span><span class="co">#&gt; 6 &lt;NA&gt;   AI    Human        2559</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that, for essays written by AI (<code>kind == "AI"</code>), the <code>native</code> variable isn’t well-defined. Those entries thus match the numbers from the above table.</p>
 <p>For essays written by <code>Human</code>s, a plot perhaps better demonstrates the disparity:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(native)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> native, <span class="at">fill =</span> .pred_class)) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Native English Writer"</span>, <span class="at">fill =</span> <span class="st">"Predicted Class"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">native</span>, fill <span class="op">=</span> <span class="va">.pred_class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Native English Writer"</span>, fill <span class="op">=</span> <span class="st">"Predicted Class"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/plot-human-preds-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-human-preds-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Most of the essays written by non-native English writers are incorrectly classified as written by AI, while nearly all of the essays written by native English writers are correctly classified as written by humans. The same effect can be seen in the underlying probability distributions:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(native)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">native =</span> <span class="fu">case_when</span>(native <span class="sc">==</span> <span class="st">"Yes"</span> <span class="sc">~</span> <span class="st">"Native English writer"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                            native <span class="sc">==</span> <span class="st">"No"</span> <span class="sc">~</span> <span class="st">"Non-native English writer"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(.pred_AI, <span class="at">fill =</span> native)) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(native), <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>native <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
+<span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/plot-human-preds-by-native-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-human-preds-by-native-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -361,20 +339,19 @@ Note
 <p>Again, note that <em>all of the plotted essays were written by humans</em>. An effective detector would thus predict a probability near zero for all of these observations. In this plot, we see that the evidence in our initial table showing these detectors weren’t performing well didn’t tell the whole story. They perform <em>quite</em> well for native English writers, actually. For non-native English writers, though, they perform terribly.</p>
 <p>The above plots aggregate observations across several <code>detectors</code>, though. Do some GPT detectors classify essays written by non-native English writers just as well as those from native English writers? We can recreate the above plot to examine this question by faceting across <code>detectors</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(native)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">native =</span> <span class="fu">case_when</span>(native <span class="sc">==</span> <span class="st">"Yes"</span> <span class="sc">~</span> <span class="st">"Native English writer"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                            native <span class="sc">==</span> <span class="st">"No"</span> <span class="sc">~</span> <span class="st">"Non-native English writer"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(.pred_AI, <span class="at">fill =</span> native)) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="fu">vars</span>(native), <span class="fu">vars</span>(detector), <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>native <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
+<span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, <span class="fu">vars</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/plot-human-preds-by-native-detector-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-human-preds-by-native-detector-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -393,12 +370,9 @@ Note
 <p>Explore the source data further. Where are the essays written by native English writers collected from? How about non-native? What does our usage of “native writer” mean in this context, then?</p>
 </div>
 </div>
-</section>
-<section id="fairness-assessment" class="level1">
-<h1>Fairness assessment</h1>
+</section><section id="fairness-assessment" class="level1"><h1>Fairness assessment</h1>
 <p>The <a href="https://yardstick.tidymodels.org/news/index.html#yardstick-130">1.3.0 release of yardstick</a> introduced a suite of functionality for fairness-oriented analysis of machine learning models. The release includes a tool to make fairness metrics, <code>new_groupwise_metric()</code>, as well as three outputs of that tool giving canonical fairness metrics: <code>equal_opportunity()</code>, <code>equalized_odds()</code>, and <code>demographic_parity()</code>. To better understand how to use metrics to quantify model fairness, we’ll consider what a fairness assessment of this model would look like from the perspective of three different stakeholders.</p>
-<section id="effective-detection-group-blind" class="level2">
-<h2 class="anchored" data-anchor-id="effective-detection-group-blind">Effective detection, group-blind</h2>
+<section id="effective-detection-group-blind" class="level2"><h2 class="anchored" data-anchor-id="effective-detection-group-blind">Effective detection, group-blind</h2>
 <p>Imagine, first, the position that the most fair detection model is one that reliably differentiates between essays written by humans or generated by GPTs, regardless of the problem context. From this perspective, the most fair model is the model that detects GPT-generated essays most effectively; it is unfair to pass on an essay written by a GPT as one’s own work. When analyzing this data, a stakeholder with this perspective would ignore the <code>native</code> variable in their analysis.</p>
 <ul>
 <li><p>A <strong>detector author</strong> may take on such a perspective, since their model may be applied in a diverse set of unknown contexts.</p></li>
@@ -407,17 +381,17 @@ Note
 </ul>
 <p>In this case, we calculate a chosen performance metric for each detector, across all of the data, and then consider the most performant detectors:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(detector) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> kind, .pred_AI) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(.estimate)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   detector      .metric .estimator .estimate</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 GPTZero       roc_auc binary         0.750</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 OriginalityAI roc_auc binary         0.682</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 HFOpenAI      roc_auc binary         0.614</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span><span class="co">#&gt;   detector      .metric .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 GPTZero       roc_auc binary         0.750</span></span>
+<span><span class="co">#&gt; 2 OriginalityAI roc_auc binary         0.682</span></span>
+<span><span class="co">#&gt; 3 HFOpenAI      roc_auc binary         0.614</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -434,9 +408,7 @@ Tip
 </div>
 <p>From this perspective, the models with the highest <code>roc_auc()</code> estimates are the most fair.</p>
 <p>The fairness assessment for this stakeholder doesn’t need any of the functionality newly introduced in yardstick 1.3.0. An analysis that reconciles the role of the <code>native</code> variable in these models’ predictions will, though.</p>
-</section>
-<section id="fair-prediction-on-human-written-essays" class="level2">
-<h2 class="anchored" data-anchor-id="fair-prediction-on-human-written-essays">Fair prediction on human-written essays</h2>
+</section><section id="fair-prediction-on-human-written-essays" class="level2"><h2 class="anchored" data-anchor-id="fair-prediction-on-human-written-essays">Fair prediction on human-written essays</h2>
 <p>Now, consider that our only priority was to correctly classify human-written text as human-written and incorrectly classify human-written text as generated by AI at the same rate for both native English writers and non-native English writers, ignoring predictions from essays generated by AI.</p>
 <ul>
 <li><p>Another <strong>student</strong> whose work is evaluated by a detector model may take on such a perspective. This student could be a native English writer who does not want other students to be subjected to undue harm or a non-native English writer concerned with their own writing being incorrectly classified as GPT-generated.</p></li>
@@ -459,29 +431,29 @@ Note
 </div>
 <p>To calculate equal opportunity with yardstick, we use <code>equal_opportunity()</code> to create a metric function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>equal_opportunity_by_native <span class="ot">&lt;-</span> <span class="fu">equal_opportunity</span>(<span class="at">by =</span> native)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>equal_opportunity_by_native</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; A class metric | direction: minimize, group-wise on: native</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">equal_opportunity_by_native</span> <span class="op">&lt;-</span> <span class="fu">equal_opportunity</span><span class="op">(</span>by <span class="op">=</span> <span class="va">native</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">equal_opportunity_by_native</span></span>
+<span><span class="co">#&gt; A class metric | direction: minimize, group-wise on: native</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The function <code>equal_opportunity_by_native()</code> is a yardstick metric function like any other, except it knows to temporarily group by and summarize across a data-column called <code>native</code>. Applying it:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(kind <span class="sc">==</span> <span class="st">"Human"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(detector) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">equal_opportunity_by_native</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> kind, </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> .pred_class, </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"second"</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(.estimate) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 5</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   detector  .metric           .by    .estimator .estimate</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Crossplag equal_opportunity native binary         0.464</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 ZeroGPT   equal_opportunity native binary         0.477</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 GPTZero   equal_opportunity native binary         0.510</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
+<span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
+<span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>, </span>
+<span>    event_level <span class="op">=</span> <span class="st">"second"</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt;   detector  .metric           .by    .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Crossplag equal_opportunity native binary         0.464</span></span>
+<span><span class="co">#&gt; 2 ZeroGPT   equal_opportunity native binary         0.477</span></span>
+<span><span class="co">#&gt; 3 GPTZero   equal_opportunity native binary         0.510</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The detectors with estimates closest to zero are most fair, by this definition of fairness.</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -498,77 +470,70 @@ Important
 </div>
 </div>
 <p>Given this set of moral values, our analysis would offer a different set of recommendations for which detector to use.</p>
-</section>
-<section id="balancing-two-notions-of-fairness" class="level2">
-<h2 class="anchored" data-anchor-id="balancing-two-notions-of-fairness">Balancing two notions of fairness</h2>
+</section><section id="balancing-two-notions-of-fairness" class="level2"><h2 class="anchored" data-anchor-id="balancing-two-notions-of-fairness">Balancing two notions of fairness</h2>
 <p>Instead of either of the options we have considered so far, imagine that we both feel that it is unfair for GPT-generated work to go undetected <em>and</em> believe that it’s unfair for a GPT detector to disproportionately classify human-written work from non-native English writers as GPT-generated.</p>
 <ul>
 <li>Another <strong>instructor</strong> of a course may feel it is unfair to disproportionately classify human-written work from non-native English writers as GPT-generated, but still values detection of GPT-generated content.</li>
 </ul>
 <p>In this case, we could <em>first</em> ensure that a model detects GPT-generated work with some threshold of performance, and then choose the model among that set that predicts most fairly on human-written essays. This reflects the belief that it is more unfair to fail to detect GPT-generated work than it is to disproportionately classify human-written work from non-native English writers as GPT-generated, as it is possible that the model that most proportionately classifies human-written work from native and non-native English writers as GPT-generated is not among the recommended models.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>performant_detectors <span class="ot">&lt;-</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  detectors <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(detector) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> kind, .pred_AI) <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(.estimate)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(kind <span class="sc">==</span> <span class="st">"Human"</span>, detector <span class="sc">%in%</span> performant_detectors<span class="sc">$</span>detector) <span class="sc">%&gt;%</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(detector) <span class="sc">%&gt;%</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">equal_opportunity_by_native</span>(</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> kind, </span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> .pred_class, </span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"second"</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(.estimate)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 5</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   detector      .metric           .by    .estimator .estimate</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 GPTZero       equal_opportunity native binary         0.510</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 HFOpenAI      equal_opportunity native binary         0.549</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 OriginalityAI equal_opportunity native binary         0.709</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">performant_detectors</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span>, <span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">performant_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
+<span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
+<span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>, </span>
+<span>    event_level <span class="op">=</span> <span class="st">"second"</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt;   detector      .metric           .by    .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 GPTZero       equal_opportunity native binary         0.510</span></span>
+<span><span class="co">#&gt; 2 HFOpenAI      equal_opportunity native binary         0.549</span></span>
+<span><span class="co">#&gt; 3 OriginalityAI equal_opportunity native binary         0.709</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We could also reverse the process, reflecting the belief that it is more unfair to disproportionately classify human-written work from non-native English writers as GPT-generated than it is to pass on output from GPTs as one’s own work. We first set a threshold based on <code>equal_opportunity()</code>, then choose the most performant model by <code>roc_auc()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>equal_opportunity_detectors <span class="ot">&lt;-</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  detectors <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(kind <span class="sc">==</span> <span class="st">"Human"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(detector) <span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">equal_opportunity_by_native</span>(</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">truth =</span> kind, </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> .pred_class, </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_level =</span> <span class="st">"second"</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(.estimate) <span class="sc">%&gt;%</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>detectors <span class="sc">%&gt;%</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(detector <span class="sc">%in%</span> equal_opportunity_detectors<span class="sc">$</span>detector) <span class="sc">%&gt;%</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(detector) <span class="sc">%&gt;%</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> kind, .pred_AI) <span class="sc">%&gt;%</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(.estimate))</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   detector  .metric .estimator .estimate</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 GPTZero   roc_auc binary         0.750</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Crossplag roc_auc binary         0.613</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 ZeroGPT   roc_auc binary         0.603</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">equal_opportunity_detectors</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
+<span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
+<span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>, </span>
+<span>    event_level <span class="op">=</span> <span class="st">"second"</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">equal_opportunity_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span><span class="co">#&gt;   detector  .metric .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 GPTZero   roc_auc binary         0.750</span></span>
+<span><span class="co">#&gt; 2 Crossplag roc_auc binary         0.613</span></span>
+<span><span class="co">#&gt; 3 ZeroGPT   roc_auc binary         0.603</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this example, changing the prioritization of the criteria results in a different set of recommended models.</p>
-</section>
-</section>
-<section id="choosing-a-detector" class="level1">
-<h1>Choosing a detector</h1>
+</section></section><section id="choosing-a-detector" class="level1"><h1>Choosing a detector</h1>
 <p>In the preceding section, we saw that the recommended detector we identify depends on our moral values. That is, the mathematical notion of fairness appropriate for a given analysis follows from the problem context. In this way, no statistical model is objectively more fair than another; our assessment of fairness depends on our personally held ideas of fairness.</p>
 <p>As for the problem of GPT detection, while each stakeholder might find that some models are more fair than others, even the most fair models recommended in each approach are quite unfair. For instance, from the first stakeholder’s perspective, even though it’s the most performant model available, GPTZero’s <code>roc_auc()</code> of 0.75 leaves much to be desired; a stakeholder ought to consider the potential harms resulting from the substantial number of errors made by this model when applied in context.</p>
 <p>This analysis only considered one fairness metric, <code>equal_opportunity()</code>. We could have attempted to apply either of the other two fairness metrics included in yardstick 1.3.0, <code>equalized_odds()</code> and <code>demographic_parity()</code>, or a custom fairness metric. Are those two other metrics well-defined for this problem? Which stakeholders’ interests are best represented by those metrics? Would they result in yet another set of discordant recommendations?</p>
 <p>We also did not consider how the outputs of a chosen model be used. If a student’s work is classified as written by a GPT model, what happens then? Would a misclassification be more harmful for one type of student than another? Could an instructor trust model output more readily for one type of student than another? Answers to these questions are a necessary component of a complete fairness analysis and, just like the choice of metric, depend heavily on the problem context.</p>
 <p>In all, we’ve seen that applied fairness analysis is as much a social problem as it is a technical one. While we absolutely ought to strive to minimize harm in development and deployment of machine learning models, the fact that fairness is a moral concept, rather than a mathematical one, means that algorithmic unfairness cannot be automated away.</p>
-</section>
-<section id="references" class="level1">
-<h1>References</h1>
+</section><section id="references" class="level1"><h1>References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-liang2023" class="csl-entry" role="listitem">
 Liang, Weixin, Mert Yuksekgonul, Yining Mao, Eric Wu, and James Zou. 2023. <span>“GPT Detectors Are Biased Against Non-Native English Writers.”</span> <em>Patterns</em> 4 (July): 100779. <a href="https://doi.org/10.1016/j.patter.2023.100779">https://doi.org/10.1016/j.patter.2023.100779</a>.
@@ -577,8 +542,7 @@ Liang, Weixin, Mert Yuksekgonul, Yining Mao, Eric Wu, and James Zou. 2023. <span
 Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian Lum. 2021. <span>“Algorithmic Fairness: Choices, Assumptions, and Definitions.”</span> <em>Annual Review of Statistics and Its Application</em> 8 (1): 141–63. <a href="https://doi.org/10.1146/annurev-statistics-042720-125902">https://doi.org/10.1146/annurev-statistics-042720-125902</a>.
 </div>
 </div>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+<section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.2 (2025-10-31)
@@ -610,13 +574,7 @@ Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian L
 </div>
 
 
-</section>
-</section>
-
-</main> <!-- /main -->
-<!-- plausible -->
-<script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
-<div class="section resources">
+</section></section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
@@ -648,8 +606,7 @@ Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian L
   sidebar = document.querySelector('#quarto-margin-sidebar');
   resources = document.querySelector('.resources');
   sidebar.appendChild(resources);
-</script>
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1050,8 +1007,7 @@ Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian L
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
@@ -1063,8 +1019,6 @@ Mitchell, Shira, Eric Potash, Solon Barocas, Alexander D’Amour, and Kristian L
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

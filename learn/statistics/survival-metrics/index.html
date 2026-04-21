@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="Let’s discuss how to compute modern performance metrics for time-to-event models.">
-
 <title>Dynamic Performance Metrics for Event Time Data – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
@@ -61,7 +58,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -80,8 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -107,12 +102,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -138,15 +128,11 @@ window.Quarto = {
   typesetMath
 };
 </script>
-
 </head>
-
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">tidymodels</span>
@@ -158,7 +144,7 @@ window.Quarto = {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../../packages/index.html"> 
 <span class="menu-text">Packages</span></a>
   </li>  
@@ -192,22 +178,18 @@ window.Quarto = {
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data">Example data</a></li>
   <li><a href="#survival-probability-prediction" id="toc-survival-probability-prediction" class="nav-link" data-scroll-target="#survival-probability-prediction">Survival Probability Prediction</a></li>
   <li><a href="#brier-score" id="toc-brier-score" class="nav-link" data-scroll-target="#brier-score">Brier Score</a></li>
@@ -216,14 +198,10 @@ window.Quarto = {
   <li><a href="#tuning-these-metrics" id="toc-tuning-these-metrics" class="nav-link" data-scroll-target="#tuning-these-metrics">Tuning these metrics</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/statistics/survival-metrics/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/statistics/survival-metrics/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Dynamic Performance Metrics for Event Time Data</h1>
   <div class="quarto-categories">
     <div class="quarto-category">statistical analysis</div>
@@ -247,11 +225,7 @@ window.Quarto = {
   
 
 
-</header>
-
-
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: censored, modeldatatoo, and tidymodels.</p>
 <p>One trend in modern survival analysis is to compute time-dependent measures of performance. These are primarily driven by an increased focus on predictions for the probability of survival at a given time (as opposed to the predictions of event times or linear predictors). Since these are conditional on the evaluation time, we call them dynamic performance metrics.</p>
 <p>Many dynamic metrics are similar to those used for binary classification models. The basic idea is that, for a given time <span class="math inline">\(t\)</span> for model evaluation, we try to encode the observed event time data into a binary “has there been an event at time <span class="math inline">\(t\)</span>?” version. We can also convert the predicted survival probabilities into predicted events/non-events based on a threshold (default is 0.50). The survival versions of these metrics need binary versions of observed truth and predictions as well as a way to account for censoring.</p>
@@ -261,104 +235,97 @@ window.Quarto = {
 <li>Observed time: time recorded in the data</li>
 <li>Event time: observed times for actual events</li>
 <li>Evaluation time: the time, specified by the analyst, that the model is evaluated.</li>
-</ul>
-</section>
-<section id="example-data" class="level2">
-<h2 class="anchored" data-anchor-id="example-data">Example data</h2>
+</ul></section><section id="example-data" class="level2"><h2 class="anchored" data-anchor-id="example-data">Example data</h2>
 <p>As an example, we’ll use the building complaints data from the <a href="../survival-case-study">case study</a>. We’ll also load the censored package so that we can fit a model to these time-to-event data:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(censored)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: survival</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching package: 'survival'</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following object is masked from 'package:future':</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     cluster</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>building_complaints <span class="ot">&lt;-</span> modeldatatoo<span class="sc">::</span><span class="fu">data_building_complaints</span>()</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>building_complaints <span class="ot">&lt;-</span> building_complaints <span class="sc">%&gt;%</span> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">disposition_surv =</span> <span class="fu">Surv</span>(days_to_disposition, status <span class="sc">==</span> <span class="st">"CLOSED"</span>), </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">"unused"</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">403</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>complaints_split <span class="ot">&lt;-</span> <span class="fu">initial_validation_split</span>(building_complaints)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>complaints_train <span class="ot">&lt;-</span> <span class="fu">training</span>(complaints_split)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>complaints_val <span class="ot">&lt;-</span> <span class="fu">validation</span>(complaints_split)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/censored">censored</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: survival</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'survival'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:future':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     cluster</span></span>
+<span></span>
+<span><span class="va">building_complaints</span> <span class="op">&lt;-</span> <span class="fu">modeldatatoo</span><span class="fu">::</span><span class="fu">data_building_complaints</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">building_complaints</span> <span class="op">&lt;-</span> <span class="va">building_complaints</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    disposition_surv <span class="op">=</span> <span class="fu">Surv</span><span class="op">(</span><span class="va">days_to_disposition</span>, <span class="va">status</span> <span class="op">==</span> <span class="st">"CLOSED"</span><span class="op">)</span>, </span>
+<span>    .keep <span class="op">=</span> <span class="st">"unused"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">403</span><span class="op">)</span></span>
+<span><span class="va">complaints_split</span> <span class="op">&lt;-</span> <span class="fu">initial_validation_split</span><span class="op">(</span><span class="va">building_complaints</span><span class="op">)</span></span>
+<span><span class="va">complaints_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">complaints_split</span><span class="op">)</span></span>
+<span><span class="va">complaints_val</span> <span class="op">&lt;-</span> <span class="fu">validation</span><span class="op">(</span><span class="va">complaints_split</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We’ll need a model to illustrate the code and concepts. Let’s fit a basic Weibull model to the training set. We’ll do a little bit of work on some of the predictors that have many possible levels using a recipe:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>survreg_spec <span class="ot">&lt;-</span> <span class="fu">survival_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"survival"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"censored regression"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>other_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(disposition_surv <span class="sc">~</span> ., <span class="at">data =</span> complaints_train) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_unknown</span>(complaint_priority) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_rm</span>(complaint_category) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_novel</span>(community_board, unit) <span class="sc">%&gt;%</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(community_board, unit, <span class="at">threshold =</span> <span class="fl">0.02</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>survreg_wflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(other_rec) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(survreg_spec)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>complaints_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(survreg_wflow, <span class="at">data =</span> complaints_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">survreg_spec</span> <span class="op">&lt;-</span> <span class="fu">survival_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"survival"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"censored regression"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">other_rec</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">disposition_surv</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">complaints_train</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_unknown</span><span class="op">(</span><span class="va">complaint_priority</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_rm</span><span class="op">(</span><span class="va">complaint_category</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_novel</span><span class="op">(</span><span class="va">community_board</span>, <span class="va">unit</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">step_other</span><span class="op">(</span><span class="va">community_board</span>, <span class="va">unit</span>, threshold <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">survreg_wflow</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">other_rec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">survreg_spec</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">complaints_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">survreg_wflow</span>, data <span class="op">=</span> <span class="va">complaints_train</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Using this model, we’ll make predictions of different types.</p>
-</section>
-<section id="survival-probability-prediction" class="level2">
-<h2 class="anchored" data-anchor-id="survival-probability-prediction">Survival Probability Prediction</h2>
+</section><section id="survival-probability-prediction" class="level2"><h2 class="anchored" data-anchor-id="survival-probability-prediction">Survival Probability Prediction</h2>
 <p>This censored regression model can make static predictions via the predicted event time using <code>predict(object, type = "time")</code>. It can also create dynamic predictions regarding the probability of survival for each data point at specific times. The syntax for this is</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(object, new_data, <span class="at">type =</span> <span class="st">"survival"</span>, <span class="at">eval_time =</span> <span class="fu">numeric</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">new_data</span>, type <span class="op">=</span> <span class="st">"survival"</span>, eval_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>where <code>eval_time</code> is a vector of time points at which we want the corresponding survivor function estimates. Alternatively, we can use the <code>augment()</code> function to get both types of prediction and automatically attach them to the data.</p>
 <p>We’ll use a finer grid than the <a href="../survival-case-study">case study</a> with a maximum evaluation time of 200 days for this analysis.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>time_points <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">200</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>val_pred <span class="ot">&lt;-</span> <span class="fu">augment</span>(complaints_fit, complaints_val, <span class="at">eval_time =</span> time_points)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>val_pred</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 847 × 12</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .pred    .pred_time year_entered latitude longitude borough  special_district</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;list&gt;        &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 &lt;tibble&gt;       96.6 2023             40.7     -73.8 Queens   None            </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 &lt;tibble&gt;       18.7 2023             40.8     -74.0 Manhatt… None            </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 &lt;tibble&gt;       29.5 2023             40.6     -74.0 Brooklyn None            </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 &lt;tibble&gt;       29.8 2023             40.7     -73.8 Queens   None            </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 &lt;tibble&gt;       24.8 2023             40.7     -74.0 Manhatt… None            </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 &lt;tibble&gt;       58.4 2023             40.6     -74.0 Brooklyn None            </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 &lt;tibble&gt;       71.3 2023             40.7     -73.9 Brooklyn None            </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 &lt;tibble&gt;      102.  2023             40.7     -73.7 Queens   None            </span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 &lt;tibble&gt;       47.1 2023             40.7     -74.0 Brooklyn None            </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 &lt;tibble&gt;       28.5 2023             40.6     -74.0 Brooklyn None            </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 837 more rows</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 5 more variables: unit &lt;fct&gt;, community_board &lt;fct&gt;,</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   complaint_category &lt;fct&gt;, complaint_priority &lt;fct&gt;, disposition_surv &lt;Surv&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">time_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">val_pred</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">complaints_fit</span>, <span class="va">complaints_val</span>, eval_time <span class="op">=</span> <span class="va">time_points</span><span class="op">)</span></span>
+<span><span class="va">val_pred</span></span>
+<span><span class="co">#&gt; # A tibble: 847 × 12</span></span>
+<span><span class="co">#&gt;    .pred    .pred_time year_entered latitude longitude borough  special_district</span></span>
+<span><span class="co">#&gt;    &lt;list&gt;        &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;           </span></span>
+<span><span class="co">#&gt;  1 &lt;tibble&gt;       96.6 2023             40.7     -73.8 Queens   None            </span></span>
+<span><span class="co">#&gt;  2 &lt;tibble&gt;       18.7 2023             40.8     -74.0 Manhatt… None            </span></span>
+<span><span class="co">#&gt;  3 &lt;tibble&gt;       29.5 2023             40.6     -74.0 Brooklyn None            </span></span>
+<span><span class="co">#&gt;  4 &lt;tibble&gt;       29.8 2023             40.7     -73.8 Queens   None            </span></span>
+<span><span class="co">#&gt;  5 &lt;tibble&gt;       24.8 2023             40.7     -74.0 Manhatt… None            </span></span>
+<span><span class="co">#&gt;  6 &lt;tibble&gt;       58.4 2023             40.6     -74.0 Brooklyn None            </span></span>
+<span><span class="co">#&gt;  7 &lt;tibble&gt;       71.3 2023             40.7     -73.9 Brooklyn None            </span></span>
+<span><span class="co">#&gt;  8 &lt;tibble&gt;      102.  2023             40.7     -73.7 Queens   None            </span></span>
+<span><span class="co">#&gt;  9 &lt;tibble&gt;       47.1 2023             40.7     -74.0 Brooklyn None            </span></span>
+<span><span class="co">#&gt; 10 &lt;tibble&gt;       28.5 2023             40.6     -74.0 Brooklyn None            </span></span>
+<span><span class="co">#&gt; # ℹ 837 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 5 more variables: unit &lt;fct&gt;, community_board &lt;fct&gt;,</span></span>
+<span><span class="co">#&gt; #   complaint_category &lt;fct&gt;, complaint_priority &lt;fct&gt;, disposition_surv &lt;Surv&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The observed data are in the <code>disposition_surv</code> column. The predicted survival probabilities are in the <code>.pred</code> column. This is a list column with a data frame for each observation, containing the predictions at the 21 evaluation time points in the (nested) column <code>.pred_survival</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>val_pred<span class="sc">$</span>.pred[[<span class="dv">1</span>]]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 21 × 5</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .eval_time .pred_survival .weight_time .pred_censored .weight_censored</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1          0          1             0             1                 1   </span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2         10          0.847        10.00          0.988             1.01</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3         20          0.750        20.0           0.976             1.02</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4         30          0.673        30.0           0.963             1.04</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5         40          0.608        NA            NA                NA   </span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6         50          0.552        NA            NA                NA   </span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7         60          0.504        NA            NA                NA   </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8         70          0.461        NA            NA                NA   </span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9         80          0.423        NA            NA                NA   </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10         90          0.388        NA            NA                NA   </span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">val_pred</span><span class="op">$</span><span class="va">.pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 21 × 5</span></span>
+<span><span class="co">#&gt;    .eval_time .pred_survival .weight_time .pred_censored .weight_censored</span></span>
+<span><span class="co">#&gt;         &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1          0          1             0             1                 1   </span></span>
+<span><span class="co">#&gt;  2         10          0.847        10.00          0.988             1.01</span></span>
+<span><span class="co">#&gt;  3         20          0.750        20.0           0.976             1.02</span></span>
+<span><span class="co">#&gt;  4         30          0.673        30.0           0.963             1.04</span></span>
+<span><span class="co">#&gt;  5         40          0.608        NA            NA                NA   </span></span>
+<span><span class="co">#&gt;  6         50          0.552        NA            NA                NA   </span></span>
+<span><span class="co">#&gt;  7         60          0.504        NA            NA                NA   </span></span>
+<span><span class="co">#&gt;  8         70          0.461        NA            NA                NA   </span></span>
+<span><span class="co">#&gt;  9         80          0.423        NA            NA                NA   </span></span>
+<span><span class="co">#&gt; 10         90          0.388        NA            NA                NA   </span></span>
+<span><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The yardstick package currently has two dynamic metrics. Each is described below.</p>
-</section>
-<section id="brier-score" class="level2">
-<h2 class="anchored" data-anchor-id="brier-score">Brier Score</h2>
+</section><section id="brier-score" class="level2"><h2 class="anchored" data-anchor-id="brier-score">Brier Score</h2>
 <p>The Brier score is a metric that can be used with both classification and event-time models. In classification models, we compute the squared error between the observed outcome (encoded as 0/1) and the corresponding predicted probability for the class.</p>
 <p>A little math: suppose that the value <span class="math inline">\(y_{ik}\)</span> is a 0/1 indicator for whether the observed outcome <span class="math inline">\(i\)</span> corresponds to class <span class="math inline">\(k\)</span>, and <span class="math inline">\(\hat{p}_{ik}\)</span> is the estimated class probability. The classification score is then:</p>
 <p><span class="math display">\[
@@ -372,43 +339,45 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <p>For this score, a perfect model has a score of zero, while an uninformative model would have a score of around 1/4.</p>
 <p>How do we compute this using the yardstick package? The function <a href="https://yardstick.tidymodels.org/reference/brier_survival.html"><code>brier_survival()</code></a> follows the same convention as the other metric functions. The main arguments are:</p>
 <ul>
-<li><code>data</code>: the data frame with the predictions (structured as the output produced by <code>augment()</code>, as shown above).</li>
-<li><code>truth</code>: the name of the column with the <code>Surv</code> object.</li>
-<li><code>...</code>: the name of the column with the dynamic predictions. Within tidymodels, this column is always called <code>.pred</code>. In other words, <code>.pred</code> should be passed without an argument name.</li>
+<li>
+<code>data</code>: the data frame with the predictions (structured as the output produced by <code>augment()</code>, as shown above).</li>
+<li>
+<code>truth</code>: the name of the column with the <code>Surv</code> object.</li>
+<li>
+<code>...</code>: the name of the column with the dynamic predictions. Within tidymodels, this column is always called <code>.pred</code>. In other words, <code>.pred</code> should be passed without an argument name.</li>
 </ul>
 <p>Since the evaluation times and the case weights are within the <code>.pred</code> column, there is no need to specify these. Here are the results of our validation set:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>brier_scores <span class="ot">&lt;-</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  val_pred <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brier_survival</span>(<span class="at">truth =</span> disposition_surv, .pred)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>brier_scores</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 21 × 4</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .metric        .estimator .eval_time .estimate</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 brier_survival standard            0    0     </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 brier_survival standard           10    0.177 </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 brier_survival standard           20    0.168 </span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 brier_survival standard           30    0.160 </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 brier_survival standard           40    0.156 </span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 brier_survival standard           50    0.138 </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 brier_survival standard           60    0.121 </span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 brier_survival standard           70    0.0954</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 brier_survival standard           80    0.0808</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 brier_survival standard           90    0.0697</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">brier_scores</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">val_pred</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">brier_survival</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">disposition_surv</span>, <span class="va">.pred</span><span class="op">)</span></span>
+<span><span class="va">brier_scores</span></span>
+<span><span class="co">#&gt; # A tibble: 21 × 4</span></span>
+<span><span class="co">#&gt;    .metric        .estimator .eval_time .estimate</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 brier_survival standard            0    0     </span></span>
+<span><span class="co">#&gt;  2 brier_survival standard           10    0.177 </span></span>
+<span><span class="co">#&gt;  3 brier_survival standard           20    0.168 </span></span>
+<span><span class="co">#&gt;  4 brier_survival standard           30    0.160 </span></span>
+<span><span class="co">#&gt;  5 brier_survival standard           40    0.156 </span></span>
+<span><span class="co">#&gt;  6 brier_survival standard           50    0.138 </span></span>
+<span><span class="co">#&gt;  7 brier_survival standard           60    0.121 </span></span>
+<span><span class="co">#&gt;  8 brier_survival standard           70    0.0954</span></span>
+<span><span class="co">#&gt;  9 brier_survival standard           80    0.0808</span></span>
+<span><span class="co">#&gt; 10 brier_survival standard           90    0.0697</span></span>
+<span><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Over time:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>brier_scores <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(.eval_time, .estimate)) <span class="sc">+</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"time"</span>, <span class="at">y =</span> <span class="st">"Brier score"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">brier_scores</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.eval_time</span>, <span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">4</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"Brier score"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/brier-scores-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/brier-scores-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -416,17 +385,15 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <p>This shows the worst predictions (relatively speaking) occur at 10 days with a corresponding Brier score of 0.177. Performance gets steadily better over (evaluation) time.</p>
 <p>Instead of thinking in 21 dimensions, there is also an <em>integrated</em> Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the above curve. The syntax is the same, but the result has a single row:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>val_pred <span class="sc">%&gt;%</span> <span class="fu">brier_survival_integrated</span>(<span class="at">truth =</span> disposition_surv, .pred)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .metric                   .estimator .estimate</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                     &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 brier_survival_integrated standard      0.0772</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">val_pred</span> <span class="op">%&gt;%</span> <span class="fu">brier_survival_integrated</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">disposition_surv</span>, <span class="va">.pred</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span><span class="co">#&gt;   .metric                   .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                     &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 brier_survival_integrated standard      0.0772</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Again, smaller values are better.</p>
 <p>We’ll look at the data behind this performance metric in more detail in a bit.</p>
-</section>
-<section id="receiver-operating-characteristic-roc-curves" class="level2">
-<h2 class="anchored" data-anchor-id="receiver-operating-characteristic-roc-curves">Receiver Operating Characteristic (ROC) Curves</h2>
+</section><section id="receiver-operating-characteristic-roc-curves" class="level2"><h2 class="anchored" data-anchor-id="receiver-operating-characteristic-roc-curves">Receiver Operating Characteristic (ROC) Curves</h2>
 <p>When we not only turn the event time data into a binary representation but also the predicted probabilities, we are in well-chartered classification metrics territory. Sensitivity and specificity are common quantities to compute; we do so here in their weighted version to account for censoring:</p>
 <ul>
 <li>Sensitivity: How well do we predict the events? This is analogous to the true positive rate.</li>
@@ -436,8 +403,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/surv-hist-early-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="figs/surv-hist-early-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -449,8 +415,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/roc-early-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/roc-early-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -458,45 +423,42 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <p>The area under this curve is 0.822.</p>
 <p>Since this is a dynamic metric, we compute the AUC for each evaluation time. The syntax is very similar to the Brier code shown above:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>roc_scores <span class="ot">&lt;-</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  val_pred <span class="sc">%&gt;%</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc_survival</span>(<span class="at">truth =</span> disposition_surv, .pred)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>roc_scores</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 21 × 4</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .metric          .estimator .eval_time .estimate</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 roc_auc_survival standard            0     0.5  </span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 roc_auc_survival standard           10     0.822</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 roc_auc_survival standard           20     0.831</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 roc_auc_survival standard           30     0.831</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 roc_auc_survival standard           40     0.815</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 roc_auc_survival standard           50     0.811</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 roc_auc_survival standard           60     0.789</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 roc_auc_survival standard           70     0.794</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 roc_auc_survival standard           80     0.790</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 roc_auc_survival standard           90     0.784</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">roc_scores</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">val_pred</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">roc_auc_survival</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">disposition_surv</span>, <span class="va">.pred</span><span class="op">)</span></span>
+<span><span class="va">roc_scores</span></span>
+<span><span class="co">#&gt; # A tibble: 21 × 4</span></span>
+<span><span class="co">#&gt;    .metric          .estimator .eval_time .estimate</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 roc_auc_survival standard            0     0.5  </span></span>
+<span><span class="co">#&gt;  2 roc_auc_survival standard           10     0.822</span></span>
+<span><span class="co">#&gt;  3 roc_auc_survival standard           20     0.831</span></span>
+<span><span class="co">#&gt;  4 roc_auc_survival standard           30     0.831</span></span>
+<span><span class="co">#&gt;  5 roc_auc_survival standard           40     0.815</span></span>
+<span><span class="co">#&gt;  6 roc_auc_survival standard           50     0.811</span></span>
+<span><span class="co">#&gt;  7 roc_auc_survival standard           60     0.789</span></span>
+<span><span class="co">#&gt;  8 roc_auc_survival standard           70     0.794</span></span>
+<span><span class="co">#&gt;  9 roc_auc_survival standard           80     0.790</span></span>
+<span><span class="co">#&gt; 10 roc_auc_survival standard           90     0.784</span></span>
+<span><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Over time:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>roc_scores <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(.eval_time, .estimate)) <span class="sc">+</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"time"</span>, <span class="at">y =</span> <span class="st">"ROC AUC"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">roc_scores</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.eval_time</span>, <span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"ROC AUC"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/roc-scores-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/roc-scores-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>In this case, performance is best at earlier time points (unlike the Brier score), degrades a bit, and then increases again. Despite this, performance is fairly good across all non-zero evaluation times.</p>
-</section>
-<section id="disagreement-between-metrics" class="level2">
-<h2 class="anchored" data-anchor-id="disagreement-between-metrics">Disagreement between metrics</h2>
+</section><section id="disagreement-between-metrics" class="level2"><h2 class="anchored" data-anchor-id="disagreement-between-metrics">Disagreement between metrics</h2>
 <p>While it may not be surprising that each metric’s results vary over time, it may seem odd that <em>when</em> the model does best also differs between metrics.</p>
 <p>The issue is that the ROC measures class separation, and the Brier score focuses more on accurate and well-calibrated predictions. These are not the same thing. As we’ll see shortly, it can be easy to separate data between qualitative prediction (event or no event) even when the corresponding probability predictions are very inaccurate.</p>
 <p>Below is a contrived (but common) case with two classes. The probability distributions between the true classes are shown on the left. Note that the curves show separation between the event and non-event groups. As expected, the area under the ROC curve is very high (0.997).</p>
@@ -504,8 +466,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/example-miscal-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/example-miscal-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -515,8 +476,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/cal-hist-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/cal-hist-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -526,8 +486,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/cal-both-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/cal-both-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -537,31 +496,23 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/roc-both-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/roc-both-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>It may be difficult to tell from the histograms above, but the groups are separated enough at 100 days to produce an area under the ROC curve of 0.76. That’s not bad; the metric is seeing separation despite the lack of accuracy.</p>
 <p>This demonstrates that there are situations where the metrics have discordant results. The context of the project should determine whether the separation of classes or accuracy is more important.</p>
-</section>
-<section id="tuning-these-metrics" class="level2">
-<h2 class="anchored" data-anchor-id="tuning-these-metrics">Tuning these metrics</h2>
+</section><section id="tuning-these-metrics" class="level2"><h2 class="anchored" data-anchor-id="tuning-these-metrics">Tuning these metrics</h2>
 <p>Many of the event time models available in tidymodels have tuning parameters. The <code>tune_*()</code> functions and <code>fit_resamples()</code> have an <code>eval_time</code> argument to pass the evaluation times. The statistics are computed for these time points using out-of-sample data.</p>
 <p>In some cases, such as <a href="https://www.tmwr.org/iterative-search.html">iterative search</a> or <a href="https://www.tmwr.org/grid-search.html#racing">racing methods</a>, the functions need a single value to optimize. If a dynamic metric is chosen to guide the optimization, <em>the first evaluation time given by the user</em> will be used.</p>
 <p>For example, if a model for these data was being optimized, and we wanted a time of 10 days to guide the search, we would need to use that value of 10.00 as the first element <code>time_points</code>, the vector given to the <code>eval_time</code> argument in our example above.</p>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+</section><section id="summary" class="level2"><h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p>tidymodels has two time-dependent metrics for characterizing the performance of event-time models:</p>
 <ul>
 <li>The Brier score measures the distance between the observed class result and the predicted probabilities.</li>
 <li>ROC curves try to measure the separation between the two classes based on the survival probabilities.</li>
-</ul>
-</section>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+</ul></section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.2 (2025-10-31)
@@ -594,18 +545,10 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 </div>
 
 
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
+</section><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 <ol>
 <li id="fn1"><p>Again, see the <a href="../survival-metrics-details">Accounting for Censoring in Performance Metrics for Event Time Data</a> article for more on this.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
-<!-- plausible -->
-<script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
-<div class="section resources">
+</ol></section></div></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
@@ -637,8 +580,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
   sidebar = document.querySelector('#quarto-margin-sidebar');
   resources = document.querySelector('.resources');
   sidebar.appendChild(resources);
-</script>
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1039,8 +981,7 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
@@ -1052,8 +993,6 @@ Brier_{surv}(t) = \frac{1}{N}\sum_{i=1}^N w_{it}\left[\underbrace{I(y_{it} = 0)(
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

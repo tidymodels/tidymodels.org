@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="Create a parsnip model function from an existing model implementation.">
-
 <title>How to build a parsnip model – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
@@ -61,7 +58,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -80,8 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,16 +103,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">tidymodels</span>
@@ -129,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../../packages/index.html"> 
 <span class="menu-text">Packages</span></a>
   </li>  
@@ -163,13 +153,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -177,15 +165,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Learn</span></a>
@@ -199,8 +183,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/statistics/bootstrap/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Bootstrap resampling and tidy regression models</span></a>
@@ -231,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
@@ -240,8 +224,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/models/coefficients/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Working with model coefficients</span></a>
@@ -284,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
@@ -293,8 +277,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/develop/broom/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Create your own broom tidier methods</span></a>
@@ -325,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -334,8 +318,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/work/bayes-opt/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Iterative Bayesian optimization of a classification model</span></a>
@@ -366,18 +350,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#an-example-model" id="toc-an-example-model" class="nav-link" data-scroll-target="#an-example-model">An example model</a></li>
   <li><a href="#aspects-of-models" id="toc-aspects-of-models" class="nav-link" data-scroll-target="#aspects-of-models">Aspects of models</a></li>
   <li><a href="#the-general-process" id="toc-the-general-process" class="nav-link" data-scroll-target="#the-general-process">The general process</a></li>
@@ -386,14 +368,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#your-model-tuning-parameters-and-you" id="toc-your-model-tuning-parameters-and-you" class="nav-link" data-scroll-target="#your-model-tuning-parameters-and-you">Your model, tuning parameters, and you</a></li>
   <li><a href="#pro-tips-what-ifs-exceptions-faq-and-minutiae" id="toc-pro-tips-what-ifs-exceptions-faq-and-minutiae" class="nav-link" data-scroll-target="#pro-tips-what-ifs-exceptions-faq-and-minutiae">Pro-tips, what-ifs, exceptions, FAQ, and minutiae</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/models/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/models/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li><li class="breadcrumb-item"><a href="../../../learn/develop/models/index.html">How to build a parsnip model</a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li><li class="breadcrumb-item"><a href="../../../learn/develop/models/index.html">How to build a parsnip model</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">How to build a parsnip model</h1>
   <div class="quarto-categories">
     <div class="quarto-category">developer tools</div>
@@ -416,11 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header>
-
-
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: mda, modeldata, and tidymodels.</p>
 <p>The parsnip package constructs models and predictions by representing those actions in expressions. There are a few reasons for this:</p>
 <ul>
@@ -429,63 +403,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>A parsnip model function is itself very general. For example, the <code>logistic_reg()</code> function itself doesn’t have any model code within it. Instead, each model function is associated with one or more computational <em>engines</em>. These might be different R packages or some function in another language (that can be evaluated by R).</p>
 <p>This article describes the process of creating a new model function. Before proceeding, take a minute and read our <a href="https://tidymodels.github.io/model-implementation-principles/">guidelines on creating modeling packages</a> to understand the general themes and conventions that we use.</p>
-</section>
-<section id="an-example-model" class="level2">
-<h2 class="anchored" data-anchor-id="an-example-model">An example model</h2>
+</section><section id="an-example-model" class="level2"><h2 class="anchored" data-anchor-id="an-example-model">An example model</h2>
 <p>As an example, we’ll create a function for <em>mixture discriminant analysis</em>. There are <a href="http://search.r-project.org/cgi-bin/namazu.cgi?query=%22mixture+discriminant%22&amp;max=100&amp;result=normal&amp;sort=score&amp;idxname=functions">a few packages</a> that implement this but we’ll focus on <code>mda::mda()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mda<span class="sc">::</span>mda)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; function (formula = formula(data), data = sys.frame(sys.parent()), subclasses = 3, </span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     sub.df = NULL, tot.df = NULL, dimension = sum(subclasses) - 1, eps = 100 * </span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         .Machine$double.eps, iter = 5, weights = mda.start(x, g, subclasses, </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         trace, ...), method = polyreg, keep.fitted = (n * dimension &lt; 5000), </span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     trace = FALSE, ...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">mda</span><span class="fu">::</span><span class="va">mda</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (formula = formula(data), data = sys.frame(sys.parent()), subclasses = 3, </span></span>
+<span><span class="co">#&gt;     sub.df = NULL, tot.df = NULL, dimension = sum(subclasses) - 1, eps = 100 * </span></span>
+<span><span class="co">#&gt;         .Machine$double.eps, iter = 5, weights = mda.start(x, g, subclasses, </span></span>
+<span><span class="co">#&gt;         trace, ...), method = polyreg, keep.fitted = (n * dimension &lt; 5000), </span></span>
+<span><span class="co">#&gt;     trace = FALSE, ...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The main hyperparameter is the number of subclasses. We’ll name our function <code>discrim_mixture()</code>.</p>
-</section>
-<section id="aspects-of-models" class="level2">
-<h2 class="anchored" data-anchor-id="aspects-of-models">Aspects of models</h2>
+</section><section id="aspects-of-models" class="level2"><h2 class="anchored" data-anchor-id="aspects-of-models">Aspects of models</h2>
 <p>Before proceeding, it helps to to review how parsnip categorizes models:</p>
 <ul>
 <li><p>The model <em>type</em> is related to the structural aspect of the model. For example, the model type <code>linear_reg()</code> represents linear models (slopes and intercepts) that model a numeric outcome. Other model types in the package are <code>nearest_neighbor()</code>, <code>decision_tree()</code>, and so on.</p></li>
 <li><p>Within a model type is the <em>mode</em>, related to the modeling goal. Currently the three modes in the package are regression, classification, and censored regression. Some models have methods for multiple modes (e.g.&nbsp;nearest neighbors) while others have only a single mode (e.g.&nbsp;logistic regression).</p></li>
-<li><p>The computation <em>engine</em> is a combination of the estimation method and the implementation. For example, for linear regression, one engine is <code>"lm"</code> which uses ordinary least squares analysis via the <code>lm()</code> function. Another engine is <code>"stan"</code> which uses the Stan infrastructure to estimate parameters using Bayes rule.</p></li>
+<li><p>The computation <em>engine</em> is a combination of the estimation method and the implementation. For example, for linear regression, one engine is <code>"lm"</code> which uses ordinary least squares analysis via the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function. Another engine is <code>"stan"</code> which uses the Stan infrastructure to estimate parameters using Bayes rule.</p></li>
 </ul>
 <p>When adding a model into parsnip, the user has to specify which modes and engines are used. The package also enables users to add a new mode or engine to an existing model.</p>
-</section>
-<section id="the-general-process" class="level2">
-<h2 class="anchored" data-anchor-id="the-general-process">The general process</h2>
+</section><section id="the-general-process" class="level2"><h2 class="anchored" data-anchor-id="the-general-process">The general process</h2>
 <p>The parsnip package stores information about the models in an internal environment object. The environment can be accessed via the function <code>get_model_env()</code>. The package includes a variety of functions that can get or set the different aspects of the models.</p>
 <p>If you are adding a new model from your own package, you can use these functions to add new entries into the model environment.</p>
-<section id="step-1.-register-the-model-modes-and-arguments" class="level3">
-<h3 class="anchored" data-anchor-id="step-1.-register-the-model-modes-and-arguments">Step 1. Register the model, modes, and arguments</h3>
+<section id="step-1.-register-the-model-modes-and-arguments" class="level3"><h3 class="anchored" data-anchor-id="step-1.-register-the-model-modes-and-arguments">Step 1. Register the model, modes, and arguments</h3>
 <p>We will add the MDA model using the model type <code>discrim_mixture()</code>. Since this is a classification method, we only have to register a single mode:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set_new_model</span>(<span class="st">"discrim_mixture"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set_model_mode</span>(<span class="at">model =</span> <span class="st">"discrim_mixture"</span>, <span class="at">mode =</span> <span class="st">"classification"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set_model_engine</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"discrim_mixture"</span>, </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"classification"</span>, </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"mda"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set_dependency</span>(<span class="st">"discrim_mixture"</span>, <span class="at">eng =</span> <span class="st">"mda"</span>, <span class="at">pkg =</span> <span class="st">"mda"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu">set_new_model</span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
+<span><span class="fu">set_model_mode</span><span class="op">(</span>model <span class="op">=</span> <span class="st">"discrim_mixture"</span>, mode <span class="op">=</span> <span class="st">"classification"</span><span class="op">)</span></span>
+<span><span class="fu">set_model_engine</span><span class="op">(</span></span>
+<span>  <span class="st">"discrim_mixture"</span>, </span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span>, </span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">set_dependency</span><span class="op">(</span><span class="st">"discrim_mixture"</span>, eng <span class="op">=</span> <span class="st">"mda"</span>, pkg <span class="op">=</span> <span class="st">"mda"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_model_info</span>(<span class="st">"discrim_mixture"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Information for `discrim_mixture`</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  modes: unknown, classification </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  engines: </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    classification: mdaNA</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  no registered arguments.</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  no registered fit modules.</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  no registered prediction modules.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">show_model_info</span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Information for `discrim_mixture`</span></span>
+<span><span class="co">#&gt;  modes: unknown, classification </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  engines: </span></span>
+<span><span class="co">#&gt;    classification: mdaNA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  no registered arguments.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  no registered fit modules.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  no registered prediction modules.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The next step is to declare the main arguments to the model. These are declared independent of the mode. To specify the argument, there are a few slots to fill in:</p>
 <ul>
@@ -496,33 +463,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>For <code>mda::mda()</code>, the main tuning parameter is <code>subclasses</code> which we will rewrite as <code>sub_classes</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_model_arg</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"mda"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">parsnip =</span> <span class="st">"sub_classes"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">original =</span> <span class="st">"subclasses"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> <span class="fu">list</span>(<span class="at">pkg =</span> <span class="st">"foo"</span>, <span class="at">fun =</span> <span class="st">"bar"</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">has_submodel =</span> <span class="cn">FALSE</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">show_model_info</span>(<span class="st">"discrim_mixture"</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Information for `discrim_mixture`</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  modes: unknown, classification </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  engines: </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    classification: mdaNA</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  arguments: </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mda: </span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sub_classes --&gt; subclasses</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  no registered fit modules.</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  no registered prediction modules.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_model_arg</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  parsnip <span class="op">=</span> <span class="st">"sub_classes"</span>,</span>
+<span>  original <span class="op">=</span> <span class="st">"subclasses"</span>,</span>
+<span>  func <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"foo"</span>, fun <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span>,</span>
+<span>  has_submodel <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">show_model_info</span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Information for `discrim_mixture`</span></span>
+<span><span class="co">#&gt;  modes: unknown, classification </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  engines: </span></span>
+<span><span class="co">#&gt;    classification: mdaNA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  arguments: </span></span>
+<span><span class="co">#&gt;    mda: </span></span>
+<span><span class="co">#&gt;       sub_classes --&gt; subclasses</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  no registered fit modules.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  no registered prediction modules.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="step-2.-create-the-model-function" class="level3">
-<h3 class="anchored" data-anchor-id="step-2.-create-the-model-function">Step 2. Create the model function</h3>
+</section><section id="step-2.-create-the-model-function" class="level3"><h3 class="anchored" data-anchor-id="step-2.-create-the-model-function">Step 2. Create the model function</h3>
 <p>This is a fairly simple function that can follow a basic template. The main arguments to our function will be:</p>
 <ul>
 <li><p>The mode. If the model can do more than one mode, you might default this to <code>"unknown"</code>. In our case, since it is only a classification model, it makes sense to default it to that mode so that the users won’t have to specify it.</p></li>
@@ -530,26 +495,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>A basic version of the function is:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>discrim_mixture <span class="ot">&lt;-</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(<span class="at">mode =</span> <span class="st">"classification"</span>,  <span class="at">sub_classes =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check for correct mode</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mode  <span class="sc">!=</span> <span class="st">"classification"</span>) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      rlang<span class="sc">::</span><span class="fu">abort</span>(<span class="st">"`mode` should be 'classification'."</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Capture the arguments in quosures</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    args <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">sub_classes =</span> rlang<span class="sc">::</span><span class="fu">enquo</span>(sub_classes))</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save some empty slots for future parts of the specification</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new_model_spec</span>(</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> args,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">eng_args =</span> <span class="cn">NULL</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">mode =</span> mode,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="cn">NULL</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">engine =</span> <span class="cn">NULL</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">discrim_mixture</span> <span class="op">&lt;-</span></span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">mode</span> <span class="op">=</span> <span class="st">"classification"</span>,  <span class="va">sub_classes</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># Check for correct mode</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mode</span>  <span class="op">!=</span> <span class="st">"classification"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`mode` should be 'classification'."</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    </span>
+<span>    <span class="co"># Capture the arguments in quosures</span></span>
+<span>    <span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sub_classes <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">sub_classes</span><span class="op">)</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Save some empty slots for future parts of the specification</span></span>
+<span>    <span class="fu">new_model_spec</span><span class="op">(</span></span>
+<span>      <span class="st">"discrim_mixture"</span>,</span>
+<span>      args <span class="op">=</span> <span class="va">args</span>,</span>
+<span>      eng_args <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>      mode <span class="op">=</span> <span class="va">mode</span>,</span>
+<span>      method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>      engine <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is pretty simple since the data are not exposed to this function.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -562,12 +527,10 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We strongly suggest favoring <code>rlang::abort()</code> and <code>rlang::warn()</code> (or their cli counterparts <code>cli::cli_abort()</code> and <code>cli::cli_warn()</code>) over <code>stop()</code> and <code>warning()</code>. The former return better traceback results and have safer defaults for handling call objects.</p>
+<p>We strongly suggest favoring <code><a href="https://rlang.r-lib.org/reference/abort.html">rlang::abort()</a></code> and <code><a href="https://rlang.r-lib.org/reference/abort.html">rlang::warn()</a></code> (or their cli counterparts <code><a href="https://cli.r-lib.org/reference/cli_abort.html">cli::cli_abort()</a></code> and <code><a href="https://cli.r-lib.org/reference/cli_abort.html">cli::cli_warn()</a></code>) over <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> and <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code>. The former return better traceback results and have safer defaults for handling call objects.</p>
 </div>
 </div>
-</section>
-<section id="step-3.-add-a-fit-module" class="level3">
-<h3 class="anchored" data-anchor-id="step-3.-add-a-fit-module">Step 3. Add a fit module</h3>
+</section><section id="step-3.-add-a-fit-module" class="level3"><h3 class="anchored" data-anchor-id="step-3.-add-a-fit-module">Step 3. Add a fit module</h3>
 <p>Now that parsnip knows about the model, mode, and engine, we can give it the information on fitting the model for our engine. The information needed to fit the model is contained in another list. The elements are:</p>
 <ul>
 <li><p><code>interface</code> is a single character value that could be <code>"formula"</code>, <code>"data.frame"</code>, or <code>"matrix"</code>. This defines the type of interface used by the underlying fit function (<code>mda::mda()</code>, in this case). This helps the translation of the data to be in an appropriate format for the that function.</p></li>
@@ -577,308 +540,302 @@ Warning
 </ul>
 <p>For the first engine:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_fit</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"mda"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"classification"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="fu">list</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">interface =</span> <span class="st">"formula"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">protect =</span> <span class="fu">c</span>(<span class="st">"formula"</span>, <span class="st">"data"</span>),</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> <span class="fu">c</span>(<span class="at">pkg =</span> <span class="st">"mda"</span>, <span class="at">fun =</span> <span class="st">"mda"</span>),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">defaults =</span> <span class="fu">list</span>()</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">show_model_info</span>(<span class="st">"discrim_mixture"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Information for `discrim_mixture`</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  modes: unknown, classification </span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  engines: </span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    classification: mda</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  arguments: </span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mda: </span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sub_classes --&gt; subclasses</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  fit modules:</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  engine           mode</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     mda classification</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  no registered prediction modules.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_fit</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    interface <span class="op">=</span> <span class="st">"formula"</span>,</span>
+<span>    protect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"formula"</span>, <span class="st">"data"</span><span class="op">)</span>,</span>
+<span>    func <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"mda"</span>, fun <span class="op">=</span> <span class="st">"mda"</span><span class="op">)</span>,</span>
+<span>    defaults <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_model_info</span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Information for `discrim_mixture`</span></span>
+<span><span class="co">#&gt;  modes: unknown, classification </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  engines: </span></span>
+<span><span class="co">#&gt;    classification: mda</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  arguments: </span></span>
+<span><span class="co">#&gt;    mda: </span></span>
+<span><span class="co">#&gt;       sub_classes --&gt; subclasses</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  fit modules:</span></span>
+<span><span class="co">#&gt;  engine           mode</span></span>
+<span><span class="co">#&gt;     mda classification</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  no registered prediction modules.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We also set up the information on how the predictors should be handled. These options ensure that the data that parsnip gives to the underlying model allows for a model fit that is as similar as possible to what it would have produced directly.</p>
 <ul>
-<li><p><code>predictor_indicators</code> describes whether and how to create indicator/dummy variables from factor predictors. There are three options: <code>"none"</code> (do not expand factor predictors), <code>"traditional"</code> (apply the standard <code>model.matrix()</code> encodings), and <code>"one_hot"</code> (create the complete set including the baseline level for all factors).</p></li>
-<li><p><code>compute_intercept</code> controls whether <code>model.matrix()</code> should include the intercept in its formula. This affects more than the inclusion of an intercept column. With an intercept, <code>model.matrix()</code> computes dummy variables for all but one factor level. Without an intercept, <code>model.matrix()</code> computes a full set of indicators for the first factor variable, but an incomplete set for the remainder.</p></li>
-<li><p><code>remove_intercept</code> removes the intercept column <em>after</em> <code>model.matrix()</code> is finished. This can be useful if the model function (e.g.&nbsp;<code>lm()</code>) automatically generates an intercept.</p></li>
+<li><p><code>predictor_indicators</code> describes whether and how to create indicator/dummy variables from factor predictors. There are three options: <code>"none"</code> (do not expand factor predictors), <code>"traditional"</code> (apply the standard <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> encodings), and <code>"one_hot"</code> (create the complete set including the baseline level for all factors).</p></li>
+<li><p><code>compute_intercept</code> controls whether <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> should include the intercept in its formula. This affects more than the inclusion of an intercept column. With an intercept, <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> computes dummy variables for all but one factor level. Without an intercept, <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> computes a full set of indicators for the first factor variable, but an incomplete set for the remainder.</p></li>
+<li><p><code>remove_intercept</code> removes the intercept column <em>after</em> <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> is finished. This can be useful if the model function (e.g.&nbsp;<code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>) automatically generates an intercept.</p></li>
 <li><p><code>allow_sparse_x</code> specifies whether the model can accommodate a sparse representation for predictors during fitting and tuning.</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_encoding</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"mda"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"classification"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">predictor_indicators =</span> <span class="st">"traditional"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">compute_intercept =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_intercept =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">allow_sparse_x =</span> <span class="cn">FALSE</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_encoding</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    predictor_indicators <span class="op">=</span> <span class="st">"traditional"</span>,</span>
+<span>    compute_intercept <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    remove_intercept <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    allow_sparse_x <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="step-4.-add-modules-for-prediction" class="level3">
-<h3 class="anchored" data-anchor-id="step-4.-add-modules-for-prediction">Step 4. Add modules for prediction</h3>
+</section><section id="step-4.-add-modules-for-prediction" class="level3"><h3 class="anchored" data-anchor-id="step-4.-add-modules-for-prediction">Step 4. Add modules for prediction</h3>
 <p>Similar to the fitting module, we specify the code for making different types of predictions. To make hard class predictions, the <code>class_info</code> object below contains the details. The elements of the list are:</p>
 <ul>
-<li><code>pre</code> and <code>post</code> are optional functions that can preprocess the data being fed to the prediction code and to postprocess the raw output of the predictions. These won’t be needed for this example, but a section below has examples of how these can be used when the model code is not easy to use. If the data being predicted has a simple type requirement, you can avoid using a <code>pre</code> function with the <code>args</code> below.</li>
-<li><code>func</code> is the prediction function (in the same format as above). In many cases, packages have a predict method for their model’s class but this is typically not exported. In this case (and the example below), it is simple enough to make a generic call to <code>predict()</code> with no associated package.</li>
-<li><code>args</code> is a list of arguments to pass to the prediction function. These will most likely be wrapped in <code>rlang::expr()</code> so that they are not evaluated when defining the method. For mda, the code would be <code>predict(object, newdata, type = "class")</code>. What is actually given to the function is the parsnip model fit object, which includes a sub-object called <code>fit</code> that houses the mda model object. If the data need to be a matrix or data frame, you could also use <code>newdata = rlang::expr(as.data.frame(newdata))</code> or similar.</li>
+<li>
+<code>pre</code> and <code>post</code> are optional functions that can preprocess the data being fed to the prediction code and to postprocess the raw output of the predictions. These won’t be needed for this example, but a section below has examples of how these can be used when the model code is not easy to use. If the data being predicted has a simple type requirement, you can avoid using a <code>pre</code> function with the <code>args</code> below.</li>
+<li>
+<code>func</code> is the prediction function (in the same format as above). In many cases, packages have a predict method for their model’s class but this is typically not exported. In this case (and the example below), it is simple enough to make a generic call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> with no associated package.</li>
+<li>
+<code>args</code> is a list of arguments to pass to the prediction function. These will most likely be wrapped in <code><a href="https://rlang.r-lib.org/reference/expr.html">rlang::expr()</a></code> so that they are not evaluated when defining the method. For mda, the code would be <code>predict(object, newdata, type = "class")</code>. What is actually given to the function is the parsnip model fit object, which includes a sub-object called <code>fit</code> that houses the mda model object. If the data need to be a matrix or data frame, you could also use <code>newdata = rlang::expr(as.data.frame(newdata))</code> or similar.</li>
 </ul>
 <p>The parsnip prediction code will expect the result to be an unnamed character string or factor. This will be coerced to a factor with the same levels as the original data.</p>
 <p>To add this method to the model environment, a similar set function, <code>set_pred()</code>, is used:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>class_info <span class="ot">&lt;-</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">pre =</span> <span class="cn">NULL</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">post =</span> <span class="cn">NULL</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> <span class="fu">c</span>(<span class="at">fun =</span> <span class="st">"predict"</span>),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">args =</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="co"># These lists should be of the form:</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="co"># {predict.mda argument name} = {values provided from parsnip objects}</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># We don't want the first two arguments evaluated right now</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># since they don't exist yet. `type` is a simple object that</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># doesn't need to have its evaluation deferred. </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">object =</span> rlang<span class="sc">::</span><span class="fu">expr</span>(object<span class="sc">$</span>fit),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">newdata =</span> rlang<span class="sc">::</span><span class="fu">expr</span>(new_data),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"class"</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">set_pred</span>(</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"mda"</span>,</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"classification"</span>,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"class"</span>,</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> class_info</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">class_info</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    pre <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    post <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    func <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"predict"</span><span class="op">)</span>,</span>
+<span>    args <span class="op">=</span></span>
+<span>      <span class="co"># These lists should be of the form:</span></span>
+<span>      <span class="co"># {predict.mda argument name} = {values provided from parsnip objects}</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>        <span class="co"># We don't want the first two arguments evaluated right now</span></span>
+<span>        <span class="co"># since they don't exist yet. `type` is a simple object that</span></span>
+<span>        <span class="co"># doesn't need to have its evaluation deferred. </span></span>
+<span>        object <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/expr.html">expr</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>,</span>
+<span>        newdata <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/expr.html">expr</a></span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span>,</span>
+<span>        type <span class="op">=</span> <span class="st">"class"</span></span>
+<span>      <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_pred</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"class"</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">class_info</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A similar call can be used to define the class probability module (if they can be computed). The format is identical to the <code>class</code> module but the output is expected to be a tibble with columns for each factor level.</p>
 <p>As an example of the <code>post</code> function, the data frame created by <code>mda:::predict.mda()</code> will be converted to a tibble. The arguments are <code>x</code> (the raw results coming from the predict method) and <code>object</code> (the parsnip model fit object). The latter has a sub-object called <code>lvl</code> which is a character string of the outcome’s factor levels (if any).</p>
 <p>We register the probability module. There is a template function that makes it slightly easier to format the objects:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>prob_info <span class="ot">&lt;-</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pred_value_template</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">post =</span> <span class="cf">function</span>(x, object) {</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      tibble<span class="sc">::</span><span class="fu">as_tibble</span>(x)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> <span class="fu">c</span>(<span class="at">fun =</span> <span class="st">"predict"</span>),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Now everything else is put into the `args` slot</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">object =</span> rlang<span class="sc">::</span><span class="fu">expr</span>(object<span class="sc">$</span>fit),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> rlang<span class="sc">::</span><span class="fu">expr</span>(new_data),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"posterior"</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set_pred</span>(</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"mda"</span>,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"classification"</span>,</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"prob"</span>,</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> prob_info</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="fu">show_model_info</span>(<span class="st">"discrim_mixture"</span>)</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Information for `discrim_mixture`</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  modes: unknown, classification </span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  engines: </span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    classification: mda</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  arguments: </span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mda: </span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sub_classes --&gt; subclasses</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  fit modules:</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  engine           mode</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     mda classification</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  prediction modules:</span></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              mode engine     methods</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    classification    mda class, prob</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prob_info</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">pred_value_template</span><span class="op">(</span></span>
+<span>    post <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    func <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"predict"</span><span class="op">)</span>,</span>
+<span>    <span class="co"># Now everything else is put into the `args` slot</span></span>
+<span>    object <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/expr.html">expr</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>,</span>
+<span>    newdata <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/expr.html">expr</a></span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span>,</span>
+<span>    type <span class="op">=</span> <span class="st">"posterior"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_pred</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"prob"</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">prob_info</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_model_info</span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Information for `discrim_mixture`</span></span>
+<span><span class="co">#&gt;  modes: unknown, classification </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  engines: </span></span>
+<span><span class="co">#&gt;    classification: mda</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  arguments: </span></span>
+<span><span class="co">#&gt;    mda: </span></span>
+<span><span class="co">#&gt;       sub_classes --&gt; subclasses</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  fit modules:</span></span>
+<span><span class="co">#&gt;  engine           mode</span></span>
+<span><span class="co">#&gt;     mda classification</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  prediction modules:</span></span>
+<span><span class="co">#&gt;              mode engine     methods</span></span>
+<span><span class="co">#&gt;    classification    mda class, prob</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If this model could be used for regression situations, we could also add a <code>numeric</code> module. For these predictions, the model requires an unnamed numeric vector output.</p>
 <p>Examples are <a href="https://github.com/tidymodels/parsnip/blob/master/R/linear_reg_data.R">here</a> and <a href="https://github.com/tidymodels/parsnip/blob/master/R/rand_forest_data.R">here</a>.</p>
-</section>
-<section id="does-it-work" class="level3">
-<h3 class="anchored" data-anchor-id="does-it-work">Does it work?</h3>
+</section><section id="does-it-work" class="level3"><h3 class="anchored" data-anchor-id="does-it-work">Does it work?</h3>
 <p>As a developer, one thing that may come in handy is the <code>translate()</code> function. This will tell you what the model’s eventual syntax will be.</p>
 <p>For example:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">discrim_mixture</span>(<span class="at">sub_classes =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">translate</span>(<span class="at">engine =</span> <span class="st">"mda"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; discrim mixture Model Specification (classification)</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Main Arguments:</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sub_classes = 2</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Computational engine: mda </span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model fit template:</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mda::mda(formula = missing_arg(), data = missing_arg(), subclasses = 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">discrim_mixture</span><span class="op">(</span>sub_classes <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">translate</span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"mda"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; discrim mixture Model Specification (classification)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Main Arguments:</span></span>
+<span><span class="co">#&gt;   sub_classes = 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: mda </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model fit template:</span></span>
+<span><span class="co">#&gt; mda::mda(formula = missing_arg(), data = missing_arg(), subclasses = 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s try it on a data set from the modeldata package:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"two_class_dat"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4622</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>example_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(two_class_dat, <span class="at">prop =</span> <span class="fl">0.99</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>example_train <span class="ot">&lt;-</span> <span class="fu">training</span>(example_split)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>example_test  <span class="ot">&lt;-</span>  <span class="fu">testing</span>(example_split)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>mda_spec <span class="ot">&lt;-</span> <span class="fu">discrim_mixture</span>(<span class="at">sub_classes =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"mda"</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>mda_fit <span class="ot">&lt;-</span> mda_spec <span class="sc">%&gt;%</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> example_train)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>mda_fit</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parsnip model object</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mda::mda(formula = Class ~ ., data = data, subclasses = ~2)</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension: 2 </span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Percent Between-Group Variance Explained:</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     v1     v2 </span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  82.63 100.00 </span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom (per dimension): 3 </span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Training Misclassification Error: 0.17241 ( N = 783 )</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Deviance: 671.391</span></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mda_fit, <span class="at">new_data =</span> example_test, <span class="at">type =</span> <span class="st">"prob"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(example_test <span class="sc">%&gt;%</span> <span class="fu">select</span>(Class))</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 8 × 3</span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .pred_Class1 .pred_Class2 Class </span></span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt; &lt;fct&gt; </span></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       0.679         0.321 Class1</span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       0.690         0.310 Class1</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       0.384         0.616 Class2</span></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       0.300         0.700 Class1</span></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       0.0262        0.974 Class2</span></span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       0.405         0.595 Class2</span></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       0.793         0.207 Class1</span></span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       0.0949        0.905 Class2</span></span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mda_fit, <span class="at">new_data =</span> example_test) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a> <span class="fu">bind_cols</span>(example_test <span class="sc">%&gt;%</span> <span class="fu">select</span>(Class))</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 8 × 2</span></span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .pred_class Class </span></span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt;       &lt;fct&gt; </span></span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Class1      Class1</span></span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Class1      Class1</span></span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Class2      Class2</span></span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Class2      Class1</span></span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 Class2      Class2</span></span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 Class2      Class2</span></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 Class1      Class1</span></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 Class2      Class2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"two_class_dat"</span>, package <span class="op">=</span> <span class="st">"modeldata"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4622</span><span class="op">)</span></span>
+<span><span class="va">example_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">two_class_dat</span>, prop <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span><span class="va">example_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">example_split</span><span class="op">)</span></span>
+<span><span class="va">example_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">example_split</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mda_spec</span> <span class="op">&lt;-</span> <span class="fu">discrim_mixture</span><span class="op">(</span>sub_classes <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"mda"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mda_fit</span> <span class="op">&lt;-</span> <span class="va">mda_spec</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">example_train</span><span class="op">)</span></span>
+<span><span class="va">mda_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; mda::mda(formula = Class ~ ., data = data, subclasses = ~2)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Dimension: 2 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percent Between-Group Variance Explained:</span></span>
+<span><span class="co">#&gt;     v1     v2 </span></span>
+<span><span class="co">#&gt;  82.63 100.00 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Degrees of Freedom (per dimension): 3 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Training Misclassification Error: 0.17241 ( N = 783 )</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Deviance: 671.391</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mda_fit</span>, new_data <span class="op">=</span> <span class="va">example_test</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="va">example_test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">Class</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
+<span><span class="co">#&gt;   .pred_Class1 .pred_Class2 Class </span></span>
+<span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt; &lt;fct&gt; </span></span>
+<span><span class="co">#&gt; 1       0.679         0.321 Class1</span></span>
+<span><span class="co">#&gt; 2       0.690         0.310 Class1</span></span>
+<span><span class="co">#&gt; 3       0.384         0.616 Class2</span></span>
+<span><span class="co">#&gt; 4       0.300         0.700 Class1</span></span>
+<span><span class="co">#&gt; 5       0.0262        0.974 Class2</span></span>
+<span><span class="co">#&gt; 6       0.405         0.595 Class2</span></span>
+<span><span class="co">#&gt; 7       0.793         0.207 Class1</span></span>
+<span><span class="co">#&gt; 8       0.0949        0.905 Class2</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mda_fit</span>, new_data <span class="op">=</span> <span class="va">example_test</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span> <span class="fu">bind_cols</span><span class="op">(</span><span class="va">example_test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">Class</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 2</span></span>
+<span><span class="co">#&gt;   .pred_class Class </span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;       &lt;fct&gt; </span></span>
+<span><span class="co">#&gt; 1 Class1      Class1</span></span>
+<span><span class="co">#&gt; 2 Class1      Class1</span></span>
+<span><span class="co">#&gt; 3 Class2      Class2</span></span>
+<span><span class="co">#&gt; 4 Class2      Class1</span></span>
+<span><span class="co">#&gt; 5 Class2      Class2</span></span>
+<span><span class="co">#&gt; 6 Class2      Class2</span></span>
+<span><span class="co">#&gt; 7 Class1      Class1</span></span>
+<span><span class="co">#&gt; 8 Class2      Class2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-</section>
-<section id="add-an-engine" class="level2">
-<h2 class="anchored" data-anchor-id="add-an-engine">Add an engine</h2>
-<p>The process for adding an engine to an existing model is <em>almost</em> the same as building a new model but simpler with fewer steps. You only need to add the engine-specific aspects of the model. For example, if we wanted to fit a linear regression model using M-estimation, we could only add a new engine. The code for the <code>rlm()</code> function in MASS is pretty similar to <code>lm()</code>, so we can copy that code and change the package/function names:</p>
+</section></section><section id="add-an-engine" class="level2"><h2 class="anchored" data-anchor-id="add-an-engine">Add an engine</h2>
+<p>The process for adding an engine to an existing model is <em>almost</em> the same as building a new model but simpler with fewer steps. You only need to add the engine-specific aspects of the model. For example, if we wanted to fit a linear regression model using M-estimation, we could only add a new engine. The code for the <code>rlm()</code> function in MASS is pretty similar to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, so we can copy that code and change the package/function names:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_model_engine</span>(<span class="st">"linear_reg"</span>, <span class="st">"regression"</span>, <span class="at">eng =</span> <span class="st">"rlm"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set_dependency</span>(<span class="st">"linear_reg"</span>, <span class="at">eng =</span> <span class="st">"rlm"</span>, <span class="at">pkg =</span> <span class="st">"MASS"</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set_fit</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"linear_reg"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"rlm"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"regression"</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="fu">list</span>(</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">interface =</span> <span class="st">"formula"</span>,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">protect =</span> <span class="fu">c</span>(<span class="st">"formula"</span>, <span class="st">"data"</span>, <span class="st">"weights"</span>),</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> <span class="fu">c</span>(<span class="at">pkg =</span> <span class="st">"MASS"</span>, <span class="at">fun =</span> <span class="st">"rlm"</span>),</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">defaults =</span> <span class="fu">list</span>()</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">set_encoding</span>(</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"linear_reg"</span>,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"rlm"</span>,</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"regression"</span>,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">predictor_indicators =</span> <span class="st">"traditional"</span>,</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">compute_intercept =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_intercept =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">allow_sparse_x =</span> <span class="cn">FALSE</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="fu">set_pred</span>(</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"linear_reg"</span>,</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"rlm"</span>,</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"regression"</span>,</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"numeric"</span>,</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="fu">list</span>(</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">pre =</span> <span class="cn">NULL</span>,</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">post =</span> <span class="cn">NULL</span>,</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> <span class="fu">c</span>(<span class="at">fun =</span> <span class="st">"predict"</span>),</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">args =</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">object =</span> <span class="fu">expr</span>(object<span class="sc">$</span>fit),</span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">newdata =</span> <span class="fu">expr</span>(new_data),</span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"response"</span></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="co"># testing:</span></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"rlm"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars)</span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parsnip model object</span></span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rlm(formula = mpg ~ ., data = data)</span></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Converged in 8 iterations</span></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)         cyl        disp          hp        drat          wt </span></span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17.82250038 -0.27878615  0.01593890 -0.02536343  0.46391132 -4.14355431 </span></span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        qsec          vs          am        gear        carb </span></span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.65307203  0.24975463  1.43412689  0.85943158 -0.01078897 </span></span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of freedom: 32 total; 21 residual</span></span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Scale estimate: 2.15</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_model_engine</span><span class="op">(</span><span class="st">"linear_reg"</span>, <span class="st">"regression"</span>, eng <span class="op">=</span> <span class="st">"rlm"</span><span class="op">)</span></span>
+<span><span class="fu">set_dependency</span><span class="op">(</span><span class="st">"linear_reg"</span>, eng <span class="op">=</span> <span class="st">"rlm"</span>, pkg <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_fit</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"linear_reg"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"rlm"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"regression"</span>,</span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    interface <span class="op">=</span> <span class="st">"formula"</span>,</span>
+<span>    protect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"formula"</span>, <span class="st">"data"</span>, <span class="st">"weights"</span><span class="op">)</span>,</span>
+<span>    func <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"MASS"</span>, fun <span class="op">=</span> <span class="st">"rlm"</span><span class="op">)</span>,</span>
+<span>    defaults <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_encoding</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"linear_reg"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"rlm"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"regression"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    predictor_indicators <span class="op">=</span> <span class="st">"traditional"</span>,</span>
+<span>    compute_intercept <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    remove_intercept <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    allow_sparse_x <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_pred</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"linear_reg"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"rlm"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"regression"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"numeric"</span>,</span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    pre <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    post <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    func <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"predict"</span><span class="op">)</span>,</span>
+<span>    args <span class="op">=</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>        object <span class="op">=</span> <span class="fu">expr</span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>,</span>
+<span>        newdata <span class="op">=</span> <span class="fu">expr</span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span>,</span>
+<span>        type <span class="op">=</span> <span class="st">"response"</span></span>
+<span>      <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># testing:</span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"rlm"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; rlm(formula = mpg ~ ., data = data)</span></span>
+<span><span class="co">#&gt; Converged in 8 iterations</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)         cyl        disp          hp        drat          wt </span></span>
+<span><span class="co">#&gt; 17.82250038 -0.27878615  0.01593890 -0.02536343  0.46391132 -4.14355431 </span></span>
+<span><span class="co">#&gt;        qsec          vs          am        gear        carb </span></span>
+<span><span class="co">#&gt;  0.65307203  0.24975463  1.43412689  0.85943158 -0.01078897 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Degrees of freedom: 32 total; 21 residual</span></span>
+<span><span class="co">#&gt; Scale estimate: 2.15</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="add-parsnip-models-to-another-package" class="level2">
-<h2 class="anchored" data-anchor-id="add-parsnip-models-to-another-package">Add parsnip models to another package</h2>
+</section><section id="add-parsnip-models-to-another-package" class="level2"><h2 class="anchored" data-anchor-id="add-parsnip-models-to-another-package">Add parsnip models to another package</h2>
 <p>The process here is almost the same. All of the previous functions are still required but their execution is a little different.</p>
 <p>For parsnip to register them, that package must already be loaded. For this reason, it makes sense to have parsnip in the “Depends” category of the DESCRIPTION file of your package.</p>
 <p>The first difference is that the functions that define the model must be inside of a wrapper function that is called when your package is loaded. For our example here, this might look like:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>make_discrim_mixture_mda <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">set_new_model</span>(<span class="st">"discrim_mixture"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">set_model_mode</span>(<span class="st">"discrim_mixture"</span>, <span class="st">"classification"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and so one...</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">make_discrim_mixture_mda</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu">set_new_model</span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu">set_model_mode</span><span class="op">(</span><span class="st">"discrim_mixture"</span>, <span class="st">"classification"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># and so one...</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function is then executed when your package is loaded:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>.onLoad <span class="ot">&lt;-</span> <span class="cf">function</span>(libname, pkgname) {</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This defines discrim_mixture in the model database</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_discrim_mixture_mda</span>()</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">.onLoad</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">libname</span>, <span class="va">pkgname</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># This defines discrim_mixture in the model database</span></span>
+<span>  <span class="fu">make_discrim_mixture_mda</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For an example package that uses parsnip definitions, take a look at the <a href="https://github.com/tidymodels/discrim">discrim</a> package.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -895,11 +852,9 @@ Warning
 </div>
 </div>
 <p>It is also important for parallel processing support to <strong>list the home package as a dependency</strong>. If the <code>discrim_mixture()</code> function lived in a package called <code>mixedup</code>, include the line:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_dependency</span>(<span class="st">"discrim_mixture"</span>, <span class="at">eng =</span> <span class="st">"mda"</span>, <span class="at">pkg =</span> <span class="st">"mixedup"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_dependency</span><span class="op">(</span><span class="st">"discrim_mixture"</span>, eng <span class="op">=</span> <span class="st">"mda"</span>, pkg <span class="op">=</span> <span class="st">"mixedup"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Parallel processing requires this explicit dependency setting. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux will load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a parsnip model is not loaded in the worker processes, the model will not have an entry in parsnip’s internal database (and produce an error).</p>
-</section>
-<section id="your-model-tuning-parameters-and-you" class="level2">
-<h2 class="anchored" data-anchor-id="your-model-tuning-parameters-and-you">Your model, tuning parameters, and you</h2>
+</section><section id="your-model-tuning-parameters-and-you" class="level2"><h2 class="anchored" data-anchor-id="your-model-tuning-parameters-and-you">Your model, tuning parameters, and you</h2>
 <p>The tune package can be used to find reasonable values of model arguments via tuning. There are some S3 methods that are useful to define for your model. <code>discrim_mixture()</code> has one main tuning parameter: <code>sub_classes</code>. To work with tune it is <em>helpful</em> (but not required) to use an S3 method called <code>tunable()</code> to define which arguments should be tuned and how values of those arguments should be generated.</p>
 <p><code>tunable()</code> takes the model specification as its argument and returns a tibble with columns:</p>
 <ul>
@@ -912,101 +867,99 @@ Warning
 <p>The main piece of information that requires some detail is <code>call_info</code>. This is a list column in the tibble. Each element of the list is a list that describes the package and function that can be used to create a dials parameter object.</p>
 <p>For example, for a nearest-neighbors <code>neighbors</code> parameter, this value is just:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">pkg =</span> <span class="st">"dials"</span>, <span class="at">fun =</span> <span class="st">"neighbors"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># FYI: how it is used under-the-hood: </span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>new_param_call <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">call2</span>(<span class="at">.fn =</span> info<span class="sc">$</span>fun, <span class="at">.ns =</span> info<span class="sc">$</span>pkg)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>rlang<span class="sc">::</span><span class="fu">eval_tidy</span>(new_param_call)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Nearest Neighbors (quantitative)</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 10]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"dials"</span>, fun <span class="op">=</span> <span class="st">"neighbors"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># FYI: how it is used under-the-hood: </span></span>
+<span><span class="va">new_param_call</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/call2.html">call2</a></span><span class="op">(</span>.fn <span class="op">=</span> <span class="va">info</span><span class="op">$</span><span class="va">fun</span>, .ns <span class="op">=</span> <span class="va">info</span><span class="op">$</span><span class="va">pkg</span><span class="op">)</span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/eval_tidy.html">eval_tidy</a></span><span class="op">(</span><span class="va">new_param_call</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Nearest Neighbors (quantitative)</span></span>
+<span><span class="co">#&gt; Range: [1, 10]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For <code>discrim_mixture()</code>, a dials object is needed that returns an integer that is the number of sub-classes that should be create. We can create a dials parameter function for this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sub_classes <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">10</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new_quant_param</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"integer"</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> range,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">inclusive =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> trans,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="at">sub_classes =</span> <span class="st">"# Sub-Classes"</span>),</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">finalize =</span> <span class="cn">NULL</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sub_classes</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">10L</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
+<span>    range <span class="op">=</span> <span class="va">range</span>,</span>
+<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    trans <span class="op">=</span> <span class="va">trans</span>,</span>
+<span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>sub_classes <span class="op">=</span> <span class="st">"# Sub-Classes"</span><span class="op">)</span>,</span>
+<span>    finalize <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If this were in the same package as the other specifications for the parsnip engine, we could use:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tunable.discrim_mixture <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"sub_classes"</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">call_info =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">pkg =</span> <span class="cn">NULL</span>, <span class="at">fun =</span> <span class="st">"sub_classes"</span>)),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> <span class="st">"model_spec"</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">component =</span> <span class="st">"discrim_mixture"</span>,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">component_id =</span> <span class="st">"main"</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tunable.discrim_mixture</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sub_classes"</span><span class="op">)</span>,</span>
+<span>    call_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="cn">NULL</span>, fun <span class="op">=</span> <span class="st">"sub_classes"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    source <span class="op">=</span> <span class="st">"model_spec"</span>,</span>
+<span>    component <span class="op">=</span> <span class="st">"discrim_mixture"</span>,</span>
+<span>    component_id <span class="op">=</span> <span class="st">"main"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once this method is in place, the tuning functions can be used:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mda_spec <span class="ot">&lt;-</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">discrim_mixture</span>(<span class="at">sub_classes =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"mda"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">452</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(example_train)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>mda_tune_res <span class="ot">&lt;-</span> mda_spec <span class="sc">%&gt;%</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(Class <span class="sc">~</span> ., cv, <span class="at">grid =</span> <span class="dv">4</span>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(mda_tune_res, <span class="at">metric =</span> <span class="st">"roc_auc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mda_spec</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">discrim_mixture</span><span class="op">(</span>sub_classes <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"mda"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">452</span><span class="op">)</span></span>
+<span><span class="va">cv</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">example_train</span><span class="op">)</span></span>
+<span><span class="va">mda_tune_res</span> <span class="op">&lt;-</span> <span class="va">mda_spec</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">tune_grid</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">cv</span>, grid <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu">show_best</span><span class="op">(</span><span class="va">mda_tune_res</span>, metric <span class="op">=</span> <span class="st">"roc_auc"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="pro-tips-what-ifs-exceptions-faq-and-minutiae" class="level2">
-<h2 class="anchored" data-anchor-id="pro-tips-what-ifs-exceptions-faq-and-minutiae">Pro-tips, what-ifs, exceptions, FAQ, and minutiae</h2>
+</section><section id="pro-tips-what-ifs-exceptions-faq-and-minutiae" class="level2"><h2 class="anchored" data-anchor-id="pro-tips-what-ifs-exceptions-faq-and-minutiae">Pro-tips, what-ifs, exceptions, FAQ, and minutiae</h2>
 <p>There are various things that came to mind while developing this resource.</p>
-<p><strong>Do I have to return a simple vector for <code>predict()</code>?</strong></p>
-<p>There are some models (e.g.&nbsp;glmnet, plsr, Cubist, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via <code>multi_predict()</code>, rather than <code>predict()</code>.</p>
+<p><strong>Do I have to return a simple vector for <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>?</strong></p>
+<p>There are some models (e.g.&nbsp;glmnet, plsr, Cubist, etc.) that can make predictions for different models from the same fitted model object. We facilitate this via <code>multi_predict()</code>, rather than <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>.</p>
 <p>For example, if we fit a linear regression model via <code>glmnet</code> and predict for 10 different penalty values:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>(<span class="at">penalty =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars) <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">multi_predict</span>(<span class="at">new_data =</span> mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>], <span class="at">penalty =</span> <span class="fu">seq</span>(<span class="fl">0.1</span> <span class="sc">/</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>preds</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 1</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .pred            </span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;list&gt;           </span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 &lt;tibble [10 × 2]&gt;</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 &lt;tibble [10 × 2]&gt;</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 &lt;tibble [10 × 2]&gt;</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>preds<span class="sc">$</span>.pred[[<span class="dv">1</span>]]</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 × 2</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    penalty .pred</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1  22.2</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       2  21.5</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       3  21.1</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       4  20.6</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       5  20.2</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       6  20.1</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       7  20.1</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       8  20.1</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       9  20.1</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      10  20.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span>penalty <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">multi_predict</span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, penalty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.1</span> <span class="op">/</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">preds</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 1</span></span>
+<span><span class="co">#&gt;   .pred            </span></span>
+<span><span class="co">#&gt;   &lt;list&gt;           </span></span>
+<span><span class="co">#&gt; 1 &lt;tibble [10 × 2]&gt;</span></span>
+<span><span class="co">#&gt; 2 &lt;tibble [10 × 2]&gt;</span></span>
+<span><span class="co">#&gt; 3 &lt;tibble [10 × 2]&gt;</span></span>
+<span></span>
+<span><span class="va">preds</span><span class="op">$</span><span class="va">.pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 10 × 2</span></span>
+<span><span class="co">#&gt;    penalty .pred</span></span>
+<span><span class="co">#&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1       1  22.2</span></span>
+<span><span class="co">#&gt;  2       2  21.5</span></span>
+<span><span class="co">#&gt;  3       3  21.1</span></span>
+<span><span class="co">#&gt;  4       4  20.6</span></span>
+<span><span class="co">#&gt;  5       5  20.2</span></span>
+<span><span class="co">#&gt;  6       6  20.1</span></span>
+<span><span class="co">#&gt;  7       7  20.1</span></span>
+<span><span class="co">#&gt;  8       8  20.1</span></span>
+<span><span class="co">#&gt;  9       9  20.1</span></span>
+<span><span class="co">#&gt; 10      10  20.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This gives a list column <code>.pred</code> which contains a tibble per row, each tibble corresponding to one row in <code>new_data</code>. Within each tibble are columns for the parameter we vary, here <code>penalty</code>, and the predictions themselves.</p>
 <p><strong>What do I do about how my model handles factors or categorical data?</strong></p>
-<p>Some modeling functions in R create indicator/dummy variables from categorical data when you use a model formula (typically using <code>model.matrix()</code>), and some do not. Some examples of models that do <em>not</em> create indicator variables include tree-based models, naive Bayes models, and multilevel or hierarchical models. The tidymodels ecosystem assumes a <code>model.matrix()</code>-like default encoding for categorical data used in a model formula, but you can change this encoding using <code>set_encoding()</code>. For example, you can set predictor encodings that say, “leave my data alone,” and keep factors as is:</p>
+<p>Some modeling functions in R create indicator/dummy variables from categorical data when you use a model formula (typically using <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>), and some do not. Some examples of models that do <em>not</em> create indicator variables include tree-based models, naive Bayes models, and multilevel or hierarchical models. The tidymodels ecosystem assumes a <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>-like default encoding for categorical data used in a model formula, but you can change this encoding using <code>set_encoding()</code>. For example, you can set predictor encodings that say, “leave my data alone,” and keep factors as is:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set_encoding</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"decision_tree"</span>,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">eng =</span> <span class="st">"rpart"</span>,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"regression"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">predictor_indicators =</span> <span class="st">"none"</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">compute_intercept =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_intercept =</span> <span class="cn">FALSE</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_encoding</span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"decision_tree"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"rpart"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"regression"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    predictor_indicators <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>    compute_intercept <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    remove_intercept <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1020,78 +973,79 @@ Note
 <div class="callout-body-container callout-body">
 <p>There are three options for <code>predictor_indicators</code>:</p>
 <ul>
-<li><code>"none"</code>: do not expand factor predictors</li>
-<li><code>"traditional"</code>: apply the standard <code>model.matrix()</code> encoding</li>
-<li><code>"one_hot"</code>: create the complete set including the baseline level for all factors</li>
+<li>
+<code>"none"</code>: do not expand factor predictors</li>
+<li>
+<code>"traditional"</code>: apply the standard <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> encoding</li>
+<li>
+<code>"one_hot"</code>: create the complete set including the baseline level for all factors</li>
 </ul>
 </div>
 </div>
 <p>To learn more about encoding categorical predictors, check out <a href="https://www.tidyverse.org/blog/2020/07/parsnip-0-1-2/#predictor-encoding-consistency">this blog post</a>.</p>
 <p><strong>What is the <code>defaults</code> slot and why do I need it?</strong></p>
-<p>You might want to set defaults that can be overridden by the user. For example, for logistic regression with <code>glm()</code>, it make sense to default to <code>family = binomial</code>. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:</p>
+<p>You might want to set defaults that can be overridden by the user. For example, for logistic regression with <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, it make sense to default to <code>family = binomial</code>. However, if someone wants to use a different link function, they should be able to do that. For that model/engine definition, it has:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>defaults <span class="ot">=</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="fu">expr</span>(binomial))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">defaults</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>family <span class="op">=</span> <span class="fu">expr</span><span class="op">(</span><span class="va">binomial</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>So that is the default:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">translate</span>(<span class="at">engine =</span> <span class="st">"glm"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Logistic Regression Model Specification (classification)</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Computational engine: glm </span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model fit template:</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stats::glm(formula = missing_arg(), data = missing_arg(), weights = missing_arg(), </span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     family = stats::binomial)</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># but you can change it:</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">translate</span>()</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Logistic Regression Model Specification (classification)</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Engine-Specific Arguments:</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   family = binomial(link = "probit")</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Computational engine: glm </span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model fit template:</span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stats::glm(formula = missing_arg(), data = missing_arg(), weights = missing_arg(), </span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     family = binomial(link = "probit"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">logistic_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">translate</span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"glm"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Logistic Regression Model Specification (classification)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: glm </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model fit template:</span></span>
+<span><span class="co">#&gt; stats::glm(formula = missing_arg(), data = missing_arg(), weights = missing_arg(), </span></span>
+<span><span class="co">#&gt;     family = stats::binomial)</span></span>
+<span></span>
+<span><span class="co"># but you can change it:</span></span>
+<span><span class="fu">logistic_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glm"</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">translate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Logistic Regression Model Specification (classification)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Engine-Specific Arguments:</span></span>
+<span><span class="co">#&gt;   family = binomial(link = "probit")</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: glm </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model fit template:</span></span>
+<span><span class="co">#&gt; stats::glm(formula = missing_arg(), data = missing_arg(), weights = missing_arg(), </span></span>
+<span><span class="co">#&gt;     family = binomial(link = "probit"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>That’s what <code>defaults</code> are for.</p>
 <p><strong>What if I want more complex defaults?</strong></p>
 <p>The <code>translate()</code> function can be used to check values or set defaults once the model’s mode is known. To do this, you can create a model-specific S3 method that first calls the general method (<code>translate.model_spec()</code>) and then makes modifications or conducts error traps.</p>
 <p>For example, the ranger and randomForest package functions have arguments for calculating importance. One is a logical and the other is a string. Since this is likely to lead to a bunch of frustration and GitHub issues, we can put in a check:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplified version</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>translate.rand_forest <span class="ot">&lt;-</span> <span class="cf">function</span> (x, engine, ...){</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Run the general method to get the real arguments in place</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">translate.default</span>(x, engine, ...)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check and see if they make sense for the engine and/or mode:</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (x<span class="sc">$</span>engine <span class="sc">==</span> <span class="st">"ranger"</span>) {</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">names</span>(x<span class="sc">$</span>method<span class="sc">$</span>fit<span class="sc">$</span>args) <span class="sc">==</span> <span class="st">"importance"</span>)) </span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.logical</span>(x<span class="sc">$</span>method<span class="sc">$</span>fit<span class="sc">$</span>args<span class="sc">$</span>importance)) </span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        rlang<span class="sc">::</span><span class="fu">abort</span>(<span class="st">"`importance` should be a character value. See ?ranger::ranger."</span>)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  x</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Simplified version</span></span>
+<span><span class="va">translate.rand_forest</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">engine</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="co"># Run the general method to get the real arguments in place</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">translate.default</span><span class="op">(</span><span class="va">x</span>, <span class="va">engine</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Check and see if they make sense for the engine and/or mode:</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">engine</span> <span class="op">==</span> <span class="st">"ranger"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">method</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">args</span><span class="op">)</span> <span class="op">==</span> <span class="st">"importance"</span><span class="op">)</span><span class="op">)</span> </span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/logical.html">is.logical</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">method</span><span class="op">$</span><span class="va">fit</span><span class="op">$</span><span class="va">args</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span><span class="op">)</span> </span>
+<span>        <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`importance` should be a character value. See ?ranger::ranger."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>As another example, <code>nnet::nnet()</code> has an option for the final layer to be linear (called <code>linout</code>). If <code>mode = "regression"</code>, that should probably be set to <code>TRUE</code>. You couldn’t do this with the <code>args</code> (described above) since you need the function translated first.</p>
+<p>As another example, <code><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet::nnet()</a></code> has an option for the final layer to be linear (called <code>linout</code>). If <code>mode = "regression"</code>, that should probably be set to <code>TRUE</code>. You couldn’t do this with the <code>args</code> (described above) since you need the function translated first.</p>
 <p><strong>My model fit requires more than one function call. So….?</strong></p>
 <p>The best course of action is to write wrapper so that it can be one call. This was the case with xgboost and keras.</p>
 <p><strong>Why would I preprocess my data?</strong></p>
 <p>There might be non-trivial transformations that the model prediction code requires (such as converting to a sparse matrix representation, etc.)</p>
-<p>This would <strong>not</strong> include making dummy variables and <code>model.matrix()</code> stuff. The parsnip infrastructure already does that for you.</p>
+<p>This would <strong>not</strong> include making dummy variables and <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> stuff. The parsnip infrastructure already does that for you.</p>
 <p><strong>Why would I post-process my predictions?</strong></p>
 <p>What comes back from some R functions may be somewhat… arcane or problematic. As an example, for xgboost, if you fit a multi-class boosted tree, you might expect the class probabilities to come back as a matrix (<em>narrator: they don’t</em>). If you have four classes and make predictions on three samples, you get a vector of 12 probability values. You need to convert these to a rectangular data set.</p>
 <p>Another example is the predict method for ranger, which encapsulates the actual predictions in a more complex object structure.</p>
 <p>These are the types of problems that the post-processor will solve.</p>
 <p><strong>Are there other modes?</strong></p>
 <p>There could be. If you have a suggestion, please add a <a href="https://github.com/tidymodels/parsnip/issues">GitHub issue</a> to discuss it.</p>
-</section>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+</section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.2 (2025-10-31)
@@ -1124,12 +1078,7 @@ Note
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<!-- plausible -->
-<script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
-<div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
@@ -1161,8 +1110,7 @@ Note
   sidebar = document.querySelector('#quarto-margin-sidebar');
   resources = document.querySelector('.resources');
   sidebar.appendChild(resources);
-</script>
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1563,8 +1511,7 @@ Note
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
@@ -1576,8 +1523,6 @@ Note
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="Build functions to use in tuning both quantitative and qualitative parameters.">
-
 <title>How to create a tuning parameter function – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
@@ -61,7 +58,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -80,8 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,16 +103,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">tidymodels</span>
@@ -129,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../../packages/index.html"> 
 <span class="menu-text">Packages</span></a>
   </li>  
@@ -163,13 +153,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -177,15 +165,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Learn</span></a>
@@ -199,8 +183,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/statistics/bootstrap/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Bootstrap resampling and tidy regression models</span></a>
@@ -231,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
@@ -240,8 +224,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/models/coefficients/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Working with model coefficients</span></a>
@@ -284,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
@@ -293,8 +277,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/develop/broom/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Create your own broom tidier methods</span></a>
@@ -325,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -334,8 +318,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/work/bayes-opt/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Iterative Bayesian optimization of a classification model</span></a>
@@ -366,29 +350,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#quantitative-parameters" id="toc-quantitative-parameters" class="nav-link" data-scroll-target="#quantitative-parameters">Quantitative parameters</a></li>
   <li><a href="#qualitative-parameters" id="toc-qualitative-parameters" class="nav-link" data-scroll-target="#qualitative-parameters">Qualitative parameters</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
-  </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/parameters/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/parameters/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li><li class="breadcrumb-item"><a href="../../../learn/develop/parameters/index.html">How to create a tuning parameter function</a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li><li class="breadcrumb-item"><a href="../../../learn/develop/parameters/index.html">How to create a tuning parameter function</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">How to create a tuning parameter function</h1>
   <div class="quarto-categories">
     <div class="quarto-category">developer tools</div>
@@ -411,66 +389,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header>
-
-
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: dials and scales.</p>
 <p>Some models and recipe steps contain parameters that dials does not know about. You can construct new quantitative and qualitative parameters using <code>new_quant_param()</code> or <code>new_qual_param()</code>, respectively. This article is a guide to creating new parameters.</p>
-</section>
-<section id="quantitative-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="quantitative-parameters">Quantitative parameters</h2>
+</section><section id="quantitative-parameters" class="level2"><h2 class="anchored" data-anchor-id="quantitative-parameters">Quantitative parameters</h2>
 <p>As an example, let’s consider the multivariate adaptive regression spline (<a href="https://en.wikipedia.org/wiki/Multivariate_adaptive_regression_spline">MARS</a>) model, which creates nonlinear features from predictors and adds them to a linear regression models. The earth package is an excellent implementation of this method.</p>
 <p>MARS creates an initial set of features and then prunes them back to an appropriate size. This can be done automatically by <code>earth::earth()</code> or the number of final terms can be set by the user. The parsnip function <code>mars()</code> has a parameter called <code>num_terms</code> that defines this.</p>
 <p>What if we want to create a parameter for the number of <em>initial terms</em> included in the model. There is no argument in <code>parsnip::mars()</code> for this but we will make one now. The argument name in <code>earth::earth()</code> is <code>nk</code>, which is not very descriptive. Our parameter will be called <code>num_initial_terms</code>.</p>
 <p>We use the <code>new_quant_param()</code> function since this is a numeric parameter. The main two arguments to a numeric parameter function are <code>range</code> and <code>trans</code>.</p>
 <p>The <code>range</code> specifies the possible values of the parameter. For our example, a minimal value might be one or two. What is the upper limit? The default in the earth package is</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(<span class="dv">200</span>, <span class="fu">max</span>(<span class="dv">20</span>, <span class="dv">2</span> <span class="sc">*</span> <span class="fu">ncol</span>(x))) <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>where <code>x</code> is the predictor matrix. We often put in values that are either sensible defaults or are minimal enough to work for the majority of data sets. For now, let’s specify an upper limit of 10 but this will be discussed more in the next section.</p>
 <p>The other argument is <code>trans</code>, which represents a transformation that should be applied to the parameter values when working with them. For example, many regularization methods have a <code>penalty</code> parameter that tends to range between zero and some upper bound (let’s say 1). The effect of going from a penalty value of 0.01 to 0.1 is much more impactful than going from 0.9 to 1.0. In such a case, it might make sense to work with this parameter in transformed units (such as the log, in this example). If new parameter values are generated at random, it helps if they are uniformly simulated in the transformed units and then converted back to the original units.</p>
 <p>The <code>trans</code> parameter accepts a transformation object from the scales package. For example:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lsf.str</span>(<span class="st">"package:scales"</span>, <span class="at">pattern =</span> <span class="st">"_trans$"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; asinh_trans : function ()  </span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; asn_trans : function ()  </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; atanh_trans : function ()  </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; boxcox_trans : function (p, offset = 0)  </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; compose_trans : function (...)  </span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; date_trans : function ()  </span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exp_trans : function (base = exp(1))  </span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hms_trans : function ()  </span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; identity_trans : function ()  </span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; log_trans : function (base = exp(1))  </span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; log10_trans : function ()  </span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; log1p_trans : function ()  </span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; log2_trans : function ()  </span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logit_trans : function ()  </span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; modulus_trans : function (p, offset = 1)  </span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; probability_trans : function (distribution, ...)  </span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; probit_trans : function ()  </span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pseudo_log_trans : function (sigma = 1, base = exp(1))  </span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; reciprocal_trans : function ()  </span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; reverse_trans : function ()  </span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sqrt_trans : function ()  </span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; time_trans : function (tz = NULL)  </span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; timespan_trans : function (unit = c("secs", "mins", "hours", "days", "weeks"))  </span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; yj_trans : function (p)</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>scales<span class="sc">::</span><span class="fu">log10_trans</span>()</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Transformer: log-10 [1e-100, Inf]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html">lsf.str</a></span><span class="op">(</span><span class="st">"package:scales"</span>, pattern <span class="op">=</span> <span class="st">"_trans$"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; asinh_trans : function ()  </span></span>
+<span><span class="co">#&gt; asn_trans : function ()  </span></span>
+<span><span class="co">#&gt; atanh_trans : function ()  </span></span>
+<span><span class="co">#&gt; boxcox_trans : function (p, offset = 0)  </span></span>
+<span><span class="co">#&gt; compose_trans : function (...)  </span></span>
+<span><span class="co">#&gt; date_trans : function ()  </span></span>
+<span><span class="co">#&gt; exp_trans : function (base = exp(1))  </span></span>
+<span><span class="co">#&gt; hms_trans : function ()  </span></span>
+<span><span class="co">#&gt; identity_trans : function ()  </span></span>
+<span><span class="co">#&gt; log_trans : function (base = exp(1))  </span></span>
+<span><span class="co">#&gt; log10_trans : function ()  </span></span>
+<span><span class="co">#&gt; log1p_trans : function ()  </span></span>
+<span><span class="co">#&gt; log2_trans : function ()  </span></span>
+<span><span class="co">#&gt; logit_trans : function ()  </span></span>
+<span><span class="co">#&gt; modulus_trans : function (p, offset = 1)  </span></span>
+<span><span class="co">#&gt; probability_trans : function (distribution, ...)  </span></span>
+<span><span class="co">#&gt; probit_trans : function ()  </span></span>
+<span><span class="co">#&gt; pseudo_log_trans : function (sigma = 1, base = exp(1))  </span></span>
+<span><span class="co">#&gt; reciprocal_trans : function ()  </span></span>
+<span><span class="co">#&gt; reverse_trans : function ()  </span></span>
+<span><span class="co">#&gt; sqrt_trans : function ()  </span></span>
+<span><span class="co">#&gt; time_trans : function (tz = NULL)  </span></span>
+<span><span class="co">#&gt; timespan_trans : function (unit = c("secs", "mins", "hours", "days", "weeks"))  </span></span>
+<span><span class="co">#&gt; yj_trans : function (p)</span></span>
+<span><span class="fu">scales</span><span class="fu">::</span><span class="fu">log10_trans</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Transformer: log-10 [1e-100, Inf]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A value of <code>NULL</code> means that no transformation should be used.</p>
 <p>A quantitative parameter function should have these two arguments and, in the function body, a call <code>new_quant_param()</code>. There are a few arguments to this function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(new_quant_param)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; function (type = c("double", "integer"), range = NULL, inclusive = NULL, </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     default = deprecated(), trans = NULL, values = NULL, label = NULL, </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     finalize = NULL, ..., call = caller_env()) </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">new_quant_param</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (type = c("double", "integer"), range = NULL, inclusive = NULL, </span></span>
+<span><span class="co">#&gt;     default = deprecated(), trans = NULL, values = NULL, label = NULL, </span></span>
+<span><span class="co">#&gt;     finalize = NULL, ..., call = caller_env()) </span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><p>Possible types are double precision and integers. The value of <code>type</code> should agree with the values of <code>range</code> in the function definition.</p></li>
@@ -480,131 +452,125 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Here’s an example of a basic quantitative parameter object:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num_initial_terms <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">10</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new_quant_param</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"integer"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> range,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">inclusive =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> trans,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="at">num_initial_terms =</span> <span class="st">"# Initial MARS Terms"</span>),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">finalize =</span> <span class="cn">NULL</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">num_initial_terms</span>()</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 10]</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample from the parameter:</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4832856</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">num_initial_terms</span>() <span class="sc">%&gt;%</span> <span class="fu">value_sample</span>(<span class="dv">5</span>)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  6  4  9 10  4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">10L</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
+<span>    range <span class="op">=</span> <span class="va">range</span>,</span>
+<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    trans <span class="op">=</span> <span class="va">trans</span>,</span>
+<span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>num_initial_terms <span class="op">=</span> <span class="st">"# Initial MARS Terms"</span><span class="op">)</span>,</span>
+<span>    finalize <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
+<span><span class="co">#&gt; Range: [1, 10]</span></span>
+<span></span>
+<span><span class="co"># Sample from the parameter:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4832856</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  6  4  9 10  4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="finalizing-parameters" class="level3">
-<h3 class="anchored" data-anchor-id="finalizing-parameters">Finalizing parameters</h3>
+<section id="finalizing-parameters" class="level3"><h3 class="anchored" data-anchor-id="finalizing-parameters">Finalizing parameters</h3>
 <p>It might be the case that the range of the parameter is unknown. For example, parameters that are related to the number of columns in a data set cannot be exactly specified in the absence of data. In those cases, a placeholder of <code>unknown()</code> can be added. This will force the user to “finalize” the parameter object for their particular data set. Let’s redefine our function with an <code>unknown()</code> value:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>num_initial_terms <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="fu">unknown</span>()), <span class="at">trans =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new_quant_param</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"integer"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> range,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">inclusive =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> trans,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="at">num_initial_terms =</span> <span class="st">"# Initial MARS Terms"</span>),</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">finalize =</span> <span class="cn">NULL</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">num_initial_terms</span>()</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Can we sample? </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">num_initial_terms</span>() <span class="sc">%&gt;%</span> <span class="fu">value_sample</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu">unknown</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
+<span>    range <span class="op">=</span> <span class="va">range</span>,</span>
+<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    trans <span class="op">=</span> <span class="va">trans</span>,</span>
+<span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>num_initial_terms <span class="op">=</span> <span class="st">"# Initial MARS Terms"</span><span class="op">)</span>,</span>
+<span>    finalize <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Can we sample? </span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>finalize</code> argument of <code>num_initial_terms()</code> can take a function that uses data to set the range. For example, the package already includes a few functions for finalization:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lsf.str</span>(<span class="st">"package:dials"</span>, <span class="at">pattern =</span> <span class="st">"^get_"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_batch_sizes : function (object, x, frac = c(1/10, 1/3), ...)  </span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_log_p : function (object, x, ...)  </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_n : function (object, x, log_vals = FALSE, ...)  </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_n_frac : function (object, x, log_vals = FALSE, frac = 1/3, ...)  </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_n_frac_range : function (object, x, log_vals = FALSE, frac = c(1/10, 5/10), ...)  </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_p : function (object, x, log_vals = FALSE, ...)  </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; get_rbf_range : function (object, x, seed = sample.int(10^5, 1), ...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html">lsf.str</a></span><span class="op">(</span><span class="st">"package:dials"</span>, pattern <span class="op">=</span> <span class="st">"^get_"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; get_batch_sizes : function (object, x, frac = c(1/10, 1/3), ...)  </span></span>
+<span><span class="co">#&gt; get_log_p : function (object, x, ...)  </span></span>
+<span><span class="co">#&gt; get_n : function (object, x, log_vals = FALSE, ...)  </span></span>
+<span><span class="co">#&gt; get_n_frac : function (object, x, log_vals = FALSE, frac = 1/3, ...)  </span></span>
+<span><span class="co">#&gt; get_n_frac_range : function (object, x, log_vals = FALSE, frac = c(1/10, 5/10), ...)  </span></span>
+<span><span class="co">#&gt; get_p : function (object, x, log_vals = FALSE, ...)  </span></span>
+<span><span class="co">#&gt; get_rbf_range : function (object, x, seed = sample.int(10^5, 1), ...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>These functions generally take a data frame of predictors (in an argument called <code>x</code>) and add the range of the parameter object. Using the formula in the earth package, we might use:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>get_initial_mars_terms <span class="ot">&lt;-</span> <span class="cf">function</span>(object, x) {</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  upper_bound <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="dv">200</span>, <span class="fu">max</span>(<span class="dv">20</span>, <span class="dv">2</span> <span class="sc">*</span> <span class="fu">ncol</span>(x))) <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  upper_bound <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(upper_bound)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  bounds <span class="ot">&lt;-</span> <span class="fu">range_get</span>(object)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  bounds<span class="sc">$</span>upper <span class="ot">&lt;-</span> upper_bound</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">range_set</span>(object, bounds)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the mtcars are the finalize the upper bound: </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">num_initial_terms</span>() <span class="sc">%&gt;%</span> <span class="fu">get_initial_mars_terms</span>(<span class="at">x =</span> mtcars[, <span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">get_initial_mars_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">upper_bound</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>  <span class="va">upper_bound</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">upper_bound</span><span class="op">)</span></span>
+<span>  <span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu">range_get</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span>  <span class="va">bounds</span><span class="op">$</span><span class="va">upper</span> <span class="op">&lt;-</span> <span class="va">upper_bound</span></span>
+<span>  <span class="fu">range_set</span><span class="op">(</span><span class="va">object</span>, <span class="va">bounds</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Use the mtcars are the finalize the upper bound: </span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">get_initial_mars_terms</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
+<span><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once we add this function to the object, the general <code>finalize()</code> method can be used:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>num_initial_terms <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="fu">unknown</span>()), <span class="at">trans =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new_quant_param</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"integer"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> range,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">inclusive =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> trans,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="at">num_initial_terms =</span> <span class="st">"# Initial MARS Terms"</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">finalize =</span> get_initial_mars_terms</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">num_initial_terms</span>() <span class="sc">%&gt;%</span> <span class="fu">finalize</span>(<span class="at">x =</span> mtcars[, <span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu">unknown</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
+<span>    range <span class="op">=</span> <span class="va">range</span>,</span>
+<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    trans <span class="op">=</span> <span class="va">trans</span>,</span>
+<span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>num_initial_terms <span class="op">=</span> <span class="st">"# Initial MARS Terms"</span><span class="op">)</span>,</span>
+<span>    finalize <span class="op">=</span> <span class="va">get_initial_mars_terms</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">finalize</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
+<span><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-</section>
-<section id="qualitative-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="qualitative-parameters">Qualitative parameters</h2>
+</section></section><section id="qualitative-parameters" class="level2"><h2 class="anchored" data-anchor-id="qualitative-parameters">Qualitative parameters</h2>
 <p>Now let’s look at an example of a qualitative parameter. If a model includes a data aggregation step, we want to allow users to tune how our parameters are aggregated. For example, in embedding methods, possible values might be <code>min</code>, <code>max</code>, <code>mean</code>, <code>sum</code>, or to not aggregate at all (“none”). Since these cannot be put on a numeric scale, they are possible values of a qualitative parameter. We’ll take “character” input (not “logical”), and we must specify the allowed values. By default we won’t aggregate.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>aggregation <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"none"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"mean"</span>, <span class="st">"sum"</span>)) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new_qual_param</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"character"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> values,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># By default, the first value is selected as default. We'll specify that to</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make it clear.</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">default =</span> <span class="st">"none"</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="at">aggregation =</span> <span class="st">"Aggregation Method"</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aggregation</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">values</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">new_qual_param</span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"character"</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">values</span>,</span>
+<span>    <span class="co"># By default, the first value is selected as default. We'll specify that to</span></span>
+<span>    <span class="co"># make it clear.</span></span>
+<span>    default <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>aggregation <span class="op">=</span> <span class="st">"Aggregation Method"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Within the dials package, the convention is to have the values contained in a separate vector whose name starts with <code>values_</code>. For example:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>values_aggregation <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"none"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"mean"</span>, <span class="st">"sum"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>aggregation <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">values =</span> values_aggregation) {</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new_qual_param</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"character"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> values,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># By default, the first value is selected as default. We'll specify that to</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make it clear.</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="at">aggregation =</span> <span class="st">"Aggregation Method"</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">values_aggregation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span></span>
+<span><span class="va">aggregation</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">values</span> <span class="op">=</span> <span class="va">values_aggregation</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">new_qual_param</span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"character"</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">values</span>,</span>
+<span>    <span class="co"># By default, the first value is selected as default. We'll specify that to</span></span>
+<span>    <span class="co"># make it clear.</span></span>
+<span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>aggregation <span class="op">=</span> <span class="st">"Aggregation Method"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This step may not make sense if you are using the function in a script and not keeping it within a package.</p>
 <p>We can use our <code>aggregation</code> parameters with dials functions.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregation</span>()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Aggregation Method (qualitative)</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 possible values include:</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'none', 'min', 'max', 'mean', and 'sum'</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregation</span>() <span class="sc">%&gt;%</span> <span class="fu">value_sample</span>(<span class="dv">3</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "min"  "sum"  "mean"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">aggregation</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Aggregation Method (qualitative)</span></span>
+<span><span class="co">#&gt; 5 possible values include:</span></span>
+<span><span class="co">#&gt; 'none', 'min', 'max', 'mean', and 'sum'</span></span>
+<span><span class="fu">aggregation</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "min"  "sum"  "mean"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+</section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.2 (2025-10-31)
@@ -636,12 +602,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<!-- plausible -->
-<script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
-<div class="section resources">
+</section></main><!-- /main --><!-- plausible --><script async="" defer="" data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
   <div class="resourcesTitle">Resources</div>
   <div class="event">
     <div class="eventTitle">
@@ -673,8 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   sidebar = document.querySelector('#quarto-margin-sidebar');
   resources = document.querySelector('.resources');
   sidebar.appendChild(resources);
-</script>
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1075,8 +1035,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Proudly supported by <a href="https://posit.co"><img src="https://posit.co/wp-content/themes/Posit/assets/images/posit-logo-2024.svg" class="img-fluid" alt="Posit" width="65"></a></p>
 </div>   
@@ -1088,8 +1047,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>
