@@ -49,9 +49,7 @@ When updating the site, the goal is to use the most recent CRAN versions of the 
 
 We use the latest release version of quarto. You can install and manage different version with [qvm](https://github.com/dpastoor/qvm).
 
-The website is set up to render with [Netlify](https://app.netlify.com/sites/tidymodels-org/deploys) in according to [quarto documentation](https://quarto.org/docs/publishing/netlify.html).
-
-The files [`_publish.yml`](_publish.yml), [`netlify.toml`](netlify.toml), and [`package.json`](package.json) specifies this configuration. 
+The website is deployed to GitHub Pages via the `publish.yml` workflow.
 
 ## Structure
 
@@ -76,8 +74,8 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 This repo uses two Quarto profiles to split behavior between local and CI rendering:
 
-- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `post-render.R`.
-- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Runs post-render scripts that need to apply to all HTML files (e.g. `post-render-downlit.R`).
+- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `post-render.R` and `post-render-downlit.R`.
+- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Also runs `post-render-downlit.R` so code linking applies to all HTML files including frozen pages.
 
 When adding a script that should only run locally, add it to `_quarto-local.yml`. If it should run in CI, add it to `_quarto-production.yml` and ensure the workflow installs the needed dependencies.
 
@@ -85,7 +83,7 @@ When adding a script that should only run locally, add it to `_quarto-local.yml`
 
 R functions in code blocks are hyperlinked to their documentation via the [downlit](https://downlit.r-lib.org/) package, enabled with `code-link: true` in `_quarto.yml`.
 
-Because `library(tidymodels)` is not automatically expanded by downlit (unlike `library(tidyverse)`), the tidymodels member packages are explicitly listed in the `tidymodels_pkgs` vector in `post-render-downlit.R`. This must be kept in sync with `tidymodels::tidymodels_packages()` when tidymodels adds or removes member packages.
+Because `library(tidymodels)` is not automatically expanded by downlit (unlike `library(tidyverse)`), `post-render-downlit.R` explicitly seeds the package list via `tidymodels::tidymodels_packages()` so functions like `step_*`, `tune()`, etc. are linked correctly.
 
 ## Workflow
 
