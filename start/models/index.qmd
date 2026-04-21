@@ -47,6 +47,7 @@ How do you create a statistical model using tidymodels? In this article, we will
 `r article_req_pkgs(pkgs)`
 
 ```{r}
+#| label: load-packages
 #| eval: false
 library(tidymodels)  # for the parsnip package, along with the rest of tidymodels
 
@@ -81,6 +82,7 @@ urchins <-
 Let's take a quick look at the data:
 
 ```{r}
+#| label: print-urchins
 urchins
 ```
 
@@ -137,6 +139,7 @@ linear_reg() %>%
 The [documentation page for `linear_reg()`](https://parsnip.tidymodels.org/reference/linear_reg.html) lists all the possible engines. We'll save our model object using the default engine as `lm_mod`.
 
 ```{r}
+#| label: set-lm-mod
 lm_mod <- linear_reg()
 ```
 
@@ -307,6 +310,7 @@ bayes_mod %>%
 This may seem jarring if you have used dplyr a lot, but it is extremely similar to how ggplot2 operates:
 
 ```{r}
+#| label: ggplot-pipe-analogy
 #| eval: false
 ggplot(urchins,
        aes(initial_volume, width)) +      # returns a ggplot object 

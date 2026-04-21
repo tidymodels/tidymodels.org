@@ -40,6 +40,7 @@ This article demonstrates how to create and use importance weights in a predicti
 To demonstrate we will use the Chicago data from the modeldata package.
 
 ```{r}
+#| label: load-chicago-data
 library(tidymodels)
 data(Chicago)
 
@@ -68,12 +69,14 @@ $$ weight = base ^ x $$
 where `base` is some constant and `x` is the number of days. To make sure that we select a reasonable `base`, we need to do some manual testing, starting with looking at how old the oldest observation is.
 
 ```{r}
+#| label: compute-date-range
 difftime("2016-01-01", min(Chicago$date))
 ```
 
 Using this information we can visualize the weight curve, to see if we like the value of `base`.
 
 ```{r}
+#| label: plot-single-decay-curve
 tibble_days <- tibble(days = 0:5457)
 
 tibble_days %>%
@@ -86,6 +89,7 @@ setting `base` to 0.99 appears to be down weighted too much. Any observation mor
 Let us try a few more values to find 
 
 ```{r}
+#| label: plot-compare-decay-bases
 map_dfr(
   c(0.99, 0.999, 0.9999),
   ~ tibble_days %>% mutate(base = factor(.x), value = .x ^ days)
@@ -97,6 +101,7 @@ map_dfr(
 From this, we could pick something around 0.999 since it gives a better balance. Let's create a small function to help us encode this weight. 
 
 ```{r}
+#| label: define-weights-from-dates
 weights_from_dates <- function(x, ref) {
   if_else(
     condition = x >= ref,
@@ -109,6 +114,7 @@ weights_from_dates <- function(x, ref) {
 We then modify `Chicago` to add a weight column, explicitly making it an importance weight with `importance_weight()`.
 
 ```{r}
+#| label: add-importance-weights
 Chicago <- Chicago %>%
   mutate(weight = weights_from_dates(date, "2016-01-01"),
          weight = importance_weights(weight))
@@ -121,6 +127,7 @@ This approach to creating importance weights from dates is not limited to cases 
 We start by splitting up our data into a training and testing set based on the day `"2016-01-01"`. We added weights to the data set before splitting it so each set has weights.
 
 ```{r}
+#| label: train-test-split
 Chicago_train <- Chicago %>% filter(date < "2016-01-01")
 Chicago_test <- Chicago %>% filter(date >= "2016-01-01")
 ```
@@ -128,6 +135,7 @@ Chicago_test <- Chicago %>% filter(date >= "2016-01-01")
 Next, we are going to create a recipe. The weights won't have any influence on the preprocessing since none of these operations are supervised and we are using importance weights.
 
 ```{r}
+#| label: define-recipe
 base_recipe <-
   recipe(ridership ~ ., data = Chicago_train) %>%
   # Create date features
@@ -144,6 +152,7 @@ base_recipe <-
 Next we need to build the rest of the workflow. We use a linear regression specification
 
 ```{r}
+#| label: define-lm-spec
 lm_spec <-
   linear_reg() %>%
   set_engine("lm")
@@ -152,6 +161,7 @@ lm_spec <-
 and we add these together in the workflow. To activate the case weights, we use the `add_case_weights()` function to specify the name of the case weights being used.
 
 ```{r}
+#| label: build-workflow
 lm_wflow <-
   workflow() %>% 
   add_case_weights(weight) %>%
@@ -164,6 +174,7 @@ lm_wflow
 With all that done we can fit the workflow with the usual syntax: 
 
 ```{r}
+#| label: fit-workflow
 lm_fit <- fit(lm_wflow, data = Chicago_train)
 lm_fit
 ```

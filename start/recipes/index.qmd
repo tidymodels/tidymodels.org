@@ -56,6 +56,7 @@ and so on. If you are familiar with R's formula interface, a lot of this might s
 `r article_req_pkgs(pkgs)`
 
 ```{r}
+#| label: load-packages
 #| eval: false
 library(tidymodels)      # for the recipes package, along with the rest of tidymodels
 
@@ -97,6 +98,7 @@ flight_data <-
 Let's use the [nycflights13 data](https://github.com/hadley/nycflights13) to predict whether a plane arrives more than 30 minutes late. This data set contains information on `r scales::comma(nrow(flight_data))` flights departing near New York City in 2013. Let's start by loading the data and making a few changes to the variables:
 
 ```{r}
+#| label: redisplay-flight-data
 #| ref.label: "flight-start"
 
 ```
@@ -404,6 +406,7 @@ flights_aug %>%
 Not too bad! We leave it to the reader to test out this workflow [*without*](https://workflows.tidymodels.org/reference/add_formula.html) this recipe. You can use `workflows::add_formula(arr_delay ~ .)` instead of `add_recipe()` (remember to remove the identification variables first!), and see whether our recipe improved our model's ability to predict late arrivals.
 
 ```{r}
+#| label: no-recipe-workflow
 #| eval: false
 #| include: false
 set.seed(555)

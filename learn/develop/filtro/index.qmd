@@ -63,6 +63,7 @@ Additionally, we provide guidance on documenting an S7 method.
 All the subclasses (custom scoring objects) share the same parent class named `class_score`. The parent class is already implemented, and we need this to build our own scoring class object: 
 
 ```{r}
+#| label: show-parent-class
 #| eval: false
 # Call the parent class
 library(filtro) 
@@ -106,6 +107,7 @@ For reference, the ANOVA F-test filter computes feature score using analysis of 
 By setting `parent = class_score`, the subclass `class_score_aov` inherits all of the fixed properties from the parent class. Additional, implementation-specific properties can be added using the `properties =` argument. For example:
 
 ```{r}
+#| label: define-class-score-aov
 #| eval: false
 # Create a subclass named 'class_score_aov'
 class_score_aov <- S7::new_class(
@@ -132,6 +134,7 @@ We demonstrate how to create these instances (objects) accordingly.
 `score_aov_pval` is created as an instance of the `class_score_aov` subclass by calling its constructor and specifying its properties:
 
 ```{r}
+#| label: create-score-aov-pval
 #| eval: false
 # ANOVA p-value
 score_aov_pval <-
@@ -153,6 +156,7 @@ score_aov_pval <-
 Once instantiated, individual properties can be accessed via `object@`. For example: 
 
 ```{r}
+#| label: access-score-properties
 score_aov_pval@case_weights
 score_aov_pval@fallback_value
 score_aov_pval@direction
@@ -163,6 +167,7 @@ Note that by default, the returned p-value is transformed to `-log10(p_value)`, 
 `score_aov_fstat` is another instance of the `class_score_aov` subclass:  
 
 ```{r}
+#| label: create-score-aov-fstat
 #| eval: false
 # ANOVA F-statistic
 score_aov_fstat <-
@@ -207,6 +212,7 @@ class_score
 Let’s use the ANOVA F-test filter again as an example: 
 
 ```{r}
+#| label: check-score-class
 # User-level example: Check the class of the object
 class(score_aov_pval)
 class(score_aov_fstat)
@@ -215,6 +221,7 @@ class(score_aov_fstat)
 Both instances (objects) belong to the custom scoring object `class_score_aov`. Therefore, when `fit()` is called, the method for `class_score_aov` is dispatched, performing the actual fitting using the ANOVA F-test:
 
 ```{r}
+#| label: fit-dispatch-example
 #| eval: false
 # User-level example: Method dispatch for objects of class `class_score_aov`
 score_aov_pval |>
@@ -230,6 +237,7 @@ For users to use the `fit()` method described above, we need to define a S7 meth
 The following code defines the `fit()` method specifically for the `class_score_aov` subclass, specifying how feature score should be computed using ANOVA F-test:
 
 ```{r}
+#| label: define-fit-method-score-aov
 #| eval: false
 # Define the scoring method for `class_score_aov`
 S7::method(fit, class_score_aov) <- function(
@@ -259,6 +267,7 @@ Documentation for S7 methods is still a work in progress, but our current best a
 The code below opens the help page for the `fit()` generic: 
 
 ```{r}
+#| label: help-fit-generic
 #| eval: false
 # User-level example: Help page for `fit()` generic
 ?fit
@@ -267,6 +276,7 @@ The code below opens the help page for the `fit()` generic:
 The code below opens the help page for specific `fit()` method: 
 
 ```{r}
+#| label: help-score-objects
 #| eval: false
 # User-level example: Help page for `fit()` method along with the documentation for the specific object
 ?score_aov_pval
@@ -276,6 +286,7 @@ The code below opens the help page for specific `fit()` method:
 For users to access the help page using `?` as described above, the `fit()` method needs to be exported using `#' @export`, but it is not documented directly.
 
 ```{r}
+#| label: export-fit-method
 #| eval: false
 #' @export
 S7::method(fit, class_score_aov) <- function(
@@ -292,6 +303,7 @@ S7::method(fit, class_score_aov) <- function(
 Instead, documentation is provided in the "Details" section and the "Estimating the scores" subsection of the documentation for the `score_aov_pval` object.  
 
 ```{r}
+#| label: document-score-aov-pval
 #| eval: false
 #' Scoring via analysis of variance hypothesis tests
 #'
@@ -344,6 +356,7 @@ score_aov_pval <-
 We can have the `score_aov_fstat` object share the same help page as `score_aov_pval` by using `#' @name`. This avoids repeated documentation for similar or related objects.
 
 ```{r}
+#| label: document-score-aov-fstat
 #| eval: false
 #' @name score_aov_pval
 #' @export
@@ -371,6 +384,7 @@ Once the method has been fitted via `fit()`, the data frame of results can be ac
 We use a subset of the Ames data set from the {modeldata} package for demonstration. The goal is to predict housing sale price. `Sale_Price` is the outcome and is numeric. 
 
 ```{r}
+#| label: load-ames-subset
 library(modeldata)
 ames_subset <- modeldata::ames |>
   # Use a subset of data for demonstration
@@ -389,6 +403,7 @@ ames_subset <- ames_subset |>
 Next, we fit the score as we discuss before: 
 
 ```{r}
+#| label: fit-score-aov-pval
 # Specify ANOVA p-value and fit score
 ames_aov_pval_res <-
   score_aov_pval |>
@@ -396,6 +411,7 @@ ames_aov_pval_res <-
 ```
 
 ```{r}
+#| label: fit-score-aov-fstat
 # Specify ANOVA F-statistic and fit score
 ames_aov_fstat_res <-
   score_aov_fstat |>
@@ -405,10 +421,12 @@ ames_aov_fstat_res <-
 Recall that individual properties of an object can be accessed using `object@`. Once the method has been fitted, the resulting data frame can be accessed via `object@results`:
 
 ```{r}
+#| label: access-pval-results
 ames_aov_pval_res@results
 ```
 
 ```{r}
+#| label: access-fstat-results
 ames_aov_fstat_res@results
 ```
 
