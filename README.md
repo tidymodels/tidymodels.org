@@ -87,7 +87,9 @@ When adding a script that should only run locally, add it to `_quarto-local.yml`
 
 * To preview the site, render it locally with the latest quarto release version.
 
-* The site is published via Netlify but rendered locally, so add those files to the PR. 
+* The site is rendered locally, not in CI. Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true` — and those files are what gets deployed. Always include them in your PR.
+
+* `keep-md: true` is set in `_quarto.yml` so that rendered `.md` files are committed alongside the source. This makes it possible to review in a PR whether code produced different results than before.
 
 * To do a complete rerender, run `re-render.R` script.
 
