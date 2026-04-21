@@ -5,14 +5,7 @@ library(xml2)
 # downlit special-cases library(tidyverse) but not library(tidymodels), so its
 # member packages are never added to the search path used for linking.
 # Pre-seeding downlit.attached fixes linking for step_*, boost_tree(), tune(), etc.
-# Equivalent to tidymodels::tidymodels_packages() but avoids a tidymodels dependency in CI
-tidymodels_pkgs <- c(
-  "broom", "cli", "conflicted", "dials", "dplyr", "ggplot2", "hardhat",
-  "infer", "modeldata", "parsnip", "purrr", "recipes", "rlang", "rsample",
-  "rstudioapi", "tailor", "tibble", "tidymodels", "tidyr", "tune",
-  "workflows", "workflowsets", "yardstick"
-)
-options(downlit.attached = union(tidymodels_pkgs, getOption("downlit.attached")))
+options(downlit.attached = union(tidymodels::tidymodels_packages(), getOption("downlit.attached")))
 
 # Collect HTML output files
 output_files <- strsplit(Sys.getenv("QUARTO_PROJECT_OUTPUT_FILES"), "\n")[[1]]
