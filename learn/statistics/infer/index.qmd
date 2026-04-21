@@ -309,6 +309,7 @@ The infer package also provides functionality to use theoretical methods for `"C
 Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using randomization-based methods, but skip the `generate()` step. For example, if we wanted to find a null distribution for the relationship between age (`age`) and party identification (`partyid`) using randomization, we could write:
 
 ```{r}
+#| label: generate-null-f-distn
 #| message: false
 #| warning: false
 set.seed(533)
@@ -323,6 +324,7 @@ null_f_distn <- gss %>%
 To find the null distribution using theory-based methods, instead, skip the `generate()` step entirely:
 
 ```{r}
+#| label: generate-null-f-theoretical
 #| message: false
 #| warning: false
 null_f_distn_theoretical <- gss %>%
@@ -334,6 +336,7 @@ null_f_distn_theoretical <- gss %>%
 We'll calculate the observed statistic to make use of in the following visualizations; this procedure is the same, regardless of the methods used to find the null distribution.
 
 ```{r}
+#| label: calculate-observed-f
 #| message: false
 #| warning: false
 F_hat <- gss %>% 
@@ -344,6 +347,7 @@ F_hat <- gss %>%
 Now, instead of just piping the null distribution into `visualize()`, as we would do if we wanted to visualize the randomization-based null distribution, we also need to provide `method = "theoretical"` to `visualize()`.
 
 ```{r}
+#| label: visualize-theoretical-null
 #| message: false
 #| warning: false
 visualize(null_f_distn_theoretical, method = "theoretical") +
@@ -353,6 +357,7 @@ visualize(null_f_distn_theoretical, method = "theoretical") +
 To get a sense of how the theory-based and randomization-based null distributions relate, we can pipe the randomization-based null distribution into `visualize()` and also specify `method = "both"`
 
 ```{r}
+#| label: visualize-both-distributions
 #| message: false
 #| warning: false
 visualize(null_f_distn, method = "both") +

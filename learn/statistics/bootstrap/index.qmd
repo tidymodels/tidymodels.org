@@ -43,6 +43,7 @@ Bootstrapping consists of randomly sampling a data set with replacement, then pe
 Let's say we want to fit a nonlinear model to the weight/mileage relationship in the `mtcars` data set.
 
 ```{r}
+#| label: plot-mtcars-scatter
 library(tidymodels)
 
 ggplot(mtcars, aes(mpg, wt)) + 
@@ -52,6 +53,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 We might use the method of nonlinear least squares (via the `nls()` function) to fit a model.
 
 ```{r}
+#| label: fit-nls-model
 nlsfit <- nls(mpg ~ k / wt + b, mtcars, start = list(k = 1, b = 0))
 summary(nlsfit)
 
@@ -69,6 +71,7 @@ We can use the `bootstraps()` function in the rsample package to sample bootstra
 An `rsplit` object has two main components: an analysis data set and an assessment data set, accessible via `analysis(rsplit)` and `assessment(rsplit)` respectively. For bootstrap samples, the analysis data set is the bootstrap sample itself, and the assessment data set consists of all the out-of-bag samples.
 
 ```{r}
+#| label: create-bootstrap-resamples
 set.seed(27)
 boots <- bootstraps(mtcars, times = 2000, apparent = TRUE)
 boots
@@ -77,6 +80,7 @@ boots
 Let's create a helper function to fit an `nls()` model on each bootstrap sample, and then use `purrr::map()` to apply this function to all the bootstrap samples at once. Similarly, we create a column of tidy coefficient information by unnesting.
 
 ```{r}
+#| label: define-fit-nls-bootstrap
 fit_nls_on_bootstrap <- function(split) {
     nls(mpg ~ k / wt + b, analysis(split), start = list(k = 1, b = 0))
 }
@@ -94,6 +98,7 @@ boot_coefs <-
 The unnested coefficient information contains a summary of each replication combined in a single data frame:
 
 ```{r}
+#| label: print-boot-coefs
 boot_coefs
 ```
 
@@ -110,6 +115,7 @@ percentile_intervals
 Or we can use histograms to get a more detailed idea of the uncertainty in each estimate:
 
 ```{r}
+#| label: plot-coefficient-distributions
 ggplot(boot_coefs, aes(estimate)) +
   geom_histogram(bins = 30) +
   facet_wrap( ~ term, scales = "free") +
@@ -124,6 +130,7 @@ The rsample package also has functions for [other types of confidence intervals]
 We can use `augment()` to visualize the uncertainty in the fitted curve. Since there are so many bootstrap samples, we'll only show a sample of the model fits in our visualization:
 
 ```{r}
+#| label: augment-bootstrap-fits
 boot_aug <- 
   boot_models %>% 
   sample_n(200) %>% 
@@ -134,6 +141,7 @@ boot_aug
 ```
 
 ```{r}
+#| label: plot-bootstrap-curves
 ggplot(boot_aug, aes(wt, mpg)) +
   geom_line(aes(y = .fitted, group = id), alpha = .2, col = "blue") +
   geom_point()
@@ -142,6 +150,7 @@ ggplot(boot_aug, aes(wt, mpg)) +
 With only a few small changes, we could easily perform bootstrapping with other kinds of predictive or hypothesis testing models, since the `tidy()` and `augment()` functions works for many statistical outputs. As another example, we could use `smooth.spline()`, which fits a cubic smoothing spline to data:
 
 ```{r}
+#| label: define-fit-spline-bootstrap
 fit_spline_on_bootstrap <- function(split) {
     data <- analysis(split)
     smooth.spline(data$wt, data$mpg, df = 4)

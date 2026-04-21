@@ -291,7 +291,7 @@ train_preds |>
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-15-1.svg){fig-align='center' fig-alt='Scatter chart. Arrival delay along the x-axis and predictions along the 
+![](figs/plot-train-predictions-1.svg){fig-align='center' fig-alt='Scatter chart. Arrival delay along the x-axis and predictions along the 
 y-axis. The majority of the points are along the diagonal, with a shift
 down.' width=672}
 :::
@@ -327,7 +327,7 @@ test_preds |>
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-17-1.svg){fig-align='center' fig-alt='Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
+![](figs/plot-rmse-by-month-1.svg){fig-align='center' fig-alt='Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
 Starting on the second month with a value around 17, it goes up for each
 month to 23 in July, afterward it does back down to 16 in September, 
 with November having the same value and December having a value of 20.' width=672}

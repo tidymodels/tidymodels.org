@@ -532,7 +532,7 @@ visualize(null_f_distn_theoretical, method = "theoretical") +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-4-1.svg){fig-align='center' width=672}
+![](figs/visualize-theoretical-null-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -546,7 +546,7 @@ visualize(null_f_distn, method = "both") +
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-5-1.svg){fig-align='center' width=672}
+![](figs/visualize-both-distributions-1.svg){fig-align='center' width=672}
 :::
 :::
 
