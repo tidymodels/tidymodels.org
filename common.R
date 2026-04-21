@@ -11,6 +11,16 @@ knitr::opts_chunk$set(
 )
 options(width = 80, cli.width = 70)
 
+# Workaround for https://github.com/r-lib/downlit/issues/173
+# downlit special-cases library(tidyverse) but not library(tidymodels), so
+# pre-seeding downlit.attached ensures step_*, boost_tree(), tune(), etc. are linked.
+tidymodels_core <- c(
+  "broom", "dials", "dplyr", "ggplot2", "hardhat", "infer", "modeldata",
+  "parsnip", "purrr", "recipes", "rsample", "tibble", "tidyr", "tune",
+  "workflows", "workflowsets", "yardstick"
+)
+options(downlit.attached = union(tidymodels_core, getOption("downlit.attached")))
+
 article_req_pkgs <- function(x, what = "To use code in this article, ") {
   x <- sort(x)
   x <- knitr::combine_words(x, and = " and ")
