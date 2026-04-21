@@ -126,7 +126,7 @@ broom_pkgs <- revdepcheck::cran_revdeps(
 generics_pkgs <- revdepcheck::cran_revdeps("generics", dependencies = "Imports")
 
 broom_pkgs <- sort(unique(c(broom_pkgs, generics_pkgs)))
-excl <- c("hydrorecipes", "healthcareai")
+excl <- c("hydrorecipes", "healthcareai", "doBy", "nestedmodels", "skedastic")
 broom_pkgs <- broom_pkgs[!(broom_pkgs %in% excl)]
 
 broom_functions <-
@@ -153,7 +153,7 @@ recipe_pkgs <- revdepcheck::cran_revdeps(
 recipe_pkgs <- c(recipe_pkgs, "recipes")
 
 recipe_pkgs <- sort(unique(c(recipe_pkgs)))
-excl <- c("hydrorecipes", "healthcareai")
+excl <- c("hydrorecipes", "healthcareai", "D2MCS", "nestedmodels", "tidytof", "viraldomain", "viralmodels")
 recipe_pkgs <- recipe_pkgs[!(recipe_pkgs %in% excl)]
 
 recipe_functions <-
@@ -210,7 +210,10 @@ excl <- c(
   "tidymodels",
   "shinymodels",
   "stacks",
-  "viruslearner"
+  "viruslearner",
+  "nestedmodels",
+  "viraldomain",
+  "viralmodels"
 )
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 

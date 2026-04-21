@@ -247,8 +247,8 @@ tree_res %>%
 #>  4    0.0000000001          4 accuracy    binary     0.807    10 0.0119  pre0_m…
 #>  5    0.0000000001          4 brier_class binary     0.143    10 0.00681 pre0_m…
 #>  6    0.0000000001          4 roc_auc     binary     0.852    10 0.0110  pre0_m…
-#>  7    0.0000000001          8 accuracy    binary     0.782    10 0.0121  pre0_m…
-#>  8    0.0000000001          8 brier_class binary     0.159    10 0.00884 pre0_m…
+#>  7    0.0000000001          8 accuracy    binary     0.781    10 0.0120  pre0_m…
+#>  8    0.0000000001          8 brier_class binary     0.160    10 0.00877 pre0_m…
 #>  9    0.0000000001          8 roc_auc     binary     0.853    10 0.0144  pre0_m…
 #> 10    0.0000000001         11 accuracy    binary     0.777    10 0.0132  pre0_m…
 #> # ℹ 65 more rows
@@ -471,32 +471,32 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.1 (2025-06-13)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2025-10-21
-#>  pandoc   3.6.3
-#>  quarto   1.8.25
+#>  date     2026-04-17
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC) source
-#>  broom        1.0.9   2025-07-28 CRAN (R 4.5.0)
-#>  dials        1.4.2   2025-09-04 CRAN (R 4.5.0)
-#>  dplyr        1.1.4   2023-11-17 CRAN (R 4.5.0)
-#>  ggplot2      4.0.0   2025-09-11 CRAN (R 4.5.0)
-#>  infer        1.0.9   2025-06-26 CRAN (R 4.5.0)
-#>  parsnip      1.3.3   2025-08-31 CRAN (R 4.5.0)
-#>  purrr        1.1.0   2025-07-10 CRAN (R 4.5.0)
-#>  recipes      1.3.1   2025-05-21 CRAN (R 4.5.0)
-#>  rlang        1.1.6   2025-04-11 CRAN (R 4.5.0)
-#>  rpart        4.1.24  2025-01-07 CRAN (R 4.5.0)
-#>  rpart.plot   3.1.3   2025-07-26 CRAN (R 4.5.0)
-#>  rsample      1.3.1   2025-07-29 CRAN (R 4.5.0)
-#>  tibble       3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  broom        1.0.12  2026-01-27 CRAN (R 4.5.2)
+#>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
+#>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
+#>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
+#>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
+#>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)
+#>  rlang        1.2.0   2026-04-06 CRAN (R 4.5.2)
+#>  rpart        4.1.27  2026-03-27 CRAN (R 4.5.2)
+#>  rpart.plot   3.1.4   2026-01-08 CRAN (R 4.5.2)
+#>  rsample      1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  tibble       3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
 #>  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
-#>  vip          0.4.1   2023-08-21 CRAN (R 4.5.0)
+#>  vip          0.4.5   2025-12-12 CRAN (R 4.5.2)
 #>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
-#>  yardstick    1.3.2   2025-01-22 CRAN (R 4.5.0)
+#>  yardstick    1.4.0   2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

@@ -27,6 +27,9 @@ Add a New Operation to the Current Recipe,<a href='https://recipes.tidymodels.or
 Add a recipe to a workflow,<a href='https://workflows.tidymodels.org/reference/add_recipe.html' target='_blank'><tt>add_recipe</tt></a>,workflows
 Add a recipe to a workflow,<a href='https://workflows.tidymodels.org/reference/add_recipe.html' target='_blank'><tt>remove_recipe</tt></a>,workflows
 Add a recipe to a workflow,<a href='https://workflows.tidymodels.org/reference/add_recipe.html' target='_blank'><tt>update_recipe</tt></a>,workflows
+Add a tailor to a workflow,<a href='https://workflows.tidymodels.org/reference/add_tailor.html' target='_blank'><tt>add_tailor</tt></a>,workflows
+Add a tailor to a workflow,<a href='https://workflows.tidymodels.org/reference/add_tailor.html' target='_blank'><tt>remove_tailor</tt></a>,workflows
+Add a tailor to a workflow,<a href='https://workflows.tidymodels.org/reference/add_tailor.html' target='_blank'><tt>update_tailor</tt></a>,workflows
 Add an intercept column to <code>data</code>,<a href='https://hardhat.tidymodels.org/reference/add_intercept_column.html' target='_blank'><tt>add_intercept_column</tt></a>,hardhat
 Add and edit options saved in a workflow set,<a href='https://workflowsets.tidymodels.org/reference/option_add.html' target='_blank'><tt>option_add</tt></a>,workflowsets
 Add and edit options saved in a workflow set,<a href='https://workflowsets.tidymodels.org/reference/option_add.html' target='_blank'><tt>option_remove</tt></a>,workflowsets
@@ -48,6 +51,7 @@ Add information about confidence interval,<a href='https://infer.tidymodels.org/
 Add intercept (or constant) column,<a href='https://recipes.tidymodels.org//reference/step_intercept.html' target='_blank'><tt>step_intercept</tt></a>,recipes
 Add model definitions to a data stack,<a href='https://stacks.tidymodels.org//reference/add_candidates.html' target='_blank'><tt>add_candidates</tt></a>,stacks
 Add new variables using dplyr,<a href='https://recipes.tidymodels.org//reference/step_mutate.html' target='_blank'><tt>step_mutate</tt></a>,recipes
+Add resample weights to an rset object,<a href='https://tune.tidymodels.org//reference/add_resample_weights.html' target='_blank'><tt>add_resample_weights</tt></a>,tune
 Add sin and cos terms for harmonic analysis,<a href='https://recipes.tidymodels.org//reference/step_harmonic.html' target='_blank'><tt>step_harmonic</tt></a>,recipes
 Add variables to a workflow,<a href='https://workflows.tidymodels.org/reference/add_variables.html' target='_blank'><tt>add_variables</tt></a>,workflows
 Add variables to a workflow,<a href='https://workflows.tidymodels.org/reference/add_variables.html' target='_blank'><tt>remove_variables</tt></a>,workflows
@@ -157,7 +161,23 @@ Axe a call.,<a href='https://butcher.tidymodels.org//reference/axe_call.html' ta
 Axe an environment.,<a href='https://butcher.tidymodels.org//reference/axe_env.html' target='_blank'><tt>axe_env</tt></a>,butcher
 Axe controls.,<a href='https://butcher.tidymodels.org//reference/axe_ctrl.html' target='_blank'><tt>axe_ctrl</tt></a>,butcher
 Axe data.,<a href='https://butcher.tidymodels.org//reference/axe_data.html' target='_blank'><tt>axe_data</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe-rsample-data</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data.default</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data.rsplit</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data.three_way_split</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data.rset</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data.tune_results</tt></a>,butcher
+Axe data within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-data.html' target='_blank'><tt>axe_rsample_data.workflow_set</tt></a>,butcher
 Axe fitted values.,<a href='https://butcher.tidymodels.org//reference/axe_fitted.html' target='_blank'><tt>axe_fitted</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe-rsample-indicators</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators.default</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators.rsplit</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators.three_way_split</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators.rset</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators.tune_results</tt></a>,butcher
+Axe indicators within rsample objects.,<a href='https://butcher.tidymodels.org//reference/axe-rsample-indicators.html' target='_blank'><tt>axe_rsample_indicators.workflow_set</tt></a>,butcher
 Axing a bagged tree.,<a href='https://butcher.tidymodels.org//reference/axe-ipred.html' target='_blank'><tt>axe-ipred</tt></a>,butcher
 Axing a bagged tree.,<a href='https://butcher.tidymodels.org//reference/axe-ipred.html' target='_blank'><tt>axe-regbagg</tt></a>,butcher
 Axing a bagged tree.,<a href='https://butcher.tidymodels.org//reference/axe-ipred.html' target='_blank'><tt>axe-classbagg</tt></a>,butcher
@@ -217,6 +237,7 @@ Axing a MASS discriminant analysis object.,<a href='https://butcher.tidymodels.o
 Axing a MASS discriminant analysis object.,<a href='https://butcher.tidymodels.org//reference/axe-mass.html' target='_blank'><tt>axe-qda</tt></a>,butcher
 Axing a MASS discriminant analysis object.,<a href='https://butcher.tidymodels.org//reference/axe-mass.html' target='_blank'><tt>axe_env.lda</tt></a>,butcher
 Axing a MASS discriminant analysis object.,<a href='https://butcher.tidymodels.org//reference/axe-mass.html' target='_blank'><tt>axe_env.qda</tt></a>,butcher
+Axing a MASS discriminant analysis object.,<a href='https://butcher.tidymodels.org//reference/axe-mass.html' target='_blank'><tt>axe_env.polr</tt></a>,butcher
 Axing a mda.,<a href='https://butcher.tidymodels.org//reference/axe-mda.html' target='_blank'><tt>axe-mda</tt></a>,butcher
 Axing a mda.,<a href='https://butcher.tidymodels.org//reference/axe-mda.html' target='_blank'><tt>axe_call.mda</tt></a>,butcher
 Axing a mda.,<a href='https://butcher.tidymodels.org//reference/axe-mda.html' target='_blank'><tt>axe_call.fda</tt></a>,butcher
@@ -266,6 +287,8 @@ Axing a spark object.,<a href='https://butcher.tidymodels.org//reference/axe-spa
 Axing a spark object.,<a href='https://butcher.tidymodels.org//reference/axe-spark.html' target='_blank'><tt>axe_ctrl.ml_model</tt></a>,butcher
 Axing a spark object.,<a href='https://butcher.tidymodels.org//reference/axe-spark.html' target='_blank'><tt>axe_data.ml_model</tt></a>,butcher
 Axing a spark object.,<a href='https://butcher.tidymodels.org//reference/axe-spark.html' target='_blank'><tt>axe_fitted.ml_model</tt></a>,butcher
+Axing a tabnet_fit.,<a href='https://butcher.tidymodels.org//reference/axe-tabnet_fit.html' target='_blank'><tt>axe-tabnet_fit</tt></a>,butcher
+Axing a tabnet_fit.,<a href='https://butcher.tidymodels.org//reference/axe-tabnet_fit.html' target='_blank'><tt>axe_fitted._tabnet_fit</tt></a>,butcher
 Axing a train object.,<a href='https://butcher.tidymodels.org//reference/axe-train.html' target='_blank'><tt>axe-train</tt></a>,butcher
 Axing a train object.,<a href='https://butcher.tidymodels.org//reference/axe-train.html' target='_blank'><tt>axe_call.train</tt></a>,butcher
 Axing a train object.,<a href='https://butcher.tidymodels.org//reference/axe-train.html' target='_blank'><tt>axe_ctrl.train</tt></a>,butcher
@@ -294,7 +317,6 @@ Axing an flexsurvreg.,<a href='https://butcher.tidymodels.org//reference/axe-fle
 Axing an flexsurvreg.,<a href='https://butcher.tidymodels.org//reference/axe-flexsurvreg.html' target='_blank'><tt>axe_call.flexsurvreg</tt></a>,butcher
 Axing an flexsurvreg.,<a href='https://butcher.tidymodels.org//reference/axe-flexsurvreg.html' target='_blank'><tt>axe_env.flexsurvreg</tt></a>,butcher
 Axing an kknn.,<a href='https://butcher.tidymodels.org//reference/axe-kknn.html' target='_blank'><tt>axe-kknn</tt></a>,butcher
-Axing an kknn.,<a href='https://butcher.tidymodels.org//reference/axe-kknn.html' target='_blank'><tt>axe_call.kknn</tt></a>,butcher
 Axing an kknn.,<a href='https://butcher.tidymodels.org//reference/axe-kknn.html' target='_blank'><tt>axe_env.kknn</tt></a>,butcher
 Axing an kknn.,<a href='https://butcher.tidymodels.org//reference/axe-kknn.html' target='_blank'><tt>axe_fitted.kknn</tt></a>,butcher
 Axing an lm.,<a href='https://butcher.tidymodels.org//reference/axe-lm.html' target='_blank'><tt>axe-lm</tt></a>,butcher
@@ -374,10 +396,13 @@ Boosted regression trees predictions,<a href='https://probably.tidymodels.org/re
 Boosted regression trees predictions,<a href='https://probably.tidymodels.org/reference/boosting_predictions.html' target='_blank'><tt>boosting_predictions_test</tt></a>,probably
 Boosted trees,<a href='https://parsnip.tidymodels.org//reference/boost_tree.html' target='_blank'><tt>boost_tree</tt></a>,parsnip
 Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_pctl</tt></a>,rsample
+Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_pctl.default</tt></a>,rsample
 Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_pctl.bootstraps</tt></a>,rsample
 Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_t</tt></a>,rsample
+Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_t.default</tt></a>,rsample
 Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_t.bootstraps</tt></a>,rsample
 Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_bca</tt></a>,rsample
+Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_bca.default</tt></a>,rsample
 Bootstrap confidence intervals,<a href='https://rsample.tidymodels.org/reference/int_pctl.html' target='_blank'><tt>int_bca.bootstraps</tt></a>,rsample
 Bootstrap confidence intervals for performance metrics,<a href='https://tune.tidymodels.org//reference/int_pctl.tune_results.html' target='_blank'><tt>int_pctl.tune_results</tt></a>,tune
 Bootstrap Sampling,<a href='https://rsample.tidymodels.org/reference/bootstraps.html' target='_blank'><tt>bootstraps</tt></a>,rsample
@@ -405,6 +430,7 @@ Calculate and format metrics from tuning functions,<a href='https://tune.tidymod
 Calculate LDA Dimension Estimates of Tokens,<a href='https://textrecipes.tidymodels.org//reference/step_lda.html' target='_blank'><tt>step_lda</tt></a>,textrecipes
 Calculate LDA Dimension Estimates of Tokens,<a href='https://textrecipes.tidymodels.org//reference/step_lda.html' target='_blank'><tt>tidy.step_lda</tt></a>,textrecipes
 Calculate observed statistics,<a href='https://infer.tidymodels.org//reference/observe.html' target='_blank'><tt>observe</tt></a>,infer
+Calculate resample weights from resample sizes,<a href='https://tune.tidymodels.org//reference/calculate_resample_weights.html' target='_blank'><tt>calculate_resample_weights</tt></a>,tune
 Calculate Set of Text Features,<a href='https://textrecipes.tidymodels.org//reference/step_textfeature.html' target='_blank'><tt>step_textfeature</tt></a>,textrecipes
 Calculate Set of Text Features,<a href='https://textrecipes.tidymodels.org//reference/step_textfeature.html' target='_blank'><tt>tidy.step_textfeature</tt></a>,textrecipes
 Calculate summary statistics,<a href='https://infer.tidymodels.org//reference/calculate.html' target='_blank'><tt>calculate</tt></a>,infer
@@ -499,6 +525,9 @@ Compute the total sum of squares,<a href='https://tidyclust.tidymodels.org//refe
 Compute the total sum of squares,<a href='https://tidyclust.tidymodels.org//reference/sse_total.html' target='_blank'><tt>sse_total.cluster_fit</tt></a>,tidyclust
 Compute the total sum of squares,<a href='https://tidyclust.tidymodels.org//reference/sse_total.html' target='_blank'><tt>sse_total.workflow</tt></a>,tidyclust
 Compute the total sum of squares,<a href='https://tidyclust.tidymodels.org//reference/sse_total.html' target='_blank'><tt>sse_total_vec</tt></a>,tidyclust
+Compute weighted interval score,<a href='https://yardstick.tidymodels.org/reference/weighted_interval_score.html' target='_blank'><tt>weighted_interval_score</tt></a>,yardstick
+Compute weighted interval score,<a href='https://yardstick.tidymodels.org/reference/weighted_interval_score.html' target='_blank'><tt>weighted_interval_score.data.frame</tt></a>,yardstick
+Compute weighted interval score,<a href='https://yardstick.tidymodels.org/reference/weighted_interval_score.html' target='_blank'><tt>weighted_interval_score_vec</tt></a>,yardstick
 Computes distance from observations to centroids,<a href='https://tidyclust.tidymodels.org//reference/get_centroid_dists.html' target='_blank'><tt>get_centroid_dists</tt></a>,tidyclust
 Concordance correlation coefficient,<a href='https://yardstick.tidymodels.org/reference/ccc.html' target='_blank'><tt>ccc</tt></a>,yardstick
 Concordance correlation coefficient,<a href='https://yardstick.tidymodels.org/reference/ccc.html' target='_blank'><tt>ccc.data.frame</tt></a>,yardstick
@@ -520,10 +549,14 @@ Construct a new clustering metric function,<a href='https://tidyclust.tidymodels
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new-metric</tt></a>,yardstick
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_class_metric</tt></a>,yardstick
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_prob_metric</tt></a>,yardstick
+Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_ordered_prob_metric</tt></a>,yardstick
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_numeric_metric</tt></a>,yardstick
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_dynamic_survival_metric</tt></a>,yardstick
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_integrated_survival_metric</tt></a>,yardstick
 Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_static_survival_metric</tt></a>,yardstick
+Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_linear_pred_survival_metric</tt></a>,yardstick
+Construct a new metric function,<a href='https://yardstick.tidymodels.org/reference/new-metric.html' target='_blank'><tt>new_quantile_metric</tt></a>,yardstick
+Construct a single node of a tree,<a href='https://tidypredict.tidymodels.org/reference/generate_tree_node.html' target='_blank'><tt>generate_tree_node</tt></a>,tidypredict
 "Construct a single row summary ""glance"" of a model, fit, or other object",<a href='https://parsnip.tidymodels.org//reference/glance.model_fit.html' target='_blank'><tt>glance.model_fit</tt></a>,parsnip
 "Construct a single row summary ""glance"" of a model, fit, or other object",<a href='https://tidyclust.tidymodels.org//reference/glance.cluster_fit.html' target='_blank'><tt>glance.cluster_fit</tt></a>,tidyclust
 Construct an importance weights vector,<a href='https://hardhat.tidymodels.org/reference/new_importance_weights.html' target='_blank'><tt>new_importance_weights</tt></a>,hardhat
@@ -540,12 +573,12 @@ Control model tuning via <code><a href='https://rdrr.io/pkg/h2o/man/h2o.grid.htm
 Control object for a workflow,<a href='https://workflows.tidymodels.org/reference/control_workflow.html' target='_blank'><tt>control_workflow</tt></a>,workflows
 Control the fit function,<a href='https://parsnip.tidymodels.org//reference/control_parsnip.html' target='_blank'><tt>control_parsnip</tt></a>,parsnip
 Control the fit function,<a href='https://tidyclust.tidymodels.org//reference/control_cluster.html' target='_blank'><tt>control_cluster</tt></a>,tidyclust
+Control wrappers,<a href='https://stacks.tidymodels.org//reference/control_stack.html' target='_blank'><tt>control_stack</tt></a>,stacks
 Control wrappers,<a href='https://stacks.tidymodels.org//reference/control_stack.html' target='_blank'><tt>control_stack_grid</tt></a>,stacks
 Control wrappers,<a href='https://stacks.tidymodels.org//reference/control_stack.html' target='_blank'><tt>control_stack_resamples</tt></a>,stacks
 Control wrappers,<a href='https://stacks.tidymodels.org//reference/control_stack.html' target='_blank'><tt>control_stack_bayes</tt></a>,stacks
 Controlling the bagging process,<a href='https://baguette.tidymodels.org/reference/control_bag.html' target='_blank'><tt>control_bag</tt></a>,baguette
 Controlling the numeric details for conformal inference,<a href='https://probably.tidymodels.org/reference/control_conformal_full.html' target='_blank'><tt>control_conformal_full</tt></a>,probably
-Convenience functions to extract model,<a href='https://tune.tidymodels.org//reference/extract_model.html' target='_blank'><tt>extract_model</tt></a>,tune
 Convert a correlation data frame to matrix format,<a href='https://corrr.tidymodels.org/reference/as_matrix.html' target='_blank'><tt>as_matrix</tt></a>,corrr
 Convert an <code>rsplit</code> object to a data frame,<a href='https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html' target='_blank'><tt>as.data.frame.rsplit</tt></a>,rsample
 Convert an <code>rsplit</code> object to a data frame,<a href='https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html' target='_blank'><tt>analysis</tt></a>,rsample
@@ -564,7 +597,7 @@ Convert Resampling Objects to Other Formats,<a href='https://rsample.tidymodels.
 Convert Resampling Objects to Other Formats,<a href='https://rsample.tidymodels.org/reference/rsample2caret.html' target='_blank'><tt>caret2rsample</tt></a>,rsample
 Convert strings to factors,<a href='https://recipes.tidymodels.org//reference/step_string2factor.html' target='_blank'><tt>step_string2factor</tt></a>,recipes
 Convert values to predefined integers,<a href='https://recipes.tidymodels.org//reference/step_integer.html' target='_blank'><tt>step_integer</tt></a>,recipes
-Converts an R model object into a table.,<a href='https://tidypredict.tidymodels.org/reference/parse_model.html' target='_blank'><tt>parse_model</tt></a>,tidypredict
+Converts an R model object into a parsed model,<a href='https://tidypredict.tidymodels.org/reference/parse_model.html' target='_blank'><tt>parse_model</tt></a>,tidypredict
 Convex splines,<a href='https://recipes.tidymodels.org//reference/step_spline_convex.html' target='_blank'><tt>step_spline_convex</tt></a>,recipes
 Correlation Data Frame,<a href='https://corrr.tidymodels.org/reference/correlate.html' target='_blank'><tt>correlate</tt></a>,corrr
 Cost parameter for minority class,<a href='https://baguette.tidymodels.org/reference/class_cost.html' target='_blank'><tt>class_cost</tt></a>,baguette
@@ -595,6 +628,10 @@ Create a new preprocessing blueprint,<a href='https://hardhat.tidymodels.org/ref
 Create a new preprocessing blueprint,<a href='https://hardhat.tidymodels.org/reference/new-blueprint.html' target='_blank'><tt>new_xy_blueprint</tt></a>,hardhat
 Create a new preprocessing blueprint,<a href='https://hardhat.tidymodels.org/reference/new-blueprint.html' target='_blank'><tt>new-blueprint</tt></a>,hardhat
 Create a new preprocessing blueprint,<a href='https://hardhat.tidymodels.org/reference/new-blueprint.html' target='_blank'><tt>new_blueprint</tt></a>,hardhat
+Create a parameter set,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters</tt></a>,dials
+Create a parameter set,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters.default</tt></a>,dials
+Create a parameter set,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters.param</tt></a>,dials
+Create a parameter set,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters.list</tt></a>,dials
 Create a profiling version of a data set,<a href='https://recipes.tidymodels.org//reference/step_profile.html' target='_blank'><tt>step_profile</tt></a>,recipes
 Create a recipe for preprocessing data,<a href='https://recipes.tidymodels.org//reference/recipe.html' target='_blank'><tt>recipe</tt></a>,recipes
 Create a recipe for preprocessing data,<a href='https://recipes.tidymodels.org//reference/recipe.html' target='_blank'><tt>recipe.default</tt></a>,recipes
@@ -608,6 +645,7 @@ Create a Validation Split for Tuning,<a href='https://rsample.tidymodels.org/ref
 Create a Validation Split for Tuning,<a href='https://rsample.tidymodels.org/reference/validation_set.html' target='_blank'><tt>validation.val_split</tt></a>,rsample
 Create a Validation Split for Tuning,<a href='https://rsample.tidymodels.org/reference/validation_set.html' target='_blank'><tt>testing.val_split</tt></a>,rsample
 Create a vector containing sets of quantiles,<a href='https://hardhat.tidymodels.org/reference/quantile_pred.html' target='_blank'><tt>quantile_pred</tt></a>,hardhat
+Create a vector containing sets of quantiles,<a href='https://hardhat.tidymodels.org/reference/quantile_pred.html' target='_blank'><tt>is_quantile_pred</tt></a>,hardhat
 Create a vector containing sets of quantiles,<a href='https://hardhat.tidymodels.org/reference/quantile_pred.html' target='_blank'><tt>extract_quantile_levels</tt></a>,hardhat
 Create a vector containing sets of quantiles,<a href='https://hardhat.tidymodels.org/reference/quantile_pred.html' target='_blank'><tt>as_tibble.quantile_pred</tt></a>,hardhat
 Create a vector containing sets of quantiles,<a href='https://hardhat.tidymodels.org/reference/quantile_pred.html' target='_blank'><tt>as.matrix.quantile_pred</tt></a>,hardhat
@@ -623,10 +661,12 @@ Create an Initial Train/Validation/Test Split,<a href='https://rsample.tidymodel
 Create counts of patterns using regular expressions,<a href='https://recipes.tidymodels.org//reference/step_count.html' target='_blank'><tt>step_count</tt></a>,recipes
 Create formulas without each predictor,<a href='https://workflowsets.tidymodels.org/reference/leave_var_out_formulas.html' target='_blank'><tt>leave_var_out_formulas</tt></a>,workflowsets
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_regular</tt></a>,dials
+Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_regular.default</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_regular.parameters</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_regular.list</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_regular.param</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_random</tt></a>,dials
+Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_random.default</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_random.parameters</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_random.list</tt></a>,dials
 Create grids of tuning parameters,<a href='https://dials.tidymodels.org/reference/grid_regular.html' target='_blank'><tt>grid_random.param</tt></a>,dials
@@ -691,18 +731,24 @@ Developer function for checking inputs in new metrics,<a href='https://yardstick
 Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_numeric_metric</tt></a>,yardstick
 Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_class_metric</tt></a>,yardstick
 Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_prob_metric</tt></a>,yardstick
+Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_ordered_prob_metric</tt></a>,yardstick
 Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_dynamic_survival_metric</tt></a>,yardstick
 Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_static_survival_metric</tt></a>,yardstick
+Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_linear_pred_survival_metric</tt></a>,yardstick
+Developer function for checking inputs in new metrics,<a href='https://yardstick.tidymodels.org/reference/check_metric.html' target='_blank'><tt>check_quantile_metric</tt></a>,yardstick
 Developer function for handling missing values in new metrics,<a href='https://yardstick.tidymodels.org/reference/yardstick_remove_missing.html' target='_blank'><tt>yardstick_remove_missing</tt></a>,yardstick
 Developer function for handling missing values in new metrics,<a href='https://yardstick.tidymodels.org/reference/yardstick_remove_missing.html' target='_blank'><tt>yardstick_any_missing</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>metric-summarizers</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>numeric_metric_summarizer</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>class_metric_summarizer</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>prob_metric_summarizer</tt></a>,yardstick
+Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>ordered_prob_metric_summarizer</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>curve_metric_summarizer</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>dynamic_survival_metric_summarizer</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>static_survival_metric_summarizer</tt></a>,yardstick
 Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>curve_survival_metric_summarizer</tt></a>,yardstick
+Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>linear_pred_survival_metric_summarizer</tt></a>,yardstick
+Developer function for summarizing new metrics,<a href='https://yardstick.tidymodels.org/reference/metric-summarizers.html' target='_blank'><tt>quantile_metric_summarizer</tt></a>,yardstick
 Developer functions for creating recipes steps,<a href='https://recipes.tidymodels.org//reference/developer_functions.html' target='_blank'><tt>developer_functions</tt></a>,recipes
 Developer helpers,<a href='https://yardstick.tidymodels.org/reference/developer-helpers.html' target='_blank'><tt>developer-helpers</tt></a>,yardstick
 Developer helpers,<a href='https://yardstick.tidymodels.org/reference/developer-helpers.html' target='_blank'><tt>dots_to_estimate</tt></a>,yardstick
@@ -722,11 +768,16 @@ Discretize numeric variables with XgBoost,<a href='https://embed.tidymodels.org/
 Display currently available engines for a model,<a href='https://parsnip.tidymodels.org//reference/show_engines.html' target='_blank'><tt>show_engines</tt></a>,parsnip
 Display distinct errors from tune objects,<a href='https://tune.tidymodels.org//reference/show_notes.html' target='_blank'><tt>show_notes</tt></a>,tune
 Distance between two locations,<a href='https://recipes.tidymodels.org//reference/step_geodist.html' target='_blank'><tt>step_geodist</tt></a>,recipes
+Distance to ROC corner,<a href='https://yardstick.tidymodels.org/reference/roc_dist.html' target='_blank'><tt>roc_dist</tt></a>,yardstick
+Distance to ROC corner,<a href='https://yardstick.tidymodels.org/reference/roc_dist.html' target='_blank'><tt>roc_dist.data.frame</tt></a>,yardstick
+Distance to ROC corner,<a href='https://yardstick.tidymodels.org/reference/roc_dist.html' target='_blank'><tt>roc_dist_vec</tt></a>,yardstick
 Distances to class centroids,<a href='https://recipes.tidymodels.org//reference/step_classdist.html' target='_blank'><tt>step_classdist</tt></a>,recipes
+Do not calibrate model predictions.,<a href='https://probably.tidymodels.org/reference/cal_estimate_none.html' target='_blank'><tt>cal_estimate_none</tt></a>,probably
+Do not calibrate model predictions.,<a href='https://probably.tidymodels.org/reference/cal_estimate_none.html' target='_blank'><tt>cal_estimate_none.data.frame</tt></a>,probably
+Do not calibrate model predictions.,<a href='https://probably.tidymodels.org/reference/cal_estimate_none.html' target='_blank'><tt>cal_estimate_none.tune_results</tt></a>,probably
+Do not calibrate model predictions.,<a href='https://probably.tidymodels.org/reference/cal_estimate_none.html' target='_blank'><tt>cal_estimate_none.grouped_df</tt></a>,probably
 Down-Sample a Data Set Based on a Factor Variable,<a href='https://themis.tidymodels.org/reference/step_downsample.html' target='_blank'><tt>step_downsample</tt></a>,themis
 Down-Sample a Data Set Based on a Factor Variable,<a href='https://themis.tidymodels.org/reference/step_downsample.html' target='_blank'><tt>tidy.step_downsample</tt></a>,themis
-Dummy Variables Creation via Feature Hashing,<a href='https://embed.tidymodels.org/reference/step_feature_hash.html' target='_blank'><tt>step_feature_hash</tt></a>,embed
-Dummy Variables Creation via Feature Hashing,<a href='https://embed.tidymodels.org/reference/step_feature_hash.html' target='_blank'><tt>tidy.step_feature_hash</tt></a>,embed
 Early stopping parameter,<a href='https://dials.tidymodels.org/reference/stop_iter.html' target='_blank'><tt>stop_iter</tt></a>,dials
 Efficient grid search via racing with ANOVA models,<a href='https://finetune.tidymodels.org/reference/tune_race_anova.html' target='_blank'><tt>tune_race_anova</tt></a>,finetune
 Efficient grid search via racing with ANOVA models,<a href='https://finetune.tidymodels.org/reference/tune_race_anova.html' target='_blank'><tt>tune_race_anova.model_spec</tt></a>,finetune
@@ -767,6 +818,7 @@ Estimate a preprocessing recipe,<a href='https://recipes.tidymodels.org//referen
 Estimate the Difference Between Models,<a href='https://tidyposterior.tidymodels.org/reference/contrast_models.html' target='_blank'><tt>contrast_models</tt></a>,tidyposterior
 Estimation methods for regularized models,<a href='https://dials.tidymodels.org/reference/regularization_method.html' target='_blank'><tt>regularization_method</tt></a>,dials
 Estimation methods for regularized models,<a href='https://dials.tidymodels.org/reference/regularization_method.html' target='_blank'><tt>values_regularization_method</tt></a>,dials
+Evaluate a selection with tidyselect semantics for arguments,<a href='https://recipes.tidymodels.org//reference/recipes_argument_select.html' target='_blank'><tt>recipes_argument_select</tt></a>,recipes
 Evaluate a selection with tidyselect semantics specific to recipes,<a href='https://recipes.tidymodels.org//reference/recipes_eval_select.html' target='_blank'><tt>recipes_eval_select</tt></a>,recipes
 Example Analysis of Ames Housing Data,<a href='https://tune.tidymodels.org//reference/example_ames_knn.html' target='_blank'><tt>example_ames_knn</tt></a>,tune
 Example Analysis of Ames Housing Data,<a href='https://tune.tidymodels.org//reference/example_ames_knn.html' target='_blank'><tt>ames_wflow</tt></a>,tune
@@ -829,6 +881,8 @@ Extract elements of a workflow,<a href='https://workflows.tidymodels.org/referen
 Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_fit_engine.workflow</tt></a>,workflows
 Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_mold.workflow</tt></a>,workflows
 Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_preprocessor.workflow</tt></a>,workflows
+Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_postprocessor.workflow</tt></a>,workflows
+Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_tailor.workflow</tt></a>,workflows
 Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_parameter_set_dials.workflow</tt></a>,workflows
 Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_parameter_dials.workflow</tt></a>,workflows
 Extract elements of a workflow,<a href='https://workflows.tidymodels.org/reference/extract-workflow.html' target='_blank'><tt>extract_fit_time.workflow</tt></a>,workflows
@@ -861,6 +915,7 @@ Extract Model Coefficients,<a href='https://brulee.tidymodels.org//reference/bru
 Extract patterns from nominal data,<a href='https://recipes.tidymodels.org//reference/step_dummy_extract.html' target='_blank'><tt>step_dummy_extract</tt></a>,recipes
 Extract Posterior Distributions for Models,<a href='https://tidyposterior.tidymodels.org/reference/tidy.perf_mod.html' target='_blank'><tt>tidy.perf_mod</tt></a>,tidyposterior
 Extract Predictor Names from Formula or Terms,<a href='https://rsample.tidymodels.org/reference/form_pred.html' target='_blank'><tt>form_pred</tt></a>,rsample
+Extract resample weights from rset or tuning objects,<a href='https://tune.tidymodels.org//reference/extract_resample_weights.html' target='_blank'><tt>extract_resample_weights</tt></a>,tune
 Extract transformed training set,<a href='https://recipes.tidymodels.org//reference/juice.html' target='_blank'><tt>juice</tt></a>,recipes
 F Measure,<a href='https://yardstick.tidymodels.org/reference/f_meas.html' target='_blank'><tt>f_meas</tt></a>,yardstick
 F Measure,<a href='https://yardstick.tidymodels.org/reference/f_meas.html' target='_blank'><tt>f_meas.data.frame</tt></a>,yardstick
@@ -869,6 +924,9 @@ Facilities for loading and updating other packages,<a href='https://tidymodels.t
 Facilities for loading and updating other packages,<a href='https://tidymodels.tidymodels.org/reference/tag_show.html' target='_blank'><tt>tags</tt></a>,tidymodels
 Facilities for loading and updating other packages,<a href='https://tidymodels.tidymodels.org/reference/tag_show.html' target='_blank'><tt>tag_attach</tt></a>,tidymodels
 Facilities for loading and updating other packages,<a href='https://tidymodels.tidymodels.org/reference/tag_show.html' target='_blank'><tt>tag_update</tt></a>,tidymodels
+Fall-out (False Positive Rate),<a href='https://yardstick.tidymodels.org/reference/fall_out.html' target='_blank'><tt>fall_out</tt></a>,yardstick
+Fall-out (False Positive Rate),<a href='https://yardstick.tidymodels.org/reference/fall_out.html' target='_blank'><tt>fall_out.data.frame</tt></a>,yardstick
+Fall-out (False Positive Rate),<a href='https://yardstick.tidymodels.org/reference/fall_out.html' target='_blank'><tt>fall_out_vec</tt></a>,yardstick
 Fashion a correlation data frame for printing.,<a href='https://corrr.tidymodels.org/reference/fashion.html' target='_blank'><tt>fashion</tt></a>,corrr
 "Fat, water and protein content of meat samples",<a href='https://modeldata.tidymodels.org/reference/meats.html' target='_blank'><tt>meats</tt></a>,modeldata
 Fatty acid composition of commercial oils,<a href='https://modeldata.tidymodels.org/reference/oils.html' target='_blank'><tt>oils</tt></a>,modeldata
@@ -982,7 +1040,6 @@ Functions to finalize data-specific parameter ranges,<a href='https://dials.tidy
 Functions to finalize data-specific parameter ranges,<a href='https://dials.tidymodels.org/reference/finalize.html' target='_blank'><tt>get_n_frac_range</tt></a>,dials
 Functions to finalize data-specific parameter ranges,<a href='https://dials.tidymodels.org/reference/finalize.html' target='_blank'><tt>get_n</tt></a>,dials
 Functions to finalize data-specific parameter ranges,<a href='https://dials.tidymodels.org/reference/finalize.html' target='_blank'><tt>get_rbf_range</tt></a>,dials
-Functions to finalize data-specific parameter ranges,<a href='https://dials.tidymodels.org/reference/finalize.html' target='_blank'><tt>get_batch_sizes</tt></a>,dials
 Fuzzy conversions,<a href='https://parsnip.tidymodels.org//reference/maybe_matrix.html' target='_blank'><tt>maybe_matrix</tt></a>,parsnip
 Fuzzy conversions,<a href='https://parsnip.tidymodels.org//reference/maybe_matrix.html' target='_blank'><tt>maybe_data_frame</tt></a>,parsnip
 Gain capture,<a href='https://yardstick.tidymodels.org/reference/gain_capture.html' target='_blank'><tt>gain_capture</tt></a>,yardstick
@@ -1011,9 +1068,11 @@ Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference
 Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_mold</tt></a>,hardhat
 Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_preprocessor</tt></a>,hardhat
 Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_postprocessor</tt></a>,hardhat
+Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_tailor</tt></a>,hardhat
 Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_parameter_dials</tt></a>,hardhat
 Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_parameter_set_dials</tt></a>,hardhat
 Generics for object extraction,<a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html' target='_blank'><tt>extract_fit_time</tt></a>,hardhat
+Get all metrics of a given type,<a href='https://yardstick.tidymodels.org/reference/get_metrics.html' target='_blank'><tt>get_metrics</tt></a>,yardstick
 Give object unsupervised fit class,<a href='http://modelenv.tidymodels.org//reference/new_unsupervised_fit.html' target='_blank'><tt>new_unsupervised_fit</tt></a>,modelenv
 Give object unsupervised specification class,<a href='http://modelenv.tidymodels.org//reference/new_unsupervised_spec.html' target='_blank'><tt>new_unsupervised_spec</tt></a>,modelenv
 Glance at a workflow model,<a href='https://workflows.tidymodels.org/reference/glance.workflow.html' target='_blank'><tt>glance.workflow</tt></a>,workflows
@@ -1067,7 +1126,6 @@ Glance at a(n) negbin object,<a href='https://broom.tidymodels.org//reference/gl
 Glance at a(n) negbin object,<a href='https://broom.tidymodels.org//reference/glance.negbin.html' target='_blank'><tt>glm.nb_tidiers</tt></a>,broom
 Glance at a(n) nlrq object,<a href='https://broom.tidymodels.org//reference/glance.nlrq.html' target='_blank'><tt>glance.nlrq</tt></a>,broom
 Glance at a(n) nls object,<a href='https://broom.tidymodels.org//reference/glance.nls.html' target='_blank'><tt>glance.nls</tt></a>,broom
-Glance at a(n) orcutt object,<a href='https://broom.tidymodels.org//reference/glance.orcutt.html' target='_blank'><tt>glance.orcutt</tt></a>,broom
 Glance at a(n) pam object,<a href='https://broom.tidymodels.org//reference/glance.pam.html' target='_blank'><tt>glance.pam</tt></a>,broom
 Glance at a(n) plm object,<a href='https://broom.tidymodels.org//reference/glance.plm.html' target='_blank'><tt>glance.plm</tt></a>,broom
 Glance at a(n) poLCA object,<a href='https://broom.tidymodels.org//reference/glance.poLCA.html' target='_blank'><tt>glance.poLCA</tt></a>,broom
@@ -1121,6 +1179,7 @@ Image segmentation predictions,<a href='https://probably.tidymodels.org/referenc
 Image segmentation predictions,<a href='https://probably.tidymodels.org/reference/segment_naive_bayes.html' target='_blank'><tt>segment_logistic</tt></a>,probably
 Imipramine longitudinal data,<a href='http://multilevelmod.tidymodels.org//reference/riesby.html' target='_blank'><tt>riesby</tt></a>,multilevelmod
 Importance weights,<a href='https://hardhat.tidymodels.org/reference/importance_weights.html' target='_blank'><tt>importance_weights</tt></a>,hardhat
+Impute additional quantiles from a <code>quantile_pred</code>,<a href='https://hardhat.tidymodels.org/reference/impute_quantiles.html' target='_blank'><tt>impute_quantiles</tt></a>,hardhat
 Impute nominal data using the most common value,<a href='https://recipes.tidymodels.org//reference/step_impute_mode.html' target='_blank'><tt>step_impute_mode</tt></a>,recipes
 Impute numeric data below the threshold of measurement,<a href='https://recipes.tidymodels.org//reference/step_impute_lower.html' target='_blank'><tt>step_impute_lower</tt></a>,recipes
 Impute numeric data using a rolling window statistic,<a href='https://recipes.tidymodels.org//reference/step_impute_roll.html' target='_blank'><tt>step_impute_roll</tt></a>,recipes
@@ -1137,10 +1196,6 @@ Indicator Variables via Feature Hashing,<a href='https://textrecipes.tidymodels.
 Indicator Variables via Feature Hashing,<a href='https://textrecipes.tidymodels.org//reference/step_dummy_hash.html' target='_blank'><tt>tidy.step_dummy_hash</tt></a>,textrecipes
 infer: a grammar for statistical inference,<a href='https://infer.tidymodels.org//reference/infer.html' target='_blank'><tt>infer-package</tt></a>,infer
 infer: a grammar for statistical inference,<a href='https://infer.tidymodels.org//reference/infer.html' target='_blank'><tt>infer</tt></a>,infer
-Information on tuning parameters within an object,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters</tt></a>,dials
-Information on tuning parameters within an object,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters.default</tt></a>,dials
-Information on tuning parameters within an object,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters.param</tt></a>,dials
-Information on tuning parameters within an object,<a href='https://dials.tidymodels.org/reference/parameters.html' target='_blank'><tt>parameters.list</tt></a>,dials
 Initialization method for UMAP,<a href='https://dials.tidymodels.org/reference/initial_umap.html' target='_blank'><tt>initial_umap</tt></a>,dials
 Initialization method for UMAP,<a href='https://dials.tidymodels.org/reference/initial_umap.html' target='_blank'><tt>values_initial_umap</tt></a>,dials
 Initialize a Stack,<a href='https://stacks.tidymodels.org//reference/stacks.html' target='_blank'><tt>stacks</tt></a>,stacks
@@ -1193,6 +1248,8 @@ Lemmatization of Token Variables,<a href='https://textrecipes.tidymodels.org//re
 Lemmatization of Token Variables,<a href='https://textrecipes.tidymodels.org//reference/step_lemma.html' target='_blank'><tt>tidy.step_lemma</tt></a>,textrecipes
 Lift curve,<a href='https://yardstick.tidymodels.org/reference/lift_curve.html' target='_blank'><tt>lift_curve</tt></a>,yardstick
 Lift curve,<a href='https://yardstick.tidymodels.org/reference/lift_curve.html' target='_blank'><tt>lift_curve.data.frame</tt></a>,yardstick
+Likelihood encoding using analytical formula,<a href='https://embed.tidymodels.org/reference/step_lencode.html' target='_blank'><tt>step_lencode</tt></a>,embed
+Likelihood encoding using analytical formula,<a href='https://embed.tidymodels.org/reference/step_lencode.html' target='_blank'><tt>tidy.step_lencode</tt></a>,embed
 Limits for the range of predictions,<a href='https://dials.tidymodels.org/reference/range_limits.html' target='_blank'><tt>range_limits</tt></a>,dials
 Limits for the range of predictions,<a href='https://dials.tidymodels.org/reference/range_limits.html' target='_blank'><tt>lower_limit</tt></a>,dials
 Limits for the range of predictions,<a href='https://dials.tidymodels.org/reference/range_limits.html' target='_blank'><tt>upper_limit</tt></a>,dials
@@ -1221,6 +1278,9 @@ Manually alter roles,<a href='https://recipes.tidymodels.org//reference/roles.ht
 Manually alter roles,<a href='https://recipes.tidymodels.org//reference/roles.html' target='_blank'><tt>update_role</tt></a>,recipes
 Manually alter roles,<a href='https://recipes.tidymodels.org//reference/roles.html' target='_blank'><tt>remove_role</tt></a>,recipes
 Mark arguments for tuning,<a href='https://hardhat.tidymodels.org/reference/tune.html' target='_blank'><tt>tune</tt></a>,hardhat
+Markedness,<a href='https://yardstick.tidymodels.org/reference/markedness.html' target='_blank'><tt>markedness</tt></a>,yardstick
+Markedness,<a href='https://yardstick.tidymodels.org/reference/markedness.html' target='_blank'><tt>markedness.data.frame</tt></a>,yardstick
+Markedness,<a href='https://yardstick.tidymodels.org/reference/markedness.html' target='_blank'><tt>markedness_vec</tt></a>,yardstick
 MARS pruning methods,<a href='https://dials.tidymodels.org/reference/prune_method.html' target='_blank'><tt>prune_method</tt></a>,dials
 MARS pruning methods,<a href='https://dials.tidymodels.org/reference/prune_method.html' target='_blank'><tt>values_prune_method</tt></a>,dials
 Matthews correlation coefficient,<a href='https://yardstick.tidymodels.org/reference/mcc.html' target='_blank'><tt>mcc</tt></a>,yardstick
@@ -1248,6 +1308,9 @@ Mean percentage error,<a href='https://yardstick.tidymodels.org/reference/mpe.ht
 Mean signed deviation,<a href='https://yardstick.tidymodels.org/reference/msd.html' target='_blank'><tt>msd</tt></a>,yardstick
 Mean signed deviation,<a href='https://yardstick.tidymodels.org/reference/msd.html' target='_blank'><tt>msd.data.frame</tt></a>,yardstick
 Mean signed deviation,<a href='https://yardstick.tidymodels.org/reference/msd.html' target='_blank'><tt>msd_vec</tt></a>,yardstick
+Mean squared error,<a href='https://yardstick.tidymodels.org/reference/mse.html' target='_blank'><tt>mse</tt></a>,yardstick
+Mean squared error,<a href='https://yardstick.tidymodels.org/reference/mse.html' target='_blank'><tt>mse.data.frame</tt></a>,yardstick
+Mean squared error,<a href='https://yardstick.tidymodels.org/reference/mse.html' target='_blank'><tt>mse_vec</tt></a>,yardstick
 Measure performance with and without using bagged isotonic regression calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_isotonic_boot.html' target='_blank'><tt>cal_validate_isotonic_boot</tt></a>,probably
 Measure performance with and without using bagged isotonic regression calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_isotonic_boot.html' target='_blank'><tt>cal_validate_isotonic_boot.resample_results</tt></a>,probably
 Measure performance with and without using bagged isotonic regression calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_isotonic_boot.html' target='_blank'><tt>cal_validate_isotonic_boot.rset</tt></a>,probably
@@ -1271,6 +1334,10 @@ Measure performance with and without using multinomial calibration,<a href='http
 Measure performance with and without using multinomial calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_multinomial.html' target='_blank'><tt>cal_validate_multinomial.resample_results</tt></a>,probably
 Measure performance with and without using multinomial calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_multinomial.html' target='_blank'><tt>cal_validate_multinomial.rset</tt></a>,probably
 Measure performance with and without using multinomial calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_multinomial.html' target='_blank'><tt>cal_validate_multinomial.tune_results</tt></a>,probably
+Measure performance without using calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_none.html' target='_blank'><tt>cal_validate_none</tt></a>,probably
+Measure performance without using calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_none.html' target='_blank'><tt>cal_validate_none.resample_results</tt></a>,probably
+Measure performance without using calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_none.html' target='_blank'><tt>cal_validate_none.rset</tt></a>,probably
+Measure performance without using calibration,<a href='https://probably.tidymodels.org/reference/cal_validate_none.html' target='_blank'><tt>cal_validate_none.tune_results</tt></a>,probably
 Measurement systems analysis data,<a href='http://multilevelmod.tidymodels.org//reference/msa_data.html' target='_blank'><tt>msa_data</tt></a>,multilevelmod
 Measures average silhouette across all observations,<a href='https://tidyclust.tidymodels.org//reference/silhouette_avg.html' target='_blank'><tt>silhouette_avg</tt></a>,tidyclust
 Measures average silhouette across all observations,<a href='https://tidyclust.tidymodels.org//reference/silhouette_avg.html' target='_blank'><tt>silhouette_avg.cluster_spec</tt></a>,tidyclust
@@ -1278,9 +1345,16 @@ Measures average silhouette across all observations,<a href='https://tidyclust.t
 Measures average silhouette across all observations,<a href='https://tidyclust.tidymodels.org//reference/silhouette_avg.html' target='_blank'><tt>silhouette_avg.workflow</tt></a>,tidyclust
 Measures average silhouette across all observations,<a href='https://tidyclust.tidymodels.org//reference/silhouette_avg.html' target='_blank'><tt>silhouette_avg_vec</tt></a>,tidyclust
 Measures silhouette between clusters,<a href='https://tidyclust.tidymodels.org//reference/silhouette.html' target='_blank'><tt>silhouette</tt></a>,tidyclust
+Methods for model calibration,<a href='https://dials.tidymodels.org/reference/calibration.html' target='_blank'><tt>cal_method_class</tt></a>,dials
+Methods for model calibration,<a href='https://dials.tidymodels.org/reference/calibration.html' target='_blank'><tt>cal_method_reg</tt></a>,dials
+Methods for model calibration,<a href='https://dials.tidymodels.org/reference/calibration.html' target='_blank'><tt>values_cal_cls</tt></a>,dials
+Methods for model calibration,<a href='https://dials.tidymodels.org/reference/calibration.html' target='_blank'><tt>values_cal_reg</tt></a>,dials
 Methods for selecting variables in step functions,<a href='https://recipes.tidymodels.org//reference/selections.html' target='_blank'><tt>selections</tt></a>,recipes
 Methods for selecting variables in step functions,<a href='https://recipes.tidymodels.org//reference/selections.html' target='_blank'><tt>selection</tt></a>,recipes
 Minkowski distance parameter,<a href='https://dials.tidymodels.org/reference/dist_power.html' target='_blank'><tt>dist_power</tt></a>,dials
+Miss rate (False Negative Rate),<a href='https://yardstick.tidymodels.org/reference/miss_rate.html' target='_blank'><tt>miss_rate</tt></a>,yardstick
+Miss rate (False Negative Rate),<a href='https://yardstick.tidymodels.org/reference/miss_rate.html' target='_blank'><tt>miss_rate.data.frame</tt></a>,yardstick
+Miss rate (False Negative Rate),<a href='https://yardstick.tidymodels.org/reference/miss_rate.html' target='_blank'><tt>miss_rate_vec</tt></a>,yardstick
 Missing value column filter,<a href='https://recipes.tidymodels.org//reference/step_filter_missing.html' target='_blank'><tt>step_filter_missing</tt></a>,recipes
 Mixture of penalization terms,<a href='https://dials.tidymodels.org/reference/mixture.html' target='_blank'><tt>mixture</tt></a>,dials
 Model Fit Object Information,<a href='https://tidyclust.tidymodels.org//reference/cluster_fit.html' target='_blank'><tt>cluster_fit</tt></a>,tidyclust
@@ -1349,11 +1423,13 @@ Neural network parameters,<a href='https://dials.tidymodels.org/reference/dropou
 Neural network parameters,<a href='https://dials.tidymodels.org/reference/dropout.html' target='_blank'><tt>hidden_units_2</tt></a>,dials
 Neural network parameters,<a href='https://dials.tidymodels.org/reference/dropout.html' target='_blank'><tt>batch_size</tt></a>,dials
 New axe functions for a modeling object.,<a href='https://butcher.tidymodels.org//reference/new_model_butcher.html' target='_blank'><tt>new_model_butcher</tt></a>,butcher
-Non-negative matrix factorization signal extraction,<a href='https://recipes.tidymodels.org//reference/step_nnmf.html' target='_blank'><tt>step_nnmf</tt></a>,recipes
 Non-negative matrix factorization signal extraction with lasso penalization,<a href='https://recipes.tidymodels.org//reference/step_nnmf_sparse.html' target='_blank'><tt>step_nnmf_sparse</tt></a>,recipes
 Non-negative splines,<a href='https://recipes.tidymodels.org//reference/step_spline_nonnegative.html' target='_blank'><tt>step_spline_nonnegative</tt></a>,recipes
 Normalization of Character Variables,<a href='https://textrecipes.tidymodels.org//reference/step_text_normalization.html' target='_blank'><tt>step_text_normalization</tt></a>,textrecipes
 Normalization of Character Variables,<a href='https://textrecipes.tidymodels.org//reference/step_text_normalization.html' target='_blank'><tt>tidy.step_text_normalization</tt></a>,textrecipes
+Normalized Gini coefficient,<a href='https://yardstick.tidymodels.org/reference/gini_coef.html' target='_blank'><tt>gini_coef</tt></a>,yardstick
+Normalized Gini coefficient,<a href='https://yardstick.tidymodels.org/reference/gini_coef.html' target='_blank'><tt>gini_coef.data.frame</tt></a>,yardstick
+Normalized Gini coefficient,<a href='https://yardstick.tidymodels.org/reference/gini_coef.html' target='_blank'><tt>gini_coef_vec</tt></a>,yardstick
 Null model,<a href='https://parsnip.tidymodels.org//reference/null_model.html' target='_blank'><tt>null_model</tt></a>,parsnip
 Number of Clusters,<a href='https://dials.tidymodels.org/reference/num_clusters.html' target='_blank'><tt>num_clusters</tt></a>,dials
 Number of Computation Runs,<a href='https://dials.tidymodels.org/reference/num_runs.html' target='_blank'><tt>num_runs</tt></a>,dials
@@ -1385,6 +1461,7 @@ Obtain and format results produced by tuning functions,<a href='https://tune.tid
 Obtain and format results produced by tuning functions for workflow sets,<a href='https://workflowsets.tidymodels.org/reference/collect_metrics.workflow_set.html' target='_blank'><tt>collect_metrics.workflow_set</tt></a>,workflowsets
 Obtain and format results produced by tuning functions for workflow sets,<a href='https://workflowsets.tidymodels.org/reference/collect_metrics.workflow_set.html' target='_blank'><tt>collect_predictions.workflow_set</tt></a>,workflowsets
 Obtain and format results produced by tuning functions for workflow sets,<a href='https://workflowsets.tidymodels.org/reference/collect_metrics.workflow_set.html' target='_blank'><tt>collect_notes.workflow_set</tt></a>,workflowsets
+Obtain and format results produced by tuning functions for workflow sets,<a href='https://workflowsets.tidymodels.org/reference/collect_metrics.workflow_set.html' target='_blank'><tt>collect_extracts.workflow_set</tt></a>,workflowsets
 Obtain prediction equations for all possible values of type,<a href='https://stacks.tidymodels.org//reference/get_expressions.html' target='_blank'><tt>get_expressions</tt></a>,stacks
 Obtain prediction equations for all possible values of type,<a href='https://stacks.tidymodels.org//reference/get_expressions.html' target='_blank'><tt>get_expressions._multnet</tt></a>,stacks
 Obtain prediction equations for all possible values of type,<a href='https://stacks.tidymodels.org//reference/get_expressions.html' target='_blank'><tt>get_expressions._lognet</tt></a>,stacks
@@ -1396,6 +1473,10 @@ OkCupid Binary Predictors,<a href='https://applicable.tidymodels.org/reference/o
 Optimization of model parameters via simulated annealing,<a href='https://finetune.tidymodels.org/reference/tune_sim_anneal.html' target='_blank'><tt>tune_sim_anneal</tt></a>,finetune
 Optimization of model parameters via simulated annealing,<a href='https://finetune.tidymodels.org/reference/tune_sim_anneal.html' target='_blank'><tt>tune_sim_anneal.model_spec</tt></a>,finetune
 Optimization of model parameters via simulated annealing,<a href='https://finetune.tidymodels.org/reference/tune_sim_anneal.html' target='_blank'><tt>tune_sim_anneal.workflow</tt></a>,finetune
+Ordinal Regression Link Functions (character),<a href='https://dials.tidymodels.org/reference/ordinal_link.html' target='_blank'><tt>ordinal_link</tt></a>,dials
+Ordinal Regression Link Functions (character),<a href='https://dials.tidymodels.org/reference/ordinal_link.html' target='_blank'><tt>values_ordinal_link</tt></a>,dials
+Ordinal Regression Link Functions (character),<a href='https://dials.tidymodels.org/reference/ordinal_link.html' target='_blank'><tt>odds_link</tt></a>,dials
+Ordinal Regression Link Functions (character),<a href='https://dials.tidymodels.org/reference/ordinal_link.html' target='_blank'><tt>values_odds_link</tt></a>,dials
 Orthogonal polynomial basis functions,<a href='https://recipes.tidymodels.org//reference/step_poly.html' target='_blank'><tt>step_poly</tt></a>,recipes
 Palmer Station penguin data,<a href='https://modeldata.tidymodels.org/reference/penguins.html' target='_blank'><tt>penguins</tt></a>,modeldata
 Parabolic class boundary data,<a href='https://discrim.tidymodels.org//reference/parabolic.html' target='_blank'><tt>parabolic</tt></a>,discrim
@@ -1430,15 +1511,15 @@ Parameters for exponents,<a href='https://dials.tidymodels.org/reference/degree.
 Parameters for exponents,<a href='https://dials.tidymodels.org/reference/degree.html' target='_blank'><tt>degree_int</tt></a>,dials
 Parameters for exponents,<a href='https://dials.tidymodels.org/reference/degree.html' target='_blank'><tt>spline_degree</tt></a>,dials
 Parameters for exponents,<a href='https://dials.tidymodels.org/reference/degree.html' target='_blank'><tt>prod_degree</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>scheduler-param</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_initial</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_largest</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_reduction</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_steps</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_step_size</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_decay</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_schedule</tt></a>,dials
-Parameters for neural network learning rate schedulers These parameters are used for constructing neural network models.,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>values_scheduler</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>scheduler-param</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_initial</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_largest</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_reduction</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_steps</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_step_size</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_decay</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>rate_schedule</tt></a>,dials
+Parameters for neural network learning rate schedulers,<a href='https://dials.tidymodels.org/reference/scheduler-param.html' target='_blank'><tt>values_scheduler</tt></a>,dials
 Parameters for possible engine parameters for C5.0,<a href='https://dials.tidymodels.org/reference/c5_parameters.html' target='_blank'><tt>confidence_factor</tt></a>,dials
 Parameters for possible engine parameters for C5.0,<a href='https://dials.tidymodels.org/reference/c5_parameters.html' target='_blank'><tt>no_global_pruning</tt></a>,dials
 Parameters for possible engine parameters for C5.0,<a href='https://dials.tidymodels.org/reference/c5_parameters.html' target='_blank'><tt>predictor_winnowing</tt></a>,dials
@@ -1470,6 +1551,12 @@ Parameters for possible engine parameters for sda models,<a href='https://dials.
 Parameters for possible engine parameters for xgboost,<a href='https://dials.tidymodels.org/reference/xgboost_parameters.html' target='_blank'><tt>scale_pos_weight</tt></a>,dials
 Parameters for possible engine parameters for xgboost,<a href='https://dials.tidymodels.org/reference/xgboost_parameters.html' target='_blank'><tt>penalty_L2</tt></a>,dials
 Parameters for possible engine parameters for xgboost,<a href='https://dials.tidymodels.org/reference/xgboost_parameters.html' target='_blank'><tt>penalty_L1</tt></a>,dials
+Parameters for TabPFN models,<a href='https://dials.tidymodels.org/reference/tab-pfn-param.html' target='_blank'><tt>tab-pfn-param</tt></a>,dials
+Parameters for TabPFN models,<a href='https://dials.tidymodels.org/reference/tab-pfn-param.html' target='_blank'><tt>num_estimators</tt></a>,dials
+Parameters for TabPFN models,<a href='https://dials.tidymodels.org/reference/tab-pfn-param.html' target='_blank'><tt>softmax_temperature</tt></a>,dials
+Parameters for TabPFN models,<a href='https://dials.tidymodels.org/reference/tab-pfn-param.html' target='_blank'><tt>balance_probabilities</tt></a>,dials
+Parameters for TabPFN models,<a href='https://dials.tidymodels.org/reference/tab-pfn-param.html' target='_blank'><tt>average_before_softmax</tt></a>,dials
+Parameters for TabPFN models,<a href='https://dials.tidymodels.org/reference/tab-pfn-param.html' target='_blank'><tt>training_set_limit</tt></a>,dials
 Parameters to adjust effective degrees of freedom,<a href='https://dials.tidymodels.org/reference/adjust_deg_free.html' target='_blank'><tt>adjust_deg_free</tt></a>,dials
 Parametric distributions for censored data,<a href='https://dials.tidymodels.org/reference/surv_dist.html' target='_blank'><tt>surv_dist</tt></a>,dials
 Parametric distributions for censored data,<a href='https://dials.tidymodels.org/reference/surv_dist.html' target='_blank'><tt>values_surv_dist</tt></a>,dials
@@ -1528,8 +1615,8 @@ Predicting permeability from chemical information,<a href='https://modeldata.tid
 Predicting steroidogenic toxicity with assay data,<a href='https://modeldata.tidymodels.org/reference/steroidogenic_toxicity.html' target='_blank'><tt>steroidogenic_toxicity</tt></a>,modeldata
 Predicting with a model stack,<a href='https://stacks.tidymodels.org//reference/predict.data_stack.html' target='_blank'><tt>predict.data_stack</tt></a>,stacks
 Predicting with a model stack,<a href='https://stacks.tidymodels.org//reference/predict.model_stack.html' target='_blank'><tt>predict.model_stack</tt></a>,stacks
-Prediction intervals from conformal methods,<a href='https://probably.tidymodels.org/reference/predict.int_conformal_full.html' target='_blank'><tt>predict.int_conformal_full</tt></a>,probably
 Prediction intervals from conformal methods,<a href='https://probably.tidymodels.org/reference/predict.int_conformal_full.html' target='_blank'><tt>predict.int_conformal_cv</tt></a>,probably
+Prediction intervals from conformal methods,<a href='https://probably.tidymodels.org/reference/predict.int_conformal_full.html' target='_blank'><tt>predict.int_conformal_full</tt></a>,probably
 Prediction intervals from conformal methods,<a href='https://probably.tidymodels.org/reference/predict.int_conformal_full.html' target='_blank'><tt>predict.int_conformal_quantile</tt></a>,probably
 Prediction intervals from conformal methods,<a href='https://probably.tidymodels.org/reference/predict.int_conformal_full.html' target='_blank'><tt>predict.int_conformal_split</tt></a>,probably
 Prediction intervals via conformal inference,<a href='https://probably.tidymodels.org/reference/int_conformal_full.html' target='_blank'><tt>int_conformal_full</tt></a>,probably
@@ -1578,6 +1665,7 @@ Process a series of workflows,<a href='https://workflowsets.tidymodels.org/refer
 Proportion of data used for validation,<a href='https://dials.tidymodels.org/reference/validation_set_prop.html' target='_blank'><tt>validation_set_prop</tt></a>,dials
 Proportion of predictors,<a href='https://dials.tidymodels.org/reference/predictor_prop.html' target='_blank'><tt>predictor_prop</tt></a>,dials
 Proportion of Randomly Selected Predictors,<a href='https://dials.tidymodels.org/reference/mtry_prop.html' target='_blank'><tt>mtry_prop</tt></a>,dials
+Proportion of top predictors,<a href='https://dials.tidymodels.org/reference/prop_terms.html' target='_blank'><tt>prop_terms</tt></a>,dials
 Psuedo-Huber Loss,<a href='https://yardstick.tidymodels.org/reference/huber_loss_pseudo.html' target='_blank'><tt>huber_loss_pseudo</tt></a>,yardstick
 Psuedo-Huber Loss,<a href='https://yardstick.tidymodels.org/reference/huber_loss_pseudo.html' target='_blank'><tt>huber_loss_pseudo.data.frame</tt></a>,yardstick
 Psuedo-Huber Loss,<a href='https://yardstick.tidymodels.org/reference/huber_loss_pseudo.html' target='_blank'><tt>huber_loss_pseudo_vec</tt></a>,yardstick
@@ -1592,6 +1680,9 @@ Radial basis function kernel PCA signal extraction,<a href='https://recipes.tidy
 Radial basis function support vector machines,<a href='https://parsnip.tidymodels.org//reference/svm_rbf.html' target='_blank'><tt>svm_rbf</tt></a>,parsnip
 Random forest,<a href='https://parsnip.tidymodels.org//reference/rand_forest.html' target='_blank'><tt>rand_forest</tt></a>,parsnip
 Rank the results by a metric,<a href='https://workflowsets.tidymodels.org/reference/rank_results.html' target='_blank'><tt>rank_results</tt></a>,workflowsets
+Ranked probability scores for ordinal classification models,<a href='https://yardstick.tidymodels.org/reference/ranked_prob_score.html' target='_blank'><tt>ranked_prob_score</tt></a>,yardstick
+Ranked probability scores for ordinal classification models,<a href='https://yardstick.tidymodels.org/reference/ranked_prob_score.html' target='_blank'><tt>ranked_prob_score.data.frame</tt></a>,yardstick
+Ranked probability scores for ordinal classification models,<a href='https://yardstick.tidymodels.org/reference/ranked_prob_score.html' target='_blank'><tt>ranked_prob_score_vec</tt></a>,yardstick
 Rates of Cricket Chirps,<a href='https://modeldata.tidymodels.org/reference/crickets.html' target='_blank'><tt>crickets</tt></a>,modeldata
 Ratio of performance to deviation,<a href='https://yardstick.tidymodels.org/reference/rpd.html' target='_blank'><tt>rpd</tt></a>,yardstick
 Ratio of performance to deviation,<a href='https://yardstick.tidymodels.org/reference/rpd.html' target='_blank'><tt>rpd.data.frame</tt></a>,yardstick
@@ -1629,6 +1720,9 @@ Regression calibration plots,<a href='https://probably.tidymodels.org/reference/
 Regression calibration plots,<a href='https://probably.tidymodels.org/reference/cal_plot_regression.html' target='_blank'><tt>cal_plot_regression.grouped_df</tt></a>,probably
 Regularized discriminant analysis,<a href='https://parsnip.tidymodels.org//reference/discrim_regularized.html' target='_blank'><tt>discrim_regularized</tt></a>,parsnip
 Relabels clusters to match another cluster assignment,<a href='https://tidyclust.tidymodels.org//reference/reconcile_clusterings_mapping.html' target='_blank'><tt>reconcile_clusterings_mapping</tt></a>,tidyclust
+Relative root mean squared error,<a href='https://yardstick.tidymodels.org/reference/rmse_relative.html' target='_blank'><tt>rmse_relative</tt></a>,yardstick
+Relative root mean squared error,<a href='https://yardstick.tidymodels.org/reference/rmse_relative.html' target='_blank'><tt>rmse_relative.data.frame</tt></a>,yardstick
+Relative root mean squared error,<a href='https://yardstick.tidymodels.org/reference/rmse_relative.html' target='_blank'><tt>rmse_relative_vec</tt></a>,yardstick
 Relevel factors to a desired level,<a href='https://recipes.tidymodels.org//reference/step_relevel.html' target='_blank'><tt>step_relevel</tt></a>,recipes
 Remove observations with missing values,<a href='https://recipes.tidymodels.org//reference/step_naomit.html' target='_blank'><tt>step_naomit</tt></a>,recipes
 Remove Points Near Other Classes,<a href='https://themis.tidymodels.org/reference/nearmiss.html' target='_blank'><tt>nearmiss</tt></a>,themis
@@ -1695,6 +1789,9 @@ Rolling summary statistic for moving windows,<a href='https://dials.tidymodels.o
 Root mean squared error,<a href='https://yardstick.tidymodels.org/reference/rmse.html' target='_blank'><tt>rmse</tt></a>,yardstick
 Root mean squared error,<a href='https://yardstick.tidymodels.org/reference/rmse.html' target='_blank'><tt>rmse.data.frame</tt></a>,yardstick
 Root mean squared error,<a href='https://yardstick.tidymodels.org/reference/rmse.html' target='_blank'><tt>rmse_vec</tt></a>,yardstick
+Royston-Sauerbei D statistic,<a href='https://yardstick.tidymodels.org/reference/royston_survival.html' target='_blank'><tt>royston_survival</tt></a>,yardstick
+Royston-Sauerbei D statistic,<a href='https://yardstick.tidymodels.org/reference/royston_survival.html' target='_blank'><tt>royston_survival.data.frame</tt></a>,yardstick
+Royston-Sauerbei D statistic,<a href='https://yardstick.tidymodels.org/reference/royston_survival.html' target='_blank'><tt>royston_survival_vec</tt></a>,yardstick
 RuleFit models,<a href='https://parsnip.tidymodels.org//reference/rule_fit.html' target='_blank'><tt>rule_fit</tt></a>,parsnip
 S3 method to get fitted model summary info depending on engine,<a href='https://tidyclust.tidymodels.org//reference/extract_fit_summary.html' target='_blank'><tt>extract_fit_summary</tt></a>,tidyclust
 Sacramento CA home prices,<a href='https://modeldata.tidymodels.org/reference/Sacramento.html' target='_blank'><tt>Sacramento</tt></a>,modeldata
@@ -1716,6 +1813,7 @@ Sensitivity,<a href='https://yardstick.tidymodels.org/reference/sens.html' targe
 Sensitivity,<a href='https://yardstick.tidymodels.org/reference/sens.html' target='_blank'><tt>sensitivity_vec</tt></a>,yardstick
 Sentencepiece Tokenization of Character Variables,<a href='https://textrecipes.tidymodels.org//reference/step_tokenize_sentencepiece.html' target='_blank'><tt>step_tokenize_sentencepiece</tt></a>,textrecipes
 Sentencepiece Tokenization of Character Variables,<a href='https://textrecipes.tidymodels.org//reference/step_tokenize_sentencepiece.html' target='_blank'><tt>tidy.step_tokenize_sentencepiece</tt></a>,textrecipes
+Set categorical feature mappings for CatBoost model,<a href='https://tidypredict.tidymodels.org/reference/set_catboost_categories.html' target='_blank'><tt>set_catboost_categories</tt></a>,tidypredict
 Set up bootstrap replicates of a dplyr operation,<a href='https://broom.tidymodels.org//reference/bootstrap.html' target='_blank'><tt>bootstrap</tt></a>,broom
 Shade histogram area beyond an observed statistic,<a href='https://infer.tidymodels.org//reference/shade_p_value.html' target='_blank'><tt>shade_p_value</tt></a>,infer
 Shade histogram area beyond an observed statistic,<a href='https://infer.tidymodels.org//reference/shade_p_value.html' target='_blank'><tt>shade_pvalue</tt></a>,infer
@@ -1752,6 +1850,7 @@ Solubility predictions from MARS model,<a href='https://modeldata.tidymodels.org
 Solubility Predictions from MARS Model,<a href='https://yardstick.tidymodels.org/reference/solubility_test.html' target='_blank'><tt>solubility_test</tt></a>,yardstick
 Sort rows using dplyr,<a href='https://recipes.tidymodels.org//reference/step_arrange.html' target='_blank'><tt>step_arrange</tt></a>,recipes
 Space-filling parameter grids,<a href='https://dials.tidymodels.org/reference/grid_space_filling.html' target='_blank'><tt>grid_space_filling</tt></a>,dials
+Space-filling parameter grids,<a href='https://dials.tidymodels.org/reference/grid_space_filling.html' target='_blank'><tt>grid_space_filling.default</tt></a>,dials
 Space-filling parameter grids,<a href='https://dials.tidymodels.org/reference/grid_space_filling.html' target='_blank'><tt>grid_space_filling.parameters</tt></a>,dials
 Space-filling parameter grids,<a href='https://dials.tidymodels.org/reference/grid_space_filling.html' target='_blank'><tt>grid_space_filling.list</tt></a>,dials
 Space-filling parameter grids,<a href='https://dials.tidymodels.org/reference/grid_space_filling.html' target='_blank'><tt>grid_space_filling.param</tt></a>,dials
@@ -1774,6 +1873,7 @@ Splice final parameters into objects,<a href='https://tidyclust.tidymodels.org//
 Splice final parameters into objects,<a href='https://tune.tidymodels.org//reference/finalize_model.html' target='_blank'><tt>finalize_model</tt></a>,tune
 Splice final parameters into objects,<a href='https://tune.tidymodels.org//reference/finalize_model.html' target='_blank'><tt>finalize_recipe</tt></a>,tune
 Splice final parameters into objects,<a href='https://tune.tidymodels.org//reference/finalize_model.html' target='_blank'><tt>finalize_workflow</tt></a>,tune
+Splice final parameters into objects,<a href='https://tune.tidymodels.org//reference/finalize_model.html' target='_blank'><tt>finalize_tailor</tt></a>,tune
 Spruce up multi-outcome predictions,<a href='https://hardhat.tidymodels.org/reference/spruce-multiple.html' target='_blank'><tt>spruce-multiple</tt></a>,hardhat
 Spruce up multi-outcome predictions,<a href='https://hardhat.tidymodels.org/reference/spruce-multiple.html' target='_blank'><tt>spruce_numeric_multiple</tt></a>,hardhat
 Spruce up multi-outcome predictions,<a href='https://hardhat.tidymodels.org/reference/spruce-multiple.html' target='_blank'><tt>spruce_class_multiple</tt></a>,hardhat
@@ -1813,6 +1913,9 @@ Support vector machine parameters,<a href='https://dials.tidymodels.org/referenc
 Survival Analysis Results,<a href='https://yardstick.tidymodels.org/reference/lung_surv.html' target='_blank'><tt>lung_surv</tt></a>,yardstick
 Survival Model Link Function,<a href='https://dials.tidymodels.org/reference/survival_link.html' target='_blank'><tt>survival_link</tt></a>,dials
 Survival Model Link Function,<a href='https://dials.tidymodels.org/reference/survival_link.html' target='_blank'><tt>values_survival_link</tt></a>,dials
+Symmetric Extremal Dependence Index,<a href='https://yardstick.tidymodels.org/reference/sedi.html' target='_blank'><tt>sedi</tt></a>,yardstick
+Symmetric Extremal Dependence Index,<a href='https://yardstick.tidymodels.org/reference/sedi.html' target='_blank'><tt>sedi.data.frame</tt></a>,yardstick
+Symmetric Extremal Dependence Index,<a href='https://yardstick.tidymodels.org/reference/sedi.html' target='_blank'><tt>sedi_vec</tt></a>,yardstick
 Symmetric mean absolute percentage error,<a href='https://yardstick.tidymodels.org/reference/smape.html' target='_blank'><tt>smape</tt></a>,yardstick
 Symmetric mean absolute percentage error,<a href='https://yardstick.tidymodels.org/reference/smape.html' target='_blank'><tt>smape.data.frame</tt></a>,yardstick
 Symmetric mean absolute percentage error,<a href='https://yardstick.tidymodels.org/reference/smape.html' target='_blank'><tt>smape_vec</tt></a>,yardstick
@@ -1981,8 +2084,6 @@ Tidy a(n) optim object masquerading as list,<a href='https://broom.tidymodels.or
 Tidy a(n) optim object masquerading as list,<a href='https://broom.tidymodels.org//reference/tidy_optim.html' target='_blank'><tt>tidy_optim</tt></a>,broom
 Tidy a(n) optim object masquerading as list,<a href='https://broom.tidymodels.org//reference/tidy_optim.html' target='_blank'><tt>optim_tidiers</tt></a>,broom
 Tidy a(n) optim object masquerading as list,<a href='https://broom.tidymodels.org//reference/tidy_optim.html' target='_blank'><tt>tidy.optim</tt></a>,broom
-Tidy a(n) orcutt object,<a href='https://broom.tidymodels.org//reference/tidy.orcutt.html' target='_blank'><tt>tidy.orcutt</tt></a>,broom
-Tidy a(n) orcutt object,<a href='https://broom.tidymodels.org//reference/tidy.orcutt.html' target='_blank'><tt>orcutt_tidiers</tt></a>,broom
 Tidy a(n) pairwise.htest object,<a href='https://broom.tidymodels.org//reference/tidy.pairwise.htest.html' target='_blank'><tt>tidy.pairwise.htest</tt></a>,broom
 Tidy a(n) pam object,<a href='https://broom.tidymodels.org//reference/tidy.pam.html' target='_blank'><tt>tidy.pam</tt></a>,broom
 Tidy a(n) pam object,<a href='https://broom.tidymodels.org//reference/tidy.pam.html' target='_blank'><tt>pam_tidiers</tt></a>,broom
@@ -2234,10 +2335,13 @@ Tools for working with parameter values,<a href='https://dials.tidymodels.org/re
 Tools for working with parameter values,<a href='https://dials.tidymodels.org/reference/value_validate.html' target='_blank'><tt>value_inverse</tt></a>,dials
 Tools for working with parameter values,<a href='https://dials.tidymodels.org/reference/value_validate.html' target='_blank'><tt>value_set</tt></a>,dials
 Tree frog embryo hatching data,<a href='https://stacks.tidymodels.org//reference/tree_frogs.html' target='_blank'><tt>tree_frogs</tt></a>,stacks
+Truncate a numeric prediction column,<a href='https://probably.tidymodels.org/reference/bound_prediction.html' target='_blank'><tt>bound_prediction</tt></a>,probably
 Truncated PCA Signal Extraction,<a href='https://embed.tidymodels.org/reference/step_pca_truncated.html' target='_blank'><tt>step_pca_truncated</tt></a>,embed
 Truncated PCA Signal Extraction,<a href='https://embed.tidymodels.org/reference/step_pca_truncated.html' target='_blank'><tt>tidy.step_pca_truncated</tt></a>,embed
 Tuned flexible discriminant analysis results,<a href='https://shinymodels.tidymodels.org/reference/scat_fda_bt.html' target='_blank'><tt>scat_fda_bt</tt></a>,shinymodels
 Turn a parsnip model object into a tidy tibble,<a href='https://parsnip.tidymodels.org//reference/tidy.model_fit.html' target='_blank'><tt>tidy.model_fit</tt></a>,parsnip
+Turn a path object into a combined expression,<a href='https://tidypredict.tidymodels.org/reference/path_formulas.html' target='_blank'><tt>path_formulas</tt></a>,tidypredict
+Turn a path object into an expression,<a href='https://tidypredict.tidymodels.org/reference/path_formula.html' target='_blank'><tt>path_formula</tt></a>,tidypredict
 Turn a tidyclust model object into a tidy tibble,<a href='https://tidyclust.tidymodels.org//reference/tidy.cluster_fit.html' target='_blank'><tt>tidy.cluster_fit</tt></a>,tidyclust
 Turn C5.0 and rule-based models into tidy tibbles,<a href='https://rules.tidymodels.org//reference/tidy.cubist.html' target='_blank'><tt>tidy.C5.0</tt></a>,rules
 Turn C5.0 and rule-based models into tidy tibbles,<a href='https://rules.tidymodels.org//reference/tidy.cubist.html' target='_blank'><tt>tidy.cubist</tt></a>,rules
@@ -2283,6 +2387,7 @@ Updating a model specification,<a href='https://parsnip.tidymodels.org//referenc
 Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.multinom_reg</tt></a>,parsnip
 Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.naive_Bayes</tt></a>,parsnip
 Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.nearest_neighbor</tt></a>,parsnip
+Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.ordinal_reg</tt></a>,parsnip
 Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.pls</tt></a>,parsnip
 Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.poisson_reg</tt></a>,parsnip
 Updating a model specification,<a href='https://parsnip.tidymodels.org//reference/parsnip_update.html' target='_blank'><tt>update.proportional_hazards</tt></a>,parsnip
