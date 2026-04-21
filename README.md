@@ -72,6 +72,15 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 * [`find/`](find/): these files make up the find page, linked from the top navbar and resource stickies. Each of these pages is an `.qmd` file.
 
 
+## Quarto profiles
+
+This repo uses two Quarto profiles to split behavior between local and CI rendering:
+
+- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `post-render.R`.
+- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Disables post-render scripts since CI serves pages from the freeze cache.
+
+When adding a script that should only run locally, add it to `_quarto-local.yml`. If it should run in CI, add it to `_quarto-production.yml` and ensure the workflow installs the needed dependencies.
+
 ## Workflow
 
 * To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `installs.R`.
