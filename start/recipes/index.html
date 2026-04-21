@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -273,24 +273,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">flight_data</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">flights</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>  <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>    <span class="co"># Convert the arrival delay to a factor</span></span>
 <span>    arr_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">&gt;=</span> <span class="fl">30</span>, <span class="st">"late"</span>, <span class="st">"on_time"</span><span class="op">)</span>,</span>
 <span>    arr_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>,</span>
 <span>    <span class="co"># We will use the date (not date-time) in the recipe below</span></span>
-<span>    date <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu">as_date</span><span class="op">(</span><span class="va">time_hour</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    date <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html">as_date</a></span><span class="op">(</span><span class="va">time_hour</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Include the weather data</span></span>
-<span>  <span class="fu">inner_join</span><span class="op">(</span><span class="va">weather</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"time_hour"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">weather</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"time_hour"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Only retain the specific columns we will use</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">dep_time</span>, <span class="va">flight</span>, <span class="va">origin</span>, <span class="va">dest</span>, <span class="va">air_time</span>, <span class="va">distance</span>, </span>
-<span>         <span class="va">carrier</span>, <span class="va">date</span>, <span class="va">arr_delay</span>, <span class="va">time_hour</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">dep_time</span>, <span class="va">flight</span>, <span class="va">origin</span>, <span class="va">dest</span>, <span class="va">air_time</span>, <span class="va">distance</span>, </span>
+<span>         <span class="va">carrier</span>, <span class="va">date</span>, <span class="va">arr_delay</span>, <span class="va">time_hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Exclude missing data</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># For creating models, it is better to have qualitative columns</span></span>
 <span>  <span class="co"># encoded as factors (instead of character strings)</span></span>
-<span>  <span class="fu">mutate_if</span><span class="op">(</span><span class="va">is.character</span>, <span class="va">as.factor</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span><span class="op">(</span><span class="va">is.character</span>, <span class="va">as.factor</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -298,9 +298,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">flight_data</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">flight_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   arr_delay      n  prop</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
@@ -314,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">flight_data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">flight_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 325,819</span></span>
 <span><span class="co">#&gt; Columns: 10</span></span>
 <span><span class="co">#&gt; $ dep_time  &lt;int&gt; 517, 533, 542, 544, 554, 554, 555, 557, 557, 558, 558, 558, …</span></span>
@@ -335,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">flight_data</span> <span class="op">%&gt;%</span> </span>
+<code class="sourceCode R"><span><span class="va">flight_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">skimr</span><span class="fu">::</span><span class="fu">skim</span><span class="op">(</span><span class="va">dest</span>, <span class="va">carrier</span><span class="op">)</span> </span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -427,11 +427,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co"># This enables the analysis to be reproducible when random numbers are used </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">222</span><span class="op">)</span></span>
 <span><span class="co"># Put 3/4 of the data into the training set </span></span>
-<span><span class="va">data_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">flight_data</span>, prop <span class="op">=</span> <span class="fl">3</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">data_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">flight_data</span>, prop <span class="op">=</span> <span class="fl">3</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create data frames for the two sets:</span></span>
-<span><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span>
-<span><span class="va">test_data</span>  <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span>
+<span><span class="va">test_data</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -442,7 +442,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_rec</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> </span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -456,8 +456,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_rec</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">update_role</span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html">update_role</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> </span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -488,9 +488,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">flight_data</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">distinct</span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>numeric_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">flight_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>numeric_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; # A tibble: 364 × 2</span></span>
 <span><span class="co">#&gt;    date       numeric_date</span></span>
 <span><span class="co">#&gt;    &lt;date&gt;            &lt;dbl&gt;</span></span>
@@ -519,11 +519,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_rec</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">update_role</span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_date</span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dow"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>               </span>
-<span>  <span class="fu">step_holiday</span><span class="op">(</span><span class="va">date</span>, </span>
-<span>               holidays <span class="op">=</span> <span class="fu">timeDate</span><span class="fu">::</span><span class="fu">listHolidays</span><span class="op">(</span><span class="st">"US"</span><span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html">update_role</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dow"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>               </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_holiday.html">step_holiday</a></span><span class="op">(</span><span class="va">date</span>, </span>
+<span>               holidays <span class="op">=</span> <span class="fu">timeDate</span><span class="fu">::</span><span class="fu"><a href="https://geobosh.github.io/timeDateDoc/reference/holiday-Listing.html">listHolidays</a></span><span class="op">(</span><span class="st">"US"</span><span class="op">)</span>, </span>
 <span>               keep_original_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -564,31 +564,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<p>But, unlike the standard model formula methods in R, a recipe <strong>does not</strong> automatically create these dummy variables for you; you’ll need to tell your recipe to add this step. This is for two reasons. First, many models do not require <a href="https://bookdown.org/max/FES/categorical-trees.html">numeric predictors</a>, so dummy variables may not always be preferred. Second, recipes can also be used for purposes outside of modeling, where non-dummy versions of the variables may work better. For example, you may want to make a table or a plot with a variable as a single factor. For those reasons, you need to explicitly tell recipes to create dummy variables using <code>step_dummy()</code>:</p>
+<p>But, unlike the standard model formula methods in R, a recipe <strong>does not</strong> automatically create these dummy variables for you; you’ll need to tell your recipe to add this step. This is for two reasons. First, many models do not require <a href="https://bookdown.org/max/FES/categorical-trees.html">numeric predictors</a>, so dummy variables may not always be preferred. Second, recipes can also be used for purposes outside of modeling, where non-dummy versions of the variables may work better. For example, you may want to make a table or a plot with a variable as a single factor. For those reasons, you need to explicitly tell recipes to create dummy variables using <code><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_rec</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">update_role</span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_date</span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dow"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>               </span>
-<span>  <span class="fu">step_holiday</span><span class="op">(</span><span class="va">date</span>, </span>
-<span>               holidays <span class="op">=</span> <span class="fu">timeDate</span><span class="fu">::</span><span class="fu">listHolidays</span><span class="op">(</span><span class="st">"US"</span><span class="op">)</span>, </span>
-<span>               keep_original_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html">update_role</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dow"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>               </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_holiday.html">step_holiday</a></span><span class="op">(</span><span class="va">date</span>, </span>
+<span>               holidays <span class="op">=</span> <span class="fu">timeDate</span><span class="fu">::</span><span class="fu"><a href="https://geobosh.github.io/timeDateDoc/reference/holiday-Listing.html">listHolidays</a></span><span class="op">(</span><span class="st">"US"</span><span class="op">)</span>, </span>
+<span>               keep_original_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Here, we did something different than before: instead of applying a step to an individual variable, we used <a href="https://recipes.tidymodels.org/reference/selections.html">selectors</a> to apply this recipe step to several variables at once, <code>all_nominal_predictors()</code>. The <a href="https://recipes.tidymodels.org/reference/selections.html">selector functions</a> can be combined to select intersections of variables.</p>
-<p>At this stage in the recipe, this step selects the <code>origin</code>, <code>dest</code>, and <code>carrier</code> variables. It also includes two new variables, <code>date_dow</code> and <code>date_month</code>, that were created by the earlier <code>step_date()</code>.</p>
+<p>Here, we did something different than before: instead of applying a step to an individual variable, we used <a href="https://recipes.tidymodels.org/reference/selections.html">selectors</a> to apply this recipe step to several variables at once, <code><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors()</a></code>. The <a href="https://recipes.tidymodels.org/reference/selections.html">selector functions</a> can be combined to select intersections of variables.</p>
+<p>At this stage in the recipe, this step selects the <code>origin</code>, <code>dest</code>, and <code>carrier</code> variables. It also includes two new variables, <code>date_dow</code> and <code>date_month</code>, that were created by the earlier <code><a href="https://recipes.tidymodels.org/reference/step_date.html">step_date()</a></code>.</p>
 <p>More generally, the recipe selectors mean that you don’t always have to apply steps to individual variables one at a time. Since a recipe knows the <em>variable type</em> and <em>role</em> of each column, they can also be selected (or dropped) using this information.</p>
 <p>We need one final step to add to our recipe. Since <code>carrier</code> and <code>dest</code> have some infrequently occurring factor values, it is possible that dummy variables might be created for values that don’t exist in the training set. For example, there is one destination that is only in the test set:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">distinct</span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">anti_join</span><span class="op">(</span><span class="va">train_data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">train_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(dest)`</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
 <span><span class="co">#&gt;   dest </span></span>
@@ -597,19 +597,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>When the recipe is applied to the training set, a column is made for LEX because the factor levels come from <code>flight_data</code> (not the training set), but this column will contain all zeros. This is a “zero-variance predictor” that has no information within the column. While some R functions will not produce an error for such predictors, it usually causes warnings and other issues. <code>step_zv()</code> will remove columns from the data when the training set data have a single value, so it is added to the recipe <em>after</em> <code>step_dummy()</code>:</p>
+<p>When the recipe is applied to the training set, a column is made for LEX because the factor levels come from <code>flight_data</code> (not the training set), but this column will contain all zeros. This is a “zero-variance predictor” that has no information within the column. While some R functions will not produce an error for such predictors, it usually causes warnings and other issues. <code><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv()</a></code> will remove columns from the data when the training set data have a single value, so it is added to the recipe <em>after</em> <code><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_rec</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">update_role</span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_date</span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dow"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>               </span>
-<span>  <span class="fu">step_holiday</span><span class="op">(</span><span class="va">date</span>, </span>
-<span>               holidays <span class="op">=</span> <span class="fu">timeDate</span><span class="fu">::</span><span class="fu">listHolidays</span><span class="op">(</span><span class="st">"US"</span><span class="op">)</span>, </span>
-<span>               keep_original_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html">update_role</a></span><span class="op">(</span><span class="va">flight</span>, <span class="va">time_hour</span>, new_role <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dow"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>               </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_holiday.html">step_holiday</a></span><span class="op">(</span><span class="va">date</span>, </span>
+<span>               holidays <span class="op">=</span> <span class="fu">timeDate</span><span class="fu">::</span><span class="fu"><a href="https://geobosh.github.io/timeDateDoc/reference/holiday-Listing.html">listHolidays</a></span><span class="op">(</span><span class="st">"US"</span><span class="op">)</span>, </span>
+<span>               keep_original_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -620,8 +620,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lr_mod</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">logistic_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glm"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/logistic_reg.html">logistic_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"glm"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -636,9 +636,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_wflow</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">lr_mod</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">flights_rec</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html">add_model</a></span><span class="op">(</span><span class="va">lr_mod</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_recipe.html">add_recipe</a></span><span class="op">(</span><span class="va">flights_rec</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">flights_wflow</span></span>
 <span><span class="co">#&gt; ══ Workflow ══════════════════════════════════════════════════════════</span></span>
@@ -665,18 +665,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">flights_wflow</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">fit</span><span class="op">(</span>data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="va">flights_wflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>This object has the finalized recipe and fitted model objects inside. You may want to extract the model or recipe objects from the workflow. To do this, you can use the helper functions <code>extract_fit_parsnip()</code> and <code>extract_recipe()</code>. For example, here we pull the fitted model object then use the <code>broom::tidy()</code> function to get a tidy tibble of model coefficients:</p>
+<p>This object has the finalized recipe and fitted model objects inside. You may want to extract the model or recipe objects from the workflow. To do this, you can use the helper functions <code><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_parsnip()</a></code> and <code><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_recipe()</a></code>. For example, here we pull the fitted model object then use the <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy()</a></code> function to get a tidy tibble of model coefficients:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">flights_fit</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">extract_fit_parsnip</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">tidy</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">flights_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_parsnip</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 157 × 5</span></span>
 <span><span class="co">#&gt;    term                         estimate std.error statistic  p.value</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
@@ -700,7 +700,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Built the model (<code>lr_mod</code>),</p></li>
 <li><p>Created a preprocessing recipe (<code>flights_rec</code>),</p></li>
 <li><p>Bundled the model and recipe (<code>flights_wflow</code>), and</p></li>
-<li><p>Trained our workflow using a single call to <code>fit()</code>.</p></li>
+<li><p>Trained our workflow using a single call to <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>.</p></li>
 </ol>
 <p>The next step is to use the trained workflow (<code>flights_fit</code>) to predict with the unseen test data, which we will do with a single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. The <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method applies the recipe to the new data, then passes them to the fitted model.</p>
 <div class="cell" data-layout-align="center">
@@ -724,16 +724,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Because our outcome variable here is a factor, the output from <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> returns the predicted class: <code>late</code> versus <code>on_time</code>. But, let’s say we want the predicted class probabilities for each flight instead. To return those, we can specify <code>type = "prob"</code> when we use <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> or use <code>augment()</code> with the model plus test data to save them together:</p>
+<p>Because our outcome variable here is a factor, the output from <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> returns the predicted class: <code>late</code> versus <code>on_time</code>. But, let’s say we want the predicted class probabilities for each flight instead. To return those, we can specify <code>type = "prob"</code> when we use <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> or use <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> with the model plus test data to save them together:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_aug</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">augment</span><span class="op">(</span><span class="va">flights_fit</span>, <span class="va">test_data</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">flights_fit</span>, <span class="va">test_data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># The data look like: </span></span>
-<span><span class="va">flights_aug</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">time_hour</span>, <span class="va">flight</span>, <span class="va">.pred_class</span>, <span class="va">.pred_on_time</span><span class="op">)</span></span>
+<span><span class="va">flights_aug</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">time_hour</span>, <span class="va">flight</span>, <span class="va">.pred_class</span>, <span class="va">.pred_on_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 81,455 × 5</span></span>
 <span><span class="co">#&gt;    arr_delay time_hour           flight .pred_class .pred_on_time</span></span>
 <span><span class="co">#&gt;    &lt;fct&gt;     &lt;dttm&gt;               &lt;int&gt; &lt;fct&gt;               &lt;dbl&gt;</span></span>
@@ -752,14 +752,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now that we have a tibble with our predicted class probabilities, how will we evaluate the performance of our workflow? We can see from these first few rows that our model predicted these 5 on time flights correctly because the values of <code>.pred_on_time</code> are <em>p</em> &gt; .50. But we also know that we have 81,455 rows total to predict. We would like to calculate a metric that tells how well our model predicted late arrivals, compared to the true status of our outcome variable, <code>arr_delay</code>.</p>
-<p>Let’s use the area under the <a href="https://bookdown.org/max/FES/measuring-performance.html#class-metrics">ROC curve</a> as our metric, computed using <code>roc_curve()</code> and <code>roc_auc()</code> from the <a href="https://yardstick.tidymodels.org/">yardstick package</a>.</p>
-<p>To generate a ROC curve, we need the predicted class probabilities for <code>late</code> and <code>on_time</code>, which we just calculated in the code chunk above. We can create the ROC curve with these values, using <code>roc_curve()</code> and then piping to the <code>autoplot()</code> method:</p>
+<p>Let’s use the area under the <a href="https://bookdown.org/max/FES/measuring-performance.html#class-metrics">ROC curve</a> as our metric, computed using <code><a href="https://yardstick.tidymodels.org/reference/roc_curve.html">roc_curve()</a></code> and <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> from the <a href="https://yardstick.tidymodels.org/">yardstick package</a>.</p>
+<p>To generate a ROC curve, we need the predicted class probabilities for <code>late</code> and <code>on_time</code>, which we just calculated in the code chunk above. We can create the ROC curve with these values, using <code><a href="https://yardstick.tidymodels.org/reference/roc_curve.html">roc_curve()</a></code> and then piping to the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">flights_aug</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">roc_curve</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">arr_delay</span>, <span class="va">.pred_late</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">autoplot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights_aug</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_curve.html">roc_curve</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">arr_delay</span>, <span class="va">.pred_late</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -769,12 +769,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Similarly, <code>roc_auc()</code> estimates the area under the curve:</p>
+<p>Similarly, <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> estimates the area under the curve:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">flights_aug</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">arr_delay</span>, <span class="va">.pred_late</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">flights_aug</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">arr_delay</span>, <span class="va">.pred_late</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -782,7 +782,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Not too bad! We leave it to the reader to test out this workflow <a href="https://workflows.tidymodels.org/reference/add_formula.html"><em>without</em></a> this recipe. You can use <code>workflows::add_formula(arr_delay ~ .)</code> instead of <code>add_recipe()</code> (remember to remove the identification variables first!), and see whether our recipe improved our model’s ability to predict late arrivals.</p>
+<p>Not too bad! We leave it to the reader to test out this workflow <a href="https://workflows.tidymodels.org/reference/add_formula.html"><em>without</em></a> this recipe. You can use <code>workflows::add_formula(arr_delay ~ .)</code> instead of <code><a href="https://workflows.tidymodels.org/reference/add_recipe.html">add_recipe()</a></code> (remember to remove the identification variables first!), and see whether our recipe improved our model’s ability to predict late arrivals.</p>
 </section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────

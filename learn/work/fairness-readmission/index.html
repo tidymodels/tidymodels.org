@@ -82,7 +82,7 @@ div.csl-indent {
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -263,8 +263,8 @@ div.csl-indent {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">readmitted</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">readmission</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">readmitted</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span><span class="co">#&gt;   readmitted     n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;      &lt;int&gt;</span></span>
@@ -277,8 +277,8 @@ div.csl-indent {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">readmission</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span><span class="co">#&gt;   race                 n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;            &lt;int&gt;</span></span>
@@ -308,15 +308,15 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">readmission</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># randomly split into groups</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span><span class="va">.</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">race</span>, <span class="va">group</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">.</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">race</span>, <span class="va">group</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># compute proportion readmitted by race + random `group`ing</span></span>
-<span>  <span class="fu">summarize</span><span class="op">(</span>prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">readmitted</span> <span class="op">==</span> <span class="st">"Yes"</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">readmitted</span> <span class="op">==</span> <span class="st">"Yes"</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># compute variation in the proportion by race.</span></span>
 <span>  <span class="co"># note that, by default, the output from above is grouped by race only.</span></span>
-<span>  <span class="fu">summarize</span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">prop</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">prop</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">prop</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">prop</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
 <span><span class="co">#&gt;   race               mean      sd     n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;             &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;</span></span>
@@ -350,7 +350,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>While we won’t construct custom fairness metrics in this example, you can do so using the <code>new_groupwise_metric()</code> function in yardstick.</p>
+<p>While we won’t construct custom fairness metrics in this example, you can do so using the <code><a href="https://yardstick.tidymodels.org/reference/new_groupwise_metric.html">new_groupwise_metric()</a></code> function in yardstick.</p>
 </div>
 </div>
 <p>Recoding that data column:</p>
@@ -358,17 +358,17 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">readmission</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    race <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>  <span class="va">readmission</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    race <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="op">!</span><span class="op">(</span><span class="va">race</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Caucasian"</span>, <span class="st">"African American"</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Other"</span>,</span>
 <span>      .default <span class="op">=</span> <span class="va">race</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    race <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">readmission_collapsed</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
+<span><span class="va">readmission_collapsed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
 <span><span class="co">#&gt;   race                 n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;            &lt;int&gt;</span></span>
@@ -382,10 +382,10 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span>rows <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">admission_source</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">admission_source</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -399,9 +399,9 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">insurer</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">insurer</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -428,11 +428,11 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"n_"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">readmission_collapsed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"n_"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -450,9 +450,9 @@ Tip
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">readmission_splits</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">readmission_collapsed</span>, strata <span class="op">=</span> <span class="va">readmitted</span><span class="op">)</span></span>
-<span><span class="va">readmission_train</span>  <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">readmission_splits</span><span class="op">)</span></span>
-<span><span class="va">readmission_test</span>   <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">readmission_splits</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">readmission_splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">readmission_collapsed</span>, strata <span class="op">=</span> <span class="va">readmitted</span><span class="op">)</span></span>
+<span><span class="va">readmission_train</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">readmission_splits</span><span class="op">)</span></span>
+<span><span class="va">readmission_test</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">readmission_splits</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -473,7 +473,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">readmission_folds</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">readmission_train</span>, strata <span class="op">=</span> <span class="va">readmitted</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">readmission_folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/vfold_cv.html">vfold_cv</a></span><span class="op">(</span><span class="va">readmission_train</span>, strata <span class="op">=</span> <span class="va">readmitted</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">readmission_folds</span></span>
 <span><span class="co">#&gt; #  10-fold cross-validation using stratification </span></span>
@@ -502,11 +502,11 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recipe_basic</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">readmitted</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">readmission</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_unknown</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_YeoJohnson</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">readmitted</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">readmission</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_unknown.html">step_unknown</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_YeoJohnson.html">step_YeoJohnson</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html">step_normalize</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -527,13 +527,13 @@ Note
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">recipe_age</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">readmitted</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">readmission</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_mutate</span><span class="op">(</span>age_num <span class="op">=</span> <span class="fu">age_bin_to_midpoint</span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_rm</span><span class="op">(</span><span class="va">age</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_unknown</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_YeoJohnson</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">readmitted</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">readmission</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html">step_mutate</a></span><span class="op">(</span>age_num <span class="op">=</span> <span class="fu">age_bin_to_midpoint</span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_unknown.html">step_unknown</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_YeoJohnson.html">step_YeoJohnson</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html">step_normalize</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -542,13 +542,13 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spec_lr</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">logistic_reg</span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/logistic_reg.html">logistic_reg</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">spec_bt</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">boost_tree</span><span class="op">(</span><span class="st">"classification"</span>, mtry <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span>, learn_rate <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span>, trees <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="st">"classification"</span>, mtry <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>, learn_rate <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>, trees <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">spec_nn</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">bag_mlp</span><span class="op">(</span><span class="st">"classification"</span>, hidden_units <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span>, penalty <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/bag_mlp.html">bag_mlp</a></span><span class="op">(</span><span class="st">"classification"</span>, hidden_units <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>, penalty <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -557,7 +557,7 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wflow_set</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">workflow_set</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set</a></span><span class="op">(</span></span>
 <span>    preproc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>basic <span class="op">=</span> <span class="va">recipe_basic</span>, age <span class="op">=</span> <span class="va">recipe_age</span><span class="op">)</span>,</span>
 <span>    models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lr <span class="op">=</span> <span class="va">spec_lr</span>, bt <span class="op">=</span> <span class="va">spec_bt</span>, nn <span class="op">=</span> <span class="va">spec_nn</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -577,25 +577,25 @@ Note
 </div>
 <p>Each workflow in the workflow set is now ready to be evaluated. We now need to decide how to best evaluate these modeling workflows, though.</p>
 </section><section id="metrics" class="level3"><h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
-<p>The metrics with which we choose to evaluate our models are the core of our fairness analysis. In addition to the default metrics for classification in tune, <code>accuracy()</code> and <code>roc_auc()</code>, we’ll compute a set of fairness metrics: <code>equal_opportunity()</code>, <code>equalized_odds()</code>, and <code>demographic_parity()</code>.</p>
+<p>The metrics with which we choose to evaluate our models are the core of our fairness analysis. In addition to the default metrics for classification in tune, <code><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy()</a></code> and <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code>, we’ll compute a set of fairness metrics: <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>, <code><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds()</a></code>, and <code><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity()</a></code>.</p>
 <ul>
-<li><p><code>equal_opportunity()</code>: Equal opportunity is satisfied when a model’s predictions have the same true positive and false negative rates across protected groups. In this example, a model satisfies equal opportunity if it correctly predicts readmission and incorrectly predicts non-readmission at the same rate across <code>race</code> groups. In this case, the metric represents the interests of the patient; a patient would like to be just as likely to receive additional care resources as another if they are of equal need, and no more likely to go without unneeded care than another. Since this metric does not consider false positives, it notably does not penalize disparately providing additional care resources to a patient who may not need them.</p></li>
-<li><p><code>equalized_odds()</code>: Equalized odds is satisfied when a model’s predictions have the same false positive, true positive, false negative, and true negative rates across protected groups. This definition is a special case of the one above, where there’s additionally a constraint placed on the false positive and true negative rates. In this example, a model satisfies equalized odds if it correctly predicts both readmission and non-readmission <em>and</em> incorrectly predicts readmission and non-readmission at the same rate across <code>race</code> groups. Similar to equal opportunity, the stakeholders for the metric in this case can be generally understood to be those who are subject to the model’s predictions, except that this metric also aims to prevent disparately 1) providing additional care resources to those who may not need them and 2) identifying patients who do <em>not</em> need additional care resources correctly.</p></li>
-<li><p><code>demographic_parity()</code>: Demographic parity is satisfied when a model’s predictions have the same predicted positive rate across groups. In this example, a model satisfies demographic parity if it predicts readmission at the same rate across <code>race</code> groups. Note that this metric does not depend on the true outcome value, <code>readmitted</code>. The interests of a stakeholder who would like to see additional care resources provisioned at the same rate across <code>race</code> groups, even if the actual need for those resources differs among groups, are represented by this metric. As demographic parity is broadly accepted as part of a legal definition of machine learning fairness, hospital systems might consider this metric to protect themselves legally <span class="citation" data-cites="ecfr">(<a href="#ref-ecfr" role="doc-biblioref">1607.4, n.d.</a>)</span>.</p></li>
+<li><p><code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>: Equal opportunity is satisfied when a model’s predictions have the same true positive and false negative rates across protected groups. In this example, a model satisfies equal opportunity if it correctly predicts readmission and incorrectly predicts non-readmission at the same rate across <code>race</code> groups. In this case, the metric represents the interests of the patient; a patient would like to be just as likely to receive additional care resources as another if they are of equal need, and no more likely to go without unneeded care than another. Since this metric does not consider false positives, it notably does not penalize disparately providing additional care resources to a patient who may not need them.</p></li>
+<li><p><code><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds()</a></code>: Equalized odds is satisfied when a model’s predictions have the same false positive, true positive, false negative, and true negative rates across protected groups. This definition is a special case of the one above, where there’s additionally a constraint placed on the false positive and true negative rates. In this example, a model satisfies equalized odds if it correctly predicts both readmission and non-readmission <em>and</em> incorrectly predicts readmission and non-readmission at the same rate across <code>race</code> groups. Similar to equal opportunity, the stakeholders for the metric in this case can be generally understood to be those who are subject to the model’s predictions, except that this metric also aims to prevent disparately 1) providing additional care resources to those who may not need them and 2) identifying patients who do <em>not</em> need additional care resources correctly.</p></li>
+<li><p><code><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity()</a></code>: Demographic parity is satisfied when a model’s predictions have the same predicted positive rate across groups. In this example, a model satisfies demographic parity if it predicts readmission at the same rate across <code>race</code> groups. Note that this metric does not depend on the true outcome value, <code>readmitted</code>. The interests of a stakeholder who would like to see additional care resources provisioned at the same rate across <code>race</code> groups, even if the actual need for those resources differs among groups, are represented by this metric. As demographic parity is broadly accepted as part of a legal definition of machine learning fairness, hospital systems might consider this metric to protect themselves legally <span class="citation" data-cites="ecfr">(<a href="#ref-ecfr" role="doc-biblioref">1607.4, n.d.</a>)</span>.</p></li>
 </ul>
 <p>For each of the above metrics, values closer to zero indicate that a model is more fair.</p>
-<p>The above three metrics are defined specifically with fairness in mind. By another view of fairness, though, <code>accuracy()</code> and <code>roc_auc()</code> are <em>also</em> fairness metrics. Some stakeholders may believe that the most performant model regardless of group membership—i.e. the model that predicts readmission most accurately across groups—is the most fair model.</p>
+<p>The above three metrics are defined specifically with fairness in mind. By another view of fairness, though, <code><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy()</a></code> and <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> are <em>also</em> fairness metrics. Some stakeholders may believe that the most performant model regardless of group membership—i.e. the model that predicts readmission most accurately across groups—is the most fair model.</p>
 <p>To evaluate each of these metrics against the specified workflows, we create a metric set like so:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_set</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">metric_set</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span></span>
 <span>    <span class="va">accuracy</span>,</span>
 <span>    <span class="va">roc_auc</span>,</span>
-<span>    <span class="fu">equal_opportunity</span><span class="op">(</span><span class="va">race</span><span class="op">)</span>,</span>
-<span>    <span class="fu">equalized_odds</span><span class="op">(</span><span class="va">race</span><span class="op">)</span>,</span>
-<span>    <span class="fu">demographic_parity</span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity</a></span><span class="op">(</span><span class="va">race</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds</a></span><span class="op">(</span><span class="va">race</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity</a></span><span class="op">(</span><span class="va">race</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">m_set</span></span>
@@ -621,17 +621,17 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The first two inputs, <code>accuracy()</code> and <code>roc_auc()</code>, are standard <a href="https://yardstick.tidymodels.org">yardstick</a> metrics. The latter three are also yardstick metrics like any other, though are created using the <a href="https://yardstick.tidymodels.org/reference/new_groupwise_metric.html"><em>metric factories</em></a> <code>equal_opportunity()</code>, <code>equalized_odds()</code>, and <code>demographic_parity()</code>. When passed a data-column, metric factories output yardstick metrics.</p>
+<p>The first two inputs, <code><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy()</a></code> and <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code>, are standard <a href="https://yardstick.tidymodels.org">yardstick</a> metrics. The latter three are also yardstick metrics like any other, though are created using the <a href="https://yardstick.tidymodels.org/reference/new_groupwise_metric.html"><em>metric factories</em></a> <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>, <code><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds()</a></code>, and <code><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity()</a></code>. When passed a data-column, metric factories output yardstick metrics.</p>
 </div>
 </div>
 </section><section id="evaluation" class="level3"><h3 class="anchored" data-anchor-id="evaluation">Evaluation</h3>
-<p>We can now evaluate the workflows we’ve defined against resamples using our metric set. The <code>workflow_map()</code> function will call <code>tune_grid()</code> on each workflow:</p>
+<p>We can now evaluate the workflows we’ve defined against resamples using our metric set. The <code><a href="https://workflowsets.tidymodels.org/reference/workflow_map.html">workflow_map()</a></code> function will call <code><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid()</a></code> on each workflow:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">wflow_set_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">workflow_map</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_map.html">workflow_map</a></span><span class="op">(</span></span>
 <span>    <span class="va">wflow_set</span>, </span>
 <span>    verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>    seed <span class="op">=</span> <span class="fl">1</span>, </span>
@@ -663,16 +663,16 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">wflow_set_fit</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">wflow_set_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
 <span>    id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">wflow_id</span>, <span class="va">.config</span><span class="op">)</span>, </span>
 <span>    names_from <span class="op">=</span> <span class="va">.metric</span>, </span>
 <span>    values_from <span class="op">=</span> <span class="va">mean</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">wflow_id</span>, <span class="va">.config</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">wflow_id</span>, <span class="va">.config</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">ggpairs</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">.8</span>, hjust <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">.8</span>, hjust <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -682,13 +682,13 @@ Note
 </div>
 </div>
 </div>
-<p>The fairness metrics <code>demographic_parity()</code>, <code>equal_opportunity()</code>, and <code>equalized_odds()</code> all take values very close to zero for many models. Also, the metric values are highly correlated with each other, including correlations between fairness metrics and the more general-purpose performance metrics. That is, the most performant models also seem to be among the most fair.</p>
+<p>The fairness metrics <code><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity()</a></code>, <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>, and <code><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds()</a></code> all take values very close to zero for many models. Also, the metric values are highly correlated with each other, including correlations between fairness metrics and the more general-purpose performance metrics. That is, the most performant models also seem to be among the most fair.</p>
 <p>More concretely, we can rank the model configurations to examine only the most performant models:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rank_results</span><span class="op">(</span><span class="va">wflow_set_fit</span>, rank_metric <span class="op">=</span> <span class="st">"roc_auc"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.metric</span> <span class="op">==</span> <span class="st">"roc_auc"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://workflowsets.tidymodels.org/reference/rank_results.html">rank_results</a></span><span class="op">(</span><span class="va">wflow_set_fit</span>, rank_metric <span class="op">=</span> <span class="st">"roc_auc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.metric</span> <span class="op">==</span> <span class="st">"roc_auc"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 42 × 9</span></span>
 <span><span class="co">#&gt;    wflow_id .config         .metric  mean std_err     n preprocessor model  rank</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt; &lt;int&gt;</span></span>
@@ -710,7 +710,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">wflow_set_fit</span>, id <span class="op">=</span> <span class="st">"age_bt"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">wflow_set_fit</span>, id <span class="op">=</span> <span class="st">"age_bt"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -720,7 +720,7 @@ Note
 </div>
 </div>
 </div>
-<p>The learning rate <code>learn_rate</code> seems to have a more pronounced effect on the results metrics than the number of randomly selected predictors <code>mtry</code>. As before, we see that the most performant models with respect to <code>roc_auc()</code> also tend to be the most fair according to our fairness metrics. Further, the values of each of the fairness metrics plotted above seem highly correlated.</p>
+<p>The learning rate <code>learn_rate</code> seems to have a more pronounced effect on the results metrics than the number of randomly selected predictors <code>mtry</code>. As before, we see that the most performant models with respect to <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> also tend to be the most fair according to our fairness metrics. Further, the values of each of the fairness metrics plotted above seem highly correlated.</p>
 <p>From the perspective of a practitioner hoping to satisfy various stakeholders, the fact that these metrics are highly correlated makes the model selection process much easier. We can choose one fairness metric that we’d like to optimize for, and likely end up with a near-optimal configuration for the other metrics as a byproduct.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -735,31 +735,31 @@ Note
 <p>In machine learning fairness, “impossibility theorems” show that fairness definitions “are not mathematically or morally compatible in general” <span class="citation" data-cites="mitchell2021">(<a href="#ref-mitchell2021" role="doc-biblioref">Mitchell et al. 2021</a>)</span>. More concretely, unless we live in a world with no inequality, there is no way to satisfy many definitions of fairness at once. However, recent research emphasizes that near-fairness among more limited sets of metrics, like the three we’ve used here, is both possible and relevant <span class="citation" data-cites="bell2023">(<a href="#ref-bell2023" role="doc-biblioref">Bell et al. 2023</a>)</span>.</p>
 </div>
 </div>
-<p>To choose a model that performs well both with respect to a typical performance metric like <code>roc_auc()</code> and the fairness metrics we’ve chosen, we will make use of <a href="https://www.tidyverse.org/blog/2023/05/desirability2/">desirability functions</a>, which allow us to optimize based on multiple metrics at once.</p>
+<p>To choose a model that performs well both with respect to a typical performance metric like <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> and the fairness metrics we’ve chosen, we will make use of <a href="https://www.tidyverse.org/blog/2023/05/desirability2/">desirability functions</a>, which allow us to optimize based on multiple metrics at once.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best_params</span> <span class="op">&lt;-</span></span>
 <span>  <span class="co"># extract the tuning results for the boosted tree model</span></span>
-<span>  <span class="fu">extract_workflow_set_result</span><span class="op">(</span><span class="va">wflow_set_fit</span>, <span class="st">"age_bt"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/extract_workflow_set_result.html">extract_workflow_set_result</a></span><span class="op">(</span><span class="va">wflow_set_fit</span>, <span class="st">"age_bt"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># collect the metrics associated with it</span></span>
-<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># pivot the metrics so that each is in a column</span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
 <span>    id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mtry</span>, <span class="va">learn_rate</span><span class="op">)</span>, </span>
 <span>    names_from <span class="op">=</span> <span class="va">.metric</span>, </span>
 <span>    values_from <span class="op">=</span> <span class="va">mean</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>    <span class="co"># higher roc values are better; detect max and min from the data</span></span>
 <span>    d_roc     <span class="op">=</span> <span class="fu">d_max</span><span class="op">(</span><span class="va">roc_auc</span>, use_data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    <span class="co"># lower equalized odds are better; detect max and min from the data</span></span>
 <span>    d_e_odds  <span class="op">=</span> <span class="fu">d_min</span><span class="op">(</span><span class="va">equalized_odds</span>, use_data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    <span class="co"># compute overall desirability based on d_roc and d_e_odds</span></span>
-<span>    d_overall <span class="op">=</span> <span class="fu">d_overall</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"d_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    d_overall <span class="op">=</span> <span class="fu">d_overall</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"d_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># pick the model with the highest desirability value</span></span>
-<span>  <span class="fu">slice_max</span><span class="op">(</span><span class="va">d_overall</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span><span class="va">d_overall</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -782,8 +782,8 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_model_config</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">extract_workflow</span><span class="op">(</span><span class="va">wflow_set_fit</span>, <span class="st">"age_bt"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">finalize_workflow</span><span class="op">(</span><span class="va">best_params</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">wflow_set_fit</span>, <span class="st">"age_bt"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/finalize_model.html">finalize_workflow</a></span><span class="op">(</span><span class="va">best_params</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -792,15 +792,15 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_model</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">last_fit</span><span class="op">(</span><span class="va">final_model_config</span>, <span class="va">readmission_splits</span>, metrics <span class="op">=</span> <span class="va">m_set</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html">last_fit</a></span><span class="op">(</span><span class="va">final_model_config</span>, <span class="va">readmission_splits</span>, metrics <span class="op">=</span> <span class="va">m_set</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>We can see the metrics associated with the final fit using <code>collect_metrics()</code>, just as with a tuning result:</p>
+<p>We can see the metrics associated with the final fit using <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code>, just as with a tuning result:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">final_model</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">final_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
 <span><span class="co">#&gt;   .metric            .estimator .estimate .by   .config             </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;              &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;               </span></span>
@@ -812,12 +812,12 @@ Note
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The model we’ve selected has near-fairness with respect to the set of metrics we’ve chosen here. The accuracy of the model is 91.16%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The <code>roc_auc()</code> value 0.602 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class—as in, patients that did actually readmit—like <a href="https://yardstick.tidymodels.org/reference/sens.html?q=sens#details"><code>sens()</code></a>.</p>
+<p>The model we’ve selected has near-fairness with respect to the set of metrics we’ve chosen here. The accuracy of the model is 91.16%, quite similar to the accuracy that would result if the model just always predicted a patient would not readmit (91.2%). The <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> value 0.602 indicates that the model indeed correctly predicts readmission in some cases, though still has a lot of room for improvement. A further analysis of these models might measure performance using a metric that specifically evaluates predictions on observations from the minority class—as in, patients that did actually readmit—like <a href="https://yardstick.tidymodels.org/reference/sens.html?q=sens#details"><code>sens()</code></a>.</p>
 <p>Extracting the model fit from the <code>last_fit</code> object:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">final_model_fit</span> <span class="op">&lt;-</span> <span class="fu">extract_workflow</span><span class="op">(</span><span class="va">final_model</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">final_model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">final_model</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>

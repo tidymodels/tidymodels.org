@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -401,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"drinks"</span><span class="op">)</span></span>
-<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">drinks</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">drinks</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 309</span></span>
 <span><span class="co">#&gt; Columns: 2</span></span>
 <span><span class="co">#&gt; $ date           &lt;date&gt; 1992-01-01, 1992-02-01, 1992-03-01, 1992-04-01, 1992-0…</span></span>
@@ -415,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">roll_rs</span> <span class="op">&lt;-</span> <span class="fu">rolling_origin</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">roll_rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/rolling_origin.html">rolling_origin</a></span><span class="op">(</span></span>
 <span>  <span class="va">drinks</span>, </span>
 <span>  initial <span class="op">=</span> <span class="fl">12</span> <span class="op">*</span> <span class="fl">20</span>, </span>
 <span>  assess <span class="op">=</span> <span class="fl">12</span>,</span>
@@ -459,10 +459,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_date</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu">assessment</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">start_date</span> <span class="op">&lt;-</span> <span class="fu">map</span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">splits</span>, <span class="va">get_date</span><span class="op">)</span></span>
+<span><span class="va">start_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">splits</span>, <span class="va">get_date</span><span class="op">)</span></span>
 <span><span class="va">roll_rs</span><span class="op">$</span><span class="va">start_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"c"</span>, <span class="va">start_date</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">start_date</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2012-01-01" "2012-02-01" "2012-03-01" "2012-04-01" "2012-05-01"</span></span>
@@ -470,7 +470,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the <code>auto.arima()</code> function from the forecast package. The rsample functions <code>analysis()</code> and <code>assessment()</code> return a data frame, so another step converts the data to a <code>ts</code> object called <code>mod_dat</code> using a function in the timetk package.</p>
+<p>This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the <code>auto.arima()</code> function from the forecast package. The rsample functions <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis()</a></code> and <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment()</a></code> return a data frame, so another step converts the data to a <code>ts</code> object called <code>mod_dat</code> using a function in the timetk package.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -480,13 +480,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">fit_model</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># suggested by Matt Dancho:</span></span>
-<span>  <span class="va">x</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="fu">analysis</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="co"># Since the first day changes over resamples, adjust it</span></span>
 <span>    <span class="co"># based on the first date value in the data frame </span></span>
-<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu">as.yearmon</span><span class="op">(</span><span class="op">)</span>, </span>
+<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">as.yearmon</span><span class="op">(</span><span class="op">)</span>, </span>
 <span>          frequency <span class="op">=</span> <span class="fl">12</span>, </span>
-<span>          silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>          silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu">auto.arima</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -496,7 +496,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span> <span class="op">&lt;-</span> <span class="fu">map</span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">splits</span>, <span class="va">fit_model</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">splits</span>, <span class="va">fit_model</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># For example:</span></span>
 <span><span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -528,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://business-science.github.io/sweep/">sweep</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">roll_rs</span><span class="op">$</span><span class="va">interpolation</span> <span class="op">&lt;-</span> <span class="fu">map_dbl</span><span class="op">(</span></span>
+<span><span class="va">roll_rs</span><span class="op">$</span><span class="va">interpolation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span></span>
 <span>  <span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> </span>
 <span>    <span class="fu">sw_glance</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[[</span><span class="st">"MAPE"</span><span class="op">]</span><span class="op">]</span></span>
@@ -545,10 +545,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_extrap</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">split</span>, <span class="va">mod</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu">assessment</span><span class="op">(</span><span class="va">split</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="co"># Get assessment data</span></span>
-<span>  <span class="va">pred_dat</span> <span class="op">&lt;-</span> <span class="fu">assessment</span><span class="op">(</span><span class="va">split</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="fu">mutate</span><span class="op">(</span></span>
+<span>  <span class="va">pred_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>      pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu">forecast</span><span class="op">(</span><span class="va">mod</span>, h <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">$</span><span class="va">mean</span><span class="op">)</span>,</span>
 <span>      pct_error <span class="op">=</span> <span class="op">(</span> <span class="va">S4248SM144NCEN</span> <span class="op">-</span> <span class="va">pred</span> <span class="op">)</span> <span class="op">/</span> <span class="va">S4248SM144NCEN</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span>    <span class="op">)</span></span>
@@ -556,7 +556,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">roll_rs</span><span class="op">$</span><span class="va">extrapolation</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">map2_dbl</span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">splits</span>, <span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span>, <span class="va">get_extrap</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2_dbl</a></span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">splits</span>, <span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span>, <span class="va">get_extrap</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">extrapolation</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
@@ -568,12 +568,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">roll_rs</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">interpolation</span>, <span class="va">extrapolation</span>, <span class="va">start_date</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">matches</span><span class="op">(</span><span class="st">"ation"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"error"</span>, values_to <span class="op">=</span> <span class="st">"MAPE"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">MAPE</span>, col <span class="op">=</span> <span class="va">error</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">roll_rs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">interpolation</span>, <span class="va">extrapolation</span>, <span class="va">start_date</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">matches</a></span><span class="op">(</span><span class="st">"ation"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"error"</span>, values_to <span class="op">=</span> <span class="st">"MAPE"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">MAPE</span>, col <span class="op">=</span> <span class="va">error</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -584,23 +584,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>It is likely that the interpolation error is an underestimate to some degree, as mentioned above.</p>
-<p>It is also worth noting that <code>rolling_origin()</code> can be used over calendar periods, rather than just over a fixed window size. This is especially useful for irregular series where a fixed window size might not make sense because of missing data points, or because of calendar features like different months having a different number of days.</p>
+<p>It is also worth noting that <code><a href="https://rsample.tidymodels.org/reference/rolling_origin.html">rolling_origin()</a></code> can be used over calendar periods, rather than just over a fixed window size. This is especially useful for irregular series where a fixed window size might not make sense because of missing data points, or because of calendar features like different months having a different number of days.</p>
 <p>The example below demonstrates this idea by splitting <code>drinks</code> into a nested set of 26 years, and rolling over years rather than months. Note that the end result accomplishes a different task than the original example; in this new case, each slice moves forward an entire year, rather than just one month.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The idea is to nest by the period to roll over,</span></span>
 <span><span class="co"># which in this case is the year.</span></span>
-<span><span class="va">roll_rs_annual</span> <span class="op">&lt;-</span> <span class="va">drinks</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">$</span><span class="va">year</span> <span class="op">+</span> <span class="fl">1900</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">nest</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">S4248SM144NCEN</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">rolling_origin</span><span class="op">(</span></span>
+<span><span class="va">roll_rs_annual</span> <span class="op">&lt;-</span> <span class="va">drinks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">$</span><span class="va">year</span> <span class="op">+</span> <span class="fl">1900</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">S4248SM144NCEN</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rsample.tidymodels.org/reference/rolling_origin.html">rolling_origin</a></span><span class="op">(</span></span>
 <span>    initial <span class="op">=</span> <span class="fl">20</span>, </span>
 <span>    assess <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>    cumulative <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="fu">analysis</span><span class="op">(</span><span class="va">roll_rs_annual</span><span class="op">$</span><span class="va">splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="va">roll_rs_annual</span><span class="op">$</span><span class="va">splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 20 × 2</span></span>
 <span><span class="co">#&gt;     year data             </span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt; &lt;list&gt;           </span></span>
@@ -627,13 +627,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The workflow to access these calendar slices is to use <code>bind_rows()</code> to join each analysis set together.</p>
+<p>The workflow to access these calendar slices is to use <code><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows()</a></code> to join each analysis set together.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">mutate</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>  <span class="va">roll_rs_annual</span>,</span>
-<span>  extracted_slice <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">splits</span>, <span class="op">~</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="fu">analysis</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span>  extracted_slice <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">splits</span>, <span class="op">~</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Rolling origin forecast resampling </span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>

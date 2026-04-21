@@ -82,7 +82,7 @@ div.csl-indent {
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -283,8 +283,8 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
 <span><span class="co">#&gt;   kind  .pred_class     n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
@@ -300,8 +300,8 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">native</span>, <span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">native</span>, <span class="va">kind</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
 <span><span class="co">#&gt;   native kind  .pred_class     n</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
@@ -319,11 +319,11 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">native</span>, fill <span class="op">=</span> <span class="va">.pred_class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Native English Writer"</span>, fill <span class="op">=</span> <span class="st">"Predicted Class"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">native</span>, fill <span class="op">=</span> <span class="va">.pred_class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Native English Writer"</span>, fill <span class="op">=</span> <span class="st">"Predicted Class"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -337,14 +337,14 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>native <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
-<span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>native <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
+<span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -359,16 +359,16 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>native <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
-<span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, <span class="fu">vars</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>native <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
+<span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Predicted Probability That Essay Was Written by AI"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -393,7 +393,7 @@ Note
 </div>
 </div>
 </section><section id="fairness-assessment" class="level1"><h1>Fairness assessment</h1>
-<p>The <a href="https://yardstick.tidymodels.org/news/index.html#yardstick-130">1.3.0 release of yardstick</a> introduced a suite of functionality for fairness-oriented analysis of machine learning models. The release includes a tool to make fairness metrics, <code>new_groupwise_metric()</code>, as well as three outputs of that tool giving canonical fairness metrics: <code>equal_opportunity()</code>, <code>equalized_odds()</code>, and <code>demographic_parity()</code>. To better understand how to use metrics to quantify model fairness, we’ll consider what a fairness assessment of this model would look like from the perspective of three different stakeholders.</p>
+<p>The <a href="https://yardstick.tidymodels.org/news/index.html#yardstick-130">1.3.0 release of yardstick</a> introduced a suite of functionality for fairness-oriented analysis of machine learning models. The release includes a tool to make fairness metrics, <code><a href="https://yardstick.tidymodels.org/reference/new_groupwise_metric.html">new_groupwise_metric()</a></code>, as well as three outputs of that tool giving canonical fairness metrics: <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>, <code><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds()</a></code>, and <code><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity()</a></code>. To better understand how to use metrics to quantify model fairness, we’ll consider what a fairness assessment of this model would look like from the perspective of three different stakeholders.</p>
 <section id="effective-detection-group-blind" class="level2"><h2 class="anchored" data-anchor-id="effective-detection-group-blind">Effective detection, group-blind</h2>
 <p>Imagine, first, the position that the most fair detection model is one that reliably differentiates between essays written by humans or generated by GPTs, regardless of the problem context. From this perspective, the most fair model is the model that detects GPT-generated essays most effectively; it is unfair to pass on an essay written by a GPT as one’s own work. When analyzing this data, a stakeholder with this perspective would ignore the <code>native</code> variable in their analysis.</p>
 <ul>
@@ -405,10 +405,10 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
 <span><span class="co">#&gt;   detector      .metric .estimator .estimate</span></span>
@@ -432,7 +432,7 @@ Tip
 <p>To learn more about how the yardstick package handles groups in data, see the <a href="https://yardstick.tidymodels.org/articles/grouping.html">“Grouping behavior in yardstick” vignette</a>.</p>
 </div>
 </div>
-<p>From this perspective, the models with the highest <code>roc_auc()</code> estimates are the most fair.</p>
+<p>From this perspective, the models with the highest <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> estimates are the most fair.</p>
 <p>The fairness assessment for this stakeholder doesn’t need any of the functionality newly introduced in yardstick 1.3.0. An analysis that reconciles the role of the <code>native</code> variable in these models’ predictions will, though.</p>
 </section><section id="fair-prediction-on-human-written-essays" class="level2"><h2 class="anchored" data-anchor-id="fair-prediction-on-human-written-essays">Fair prediction on human-written essays</h2>
 <p>Now, consider that our only priority was to correctly classify human-written text as human-written and incorrectly classify human-written text as generated by AI at the same rate for both native English writers and non-native English writers, ignoring predictions from essays generated by AI.</p>
@@ -440,7 +440,7 @@ Tip
 <li><p>Another <strong>student</strong> whose work is evaluated by a detector model may take on such a perspective. This student could be a native English writer who does not want other students to be subjected to undue harm or a non-native English writer concerned with their own writing being incorrectly classified as GPT-generated.</p></li>
 <li><p>Another <strong>instructor</strong> of a course may feel it is unfair to disproportionately classify writing from students who are non-native English writers as GPT-generated, regardless of how effectively the model detects GPT-generated essays.</p></li>
 </ul>
-<p>The <code>equal_opportunity()</code> metric enables us to quantify the extent of this interpretation of unfairness. Equal opportunity is satisfied when a model’s predictions have the same true positive and false negative rates across protected groups; a model predicts more fairly if it’s equally likely to predict a positive outcome for each group.</p>
+<p>The <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code> metric enables us to quantify the extent of this interpretation of unfairness. Equal opportunity is satisfied when a model’s predictions have the same true positive and false negative rates across protected groups; a model predicts more fairly if it’s equally likely to predict a positive outcome for each group.</p>
 <p>In this example, a GPT detector satisfies equal opportunity when the detector correctly classifies human-written text as human-written and incorrectly classifies human-written text as generated by AI at the same rate for both native English writers and non-native English writers.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -455,11 +455,11 @@ Note
 <p>This definition does not consider the predictions based on essays generated by AI.</p>
 </div>
 </div>
-<p>To calculate equal opportunity with yardstick, we use <code>equal_opportunity()</code> to create a metric function:</p>
+<p>To calculate equal opportunity with yardstick, we use <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code> to create a metric function:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">equal_opportunity_by_native</span> <span class="op">&lt;-</span> <span class="fu">equal_opportunity</span><span class="op">(</span>by <span class="op">=</span> <span class="va">native</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">equal_opportunity_by_native</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity</a></span><span class="op">(</span>by <span class="op">=</span> <span class="va">native</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">equal_opportunity_by_native</span></span>
 <span><span class="co">#&gt; A class metric | direction: minimize, group-wise on: native</span></span></code></pre></div>
@@ -470,15 +470,15 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
 <span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
 <span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>, </span>
 <span>    event_level <span class="op">=</span> <span class="st">"second"</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;   detector  .metric           .by    .estimator .estimate</span></span>
@@ -514,21 +514,21 @@ Important
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">performant_detectors</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span>, <span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">performant_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span>, <span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">performant_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
 <span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
 <span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>, </span>
 <span>    event_level <span class="op">=</span> <span class="st">"second"</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;   detector      .metric           .by    .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -538,27 +538,27 @@ Important
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>We could also reverse the process, reflecting the belief that it is more unfair to disproportionately classify human-written work from non-native English writers as GPT-generated than it is to pass on output from GPTs as one’s own work. We first set a threshold based on <code>equal_opportunity()</code>, then choose the most performant model by <code>roc_auc()</code>:</p>
+<p>We could also reverse the process, reflecting the belief that it is more unfair to disproportionately classify human-written work from non-native English writers as GPT-generated than it is to pass on output from GPTs as one’s own work. We first set a threshold based on <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>, then choose the most performant model by <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">equal_opportunity_detectors</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
 <span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
 <span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>, </span>
 <span>    event_level <span class="op">=</span> <span class="st">"second"</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">detectors</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">equal_opportunity_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">detectors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">equal_opportunity_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
 <span><span class="co">#&gt;   detector  .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -571,8 +571,8 @@ Important
 <p>In this example, changing the prioritization of the criteria results in a different set of recommended models.</p>
 </section></section><section id="choosing-a-detector" class="level1"><h1>Choosing a detector</h1>
 <p>In the preceding section, we saw that the recommended detector we identify depends on our moral values. That is, the mathematical notion of fairness appropriate for a given analysis follows from the problem context. In this way, no statistical model is objectively more fair than another; our assessment of fairness depends on our personally held ideas of fairness.</p>
-<p>As for the problem of GPT detection, while each stakeholder might find that some models are more fair than others, even the most fair models recommended in each approach are quite unfair. For instance, from the first stakeholder’s perspective, even though it’s the most performant model available, GPTZero’s <code>roc_auc()</code> of 0.75 leaves much to be desired; a stakeholder ought to consider the potential harms resulting from the substantial number of errors made by this model when applied in context.</p>
-<p>This analysis only considered one fairness metric, <code>equal_opportunity()</code>. We could have attempted to apply either of the other two fairness metrics included in yardstick 1.3.0, <code>equalized_odds()</code> and <code>demographic_parity()</code>, or a custom fairness metric. Are those two other metrics well-defined for this problem? Which stakeholders’ interests are best represented by those metrics? Would they result in yet another set of discordant recommendations?</p>
+<p>As for the problem of GPT detection, while each stakeholder might find that some models are more fair than others, even the most fair models recommended in each approach are quite unfair. For instance, from the first stakeholder’s perspective, even though it’s the most performant model available, GPTZero’s <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> of 0.75 leaves much to be desired; a stakeholder ought to consider the potential harms resulting from the substantial number of errors made by this model when applied in context.</p>
+<p>This analysis only considered one fairness metric, <code><a href="https://yardstick.tidymodels.org/reference/equal_opportunity.html">equal_opportunity()</a></code>. We could have attempted to apply either of the other two fairness metrics included in yardstick 1.3.0, <code><a href="https://yardstick.tidymodels.org/reference/equalized_odds.html">equalized_odds()</a></code> and <code><a href="https://yardstick.tidymodels.org/reference/demographic_parity.html">demographic_parity()</a></code>, or a custom fairness metric. Are those two other metrics well-defined for this problem? Which stakeholders’ interests are best represented by those metrics? Would they result in yet another set of discordant recommendations?</p>
 <p>We also did not consider how the outputs of a chosen model be used. If a student’s work is classified as written by a GPT model, what happens then? Would a misclassification be more harmful for one type of student than another? Could an instructor trust model output more readily for one type of student than another? Answers to these questions are a necessary component of a complete fairness analysis and, just like the choice of metric, depend heavily on the problem context.</p>
 <p>In all, we’ve seen that applied fairness analysis is as much a social problem as it is a technical one. While we absolutely ought to strive to minimize harm in development and deployment of machine learning models, the fact that fairness is a moral concept, rather than a mathematical one, means that algorithmic unfairness cannot be automated away.</p>
 </section><section id="references" class="level1"><h1>References</h1>

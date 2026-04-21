@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -323,10 +323,10 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">cell_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">cells</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">case</span><span class="op">)</span>, </span>
+<span><span class="va">cell_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">case</span><span class="op">)</span>, </span>
 <span>                            strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span>
-<span><span class="va">cell_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span>
-<span><span class="va">cell_test</span>  <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">cell_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span>
+<span><span class="va">cell_test</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -337,12 +337,12 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tune_spec</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">decision_tree</span><span class="op">(</span></span>
-<span>    cost_complexity <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    tree_depth <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/decision_tree.html">decision_tree</a></span><span class="op">(</span></span>
+<span>    cost_complexity <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    tree_depth <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tune_spec</span></span>
 <span><span class="co">#&gt; Decision Tree Model Specification (classification)</span></span>
@@ -355,18 +355,18 @@ window.Quarto = {
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Think of <code>tune()</code> here as a placeholder. After the tuning process, we will select a single numeric value for each of these hyperparameters. For now, we specify our parsnip model object and identify the hyperparameters we will <code>tune()</code>.</p>
+<p>Think of <code><a href="https://hardhat.tidymodels.org/reference/tune.html">tune()</a></code> here as a placeholder. After the tuning process, we will select a single numeric value for each of these hyperparameters. For now, we specify our parsnip model object and identify the hyperparameters we will <code><a href="https://hardhat.tidymodels.org/reference/tune.html">tune()</a></code>.</p>
 <p>We can’t train this specification on a single data set (such as the entire training set) and learn what the hyperparameter values should be, but we <em>can</em> train many models using resampled data and see which models turn out best. We can create a regular grid of values to try using some convenience functions for each hyperparameter:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree_grid</span> <span class="op">&lt;-</span> <span class="fu">grid_regular</span><span class="op">(</span><span class="fu">cost_complexity</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                          <span class="fu">tree_depth</span><span class="op">(</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">tree_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dials.tidymodels.org/reference/grid_regular.html">grid_regular</a></span><span class="op">(</span><span class="fu"><a href="https://dials.tidymodels.org/reference/trees.html">cost_complexity</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                          <span class="fu"><a href="https://dials.tidymodels.org/reference/trees.html">tree_depth</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>                          levels <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The function <a href="https://dials.tidymodels.org/reference/grid_regular.html"><code>grid_regular()</code></a> is from the <a href="https://dials.tidymodels.org/">dials</a> package. It chooses sensible values to try for each hyperparameter; here, we asked for 5 of each. Since we have two to tune, <code>grid_regular()</code> returns 5 <span class="math inline">\(\times\)</span> 5 = 25 different possible tuning combinations to try in a tidy tibble format.</p>
+<p>The function <a href="https://dials.tidymodels.org/reference/grid_regular.html"><code>grid_regular()</code></a> is from the <a href="https://dials.tidymodels.org/">dials</a> package. It chooses sensible values to try for each hyperparameter; here, we asked for 5 of each. Since we have two to tune, <code><a href="https://dials.tidymodels.org/reference/grid_regular.html">grid_regular()</a></code> returns 5 <span class="math inline">\(\times\)</span> 5 = 25 different possible tuning combinations to try in a tidy tibble format.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -392,8 +392,8 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree_grid</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">tree_depth</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tree_grid</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">tree_depth</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 2</span></span>
 <span><span class="co">#&gt;   tree_depth     n</span></span>
 <span><span class="co">#&gt;        &lt;int&gt; &lt;int&gt;</span></span>
@@ -410,7 +410,7 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">234</span><span class="op">)</span></span>
-<span><span class="va">cell_folds</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">cell_train</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">cell_folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/vfold_cv.html">vfold_cv</a></span><span class="op">(</span><span class="va">cell_train</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -421,19 +421,19 @@ window.Quarto = {
 <li><p>Tune a model specification along with a recipe or model, or</p></li>
 <li><p>Tune a <a href="https://workflows.tidymodels.org/"><code>workflow()</code></a> that bundles together a model specification and a recipe or model preprocessor.</p></li>
 </ul>
-<p>Here we use a <code>workflow()</code> with a straightforward formula; if this model required more involved data preprocessing, we could use <code>add_recipe()</code> instead of <code>add_formula()</code>.</p>
+<p>Here we use a <code><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow()</a></code> with a straightforward formula; if this model required more involved data preprocessing, we could use <code><a href="https://workflows.tidymodels.org/reference/add_recipe.html">add_recipe()</a></code> instead of <code><a href="https://workflows.tidymodels.org/reference/add_formula.html">add_formula()</a></code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">345</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tree_wf</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">tune_spec</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span><span class="va">tree_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html">add_model</a></span><span class="op">(</span><span class="va">tune_spec</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_formula.html">add_formula</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tree_res</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">tree_wf</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">tune_grid</span><span class="op">(</span></span>
+<span>  <span class="va">tree_wf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid</a></span><span class="op">(</span></span>
 <span>    resamples <span class="op">=</span> <span class="va">cell_folds</span>,</span>
 <span>    grid <span class="op">=</span> <span class="va">tree_grid</span></span>
 <span>    <span class="op">)</span></span>
@@ -457,12 +457,12 @@ window.Quarto = {
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Once we have our tuning results, we can both explore them through visualization and then select the best result. The function <code>collect_metrics()</code> gives us a tidy tibble with all the results. We had 25 candidate models and two metrics, <code>accuracy</code> and <code>roc_auc</code>, and we get a row for each <code>.metric</code> and model.</p>
+<p>Once we have our tuning results, we can both explore them through visualization and then select the best result. The function <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code> gives us a tidy tibble with all the results. We had 25 candidate models and two metrics, <code>accuracy</code> and <code>roc_auc</code>, and we get a row for each <code>.metric</code> and model.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree_res</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tree_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 75 × 8</span></span>
 <span><span class="co">#&gt;    cost_complexity tree_depth .metric     .estimator  mean     n std_err .config</span></span>
 <span><span class="co">#&gt;              &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
@@ -484,15 +484,15 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree_res</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>tree_depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">tree_depth</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">cost_complexity</span>, <span class="va">mean</span>, color <span class="op">=</span> <span class="va">tree_depth</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.5</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">.metric</span>, scales <span class="op">=</span> <span class="st">"free"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_x_log10</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu">label_number</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_color_viridis_d</span><span class="op">(</span>option <span class="op">=</span> <span class="st">"plasma"</span>, begin <span class="op">=</span> <span class="fl">.9</span>, end <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tree_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>tree_depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">tree_depth</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">cost_complexity</span>, <span class="va">mean</span>, color <span class="op">=</span> <span class="va">tree_depth</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.5</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.metric</span>, scales <span class="op">=</span> <span class="st">"free"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_color_viridis_d</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"plasma"</span>, begin <span class="op">=</span> <span class="fl">.9</span>, end <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
 <span><span class="co">#&gt; ℹ Please use `linewidth` instead.</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -508,8 +508,8 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree_res</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">show_best</span><span class="op">(</span>metric <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tree_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span>metric <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 8</span></span>
 <span><span class="co">#&gt;   cost_complexity tree_depth .metric  .estimator  mean     n std_err .config    </span></span>
 <span><span class="co">#&gt;             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;      </span></span>
@@ -525,8 +525,8 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">best_tree</span> <span class="op">&lt;-</span> <span class="va">tree_res</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select_best</span><span class="op">(</span>metric <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">best_tree</span> <span class="op">&lt;-</span> <span class="va">tree_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">select_best</a></span><span class="op">(</span>metric <span class="op">=</span> <span class="st">"accuracy"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">best_tree</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
@@ -538,13 +538,13 @@ window.Quarto = {
 </div>
 <p>These are the values for <code>tree_depth</code> and <code>cost_complexity</code> that maximize accuracy in this data set of cell images.</p>
 </section><section id="final-model" class="level2"><h2 class="anchored" data-anchor-id="final-model">Finalizing our model</h2>
-<p>We can update (or “finalize”) our workflow object <code>tree_wf</code> with the values from <code>select_best()</code>.</p>
+<p>We can update (or “finalize”) our workflow object <code>tree_wf</code> with the values from <code><a href="https://tune.tidymodels.org/reference/show_best.html">select_best()</a></code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_wf</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">tree_wf</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">finalize_workflow</span><span class="op">(</span><span class="va">best_tree</span><span class="op">)</span></span>
+<span>  <span class="va">tree_wf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/finalize_model.html">finalize_workflow</a></span><span class="op">(</span><span class="va">best_tree</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">final_wf</span></span>
 <span><span class="co">#&gt; ══ Workflow ══════════════════════════════════════════════════════════</span></span>
@@ -572,11 +572,11 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">final_wf</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">last_fit</span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span> </span>
+<span>  <span class="va">final_wf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html">last_fit</a></span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span> </span>
 <span></span>
-<span><span class="va">final_fit</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">final_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
 <span><span class="co">#&gt;   .metric     .estimator .estimate .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;          </span></span>
@@ -584,10 +584,10 @@ window.Quarto = {
 <span><span class="co">#&gt; 2 roc_auc     binary         0.840 pre0_mod0_post0</span></span>
 <span><span class="co">#&gt; 3 brier_class binary         0.148 pre0_mod0_post0</span></span>
 <span></span>
-<span><span class="va">final_fit</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">roc_curve</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">autoplot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">final_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_curve.html">roc_curve</a></span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -602,7 +602,7 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">final_tree</span> <span class="op">&lt;-</span> <span class="fu">extract_workflow</span><span class="op">(</span><span class="va">final_fit</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">final_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">final_fit</span><span class="op">)</span></span>
 <span><span class="va">final_tree</span></span>
 <span><span class="co">#&gt; ══ Workflow [trained] ════════════════════════════════════════════════</span></span>
 <span><span class="co">#&gt; Preprocessor: Formula</span></span>
@@ -639,8 +639,8 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">final_tree</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">final_tree</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">rpart.plot</span><span class="op">(</span>roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -657,8 +657,8 @@ window.Quarto = {
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koalaverse/vip/">vip</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">final_tree</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">extract_fit_parsnip</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span><span class="va">final_tree</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_parsnip</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">vip</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>

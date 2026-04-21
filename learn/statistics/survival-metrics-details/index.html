@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -238,14 +238,14 @@ window.Quarto = {
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">prodlim</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">5882</span><span class="op">)</span></span>
-<span><span class="va">sim_dat</span> <span class="op">&lt;-</span> <span class="fu">SimSurv</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>event_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">event</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">event_time</span>, <span class="va">X1</span>, <span class="va">X2</span><span class="op">)</span></span>
+<span><span class="va">sim_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/prodlim/man/SimSurv.html">SimSurv</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>event_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">event</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">event_time</span>, <span class="va">X1</span>, <span class="va">X2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
-<span><span class="va">split</span>   <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">sim_dat</span><span class="op">)</span></span>
-<span><span class="va">sim_tr</span>  <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
-<span><span class="va">sim_val</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">split</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">sim_dat</span><span class="op">)</span></span>
+<span><span class="va">sim_tr</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
+<span><span class="va">sim_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -255,10 +255,10 @@ window.Quarto = {
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">17</span><span class="op">)</span></span>
 <span><span class="va">bag_tree_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">bag_tree</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"censored regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">event_time</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">sim_tr</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/bag_tree.html">bag_tree</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"censored regression"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">event_time</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">sim_tr</span><span class="op">)</span></span>
 <span><span class="va">bag_tree_fit</span></span>
 <span><span class="co">#&gt; parsnip model object</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -269,13 +269,13 @@ window.Quarto = {
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Using this model, we can make predictions of different types and <code>augment()</code> provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21.</p>
+<p>Using this model, we can make predictions of different types and <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> provides us with a version of the data augmented with the various predictions. Here we are interested in the predicted probability of survival at different evaluation time points. The largest event time in the training set is 21.083 so we will use a set of evaluation times between zero and 21.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">21</span>, by <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">val_pred</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">bag_tree_fit</span>, <span class="va">sim_val</span>, eval_time <span class="op">=</span> <span class="va">time_points</span><span class="op">)</span></span>
+<span><span class="va">val_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">bag_tree_fit</span>, <span class="va">sim_val</span>, eval_time <span class="op">=</span> <span class="va">time_points</span><span class="op">)</span></span>
 <span><span class="va">val_pred</span></span>
 <span><span class="co">#&gt; # A tibble: 500 × 5</span></span>
 <span><span class="co">#&gt;    .pred             .pred_time event_time    X1      X2</span></span>
@@ -363,14 +363,14 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dyn_val_pred</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">val_pred</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">.pred</span>, <span class="va">event_time</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">add_rowindex</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">unnest</span><span class="op">(</span><span class="va">.pred</span><span class="op">)</span> </span>
+<span>  <span class="va">val_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="va">event_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/add_rowindex.html">add_rowindex</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html">unnest</a></span><span class="op">(</span><span class="va">.pred</span><span class="op">)</span> </span>
 <span></span>
-<span><span class="va">dyn_val_pred</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.row</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">.eval_time</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">event_time</span>, <span class="va">.eval_time</span>, <span class="va">.weight_time</span>, <span class="va">.pred_censored</span>, <span class="va">.weight_censored</span><span class="op">)</span></span>
+<span><span class="va">dyn_val_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.row</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">.eval_time</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">event_time</span>, <span class="va">.eval_time</span>, <span class="va">.weight_time</span>, <span class="va">.pred_censored</span>, <span class="va">.weight_censored</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
 <span><span class="co">#&gt;   event_time .eval_time .weight_time .pred_censored .weight_censored</span></span>
 <span><span class="co">#&gt;       &lt;Surv&gt;      &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;</span></span>
@@ -392,8 +392,8 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time_as_binary_event</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">surv</span>, <span class="va">eval_time</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">event_time</span> <span class="op">&lt;-</span> <span class="fu">.extract_surv_time</span><span class="op">(</span><span class="va">surv</span><span class="op">)</span></span>
-<span>  <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">.extract_surv_status</span><span class="op">(</span><span class="va">surv</span><span class="op">)</span></span>
+<span>  <span class="va">event_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/dot-extract_surv_time.html">.extract_surv_time</a></span><span class="op">(</span><span class="va">surv</span><span class="op">)</span></span>
+<span>  <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/dot-extract_surv_status.html">.extract_surv_status</a></span><span class="op">(</span><span class="va">surv</span><span class="op">)</span></span>
 <span>  <span class="va">is_event_before_t</span> <span class="op">&lt;-</span> <span class="va">event_time</span> <span class="op">&lt;=</span> <span class="va">eval_time</span> <span class="op">&amp;</span> <span class="va">status</span> <span class="op">==</span> <span class="fl">1</span></span>
 <span>  </span>
 <span>  <span class="co"># Three possible contributions to the statistic from Graf 1999</span></span>
@@ -401,18 +401,18 @@ window.Quarto = {
 <span>  <span class="va">binary_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">event_time</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># A real event prior to eval_time (Graf category 1)</span></span>
-<span>  <span class="va">binary_res</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">is_event_before_t</span>, <span class="st">"event"</span>, <span class="va">binary_res</span><span class="op">)</span></span>
+<span>  <span class="va">binary_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">is_event_before_t</span>, <span class="st">"event"</span>, <span class="va">binary_res</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># Observed time greater than eval_time (Graf category 2)</span></span>
-<span>  <span class="va">binary_res</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">event_time</span> <span class="op">&gt;</span> <span class="va">eval_time</span>, <span class="st">"non-event"</span>, <span class="va">binary_res</span><span class="op">)</span></span>
+<span>  <span class="va">binary_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">event_time</span> <span class="op">&gt;</span> <span class="va">eval_time</span>, <span class="st">"non-event"</span>, <span class="va">binary_res</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">binary_res</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"event"</span>, <span class="st">"non-event"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">binary_encoding</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">dyn_val_pred</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>  <span class="va">dyn_val_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>    obs_class <span class="op">=</span> <span class="fu">time_as_binary_event</span><span class="op">(</span><span class="va">event_time</span>, <span class="va">.eval_time</span><span class="op">)</span>,</span>
-<span>    pred_class <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">.pred_survival</span> <span class="op">&gt;=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span>, <span class="st">"non-event"</span>, <span class="st">"event"</span><span class="op">)</span>,</span>
+<span>    pred_class <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">.pred_survival</span> <span class="op">&gt;=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span>, <span class="st">"non-event"</span>, <span class="st">"event"</span><span class="op">)</span>,</span>
 <span>    pred_class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">pred_class</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"event"</span>, <span class="st">"non-event"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -422,13 +422,13 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dyn_val_pred</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">summarize</span><span class="op">(</span>num_usable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">.weight_censored</span><span class="op">)</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">.eval_time</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_step</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.eval_time</span>, <span class="va">num_usable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"number of usable observations"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">lims</span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_val</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dyn_val_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>num_usable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">.weight_censored</span><span class="op">)</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">.eval_time</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_step</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">.eval_time</span>, <span class="va">num_usable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"time"</span>, y <span class="op">=</span> <span class="st">"number of usable observations"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">lims</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_val</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -441,18 +441,18 @@ window.Quarto = {
 <p>Keeping this in mind, let’s look at what happens with the data points we can use. Let’s start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:</p>
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">1.00</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">conf_mat</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>, estimate <span class="op">=</span> <span class="va">pred_class</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">1.00</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/conf_mat.html">conf_mat</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>, estimate <span class="op">=</span> <span class="va">pred_class</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <p>For censored regression problems, we need to additionally use the censoring weights so we’ll include them via the <code>case_weights</code> argument:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">1.00</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">conf_mat</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>,</span>
+<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">1.00</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/conf_mat.html">conf_mat</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>,</span>
 <span>           estimate <span class="op">=</span> <span class="va">pred_class</span>,</span>
 <span>           case_weights <span class="op">=</span> <span class="va">.weight_censored</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            Truth</span></span>
@@ -468,9 +468,9 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">5.00</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">conf_mat</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>,</span>
+<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">5.00</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/conf_mat.html">conf_mat</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>,</span>
 <span>           estimate <span class="op">=</span> <span class="va">pred_class</span>,</span>
 <span>           case_weights <span class="op">=</span> <span class="va">.weight_censored</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            Truth</span></span>
@@ -485,9 +485,9 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">17.00</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">conf_mat</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>,</span>
+<code class="sourceCode R"><span><span class="va">binary_encoding</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.eval_time</span> <span class="op">==</span> <span class="fl">17.00</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/conf_mat.html">conf_mat</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">obs_class</span>,</span>
 <span>           estimate <span class="op">=</span> <span class="va">pred_class</span>,</span>
 <span>           case_weights <span class="op">=</span> <span class="va">.weight_censored</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            Truth</span></span>

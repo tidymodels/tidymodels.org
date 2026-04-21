@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -393,7 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: glmnet, randomForest, ranger, and tidymodels.</p>
-<p>We can create regression models with the tidymodels package <a href="https://parsnip.tidymodels.org/">parsnip</a> to predict continuous or numeric quantities. Here, let’s first fit a random forest model, which does <em>not</em> require all numeric input (see discussion <a href="https://bookdown.org/max/FES/categorical-trees.html">here</a>) and discuss how to use <code>fit()</code> and <code>fit_xy()</code>, as well as <em>data descriptors</em>.</p>
+<p>We can create regression models with the tidymodels package <a href="https://parsnip.tidymodels.org/">parsnip</a> to predict continuous or numeric quantities. Here, let’s first fit a random forest model, which does <em>not</em> require all numeric input (see discussion <a href="https://bookdown.org/max/FES/categorical-trees.html">here</a>) and discuss how to use <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> and <code><a href="https://generics.r-lib.org/reference/fit_xy.html">fit_xy()</a></code>, as well as <em>data descriptors</em>.</p>
 <p>Second, let’s fit a regularized linear regression model to demonstrate how to move between different types of models using parsnip.</p>
 </section><section id="the-ames-housing-data" class="level2"><h2 class="anchored" data-anchor-id="the-ames-housing-data">The Ames housing data</h2>
 <p>We’ll use the Ames housing data set to demonstrate how to create regression models using parsnip. First, set up the data set and create a simple training/test set split:</p>
@@ -405,10 +405,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4595</span><span class="op">)</span></span>
-<span><span class="va">data_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, strata <span class="op">=</span> <span class="st">"Sale_Price"</span>, prop <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
+<span><span class="va">data_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">ames</span>, strata <span class="op">=</span> <span class="st">"Sale_Price"</span>, prop <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span>
-<span><span class="va">ames_test</span>  <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span>
+<span><span class="va">ames_test</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">data_split</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -418,7 +418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rf_defaults</span> <span class="op">&lt;-</span> <span class="fu">rand_forest</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rf_defaults</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span></span>
 <span><span class="va">rf_defaults</span></span>
 <span><span class="co">#&gt; Random Forest Model Specification (regression)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -426,11 +426,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The model will be fit with the ranger package by default. Since we didn’t add any extra arguments to <code>fit</code>, <em>many</em> of the arguments will be set to their defaults from the function <code>ranger::ranger()</code>. The help pages for the model function describe the default parameters and you can also use the <code>translate()</code> function to check out such details.</p>
+<p>The model will be fit with the ranger package by default. Since we didn’t add any extra arguments to <code>fit</code>, <em>many</em> of the arguments will be set to their defaults from the function <code>ranger::ranger()</code>. The help pages for the model function describe the default parameters and you can also use the <code><a href="https://parsnip.tidymodels.org/reference/translate.html">translate()</a></code> function to check out such details.</p>
 <p>The parsnip package provides two different interfaces to fit a model:</p>
 <ul>
-<li>the formula interface (<code>fit()</code>), and</li>
-<li>the non-formula interface (<code>fit_xy()</code>).</li>
+<li>the formula interface (<code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>), and</li>
+<li>the non-formula interface (<code><a href="https://generics.r-lib.org/reference/fit_xy.html">fit_xy()</a></code>).</li>
 </ul>
 <p>Let’s start with the non-formula interface:</p>
 <div class="cell" data-layout-align="center">
@@ -439,9 +439,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Longitude"</span>, <span class="st">"Latitude"</span>, <span class="st">"Lot_Area"</span>, <span class="st">"Neighborhood"</span>, <span class="st">"Year_Sold"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">rf_xy_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">rf_defaults</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">fit_xy</span><span class="op">(</span></span>
+<span>  <span class="va">rf_defaults</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit_xy.html">fit_xy</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="va">ames_train</span><span class="op">[</span>, <span class="va">preds</span><span class="op">]</span>,</span>
 <span>    y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">ames_train</span><span class="op">$</span><span class="va">Sale_Price</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -473,13 +473,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_results</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">ames_test</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span></span>
+<span>  <span class="va">ames_test</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_xy_fit</span>, new_data <span class="op">=</span> <span class="va">ames_test</span><span class="op">[</span>, <span class="va">preds</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">test_results</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">test_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 2</span></span>
 <span><span class="co">#&gt;   Sale_Price .pred</span></span>
 <span><span class="co">#&gt;        &lt;dbl&gt; &lt;dbl&gt;</span></span>
@@ -490,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 5       5.60  5.51</span></span>
 <span></span>
 <span><span class="co"># summarize performance</span></span>
-<span><span class="va">test_results</span> <span class="op">%&gt;%</span> <span class="fu">metrics</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">Sale_Price</span>, estimate <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> </span>
+<span><span class="va">test_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metrics.html">metrics</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">Sale_Price</span>, estimate <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -502,16 +502,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Note that:</p>
 <ul>
-<li>If the model required indicator variables, we would have to create them manually prior to using <code>fit()</code> (perhaps using the recipes package).</li>
+<li>If the model required indicator variables, we would have to create them manually prior to using <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> (perhaps using the recipes package).</li>
 <li>We had to manually log the outcome prior to modeling.</li>
 </ul>
 <p>Now, for illustration, let’s use the formula method using some new parameter values:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span>, mtry <span class="op">=</span> <span class="fl">3</span>, trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span>, mtry <span class="op">=</span> <span class="fl">3</span>, trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Lot_Area</span> <span class="op">+</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Year_Sold</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">ames_train</span></span>
 <span>  <span class="op">)</span></span>
@@ -535,13 +535,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Suppose that we would like to use the randomForest package instead of ranger. To do so, the only part of the syntax that needs to change is the <code>set_engine()</code> argument:</p>
+<p>Suppose that we would like to use the randomForest package instead of ranger. To do so, the only part of the syntax that needs to change is the <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine()</a></code> argument:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span>, mtry <span class="op">=</span> <span class="fl">3</span>, trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"randomForest"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span>, mtry <span class="op">=</span> <span class="fl">3</span>, trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"randomForest"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Lot_Area</span> <span class="op">+</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Year_Sold</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">ames_train</span></span>
 <span>  <span class="op">)</span></span>
@@ -561,22 +561,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Look at the formula code that was printed out; one function uses the argument name <code>ntree</code> and the other uses <code>num.trees</code>. The parsnip models don’t require you to know the specific names of the main arguments.</p>
 <p>Now suppose that we want to modify the value of <code>mtry</code> based on the number of predictors in the data. Usually, a good default value is <code>floor(sqrt(num_predictors))</code> but a pure bagging model requires an <code>mtry</code> value equal to the total number of parameters. There may be cases where you may not know how many predictors are going to be present when the model will be fit (perhaps due to the generation of indicator variables or a variable filter) so this might be difficult to know exactly ahead of time when you write your code.</p>
-<p>When the model is being fit by parsnip, <a href="https://parsnip.tidymodels.org/reference/descriptors.html"><em>data descriptors</em></a> are made available. These attempt to let you know what you will have available when the model is fit. When a model object is created (say using <code>rand_forest()</code>), the values of the arguments that you give it are <em>immediately evaluated</em> unless you delay them. To delay the evaluation of any argument, you can used <code><a href="https://rlang.r-lib.org/reference/expr.html">rlang::expr()</a></code> to make an expression.</p>
+<p>When the model is being fit by parsnip, <a href="https://parsnip.tidymodels.org/reference/descriptors.html"><em>data descriptors</em></a> are made available. These attempt to let you know what you will have available when the model is fit. When a model object is created (say using <code><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest()</a></code>), the values of the arguments that you give it are <em>immediately evaluated</em> unless you delay them. To delay the evaluation of any argument, you can used <code><a href="https://rlang.r-lib.org/reference/expr.html">rlang::expr()</a></code> to make an expression.</p>
 <p>Two relevant data descriptors for our example model are:</p>
 <ul>
 <li>
-<code>.preds()</code>: the number of predictor <em>variables</em> in the data set that are associated with the predictors <strong>prior to dummy variable creation</strong>.</li>
+<code><a href="https://parsnip.tidymodels.org/reference/descriptors.html">.preds()</a></code>: the number of predictor <em>variables</em> in the data set that are associated with the predictors <strong>prior to dummy variable creation</strong>.</li>
 <li>
-<code>.cols()</code>: the number of predictor <em>columns</em> after dummy variables (or other encodings) are created.</li>
+<code><a href="https://parsnip.tidymodels.org/reference/descriptors.html">.cols()</a></code>: the number of predictor <em>columns</em> after dummy variables (or other encodings) are created.</li>
 </ul>
-<p>Since ranger won’t create indicator values, <code>.preds()</code> would be appropriate for <code>mtry</code> for a bagging model.</p>
-<p>For example, let’s use an expression with the <code>.preds()</code> descriptor to fit a bagging model:</p>
+<p>Since ranger won’t create indicator values, <code><a href="https://parsnip.tidymodels.org/reference/descriptors.html">.preds()</a></code> would be appropriate for <code>mtry</code> for a bagging model.</p>
+<p>For example, let’s use an expression with the <code><a href="https://parsnip.tidymodels.org/reference/descriptors.html">.preds()</a></code> descriptor to fit a bagging model:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span>, mtry <span class="op">=</span> <span class="fu">.preds</span><span class="op">(</span><span class="op">)</span>, trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span>, mtry <span class="op">=</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/descriptors.html">.preds</a></span><span class="op">(</span><span class="op">)</span>, trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Lot_Area</span> <span class="op">+</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Year_Sold</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">ames_train</span></span>
 <span>  <span class="op">)</span></span>
@@ -601,30 +601,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section><section id="regularized-regression" class="level2"><h2 class="anchored" data-anchor-id="regularized-regression">Regularized regression</h2>
-<p>A linear model might work for this data set as well. We can use the <code>linear_reg()</code> parsnip model. There are two engines that can perform regularization/penalization, the glmnet and sparklyr packages. Let’s use the former here. The glmnet package only implements a non-formula method, but parsnip will allow either one to be used.</p>
+<p>A linear model might work for this data set as well. We can use the <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code> parsnip model. There are two engines that can perform regularization/penalization, the glmnet and sparklyr packages. Let’s use the former here. The glmnet package only implements a non-formula method, but parsnip will allow either one to be used.</p>
 <p>When regularization is used, the predictors should first be centered and scaled before being passed to the model. The formula method won’t do that automatically so we will need to do this ourselves. We’ll use the <a href="https://recipes.tidymodels.org/">recipes</a> package for these steps.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">norm_recipe</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">recipe</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span></span>
 <span>    <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Lot_Area</span> <span class="op">+</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Year_Sold</span>, </span>
 <span>    data <span class="op">=</span> <span class="va">ames_train</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_other</span><span class="op">(</span><span class="va">Neighborhood</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_center</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_scale</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_log</span><span class="op">(</span><span class="va">Sale_Price</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_other.html">step_other</a></span><span class="op">(</span><span class="va">Neighborhood</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_center.html">step_center</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_scale.html">step_scale</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_log.html">step_log</a></span><span class="op">(</span><span class="va">Sale_Price</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># estimate the means and standard deviations</span></span>
-<span>  <span class="fu">prep</span><span class="op">(</span>training <span class="op">=</span> <span class="va">ames_train</span>, retain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span>training <span class="op">=</span> <span class="va">ames_train</span>, retain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Now let's fit the model using the processed version of the data</span></span>
 <span></span>
 <span><span class="va">glmn_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">linear_reg</span><span class="op">(</span>penalty <span class="op">=</span> <span class="fl">0.001</span>, mixture <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu">bake</span><span class="op">(</span><span class="va">norm_recipe</span>, new_data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span>penalty <span class="op">=</span> <span class="fl">0.001</span>, mixture <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">norm_recipe</span>, new_data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">glmn_fit</span></span>
 <span><span class="co">#&gt; parsnip model object</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -706,14 +706,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># First, get the processed version of the test set predictors:</span></span>
-<span><span class="va">test_normalized</span> <span class="op">&lt;-</span> <span class="fu">bake</span><span class="op">(</span><span class="va">norm_recipe</span>, new_data <span class="op">=</span> <span class="va">ames_test</span>, <span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">test_normalized</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">norm_recipe</span>, new_data <span class="op">=</span> <span class="va">ames_test</span>, <span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">test_results</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">test_results</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">rename</span><span class="op">(</span>`random forest` <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">glmn_fit</span>, new_data <span class="op">=</span> <span class="va">test_normalized</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>      <span class="fu">rename</span><span class="op">(</span>glmnet <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span></span>
+<span>  <span class="va">test_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>`random forest` <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">glmn_fit</span>, new_data <span class="op">=</span> <span class="va">test_normalized</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>glmnet <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">test_results</span></span>
 <span><span class="co">#&gt; # A tibble: 733 × 3</span></span>
@@ -731,7 +731,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 10       5.11            5.14   5.19</span></span>
 <span><span class="co">#&gt; # ℹ 723 more rows</span></span>
 <span></span>
-<span><span class="va">test_results</span> <span class="op">%&gt;%</span> <span class="fu">metrics</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">Sale_Price</span>, estimate <span class="op">=</span> <span class="va">glmnet</span><span class="op">)</span> </span>
+<span><span class="va">test_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metrics.html">metrics</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">Sale_Price</span>, estimate <span class="op">=</span> <span class="va">glmnet</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -739,13 +739,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 2 rsq     standard      0.391 </span></span>
 <span><span class="co">#&gt; 3 mae     standard      0.0979</span></span>
 <span></span>
-<span><span class="va">test_results</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">gather</span><span class="op">(</span><span class="va">model</span>, <span class="va">prediction</span>, <span class="op">-</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">prediction</span>, y <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_abline</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"green"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">model</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">coord_fixed</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">test_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">prediction</span>, <span class="op">-</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">prediction</span>, y <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"green"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">model</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">

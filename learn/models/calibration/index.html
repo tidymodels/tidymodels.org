@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -210,8 +210,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/probably">probably</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/discrim">discrim</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tidymodels_prefer</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">theme_set</span><span class="op">(</span><span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>pillar.advice <span class="op">=</span> <span class="cn">FALSE</span>, pillar.min_title_chars <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -227,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">cells</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2019   57</span></span>
-<span><span class="va">cells</span> <span class="op">%&gt;%</span> <span class="fu">count</span><span class="op">(</span><span class="va">class</span><span class="op">)</span></span>
+<span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span><span class="co">#&gt;   class     n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt; &lt;int&gt;</span></span>
@@ -237,16 +237,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>There is a class imbalance but that will not affect our work here.</p>
-<p>Let’s make a 75% to 25% split of the data into training and testing using <code>initial_split()</code>. We’ll also create a set of 10-fold cross-validation indices for model resampling.</p>
+<p>Let’s make a 75% to 25% split of the data into training and testing using <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split()</a></code>. We’ll also create a set of 10-fold cross-validation indices for model resampling.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">8928</span><span class="op">)</span></span>
-<span><span class="va">split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">cells</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span>
-<span><span class="va">cells_tr</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
-<span><span class="va">cells_te</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
+<span><span class="va">split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">cells</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span>
+<span><span class="va">cells_tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
+<span><span class="va">cells_te</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cells_rs</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">cells_tr</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">cells_rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/vfold_cv.html">vfold_cv</a></span><span class="op">(</span><span class="va">cells_tr</span>, strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -258,25 +258,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bayes_wflow</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_model</span><span class="op">(</span><span class="fu">naive_Bayes</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_formula.html">add_formula</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html">add_model</a></span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/naive_Bayes.html">naive_Bayes</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>We’ll resample the model first so that we can get a good assessment of the results. During the resampling process, two metrics are used to judge how well the model worked. First, the area under the ROC curve is used to measure the ability of the model to separate the classes (using probability predictions). Second, the Brier score can measure how close the probability estimates are to the actual outcome values (zero or one). The <code>collect_metrics()</code> function shows the resampling estimates:</p>
+<p>We’ll resample the model first so that we can get a good assessment of the results. During the resampling process, two metrics are used to judge how well the model worked. First, the area under the ROC curve is used to measure the ability of the model to separate the classes (using probability predictions). Second, the Brier score can measure how close the probability estimates are to the actual outcome values (zero or one). The <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code> function shows the resampling estimates:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cls_met</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span>, <span class="va">brier_class</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cls_met</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">roc_auc</span>, <span class="va">brier_class</span><span class="op">)</span></span>
 <span><span class="co"># We'll save the out-of-sample predictions to visualize them. </span></span>
-<span><span class="va">ctrl</span> <span class="op">&lt;-</span> <span class="fu">control_resamples</span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">ctrl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tune.tidymodels.org/reference/control_grid.html">control_resamples</a></span><span class="op">(</span>save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">bayes_res</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">bayes_wflow</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">fit_resamples</span><span class="op">(</span><span class="va">cells_rs</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, control <span class="op">=</span> <span class="va">ctrl</span><span class="op">)</span></span>
+<span>  <span class="va">bayes_wflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/fit_resamples.html">fit_resamples</a></span><span class="op">(</span><span class="va">cells_rs</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, control <span class="op">=</span> <span class="va">ctrl</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
 <span><span class="co">#&gt;   .metric     .estimator  mean     n std_err .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          </span></span>
@@ -292,12 +292,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">.pred_PS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"white"</span>, bins <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">class</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_rug</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Probability Estimate of PS"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">.pred_PS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"white"</span>, bins <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">class</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html">geom_rug</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Probability Estimate of PS"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The most common approach is the fit a logistic regression model to the data (with the probability estimates as the predictor). The probability predictions from this model are then used as the calibrated estimate. By default, a generalized additive model is used for this fit, but the <code>smooth = FALSE</code> argument can use simple linear effects.</p>
 <p>If effect, the GAM model estimates the probability regions where the model is off (as shown in the diagnostic plot). For example, suppose that when the model predicts a 2% event rate, the GAM model estimates that it under-predicts the probability by 5% (relative to the observed data). Given this gap, new predictions are adjusted up so that the probability estimates are more in-line with the data.</p>
 <p>How do we know if this works? There are a set of <code>cal_validate_*()</code> functions that can use holdout data to resample the model with and without the calibration tool of choice. Since we already resampled the model, we’ll use those results to estimate 10 more logistic regressions and use the out-of-sample data to estimate performance.</p>
-<p><code>collect_metrics()</code> can again be used to see the performance statistics. We’ll also use <code>cal_plot_windowed()</code> on the calibrated holdout data to get a visual assessment:</p>
+<p><code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code> can again be used to see the performance statistics. We’ll also use <code>cal_plot_windowed()</code> on the calibrated holdout data to get a visual assessment:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -367,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Registered S3 method overwritten by 'butcher':</span></span>
 <span><span class="co">#&gt;   method                 from    </span></span>
 <span><span class="co">#&gt;   as.character.dev_topic generics</span></span>
-<span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">logit_val</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">logit_val</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 7</span></span>
 <span><span class="co">#&gt;   .metric     .type        .estimator  mean     n std_err .config</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
@@ -376,10 +376,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 3 brier_class calibrated   binary     0.154    10 0.00585 config </span></span>
 <span><span class="co">#&gt; 4 roc_auc     calibrated   binary     0.852    10 0.00866 config</span></span>
 <span></span>
-<span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">logit_val</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">logit_val</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Logistic calibration via GAM"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Logistic calibration via GAM"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -397,7 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1212</span><span class="op">)</span></span>
 <span><span class="va">iso_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_isotonic_boot</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, </span>
 <span>                                      save_pred <span class="op">=</span> <span class="cn">TRUE</span>, times <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span>
-<span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">iso_val</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">iso_val</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 7</span></span>
 <span><span class="co">#&gt;   .metric     .type        .estimator  mean     n std_err .config</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
@@ -406,10 +406,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 3 brier_class calibrated   binary     0.151    10 0.00464 config </span></span>
 <span><span class="co">#&gt; 4 roc_auc     calibrated   binary     0.853    10 0.00829 config</span></span>
 <span></span>
-<span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">iso_val</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">iso_val</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Isotonic regression calibration"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Isotonic regression calibration"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -425,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">beta_val</span> <span class="op">&lt;-</span> <span class="fu">cal_validate_beta</span><span class="op">(</span><span class="va">bayes_res</span>, metrics <span class="op">=</span> <span class="va">cls_met</span>, save_pred <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">beta_val</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">beta_val</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 7</span></span>
 <span><span class="co">#&gt;   .metric     .type        .estimator  mean     n std_err .config</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
@@ -434,10 +434,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 3 brier_class calibrated   binary     0.146    10 0.00391 config </span></span>
 <span><span class="co">#&gt; 4 roc_auc     calibrated   binary     0.853    10 0.00837 config</span></span>
 <span></span>
-<span><span class="fu">collect_predictions</span><span class="op">(</span><span class="va">beta_val</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">beta_val</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.type</span> <span class="op">==</span> <span class="st">"calibrated"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Beta calibration"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Beta calibration"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -454,7 +454,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cell_cal</span> <span class="op">&lt;-</span> <span class="fu">cal_estimate_beta</span><span class="op">(</span><span class="va">bayes_res</span><span class="op">)</span></span>
-<span><span class="va">bayes_fit</span> <span class="op">&lt;-</span> <span class="va">bayes_wflow</span> <span class="op">%&gt;%</span> <span class="fu">fit</span><span class="op">(</span>data <span class="op">=</span> <span class="va">cells_tr</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">bayes_fit</span> <span class="op">&lt;-</span> <span class="va">bayes_wflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">cells_tr</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -464,8 +464,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cell_test_pred</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">cells_te</span><span class="op">)</span></span>
-<span><span class="va">cell_test_pred</span> <span class="op">%&gt;%</span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cell_test_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">cells_te</span><span class="op">)</span></span>
+<span><span class="va">cell_test_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   .metric     .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -480,9 +480,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">cell_test_pred</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="va">cell_test_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">cal_apply</span><span class="op">(</span><span class="va">cell_cal</span><span class="op">)</span></span>
-<span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">select</span><span class="op">(</span><span class="va">class</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">".pred_"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cell_test_cal_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">class</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">".pred_"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 505 × 4</span></span>
 <span><span class="co">#&gt;    class .pred_class .pred_PS .pred_WS</span></span>
 <span><span class="co">#&gt;    &lt;fct&gt; &lt;fct&gt;          &lt;dbl&gt;    &lt;dbl&gt;</span></span>
@@ -505,13 +505,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cell_test_cal_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">cls_met</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   .metric     .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 roc_auc     binary         0.840</span></span>
 <span><span class="co">#&gt; 2 brier_class binary         0.153</span></span>
-<span><span class="va">cell_test_cal_pred</span> <span class="op">%&gt;%</span></span>
+<span><span class="va">cell_test_cal_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">cal_plot_windowed</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, estimate <span class="op">=</span> <span class="va">.pred_PS</span>, step_size <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>

@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -409,12 +409,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: modeldata and tidymodels.</p>
 <p>There are many existing recipe steps in packages like recipes, themis, textrecipes, and others. A full list of steps in CRAN packages <a href="../../../find/recipes/">can be found here</a>. However, you might need to define your own preprocessing operations; this article describes how to do that. If you are looking for good examples of existing steps, we suggest looking at the code for <a href="https://github.com/tidymodels/recipes/blob/master/R/center.R">centering</a> or <a href="https://github.com/tidymodels/recipes/blob/master/R/pca.R">PCA</a> to start.</p>
-<p>For check operations (e.g. <code>check_class()</code>), the process is very similar. Notes on this are available at the end of this article.</p>
+<p>For check operations (e.g. <code><a href="https://recipes.tidymodels.org/reference/check_class.html">check_class()</a></code>), the process is very similar. Notes on this are available at the end of this article.</p>
 <p>The general process to follow is to:</p>
 <ol type="1">
 <li><p>Define a step constructor function.</p></li>
-<li><p>Create the minimal S3 methods for <code>prep()</code>, <code>bake()</code>, and <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>.</p></li>
-<li><p>Optionally add some extra methods to work with other tidymodels packages, such as <code>tunable()</code> and <code>tidy()</code>.</p></li>
+<li><p>Create the minimal S3 methods for <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>, <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code>, and <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>.</p></li>
+<li><p>Optionally add some extra methods to work with other tidymodels packages, such as <code><a href="https://generics.r-lib.org/reference/tunable.html">tunable()</a></code> and <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code>.</p></li>
 </ol>
 <p>As an example, we will create a step for converting data into percentiles.</p>
 </section><section id="creating-a-new-step" class="level2"><h2 class="anchored" data-anchor-id="creating-a-new-step">Creating a new step</h2>
@@ -445,10 +445,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu">theme_set</span><span class="op">(</span><span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">biomass_tr</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">carbon</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">5</span>, col <span class="op">=</span> <span class="st">"blue"</span>, fill <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">biomass_te</span><span class="op">$</span><span class="va">carbon</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">biomass_tr</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">carbon</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">5</span>, col <span class="op">=</span> <span class="st">"blue"</span>, fill <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">biomass_te</span><span class="op">$</span><span class="va">carbon</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -487,9 +487,9 @@ Note
 <span> <span class="va">ref_dist</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span> <span class="va">options</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>probs <span class="op">=</span> <span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span>, names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span> <span class="va">skip</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span> <span class="va">id</span> <span class="op">=</span> <span class="fu">rand_id</span><span class="op">(</span><span class="st">"percentiles"</span><span class="op">)</span></span>
+<span> <span class="va">id</span> <span class="op">=</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/rand_id.html">rand_id</a></span><span class="op">(</span><span class="st">"percentiles"</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">add_step</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/add_step.html">add_step</a></span><span class="op">(</span></span>
 <span> <span class="va">recipe</span>,</span>
 <span>    <span class="fu">step_percentiles_new</span><span class="op">(</span></span>
 <span> terms <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>,</span>
@@ -511,13 +511,13 @@ Note
 <li>
 <code>trained</code> is set by the package when the estimation step has been run. You should default your function definition’s argument to <code>FALSE</code>.</li>
 <li>
-<code>skip</code> is a logical. Whenever a recipe is prepped, each step is trained and then baked. However, there are some steps that should not be applied when a call to <code>bake()</code> is used. For example, if a step is applied to the variables with roles of “outcomes”, these data would not be available for new samples.</li>
+<code>skip</code> is a logical. Whenever a recipe is prepped, each step is trained and then baked. However, there are some steps that should not be applied when a call to <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> is used. For example, if a step is applied to the variables with roles of “outcomes”, these data would not be available for new samples.</li>
 <li>
-<code>id</code> is a character string that can be used to identify steps in package code. <code>rand_id()</code> will create an ID that has the prefix and a random character sequence.</li>
+<code>id</code> is a character string that can be used to identify steps in package code. <code><a href="https://recipes.tidymodels.org/reference/rand_id.html">rand_id()</a></code> will create an ID that has the prefix and a random character sequence.</li>
 </ul>
-<p>We can estimate the percentiles of new data points based on the percentiles from the training set with <code><a href="https://rdrr.io/r/stats/approxfun.html">approx()</a></code>. Our <code>step_percentiles()</code> contains a <code>ref_dist</code> object to store these percentiles (pre-computed from the training set in <code>prep()</code>) for later use in <code>bake()</code>.</p>
+<p>We can estimate the percentiles of new data points based on the percentiles from the training set with <code><a href="https://rdrr.io/r/stats/approxfun.html">approx()</a></code>. Our <code>step_percentiles()</code> contains a <code>ref_dist</code> object to store these percentiles (pre-computed from the training set in <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>) for later use in <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code>.</p>
 <p>We will use <code><a href="https://rdrr.io/r/stats/quantile.html">stats::quantile()</a></code> to compute the grid. However, we might also want to have control over the granularity of this grid, so the <code>options</code> argument will be used to define how that calculation is done. We could use the ellipses (aka <code>...</code>) so that any options passed to <code>step_percentiles()</code> that are not one of its arguments will then be passed to <code><a href="https://rdrr.io/r/stats/quantile.html">stats::quantile()</a></code>. However, we recommend making a separate list object with the options and use these inside the function because <code>...</code> is already used to define the variable selection.</p>
-<p>It is also important to consider if there are any <em>main arguments</em> to the step. For example, for spline-related steps such as <code>step_ns()</code>, users typically want to adjust the argument for the degrees of freedom in the spline (e.g. <code>splines::ns(x, df)</code>). Rather than letting users add <code>df</code> to the <code>options</code> argument:</p>
+<p>It is also important to consider if there are any <em>main arguments</em> to the step. For example, for spline-related steps such as <code><a href="https://recipes.tidymodels.org/reference/step_ns.html">step_ns()</a></code>, users typically want to adjust the argument for the degrees of freedom in the spline (e.g. <code>splines::ns(x, df)</code>). Rather than letting users add <code>df</code> to the <code>options</code> argument:</p>
 <ul>
 <li><p>Allow the important arguments to be the main arguments to the step function.</p></li>
 <li><p>Follow the tidymodels <a href="https://tidymodels.github.io/model-implementation-principles/standardized-argument-names.html">conventions for naming arguments</a>. Whenever possible, avoid jargon and keep common argument names.</p></li>
@@ -535,7 +535,7 @@ Note
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">step_percentiles_new</span> <span class="op">&lt;-</span></span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">terms</span>, <span class="va">role</span>, <span class="va">trained</span>, <span class="va">ref_dist</span>, <span class="va">options</span>, <span class="va">skip</span>, <span class="va">id</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step.html">step</a></span><span class="op">(</span></span>
 <span> subclass <span class="op">=</span> <span class="st">"percentiles"</span>,</span>
 <span> terms <span class="op">=</span> <span class="va">terms</span>,</span>
 <span> role <span class="op">=</span> <span class="va">role</span>,</span>
@@ -551,7 +551,7 @@ Note
 </div>
 <p>This constructor function should have no default argument values. Defaults should be set in the user-facing step object.</p>
 </section><section id="create-the-prep-method" class="level3"><h3 class="anchored" data-anchor-id="create-the-prep-method">Create the <code>prep()</code> method</h3>
-<p>You will need to create a new <code>prep()</code> method for your step’s class. To do this, three arguments that the method should have are:</p>
+<p>You will need to create a new <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> method for your step’s class. To do this, three arguments that the method should have are:</p>
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(x, training, <span class="at">info =</span> <span class="cn">NULL</span>, ...)</span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -563,11 +563,11 @@ Note
 <li>
 <code>training</code> will be a <em>tibble</em> that has the training set data, and</li>
 <li>
-<code>info</code> will also be a tibble that has information on the current set of data available. This information is updated as each step is evaluated by its specific <code>prep()</code> method so it may not have the variables from the original data. The columns in this tibble are <code>variable</code> (the variable name), <code>type</code> (currently either <code>"numeric"</code> or <code>"nominal"</code>), <code>role</code> (defining the variable’s role), and <code>source</code> (either <code>"original"</code> or <code>"derived"</code> depending on where it originated).</li>
+<code>info</code> will also be a tibble that has information on the current set of data available. This information is updated as each step is evaluated by its specific <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> method so it may not have the variables from the original data. The columns in this tibble are <code>variable</code> (the variable name), <code>type</code> (currently either <code>"numeric"</code> or <code>"nominal"</code>), <code>role</code> (defining the variable’s role), and <code>source</code> (either <code>"original"</code> or <code>"derived"</code> depending on where it originated).</li>
 <li>
 <code>...</code> not being used.</li>
 </ul>
-<p>The first thing that you might want to do in the <code>prep()</code> function is to translate the specification listed in the <code>terms</code> argument to column names in the current data. This is done using the <code>recipes_eval_select()</code> function.</p>
+<p>The first thing that you might want to do in the <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> function is to translate the specification listed in the <code>terms</code> argument to column names in the current data. This is done using the <code><a href="https://recipes.tidymodels.org/reference/recipes_eval_select.html">recipes_eval_select()</a></code> function.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -578,32 +578,32 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The <code>recipes_eval_select()</code> function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps.</p>
+<p>The <code><a href="https://recipes.tidymodels.org/reference/recipes_eval_select.html">recipes_eval_select()</a></code> function is not one you interact with as a typical recipes user, but it is helpful if you develop your own custom recipe steps.</p>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prep.step_percentiles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">training</span>, <span class="va">info</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu">recipes_eval_select</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span>, <span class="va">training</span>, <span class="va">info</span><span class="op">)</span></span>
+<span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes_eval_select.html">recipes_eval_select</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span>, <span class="va">training</span>, <span class="va">info</span><span class="op">)</span></span>
 <span>  <span class="co"># TODO finish the rest of the function</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>After this function call, it is a good idea to check that the selected columns have the appropriate type (e.g. numeric for this example). See <code>recipes::check_type()</code> to do this for basic types.</p>
+<p>After this function call, it is a good idea to check that the selected columns have the appropriate type (e.g. numeric for this example). See <code><a href="https://recipes.tidymodels.org/reference/check_type.html">recipes::check_type()</a></code> to do this for basic types.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prep.step_percentiles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">training</span>, <span class="va">info</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu">recipes_eval_select</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span>, <span class="va">training</span>, <span class="va">info</span><span class="op">)</span></span>
-<span>  <span class="fu">check_type</span><span class="op">(</span><span class="va">training</span><span class="op">[</span>, <span class="va">col_names</span><span class="op">]</span>, types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"integer"</span><span class="op">)</span><span class="op">)</span></span>
+<span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes_eval_select.html">recipes_eval_select</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span>, <span class="va">training</span>, <span class="va">info</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/check_type.html">check_type</a></span><span class="op">(</span><span class="va">training</span><span class="op">[</span>, <span class="va">col_names</span><span class="op">]</span>, types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"integer"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="co"># TODO finish the rest of the function</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Once we have this then we are ready for the meat of the function. The purpose of the <code>prep()</code> method is to calculate and store the information needed to perform the transformations. <code>step_center()</code> stores the means of the selected variables, <code>step_pca()</code> stores the loadings, and <code>step_lincomb()</code> calculates which variables are linear combinations of each other and marks them for removal. Some steps don’t need to calculate anything in the <code>prep()</code> method, examples include <code>step_arrange()</code> and <code>step_date()</code>.</p>
+<p>Once we have this then we are ready for the meat of the function. The purpose of the <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> method is to calculate and store the information needed to perform the transformations. <code><a href="https://recipes.tidymodels.org/reference/step_center.html">step_center()</a></code> stores the means of the selected variables, <code><a href="https://recipes.tidymodels.org/reference/step_pca.html">step_pca()</a></code> stores the loadings, and <code><a href="https://recipes.tidymodels.org/reference/step_lincomb.html">step_lincomb()</a></code> calculates which variables are linear combinations of each other and marks them for removal. Some steps don’t need to calculate anything in the <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> method, examples include <code><a href="https://recipes.tidymodels.org/reference/step_arrange.html">step_arrange()</a></code> and <code><a href="https://recipes.tidymodels.org/reference/step_date.html">step_date()</a></code>.</p>
 <p>For this step, we want to save the approximation grid. For the grid, we will use a helper function that enables us to run <code><a href="https://rlang.r-lib.org/reference/exec.html">rlang::exec()</a></code> to splice in any extra arguments contained in the <code>options</code> list to the call to <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -624,13 +624,13 @@ Warning
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Now, the <code>prep()</code> method can be created:</p>
+<p>Now, the <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> method can be created:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prep.step_percentiles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">training</span>, <span class="va">info</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu">recipes_eval_select</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span>, <span class="va">training</span>, <span class="va">info</span><span class="op">)</span></span>
-<span>  <span class="fu">check_type</span><span class="op">(</span><span class="va">training</span><span class="op">[</span>, <span class="va">col_names</span><span class="op">]</span>, types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"integer"</span><span class="op">)</span><span class="op">)</span></span>
+<span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes_eval_select.html">recipes_eval_select</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span>, <span class="va">training</span>, <span class="va">info</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/check_type.html">check_type</a></span><span class="op">(</span><span class="va">training</span><span class="op">[</span>, <span class="va">col_names</span><span class="op">]</span>, types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"integer"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># We'll use the names later so make sure they are available</span></span>
 <span> <span class="kw">if</span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">options</span><span class="op">$</span><span class="va">names</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
@@ -675,17 +675,17 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Due to the way errors are captured and rethrown in recipes, we recommend using a for-loop over <code>map()</code> or <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> to go over the selected variables.</p>
+<p>Due to the way errors are captured and rethrown in recipes, we recommend using a for-loop over <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> or <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> to go over the selected variables.</p>
 </div>
 </div>
 <p>We suggest favoring <code><a href="https://cli.r-lib.org/reference/cli_abort.html">cli::cli_abort()</a></code> and <code><a href="https://cli.r-lib.org/reference/cli_abort.html">cli::cli_warn()</a></code> over <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> and <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code>. The former can be used for better traceback results.</p>
 </section><section id="create-the-bake-method" class="level3"><h3 class="anchored" data-anchor-id="create-the-bake-method">Create the <code>bake()</code> method</h3>
-<p>Remember that the <code>prep()</code> function does not <em>apply</em> the step to the data; it only estimates any required values such as <code>ref_dist</code>. We will need to create a new method for our <code>step_percentiles()</code> class. The signature is as follows.</p>
+<p>Remember that the <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> function does not <em>apply</em> the step to the data; it only estimates any required values such as <code>ref_dist</code>. We will need to create a new method for our <code>step_percentiles()</code> class. The signature is as follows.</p>
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(object, new_data, ...)</span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
-<p>Where <code>object</code> is the updated step function that has been through the corresponding <code>prep()</code> code and <code>new_data</code> is a tibble of data to be processed.</p>
+<p>Where <code>object</code> is the updated step function that has been through the corresponding <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> code and <code>new_data</code> is a tibble of data to be processed.</p>
 <p>Here is the code to convert the new data to percentiles. The input data (<code>x</code> below) comes in as a numeric vector and the output is a vector of approximate percentiles:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -699,13 +699,13 @@ Tip
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>We will loop over the variables one by one and apply the transformation. <code>check_new_data()</code> is used to make sure that the variables that are affected in this step are present.</p>
+<p>We will loop over the variables one by one and apply the transformation. <code><a href="https://recipes.tidymodels.org/reference/check_new_data.html">check_new_data()</a></code> is used to make sure that the variables that are affected in this step are present.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bake.step_percentiles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">new_data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">ref_dist</span><span class="op">)</span></span>
-<span>  <span class="fu">check_new_data</span><span class="op">(</span><span class="va">col_names</span>, <span class="va">object</span>, <span class="va">new_data</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/check_new_data.html">check_new_data</a></span><span class="op">(</span><span class="va">col_names</span>, <span class="va">object</span>, <span class="va">new_data</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="kw">for</span> <span class="op">(</span><span class="va">col_name</span> <span class="kw">in</span> <span class="va">col_names</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="va">new_data</span><span class="op">[[</span><span class="va">col_name</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">pctl_by_approx</span><span class="op">(</span></span>
@@ -731,7 +731,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You need to import <code>recipes::prep()</code> and <code>recipes::bake()</code> to create your own step function in a package.</p>
+<p>You need to import <code><a href="https://recipes.tidymodels.org/reference/prep.html">recipes::prep()</a></code> and <code><a href="https://recipes.tidymodels.org/reference/bake.html">recipes::bake()</a></code> to create your own step function in a package.</p>
 </div>
 </div>
 </section><section id="verify-it-works" class="level3"><h3 class="anchored" data-anchor-id="verify-it-works">Verify it works</h3>
@@ -739,15 +739,15 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rec_obj</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">HHV</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">biomass_tr</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_percentiles</span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">prep</span><span class="op">(</span>training <span class="op">=</span> <span class="va">biomass_tr</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rec_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">HHV</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">biomass_tr</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_percentiles</span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">ends_with</a></span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span>training <span class="op">=</span> <span class="va">biomass_tr</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">biomass_te</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">biomass_te</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">ends_with</a></span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   hydrogen oxygen nitrogen</span></span>
 <span><span class="co">#&gt; 1     5.67  47.20     0.30</span></span>
 <span><span class="co">#&gt; 2     5.50  48.06     2.85</span></span>
-<span><span class="fu">bake</span><span class="op">(</span><span class="va">rec_obj</span>, <span class="va">biomass_te</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, <span class="fu">ends_with</span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">rec_obj</span>, <span class="va">biomass_te</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">ends_with</a></span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   hydrogen oxygen nitrogen</span></span>
 <span><span class="co">#&gt;      &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span></span>
@@ -766,22 +766,22 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hydrogen_values</span> <span class="op">&lt;-</span> <span class="fu">bake</span><span class="op">(</span><span class="va">rec_obj</span>, <span class="va">biomass_te</span>, <span class="va">hydrogen</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="va">biomass_te</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span>original <span class="op">=</span> <span class="va">hydrogen</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">hydrogen_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">rec_obj</span>, <span class="va">biomass_te</span>, <span class="va">hydrogen</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">biomass_te</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>original <span class="op">=</span> <span class="va">hydrogen</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">biomass_tr</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">hydrogen</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">biomass_tr</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">hydrogen</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Plot the empirical distribution function of the</span></span>
 <span>  <span class="co"># hydrogen training set values as a black line</span></span>
-<span>  <span class="fu">stat_ecdf</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ecdf.html">stat_ecdf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Overlay the estimated percentiles for the new data:</span></span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span> data <span class="op">=</span> <span class="va">hydrogen_values</span>,</span>
-<span>    <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">original</span>, y <span class="op">=</span> <span class="va">hydrogen</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">original</span>, y <span class="op">=</span> <span class="va">hydrogen</span><span class="op">)</span>,</span>
 <span> col <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span> alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
 <span> cex <span class="op">=</span> <span class="fl">2</span></span>
 <span> <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"New Hydrogen Values"</span>, y <span class="op">=</span> <span class="st">"Percentile Based on Training Set"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"New Hydrogen Values"</span>, y <span class="op">=</span> <span class="st">"Percentile Based on Training Set"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -796,19 +796,19 @@ Note
 <p>The process here is exactly the same as for steps; the internal functions have a similar naming convention:</p>
 <ul>
 <li>
-<code>add_check()</code> instead of <code>add_step()</code>.</li>
+<code><a href="https://recipes.tidymodels.org/reference/add_step.html">add_check()</a></code> instead of <code><a href="https://recipes.tidymodels.org/reference/add_step.html">add_step()</a></code>.</li>
 <li>
-<code>check()</code> instead of <code><a href="https://rdrr.io/r/stats/step.html">step()</a></code>, and so on.</li>
+<code><a href="https://recipes.tidymodels.org/reference/step.html">check()</a></code> instead of <code><a href="https://rdrr.io/r/stats/step.html">step()</a></code>, and so on.</li>
 </ul>
 <p>It is strongly recommended that:</p>
 <ol type="1">
-<li>The operations start with <code>check_</code> (i.e. <code>check_range()</code> and <code>check_range_new()</code>)</li>
+<li>The operations start with <code>check_</code> (i.e. <code><a href="https://recipes.tidymodels.org/reference/check_range.html">check_range()</a></code> and <code>check_range_new()</code>)</li>
 <li>The check uses <code>cli::cli_abort(...)</code> when the conditions are not met</li>
 <li>The original data are returned (unaltered) by the check when the conditions are satisfied.</li>
 </ol></section><section id="other-step-methods" class="level2"><h2 class="anchored" data-anchor-id="other-step-methods">Other step methods</h2>
 <p>There are a few other S3 methods that can be created for your step function. They are not required unless you plan on using your step in the broader tidymodels package set.</p>
 <section id="a-print-method" class="level3"><h3 class="anchored" data-anchor-id="a-print-method">A <code>print()</code> method</h3>
-<p>If you don’t add a print method for <code>step_percentiles()</code>, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called <code>print_step()</code> that should be useful in most cases. We are using it here for the custom print method for <code>step_percentiles()</code>. It requires the original terms specification and the column names this specification is evaluated to by <code>prep()</code>. For the former, our step object is structured so that the list object <code>ref_dist</code> has the names of the selected variables:</p>
+<p>If you don’t add a print method for <code>step_percentiles()</code>, it will still print but it will be printed as a list of (potentially large) objects and look a bit ugly. The recipes package contains a helper function called <code><a href="https://recipes.tidymodels.org/reference/recipes-internal.html">print_step()</a></code> that should be useful in most cases. We are using it here for the custom print method for <code>step_percentiles()</code>. It requires the original terms specification and the column names this specification is evaluated to by <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>. For the former, our step object is structured so that the list object <code>ref_dist</code> has the names of the selected variables:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -816,7 +816,7 @@ Note
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">width</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">width</span> <span class="op">-</span> <span class="fl">35</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="va">title</span> <span class="op">&lt;-</span> <span class="st">"Percentile transformation on "</span></span>
 <span></span>
-<span>    <span class="fu">print_step</span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes-internal.html">print_step</a></span><span class="op">(</span></span>
 <span>      <span class="co"># Names after prep:</span></span>
 <span> tr_obj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ref_dist</span><span class="op">)</span>,</span>
 <span>      <span class="co"># Names before prep (could be selectors)</span></span>
@@ -832,8 +832,8 @@ Note
 <span> <span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Results before `prep()`:</span></span>
-<span><span class="fu">recipe</span><span class="op">(</span><span class="va">HHV</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">biomass_tr</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">step_percentiles</span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">HHV</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">biomass_tr</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_percentiles</span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">ends_with</a></span><span class="op">(</span><span class="st">"gen"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Recipe ────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -864,7 +864,7 @@ Note
 </div>
 </div>
 </section><section id="methods-for-declaring-required-packages" class="level3"><h3 class="anchored" data-anchor-id="methods-for-declaring-required-packages">Methods for declaring required packages</h3>
-<p>Some recipe steps use functions from other packages. When this is the case, the <code>step_*()</code> function should check to see if the package is installed. The function <code>recipes::recipes_pkg_check()</code> will do this. For example:</p>
+<p>Some recipe steps use functions from other packages. When this is the case, the <code>step_*()</code> function should check to see if the package is installed. The function <code><a href="https://recipes.tidymodels.org/reference/recipes_pkg_check.html">recipes::recipes_pkg_check()</a></code> will do this. For example:</p>
 <pre><code>&gt; recipes::recipes_pkg_check("some_package")
 1 package is needed for this step and is not installed. (some_package). Start 
 a clean R session then run: install.packages("some_package")</code></pre>
@@ -879,12 +879,12 @@ a clean R session then run: install.packages("some_package")</code></pre>
 </div>
 </div>
 <p>In this example, <code>myrecipespkg</code> is the package where the step resides (if it is in a package).</p>
-<p>The reason to declare what packages should be loaded is parallel processing. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters has no additional packages loaded. If the home package for a recipe step is not loaded in the worker processes, the <code>prep()</code> methods cannot be found and an error occurs.</p>
+<p>The reason to declare what packages should be loaded is parallel processing. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters has no additional packages loaded. If the home package for a recipe step is not loaded in the worker processes, the <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> methods cannot be found and an error occurs.</p>
 <p>If this S3 method is used for your step, you can rely on this for checking the installation:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">recipes</span><span class="fu">::</span><span class="fu">recipes_pkg_check</span><span class="op">(</span><span class="fu">required_pkgs.step_hypothetical</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes_pkg_check.html">recipes_pkg_check</a></span><span class="op">(</span><span class="fu">required_pkgs.step_hypothetical</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 2 packages (hypothetical and myrecipespkg) are needed for this step</span></span>
 <span><span class="co">#&gt; but are not installed.</span></span>
 <span><span class="co">#&gt; To install run: `install.packages(c("hypothetical", "myrecipespkg"))`</span></span></code></pre></div>
@@ -893,13 +893,13 @@ a clean R session then run: install.packages("some_package")</code></pre>
 </div>
 <p>If you’d like an example of this in a package, please take a look at the <a href="https://github.com/tidymodels/embed/">embed</a> or <a href="https://github.com/tidymodels/themis/">themis</a> package.</p>
 </section><section id="a-tidy-method" class="level3"><h3 class="anchored" data-anchor-id="a-tidy-method">A <code>tidy()</code> method</h3>
-<p>The <code>broom::tidy()</code> method is a means to return information about the step in a usable format. For our step, it would be helpful to know the reference values.</p>
+<p>The <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy()</a></code> method is a means to return information about the step in a usable format. For our step, it would be helpful to know the reference values.</p>
 <p>When the recipe has been prepped, those data are in the list <code>ref_dist</code>. A small function can be used to reformat that data into a tibble. It is customary to return the main values as <code>value</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">format_pctl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span></span>
+<span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span> value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html">unname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
 <span> percentile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"%$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span> <span class="op">)</span></span>
@@ -927,26 +927,26 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The tidy method could return these values for each selected column. Before <code>prep()</code>, missing values can be used as placeholders.</p>
+<p>The tidy method could return these values for each selected column. Before <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>, missing values can be used as placeholders.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tidy.step_percentiles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span> <span class="kw">if</span> <span class="op">(</span><span class="fu">is_trained</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes-internal.html">is_trained</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ref_dist</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="co"># We need to create consistent output when no variables are selected</span></span>
-<span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span> terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span> value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span> percentile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="op">)</span></span>
 <span> <span class="op">)</span></span>
 <span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">map_dfr</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ref_dist</span>, <span class="va">format_pctl</span>, .id <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
+<span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html">map_dfr</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ref_dist</span>, <span class="va">format_pctl</span>, .id <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
 <span> <span class="op">}</span></span>
 <span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span> <span class="va">term_names</span> <span class="op">&lt;-</span> <span class="fu">sel2char</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span><span class="op">)</span></span>
+<span> <span class="va">term_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipes-internal.html">sel2char</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">terms</span><span class="op">)</span></span>
 <span> <span class="va">res</span> <span class="op">&lt;-</span></span>
-<span>      <span class="fu">tibble</span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span> terms <span class="op">=</span> <span class="va">term_names</span>,</span>
 <span> value <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/missing.html">na_dbl</a></span>,</span>
 <span> percentile <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/missing.html">na_dbl</a></span></span>
@@ -957,7 +957,7 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span> <span class="va">res</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">tidy</span><span class="op">(</span><span class="va">rec_obj</span>, number <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">rec_obj</span>, number <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 274 × 4</span></span>
 <span><span class="co">#&gt;    term     value percentile id               </span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;            </span></span>
@@ -976,7 +976,7 @@ a clean R session then run: install.packages("some_package")</code></pre>
 </div>
 </div>
 </section><section id="methods-for-tuning-parameters" class="level3"><h3 class="anchored" data-anchor-id="methods-for-tuning-parameters">Methods for tuning parameters</h3>
-<p>The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn’t really have any tunable parameters, so we will demonstrate using <code>step_poly()</code>, which returns a polynomial expansion of selected columns. Its function definition has the following arguments:</p>
+<p>The tune package can be used to find reasonable values of step arguments by model tuning. There are some S3 methods that are useful to define for your step. The percentile example doesn’t really have any tunable parameters, so we will demonstrate using <code><a href="https://recipes.tidymodels.org/reference/step_poly.html">step_poly()</a></code>, which returns a polynomial expansion of selected columns. Its function definition has the following arguments:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
@@ -989,8 +989,8 @@ a clean R session then run: install.packages("some_package")</code></pre>
 </div>
 </div>
 <p>The argument <code>degree</code> is tunable.</p>
-<p>To work with tune it is <em>helpful</em> (but not required) to use an S3 method called <code>tunable()</code> to define which arguments should be tuned and how the values of those arguments should be generated.</p>
-<p><code>tunable()</code> takes the step object as its argument and returns a tibble with columns:</p>
+<p>To work with tune it is <em>helpful</em> (but not required) to use an S3 method called <code><a href="https://generics.r-lib.org/reference/tunable.html">tunable()</a></code> to define which arguments should be tuned and how the values of those arguments should be generated.</p>
+<p><code><a href="https://generics.r-lib.org/reference/tunable.html">tunable()</a></code> takes the step object as its argument and returns a tibble with columns:</p>
 <ul>
 <li><p><code>name</code>: The name of the argument.</p></li>
 <li><p><code>call_info</code>: A list that describes how to call a function that returns a dials parameter object.</p></li>
@@ -1013,7 +1013,7 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>For <code>step_poly()</code>, a dials object is needed that returns an integer that is the number of new columns to create. It turns out that there are a few different types of tuning parameters related to degree:</p>
+<p>For <code><a href="https://recipes.tidymodels.org/reference/step_poly.html">step_poly()</a></code>, a dials object is needed that returns an integer that is the number of new columns to create. It turns out that there are a few different types of tuning parameters related to degree:</p>
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">lsf.str</span>(<span class="st">"package:dials"</span>, <span class="at">pattern =</span> <span class="st">"degree"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>degree <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span>
@@ -1022,13 +1022,13 @@ a clean R session then run: install.packages("some_package")</code></pre>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>spline_degree <span class="sc">:</span> <span class="cf">function</span> (<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>L, <span class="dv">10</span>L), <span class="at">trans =</span> <span class="cn">NULL</span>)  </span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
-<p>Looking at the <code>range</code> values, some return doubles, and others return integers. For our problem, <code>degree_int()</code> would be a good choice.</p>
-<p>For <code>step_poly()</code> the <code>tunable()</code> S3 method could be:</p>
+<p>Looking at the <code>range</code> values, some return doubles, and others return integers. For our problem, <code><a href="https://dials.tidymodels.org/reference/degree.html">degree_int()</a></code> would be a good choice.</p>
+<p>For <code><a href="https://recipes.tidymodels.org/reference/step_poly.html">step_poly()</a></code> the <code><a href="https://generics.r-lib.org/reference/tunable.html">tunable()</a></code> S3 method could be:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tunable.step_poly</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span></span>
+<span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span> name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span><span class="op">)</span>,</span>
 <span> call_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"dials"</span>, fun <span class="op">=</span> <span class="st">"degree_int"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span> source <span class="op">=</span> <span class="st">"recipe"</span>,</span>

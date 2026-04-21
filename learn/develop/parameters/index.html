@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -390,12 +390,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: dials and scales.</p>
-<p>Some models and recipe steps contain parameters that dials does not know about. You can construct new quantitative and qualitative parameters using <code>new_quant_param()</code> or <code>new_qual_param()</code>, respectively. This article is a guide to creating new parameters.</p>
+<p>Some models and recipe steps contain parameters that dials does not know about. You can construct new quantitative and qualitative parameters using <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param()</a></code> or <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_qual_param()</a></code>, respectively. This article is a guide to creating new parameters.</p>
 </section><section id="quantitative-parameters" class="level2"><h2 class="anchored" data-anchor-id="quantitative-parameters">Quantitative parameters</h2>
 <p>As an example, let’s consider the multivariate adaptive regression spline (<a href="https://en.wikipedia.org/wiki/Multivariate_adaptive_regression_spline">MARS</a>) model, which creates nonlinear features from predictors and adds them to a linear regression models. The earth package is an excellent implementation of this method.</p>
-<p>MARS creates an initial set of features and then prunes them back to an appropriate size. This can be done automatically by <code>earth::earth()</code> or the number of final terms can be set by the user. The parsnip function <code>mars()</code> has a parameter called <code>num_terms</code> that defines this.</p>
-<p>What if we want to create a parameter for the number of <em>initial terms</em> included in the model. There is no argument in <code>parsnip::mars()</code> for this but we will make one now. The argument name in <code>earth::earth()</code> is <code>nk</code>, which is not very descriptive. Our parameter will be called <code>num_initial_terms</code>.</p>
-<p>We use the <code>new_quant_param()</code> function since this is a numeric parameter. The main two arguments to a numeric parameter function are <code>range</code> and <code>trans</code>.</p>
+<p>MARS creates an initial set of features and then prunes them back to an appropriate size. This can be done automatically by <code>earth::earth()</code> or the number of final terms can be set by the user. The parsnip function <code><a href="https://parsnip.tidymodels.org/reference/mars.html">mars()</a></code> has a parameter called <code>num_terms</code> that defines this.</p>
+<p>What if we want to create a parameter for the number of <em>initial terms</em> included in the model. There is no argument in <code><a href="https://parsnip.tidymodels.org/reference/mars.html">parsnip::mars()</a></code> for this but we will make one now. The argument name in <code>earth::earth()</code> is <code>nk</code>, which is not very descriptive. Our parameter will be called <code>num_initial_terms</code>.</p>
+<p>We use the <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param()</a></code> function since this is a numeric parameter. The main two arguments to a numeric parameter function are <code>range</code> and <code>trans</code>.</p>
 <p>The <code>range</code> specifies the possible values of the parameter. For our example, a minimal value might be one or two. What is the upper limit? The default in the earth package is</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -436,13 +436,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; time_trans : function (tz = NULL)  </span></span>
 <span><span class="co">#&gt; timespan_trans : function (unit = c("secs", "mins", "hours", "days", "weeks"))  </span></span>
 <span><span class="co">#&gt; yj_trans : function (p)</span></span>
-<span><span class="fu">scales</span><span class="fu">::</span><span class="fu">log10_trans</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/transform_log.html">log10_trans</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Transformer: log-10 [1e-100, Inf]</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <p>A value of <code>NULL</code> means that no transformation should be used.</p>
-<p>A quantitative parameter function should have these two arguments and, in the function body, a call <code>new_quant_param()</code>. There are a few arguments to this function:</p>
+<p>A quantitative parameter function should have these two arguments and, in the function body, a call <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param()</a></code>. There are a few arguments to this function:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -466,7 +466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">10L</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
 <span>    range <span class="op">=</span> <span class="va">range</span>,</span>
 <span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -482,18 +482,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># Sample from the parameter:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4832856</span><span class="op">)</span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  6  4  9 10  4</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <section id="finalizing-parameters" class="level3"><h3 class="anchored" data-anchor-id="finalizing-parameters">Finalizing parameters</h3>
-<p>It might be the case that the range of the parameter is unknown. For example, parameters that are related to the number of columns in a data set cannot be exactly specified in the absence of data. In those cases, a placeholder of <code>unknown()</code> can be added. This will force the user to “finalize” the parameter object for their particular data set. Let’s redefine our function with an <code>unknown()</code> value:</p>
+<p>It might be the case that the range of the parameter is unknown. For example, parameters that are related to the number of columns in a data set cannot be exactly specified in the absence of data. In those cases, a placeholder of <code><a href="https://dials.tidymodels.org/reference/unknown.html">unknown()</a></code> can be added. This will force the user to “finalize” the parameter object for their particular data set. Let’s redefine our function with an <code><a href="https://dials.tidymodels.org/reference/unknown.html">unknown()</a></code> value:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu">unknown</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu"><a href="https://dials.tidymodels.org/reference/unknown.html">unknown</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
 <span>    range <span class="op">=</span> <span class="va">range</span>,</span>
 <span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Can we sample? </span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -531,24 +531,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="va">get_initial_mars_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">upper_bound</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span>  <span class="va">upper_bound</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">upper_bound</span><span class="op">)</span></span>
-<span>  <span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu">range_get</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span>  <span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dials.tidymodels.org/reference/range_validate.html">range_get</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span>  <span class="va">bounds</span><span class="op">$</span><span class="va">upper</span> <span class="op">&lt;-</span> <span class="va">upper_bound</span></span>
-<span>  <span class="fu">range_set</span><span class="op">(</span><span class="va">object</span>, <span class="va">bounds</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dials.tidymodels.org/reference/range_validate.html">range_set</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">bounds</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Use the mtcars are the finalize the upper bound: </span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">get_initial_mars_terms</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">get_initial_mars_terms</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
 <span><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Once we add this function to the object, the general <code>finalize()</code> method can be used:</p>
+<p>Once we add this function to the object, the general <code><a href="https://dials.tidymodels.org/reference/finalize.html">finalize()</a></code> method can be used:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu">unknown</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">new_quant_param</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">num_initial_terms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu"><a href="https://dials.tidymodels.org/reference/unknown.html">unknown</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="va">trans</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"integer"</span>,</span>
 <span>    range <span class="op">=</span> <span class="va">range</span>,</span>
 <span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -558,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">finalize</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/finalize.html">finalize</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
 <span><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -570,7 +570,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aggregation</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">values</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">new_qual_param</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dials.tidymodels.org/reference/new-param.html">new_qual_param</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"character"</span>,</span>
 <span>    values <span class="op">=</span> <span class="va">values</span>,</span>
 <span>    <span class="co"># By default, the first value is selected as default. We'll specify that to</span></span>
@@ -588,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">values_aggregation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="va">aggregation</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">values</span> <span class="op">=</span> <span class="va">values_aggregation</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">new_qual_param</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dials.tidymodels.org/reference/new-param.html">new_qual_param</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"character"</span>,</span>
 <span>    values <span class="op">=</span> <span class="va">values</span>,</span>
 <span>    <span class="co"># By default, the first value is selected as default. We'll specify that to</span></span>
@@ -608,7 +608,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Aggregation Method (qualitative)</span></span>
 <span><span class="co">#&gt; 5 possible values include:</span></span>
 <span><span class="co">#&gt; 'none', 'min', 'max', 'mean', and 'sum'</span></span>
-<span><span class="fu">aggregation</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu">aggregation</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "min"  "sum"  "mean"</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>

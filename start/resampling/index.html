@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -334,9 +334,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cells</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">class</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   class     n  prop</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
@@ -353,22 +353,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>There are different ways to create these partitions of the data. The most common approach is to use a random sample. Suppose that one quarter of the data were reserved for the test set. Random sampling would randomly select 25% for the test set and use the remainder for the training set. We can use the <a href="https://rsample.tidymodels.org/">rsample</a> package for this purpose.</p>
 <p>Since random sampling uses random numbers, it is important to set the random number seed. This ensures that the random numbers can be reproduced at a later time (if needed).</p>
-<p>The function <code>rsample::initial_split()</code> takes the original data and saves the information on how to make the partitions. In the original analysis, the authors made their own training/test set and that information is contained in the column <code>case</code>. To demonstrate how to make a split, we’ll remove this column before we make our own split:</p>
+<p>The function <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">rsample::initial_split()</a></code> takes the original data and saves the information on how to make the partitions. In the original analysis, the authors made their own training/test set and that information is contained in the column <code>case</code>. To demonstrate how to make a split, we’ll remove this column before we make our own split:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">cell_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">cells</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">case</span><span class="op">)</span>, </span>
+<span><span class="va">cell_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">case</span><span class="op">)</span>, </span>
 <span>                            strata <span class="op">=</span> <span class="va">class</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Here we used the <a href="https://rsample.tidymodels.org/reference/initial_split.html"><code>strata</code> argument</a>, which conducts a stratified split. This ensures that, despite the imbalance we noticed in our <code>class</code> variable, our training and test data sets will keep roughly the same proportions of poorly and well-segmented cells as in the original data. After the <code>initial_split</code>, the <code>training()</code> and <code>testing()</code> functions return the actual data sets.</p>
+<p>Here we used the <a href="https://rsample.tidymodels.org/reference/initial_split.html"><code>strata</code> argument</a>, which conducts a stratified split. This ensures that, despite the imbalance we noticed in our <code>class</code> variable, our training and test data sets will keep roughly the same proportions of poorly and well-segmented cells as in the original data. After the <code>initial_split</code>, the <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training()</a></code> and <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing()</a></code> functions return the actual data sets.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cell_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span>
-<span><span class="va">cell_test</span>  <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cell_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span>
+<span><span class="va">cell_test</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">cell_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cell_train</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1514</span></span>
@@ -376,9 +376,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] 0.7498762</span></span>
 <span></span>
 <span><span class="co"># training set proportions by class</span></span>
-<span><span class="va">cell_train</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">class</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cell_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   class     n  prop</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
@@ -386,9 +386,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 2 WS      539 0.356</span></span>
 <span></span>
 <span><span class="co"># test set proportions by class</span></span>
-<span><span class="va">cell_test</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">class</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cell_test</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   class     n  prop</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
@@ -407,20 +407,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_mod</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">rand_forest</span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Starting with this parsnip model object, the <code>fit()</code> function can be used with a model formula. Since random forest models use random numbers, we again set the seed prior to computing:</p>
+<p>Starting with this parsnip model object, the <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> function can be used with a model formula. Since random forest models use random numbers, we again set the seed prior to computing:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">234</span><span class="op">)</span></span>
 <span><span class="va">rf_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">rf_mod</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">cell_train</span><span class="op">)</span></span>
+<span>  <span class="va">rf_mod</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">cell_train</span><span class="op">)</span></span>
 <span><span class="va">rf_fit</span></span>
 <span><span class="co">#&gt; parsnip model object</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -449,17 +449,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>overall classification accuracy.</p></li>
 </ul>
 <p>The ROC curve uses the class probability estimates to give us a sense of performance across the entire set of potential probability cutoffs. Overall accuracy uses the hard class predictions to measure performance. The hard class predictions tell us whether our model predicted <code>PS</code> or <code>WS</code> for each cell. But, behind those predictions, the model is actually estimating a probability. A simple 50% probability cutoff is used to categorize a cell as poorly segmented.</p>
-<p>The <a href="https://yardstick.tidymodels.org/">yardstick package</a> has functions for computing both of these measures called <code>roc_auc()</code> and <code>accuracy()</code>.</p>
+<p>The <a href="https://yardstick.tidymodels.org/">yardstick package</a> has functions for computing both of these measures called <code><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc()</a></code> and <code><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy()</a></code>.</p>
 <p>At first glance, it might seem like a good idea to use the training set data to compute these statistics. (This is actually a very bad idea.) Let’s see what happens if we try this. To evaluate performance based on the training set, we call the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method to get both types of predictions (i.e. probabilities and hard class predictions).</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_training_pred</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_train</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_train</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_train</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Add the true outcome data back in</span></span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="va">cell_train</span> <span class="op">%&gt;%</span> </span>
-<span>              <span class="fu">select</span><span class="op">(</span><span class="va">class</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">cell_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>              <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">class</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -467,14 +467,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rf_training_pred</span> <span class="op">%&gt;%</span>                <span class="co"># training set predictions</span></span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rf_training_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>                <span class="co"># training set predictions</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 roc_auc binary         1.000</span></span>
-<span><span class="va">rf_training_pred</span> <span class="op">%&gt;%</span>                <span class="co"># training set predictions</span></span>
-<span>  <span class="fu">accuracy</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<span><span class="va">rf_training_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>                <span class="co"># training set predictions</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -487,23 +487,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_testing_pred</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_test</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_test</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="va">cell_test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">class</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_test</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf_fit</span>, <span class="va">cell_test</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">cell_test</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">class</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rf_testing_pred</span> <span class="op">%&gt;%</span>                   <span class="co"># test set predictions</span></span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rf_testing_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>                   <span class="co"># test set predictions</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 roc_auc binary         0.891</span></span>
-<span><span class="va">rf_testing_pred</span> <span class="op">%&gt;%</span>                   <span class="co"># test set predictions</span></span>
-<span>  <span class="fu">accuracy</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<span><span class="va">rf_testing_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>                   <span class="co"># test set predictions</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
@@ -528,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>In the first level of this diagram, you see what happens when you use <code>rsample::initial_split()</code>, which splits the original data into training and test sets. Then, the training set is chosen for resampling, and the test set is held out.</p>
+<p>In the first level of this diagram, you see what happens when you use <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">rsample::initial_split()</a></code>, which splits the original data into training and test sets. Then, the training set is chosen for resampling, and the test set is held out.</p>
 <p>Let’s use 10-fold cross-validation (CV) in this example. This method randomly allocates the 1514 cells in the training set to 10 groups of roughly equal size, called “folds”. For the first iteration of resampling, the first fold of about 151 cells are held out for the purpose of measuring performance. This is similar to a test set but, to avoid confusion, we call these data the <em>assessment set</em> in the tidymodels framework.</p>
 <p>The other 90% of the data (about 1362 cells) are used to fit the model. Again, this sounds similar to a training set, so in tidymodels we call this data the <em>analysis set</em>. This model, trained on the analysis set, is applied to the assessment set to generate predictions, and performance statistics are computed based on those predictions.</p>
 <p>In this example, 10-fold CV moves iteratively through the folds and leaves a different 10% out each time for model assessment. At the end of this process, there are 10 sets of performance statistics that were created on 10 data sets that were not used in the modeling process. For the cell example, this means 10 accuracies and 10 areas under the ROC curve. While 10 models were created, these are not used further; we do not keep the models themselves trained on these folds because their only purpose is calculating performance metrics.</p>
@@ -619,12 +619,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>From these resampling statistics, the final estimate of performance for this random forest model would be 0.905 for the area under the ROC curve and 0.836 for accuracy.</p>
 <p>These resampling statistics are an effective method for measuring model performance <em>without</em> predicting the training set directly as a whole.</p>
 </section><section id="fit-resamples" class="level2"><h2 class="anchored" data-anchor-id="fit-resamples">Fit a model with resampling</h2>
-<p>To generate these results, the first step is to create a resampling object using rsample. There are <a href="https://rsample.tidymodels.org/reference/index.html#section-resampling-methods">several resampling methods</a> implemented in rsample; cross-validation folds can be created using <code>vfold_cv()</code>:</p>
+<p>To generate these results, the first step is to create a resampling object using rsample. There are <a href="https://rsample.tidymodels.org/reference/index.html#section-resampling-methods">several resampling methods</a> implemented in rsample; cross-validation folds can be created using <code><a href="https://rsample.tidymodels.org/reference/vfold_cv.html">vfold_cv()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">345</span><span class="op">)</span></span>
-<span><span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">cell_train</span>, v <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/vfold_cv.html">vfold_cv</a></span><span class="op">(</span><span class="va">cell_train</span>, v <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">folds</span></span>
 <span><span class="co">#&gt; #  10-fold cross-validation </span></span>
 <span><span class="co">#&gt; # A tibble: 10 × 2</span></span>
@@ -643,25 +643,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The list column for <code>splits</code> contains the information on which rows belong in the analysis and assessment sets. There are functions that can be used to extract the individual resampled data called <code>analysis()</code> and <code>assessment()</code>.</p>
+<p>The list column for <code>splits</code> contains the information on which rows belong in the analysis and assessment sets. There are functions that can be used to extract the individual resampled data called <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis()</a></code> and <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment()</a></code>.</p>
 <p>However, the tune package contains high-level functions that can do the required computations to resample a model for the purpose of measuring performance. You have several options for building an object for resampling:</p>
 <ul>
 <li><p>Resample a model specification preprocessed with a formula or <a href="../../start/recipes/">recipe</a>, or</p></li>
 <li><p>Resample a <a href="https://workflows.tidymodels.org/"><code>workflow()</code></a> that bundles together a model specification and formula/recipe.</p></li>
 </ul>
-<p>For this example, let’s use a <code>workflow()</code> that bundles together the random forest model and a formula, since we are not using a recipe. Whichever of these options you use, the syntax to <code>fit_resamples()</code> is very similar to <code>fit()</code>:</p>
+<p>For this example, let’s use a <code><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow()</a></code> that bundles together the random forest model and a formula, since we are not using a recipe. Whichever of these options you use, the syntax to <code><a href="https://tune.tidymodels.org/reference/fit_resamples.html">fit_resamples()</a></code> is very similar to <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_wf</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">rf_mod</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html">add_model</a></span><span class="op">(</span><span class="va">rf_mod</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://workflows.tidymodels.org/reference/add_formula.html">add_formula</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">456</span><span class="op">)</span></span>
 <span><span class="va">rf_fit_rs</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">rf_wf</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">fit_resamples</span><span class="op">(</span><span class="va">folds</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="va">rf_wf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/fit_resamples.html">fit_resamples</a></span><span class="op">(</span><span class="va">folds</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -691,7 +691,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">rf_fit_rs</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">rf_fit_rs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
 <span><span class="co">#&gt;   .metric     .estimator  mean     n std_err .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          </span></span>
@@ -705,14 +705,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rf_testing_pred</span> <span class="op">%&gt;%</span>                   <span class="co"># test set predictions</span></span>
-<span>  <span class="fu">roc_auc</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rf_testing_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>                   <span class="co"># test set predictions</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_PS</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 roc_auc binary         0.891</span></span>
-<span><span class="va">rf_testing_pred</span> <span class="op">%&gt;%</span>                   <span class="co"># test set predictions</span></span>
-<span>  <span class="fu">accuracy</span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
+<span><span class="va">rf_testing_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>                   <span class="co"># test set predictions</span></span>
+<span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/accuracy.html">accuracy</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>

@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -424,14 +424,14 @@ window.Quarto = {
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To use code in this article, you will need to install the following packages: generics, tidymodels, tidyverse, and usethis.</p>
-<p>The broom package provides tools to summarize key information about models in tidy <code>tibble()</code>s. The package provides three verbs, or “tidiers,” to help make model objects easier to work with:</p>
+<p>The broom package provides tools to summarize key information about models in tidy <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code>s. The package provides three verbs, or “tidiers,” to help make model objects easier to work with:</p>
 <ul>
 <li>
-<code>tidy()</code> summarizes information about model components</li>
+<code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> summarizes information about model components</li>
 <li>
-<code>glance()</code> reports information about the entire model</li>
+<code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> reports information about the entire model</li>
 <li>
-<code>augment()</code> adds information about observations to a dataset</li>
+<code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> adds information about observations to a dataset</li>
 </ul>
 <p>Each of the three verbs above are <em>generic</em>, in that they do not define a procedure to tidy a given model object, but instead redirect to the relevant <em>method</em> implemented to tidy a specific type of model object. The broom package provides methods for model objects from over 100 modeling packages along with nearly all of the model objects in the stats package that comes with base R. However, for maintainability purposes, the broom package authors now ask that requests for new methods be first directed to the parent package (i.e. the package that supplies the model object) rather than to broom. New methods will generally only be integrated into broom in the case that the requester has already asked the maintainers of the model-owning package to implement tidier methods in the parent package.</p>
 <p>We’d like to make implementing external tidier methods as painless as possible. The general process for doing so is:</p>
@@ -442,7 +442,7 @@ window.Quarto = {
 </ul>
 <p>In this article, we’ll walk through each of the above steps in detail, giving examples and pointing out helpful functions when possible.</p>
 </section><section id="re-export-the-tidier-generics" class="level2"><h2 class="anchored" data-anchor-id="re-export-the-tidier-generics">Re-export the tidier generics</h2>
-<p>The first step is to re-export the generic functions for <code>tidy()</code>, <code>glance()</code>, and/or <code>augment()</code>. You could do so from <code>broom</code> itself, but we’ve provided an alternative, much lighter dependency called <code>generics</code>.</p>
+<p>The first step is to re-export the generic functions for <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code>, and/or <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code>. You could do so from <code>broom</code> itself, but we’ve provided an alternative, much lighter dependency called <code>generics</code>.</p>
 <p>First you’ll need to add the <a href="https://github.com/r-lib/generics">generics</a> package to <code>Imports</code>. We recommend using the <a href="https://github.com/r-lib/usethis">usethis</a> package for this:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -451,13 +451,13 @@ window.Quarto = {
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Next, you’ll need to re-export the appropriate tidying methods. If you plan to implement a <code>glance()</code> method, for example, you can re-export the <code>glance()</code> generic by adding the following somewhere inside the <code>/R</code> folder of your package:</p>
+<p>Next, you’ll need to re-export the appropriate tidying methods. If you plan to implement a <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> method, for example, you can re-export the <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> generic by adding the following somewhere inside the <code>/R</code> folder of your package:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' @importFrom generics glance</span></span>
 <span><span class="co">#' @export</span></span>
-<span><span class="fu">generics</span><span class="fu">::</span><span class="va">glance</span></span></code></pre></div>
+<span><span class="fu">generics</span><span class="fu">::</span><span class="va"><a href="https://generics.r-lib.org/reference/glance.html">glance</a></span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -472,11 +472,11 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Please do not define <code>tidy()</code>, <code>glance()</code>, or <code>augment()</code> generics in your package. This will result in namespace conflicts whenever your package is used along other packages that also export tidying methods.</p>
+<p>Please do not define <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code>, or <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> generics in your package. This will result in namespace conflicts whenever your package is used along other packages that also export tidying methods.</p>
 </div>
 </div>
 </section><section id="implement-tidying-methods" class="level2"><h2 class="anchored" data-anchor-id="implement-tidying-methods">Implement tidying methods</h2>
-<p>You’ll now need to implement specific tidying methods for each of the generics you’ve re-exported in the above step. For each of <code>tidy()</code>, <code>glance()</code>, and <code>augment()</code>, we’ll walk through the big picture, an example, and helpful resources.</p>
+<p>You’ll now need to implement specific tidying methods for each of the generics you’ve re-exported in the above step. For each of <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code>, and <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code>, we’ll walk through the big picture, an example, and helpful resources.</p>
 <p>In this article, we’ll use the base R dataset <code>trees</code>, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -523,9 +523,9 @@ Warning
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>This output gives some summary statistics on the residuals (which would be described more fully in an <code>augment()</code> output), model coefficients (which, in this case, make up the <code>tidy()</code> output), and some model-level summarizations such as RSE, <span class="math inline">\(R^2\)</span>, etc. (which make up the <code>glance()</code> output.)</p>
+<p>This output gives some summary statistics on the residuals (which would be described more fully in an <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> output), model coefficients (which, in this case, make up the <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> output), and some model-level summarizations such as RSE, <span class="math inline">\(R^2\)</span>, etc. (which make up the <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> output.)</p>
 <section id="implementing-the-tidy-method" class="level3"><h3 class="anchored" data-anchor-id="implementing-the-tidy-method">Implementing the <code>tidy()</code> method</h3>
-<p>The <code>tidy(x, ...)</code> method will return a tibble where each row contains information about a component of the model. The <code>x</code> input is a model object, and the dots (<code>...</code>) are an optional argument to supply additional information to any calls inside your method. New <code>tidy()</code> methods can take additional arguments, but <em>must</em> include the <code>x</code> and <code>...</code> arguments to be compatible with the generic function. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.) Examples of model components include regression coefficients (for regression models), clusters (for classification/clustering models), etc. These <code>tidy()</code> methods are useful for inspecting model details and creating custom model visualizations.</p>
+<p>The <code>tidy(x, ...)</code> method will return a tibble where each row contains information about a component of the model. The <code>x</code> input is a model object, and the dots (<code>...</code>) are an optional argument to supply additional information to any calls inside your method. New <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods can take additional arguments, but <em>must</em> include the <code>x</code> and <code>...</code> arguments to be compatible with the generic function. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.) Examples of model components include regression coefficients (for regression models), clusters (for classification/clustering models), etc. These <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods are useful for inspecting model details and creating custom model visualizations.</p>
 <p>Returning to the example of our linear model on timber volume, we’d like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, you might notice that you can extract the regression coefficients as follows:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -542,8 +542,8 @@ Warning
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trees_model_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">as_tibble</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">trees_model_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">trees_model_tidy</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
@@ -563,8 +563,8 @@ Warning
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>A glossary giving the currently acceptable column names outputted by <code>tidy()</code> methods can be found <a href="#glossary">at the end of this article</a>. As a rule of thumb, column names resulting from <code>tidy()</code> methods should be all lowercase and contain only alphanumerics or periods (though there are plenty of exceptions).</p>
-<p>Finally, it is common for <code>tidy()</code> methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code> function can be used to calculate confidence intervals from a model object resulting from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>:</p>
+<p>A glossary giving the currently acceptable column names outputted by <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods can be found <a href="#glossary">at the end of this article</a>. As a rule of thumb, column names resulting from <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods should be all lowercase and contain only alphanumerics or periods (though there are plenty of exceptions).</p>
+<p>Finally, it is common for <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code> function can be used to calculate confidence intervals from a model object resulting from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -576,22 +576,22 @@ Warning
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>With these considerations in mind, a reasonable <code>tidy()</code> method for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> might look something like:</p>
+<p>With these considerations in mind, a reasonable <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> method for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> might look something like:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tidy.lm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">conf.int</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">conf.level</span> <span class="op">=</span> <span class="fl">0.95</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
-<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">rename</span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">Estimate</span>,</span>
+<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">Estimate</span>,</span>
 <span>                  std.error <span class="op">=</span> <span class="va">`Std. Error`</span>,</span>
 <span>                  statistic <span class="op">=</span> <span class="va">`t value`</span>,</span>
 <span>                  p.value <span class="op">=</span> <span class="va">`Pr(&gt;|t|)`</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">conf.int</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">x</span>, level <span class="op">=</span> <span class="va">conf.level</span><span class="op">)</span></span>
-<span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">left_join</span><span class="op">(</span><span class="va">result</span>, <span class="va">ci</span>, by <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
+<span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">result</span>, <span class="va">ci</span>, by <span class="op">=</span> <span class="st">"term"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  </span>
 <span>  <span class="va">result</span></span>
@@ -612,8 +612,8 @@ Note
 <p>If you’re interested, the actual <code>tidy.lm()</code> source can be found <a href="https://github.com/tidymodels/broom/blob/master/R/stats-lm-tidiers.R">here</a>! It’s not too different from the version above except for some argument checking and additional columns.</p>
 </div>
 </div>
-<p>With this method exported, then, if a user calls <code>tidy(fit)</code>, where <code>fit</code> is an output from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, the <code>tidy()</code> generic would “redirect” the call to the <code>tidy.lm()</code> function above.</p>
-<p>Some things to keep in mind while writing your <code>tidy()</code> method:</p>
+<p>With this method exported, then, if a user calls <code>tidy(fit)</code>, where <code>fit</code> is an output from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, the <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> generic would “redirect” the call to the <code>tidy.lm()</code> function above.</p>
+<p>Some things to keep in mind while writing your <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> method:</p>
 <ul>
 <li>Sometimes a model will have several different types of components. For example, in mixed models, there is different information associated with fixed effects and random effects. Since this information doesn’t have the same interpretation, it doesn’t make sense to summarize the fixed and random effects in the same table. In cases like this you should add an argument that allows the user to specify which type of information they want. For example, you might implement an interface along the lines of:</li>
 </ul>
@@ -621,14 +621,14 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">mixed_model</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span><span class="fu">tidy</span><span class="op">(</span><span class="va">model</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span>
-<span><span class="fu">tidy</span><span class="op">(</span><span class="va">model</span>, effects <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">model</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">model</span>, effects <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <ul>
 <li>How are missing values encoded in the model object and its <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>? Ensure that rows are included even when the associated model component is missing or rank deficient.</li>
-<li>Are there other measures specific to each component that could reasonably be expected to be included in their summarizations? Some common arguments to <code>tidy()</code> methods include:
+<li>Are there other measures specific to each component that could reasonably be expected to be included in their summarizations? Some common arguments to <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods include:
 <ul>
 <li>
 <code>conf.int</code>: A logical indicating whether or not to calculate confidence/credible intervals. This should default to <code>FALSE</code>.</li>
@@ -639,7 +639,7 @@ Note
 </ul>
 </li>
 </ul></section><section id="implementing-the-glance-method" class="level3"><h3 class="anchored" data-anchor-id="implementing-the-glance-method">Implementing the <code>glance()</code> method</h3>
-<p><code>glance()</code> returns a one-row tibble providing model-level summarizations (e.g. goodness of fit measures and related statistics). This is useful to check for model misspecification and to compare many models. Again, the <code>x</code> input is a model object, and the <code>...</code> is an optional argument to supply additional information to any calls inside your method. New <code>glance()</code> methods can also take additional arguments and <em>must</em> include the <code>x</code> and <code>...</code> arguments. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.)</p>
+<p><code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> returns a one-row tibble providing model-level summarizations (e.g. goodness of fit measures and related statistics). This is useful to check for model misspecification and to compare many models. Again, the <code>x</code> input is a model object, and the <code>...</code> is an optional argument to supply additional information to any calls inside your method. New <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> methods can also take additional arguments and <em>must</em> include the <code>x</code> and <code>...</code> arguments. (For a glossary of currently acceptable additional arguments, see <a href="#glossary">the end of this article</a>.)</p>
 <p>Returning to the <code>trees_model</code> example, we could pull out the <span class="math inline">\(R^2\)</span> value with the following code:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -658,12 +658,12 @@ Note
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a <code>tibble()</code> element-by-element by subsetting the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> object repeatedly. The <code><a href="https://rdrr.io/r/base/with.html">with()</a></code> function, however, can help make this process a bit less tedious by evaluating expressions inside of the <code>summary(trees_model)</code> environment. To grab those those same two model elements from above using <code><a href="https://rdrr.io/r/base/with.html">with()</a></code>:</p>
+<p>Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code> element-by-element by subsetting the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> object repeatedly. The <code><a href="https://rdrr.io/r/base/with.html">with()</a></code> function, however, can help make this process a bit less tedious by evaluating expressions inside of the <code>summary(trees_model)</code> environment. To grab those those same two model elements from above using <code><a href="https://rdrr.io/r/base/with.html">with()</a></code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">trees_model</span><span class="op">)</span>,</span>
-<span>     <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span>r.squared <span class="op">=</span> <span class="va">r.squared</span>,</span>
+<span>     <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>r.squared <span class="op">=</span> <span class="va">r.squared</span>,</span>
 <span>                    adj.r.squared <span class="op">=</span> <span class="va">adj.r.squared</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   r.squared adj.r.squared</span></span>
@@ -672,14 +672,14 @@ Note
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>A reasonable <code>glance()</code> method for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, then, might look something like:</p>
+<p>A reasonable <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> method for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, then, might look something like:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glance.lm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
-<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span></span>
+<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>      r.squared <span class="op">=</span> <span class="va">r.squared</span>,</span>
 <span>      adj.r.squared <span class="op">=</span> <span class="va">adj.r.squared</span>,</span>
 <span>      sigma <span class="op">=</span> <span class="va">sigma</span>,</span>
@@ -716,10 +716,10 @@ Note
 <p>This is the actual definition of <code>glance.lm()</code> provided by broom!</p>
 </div>
 </div>
-<p>Some things to keep in mind while writing <code>glance()</code> methods: * Output should not include the name of the modeling function or any arguments given to the modeling function. * In some cases, you may wish to provide model-level diagnostics not returned by the original object. For example, the above <code>glance.lm()</code> calculates <code>AIC</code> and <code>BIC</code> from the model fit. If these are easy to compute, feel free to add them. However, tidier methods are generally not an appropriate place to implement complex or time consuming calculations. * The <code>glance</code> method should always return the same columns in the same order when given an object of a given model class. If a summary metric (such as <code>AIC</code>) is not defined in certain circumstances, use <code>NA</code>.</p>
+<p>Some things to keep in mind while writing <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> methods: * Output should not include the name of the modeling function or any arguments given to the modeling function. * In some cases, you may wish to provide model-level diagnostics not returned by the original object. For example, the above <code>glance.lm()</code> calculates <code>AIC</code> and <code>BIC</code> from the model fit. If these are easy to compute, feel free to add them. However, tidier methods are generally not an appropriate place to implement complex or time consuming calculations. * The <code>glance</code> method should always return the same columns in the same order when given an object of a given model class. If a summary metric (such as <code>AIC</code>) is not defined in certain circumstances, use <code>NA</code>.</p>
 </section><section id="implementing-the-augment-method" class="level3"><h3 class="anchored" data-anchor-id="implementing-the-augment-method">Implementing the <code>augment()</code> method</h3>
-<p><code>augment()</code> methods add columns to a dataset containing information such as fitted values, residuals or cluster assignments. All columns added to a dataset have a <code>.</code> prefix to prevent existing columns from being overwritten. (Currently acceptable column names are given in <a href="#glossary">the glossary</a>.) The <code>x</code> and <code>...</code> arguments share their meaning with the two functions described above. <code>augment</code> methods also optionally accept a <code>data</code> argument that is a <code>data.frame</code> (or <code>tibble</code>) to add observation-level information to, returning a <code>tibble</code> object with the same number of rows as <code>data</code>. Many <code>augment()</code> methods also accept a <code>newdata</code> argument, following the same conventions as the <code>data</code> argument, except with the underlying assumption that the model has not “seen” the data yet. As a result, <code>newdata</code> arguments need not contain the response columns in <code>data</code>. Only one of <code>data</code> or <code>newdata</code> should be supplied. A full glossary of acceptable arguments to <code>augment()</code> methods can be found at <a href="#glossary">the end of this article</a>.</p>
-<p>If a <code>data</code> argument is not specified, <code>augment()</code> should try to reconstruct the original data as much as possible from the model object. This may not always be possible, and often it will not be possible to recover columns not used by the model.</p>
+<p><code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> methods add columns to a dataset containing information such as fitted values, residuals or cluster assignments. All columns added to a dataset have a <code>.</code> prefix to prevent existing columns from being overwritten. (Currently acceptable column names are given in <a href="#glossary">the glossary</a>.) The <code>x</code> and <code>...</code> arguments share their meaning with the two functions described above. <code>augment</code> methods also optionally accept a <code>data</code> argument that is a <code>data.frame</code> (or <code>tibble</code>) to add observation-level information to, returning a <code>tibble</code> object with the same number of rows as <code>data</code>. Many <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> methods also accept a <code>newdata</code> argument, following the same conventions as the <code>data</code> argument, except with the underlying assumption that the model has not “seen” the data yet. As a result, <code>newdata</code> arguments need not contain the response columns in <code>data</code>. Only one of <code>data</code> or <code>newdata</code> should be supplied. A full glossary of acceptable arguments to <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> methods can be found at <a href="#glossary">the end of this article</a>.</p>
+<p>If a <code>data</code> argument is not specified, <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> should try to reconstruct the original data as much as possible from the model object. This may not always be possible, and often it will not be possible to recover columns not used by the model.</p>
 <p>With this is mind, we can look back to our <code>trees_model</code> example. For one, the <code>model</code> element inside of the <code>trees_model</code> object will allow us to recover the original data:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -773,11 +773,11 @@ Note
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>As with <code>glance()</code> methods, it’s fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:</p>
+<p>As with <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> methods, it’s fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">se.fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">trees_model</span>, newdata <span class="op">=</span> <span class="va">trees</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">se.fit</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">se.fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">trees_model</span>, newdata <span class="op">=</span> <span class="va">trees</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">se.fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html">unname</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">se.fit</span><span class="op">)</span></span>
@@ -785,29 +785,29 @@ Note
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Thus, a reasonable <code>augment()</code> method for <code>lm</code> might look something like this:</p>
+<p>Thus, a reasonable <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> method for <code>lm</code> might look something like this:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">augment.lm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">data</span> <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">model</span>, <span class="va">newdata</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">bind_cols</span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
-<span>                     <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span>.fitted <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">fitted.values</span>,</span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>                     <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>.fitted <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">fitted.values</span>,</span>
 <span>                                    .se.fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">x</span>, </span>
 <span>                                                      newdata <span class="op">=</span> <span class="va">data</span>, </span>
 <span>                                                      se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">se.fit</span>,</span>
 <span>                                   .resid <span class="op">=</span>  <span class="va">x</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>    <span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">x</span>, newdata <span class="op">=</span> <span class="va">newdata</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">bind_cols</span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span>,</span>
-<span>                     <span class="fu">tibble</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span>.fitted <span class="op">=</span> <span class="va">predictions</span><span class="op">$</span><span class="va">fit</span>,</span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span>,</span>
+<span>                     <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>.fitted <span class="op">=</span> <span class="va">predictions</span><span class="op">$</span><span class="va">fit</span>,</span>
 <span>                                    .se.fit <span class="op">=</span> <span class="va">predictions</span><span class="op">$</span><span class="va">se.fit</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Some other things to keep in mind while writing <code>augment()</code> methods: * The <code>newdata</code> argument should default to <code>NULL</code>. Users should only ever specify one of <code>data</code> or <code>newdata</code>. Providing both <code>data</code> and <code>newdata</code> should result in an error. The <code>newdata</code> argument should accept both <code>data.frame</code>s and <code>tibble</code>s. * Data given to the <code>data</code> argument must have both the original predictors and the original response. Data given to the <code>newdata</code> argument only needs to have the original predictors. This is important because there may be important information associated with training data that is not associated with test data. This means that the <code>original_data</code> object in <code>augment(model, data = original_data)</code> should provide <code>.fitted</code> and <code>.resid</code> columns (in most cases), whereas <code>test_data</code> in <code>augment(model, data = test_data)</code> only needs a <code>.fitted</code> column, even if the response is present in <code>test_data</code>. * If the <code>data</code> or <code>newdata</code> is specified as a <code>data.frame</code> with rownames, <code>augment</code> should return them in a column called <code>.rownames</code>. * For observations where no fitted values or summaries are available (where there’s missing data, for example), return <code>NA</code>. * <em>The <code>augment()</code> method should always return as many rows as were in <code>data</code> or <code>newdata</code></em>, depending on which is supplied</p>
+<p>Some other things to keep in mind while writing <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> methods: * The <code>newdata</code> argument should default to <code>NULL</code>. Users should only ever specify one of <code>data</code> or <code>newdata</code>. Providing both <code>data</code> and <code>newdata</code> should result in an error. The <code>newdata</code> argument should accept both <code>data.frame</code>s and <code>tibble</code>s. * Data given to the <code>data</code> argument must have both the original predictors and the original response. Data given to the <code>newdata</code> argument only needs to have the original predictors. This is important because there may be important information associated with training data that is not associated with test data. This means that the <code>original_data</code> object in <code>augment(model, data = original_data)</code> should provide <code>.fitted</code> and <code>.resid</code> columns (in most cases), whereas <code>test_data</code> in <code>augment(model, data = test_data)</code> only needs a <code>.fitted</code> column, even if the response is present in <code>test_data</code>. * If the <code>data</code> or <code>newdata</code> is specified as a <code>data.frame</code> with rownames, <code>augment</code> should return them in a column called <code>.rownames</code>. * For observations where no fitted values or summaries are available (where there’s missing data, for example), return <code>NA</code>. * <em>The <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> method should always return as many rows as were in <code>data</code> or <code>newdata</code></em>, depending on which is supplied</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -818,7 +818,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The recommended interface and functionality for <code>augment()</code> methods may change soon.</p>
+<p>The recommended interface and functionality for <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> methods may change soon.</p>
 </div>
 </div>
 </section></section><section id="document-the-new-methods" class="level2"><h2 class="anchored" data-anchor-id="document-the-new-methods">Document the new methods</h2>
