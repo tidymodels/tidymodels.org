@@ -247,12 +247,6 @@ mars_boot %>% filter(num_terms == 40)
 ```{.r .cell-code}
 set.seed(168)
 mars_test_boot <- int_pctl(mars_test_res, alpha = 0.10)
-#> Warning: Using `by = character()` to perform a cross join was deprecated in
-#> dplyr 1.1.0.
-#> ℹ Please use `cross_join()` instead.
-#> ℹ The deprecated feature was likely used in the purrr package.
-#>   Please report the issue at
-#>   <https://github.com/tidyverse/purrr/issues>.
 mars_test_boot
 #> # A tibble: 2 × 6
 #>   .metric .estimator .lower .estimate .upper .config        
@@ -286,7 +280,7 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2026-04-17
+#>  date     2026-04-21
 #>  pandoc   3.8.3
 #>  quarto   1.9.35
 #> 
@@ -305,7 +299,7 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #>  rsample      1.3.2   2026-01-30 CRAN (R 4.5.2)
 #>  tibble       3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
+#>  tune         2.1.0   2026-04-17 CRAN (R 4.5.2)
 #>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
 #>  yardstick    1.4.0   2026-04-07 CRAN (R 4.5.2)
 #> 

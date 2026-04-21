@@ -72,13 +72,24 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 * [`find/`](find/): these files make up the find page, linked from the top navbar and resource stickies. Each of these pages is an `.qmd` file.
 
 
+## Quarto profiles
+
+This repo uses two Quarto profiles to split behavior between local and CI rendering:
+
+- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `post-render.R`.
+- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Disables post-render scripts since CI serves pages from the freeze cache.
+
+When adding a script that should only run locally, add it to `_quarto-local.yml`. If it should run in CI, add it to `_quarto-production.yml` and ensure the workflow installs the needed dependencies.
+
 ## Workflow
 
 * To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `installs.R`.
 
 * To preview the site, render it locally with the latest quarto release version.
 
-* The site is published via Netlify but rendered locally, so add those files to the PR. 
+* The site is rendered locally, not in CI. Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true` — and those files are what gets deployed. Always include them in your PR.
+
+* `keep-md: true` is set in `_quarto.yml` so that rendered `.md` files are committed alongside the source. This makes it possible to review in a PR whether code produced different results than before.
 
 * To do a complete rerender, run `re-render.R` script.
 

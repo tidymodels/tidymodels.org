@@ -200,7 +200,7 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2026-04-17
+#>  date     2026-04-21
 #>  pandoc   3.8.3
 #>  quarto   1.9.35
 #> 
@@ -220,7 +220,7 @@ ggplot(variance_data, aes(x = components, y = proportion, col = source)) +
 #>  rsample      1.3.2   2026-01-30 CRAN (R 4.5.2)
 #>  tibble       3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune         2.0.1   2025-10-17 CRAN (R 4.5.0)
+#>  tune         2.1.0   2026-04-17 CRAN (R 4.5.2)
 #>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
 #>  yardstick    1.4.0   2026-04-07 CRAN (R 4.5.2)
 #> 

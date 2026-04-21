@@ -110,8 +110,32 @@ format:
     toc: true
     linestretch: 1.6
     include-after-body: plausible.html
+    code-link: true
     grid:
       body-width: 840px
+
+# Workaround for https://github.com/r-lib/downlit/issues/173
+# Quarto runs downlit::downlit_html_path() in a separate R process that doesn't
+# inherit the knitr session, so downlit.attached must be set here via r-options.
+r-options:
+  downlit.attached:
+    - broom
+    - dials
+    - dplyr
+    - ggplot2
+    - hardhat
+    - infer
+    - modeldata
+    - parsnip
+    - purrr
+    - recipes
+    - rsample
+    - tibble
+    - tidyr
+    - tune
+    - workflows
+    - workflowsets
+    - yardstick
 
 theme:
   - cosmo
