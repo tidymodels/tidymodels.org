@@ -167,7 +167,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (1 year, 10 months and 6 days) old. There may be a newer version available.
+#> Your H2O cluster version is (1 year, 10 months and 9 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -5442,7 +5442,7 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> 3        0.284       0.716 
 #> 4        0.963       0.0365
 #> 5        0.892       0.108 
-#> 6        0.922       0.0785
+#> 6        0.922       0.0784
 ```
 :::
 
@@ -9443,7 +9443,6 @@ predict(poisson_reg_fit, new_data = reg_group_test)
 #> 10  5.61
 #> # ℹ 34 more rows
 predict(poisson_reg_fit, type = "conf_int", new_data = reg_group_test)
-#> Instead of posterior_linpred(..., transform=TRUE) please call posterior_epred(), which provides equivalent functionality.
 #> # A tibble: 44 × 2
 #>    .pred_lower .pred_upper
 #>          <dbl>       <dbl>
@@ -12236,7 +12235,7 @@ rand_forest_fit |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2026-04-17
+#>  date     2026-04-21
 #>  pandoc   3.8.3
 #>  quarto   1.9.35
 #> 
@@ -12257,18 +12256,18 @@ rand_forest_fit |>
 #>  multilevelmod   1.0.0      2022-06-17 CRAN (R 4.5.0)
 #>  parsnip         1.5.0      2026-04-09 CRAN (R 4.5.2)
 #>  plsmod          1.0.0      2022-09-06 CRAN (R 4.5.0)
-#>  poissonreg      1.0.1      2022-08-22 CRAN (R 4.5.0)
+#>  poissonreg      1.0.2      2026-04-20 CRAN (R 4.5.2)
 #>  prodlim         2026.03.11 2026-03-11 CRAN (R 4.5.2)
 #>  purrr           1.2.2      2026-04-10 CRAN (R 4.5.2)
 #>  recipes         1.3.2      2026-04-02 CRAN (R 4.5.2)
 #>  rlang           1.2.0      2026-04-06 CRAN (R 4.5.2)
 #>  rsample         1.3.2      2026-01-30 CRAN (R 4.5.2)
 #>  rules           1.0.3      2026-01-27 CRAN (R 4.5.2)
-#>  sparklyr        1.9.3      2025-11-19 CRAN (R 4.5.1)
+#>  sparklyr        1.9.4      2026-04-18 CRAN (R 4.5.2)
 #>  survival        3.8-6      2026-01-16 CRAN (R 4.5.2)
 #>  tibble          3.3.1      2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels      1.4.1      2025-09-08 CRAN (R 4.5.0)
-#>  tune            2.0.1      2025-10-17 CRAN (R 4.5.0)
+#>  tune            2.1.0      2026-04-17 CRAN (R 4.5.2)
 #>  workflows       1.3.0      2025-08-27 CRAN (R 4.5.0)
 #>  yardstick       1.4.0      2026-04-07 CRAN (R 4.5.2)
 #> 
