@@ -9,11 +9,13 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: rlang and tidymodels.
+To use code in this article,  you will need to install the following packages: tidymodels.
 
 The [yardstick](https://yardstick.tidymodels.org/) package already includes a large number of metrics, but there's obviously a chance that you might have a custom metric that hasn't been implemented yet. In that case, you can use a few of the tools yardstick exposes to create custom metrics.
 

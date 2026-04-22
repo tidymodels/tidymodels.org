@@ -15,6 +15,22 @@ include-after-body: ../../../resources.html
 format:
   html:
     theme: ["style.scss"]
+r-packages:
+  - tidymodels
+  - agua
+  - baguette
+  - bonsai
+  - censored
+  - discrim
+  - multilevelmod
+  - plsmod
+  - poissonreg
+  - rules
+  - sparklyr
+  - HSAUR3
+  - lme4
+  - prodlim
+  - survival
 ---
 
 # Introduction

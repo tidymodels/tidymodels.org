@@ -16,6 +16,14 @@ toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - readr
+  - glmnet
+  - ranger
+  - vip
+  - scales
+  - here
 ---
 
 ```{r}
@@ -34,7 +42,7 @@ source(here::here("common.R"))
 library(readr)
 library(vip)
 library(tidymodels)
-pkgs <- c("tidymodels", "readr", "glmnet", "ranger", "vip")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 

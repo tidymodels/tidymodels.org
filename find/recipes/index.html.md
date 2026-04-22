@@ -8,6 +8,11 @@ toc: true
 toc-depth: 0
 include-after-body: ../../resources.html
 css: ../styles-find.css
+r-packages:
+  - tidymodels
+  - readr
+  - DT
+  - htmlwidgets
 ---
 
 To learn about the recipes package, see [*Get Started: Preprocess your data with recipes*](/start/recipes/). The table below allows you to search for recipe steps across tidymodels packages.

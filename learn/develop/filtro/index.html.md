@@ -9,11 +9,15 @@ description: |
 toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
+r-packages:
+  - filtro
+  - modeldata
+  - S7
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: filtro and modeldata.
+To use code in this article,  you will need to install the following packages: filtro, modeldata, and S7.
 
 Currently, there are 6 filters in filtro and many existing score objects. A list of existing scoring objects [can be found here](https://filtro.tidymodels.org/articles/filtro.html#available-score-objects-and-filter-methods). However, you might need to define your own scoring objects. This article serves as a guide to creating new scoring objects and computing feature scores before performing ranking and selection. 
 
@@ -495,6 +499,7 @@ ames_aov_fstat_res@results
 #>  modeldata   1.5.1   2025-08-22 CRAN (R 4.5.0)
 #>  purrr       1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  rlang       1.2.0   2026-04-06 CRAN (R 4.5.2)
+#>  S7          0.2.1-1 2025-11-14 CRAN (R 4.5.2)
 #>  tibble      3.3.1   2026-01-11 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────

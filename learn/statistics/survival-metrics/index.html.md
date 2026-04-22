@@ -10,11 +10,19 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - censored
+  - modeldatatoo
+  - probably
+  - patchwork
+  - future
+  - sessioninfo
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: censored, modeldatatoo, and tidymodels. 
+To use code in this article,  you will need to install the following packages: censored, future, modeldatatoo, patchwork, probably, sessioninfo, and tidymodels. 
 
 One trend in modern survival analysis is to compute time-dependent measures of performance. These are primarily driven by an increased focus on predictions for the probability of survival at a given time (as opposed to the predictions of event times or linear predictors). Since these are conditional on the evaluation time, we call them dynamic performance metrics. 
 
@@ -400,14 +408,18 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  censored       0.3.4   2026-04-04 CRAN (R 4.5.2)
 #>  dials          1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr          1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future         1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2        4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer          1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.5.0)
 #>  parsnip        1.5.0   2026-04-09 CRAN (R 4.5.2)
+#>  patchwork      1.3.2   2025-08-25 CRAN (R 4.5.0)
+#>  probably       1.2.0   2025-10-16 CRAN (R 4.5.0)
 #>  purrr          1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes        1.3.2   2026-04-02 CRAN (R 4.5.2)
 #>  rlang          1.2.0   2026-04-06 CRAN (R 4.5.2)
 #>  rsample        1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  sessioninfo    1.2.3   2025-02-05 CRAN (R 4.5.0)
 #>  tibble         3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels     1.4.1   2025-09-08 CRAN (R 4.5.0)
 #>  tune           2.1.0   2026-04-17 CRAN (R 4.5.2)

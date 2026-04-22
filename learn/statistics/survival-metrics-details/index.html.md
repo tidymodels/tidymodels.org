@@ -11,11 +11,16 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - censored
+  - prodlim
+  - sessioninfo
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: censored, prodlim, and tidymodels.
+To use code in this article,  you will need to install the following packages: censored, prodlim, sessioninfo, and tidymodels.
 
 One trend in modern survival analysis is to compute time-dependent measures of performance. These are primarily driven by an increased focus on predictions for the probability of survival at a given time (as opposed to the predictions of event times or linear predictors). Since these are conditional on the time of evaluation, we call them dynamic performance metrics.
 
@@ -346,24 +351,25 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version    date (UTC) source
-#>  broom        1.0.12     2026-01-27 CRAN (R 4.5.2)
-#>  censored     0.3.4      2026-04-04 CRAN (R 4.5.2)
-#>  dials        1.4.3      2026-04-11 CRAN (R 4.5.2)
-#>  dplyr        1.2.1      2026-04-03 CRAN (R 4.5.2)
-#>  ggplot2      4.0.2      2026-02-03 CRAN (R 4.5.2)
-#>  infer        1.1.0      2025-12-18 CRAN (R 4.5.2)
-#>  parsnip      1.5.0      2026-04-09 CRAN (R 4.5.2)
-#>  prodlim      2026.03.11 2026-03-11 CRAN (R 4.5.2)
-#>  purrr        1.2.2      2026-04-10 CRAN (R 4.5.2)
-#>  recipes      1.3.2      2026-04-02 CRAN (R 4.5.2)
-#>  rlang        1.2.0      2026-04-06 CRAN (R 4.5.2)
-#>  rsample      1.3.2      2026-01-30 CRAN (R 4.5.2)
-#>  tibble       3.3.1      2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels   1.4.1      2025-09-08 CRAN (R 4.5.0)
-#>  tune         2.1.0      2026-04-17 CRAN (R 4.5.2)
-#>  workflows    1.3.0      2025-08-27 CRAN (R 4.5.0)
-#>  yardstick    1.4.0      2026-04-07 CRAN (R 4.5.2)
+#>  package       version    date (UTC) source
+#>  broom         1.0.12     2026-01-27 CRAN (R 4.5.2)
+#>  censored      0.3.4      2026-04-04 CRAN (R 4.5.2)
+#>  dials         1.4.3      2026-04-11 CRAN (R 4.5.2)
+#>  dplyr         1.2.1      2026-04-03 CRAN (R 4.5.2)
+#>  ggplot2       4.0.2      2026-02-03 CRAN (R 4.5.2)
+#>  infer         1.1.0      2025-12-18 CRAN (R 4.5.2)
+#>  parsnip       1.5.0      2026-04-09 CRAN (R 4.5.2)
+#>  prodlim       2026.03.11 2026-03-11 CRAN (R 4.5.2)
+#>  purrr         1.2.2      2026-04-10 CRAN (R 4.5.2)
+#>  recipes       1.3.2      2026-04-02 CRAN (R 4.5.2)
+#>  rlang         1.2.0      2026-04-06 CRAN (R 4.5.2)
+#>  rsample       1.3.2      2026-01-30 CRAN (R 4.5.2)
+#>  sessioninfo   1.2.3      2025-02-05 CRAN (R 4.5.0)
+#>  tibble        3.3.1      2026-01-11 CRAN (R 4.5.2)
+#>  tidymodels    1.4.1      2025-09-08 CRAN (R 4.5.0)
+#>  tune          2.1.0      2026-04-17 CRAN (R 4.5.2)
+#>  workflows     1.3.0      2025-08-27 CRAN (R 4.5.0)
+#>  yardstick     1.4.0      2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

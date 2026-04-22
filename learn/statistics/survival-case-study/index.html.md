@@ -10,11 +10,20 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - censored
+  - modeldatatoo
+  - glmnet
+  - aorsf
+  - sessioninfo
+  - leaflet
+  - htmlwidgets
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: aorsf, censored, glmnet, modeldatatoo, and tidymodels.
+To use code in this article,  you will need to install the following packages: aorsf, censored, glmnet, htmlwidgets, leaflet, modeldatatoo, sessioninfo, and tidymodels.
 
 Survival analysis is a field of statistics and machine learning for analyzing the time to an event. While it has its roots in medical research, the event of interest can be anything from customer churn to machine failure. Methods from survival analysis take into account that some observations may not yet have experienced the event of interest and are thus _censored_. 
 
@@ -490,13 +499,16 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  dplyr          1.2.1   2026-04-03 CRAN (R 4.5.2)
 #>  ggplot2        4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  glmnet         4.1-10  2025-07-17 CRAN (R 4.5.0)
+#>  htmlwidgets    1.6.4   2023-12-06 CRAN (R 4.5.0)
 #>  infer          1.1.0   2025-12-18 CRAN (R 4.5.2)
+#>  leaflet        2.2.3   2025-09-04 CRAN (R 4.5.0)
 #>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.5.0)
 #>  parsnip        1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr          1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes        1.3.2   2026-04-02 CRAN (R 4.5.2)
 #>  rlang          1.2.0   2026-04-06 CRAN (R 4.5.2)
 #>  rsample        1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  sessioninfo    1.2.3   2025-02-05 CRAN (R 4.5.0)
 #>  tibble         3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels     1.4.1   2025-09-08 CRAN (R 4.5.0)
 #>  tune           2.1.0   2026-04-17 CRAN (R 4.5.2)

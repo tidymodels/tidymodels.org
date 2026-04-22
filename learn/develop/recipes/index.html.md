@@ -9,11 +9,13 @@ description: |
 toc: true
 toc-depth: 3
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: modeldata and tidymodels.
+To use code in this article,  you will need to install the following packages: tidymodels.
 
 There are many existing recipe steps in packages like recipes, themis, textrecipes, and others. A full list of steps in CRAN packages [can be found here](/find/recipes/). However, you might need to define your own preprocessing operations; this article describes how to do that. If you are looking for good examples of existing steps, we suggest looking at the code for [centering](https://github.com/tidymodels/recipes/blob/master/R/center.R) or [PCA](https://github.com/tidymodels/recipes/blob/master/R/pca.R) to start. 
 
@@ -692,7 +694,6 @@ tunable.step_poly <- function(x, ...) {
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
-#>  modeldata    1.5.1   2025-08-22 CRAN (R 4.5.0)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)

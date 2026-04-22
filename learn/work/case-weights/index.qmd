@@ -10,6 +10,8 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
 ---
 
 ```{r}
@@ -18,7 +20,7 @@ include-after-body: ../../../resources.html
 #| message: false
 #| warning: false
 source(here::here("common.R"))
-pkgs <- c("tidymodels")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 ```
   
 ```{r}

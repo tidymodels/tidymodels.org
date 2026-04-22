@@ -11,13 +11,18 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - mlbench
+  - kernlab
+  - future
 ---
 
   
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: kernlab, mlbench, and tidymodels.
+To use code in this article,  you will need to install the following packages: future, kernlab, mlbench, and tidymodels.
 
 This article demonstrates how to tune a model using grid search. Many models have **hyperparameters** that can't be learned directly from a single data set when training the model. Instead, we can train many models in a grid of possible hyperparameter values and see which ones turn out best. 
 
@@ -358,6 +363,7 @@ augment(recipe_res) %>%
 #>  broom        1.0.12  2026-01-27 CRAN (R 4.5.2)
 #>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future       1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  kernlab      0.9-33  2024-08-13 CRAN (R 4.5.0)

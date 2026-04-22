@@ -13,6 +13,12 @@ toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
 bibliography: refs.bib
+r-packages:
+  - tidymodels
+  - readmission
+  - baguette
+  - GGally
+  - desirability2
 ---
 
 ------------------------------------------------------------------------
@@ -44,7 +50,7 @@ library(readmission)
 library(baguette)
 library(desirability2)
 library(GGally)
-pkgs <- c("tidymodels", "readmission", "baguette", "GGally", "desirability2")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 tidymodels_prefer()
 

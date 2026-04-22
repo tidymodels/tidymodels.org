@@ -10,6 +10,15 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - censored
+  - modeldatatoo
+  - glmnet
+  - aorsf
+  - sessioninfo
+  - leaflet
+  - htmlwidgets
 ---
 
 ```{r}
@@ -28,7 +37,7 @@ library(sessioninfo)
 library(leaflet)
 library(htmlwidgets)
 setWidgetIdSeed(1234)
-pkgs <- c("tidymodels", "censored", "modeldatatoo", "glmnet", "aorsf")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 

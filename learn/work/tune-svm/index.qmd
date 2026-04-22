@@ -11,6 +11,11 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - mlbench
+  - kernlab
+  - future
 ---
 
 ```{r}
@@ -30,7 +35,7 @@ library(kernlab)
 library(future)
 plan(multisession, workers = parallel::detectCores())
 
-pkgs <- c("tidymodels", "mlbench", "kernlab")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

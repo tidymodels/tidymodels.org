@@ -10,6 +10,14 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - censored
+  - modeldatatoo
+  - probably
+  - patchwork
+  - future
+  - sessioninfo
 ---
 
 ```{r}
@@ -32,7 +40,7 @@ library(sessioninfo)
 plan(multisession, workers = parallel::detectCores())
 
 
-pkgs <- c("tidymodels", "censored", "modeldatatoo")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 

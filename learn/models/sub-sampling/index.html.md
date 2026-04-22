@@ -10,6 +10,13 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - klaR
+  - themis
+  - discrim
+  - readr
+  - ROSE
 ---
 
 ## Introduction

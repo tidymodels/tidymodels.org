@@ -5,13 +5,20 @@ categories:
   - model fitting
   - parsnip
   - tidying results
-description: | 
+description: |
   Get started by learning how to specify and train a model using tidymodels.
 toc-location: body
 toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - readr
+  - rstanarm
+  - broom.mixed
+  - dotwhisker
+  - here
 ---
 
 ```{r}
@@ -33,7 +40,7 @@ library(tidymodels)
 library(broom.mixed)
 library(dotwhisker)
 
-pkgs <- c("tidymodels", "readr", "rstanarm", "broom.mixed", "dotwhisker")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

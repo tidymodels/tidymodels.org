@@ -12,6 +12,10 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - glmnet
+  - Matrix
 ---
 
 ```{r}
@@ -20,7 +24,7 @@ include-after-body: ../../../resources.html
 #| message: false
 #| warning: false
 source(here::here("common.R"))
-pkgs <- c("tidymodels", "glmnet")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 library(Matrix)
 library(glmnet)
 ```

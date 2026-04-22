@@ -4,6 +4,12 @@ toc: true
 toc-depth: 0
 include-after-body: ../../resources.html
 css: ../styles-find.css
+r-packages:
+  - tidymodels
+  - readr
+  - DT
+  - htmlwidgets
+  - glue
 ---
 
 Here are all the functions available across all of the tidymodels packages. Click on the link in the topic column to find the relevant reference documentation.

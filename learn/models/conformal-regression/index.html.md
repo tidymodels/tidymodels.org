@@ -12,9 +12,14 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - probably
+  - nnet
+  - future
 ---
 
-To use code in this article,  you will need to install the following packages: nnet, probably, and tidymodels. The probably package should be version 1.0.2 or greater.
+To use code in this article,  you will need to install the following packages: future, nnet, probably, and tidymodels. The probably package should be version 1.0.2 or greater.
 
 What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction)? It is a collection of statistical methods that are mostly used to construct prediction intervals (or prediction sets) for any type of regression or classification model. The basic idea revolves around some Frequentist theory on how to construct probability statements about whether a new sample could have been from an existing reference distribution.
 
@@ -473,6 +478,7 @@ If you are interested and would like to learn more, try these resources:
 #>  broom        1.0.12  2026-01-27 CRAN (R 4.5.2)
 #>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future       1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  nnet         7.3-20  2025-01-01 CRAN (R 4.5.2)

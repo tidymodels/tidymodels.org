@@ -9,11 +9,18 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - tidyverse
+  - usethis
+  - DT
+  - htmlwidgets
+  - generics
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: generics, tidymodels, tidyverse, and usethis.
+To use code in this article,  you will need to install the following packages: DT, generics, htmlwidgets, tidymodels, tidyverse, and usethis.
 
 The broom package provides tools to summarize key information about models in tidy `tibble()`s. The package provides three verbs, or "tidiers," to help make model objects easier to work with:
 
@@ -497,24 +504,26 @@ The [alexpghayes/modeltests](https://github.com/alexpghayes/modeltests) package 
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC) source
-#>  broom        1.0.12  2026-01-27 CRAN (R 4.5.2)
-#>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
-#>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
-#>  generics     0.1.4   2025-05-09 CRAN (R 4.5.0)
-#>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
-#>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
-#>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
-#>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
-#>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)
-#>  rlang        1.2.0   2026-04-06 CRAN (R 4.5.2)
-#>  rsample      1.3.2   2026-01-30 CRAN (R 4.5.2)
-#>  tibble       3.3.1   2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tidyverse    1.3.0   2019-11-21 CRAN (R 4.5.1)
-#>  tune         2.1.0   2026-04-17 CRAN (R 4.5.2)
-#>  workflows    1.3.0   2025-08-27 CRAN (R 4.5.0)
-#>  yardstick    1.4.0   2026-04-07 CRAN (R 4.5.2)
+#>  package       version date (UTC) source
+#>  broom         1.0.12  2026-01-27 CRAN (R 4.5.2)
+#>  dials         1.4.3   2026-04-11 CRAN (R 4.5.2)
+#>  dplyr         1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  DT            0.34.0  2025-09-02 CRAN (R 4.5.0)
+#>  generics      0.1.4   2025-05-09 CRAN (R 4.5.0)
+#>  ggplot2       4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  htmlwidgets   1.6.4   2023-12-06 CRAN (R 4.5.0)
+#>  infer         1.1.0   2025-12-18 CRAN (R 4.5.2)
+#>  parsnip       1.5.0   2026-04-09 CRAN (R 4.5.2)
+#>  purrr         1.2.2   2026-04-10 CRAN (R 4.5.2)
+#>  recipes       1.3.2   2026-04-02 CRAN (R 4.5.2)
+#>  rlang         1.2.0   2026-04-06 CRAN (R 4.5.2)
+#>  rsample       1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  tibble        3.3.1   2026-01-11 CRAN (R 4.5.2)
+#>  tidymodels    1.4.1   2025-09-08 CRAN (R 4.5.0)
+#>  tidyverse     1.3.0   2019-11-21 CRAN (R 4.5.1)
+#>  tune          2.1.0   2026-04-17 CRAN (R 4.5.2)
+#>  workflows     1.3.0   2025-08-27 CRAN (R 4.5.0)
+#>  yardstick     1.4.0   2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

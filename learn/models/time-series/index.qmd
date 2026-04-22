@@ -10,6 +10,12 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - timetk
+  - forecast
+  - sweep
+  - zoo
 ---
 
 ```{r}
@@ -30,7 +36,7 @@ library(forecast)
 library(tidymodels)
 library(sweep)
 library(zoo)
-pkgs <- c("tidymodels", "timetk", "forecast", "sweep", "zoo")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

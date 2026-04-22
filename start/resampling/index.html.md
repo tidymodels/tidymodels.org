@@ -14,13 +14,18 @@ toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - ranger
+  - kableExtra
+  - here
 ---
 
 ## Introduction {#intro}
 
 So far, we have [built a model](/start/models/) and [preprocessed data with a recipe](/start/recipes/). We also introduced [workflows](/start/recipes/#fit-workflow) as a way to bundle a [parsnip model](https://parsnip.tidymodels.org/) and [recipe](https://recipes.tidymodels.org/) together. Once we have a model trained, we need a way to measure how well that model predicts new data. This tutorial explains how to characterize model performance based on **resampling** statistics.
 
-To use code in this article,  you will need to install the following packages: modeldata, ranger, and tidymodels.
+To use code in this article,  you will need to install the following packages: here, kableExtra, ranger, and tidymodels.
 
 ::: {.cell layout-align="center"}
 
@@ -572,8 +577,9 @@ The performance metrics from the test set are much closer to the performance met
 #>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  here         1.0.2   2025-09-15 CRAN (R 4.5.0)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
-#>  modeldata    1.5.1   2025-08-22 CRAN (R 4.5.0)
+#>  kableExtra   1.4.0   2024-01-24 CRAN (R 4.5.0)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  ranger       0.18.0  2026-01-16 CRAN (R 4.5.2)

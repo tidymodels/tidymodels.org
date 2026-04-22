@@ -10,6 +10,9 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - sessioninfo
 ---
 
 ```{r}
@@ -25,7 +28,7 @@ source(here::here("common.R"))
 #| include: false
 library(tidymodels)
 library(sessioninfo)
-pkgs <- c("tidymodels")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 

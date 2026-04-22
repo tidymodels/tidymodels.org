@@ -11,6 +11,9 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - nycflights13
 ---
 
 ```{r}
@@ -29,7 +32,7 @@ library(tidymodels)
 library(nycflights13)
 set.seed(1234)
 
-pkgs <- c("tidymodels", "nycflights13")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

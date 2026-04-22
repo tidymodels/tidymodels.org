@@ -15,13 +15,21 @@ toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - rpart
+  - rpart.plot
+  - vip
+  - kableExtra
+  - future
+  - here
 ---
 
 ## Introduction {#intro}
 
 Some model parameters cannot be learned directly from a data set during model training; these kinds of parameters are called **hyperparameters**. Some examples of hyperparameters include the number of predictors that are sampled at splits in a tree-based model (we call this `mtry` in tidymodels) or the learning rate in a boosted tree model (we call this `learn_rate`). Instead of learning these kinds of hyperparameters during model training, we can *estimate* the best values for these values by training many models on resampled data sets and exploring how well all these models perform. This process is called **tuning**.
 
-To use code in this article,  you will need to install the following packages: rpart, rpart.plot, tidymodels, and vip.
+To use code in this article,  you will need to install the following packages: future, here, kableExtra, rpart, rpart.plot, tidymodels, and vip.
 
 ::: {.cell layout-align="center"}
 
@@ -482,8 +490,11 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  broom        1.0.12  2026-01-27 CRAN (R 4.5.2)
 #>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future       1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  here         1.0.2   2025-09-15 CRAN (R 4.5.0)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
+#>  kableExtra   1.4.0   2024-01-24 CRAN (R 4.5.0)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)

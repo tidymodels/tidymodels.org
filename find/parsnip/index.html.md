@@ -7,6 +7,11 @@ toc: true
 toc-depth: 0
 include-after-body: ../../resources.html
 css: ../styles-find.css
+r-packages:
+  - tidymodels
+  - readr
+  - DT
+  - htmlwidgets
 ---
 
 To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [model types and engines](#models).

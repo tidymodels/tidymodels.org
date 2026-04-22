@@ -9,11 +9,14 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - mda
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: mda, modeldata, and tidymodels.
+To use code in this article,  you will need to install the following packages: mda and tidymodels.
 
 The parsnip package constructs models and predictions by representing those actions in expressions. There are a few reasons for this:
 
@@ -838,7 +841,6 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  mda          0.5-5   2024-11-07 CRAN (R 4.5.0)
-#>  modeldata    1.5.1   2025-08-22 CRAN (R 4.5.0)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)

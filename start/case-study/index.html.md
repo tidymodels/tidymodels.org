@@ -16,6 +16,14 @@ toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - readr
+  - glmnet
+  - ranger
+  - vip
+  - scales
+  - here
 ---
 
 ## Introduction {#intro}
@@ -28,7 +36,7 @@ Each of the four previous [*Get Started*](/start/) articles has focused on a sin
 :::
 :::
 
-To use code in this article,  you will need to install the following packages: glmnet, ranger, readr, tidymodels, and vip.
+To use code in this article,  you will need to install the following packages: glmnet, here, ranger, readr, scales, tidymodels, and vip.
 
 ::: {.cell layout-align="center"}
 
@@ -750,6 +758,7 @@ Here are some more ideas for where to go next:
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  glmnet       4.1-10  2025-07-17 CRAN (R 4.5.0)
+#>  here         1.0.2   2025-09-15 CRAN (R 4.5.0)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
@@ -758,6 +767,7 @@ Here are some more ideas for where to go next:
 #>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)
 #>  rlang        1.2.0   2026-04-06 CRAN (R 4.5.2)
 #>  rsample      1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  scales       1.4.0   2025-04-24 CRAN (R 4.5.0)
 #>  tibble       3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels   1.4.1   2025-09-08 CRAN (R 4.5.0)
 #>  tune         2.1.0   2026-04-17 CRAN (R 4.5.2)

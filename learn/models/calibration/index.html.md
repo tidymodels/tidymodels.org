@@ -11,9 +11,15 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - probably
+  - discrim
+  - klaR
+  - future
 ---
 
-To use code in this article,  you will need to install the following packages: discrim, klaR, probably, and tidymodels. The probably package should be version 1.0.0 or greater.
+To use code in this article,  you will need to install the following packages: discrim, future, klaR, probably, and tidymodels. The probably package should be version 1.0.0 or greater.
 
 There are essentially three different parts to a predictive model: 
 
@@ -404,6 +410,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  discrim      1.1.0   2025-12-02 CRAN (R 4.5.2)
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future       1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  klaR         1.7-4   2026-02-23 CRAN (R 4.5.2)

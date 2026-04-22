@@ -9,6 +9,13 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - tidyverse
+  - usethis
+  - DT
+  - htmlwidgets
+  - generics
 ---
 
 ```{r}
@@ -30,7 +37,7 @@ library(generics)
 library(DT)
 library(htmlwidgets)
 setWidgetIdSeed(1234)
-pkgs <- c("tidymodels", "tidyverse", "generics", "usethis")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 ```
 
 ## Introduction

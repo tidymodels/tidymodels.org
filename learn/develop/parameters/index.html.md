@@ -9,11 +9,15 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - dials
+  - scales
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: dials and scales.
+To use code in this article,  you will need to install the following packages: dials, scales, and tidymodels.
 
 Some models and recipe steps contain parameters that dials does not know about. You can construct new quantitative and qualitative parameters using `new_quant_param()` or `new_qual_param()`, respectively. This article is a guide to creating new parameters.
 

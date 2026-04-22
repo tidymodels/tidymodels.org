@@ -10,6 +10,13 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - klaR
+  - themis
+  - discrim
+  - readr
+  - ROSE
 ---
 
 ```{r}
@@ -32,7 +39,7 @@ library(discrim)
 library(themis)
 library(ROSE)
 
-pkgs <- c("tidymodels", "klaR", "themis", "discrim", "readr", "ROSE")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

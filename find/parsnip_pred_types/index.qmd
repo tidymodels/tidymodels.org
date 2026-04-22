@@ -10,6 +10,13 @@ include-after-body: ../../resources.html
 css: ../styles-find.css
 message: FALSE
 warnings: FALSE
+r-packages:
+  - dplyr
+  - purrr
+  - tidyr
+  - parsnip
+  - DT
+  - htmlwidgets
 ---
 
 To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [prediction types for different models and engines](#models).

@@ -11,6 +11,11 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - ranger
+  - randomForest
+  - glmnet
 ---
 
 ```{r}
@@ -32,7 +37,7 @@ library(glmnet)
 preds <- c("Longitude", "Latitude", "Lot_Area", "Neighborhood", "Year_Sold")
 pred_names <- paste0("`", preds, "`")
 
-pkgs <- c("tidymodels", "ranger", "randomForest", "glmnet")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
