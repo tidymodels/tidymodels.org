@@ -40,7 +40,7 @@ library(sessioninfo)
 plan(multisession, workers = parallel::detectCores())
 
 
-pkgs <- c("tidymodels", "censored", "modeldatatoo")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 

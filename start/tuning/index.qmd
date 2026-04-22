@@ -49,7 +49,7 @@ theme_set(theme_bw())
 
 plan(multisession, workers = parallel::detectCores())
 
-pkgs <- c("tidymodels", "rpart", "rpart.plot", "vip")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 ```
 
 ## Introduction {#intro}

@@ -15,6 +15,14 @@ toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - nycflights13
+  - skimr
+  - kableExtra
+  - here
+  - timeDate
+  - lubridate
 ---
 
 ## Introduction {#intro}
@@ -31,7 +39,7 @@ In our [*Build a Model*](/start/models/) article, we learned how to specify and 
 
 and so on. If you are familiar with R's formula interface, a lot of this might sound familiar and like what a formula already does. Recipes can be used to do many of the same things, but they have a much wider range of possibilities. This article shows how to use recipes for modeling.
 
-To use code in this article,  you will need to install the following packages: nycflights13, skimr, and tidymodels.
+To use code in this article,  you will need to install the following packages: here, kableExtra, lubridate, nycflights13, skimr, tidymodels, and timeDate.
 
 ::: {.cell layout-align="center"}
 
@@ -585,24 +593,28 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package        version date (UTC) source
-#>  broom          1.0.12  2026-01-27 CRAN (R 4.5.2)
-#>  dials          1.4.3   2026-04-11 CRAN (R 4.5.2)
-#>  dplyr          1.2.1   2026-04-03 CRAN (R 4.5.2)
-#>  ggplot2        4.0.2   2026-02-03 CRAN (R 4.5.2)
-#>  infer          1.1.0   2025-12-18 CRAN (R 4.5.2)
-#>  nycflights13   1.0.2   2021-04-12 CRAN (R 4.5.0)
-#>  parsnip        1.5.0   2026-04-09 CRAN (R 4.5.2)
-#>  purrr          1.2.2   2026-04-10 CRAN (R 4.5.2)
-#>  recipes        1.3.2   2026-04-02 CRAN (R 4.5.2)
-#>  rlang          1.2.0   2026-04-06 CRAN (R 4.5.2)
-#>  rsample        1.3.2   2026-01-30 CRAN (R 4.5.2)
-#>  skimr          2.2.2   2026-01-10 CRAN (R 4.5.2)
-#>  tibble         3.3.1   2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels     1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune           2.1.0   2026-04-17 CRAN (R 4.5.2)
-#>  workflows      1.3.0   2025-08-27 CRAN (R 4.5.0)
-#>  yardstick      1.4.0   2026-04-07 CRAN (R 4.5.2)
+#>  package        version  date (UTC) source
+#>  broom          1.0.12   2026-01-27 CRAN (R 4.5.2)
+#>  dials          1.4.3    2026-04-11 CRAN (R 4.5.2)
+#>  dplyr          1.2.1    2026-04-03 CRAN (R 4.5.2)
+#>  ggplot2        4.0.2    2026-02-03 CRAN (R 4.5.2)
+#>  here           1.0.2    2025-09-15 CRAN (R 4.5.0)
+#>  infer          1.1.0    2025-12-18 CRAN (R 4.5.2)
+#>  kableExtra     1.4.0    2024-01-24 CRAN (R 4.5.0)
+#>  lubridate      1.9.5    2026-02-04 CRAN (R 4.5.2)
+#>  nycflights13   1.0.2    2021-04-12 CRAN (R 4.5.0)
+#>  parsnip        1.5.0    2026-04-09 CRAN (R 4.5.2)
+#>  purrr          1.2.2    2026-04-10 CRAN (R 4.5.2)
+#>  recipes        1.3.2    2026-04-02 CRAN (R 4.5.2)
+#>  rlang          1.2.0    2026-04-06 CRAN (R 4.5.2)
+#>  rsample        1.3.2    2026-01-30 CRAN (R 4.5.2)
+#>  skimr          2.2.2    2026-01-10 CRAN (R 4.5.2)
+#>  tibble         3.3.1    2026-01-11 CRAN (R 4.5.2)
+#>  tidymodels     1.4.1    2025-09-08 CRAN (R 4.5.0)
+#>  timeDate       4052.112 2026-01-28 CRAN (R 4.5.2)
+#>  tune           2.1.0    2026-04-17 CRAN (R 4.5.2)
+#>  workflows      1.3.0    2025-08-27 CRAN (R 4.5.0)
+#>  yardstick      1.4.0    2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

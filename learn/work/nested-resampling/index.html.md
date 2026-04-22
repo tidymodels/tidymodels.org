@@ -9,6 +9,12 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - scales
+  - mlbench
+  - kernlab
+  - furrr
 ---
 
 ## Introduction

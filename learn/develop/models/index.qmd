@@ -30,7 +30,7 @@ source(here::here("common.R"))
 library(mda)
 library(tidymodels)
 
-pkgs <- c("tidymodels", "mda", "modeldata")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

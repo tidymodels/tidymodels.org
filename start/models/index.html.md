@@ -5,20 +5,27 @@ categories:
   - model fitting
   - parsnip
   - tidying results
-description: | 
+description: |
   Get started by learning how to specify and train a model using tidymodels.
 toc-location: body
 toc-depth: 2
 toc-title: ""
 css: ../styles.css
 include-after-body: ../repo-actions-delete.html
+r-packages:
+  - tidymodels
+  - readr
+  - rstanarm
+  - broom.mixed
+  - dotwhisker
+  - here
 ---
 
 ## Introduction {#intro}
 
 How do you create a statistical model using tidymodels? In this article, we will walk you through the steps. We start with data for modeling, learn how to specify and train models with different engines using the [parsnip package](https://parsnip.tidymodels.org/), and understand why these functions are designed this way.
 
-To use code in this article,  you will need to install the following packages: broom.mixed, dotwhisker, readr, rstanarm, and tidymodels.
+To use code in this article,  you will need to install the following packages: broom.mixed, dotwhisker, here, readr, rstanarm, and tidymodels.
 
 ::: {.cell layout-align="center"}
 
@@ -471,6 +478,7 @@ ggplot(urchins,
 #>  dotwhisker    0.8.4   2025-05-06 CRAN (R 4.5.0)
 #>  dplyr         1.2.1   2026-04-03 CRAN (R 4.5.2)
 #>  ggplot2       4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  here          1.0.2   2025-09-15 CRAN (R 4.5.0)
 #>  infer         1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  parsnip       1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr         1.2.2   2026-04-10 CRAN (R 4.5.2)

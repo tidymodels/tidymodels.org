@@ -12,6 +12,9 @@ toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
 bibliography: refs.bib
+r-packages:
+  - tidymodels
+  - detectors
 ---
 
 ------------------------------------------------------------------------

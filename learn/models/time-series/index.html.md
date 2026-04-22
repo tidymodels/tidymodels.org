@@ -10,6 +10,12 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - timetk
+  - forecast
+  - sweep
+  - zoo
 ---
 
 ## Introduction

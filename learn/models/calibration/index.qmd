@@ -38,7 +38,7 @@ library(future)
 
 plan(multisession, workers = parallel::detectCores())
 
-pkgs <- c("tidymodels", "probably", "discrim", "klaR")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 ```
 
 

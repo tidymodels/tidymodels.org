@@ -10,13 +10,18 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - kernlab
+  - themis
+  - future
 ---
 
   
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: kernlab, modeldata, themis, and tidymodels.
+To use code in this article,  you will need to install the following packages: future, kernlab, themis, and tidymodels.
 
 Many of the examples for model tuning focus on [grid search](/learn/work/tune-svm/). For that method, all the candidate tuning parameter combinations are defined prior to evaluation. Alternatively, _iterative search_ can be used to analyze the existing tuning parameter results and then _predict_ which tuning parameters to try next. 
 
@@ -2380,10 +2385,10 @@ autoplot(search_res, type = "parameters") +
 #>  broom        1.0.12  2026-01-27 CRAN (R 4.5.2)
 #>  dials        1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr        1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future       1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  kernlab      0.9-33  2024-08-13 CRAN (R 4.5.0)
-#>  modeldata    1.5.1   2025-08-22 CRAN (R 4.5.0)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)

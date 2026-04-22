@@ -30,7 +30,7 @@ source(here::here("common.R"))
 library(tidymodels)
 library(sparsevctrs)
 
-pkgs <- c("tidymodels", "sparsevctrs")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

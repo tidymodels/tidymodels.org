@@ -12,13 +12,17 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - glmnet
+  - Matrix
 ---
 
 ## Introduction 
 
 There are many types of statistical models with diverse kinds of structure. Some models have coefficients (a.k.a. weights) for each term in the model. Familiar examples of such models are linear or logistic regression, but more complex models (e.g. neural networks, MARS) can also have model coefficients. When we work with models that use weights or coefficients, we often want to examine the estimated coefficients. 
 
-This article describes how to retrieve the estimated coefficients from models fit using tidymodels. To use code in this article,  you will need to install the following packages: glmnet and tidymodels.
+This article describes how to retrieve the estimated coefficients from models fit using tidymodels. To use code in this article,  you will need to install the following packages: glmnet, Matrix, and tidymodels.
 
 ## Linear regression
 
@@ -651,6 +655,7 @@ Notice a couple of things:
 #>  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  glmnet       4.1-10  2025-07-17 CRAN (R 4.5.0)
 #>  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
+#>  Matrix       1.7-5   2026-03-21 CRAN (R 4.5.2)
 #>  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #>  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #>  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)

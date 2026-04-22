@@ -40,7 +40,7 @@ library(tidymodels)
 library(broom.mixed)
 library(dotwhisker)
 
-pkgs <- c("tidymodels", "readr", "rstanarm", "broom.mixed", "dotwhisker")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```

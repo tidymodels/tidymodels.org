@@ -24,7 +24,7 @@ r-packages:
 #| message: false
 #| warning: false
 source(here::here("common.R"))
-pkgs <- c("tidymodels", "glmnet")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 library(Matrix)
 library(glmnet)
 ```

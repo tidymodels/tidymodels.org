@@ -36,7 +36,7 @@ library(stopwords)
 library(future)
 plan(multisession)
 
-pkgs <- c("tidymodels", "textrecipes", "stopwords")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
 theme_set(theme_bw())
 ```

@@ -12,11 +12,17 @@ description: |
 toc: true
 toc-depth: 2
 include-after-body: ../../../resources.html
+r-packages:
+  - tidymodels
+  - textrecipes
+  - stopwords
+  - future
+  - tictoc
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: stopwords, textrecipes, and tidymodels.
+To use code in this article,  you will need to install the following packages: future, stopwords, textrecipes, tictoc, and tidymodels.
 
 This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.
 
@@ -246,7 +252,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 19.203 sec elapsed
+#> 19.481 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -701,6 +707,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  broom         1.0.12  2026-01-27 CRAN (R 4.5.2)
 #>  dials         1.4.3   2026-04-11 CRAN (R 4.5.2)
 #>  dplyr         1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  future        1.70.0  2026-03-14 CRAN (R 4.5.2)
 #>  ggplot2       4.0.2   2026-02-03 CRAN (R 4.5.2)
 #>  infer         1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  parsnip       1.5.0   2026-04-09 CRAN (R 4.5.2)
@@ -711,6 +718,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  stopwords     2.3     2021-10-28 CRAN (R 4.5.0)
 #>  textrecipes   1.1.0   2025-03-18 CRAN (R 4.5.0)
 #>  tibble        3.3.1   2026-01-11 CRAN (R 4.5.2)
+#>  tictoc        1.2.1   2024-03-18 CRAN (R 4.5.0)
 #>  tidymodels    1.4.1   2025-09-08 CRAN (R 4.5.0)
 #>  tune          2.1.0   2026-04-17 CRAN (R 4.5.2)
 #>  workflows     1.3.0   2025-08-27 CRAN (R 4.5.0)

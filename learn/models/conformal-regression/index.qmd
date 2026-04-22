@@ -45,7 +45,7 @@ plan(multisession, workers = parallel::detectCores())
 
 # ------------------------------------------------------------------------------
 
-pkgs <- c("tidymodels", "probably", "nnet")
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 ```
 
 `r article_req_pkgs(pkgs)` The probably package should be version 1.0.2 or greater.
