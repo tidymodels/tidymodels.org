@@ -167,7 +167,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (1 year, 10 months and 9 days) old. There may be a newer version available.
+#> Your H2O cluster version is (1 year, 10 months and 10 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -12235,7 +12235,7 @@ rand_forest_fit |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2026-04-21
+#>  date     2026-04-22
 #>  pandoc   3.8.3
 #>  quarto   1.9.35
 #> 
