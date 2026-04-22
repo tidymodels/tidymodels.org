@@ -125,20 +125,21 @@ jobs:
 
       - name: Open issue on render failure
         if: failure() && steps.render.outcome == 'failure'
-        uses: peter-evans/create-issue@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "Automated re-render failed (${{ needs.check.outputs.updated_packages }}) ${{ steps.date.outputs.date }}"
-          body: |
-            The automated re-render triggered by a CRAN update failed.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "Automated re-render failed (${{ needs.check.outputs.updated_packages }}) ${{ steps.date.outputs.date }}" \
+            --label "automated re-render,bug" \
+            --body "The automated re-render triggered by a CRAN update failed.
 
-            **Version changes:**
-            ${{ needs.check.outputs.version_changes }}
+          **Version changes:**
+          ${{ needs.check.outputs.version_changes }}
 
-            **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            One or more pages failed to render. The freeze cache for those pages has been cleared but not repopulated — a manual re-render may be needed. Check the workflow run above for the full error output.
-          labels: "automated re-render,bug"
+          One or more pages failed to render. The freeze cache for those pages has been cleared but not repopulated — a manual re-render may be needed. Check the workflow run above for the full error output."
 
       - name: Update _versions.json
         if: success()
