@@ -1,0 +1,133 @@
+on:
+  schedule:
+    - cron: "0 12 * * 1-5"  # weekdays at 4am Pacific (UTC-8)
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: "Space-separated package names to force re-render (optional)"
+        required: false
+
+name: Check CRAN releases and re-render
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      updated_packages: ${{ steps.check.outputs.updated_packages }}
+      has_updates: ${{ steps.check.outputs.has_updates }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+          use-public-rspm: true
+
+      - name: Install jsonlite
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: any::jsonlite
+
+      - name: Check for CRAN updates
+        id: check
+        shell: Rscript {0}
+        run: |
+          library(jsonlite)
+
+          # Allow manual override via workflow_dispatch input
+          manual <- "${{ github.event.inputs.packages }}"
+          if (nzchar(trimws(manual))) {
+            pkgs <- trimws(strsplit(manual, " ")[[1]])
+            pkgs <- pkgs[nzchar(pkgs)]
+            cat("Manual override for packages:", paste(pkgs, collapse = ", "), "\n")
+            cat(sprintf("updated_packages=%s\n", paste(pkgs, collapse = " ")),
+                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+            cat("has_updates=true\n",
+                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+            quit(save = "no")
+          }
+
+          recorded <- jsonlite::read_json("_versions.json", simplifyVector = TRUE)
+          pkgs     <- names(recorded)
+
+          # Query CRAN for current versions
+          db <- available.packages(repos = "https://cloud.r-project.org")
+          cran_versions <- setNames(
+            ifelse(pkgs %in% rownames(db), db[pkgs[pkgs %in% rownames(db)], "Version"], NA),
+            pkgs
+          )
+
+          updated <- pkgs[!is.na(cran_versions) & cran_versions != recorded[pkgs]]
+
+          if (length(updated) == 0) {
+            cat("No package updates found.\n")
+            cat("has_updates=false\n",
+                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+          } else {
+            cat("Updated packages:", paste(updated, collapse = ", "), "\n")
+            cat(sprintf("updated_packages=%s\n", paste(updated, collapse = " ")),
+                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+            cat("has_updates=true\n",
+                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+          }
+
+  rerender:
+    needs: check
+    if: needs.check.outputs.has_updates == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+          use-public-rspm: true
+
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: any::jsonlite any::yaml any::here any::cli
+          cache: true
+
+      - name: Install all site packages
+        shell: Rscript {0}
+        run: source("installs.R")
+
+      - name: Re-render affected pages
+        shell: Rscript {0}
+        run: |
+          pkgs <- strsplit("${{ needs.check.outputs.updated_packages }}", " ")[[1]]
+          args <- c("re-render-package.R", pkgs)
+          source_args <- commandArgs
+          # Use system2 to call the script with package args
+          result <- system2("Rscript", args)
+          if (result != 0) stop("Re-render failed")
+
+      - name: Update _versions.json
+        shell: Rscript {0}
+        run: source("make_versions.R")
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "cran-rerender/${{ github.run_id }}"
+          commit-message: "re-render pages after CRAN update: ${{ needs.check.outputs.updated_packages }}"
+          title: "Re-render: ${{ needs.check.outputs.updated_packages }}"
+          body: |
+            Automated re-render triggered by CRAN update.
+
+            **Updated packages:** `${{ needs.check.outputs.updated_packages }}`
+
+            Please review the rendered output changes before merging.
+          labels: "automated re-render"
