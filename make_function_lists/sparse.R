@@ -48,7 +48,10 @@ excl <- c(
   "tidymodels",
   "shinymodels",
   "stacks",
-  "viruslearner"
+  "viruslearner",
+  "nestedmodels",
+  "viraldomain",
+  "viralmodels"
 )
 parsnip_pkgs <- parsnip_pkgs[!(parsnip_pkgs %in% excl)]
 
