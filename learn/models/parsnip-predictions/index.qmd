@@ -28,7 +28,7 @@ source(here::here("common.R"))
 # Indicates to enable or not running Spark code
 run_spark <- TRUE
 run_h2o <- TRUE
-run_keras <- TRUE
+run_keras <- FALSE
 run_catboost <- rlang::is_installed("catboost")
 run_grf <- rlang::is_installed("parsnip", version = "1.3.3.9000")
 ```
@@ -1505,7 +1505,7 @@ We create a model specification via:
 #| eval: !expr 'run_h2o'
 logistic_reg_spec <- logistic_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -1599,9 +1599,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-logistic-reg-classification
-logistic_reg_spec <- logistic_reg() |> 
+logistic_reg_spec <- logistic_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -1640,9 +1640,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-glmer-logistic-reg-classification
-logistic_reg_spec <- logistic_reg() |> 
+logistic_reg_spec <- logistic_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -1849,7 +1849,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("h2o")
+  set_engine("h2o", reproducible = TRUE, seed = 1)
 ```
 
 Now we create the model fit object:
@@ -2023,7 +2023,7 @@ We create a model specification via:
 #| eval: !expr 'run_h2o'
 multinom_reg_spec <- multinom_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -2134,7 +2134,7 @@ We create a model specification via:
 #| eval: !expr 'run_h2o'
 naive_Bayes_spec <- naive_Bayes() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -2473,7 +2473,7 @@ We create a model specification via:
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -2671,7 +2671,7 @@ We create a model specification via:
 rule_fit_spec <- rule_fit() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -3725,7 +3725,7 @@ We create a model specification via:
 #| eval: !expr 'run_h2o'
 linear_reg_spec <- linear_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -3863,9 +3863,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-linear-reg-regression
-linear_reg_spec <- linear_reg() |> 
+linear_reg_spec <- linear_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -3902,9 +3902,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-glmer-linear-reg-regression
-linear_reg_spec <- linear_reg() |> 
+linear_reg_spec <- linear_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -4104,7 +4104,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("h2o")
+  set_engine("h2o", reproducible = TRUE, seed = 1)
 ```
 
 Now we create the model fit object:
@@ -4439,7 +4439,7 @@ We create a model specification via:
 #| eval: !expr 'run_h2o'
 poisson_reg_spec <- poisson_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -4509,9 +4509,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-poisson-reg-regression
-poisson_reg_spec <- poisson_reg() |> 
+poisson_reg_spec <- poisson_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -4549,9 +4549,9 @@ We create a model specification via:
 
 ```{r}
 #| label: spec-stan-glmer-poisson-reg-regression
-poisson_reg_spec <- poisson_reg() |> 
+poisson_reg_spec <- poisson_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 
 Now we create the model fit object:
@@ -4739,7 +4739,7 @@ We create a model specification via:
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:
@@ -4932,7 +4932,7 @@ We create a model specification via:
 rule_fit_spec <- rule_fit() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 
 Now we create the model fit object:

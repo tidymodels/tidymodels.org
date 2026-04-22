@@ -43,6 +43,7 @@ Here we want to predict the time it takes for a complaint to be dispositioned^[I
 Let's start with loading the tidymodels and censored packages (the parsnip extension package for survival analysis models).
 
 ```{r}
+#| label: load-packages
 library(tidymodels)
 library(censored)
 ```
@@ -52,6 +53,7 @@ library(censored)
 The city of New York publishes data on the [complaints](https://data.cityofnewyork.us/Housing-Development/DOB-Complaints-Received/eabe-havv/about_data) received by the Department of Buildings. The data includes information on the type of complaint, the date it was entered in their records, the date it was dispositioned, and the location of the building the complaint was about. We are using a subset of the data, available in the modeldatatoo package.
 
 ```{r}
+#| label: load-building-complaints
 building_complaints <- modeldatatoo::data_building_complaints()
 glimpse(building_complaints)
 ```
@@ -83,6 +85,7 @@ In the dataset, we can see the `days_to_disposition` as well as the `status` of 
 The standard form for time-to-event data are `Surv` objects which capture the time as well as the event status. As with all transformations of the response, it is advisable to do this before heading into the model fitting process with tidymodels.
 
 ```{r}
+#| label: preprocess-complaints
 building_complaints <- building_complaints %>% 
   mutate(
     disposition_surv = Surv(days_to_disposition, status == "CLOSED"), 
@@ -95,6 +98,7 @@ building_complaints <- building_complaints %>%
 For our resampling strategy, let's use a [3-way split](https://www.tmwr.org/resampling#validation) into training, validation, and test set.
 
 ```{r}
+#| label: initial-split
 set.seed(403)
 complaints_split <- initial_validation_split(building_complaints)
 ```
@@ -102,6 +106,7 @@ complaints_split <- initial_validation_split(building_complaints)
 First, let's pull out the training data and have a brief look at the response using a [Kaplan-Meier curve](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3059453/). 
 
 ```{r}
+#| label: plot-kaplan-meier
 #| fig.alt: "A Kaplan-Meier curve dropping rapidly initially, then reaching about 10% survival rate at around 100 days, and finally trailing off until about 400 days."
 
 complaints_train <- training(complaints_split)
@@ -116,6 +121,7 @@ We can see that the majority of complaints is dispositioned relatively quickly, 
 The censored package includes parametric, semi-parametric, and tree-based models for this type of analysis. To start, we are fitting a parametric survival model with the default of assuming a Weibull distribution on the time to disposition. We'll explore the more flexible models once we have a sense of how well this more restrictive model performs on this dataset.
 
 ```{r}
+#| label: spec-survreg
 survreg_spec <- survival_reg() %>% 
   set_engine("survival") %>% 
   set_mode("censored regression")
@@ -124,6 +130,7 @@ survreg_spec <- survival_reg() %>%
 We have several missing values in `complaint_priority` that we are turning into a separate category, `"unknown"`. We are also combining the less common categories for `community_board` and `unit` into an `"other"` category to reduce the number of levels in the predictors. The complaint category often does not tell us much more than the unit, with several complaint categories being handled by a specific unit only. This can lead to the model being unable to estimate some of the coefficients. Since our goal here is only to get a rough idea of how well the model performs, we are removing the complaint category for now.
 
 ```{r}
+#| label: recipe-other
 rec_other <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
   step_unknown(complaint_priority) %>% 
   step_rm(complaint_category) %>% 
@@ -134,6 +141,7 @@ rec_other <- recipe(disposition_surv ~ ., data = complaints_train) %>%
 We combine the recipe and the model into a workflow. This allows us to easily resample the model because all preprocessing steps are applied to the training set and the validation set for us.
 
 ```{r}
+#| label: workflow-survreg
 survreg_wflow <- workflow() %>% 
   add_recipe(rec_other) %>% 
   add_model(survreg_spec)
@@ -148,6 +156,7 @@ For more information see the [Dynamic Performance Metrics for Event Time Data](.
 :::
 
 ```{r}
+#| label: setup-validation-metrics
 complaints_rset <- validation_set(complaints_split)
 
 survival_metrics <- metric_set(brier_survival_integrated, brier_survival,
@@ -167,6 +176,7 @@ survreg_res <- fit_resamples(
 The structure of survival model predictions is slightly different from classification and regression model predictions:
 
 ```{r}
+#| label: collect-predictions
 preds <- collect_predictions(survreg_res)
 preds
 ```
@@ -174,6 +184,7 @@ preds
 The predicted survival time is in the `.pred_time` column and the predicted survival probabilities are in the `.pred` list column. 
 
 ```{r}
+#| label: inspect-pred-survival
 preds$.pred[[6]]
 ```
 
@@ -206,6 +217,7 @@ collect_metrics(survreg_res) %>%
 The accuracy of the predicted probabilities is generally good, albeit lowest for evaluation times of 30 and 60 days. The integrated Brier score is a measure of the overall accuracy of the predicted probabilities. 
 
 ```{r}
+#| label: brier-integrated-survreg
 collect_metrics(survreg_res) %>% 
   filter(.metric == "brier_survival_integrated")
 ```
@@ -219,6 +231,7 @@ Lumping factor levels together based on frequencies can lead to a loss of inform
 First, let’s create the recipes for these two approaches:
 
 ```{r}
+#| label: recipe-rf-coxnet
 rec_unknown <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
   step_unknown(complaint_priority) 
 
@@ -234,6 +247,7 @@ For the random forest, we are using the `"aorsf"` engine for accelerated oblique
 For the regularized model, we are using the `"glmnet"` engine for a semi-parametric Cox proportional hazards model.
 
 ```{r}
+#| label: specs-rf-coxnet
 oblique_spec <- rand_forest(mtry = tune(), min_n = tune()) %>% 
   set_engine("aorsf") %>% 
   set_mode("censored regression")
@@ -254,6 +268,7 @@ coxnet_wflow <- workflow() %>%
 We can tune workflows with any of the `tune_*()` functions such as `tune_grid()` for grid search or `tune_bayes()` for Bayesian optimization. Here we are using grid search for simplicity.
 
 ```{r}
+#| label: tune-rf-coxnet
 set.seed(1)
 oblique_res <- tune_grid(
   oblique_wflow,
@@ -278,12 +293,14 @@ coxnet_res <- tune_grid(
 So do any of these models perform better than the parametric survival model?
 
 ```{r}
+#| label: show-best-rf-coxnet
 show_best(oblique_res, metric = "brier_survival_integrated", n = 5)
 
 show_best(coxnet_res, metric = "brier_survival_integrated", n = 5)
 ```
 
 ```{r}
+#| label: extract-best-metrics
 #| echo: false
 bi_best_cox <- show_best(coxnet_res, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
 bi_best_rf <- show_best(oblique_res, metric = "brier_survival_integrated", n = 1) %>% pull(mean)
@@ -301,6 +318,7 @@ The best regularized Cox model performs a little better than the parametric surv
 We chose the random forest model as the final model. So let's finalize the workflow by replacing the `tune()` placeholders with the best hyperparameters.
 
 ```{r}
+#| label: select-best-params
 param_best <- select_best(oblique_res, metric = "brier_survival_integrated")
 
 last_oblique_wflow <- finalize_workflow(oblique_wflow, param_best)
@@ -309,6 +327,7 @@ last_oblique_wflow <- finalize_workflow(oblique_wflow, param_best)
 We can now fit the final model on the training data and evaluate it on the test data.
 
 ```{r}
+#| label: last-fit-oblique
 set.seed(2)
 last_oblique_fit <- last_fit(
   last_oblique_wflow, 
@@ -341,6 +360,7 @@ bind_rows(brier_val, brier_test) %>%
 To finish, we can extract the fitted workflow to either predict directly on new data or deploy the model.
 
 ```{r}
+#| label: predict-new-complaints
 complaints_model <- extract_workflow(last_oblique_fit)
 
 complaints_5 <- testing(complaints_split) %>% slice(1:5)

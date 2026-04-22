@@ -166,6 +166,9 @@ library(agua)
 #>     rank_results
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
+#> Warning in h2o.clusterInfo(): 
+#> Your H2O cluster version is (1 year, 10 months and 9 days) old. There may be a newer version available.
+#> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
 
@@ -534,8 +537,8 @@ bag_tree_fit
 #> # A tibble: 2 × 4
 #>   term  value std.error  used
 #>   <chr> <dbl>     <dbl> <int>
-#> 1 B      272.      4.35    11
-#> 2 A      237.      5.57    11
+#> 1 B      271.      4.35    11
+#> 2 A      237.      5.58    11
 ```
 :::
 
@@ -985,10 +988,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1770287512312_5613 
+#> Model ID:  GBM_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               25380         6
+#> 1              50                       50               30000         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         21         55    35.70000
 #> 
@@ -1104,10 +1107,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1770287512312_5665 
+#> Model ID:  GBM_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               25379         6
+#> 1              50                       50               30000         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         21         55    35.70000
 #> 
@@ -1280,7 +1283,7 @@ boost_tree_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> GBTClassificationModel: uid = gradient_boosted_trees__1c57358a_ec7a_4c0c_8911_2c8d306fa909, numTrees=20, numClasses=2, numFeatures=2
+#> GBTClassificationModel: uid = gradient_boosted_trees__00000000_0000_0000_0000_000000000000, numTrees=20, numClasses=2, numFeatures=2
 ```
 :::
 
@@ -1649,7 +1652,7 @@ decision_tree_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> DecisionTreeClassificationModel: uid=decision_tree_classifier__a4e63506_aa0e_40d3_9ba8_a6534c10629f, depth=5, numNodes=43, numClasses=2, numFeatures=2
+#> DecisionTreeClassificationModel: uid=decision_tree_classifier__00000000_0000_0000_0000_000000000000, depth=5, numNodes=43, numClasses=2, numFeatures=2
 ```
 :::
 
@@ -2696,9 +2699,9 @@ logistic_reg_fit
 #> Number of obs: 1433, groups:  patientID, 219
 #> Fixed Effects:
 #>                (Intercept)        treatmentterbinafine  
-#>                  -4.574209                   -0.511919  
+#>                   -4.57420                    -0.51193  
 #>                      visit  treatmentterbinafine:visit  
-#>                  -0.987246                   -0.001121
+#>                   -0.98725                    -0.00112
 ```
 :::
 
@@ -2881,7 +2884,7 @@ We create a model specification via:
 ```{.r .cell-code}
 logistic_reg_spec <- logistic_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -2899,14 +2902,14 @@ logistic_reg_fit
 #> ==============
 #> 
 #> H2OBinomialModel: glm
-#> Model ID:  GLM_model_R_1770287512312_5717 
+#> Model ID:  GLM_model_R_1776455818270_0 
 #> GLM Model: summary
 #>     family  link                                regularization
 #> 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )
 #>   number_of_predictors_total number_of_active_predictors number_of_iterations
 #> 1                          2                           2                    4
 #>      training_frame
-#> 1 object_zkelygexok
+#> 1 object_ahzkelygex
 #> 
 #> Coefficients: glm coefficients
 #>       names coefficients standardized_coefficients
@@ -3016,19 +3019,6 @@ logistic_reg_fit <- logistic_reg_spec |>
 
 ```{.r .cell-code}
 logistic_reg_fit
-#> parsnip model object
-#> 
-#> Model: "sequential"
-#> ________________________________________________________________________________
-#>  Layer (type)                       Output Shape                    Param #     
-#> ================================================================================
-#>  dense (Dense)                      (None, 1)                       3           
-#>  dense_1 (Dense)                    (None, 2)                       4           
-#> ================================================================================
-#> Total params: 7 (28.00 Byte)
-#> Trainable params: 7 (28.00 Byte)
-#> Non-trainable params: 0 (0.00 Byte)
-#> ________________________________________________________________________________
 ```
 :::
 
@@ -3038,27 +3028,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 81ms/epoch - 81ms/step
-#> # A tibble: 6 × 1
-#>   .pred_class
-#>   <fct>      
-#> 1 Class2     
-#> 2 Class1     
-#> 3 Class1     
-#> 4 Class1     
-#> 5 Class1     
-#> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 6ms/epoch - 6ms/step
-#> # A tibble: 6 × 2
-#>   .pred_Class1 .pred_Class2
-#>          <dbl>        <dbl>
-#> 1        0.212       0.788 
-#> 2        0.627       0.373 
-#> 3        0.580       0.420 
-#> 4        0.990       0.0101
-#> 5        0.954       0.0461
-#> 6        0.470       0.530
 ```
 :::
 
@@ -3145,9 +3115,9 @@ We create a model specification via:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-logistic_reg_spec <- logistic_reg() |> 
+logistic_reg_spec <- logistic_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 :::
 
@@ -3270,9 +3240,9 @@ We create a model specification via:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-logistic_reg_spec <- logistic_reg() |> 
+logistic_reg_spec <- logistic_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 :::
 
@@ -3688,7 +3658,7 @@ mlp_fit
 #> dropout proportion: 0 
 #> batch size: 707 
 #> learn rate: 0.01 
-#> validation loss after 17 epochs: 0.405
+#> validation loss after 17 epochs: 0.406
 ```
 :::
 
@@ -3739,7 +3709,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("h2o")
+  set_engine("h2o", reproducible = TRUE, seed = 1)
 ```
 :::
 
@@ -3759,56 +3729,56 @@ mlp_fit
 #> ==============
 #> 
 #> H2OBinomialModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1770287512312_5719 
+#> Model ID:  DeepLearning_model_R_1776455818270_0 
 #> Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
-#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.008355 0.020870 0.000000
-#> 3     3     2   Softmax      NA 0.000000 0.000000  0.003311 0.000205 0.000000
+#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.015911 0.045611 0.000000
+#> 3     3     2   Softmax      NA 0.000000 0.000000  0.003350 0.000114 0.000000
 #>   mean_weight weight_rms mean_bias bias_rms
 #> 1          NA         NA        NA       NA
-#> 2    0.001630   0.103344  0.489596 0.030962
-#> 3   -0.001547   0.402480 -0.040452 0.052851
+#> 2   -0.005244   0.104666  0.478428 0.043014
+#> 3   -0.005700   0.379508  0.000000 0.017883
 #> 
 #> 
 #> H2OBinomialMetrics: deeplearning
 #> ** Reported on training data. **
 #> ** Metrics reported on full training frame **
 #> 
-#> MSE:  0.2977407
-#> RMSE:  0.5456562
-#> LogLoss:  0.9645075
-#> Mean Per-Class Error:  0.1762509
-#> AUC:  0.8895913
-#> AUCPR:  0.8505352
-#> Gini:  0.7791826
+#> MSE:  0.1296434
+#> RMSE:  0.3600603
+#> LogLoss:  0.4231046
+#> Mean Per-Class Error:  0.1731524
+#> AUC:  0.8896799
+#> AUCPR:  0.8483795
+#> Gini:  0.7793598
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error      Rate
-#> Class1    328    106 0.244240  =106/434
-#> Class2     38    313 0.108262   =38/351
-#> Totals    366    419 0.183439  =144/785
+#> Class1    348     86 0.198157   =86/434
+#> Class2     52    299 0.148148   =52/351
+#> Totals    400    385 0.175796  =138/785
 #> 
 #> Maximum Metrics: Maximum metrics at their respective thresholds
 #>                         metric threshold      value idx
-#> 1                       max f1  0.027001   0.812987 311
-#> 2                       max f2  0.014770   0.869336 342
-#> 3                 max f0point5  0.076925   0.816191 240
-#> 4                 max accuracy  0.052351   0.828025 273
-#> 5                max precision  0.911921   1.000000   0
-#> 6                   max recall  0.000422   1.000000 397
-#> 7              max specificity  0.911921   1.000000   0
-#> 8             max absolute_mcc  0.051136   0.651742 274
-#> 9   max min_per_class_accuracy  0.044334   0.820513 282
-#> 10 max mean_per_class_accuracy  0.051136   0.825400 274
-#> 11                     max tns  0.911921 434.000000   0
-#> 12                     max fns  0.911921 350.000000   0
-#> 13                     max fps  0.000061 434.000000 399
-#> 14                     max tps  0.000422 351.000000 397
-#> 15                     max tnr  0.911921   1.000000   0
-#> 16                     max fnr  0.911921   0.997151   0
-#> 17                     max fpr  0.000061   1.000000 399
-#> 18                     max tpr  0.000422   1.000000 397
+#> 1                       max f1  0.391945   0.812500 215
+#> 2                       max f2  0.219965   0.869104 275
+#> 3                 max f0point5  0.600036   0.818482 152
+#> 4                 max accuracy  0.490790   0.825478 188
+#> 5                max precision  0.883942   0.946429  51
+#> 6                   max recall  0.006179   1.000000 396
+#> 7              max specificity  0.989835   0.997696   0
+#> 8             max absolute_mcc  0.391945   0.650150 215
+#> 9   max min_per_class_accuracy  0.441370   0.820513 202
+#> 10 max mean_per_class_accuracy  0.391945   0.826848 215
+#> 11                     max tns  0.989835 433.000000   0
+#> 12                     max fns  0.989835 350.000000   0
+#> 13                     max fps  0.000912 434.000000 399
+#> 14                     max tps  0.006179 351.000000 396
+#> 15                     max tnr  0.989835   0.997696   0
+#> 16                     max fnr  0.989835   0.997151   0
+#> 17                     max fpr  0.000912   1.000000 399
+#> 18                     max tpr  0.006179   1.000000 396
 #> 
 #> Gains/Lift Table: Extract with `h2o.gainsLift(<model>, <data>)` or `h2o.gainsLift(<model>, valid=<T/F>, xval=<T/F>)`
 ```
@@ -3833,12 +3803,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.930      0.0702 
-#> 2        0.992      0.00786
-#> 3        0.957      0.0429 
-#> 4        0.999      0.00128
-#> 5        0.995      0.00534
-#> 6        0.992      0.00821
+#> 1        0.409       0.591 
+#> 2        0.881       0.119 
+#> 3        0.556       0.444 
+#> 4        0.981       0.0192
+#> 5        0.924       0.0762
+#> 6        0.874       0.126
 ```
 :::
 
@@ -3872,19 +3842,6 @@ mlp_fit <- mlp_spec |>
 
 ```{.r .cell-code}
 mlp_fit
-#> parsnip model object
-#> 
-#> Model: "sequential_1"
-#> ________________________________________________________________________________
-#>  Layer (type)                       Output Shape                    Param #     
-#> ================================================================================
-#>  dense_2 (Dense)                    (None, 5)                       15          
-#>  dense_3 (Dense)                    (None, 2)                       12          
-#> ================================================================================
-#> Total params: 27 (108.00 Byte)
-#> Trainable params: 27 (108.00 Byte)
-#> Non-trainable params: 0 (0.00 Byte)
-#> ________________________________________________________________________________
 ```
 :::
 
@@ -3894,27 +3851,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 38ms/epoch - 38ms/step
-#> # A tibble: 6 × 1
-#>   .pred_class
-#>   <fct>      
-#> 1 Class2     
-#> 2 Class1     
-#> 3 Class1     
-#> 4 Class1     
-#> 5 Class1     
-#> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 6ms/epoch - 6ms/step
-#> # A tibble: 6 × 2
-#>   .pred_Class1 .pred_Class2
-#>          <dbl>        <dbl>
-#> 1        0.315        0.685
-#> 2        0.584        0.416
-#> 3        0.508        0.492
-#> 4        0.896        0.104
-#> 5        0.871        0.129
-#> 6        0.475        0.525
 ```
 :::
 
@@ -4195,7 +4132,7 @@ We create a model specification via:
 ```{.r .cell-code}
 multinom_reg_spec <- multinom_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -4213,14 +4150,14 @@ multinom_reg_fit
 #> ==============
 #> 
 #> H2OMultinomialModel: glm
-#> Model ID:  GLM_model_R_1770287512312_5722 
+#> Model ID:  GLM_model_R_1776455818270_0 
 #> GLM Model: summary
 #>        family        link                                regularization
 #> 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )
 #>   number_of_predictors_total number_of_active_predictors number_of_iterations
 #> 1                          9                           6                    4
 #>      training_frame
-#> 1 object_jbhwnlsrno
+#> 1 object_nzyjbhwnls
 #> 
 #> Coefficients: glm multinomial coefficients
 #>       names coefs_class_0 coefs_class_1 coefs_class_2 std_coefs_class_0
@@ -4238,7 +4175,7 @@ multinom_reg_fit
 #> Training Set Metrics: 
 #> =====================
 #> 
-#> Extract training frame with `h2o.getFrame("object_jbhwnlsrno")`
+#> Extract training frame with `h2o.getFrame("object_nzyjbhwnls")`
 #> MSE: (Extract with `h2o.mse`) 0.2982118
 #> RMSE: (Extract with `h2o.rmse`) 0.5460878
 #> Logloss: (Extract with `h2o.logloss`) 0.822443
@@ -4327,19 +4264,6 @@ multinom_reg_fit <- multinom_reg_spec |>
 
 ```{.r .cell-code}
 multinom_reg_fit
-#> parsnip model object
-#> 
-#> Model: "sequential_2"
-#> ________________________________________________________________________________
-#>  Layer (type)                       Output Shape                    Param #     
-#> ================================================================================
-#>  dense_4 (Dense)                    (None, 1)                       3           
-#>  dense_5 (Dense)                    (None, 3)                       6           
-#> ================================================================================
-#> Total params: 9 (36.00 Byte)
-#> Trainable params: 9 (36.00 Byte)
-#> Non-trainable params: 0 (0.00 Byte)
-#> ________________________________________________________________________________
 ```
 :::
 
@@ -4349,31 +4273,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 38ms/epoch - 38ms/step
-#> # A tibble: 8 × 1
-#>   .pred_class
-#>   <fct>      
-#> 1 three      
-#> 2 three      
-#> 3 one        
-#> 4 one        
-#> 5 one        
-#> 6 three      
-#> 7 three      
-#> 8 one
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 5ms/epoch - 5ms/step
-#> # A tibble: 8 × 3
-#>   .pred_one .pred_two .pred_three
-#>       <dbl>     <dbl>       <dbl>
-#> 1    0.261      0.342      0.397 
-#> 2    0.335      0.326      0.339 
-#> 3    0.352      0.322      0.326 
-#> 4    0.753      0.156      0.0914
-#> 5    0.683      0.192      0.126 
-#> 6    0.0913     0.336      0.572 
-#> 7    0.202      0.349      0.449 
-#> 8    0.418      0.302      0.281
 ```
 :::
 
@@ -4465,7 +4365,7 @@ We create a model specification via:
 ```{.r .cell-code}
 naive_Bayes_spec <- naive_Bayes() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -4483,7 +4383,7 @@ naive_Bayes_fit
 #> ==============
 #> 
 #> H2OBinomialModel: naivebayes
-#> Model ID:  NaiveBayes_model_R_1770287512312_5723 
+#> Model ID:  NaiveBayes_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_response_levels min_apriori_probability max_apriori_probability
 #> 1                         2                 0.44713                 0.55287
@@ -5269,7 +5169,7 @@ We create a model specification via:
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -5289,54 +5189,54 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2OBinomialModel: drf
-#> Model ID:  DRF_model_R_1770287512312_5725 
+#> Model ID:  DRF_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               92621        12
+#> 1              50                       50               90000        13
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
-#> 1        20   16.60000        126        166   143.08000
+#> 1        20   16.82000        119        170   142.84000
 #> 
 #> 
 #> H2OBinomialMetrics: drf
 #> ** Reported on training data. **
 #> ** Metrics reported on Out-Of-Bag training samples **
 #> 
-#> MSE:  0.164699
-#> RMSE:  0.4058312
-#> LogLoss:  1.506369
-#> Mean Per-Class Error:  0.200195
-#> AUC:  0.8389854
-#> AUCPR:  0.7931927
-#> Gini:  0.6779708
-#> R^2:  0.3337559
+#> MSE:  0.1570514
+#> RMSE:  0.3962971
+#> LogLoss:  1.393291
+#> Mean Per-Class Error:  0.2117781
+#> AUC:  0.8545006
+#> AUCPR:  0.8198335
+#> Gini:  0.7090013
+#> R^2:  0.3646919
 #> AIC:  NaN
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error      Rate
-#> Class1    327    107 0.246544  =107/434
-#> Class2     54    297 0.153846   =54/351
-#> Totals    381    404 0.205096  =161/785
+#> Class1    312    122 0.281106  =122/434
+#> Class2     50    301 0.142450   =50/351
+#> Totals    362    423 0.219108  =172/785
 #> 
 #> Maximum Metrics: Maximum metrics at their respective thresholds
 #>                         metric threshold      value idx
-#> 1                       max f1  0.363636   0.786755 125
-#> 2                       max f2  0.238095   0.832435 148
-#> 3                 max f0point5  0.421053   0.760108 115
-#> 4                 max accuracy  0.363636   0.794904 125
-#> 5                max precision  1.000000   0.890244   0
-#> 6                   max recall  0.000000   1.000000 208
-#> 7              max specificity  1.000000   0.979263   0
-#> 8             max absolute_mcc  0.363636   0.596505 125
-#> 9   max min_per_class_accuracy  0.450000   0.785714 110
-#> 10 max mean_per_class_accuracy  0.363636   0.799805 125
-#> 11                     max tns  1.000000 425.000000   0
-#> 12                     max fns  1.000000 278.000000   0
-#> 13                     max fps  0.000000 434.000000 208
-#> 14                     max tps  0.000000 351.000000 208
-#> 15                     max tnr  1.000000   0.979263   0
-#> 16                     max fnr  1.000000   0.792023   0
-#> 17                     max fpr  0.000000   1.000000 208
-#> 18                     max tpr  0.000000   1.000000 208
+#> 1                       max f1  0.315789   0.777778 132
+#> 2                       max f2  0.175000   0.848757 160
+#> 3                 max f0point5  0.545455   0.769231  92
+#> 4                 max accuracy  0.468750   0.788535 103
+#> 5                max precision  0.954545   0.926316   6
+#> 6                   max recall  0.000000   1.000000 206
+#> 7              max specificity  1.000000   0.983871   0
+#> 8             max absolute_mcc  0.315789   0.574951 132
+#> 9   max min_per_class_accuracy  0.437500   0.781106 111
+#> 10 max mean_per_class_accuracy  0.315789   0.788222 132
+#> 11                     max tns  1.000000 427.000000   0
+#> 12                     max fns  1.000000 271.000000   0
+#> 13                     max fps  0.000000 434.000000 206
+#> 14                     max tps  0.000000 351.000000 206
+#> 15                     max tnr  1.000000   0.983871   0
+#> 16                     max fnr  1.000000   0.772080   0
+#> 17                     max fpr  0.000000   1.000000 206
+#> 18                     max tpr  0.000000   1.000000 206
 #> 
 #> Gains/Lift Table: Extract with `h2o.gainsLift(<model>, <data>)` or `h2o.gainsLift(<model>, valid=<T/F>, xval=<T/F>)`
 ```
@@ -5361,12 +5261,12 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.12        0.88  
-#> 2        0.94        0.0600
-#> 3        0.175       0.825 
+#> 1        0.2         0.8   
+#> 2        0.8         0.2   
+#> 3        0.173       0.827 
 #> 4        1           0     
-#> 5        0.78        0.22  
-#> 6        0.92        0.0800
+#> 5        0.7         0.3   
+#> 6        0.96        0.0400
 ```
 :::
 
@@ -5542,7 +5442,7 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> 3        0.284       0.716 
 #> 4        0.963       0.0365
 #> 5        0.892       0.108 
-#> 6        0.922       0.0785
+#> 6        0.922       0.0784
 ```
 :::
 
@@ -5642,7 +5542,7 @@ rand_forest_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> RandomForestClassificationModel: uid=random_forest__c160ba73_c71f_46ca_9bf4_22a163b941e4, numTrees=20, numClasses=2, numFeatures=2
+#> RandomForestClassificationModel: uid=random_forest__00000000_0000_0000_0000_000000000000, numTrees=20, numClasses=2, numFeatures=2
 ```
 :::
 
@@ -5774,7 +5674,7 @@ We create a model specification via:
 rule_fit_spec <- rule_fit() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -5794,55 +5694,55 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2OBinomialModel: rulefit
-#> Model ID:  RuleFit_model_R_1770287512312_5776 
+#> Model ID:  RuleFit_model_R_1776455818270_0 
 #> Rulefit Model Summary: 
 #>     family  link            regularization number_of_predictors_total
-#> 1 binomial logit Lasso (lambda = 0.03081 )                       2329
+#> 1 binomial logit Lasso (lambda = 0.03081 )                       2328
 #>   number_of_active_predictors number_of_iterations rule_ensemble_size
-#> 1                           3                    4               2327
+#> 1                           4                    4               2326
 #>   number_of_trees number_of_internal_trees min_depth max_depth mean_depth
 #> 1             150                      150         0         5    4.00000
 #>   min_leaves max_leaves mean_leaves
-#> 1          0         29    15.51333
+#> 1          0         30    15.50667
 #> 
 #> 
 #> H2OBinomialMetrics: rulefit
 #> ** Reported on training data. **
 #> 
-#> MSE:  0.1411478
-#> RMSE:  0.3756964
-#> LogLoss:  0.4472749
-#> Mean Per-Class Error:  0.1850933
-#> AUC:  0.8779327
-#> AUCPR:  0.8372496
-#> Gini:  0.7558654
+#> MSE:  0.141225
+#> RMSE:  0.3757992
+#> LogLoss:  0.4472991
+#> Mean Per-Class Error:  0.1873974
+#> AUC:  0.8780476
+#> AUCPR:  0.8379963
+#> Gini:  0.7560952
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error      Rate
-#> Class1    350     84 0.193548   =84/434
+#> Class1    348     86 0.198157   =86/434
 #> Class2     62    289 0.176638   =62/351
-#> Totals    412    373 0.185987  =146/785
+#> Totals    410    375 0.188535  =148/785
 #> 
 #> Maximum Metrics: Maximum metrics at their respective thresholds
 #>                         metric threshold      value idx
-#> 1                       max f1  0.499611   0.798343 199
-#> 2                       max f2  0.226927   0.861169 285
-#> 3                 max f0point5  0.626200   0.803634 144
-#> 4                 max accuracy  0.523044   0.815287 191
-#> 5                max precision  0.980574   1.000000   0
-#> 6                   max recall  0.052101   1.000000 394
-#> 7              max specificity  0.980574   1.000000   0
-#> 8             max absolute_mcc  0.523044   0.627478 191
-#> 9   max min_per_class_accuracy  0.512020   0.813364 196
-#> 10 max mean_per_class_accuracy  0.499611   0.814907 199
-#> 11                     max tns  0.980574 434.000000   0
-#> 12                     max fns  0.980574 350.000000   0
-#> 13                     max fps  0.043433 434.000000 399
-#> 14                     max tps  0.052101 351.000000 394
-#> 15                     max tnr  0.980574   1.000000   0
-#> 16                     max fnr  0.980574   0.997151   0
-#> 17                     max fpr  0.043433   1.000000 399
-#> 18                     max tpr  0.052101   1.000000 394
+#> 1                       max f1  0.492861   0.796143 196
+#> 2                       max f2  0.226578   0.861169 283
+#> 3                 max f0point5  0.625438   0.803881 140
+#> 4                 max accuracy  0.523163   0.812739 187
+#> 5                max precision  0.980338   1.000000   0
+#> 6                   max recall  0.052156   1.000000 394
+#> 7              max specificity  0.980338   1.000000   0
+#> 8             max absolute_mcc  0.523163   0.622336 187
+#> 9   max min_per_class_accuracy  0.514693   0.808756 191
+#> 10 max mean_per_class_accuracy  0.492861   0.812603 196
+#> 11                     max tns  0.980338 434.000000   0
+#> 12                     max fns  0.980338 350.000000   0
+#> 13                     max fps  0.043491 434.000000 399
+#> 14                     max tps  0.052156 351.000000 394
+#> 15                     max tnr  0.980338   1.000000   0
+#> 16                     max fnr  0.980338   0.997151   0
+#> 17                     max fpr  0.043491   1.000000 399
+#> 18                     max tpr  0.052156   1.000000 394
 #> 
 #> Gains/Lift Table: Extract with `h2o.gainsLift(<model>, <data>)` or `h2o.gainsLift(<model>, valid=<T/F>, xval=<T/F>)`
 ```
@@ -5867,12 +5767,12 @@ predict(rule_fit_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.393       0.607 
+#> 1        0.395       0.605 
 #> 2        0.739       0.261 
 #> 3        0.455       0.545 
-#> 4        0.956       0.0442
+#> 4        0.956       0.0443
 #> 5        0.882       0.118 
-#> 6        0.693       0.307
+#> 6        0.694       0.306
 ```
 :::
 
@@ -5941,11 +5841,11 @@ predict(svm_linear_fit, type = "prob", new_data = bin_test)
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
 #> 1        0.404       0.596 
-#> 2        0.858       0.142 
-#> 3        0.541       0.459 
-#> 4        0.975       0.0254
-#> 5        0.905       0.0950
-#> 6        0.850       0.150
+#> 2        0.860       0.140 
+#> 3        0.542       0.458 
+#> 4        0.976       0.0244
+#> 5        0.907       0.0927
+#> 6        0.852       0.148
 ```
 :::
 
@@ -6729,10 +6629,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1770287512312_5932 
+#> Model ID:  GBM_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               20474         6
+#> 1              50                       50               20000         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         14         43    27.92000
 #> 
@@ -6807,10 +6707,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1770287512312_5933 
+#> Model ID:  GBM_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               20474         6
+#> 1              50                       50               20000         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         14         43    27.92000
 #> 
@@ -6934,7 +6834,7 @@ boost_tree_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> GBTRegressionModel: uid=gradient_boosted_trees__5897a9f5_9ed9_4360_80cb_7c5694d8b78b, numTrees=20, numFeatures=8
+#> GBTRegressionModel: uid=gradient_boosted_trees__00000000_0000_0000_0000_000000000000, numTrees=20, numFeatures=8
 ```
 :::
 
@@ -7205,7 +7105,7 @@ decision_tree_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> DecisionTreeRegressionModel: uid=decision_tree_regressor__b9233b83_d74a_41e1_97df_0e3d97b8556e, depth=5, numNodes=63, numFeatures=8
+#> DecisionTreeRegressionModel: uid=decision_tree_regressor__00000000_0000_0000_0000_000000000000, depth=5, numNodes=63, numFeatures=8
 ```
 :::
 
@@ -7886,7 +7786,7 @@ We create a model specification via:
 ```{.r .cell-code}
 linear_reg_spec <- linear_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -7904,14 +7804,14 @@ linear_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1770287512312_5934 
+#> Model ID:  GLM_model_R_1776455818270_0 
 #> GLM Model: summary
 #>     family     link                               regularization
 #> 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )
 #>   number_of_predictors_total number_of_active_predictors number_of_iterations
 #> 1                          2                           2                    1
 #>      training_frame
-#> 1 object_ujvnjgioue
+#> 1 object_auujvnjgio
 #> 
 #> Coefficients: glm coefficients
 #>       names coefficients standardized_coefficients
@@ -7986,19 +7886,6 @@ linear_reg_fit
 
 ```{.r .cell-code}
 linear_reg_fit
-#> parsnip model object
-#> 
-#> Model: "sequential_3"
-#> ________________________________________________________________________________
-#>  Layer (type)                       Output Shape                    Param #     
-#> ================================================================================
-#>  dense_6 (Dense)                    (None, 1)                       3           
-#>  dense_7 (Dense)                    (None, 1)                       2           
-#> ================================================================================
-#> Total params: 5 (20.00 Byte)
-#> Trainable params: 5 (20.00 Byte)
-#> Non-trainable params: 0 (0.00 Byte)
-#> ________________________________________________________________________________
 ```
 :::
 
@@ -8008,18 +7895,6 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 40ms/epoch - 40ms/step
-#> # A tibble: 8 × 1
-#>       .pred
-#>       <dbl>
-#> 1  0.157   
-#> 2 -0.000522
-#> 3 -0.0670  
-#> 4  0.413   
-#> 5  0.290   
-#> 6  0.154   
-#> 7  0.169   
-#> 8  0.442
 ```
 :::
 
@@ -8178,9 +8053,9 @@ We create a model specification via:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-linear_reg_spec <- linear_reg() |> 
+linear_reg_spec <- linear_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 :::
 
@@ -8287,9 +8162,9 @@ We create a model specification via:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-linear_reg_spec <- linear_reg() |> 
+linear_reg_spec <- linear_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 :::
 
@@ -8685,7 +8560,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("h2o")
+  set_engine("h2o", reproducible = TRUE, seed = 1)
 ```
 :::
 
@@ -8705,27 +8580,27 @@ mlp_fit
 #> ==============
 #> 
 #> H2ORegressionModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1770287512312_5935 
+#> Model ID:  DeepLearning_model_R_1776455818270_0 
 #> Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
-#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.009004 0.020737 0.000000
-#> 3     3     1    Linear      NA 0.000000 0.000000  0.000818 0.000240 0.000000
+#> 2     2   200 Rectifier  0.00 % 0.000000 0.000000  0.018754 0.024363 0.000000
+#> 3     3     1    Linear      NA 0.000000 0.000000  0.001674 0.000069 0.000000
 #>   mean_weight weight_rms mean_bias bias_rms
 #> 1          NA         NA        NA       NA
-#> 2   -0.014857   0.124650  0.494931 0.011050
-#> 3   -0.000526   0.099345  0.006964 0.000000
+#> 2   -0.016529   0.131447  0.476171 0.031560
+#> 3   -0.002079   0.094716  0.010919 0.000000
 #> 
 #> 
 #> H2ORegressionMetrics: deeplearning
 #> ** Reported on training data. **
 #> ** Metrics reported on full training frame **
 #> 
-#> MSE:  136.9811
-#> RMSE:  11.70389
-#> MAE:  9.370161
-#> RMSLE:  0.4189636
-#> Mean Residual Deviance :  136.9811
+#> MSE:  120.0999
+#> RMSE:  10.95901
+#> MAE:  8.616114
+#> RMSLE:  0.380584
+#> Mean Residual Deviance :  120.0999
 ```
 :::
 
@@ -8738,14 +8613,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  30.2
-#> 2  32.5
-#> 3  21.2
-#> 4  51.8
-#> 5  38.6
+#> 1  28.2
+#> 2  35.0
+#> 3  21.0
+#> 4  52.0
+#> 5  36.8
 #> 6  35.3
 #> 7  36.3
-#> 8  46.8
+#> 8  44.5
 ```
 :::
 
@@ -8779,17 +8654,6 @@ mlp_fit <- mlp_spec |>
 
 ```{.r .cell-code}
 linear_reg_fit
-#> parsnip model object
-#> 
-#> Formula: compressive_strength ~ .
-#> 
-#> Coefficients:
-#>        (Intercept)             cement blast_furnace_slag            fly_ash 
-#>       -21.80239627         0.12003251         0.10399582         0.08747677 
-#>              water   superplasticizer   coarse_aggregate     fine_aggregate 
-#>        -0.15701342         0.28531613         0.01777782         0.02018358 
-#>                age 
-#>         0.11678247
 ```
 :::
 
@@ -8799,18 +8663,6 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 39ms/epoch - 39ms/step
-#> # A tibble: 8 × 1
-#>    .pred
-#>    <dbl>
-#> 1 -0.386
-#> 2 -0.337
-#> 3 -0.299
-#> 4 -0.278
-#> 5 -0.384
-#> 6 -0.373
-#> 7 -0.373
-#> 8 -0.341
 ```
 :::
 
@@ -9379,7 +9231,7 @@ We create a model specification via:
 ```{.r .cell-code}
 poisson_reg_spec <- poisson_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -9397,14 +9249,14 @@ poisson_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1770287512312_5936 
+#> Model ID:  GLM_model_R_1776455818270_0 
 #> GLM Model: summary
 #>    family link                               regularization
 #> 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )
 #>   number_of_predictors_total number_of_active_predictors number_of_iterations
 #> 1                          2                           2                    4
 #>      training_frame
-#> 1 object_kyirzmfbti
+#> 1 object_lwzokyirzm
 #> 
 #> Coefficients: glm coefficients
 #>       names coefficients standardized_coefficients
@@ -9533,9 +9385,9 @@ We create a model specification via:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-poisson_reg_spec <- poisson_reg() |> 
+poisson_reg_spec <- poisson_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan")
+  set_engine("stan", refresh = 0)
 ```
 :::
 
@@ -9549,106 +9401,6 @@ set.seed(213)
 poisson_reg_fit <- 
   poisson_reg_spec |> 
   fit(weight ~ Diet + Time, data = reg_group_train)
-#> 
-#> SAMPLING FOR MODEL 'count' NOW (CHAIN 1).
-#> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000103 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.03 seconds.
-#> Chain 1: Adjust your expectations accordingly!
-#> Chain 1: 
-#> Chain 1: 
-#> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.026 seconds (Warm-up)
-#> Chain 1:                0.026 seconds (Sampling)
-#> Chain 1:                0.052 seconds (Total)
-#> Chain 1: 
-#> 
-#> SAMPLING FOR MODEL 'count' NOW (CHAIN 2).
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 5e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 0.027 seconds (Warm-up)
-#> Chain 2:                0.027 seconds (Sampling)
-#> Chain 2:                0.054 seconds (Total)
-#> Chain 2: 
-#> 
-#> SAMPLING FOR MODEL 'count' NOW (CHAIN 3).
-#> Chain 3: 
-#> Chain 3: Gradient evaluation took 4e-06 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-#> Chain 3: Adjust your expectations accordingly!
-#> Chain 3: 
-#> Chain 3: 
-#> Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.026 seconds (Warm-up)
-#> Chain 3:                0.027 seconds (Sampling)
-#> Chain 3:                0.053 seconds (Total)
-#> Chain 3: 
-#> 
-#> SAMPLING FOR MODEL 'count' NOW (CHAIN 4).
-#> Chain 4: 
-#> Chain 4: Gradient evaluation took 4e-06 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-#> Chain 4: Adjust your expectations accordingly!
-#> Chain 4: 
-#> Chain 4: 
-#> Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 4: 
-#> Chain 4:  Elapsed Time: 0.027 seconds (Warm-up)
-#> Chain 4:                0.031 seconds (Sampling)
-#> Chain 4:                0.058 seconds (Total)
-#> Chain 4:
 poisson_reg_fit
 #> parsnip model object
 #> 
@@ -9691,7 +9443,6 @@ predict(poisson_reg_fit, new_data = reg_group_test)
 #> 10  5.61
 #> # ℹ 34 more rows
 predict(poisson_reg_fit, type = "conf_int", new_data = reg_group_test)
-#> Instead of posterior_linpred(..., transform=TRUE) please call posterior_epred(), which provides equivalent functionality.
 #> # A tibble: 44 × 2
 #>    .pred_lower .pred_upper
 #>          <dbl>       <dbl>
@@ -9740,9 +9491,9 @@ We create a model specification via:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-poisson_reg_spec <- poisson_reg() |> 
+poisson_reg_spec <- poisson_reg() |>
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("stan_glmer")
+  set_engine("stan_glmer", refresh = 0)
 ```
 :::
 
@@ -10132,7 +9883,7 @@ We create a model specification via:
 rand_forest_spec <- rand_forest() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -10152,23 +9903,23 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2ORegressionModel: drf
-#> Model ID:  DRF_model_R_1770287512312_5937 
+#> Model ID:  DRF_model_R_1776455818270_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               22316         7
+#> 1              50                       50               20000         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
-#> 1        14    9.04000         14         43    30.86000
+#> 1        13    8.84000         19         48    31.90000
 #> 
 #> 
 #> H2ORegressionMetrics: drf
 #> ** Reported on training data. **
 #> ** Metrics reported on Out-Of-Bag training samples **
 #> 
-#> MSE:  89.19785
-#> RMSE:  9.444462
-#> MAE:  7.597463
-#> RMSLE:  0.3303384
-#> Mean Residual Deviance :  89.19785
+#> MSE:  98.40006
+#> RMSE:  9.91968
+#> MAE:  7.602536
+#> RMSLE:  0.3319509
+#> Mean Residual Deviance :  98.40006
 ```
 :::
 
@@ -10181,14 +9932,14 @@ predict(rand_forest_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  24.9
-#> 2  36.4
-#> 3  28.1
-#> 4  56.8
-#> 5  39.0
-#> 6  37.8
-#> 7  37.4
-#> 8  31.8
+#> 1  23.8
+#> 2  35.7
+#> 3  28.8
+#> 4  55.1
+#> 5  37.2
+#> 6  38.2
+#> 7  38.5
+#> 8  31.7
 ```
 :::
 
@@ -10445,7 +10196,7 @@ rand_forest_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> RandomForestRegressionModel: uid=random_forest__18b9f872_1e54_42c8_9671_918541c74363, numTrees=20, numFeatures=8
+#> RandomForestRegressionModel: uid=random_forest__00000000_0000_0000_0000_000000000000, numTrees=20, numFeatures=8
 ```
 :::
 
@@ -10561,7 +10312,7 @@ We create a model specification via:
 rule_fit_spec <- rule_fit() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("h2o")
+  set_engine("h2o", seed = 1)
 ```
 :::
 
@@ -10581,26 +10332,26 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2ORegressionModel: rulefit
-#> Model ID:  RuleFit_model_R_1770287512312_5938 
+#> Model ID:  RuleFit_model_R_1776455818270_0 
 #> Rulefit Model Summary: 
 #>     family     link           regularization number_of_predictors_total
-#> 1 gaussian identity Lasso (lambda = 0.9516 )                       1917
+#> 1 gaussian identity Lasso (lambda = 0.9516 )                       1801
 #>   number_of_active_predictors number_of_iterations rule_ensemble_size
-#> 1                          51                    1               1915
+#> 1                          60                    1               1799
 #>   number_of_trees number_of_internal_trees min_depth max_depth mean_depth
 #> 1             150                      150         0         5    4.00000
 #>   min_leaves max_leaves mean_leaves
-#> 1          0         28    12.76667
+#> 1          0         28    11.99333
 #> 
 #> 
 #> H2ORegressionMetrics: rulefit
 #> ** Reported on training data. **
 #> 
-#> MSE:  90.45501
-#> RMSE:  9.510784
-#> MAE:  7.15224
-#> RMSLE:  0.3531064
-#> Mean Residual Deviance :  90.45501
+#> MSE:  90.94719
+#> RMSE:  9.536624
+#> MAE:  7.239808
+#> RMSLE:  0.3499449
+#> Mean Residual Deviance :  90.94719
 ```
 :::
 
@@ -10613,14 +10364,14 @@ predict(rule_fit_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  26.9
-#> 2  35.5
-#> 3  26.9
-#> 4  50.1
-#> 5  42.1
-#> 6  34.5
-#> 7  39.3
-#> 8  40.8
+#> 1  29.4
+#> 2  38.8
+#> 3  26.1
+#> 4  51.1
+#> 5  41.7
+#> 6  36.7
+#> 7  37.4
+#> 8  42.7
 ```
 :::
 
@@ -12484,52 +12235,41 @@ rand_forest_fit |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2026-02-06
-#>  pandoc   3.6.3
-#>  quarto   1.8.27
+#>  date     2026-04-21
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version    date (UTC) source
 #>  agua            0.1.4      2024-06-04 CRAN (R 4.5.0)
 #>  baguette        1.1.0      2025-01-28 CRAN (R 4.5.0)
 #>  bonsai          0.4.0      2025-06-25 CRAN (R 4.5.0)
-#>  broom           1.0.11     2025-12-04 CRAN (R 4.5.2)
-#>  censored        0.3.3      2025-02-14 CRAN (R 4.5.0)
-#>  dials           1.4.2      2025-09-04 CRAN (R 4.5.0)
+#>  broom           1.0.12     2026-01-27 CRAN (R 4.5.2)
+#>  censored        0.3.4      2026-04-04 CRAN (R 4.5.2)
+#>  dials           1.4.3      2026-04-11 CRAN (R 4.5.2)
 #>  discrim         1.1.0      2025-12-02 CRAN (R 4.5.2)
-#>  dplyr           1.2.0      2026-02-03 CRAN (R 4.5.2)
+#>  dplyr           1.2.1      2026-04-03 CRAN (R 4.5.2)
 #>  ggplot2         4.0.2      2026-02-03 CRAN (R 4.5.2)
 #>  HSAUR3          1.0-15     2024-08-17 CRAN (R 4.5.0)
 #>  infer           1.1.0      2025-12-18 CRAN (R 4.5.2)
-#>  lme4            1.1-38     2025-12-02 CRAN (R 4.5.2)
+#>  lme4            2.0-1      2026-03-05 CRAN (R 4.5.2)
 #>  multilevelmod   1.0.0      2022-06-17 CRAN (R 4.5.0)
-#>  parsnip         1.4.1      2026-01-11 CRAN (R 4.5.2)
+#>  parsnip         1.5.0      2026-04-09 CRAN (R 4.5.2)
 #>  plsmod          1.0.0      2022-09-06 CRAN (R 4.5.0)
-#>  poissonreg      1.0.1      2022-08-22 CRAN (R 4.5.0)
-#>  prodlim         2025.04.28 2025-04-28 CRAN (R 4.5.0)
-#>  purrr           1.2.1      2026-01-09 CRAN (R 4.5.2)
-#>  recipes         1.3.1      2025-05-21 CRAN (R 4.5.0)
-#>  rlang           1.1.7      2026-01-09 CRAN (R 4.5.2)
+#>  poissonreg      1.0.2      2026-04-20 CRAN (R 4.5.2)
+#>  prodlim         2026.03.11 2026-03-11 CRAN (R 4.5.2)
+#>  purrr           1.2.2      2026-04-10 CRAN (R 4.5.2)
+#>  recipes         1.3.2      2026-04-02 CRAN (R 4.5.2)
+#>  rlang           1.2.0      2026-04-06 CRAN (R 4.5.2)
 #>  rsample         1.3.2      2026-01-30 CRAN (R 4.5.2)
 #>  rules           1.0.3      2026-01-27 CRAN (R 4.5.2)
-#>  sparklyr        1.9.3      2025-11-19 CRAN (R 4.5.2)
+#>  sparklyr        1.9.4      2026-04-18 CRAN (R 4.5.2)
 #>  survival        3.8-6      2026-01-16 CRAN (R 4.5.2)
 #>  tibble          3.3.1      2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels      1.4.1      2025-09-08 CRAN (R 4.5.0)
-#>  tune            2.0.1      2025-10-17 CRAN (R 4.5.0)
+#>  tune            2.1.0      2026-04-17 CRAN (R 4.5.2)
 #>  workflows       1.3.0      2025-08-27 CRAN (R 4.5.0)
-#>  yardstick       1.3.2      2025-01-22 CRAN (R 4.5.0)
-#> 
-#> ─ Python configuration ─────────────────────────────────────────────
-#>  python:         /Users/hannah/.virtualenvs/r-tensorflow/bin/python
-#>  libpython:      /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/config-3.9-darwin/libpython3.9.dylib
-#>  pythonhome:     /Users/hannah/.virtualenvs/r-tensorflow:/Users/hannah/.virtualenvs/r-tensorflow
-#>  version:        3.9.6 (default, Dec  2 2025, 07:27:58)  [Clang 17.0.0 (clang-1700.6.3.2)]
-#>  numpy:          /Users/hannah/.virtualenvs/r-tensorflow/lib/python3.9/site-packages/numpy
-#>  numpy_version:  1.26.4
-#>  tensorflow:     /Users/hannah/.virtualenvs/r-tensorflow/lib/python3.9/site-packages/tensorflow
-#>  
-#>  NOTE: Python version was forced by use_python() function
+#>  yardstick       1.4.0      2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

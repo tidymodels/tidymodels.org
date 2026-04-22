@@ -51,6 +51,7 @@ Some model parameters cannot be learned directly from a data set during model tr
 `r article_req_pkgs(pkgs)`
 
 ```{r}
+#| label: load-packages
 #| eval: false
 library(tidymodels)  # for the tune package, along with the rest of tidymodels
 
@@ -133,6 +134,7 @@ tree_grid
 Here, you can see all 5 values of `cost_complexity` ranging up to `r max(tree_grid$cost_complexity)`. These values get repeated for each of the 5 values of `tree_depth`:
 
 ```{r}
+#| label: count-tree-depth
 tree_grid %>% 
   count(tree_depth)
 ```
@@ -294,6 +296,7 @@ These are the automated image analysis measurements that are the most important 
 We leave it to the reader to explore whether you can tune a different decision tree hyperparameter. You can explore the [reference docs](/find/parsnip/#models), or use the `args()` function to see which parsnip object arguments are available:
 
 ```{r}
+#| label: show-decision-tree-args
 args(decision_tree)
 ```
 
