@@ -71,6 +71,7 @@ packages <- c(
   "themis",
   "tidymodels",
   "tidyposterior",
+  "tictoc",
   "timetk",
   "torch",
   "tune",
