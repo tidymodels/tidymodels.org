@@ -49,6 +49,7 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 Each of the four previous [*Get Started*](/start/) articles has focused on a single task related to modeling. Along the way, we also introduced core packages in the tidymodels ecosystem and some of the key functions you'll need to start working with models. In this final case study, we will use all of the previous articles as a foundation to build a predictive model from beginning to end with data on hotel stays.
 
 ```{r}
+#| label: include-hotel-image
 #| echo: false
 #| out-width: "90%"
 knitr::include_graphics("img/hotel.jpg")
@@ -57,6 +58,7 @@ knitr::include_graphics("img/hotel.jpg")
 `r article_req_pkgs(pkgs)`
 
 ```{r}
+#| label: load-packages
 #| eval: false
 library(tidymodels)  
 
@@ -271,6 +273,7 @@ This plots shows us that model performance is generally better at the smaller pe
 Our model performance seems to plateau at the smaller penalty values, so going by the `roc_auc` metric alone could lead us to multiple options for the "best" value for this hyperparameter:
 
 ```{r}
+#| label: show-top-models
 top_models <-
   lr_res %>% 
   show_best(metric = "roc_auc", n = 15) %>% 
@@ -406,6 +409,7 @@ rf_workflow <-
 When we set up our parsnip model, we chose two hyperparameters for tuning:
 
 ```{r}
+#| label: show-rf-params
 #| message: false
 rf_mod
 
@@ -434,6 +438,7 @@ The message printed above *"Creating pre-processing data to finalize unknown par
 Here are our top 5 random forest models, out of the 25 candidates:
 
 ```{r}
+#| label: show-best-rf
 rf_res %>% 
   show_best(metric = "roc_auc")
 ```
@@ -461,6 +466,7 @@ rf_best
 To calculate the data needed to plot the ROC curve, we use `collect_predictions()`. This is only possible after tuning with `control_grid(save_pred = TRUE)`. In the output, you can see the two columns that hold our class probabilities for predicting hotel stays including and not including children.
 
 ```{r}
+#| label: collect-all-rf-predictions
 rf_res %>% 
   collect_predictions()
 ```
@@ -522,6 +528,7 @@ last_rf_fit
 This fitted workflow contains *everything*, including our final metrics based on the test set. So, how did this model do on the test set? Was the validation set a good estimate of future performance?
 
 ```{r}
+#| label: collect-last-fit-metrics
 last_rf_fit %>% 
   collect_metrics()
 ```

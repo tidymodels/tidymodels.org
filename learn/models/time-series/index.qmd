@@ -216,6 +216,7 @@ The workflow to access these calendar slices is to use `bind_rows()` to join
 each analysis set together.
 
 ```{r}
+#| label: extract-annual-roll-slices
 mutate(
   roll_rs_annual,
   extracted_slice = map(splits, ~ bind_rows(analysis(.x)$data))

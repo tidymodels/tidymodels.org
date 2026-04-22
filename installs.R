@@ -104,6 +104,7 @@ pak::pak(packages)
 
 # Manually check for dev versions
 # sub("rstudio/", "", packages) |>
+#   sub("/catboost/catboost/R-package", "", x = _) |>
 #   setdiff(c()) |>
 #   sapply(packageVersion) |>
 #   purrr::keep(\(x) any(x >= 9000))

@@ -21,12 +21,15 @@ r-packages:
 To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [prediction types for different models and engines](#models).
 
 ```{r, echo=FALSE, message=FALSE}
+#| label: build-pred-type-table
 
 library(dplyr)
 library(purrr)
 library(tidyr)
 library(parsnip)
 library(DT)
+library(htmlwidgets)
+setWidgetIdSeed(1234)
 
 yep <- cli::symbol$tick
 nope <- cli::symbol$cross

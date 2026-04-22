@@ -52,6 +52,7 @@ So far, we have [built a model](/start/models/) and [preprocessed data with a re
 `r article_req_pkgs(pkgs)`
 
 ```{r}
+#| label: load-packages
 #| eval: false
 library(tidymodels) # for the rsample package, along with the rest of tidymodels
 
@@ -370,6 +371,7 @@ collect_metrics(rf_fit_rs)
 Think about these values we now have for accuracy and AUC. These performance metrics are now more realistic (i.e. lower) than our ill-advised first attempt at computing performance metrics in the section above. If we wanted to try different model types for this data set, we could more confidently compare performance metrics computed using resampling to choose between models. Also, remember that at the end of our project, we return to our test set to estimate final model performance. We have looked at this once already before we started using resampling, but let's remind ourselves of the results:
 
 ```{r}
+#| label: redisplay-test-performance
 #| ref.label: "rf-test-perf"
 
 ```

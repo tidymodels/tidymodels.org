@@ -272,7 +272,7 @@ rmse(train_preds, arr_delay, .pred)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard        13.9
+#> 1 rmse    standard        14.2
 ```
 :::
 
@@ -291,7 +291,7 @@ train_preds |>
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-15-1.svg){fig-align='center' fig-alt='Scatter chart. Arrival delay along the x-axis and predictions along the 
+![](figs/plot-train-predictions-1.svg){fig-align='center' fig-alt='Scatter chart. Arrival delay along the x-axis and predictions along the 
 y-axis. The majority of the points are along the diagonal, with a shift
 down.' width=672}
 :::
@@ -310,7 +310,7 @@ rmse(test_preds, arr_delay, .pred)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard        18.9
+#> 1 rmse    standard        20.9
 ```
 :::
 
@@ -327,7 +327,7 @@ test_preds |>
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-17-1.svg){fig-align='center' fig-alt='Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
+![](figs/plot-rmse-by-month-1.svg){fig-align='center' fig-alt='Scatter chart. Month along the x-axis, estimate of RSME along the y-axis.
 Starting on the second month with a value around 17, it goes up for each
 month to 23 in July, afterward it does back down to 16 in September, 
 with November having the same value and December having a value of 20.' width=672}
@@ -342,30 +342,30 @@ We see the same result that the model doesn't generalize to the other months. Th
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.1 (2025-06-13)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2025-10-21
-#>  pandoc   3.6.3
-#>  quarto   1.8.25
+#>  date     2026-04-22
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC) source
-#>  broom          1.0.9   2025-07-28 CRAN (R 4.5.0)
-#>  dials          1.4.2   2025-09-04 CRAN (R 4.5.0)
-#>  dplyr          1.1.4   2023-11-17 CRAN (R 4.5.0)
-#>  ggplot2        4.0.0   2025-09-11 CRAN (R 4.5.0)
-#>  infer          1.0.9   2025-06-26 CRAN (R 4.5.0)
+#>  broom          1.0.12  2026-01-27 CRAN (R 4.5.2)
+#>  dials          1.4.3   2026-04-11 CRAN (R 4.5.2)
+#>  dplyr          1.2.1   2026-04-03 CRAN (R 4.5.2)
+#>  ggplot2        4.0.2   2026-02-03 CRAN (R 4.5.2)
+#>  infer          1.1.0   2025-12-18 CRAN (R 4.5.2)
 #>  nycflights13   1.0.2   2021-04-12 CRAN (R 4.5.0)
-#>  parsnip        1.3.3   2025-08-31 CRAN (R 4.5.0)
-#>  purrr          1.1.0   2025-07-10 CRAN (R 4.5.0)
-#>  recipes        1.3.1   2025-05-21 CRAN (R 4.5.0)
-#>  rlang          1.1.6   2025-04-11 CRAN (R 4.5.0)
-#>  rsample        1.3.1   2025-07-29 CRAN (R 4.5.0)
-#>  tibble         3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  parsnip        1.5.0   2026-04-09 CRAN (R 4.5.2)
+#>  purrr          1.2.2   2026-04-10 CRAN (R 4.5.2)
+#>  recipes        1.3.2   2026-04-02 CRAN (R 4.5.2)
+#>  rlang          1.2.0   2026-04-06 CRAN (R 4.5.2)
+#>  rsample        1.3.2   2026-01-30 CRAN (R 4.5.2)
+#>  tibble         3.3.1   2026-01-11 CRAN (R 4.5.2)
 #>  tidymodels     1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune           2.0.1   2025-10-17 CRAN (R 4.5.0)
+#>  tune           2.1.0   2026-04-17 CRAN (R 4.5.2)
 #>  workflows      1.3.0   2025-08-27 CRAN (R 4.5.0)
-#>  yardstick      1.3.2   2025-01-22 CRAN (R 4.5.0)
+#>  yardstick      1.4.0   2026-04-07 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

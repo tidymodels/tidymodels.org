@@ -44,6 +44,7 @@ K-means clustering serves as a useful example of applying tidy data principles t
 Let's start by generating some random two-dimensional data with three clusters. Data in each cluster will come from a multivariate gaussian distribution, with different means for each cluster:
 
 ```{r}
+#| label: simulate-cluster-data
 library(tidymodels)
 
 set.seed(27)
@@ -87,6 +88,7 @@ knitr::include_graphics("kmeans.gif")
 We'll use the built-in `kmeans()` function, which accepts a data frame with all numeric columns as it's primary argument.
 
 ```{r}
+#| label: assign-cluster-data
 points <- 
   labelled_points %>% 
   select(-cluster)
@@ -107,18 +109,21 @@ These differing lengths have important meaning when we want to tidy our data set
 Which of these do we want to extract? There is no right answer; each of them may be interesting to an analyst. Because they communicate entirely different information (not to mention there's no straightforward way to combine them), they are extracted by separate functions. `augment` adds the point classifications to the original data set:
 
 ```{r}
+#| label: augment-kmeans
 augment(kclust, points)
 ```
 
 The `tidy()` function summarizes on a per-cluster level:
 
 ```{r}
+#| label: tidy-kmeans
 tidy(kclust)
 ```
 
 And as it always does, the `glance()` function extracts a single-row summary:
 
 ```{r}
+#| label: glance-kmeans
 glance(kclust)
 ```
 
@@ -129,6 +134,7 @@ While these summaries are useful, they would not have been too difficult to extr
 Let's say we want to explore the effect of different choices of `k`, from 1 to 9, on this clustering. First cluster the data 9 times, each using a different value of `k`, then create columns containing the tidied, glanced and augmented data:
 
 ```{r}
+#| label: fit-multiple-k
 kclusts <- 
   tibble(k = 1:9) %>%
   mutate(
@@ -144,6 +150,7 @@ kclusts
 We can turn these into three separate data sets each representing a different type of data: using `tidy()`, using `augment()`, and using `glance()`. Each of these goes into a separate data set as they represent different types of data.
 
 ```{r}
+#| label: extract-cluster-data
 clusters <- 
   kclusts %>%
   unnest(cols = c(tidied))
@@ -160,6 +167,7 @@ clusterings <-
 Now we can plot the original points using the data from `augment()`, with each point colored according to the predicted cluster.
 
 ```{r}
+#| label: plot-assignments
 #| fig-width:  7
 #| fig-height:  7
 p1 <- 
@@ -172,6 +180,7 @@ p1
 Already we get a good sense of the proper number of clusters (3), and how the k-means algorithm functions when `k` is too high or too low. We can then add the centers of the cluster using the data from `tidy()`:
 
 ```{r}
+#| label: plot-with-centers
 p2 <- p1 + geom_point(data = clusters, size = 10, shape = "x")
 p2
 ```
@@ -179,6 +188,7 @@ p2
 The data from `glance()` fills a different but equally important purpose; it lets us view trends of some summary statistics across values of `k`. Of particular interest is the total within sum of squares, saved in the `tot.withinss` column.
 
 ```{r}
+#| label: plot-total-within-ss
 ggplot(clusterings, aes(k, tot.withinss)) +
   geom_line() +
   geom_point()

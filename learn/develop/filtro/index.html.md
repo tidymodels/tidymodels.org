@@ -482,20 +482,20 @@ ames_aov_fstat_res@results
 #> 
 #>     intersect, setdiff, setequal, union
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.1 (2025-06-13)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  date     2025-10-21
-#>  pandoc   3.6.3
-#>  quarto   1.8.25
+#>  date     2026-04-22
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     version date (UTC) source
-#>  dplyr       1.1.4   2023-11-17 CRAN (R 4.5.0)
+#>  dplyr       1.2.1   2026-04-03 CRAN (R 4.5.2)
 #>  filtro      0.2.0   2025-08-26 CRAN (R 4.5.0)
 #>  modeldata   1.5.1   2025-08-22 CRAN (R 4.5.0)
-#>  purrr       1.1.0   2025-07-10 CRAN (R 4.5.0)
-#>  rlang       1.1.6   2025-04-11 CRAN (R 4.5.0)
-#>  tibble      3.3.0   2025-06-08 CRAN (R 4.5.0)
+#>  purrr       1.2.2   2026-04-10 CRAN (R 4.5.2)
+#>  rlang       1.2.0   2026-04-06 CRAN (R 4.5.2)
+#>  tibble      3.3.1   2026-01-11 CRAN (R 4.5.2)
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

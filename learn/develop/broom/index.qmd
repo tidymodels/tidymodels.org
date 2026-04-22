@@ -66,6 +66,7 @@ The first step is to re-export the generic functions for `tidy()`, `glance()`, a
 First you'll need to add the [generics](https://github.com/r-lib/generics) package to `Imports`. We recommend using the [usethis](https://github.com/r-lib/usethis) package for this:
 
 ```{r}
+#| label: add-generics-dep
 #| eval: false
 usethis::use_package("generics", "Imports")
 ```
@@ -73,6 +74,7 @@ usethis::use_package("generics", "Imports")
 Next, you'll need to re-export the appropriate tidying methods. If you plan to implement a `glance()` method, for example, you can re-export the `glance()` generic by adding the following somewhere inside the `/R` folder of your package:
 
 ```{r}
+#| label: reexport-glance-generic
 #| eval: false
 #' @importFrom generics glance
 #' @export
@@ -92,6 +94,7 @@ You'll now need to implement specific tidying methods for each of the generics y
 In this article, we'll use the base R dataset `trees`, giving the tree girth (in inches), height (in feet), and volume (in cubic feet), to fit an example linear model using the base R `lm()` function. 
 
 ```{r}
+#| label: load-trees-fit-lm
 # load in the trees dataset
 data(trees)
 
@@ -105,6 +108,7 @@ trees_model <- lm(Volume ~ Girth + Height, data = trees)
 Let's take a look at the `summary()` of our `trees_model` fit.
 
 ```{r}
+#| label: summary-trees-model
 summary(trees_model)
 ```
 
@@ -117,12 +121,14 @@ The `tidy(x, ...)` method will return a tibble where each row contains informati
 Returning to the example of our linear model on timber volume, we'd like to extract information on the model components. In this example, the components are the regression coefficients. After taking a look at the model object and its `summary()`, you might notice that you can extract the regression coefficients as follows:
 
 ```{r}
+#| label: extract-coefficients
 summary(trees_model)$coefficients
 ```
 
 This object contains the model coefficients as a table, where the information giving which coefficient is being described in each row is given in the row names. Converting to a tibble where the row names are contained in a column, you might write:
 
 ```{r}
+#| label: coef-to-tibble
 trees_model_tidy <- summary(trees_model)$coefficients %>% 
   as_tibble(rownames = "term")
 
@@ -132,6 +138,7 @@ trees_model_tidy
 The broom package standardizes common column names used to describe coefficients. In this case, the column names are:
 
 ```{r}
+#| label: rename-tidy-columns
 colnames(trees_model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
 ```
 
@@ -140,12 +147,14 @@ A glossary giving the currently acceptable column names outputted by `tidy()` me
 Finally, it is common for `tidy()` methods to include an option to calculate confidence/credible intervals for each component based on the model, when possible. In this example, the `confint()` function can be used to calculate confidence intervals from a model object resulting from `lm()`:
 
 ```{r}
+#| label: compute-confint
 confint(trees_model)
 ```
 
 With these considerations in mind, a reasonable `tidy()` method for `lm()` might look something like:
 
 ```{r}
+#| label: define-tidy-lm
 #| eval: false
 tidy.lm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
   
@@ -176,6 +185,7 @@ Some things to keep in mind while writing your `tidy()` method:
 * Sometimes a model will have several different types of components. For example, in mixed models, there is different information associated with fixed effects and random effects. Since this information doesn't have the same interpretation, it doesn't make sense to summarize the fixed and random effects in the same table. In cases like this you should add an argument that allows the user to specify which type of information they want. For example, you might implement an interface along the lines of:
 
 ```{r}
+#| label: tidy-mixed-effects-example
 #| eval: false
 model <- mixed_model(...)
 tidy(model, effects = "fixed")
@@ -195,18 +205,21 @@ tidy(model, effects = "random")
 Returning to the `trees_model` example, we could pull out the $R^2$ value with the following code:
 
 ```{r}
+#| label: extract-r-squared
 summary(trees_model)$r.squared
 ```
 
 Similarly, for the adjusted $R^2$:
 
 ```{r}
+#| label: extract-adj-r-squared
 summary(trees_model)$adj.r.squared
 ```
 
 Unfortunately, for many model objects, the extraction of model-level information is largely a manual process. You will likely need to build a `tibble()` element-by-element by subsetting the `summary()` object repeatedly. The `with()` function, however, can help make this process a bit less tedious by evaluating expressions inside of the `summary(trees_model)` environment. To grab those those same two model elements from above using `with()`:
 
 ```{r}
+#| label: glance-with-tibble
 with(summary(trees_model),
      tibble::tibble(r.squared = r.squared,
                     adj.r.squared = adj.r.squared))
@@ -215,6 +228,7 @@ with(summary(trees_model),
 A reasonable `glance()` method for `lm()`, then, might look something like:
 
 ```{r}
+#| label: define-glance-lm
 #| eval: false
 glance.lm <- function(x, ...) {
   with(
@@ -260,13 +274,15 @@ If a `data` argument is not specified, `augment()` should try to reconstruct the
 With this is mind, we can look back to our `trees_model` example. For one, the `model` element inside of the `trees_model` object will allow us to recover the original data:
 
 ```{r}
-#| rows.print = 5
+#| label: access-model-data
+#| rows.print: 5
 trees_model$model
 ```
 
 Similarly, the fitted values and residuals can be accessed with the following code:
 
 ```{r}
+#| label: extract-fitted-residuals
 head(trees_model$fitted.values)
 head(trees_model$residuals)
 ```
@@ -274,6 +290,7 @@ head(trees_model$residuals)
 As with `glance()` methods, it's fine (and encouraged!) to include common metrics associated with observations if they are not computationally intensive to compute. A common metric associated with linear models, for example, is the standard error of fitted values:
 
 ```{r}
+#| label: compute-se-fit
 se.fit <- predict(trees_model, newdata = trees, se.fit = TRUE)$se.fit %>%
   unname()
 
@@ -283,6 +300,7 @@ head(se.fit)
 Thus, a reasonable `augment()` method for `lm` might look something like this:
 
 ```{r}
+#| label: define-augment-lm
 augment.lm <- function(x, data = x$model, newdata = NULL, ...) {
   if (is.null(newdata)) {
     dplyr::bind_cols(tibble::as_tibble(data),
@@ -316,6 +334,7 @@ The recommended interface and functionality for `augment()` methods may change s
 The only remaining step is to integrate the new methods into the parent package! To do so, just drop the methods into a `.R` file inside of the `/R` folder and document them using roxygen2. If you're unfamiliar with the process of documenting objects, you can read more about it [here](http://r-pkgs.had.co.nz/man.html). Here's an example of how our `tidy.lm()` method might be documented:
 
 ```{r}
+#| label: document-tidy-lm-roxygen
 #| eval: false
 #' Tidy a(n) lm object
 #'
@@ -352,6 +371,7 @@ Once you've documented each of your new methods and executed `devtools::document
 
 
 ```{r}
+#| label: download-glossary-data
 #| include: false
 # grab the argument glossary: make a temporary file, write the
 # data to it, load it, and then delete it
@@ -374,6 +394,7 @@ unlink(cols_file)
 Tidier methods have a standardized set of acceptable argument and output column names. The currently acceptable argument names by tidier method are:
 
 ```{r}
+#| label: render-argument-glossary
 #| echo: false
 argument_glossary %>%
   select(Method = method, Argument = argument) %>% 
@@ -390,6 +411,7 @@ argument_glossary %>%
 The currently acceptable column names by tidier method are:
 
 ```{r}
+#| label: render-column-glossary
 #| echo: false
 column_glossary %>%
   select(Method = method, Column = column)  %>% 

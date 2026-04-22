@@ -15,6 +15,7 @@ r-packages:
 Here are all the functions available across all of the tidymodels packages. Click on the link in the topic column to find the relevant reference documentation.
 
 ```{r}
+#| label: load-packages
 #| include: false
 
 library(tidymodels)
@@ -29,7 +30,7 @@ tidymodels_functions <- read_csv("tidymodels_functions.csv")
 ```{r}
 #| label: grey-out-s3
 #| echo: false
-# Ran in `make_function_lists.R`
+# Ran in `make_function_lists/tidymodels.R`
 # tidymodels_functions |>
 #   filter(stringr::str_detect(functions, "\\.")) |>
 #   mutate(s3 = stringr::str_remove(functions, "\\..*")) |>

@@ -427,6 +427,7 @@ a clean R session then run: install.packages("some_package")
 An S3 method can be used to declare what packages should be loaded when using the step. For a hypothetical step that relies on the `hypothetical` package, this might look like: 
 
 ```{r}
+#| label: define-required-pkgs-method
 required_pkgs.step_hypothetical <- function(x, ...) {
   c("hypothetical", "myrecipespkg")
 }
@@ -439,6 +440,7 @@ The reason to declare what packages should be loaded is parallel processing. Whe
 If this S3 method is used for your step, you can rely on this for checking the installation: 
  
 ```{r}
+#| label: check-required-pkgs
 recipes::recipes_pkg_check(required_pkgs.step_hypothetical())
 ``` 
 

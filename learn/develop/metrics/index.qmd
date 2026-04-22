@@ -73,6 +73,7 @@ The `yardstick_remove_missing()` and `yardstick_any_missing()` yardstick functio
 You are required to supply a `case_weights` argument to `mse_vec()` for the functions to work with yardstick. If your metric in question doesn't support case weights, you can error if they are passed, or simply ignore it.
 
 ```{r}
+#| label: load-packages
 library(tidymodels)
 
 mse_impl <- function(truth, estimate, case_weights = NULL) {
@@ -99,6 +100,7 @@ mse_vec <- function(truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
 At this point, you've created the vector version of the mean squared error metric.
 
 ```{r}
+#| label: test-mse-vec
 data("solubility_test")
 
 mse_vec(
@@ -110,6 +112,7 @@ mse_vec(
 Intelligent error handling is immediately available.
 
 ```{r}
+#| label: test-mse-vec-errors
 #| error: true
 mse_vec(truth = "apple", estimate = 1)
 
@@ -119,6 +122,7 @@ mse_vec(truth = 1, estimate = factor("xyz"))
 `NA` values are removed if `na_rm = TRUE` (the default). If `na_rm = FALSE` and any `NA` values are detected, then the metric automatically returns `NA`.
 
 ```{r}
+#| label: test-mse-vec-na
 # NA values removed
 mse_vec(truth = c(NA, .5, .4), estimate = c(1, .6, .5))
 
@@ -131,6 +135,7 @@ mse_vec(truth = c(NA, .5, .4), estimate = c(1, .6, .5), na_rm = FALSE)
 The data frame version of the metric should be fairly simple. It is a generic function with a `data.frame` method that calls the yardstick helper, `numeric_metric_summarizer()`, and passes along the `mse_vec()` function to it along with versions of `truth` and `estimate` that have been wrapped in `rlang::enquo()` and then unquoted with `!!` so that non-standard evaluation can be supported.
 
 ```{r}
+#| label: define-mse-df
 library(rlang)
 
 mse <- function(data, ...) {
@@ -156,6 +161,7 @@ mse.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_weights = N
 And that's it. The yardstick package handles the rest.
 
 ```{r}
+#| label: test-mse-df
 #| error: false
 #| eval: false
 mse(solubility_test, truth = solubility, estimate = prediction)
@@ -167,6 +173,7 @@ mse(solubility_test, truth = solubility, estimate = factor("xyz"))
 Let's test it out on a grouped data frame.
 
 ```{r}
+#| label: test-mse-grouped
 #| message: false
 library(dplyr)
 
@@ -204,6 +211,7 @@ Classification metrics are more complicated than numeric ones because you have t
 The vector implementation for classification metrics initially has a very similar setup as the numeric metrics. It used `check_class_metric()` instead of `check_numeric_metric()`. It has an additional argument, `estimator` that determines the type of estimator to use (binary or some kind of multiclass implementation or averaging). This argument is auto-selected for the user, so default it to  `NULL`. Additionally, pass it along to `check_class_metric()` so that it can check the provided `estimator` against the classes of `truth` and `estimate` to see if they are allowed.
 
 ```{r}
+#| label: define-miss-rate-vec
 # Logic for `event_level`
 event_col <- function(xtab, event_level) {
   if (identical(event_level, "first")) {
@@ -253,6 +261,7 @@ miss_rate_vec <- function(truth,
 Another change from the numeric metric is that a call to `finalize_estimator()` is made. This is the infrastructure that auto-selects the type of estimator to use.
 
 ```{r}
+#| label: test-miss-rate-binary
 data("two_class_example")
 miss_rate_vec(two_class_example$truth, two_class_example$predicted)
 ```
@@ -260,6 +269,7 @@ miss_rate_vec(two_class_example$truth, two_class_example$predicted)
 What happens if you try and pass in a multiclass result?
 
 ```{r}
+#| label: test-miss-rate-multiclass-fail
 data("hpc_cv")
 fold1 <- filter(hpc_cv, Resample == "Fold01")
 miss_rate_vec(fold1$obs, fold1$pred)
@@ -274,6 +284,7 @@ Don't worry about the `metric_dispatcher` argument. This is handled for you and 
 It is also good practice to call `validate_estimator()` which handles the case where a user passed in the estimator themselves. This validates that the supplied `estimator` is one of the allowed types and error otherwise.
 
 ```{r}
+#| label: define-finalize-estimator
 #| error: false
 finalize_estimator_internal.miss_rate <- function(metric_dispatcher, x, estimator, call) {
   
@@ -330,6 +341,7 @@ Generally, they require more effort to get right than the binary case, especiall
 Let's first remove the "binary" restriction we created earlier.
 
 ```{r}
+#| label: remove-binary-restriction
 rm(finalize_estimator_internal.miss_rate)
 ```
 
@@ -342,6 +354,7 @@ The main changes below are:
 -   `miss_rate_multiclass()` provides the implementation for the multiclass case. It calculates the true positive and false negative values as vectors with one value per class. For the macro case, it returns a vector of miss rate calculations, and for micro, it first sums the individual pieces and returns a single miss rate calculation. In the macro case, the vector is then weighted appropriately in `miss_rate_estimator_impl()` depending on whether or not it was macro or weighted macro.
 
 ```{r}
+#| label: redefine-miss-rate-vec
 miss_rate_vec <- function(truth, 
                           estimate, 
                           estimator = NULL, 
@@ -424,6 +437,7 @@ For the macro case, this separation of weighting from the core implementation mi
 Let's try it out now:
 
 ```{r}
+#| label: test-miss-rate-multiclass
 # two class
 miss_rate_vec(two_class_example$truth, two_class_example$predicted)
 
@@ -436,6 +450,7 @@ miss_rate_vec(fold1$obs, fold1$pred)
 Luckily, the data frame implementation is as simple as the numeric case, we just need to add an extra `estimator` argument and pass that through.
 
 ```{r}
+#| label: define-miss-rate-df
 miss_rate <- function(data, ...) {
   UseMethod("miss_rate")
 }
@@ -465,6 +480,7 @@ miss_rate.data.frame <- function(data,
 ```
 
 ```{r}
+#| label: test-miss-rate-grouped
 #| error: false
 #| eval: false
 # Macro weighted automatically selected
@@ -489,6 +505,7 @@ miss_rate(hpc_cv, obs, VF)
 The `metric_set()` function validates that all metric functions are of the same metric type by checking the class of the function. If any metrics are not of the right class, `metric_set()` fails. By using `new_numeric_metric()` and `new_class_metric()` in the above custom metrics, they work out of the box without any additional adjustments.
 
 ```{r}
+#| label: test-metric-set
 numeric_mets <- metric_set(mse, rmse)
 
 numeric_mets(solubility_test, solubility, prediction)

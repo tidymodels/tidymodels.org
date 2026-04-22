@@ -208,6 +208,7 @@ We also set up the information on how the predictors should be handled. These op
 * `allow_sparse_x` specifies whether the model can accommodate a sparse representation for predictors during fitting and tuning.
 
 ```{r}
+#| label: set-encoding-mda
 set_encoding(
   model = "discrim_mixture",
   eng = "mda",
@@ -402,6 +403,7 @@ For parsnip to register them, that package must already be loaded. For this reas
 The first difference is that the functions that define the model must be inside of a wrapper function that is called when your package is loaded. For our example here, this might look like: 
 
 ```{r}
+#| label: define-discrim-mixture-fn
 #| eval: false
 make_discrim_mixture_mda <- function() {
   parsnip::set_new_model("discrim_mixture")
@@ -415,6 +417,7 @@ make_discrim_mixture_mda <- function() {
 This function is then executed when your package is loaded: 
 
 ```{r}
+#| label: register-model-onload
 #| eval: false
 .onLoad <- function(libname, pkgname) {
   # This defines discrim_mixture in the model database

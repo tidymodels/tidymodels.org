@@ -42,6 +42,7 @@ While the tidymodels package [broom](https://broom.tidyverse.org/) is useful for
 Let's demonstrate this with a simple data set, the built-in `Orange`. We start by coercing `Orange` to a `tibble`. This gives a nicer print method that will be especially useful later on when we start working with list-columns.
 
 ```{r}
+#| label: load-orange-data
 library(tidymodels)
 
 data(Orange)
@@ -53,6 +54,7 @@ Orange
 This contains 35 observations of three variables: `Tree`, `age`, and `circumference`. `Tree` is a factor with five levels describing five trees. As might be expected, age and circumference are correlated:
 
 ```{r}
+#| label: plot-age-circumference
 cor(Orange$age, Orange$circumference)
 
 library(ggplot2)
@@ -64,6 +66,7 @@ ggplot(Orange, aes(age, circumference, color = Tree)) +
 Suppose you want to test for correlations individually *within* each tree. You can do this with dplyr's `group_by`:
 
 ```{r}
+#| label: correlation-by-tree
 Orange %>% 
   group_by(Tree) %>%
   summarize(correlation = cor(age, circumference))
@@ -74,6 +77,7 @@ Orange %>%
 Suppose that instead of simply estimating a correlation, we want to perform a hypothesis test with `cor.test()`:
 
 ```{r}
+#| label: cor-test-overall
 ct <- cor.test(Orange$age, Orange$circumference)
 ct
 ```
@@ -81,12 +85,14 @@ ct
 This test output contains multiple values we may be interested in. Some are vectors of length 1, such as the p-value and the estimate, and some are longer, such as the confidence interval. We can get this into a nicely organized tibble using the `tidy()` function:
 
 ```{r}
+#| label: tidy-cor-test
 tidy(ct)
 ```
 
 Often, we want to perform multiple tests or fit multiple models, each on a different part of the data. In this case, we recommend a `nest-map-unnest` workflow. For example, suppose we want to perform correlation tests for each different tree. We start by `nest`ing our data based on the group of interest:
 
 ```{r}
+#| label: nest-by-tree
 nested <- 
   Orange %>% 
   nest(data = c(age, circumference))
@@ -95,6 +101,7 @@ nested <-
 Then we perform a correlation test for each nested tibble using `purrr::map()`:
 
 ```{r}
+#| label: map-cor-test
 nested %>% 
   mutate(test = map(data, ~ cor.test(.x$age, .x$circumference)))
 ```
@@ -102,6 +109,7 @@ nested %>%
 This results in a list-column of S3 objects. We want to tidy each of the objects, which we can also do with `map()`.
 
 ```{r}
+#| label: map-tidy-cor-test
 nested %>% 
   mutate(
     test = map(data, ~ cor.test(.x$age, .x$circumference)), # S3 list-col
@@ -112,6 +120,7 @@ nested %>%
 Finally, we want to unnest the tidied data frames so we can see the results in a flat tibble. All together, this looks like:
 
 ```{r}
+#| label: unnest-cor-test
 Orange %>% 
   nest(data = c(age, circumference)) %>% 
   mutate(
@@ -127,6 +136,7 @@ Orange %>%
 This type of workflow becomes even more useful when applied to regressions. Untidy output for a regression looks like:
 
 ```{r}
+#| label: fit-lm-orange
 lm_fit <- lm(age ~ circumference, data = Orange)
 summary(lm_fit)
 ```
@@ -134,12 +144,14 @@ summary(lm_fit)
 When we tidy these results, we get multiple rows of output for each model:
 
 ```{r}
+#| label: tidy-lm-orange
 tidy(lm_fit)
 ```
 
 Now we can handle multiple regressions at once using exactly the same workflow as before:
 
 ```{r}
+#| label: nest-map-lm-orange
 Orange %>%
   nest(data = c(-Tree)) %>% 
   mutate(
@@ -153,6 +165,7 @@ Orange %>%
 You can just as easily use multiple predictors in the regressions, as shown here on the `mtcars` dataset. We nest the data into automatic vs. manual cars (the `am` column), then perform the regression within each nested tibble.
 
 ```{r}
+#| label: load-mtcars
 data(mtcars)
 mtcars <- as_tibble(mtcars)  # to play nicely with list-cols
 mtcars
@@ -170,6 +183,7 @@ mtcars %>%
 What if you want not just the `tidy()` output, but the `augment()` and `glance()` outputs as well, while still performing each regression only once? Since we're using list-columns, we can just fit the model once and use multiple list-columns to store the tidied, glanced and augmented outputs.
 
 ```{r}
+#| label: nest-map-lm-mtcars
 regressions <- 
   mtcars %>%
   nest(data = c(-am)) %>% 
