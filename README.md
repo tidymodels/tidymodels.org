@@ -87,9 +87,28 @@ R functions in code blocks are hyperlinked to their documentation via the [downl
 
 Because `library(tidymodels)` is not automatically expanded by downlit (unlike `library(tidyverse)`), `post-render-downlit.R` explicitly seeds the package list via `tidymodels::tidymodels_packages()` so functions like `step_*`, `tune()`, etc. are linked correctly.
 
+## Package metadata
+
+Every `.qmd` file that contains R code declares its package dependencies in the YAML front matter using the `r-packages` field:
+
+```yaml
+r-packages:
+  - tidymodels
+  - ranger
+  - kableExtra
+```
+
+**Convention:** list only packages that are not already members of the `tidymodels` meta-package. The full list of tidymodels members can be checked with `tidymodels::tidymodels_packages()`. For example, `dplyr`, `ggplot2`, `modeldata`, `tune`, and `rlang` are all covered by listing `tidymodels` and should not be listed separately.
+
+This metadata is the foundation for tooling that can:
+- install exactly the packages needed for a given page
+- selectively re-render only pages affected by a package release
+
+Pure prose pages (no R code chunks) do not need this field.
+
 ## Workflow
 
-* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `installs.R`.
+* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `installs.R` **and** to the `r-packages` field in the new post's YAML front matter.
 
 * To preview the site, render it locally with the latest quarto release version.
 
