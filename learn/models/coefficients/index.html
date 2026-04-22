@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-72348fe574da81ca8cd94ada85087e52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -418,7 +418,7 @@ window.Quarto = {
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>There are many types of statistical models with diverse kinds of structure. Some models have coefficients (a.k.a. weights) for each term in the model. Familiar examples of such models are linear or logistic regression, but more complex models (e.g. neural networks, MARS) can also have model coefficients. When we work with models that use weights or coefficients, we often want to examine the estimated coefficients.</p>
-<p>This article describes how to retrieve the estimated coefficients from models fit using tidymodels. To use code in this article, you will need to install the following packages: glmnet and tidymodels.</p>
+<p>This article describes how to retrieve the estimated coefficients from models fit using tidymodels. To use code in this article, you will need to install the following packages: glmnet, Matrix, and tidymodels.</p>
 </section><section id="linear-regression" class="level2"><h2 class="anchored" data-anchor-id="linear-regression">Linear regression</h2>
 <p>Let’s start with a linear regression model:</p>
 <p><span class="math display">\[\hat{y} = \hat{\beta}_0 + \hat{\beta}_1x_1 + \ldots + \hat{\beta}_px_p\]</span></p>
@@ -1022,6 +1022,7 @@ Note
 #&gt;  ggplot2      4.0.2   2026-02-03 CRAN (R 4.5.2)
 #&gt;  glmnet       4.1-10  2025-07-17 CRAN (R 4.5.0)
 #&gt;  infer        1.1.0   2025-12-18 CRAN (R 4.5.2)
+#&gt;  Matrix       1.7-5   2026-03-21 CRAN (R 4.5.2)
 #&gt;  parsnip      1.5.0   2026-04-09 CRAN (R 4.5.2)
 #&gt;  purrr        1.2.2   2026-04-10 CRAN (R 4.5.2)
 #&gt;  recipes      1.3.2   2026-04-02 CRAN (R 4.5.2)
