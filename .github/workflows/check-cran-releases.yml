@@ -97,25 +97,28 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: any::jsonlite any::yaml any::here any::cli
-          cache: true
+
+      - name: Cache R library
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: r-lib-${{ runner.os }}-${{ hashFiles('installs.R') }}
+          restore-keys: r-lib-${{ runner.os }}-
 
       - name: Install all site packages
         shell: Rscript {0}
         run: source("installs.R")
 
       - name: Re-render affected pages
-        shell: Rscript {0}
-        run: |
-          pkgs <- strsplit("${{ needs.check.outputs.updated_packages }}", " ")[[1]]
-          args <- c("re-render-package.R", pkgs)
-          source_args <- commandArgs
-          # Use system2 to call the script with package args
-          result <- system2("Rscript", args)
-          if (result != 0) stop("Re-render failed")
+        run: Rscript re-render-package.R ${{ needs.check.outputs.updated_packages }}
 
       - name: Update _versions.json
         shell: Rscript {0}
         run: source("make_versions.R")
+
+      - name: Update package_map.json
+        shell: Rscript {0}
+        run: source("make_package_map.R")
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v6
