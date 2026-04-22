@@ -15,7 +15,7 @@ dir_ls(recurse = TRUE, type = "directory", regexp = "cache") |>
   purrr::walk(dir_delete)
 
 # Update function lists
-source("make_function_lists.R")
+source("make_function_lists/run_all.R")
 
 # Starts rerender
 quarto_render()
