@@ -15,6 +15,7 @@ jobs:
     outputs:
       updated_packages: ${{ steps.check.outputs.updated_packages }}
       has_updates: ${{ steps.check.outputs.has_updates }}
+      version_changes: ${{ steps.check.outputs.version_changes }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -36,21 +37,26 @@ jobs:
         run: |
           library(jsonlite)
 
+          write_output <- function(...) {
+            cat(..., file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+          }
+
+          recorded <- jsonlite::read_json("_versions.json", simplifyVector = TRUE)
+
           # Allow manual override via workflow_dispatch input
           manual <- "${{ github.event.inputs.packages }}"
           if (nzchar(trimws(manual))) {
             pkgs <- trimws(strsplit(manual, " ")[[1]])
             pkgs <- pkgs[nzchar(pkgs)]
             cat("Manual override for packages:", paste(pkgs, collapse = ", "), "\n")
-            cat(sprintf("updated_packages=%s\n", paste(pkgs, collapse = " ")),
-                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
-            cat("has_updates=true\n",
-                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+            changes <- paste0("- ", pkgs, ": ", recorded[pkgs], " (manual trigger)")
+            write_output(sprintf("updated_packages=%s\n", paste(pkgs, collapse = " ")))
+            write_output("has_updates=true\n")
+            write_output(sprintf("version_changes<<EOF\n%s\nEOF\n", paste(changes, collapse = "\n")))
             quit(save = "no")
           }
 
-          recorded <- jsonlite::read_json("_versions.json", simplifyVector = TRUE)
-          pkgs     <- names(recorded)
+          pkgs <- names(recorded)
 
           # Query CRAN for current versions
           db <- available.packages(repos = "https://cloud.r-project.org")
@@ -63,14 +69,13 @@ jobs:
 
           if (length(updated) == 0) {
             cat("No package updates found.\n")
-            cat("has_updates=false\n",
-                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+            write_output("has_updates=false\n")
           } else {
             cat("Updated packages:", paste(updated, collapse = ", "), "\n")
-            cat(sprintf("updated_packages=%s\n", paste(updated, collapse = " ")),
-                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
-            cat("has_updates=true\n",
-                file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+            changes <- paste0("- ", updated, ": ", recorded[updated], " → ", cran_versions[updated])
+            write_output(sprintf("updated_packages=%s\n", paste(updated, collapse = " ")))
+            write_output("has_updates=true\n")
+            write_output(sprintf("version_changes<<EOF\n%s\nEOF\n", paste(changes, collapse = "\n")))
           }
 
   rerender:
@@ -80,6 +85,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      issues: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -109,28 +115,53 @@ jobs:
         shell: Rscript {0}
         run: source("installs.R")
 
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
       - name: Re-render affected pages
+        id: render
         run: Rscript re-render-package.R ${{ needs.check.outputs.updated_packages }}
 
+      - name: Open issue on render failure
+        if: failure() && steps.render.outcome == 'failure'
+        uses: peter-evans/create-issue@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Automated re-render failed (${{ needs.check.outputs.updated_packages }}) ${{ steps.date.outputs.date }}"
+          body: |
+            The automated re-render triggered by a CRAN update failed.
+
+            **Version changes:**
+            ${{ needs.check.outputs.version_changes }}
+
+            **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            One or more pages failed to render. The freeze cache for those pages has been cleared but not repopulated — a manual re-render may be needed. Check the workflow run above for the full error output.
+          labels: "automated re-render,bug"
+
       - name: Update _versions.json
+        if: success()
         shell: Rscript {0}
         run: source("make_versions.R")
 
       - name: Update package_map.json
-        shell: Rscript {0}
-        run: source("make_package_map.R")
+        if: success()
+        run: Rscript make_package_map.R
 
       - name: Open pull request
+        if: success()
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: "cran-rerender/${{ github.run_id }}"
           commit-message: "re-render pages after CRAN update: ${{ needs.check.outputs.updated_packages }}"
-          title: "Re-render: ${{ needs.check.outputs.updated_packages }}"
+          title: "Re-render (${{ needs.check.outputs.updated_packages }}) ${{ steps.date.outputs.date }}"
           body: |
             Automated re-render triggered by CRAN update.
 
-            **Updated packages:** `${{ needs.check.outputs.updated_packages }}`
+            **Version changes:**
+            ${{ needs.check.outputs.version_changes }}
 
             Please review the rendered output changes before merging.
           labels: "automated re-render"

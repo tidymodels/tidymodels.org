@@ -51,6 +51,8 @@ cli::cli_alert_info("{length(pages)} page{?s} to re-render")
 # ------------------------------------------------------------------------------
 # Clear freeze cache for affected pages, then render
 
+failed <- character(0)
+
 for (page in pages) {
   rel_dir    <- dirname(page)
   freeze_dir <- file.path(repo_root, "_freeze", rel_dir)
@@ -64,8 +66,17 @@ for (page in pages) {
   result <- system2("quarto", c("render", file.path(repo_root, page)))
 
   if (result != 0) {
-    cli::cli_warn("Render failed for {.file {page}}")
+    failed <- c(failed, page)
+    cli::cli_alert_danger("Render failed for {.file {page}}")
   }
 }
 
-cli::cli_alert_success("Done. {length(pages)} page{?s} re-rendered.")
+if (length(failed) > 0) {
+  cli::cli_h2("Summary")
+  cli::cli_alert_success("{length(pages) - length(failed)} page{?s} rendered successfully.")
+  cli::cli_alert_danger("{length(failed)} page{?s} failed:")
+  for (page in failed) cli::cli_bullets(c("x" = page))
+  quit(save = "no", status = 1)
+}
+
+cli::cli_alert_success("Done. {length(pages)} page{?s} re-rendered successfully.")
