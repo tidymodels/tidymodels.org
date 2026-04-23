@@ -22,8 +22,7 @@ runs:
         r-version: release
         use-public-rspm: true
 
-    - name: Set up Java (for sparklyr)
-      if: contains(inputs.packages, 'sparklyr')
+    - name: Set up Java
       uses: actions/setup-java@v4
       with:
         distribution: temurin
