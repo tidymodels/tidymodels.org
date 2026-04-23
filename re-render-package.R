@@ -57,7 +57,8 @@ cli::cli_alert_info("{length(pages)} page{?s} to re-render")
 # ------------------------------------------------------------------------------
 # Clear freeze cache for affected pages, then render
 
-failed <- character(0)
+failed    <- character(0)
+durations <- numeric(0)
 
 for (page in pages) {
   rel_dir    <- dirname(page)
@@ -69,13 +70,35 @@ for (page in pages) {
   }
 
   cli::cli_h2("Rendering {.file {page}}")
+  t0     <- proc.time()[["elapsed"]]
   result <- system2("quarto", c("render", file.path(repo_root, page)))
+  elapsed <- proc.time()[["elapsed"]] - t0
+  durations <- c(durations, setNames(elapsed, page))
 
   if (result != 0) {
     failed <- c(failed, page)
     cli::cli_alert_danger("Render failed for {.file {page}}")
   }
 }
+
+# Write render summary for use by CI (e.g. PR body)
+summary_path <- file.path(repo_root, "_render_summary.json")
+jsonlite::write_json(
+  list(
+    pages     = as.list(setNames(
+      lapply(names(durations), function(p) list(
+        duration = round(durations[[p]], 1)
+      )),
+      names(durations)
+    )),
+    n_total   = length(pages),
+    n_failed  = length(failed),
+    total_sec = round(sum(durations), 1)
+  ),
+  summary_path,
+  auto_unbox = TRUE,
+  pretty     = TRUE
+)
 
 if (length(failed) > 0) {
   cli::cli_h2("Summary")

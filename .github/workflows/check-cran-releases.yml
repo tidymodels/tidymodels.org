@@ -115,6 +115,11 @@ jobs:
         id: render
         run: Rscript re-render-package.R ${{ needs.check.outputs.updated_packages }}
 
+      - name: Build render summary for PR
+        id: render_summary
+        if: success()
+        run: Rscript make_render_summary.R
+
       - name: Open issue on render failure
         if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')
         env:
@@ -155,6 +160,9 @@ jobs:
 
             **Version changes:**
             ${{ needs.check.outputs.version_changes }}
+
+            **Rendered pages:**
+            ${{ steps.render_summary.outputs.render_table }}
 
             Please review the rendered output changes before merging.
           labels: "automated re-render"
