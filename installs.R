@@ -101,7 +101,7 @@ packages <- c(
   "gee"
 )
 
-pak::pak(packages)
+pak::pak(packages, upgrade = TRUE)
 
 # Manually check for dev versions
 # sub("rstudio/", "", packages) |>
