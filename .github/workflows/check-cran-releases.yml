@@ -72,7 +72,7 @@ jobs:
             pkgs
           )
 
-          updated <- pkgs[!is.na(cran_versions) & cran_versions != recorded[pkgs]]
+          updated <- pkgs[!is.na(cran_versions) & package_version(cran_versions[pkgs]) != package_version(unlist(recorded[pkgs]))]
 
           if (length(updated) == 0) {
             cat("No package updates found.\n")
