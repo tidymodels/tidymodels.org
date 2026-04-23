@@ -56,27 +56,6 @@ for (pkg in names(pkg_map)) {
 
 # Collect all packages needed by affected pages
 needed <- sort(unique(unlist(page_pkgs[pages], use.names = FALSE)))
-cli::cli_alert_info("{length(needed)} package{?s} required: {.pkg {needed}}")
 
-# ------------------------------------------------------------------------------
-# Install — handle special cases
-
-# catboost must be installed from GitHub
-catboost_ref <- "catboost/catboost/catboost/R-package"
-to_install <- ifelse(needed == "catboost", catboost_ref, needed)
-
-pak::pak(to_install, upgrade = TRUE)
-
-# torch must be installed explicitly for brulee to work
-if ("brulee" %in% needed) {
-  cli::cli_alert_info("Installing torch backend for brulee...")
-  torch::install_torch()
-}
-
-# sparklyr requires a local Spark installation
-if ("sparklyr" %in% needed) {
-  cli::cli_alert_info("Installing Spark for sparklyr...")
-  sparklyr::spark_install(version = "4.0")
-}
-
-cli::cli_alert_success("Done.")
+source(file.path(repo_root, "install_packages.R"))
+install_packages(needed)

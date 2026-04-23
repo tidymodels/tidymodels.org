@@ -97,48 +97,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Install R
-        uses: r-lib/actions/setup-r@v2
+      - name: Set up render environment
+        uses: ./.github/actions/setup-render
         with:
-          r-version: release
-          use-public-rspm: true
-
-      - name: Set up Java (for sparklyr)
-        if: contains(needs.check.outputs.updated_packages, 'sparklyr')
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-
-      - name: Install R packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: any::jsonlite any::yaml any::here any::cli any::pak
-
-      - name: Cache R library
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: r-lib-${{ runner.os }}-${{ needs.check.outputs.updated_packages }}
-          restore-keys: r-lib-${{ runner.os }}-
-
-      - name: Cache torch installation
-        if: contains(needs.check.outputs.updated_packages, 'brulee')
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/torch
-          key: torch-${{ runner.os }}-${{ hashFiles('_versions.json') }}
-          restore-keys: torch-${{ runner.os }}-
-
-      - name: Cache Spark installation
-        if: contains(needs.check.outputs.updated_packages, 'sparklyr')
-        uses: actions/cache@v4
-        with:
-          path: ~/spark
-          key: spark-4.0-${{ runner.os }}
+          packages: ${{ needs.check.outputs.updated_packages }}
+          cache-key-suffix: cran
 
       - name: Install packages for affected pages
         run: Rscript install_for_packages.R ${{ needs.check.outputs.updated_packages }}

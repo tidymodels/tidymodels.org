@@ -1,0 +1,57 @@
+name: Setup render environment
+description: Install R, Quarto, and conditionally Java/torch/Spark for page rendering
+
+inputs:
+  packages:
+    description: Space-separated list of R packages involved (used for conditional setup and cache keys)
+    required: true
+  cache-key-suffix:
+    description: Extra string to make the R library cache key unique across workflows
+    required: false
+    default: render
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+
+    - name: Install R
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: release
+        use-public-rspm: true
+
+    - name: Set up Java (for sparklyr)
+      if: contains(inputs.packages, 'sparklyr')
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: "17"
+
+    - name: Install bootstrap R packages
+      uses: r-lib/actions/setup-r-dependencies@v2
+      with:
+        packages: any::jsonlite any::yaml any::here any::cli any::pak
+
+    - name: Cache R library
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.R_LIBS_USER }}
+        key: r-lib-${{ runner.os }}-${{ inputs.cache-key-suffix }}-${{ inputs.packages }}
+        restore-keys: r-lib-${{ runner.os }}-
+
+    - name: Cache torch installation
+      if: contains(inputs.packages, 'brulee')
+      uses: actions/cache@v4
+      with:
+        path: ~/.local/share/torch
+        key: torch-${{ runner.os }}-${{ hashFiles('_versions.json') }}
+        restore-keys: torch-${{ runner.os }}-
+
+    - name: Cache Spark installation
+      if: contains(inputs.packages, 'sparklyr')
+      uses: actions/cache@v4
+      with:
+        path: ~/spark
+        key: spark-4.0-${{ runner.os }}

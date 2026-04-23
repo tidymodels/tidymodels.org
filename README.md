@@ -114,6 +114,8 @@ Pure prose pages (no R code chunks) do not need this field.
 
 * The site is currently rendered locally (macOS), not in CI. Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true` — and those files are what gets deployed. Always include them in your PR.
 
+* **Rendering in CI via a PR comment:** If you'd prefer not to render locally, comment `/render` on your open PR. A GitHub Actions workflow (`render-pr.yml`) will detect which `.qmd` files changed, install the needed packages, render those pages, and commit the output back to your branch. It posts a comment when done (or links to the failed run on error). Only repo owners, org members, and collaborators can trigger this.
+
 * **Note on platform differences:** As the automated nightly re-render (`check-cran-releases.yml`) matures, pages will increasingly be rendered on Linux (Ubuntu) rather than macOS. The first time a page is re-rendered in CI you may see numerical differences in the output — floating point results can vary slightly between platforms due to differences in BLAS/LAPACK libraries and other system-level factors. These differences are expected and not a sign of a bug, but should be reviewed before merging the automated PR.
 
 * `keep-md: true` is set in `_quarto.yml` so that rendered `.md` files are committed alongside the source. This makes it possible to review in a PR whether code produced different results than before.
@@ -161,7 +163,7 @@ This reads `package_map.json` to find affected pages, clears their freeze cache,
 
 The `check-cran-releases.yml` workflow runs on weekdays at 4am Pacific time. It compares current CRAN versions against `_versions.json` and, if any packages have updated, automatically:
 
-1. Installs only the packages needed for the affected pages (via `install_for_packages.R`)
+1. Installs only the packages needed for the affected pages (via `install_for_packages.R`, which uses the shared `install_packages.R` helper)
 2. Re-renders the affected pages
 3. Updates `_versions.json` and `package_map.json`
 4. Opens a pull request for review, including the old and new versions of each updated package
