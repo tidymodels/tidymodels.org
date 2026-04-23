@@ -1,6 +1,7 @@
 # ------------------------------------------------------------------------------
 # Install only the R packages needed for pages affected by the given packages.
 # Run: Rscript install_for_packages.R <pkg1> [pkg2 ...]
+#      Rscript install_for_packages.R --all   # install packages for all pages
 
 library(jsonlite)
 library(cli)
@@ -25,17 +26,22 @@ pkg_map <- jsonlite::read_json(map_path)
 # ------------------------------------------------------------------------------
 # Find affected pages
 
-known   <- intersect(args, names(pkg_map))
-unknown <- setdiff(args, names(pkg_map))
+if ("--all" %in% args) {
+  cli::cli_alert_info("--all flag set: installing packages for all pages")
+  pages <- sort(unique(unlist(pkg_map, use.names = FALSE)))
+} else {
+  known   <- intersect(args, names(pkg_map))
+  unknown <- setdiff(args, names(pkg_map))
 
-if (length(unknown) > 0) {
-  cli::cli_warn("No pages found for package{?s}: {.pkg {unknown}}")
-}
-if (length(known) == 0) {
-  cli::cli_abort("None of the requested packages appear in {.file package_map.json}.")
-}
+  if (length(unknown) > 0) {
+    cli::cli_warn("No pages found for package{?s}: {.pkg {unknown}}")
+  }
+  if (length(known) == 0) {
+    cli::cli_abort("None of the requested packages appear in {.file package_map.json}.")
+  }
 
-pages <- sort(unique(unlist(pkg_map[known], use.names = FALSE)))
+  pages <- sort(unique(unlist(pkg_map[known], use.names = FALSE)))
+}
 cli::cli_alert_info("{length(pages)} page{?s} affected")
 
 # ------------------------------------------------------------------------------

@@ -112,7 +112,9 @@ Pure prose pages (no R code chunks) do not need this field.
 
 * To preview the site, render it locally with the latest quarto release version.
 
-* The site is rendered locally, not in CI. Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true` — and those files are what gets deployed. Always include them in your PR.
+* The site is currently rendered locally (macOS), not in CI. Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true` — and those files are what gets deployed. Always include them in your PR.
+
+* **Note on platform differences:** As the automated nightly re-render (`check-cran-releases.yml`) matures, pages will increasingly be rendered on Linux (Ubuntu) rather than macOS. The first time a page is re-rendered in CI you may see numerical differences in the output — floating point results can vary slightly between platforms due to differences in BLAS/LAPACK libraries and other system-level factors. These differences are expected and not a sign of a bug, but should be reviewed before merging the automated PR.
 
 * `keep-md: true` is set in `_quarto.yml` so that rendered `.md` files are committed alongside the source. This makes it possible to review in a PR whether code produced different results than before.
 
@@ -136,6 +138,7 @@ To re-render only the pages affected by one or more package updates, use `re-ren
 Rscript re-render-package.R ranger
 Rscript re-render-package.R ranger glmnet   # union of affected pages, deduped
 Rscript re-render-package.R tidymodels      # all pages that use tidymodels
+Rscript re-render-package.R --all           # every page on the site
 ```
 
 This reads `package_map.json` to find affected pages, clears their freeze cache, and re-renders them.
@@ -173,6 +176,9 @@ gh workflow run check-cran-releases.yml
 
 # Force re-render for specific packages
 gh workflow run check-cran-releases.yml -f packages="ranger glmnet"
+
+# Re-render every page
+gh workflow run check-cran-releases.yml -f packages="--all"
 ```
 
 ## Generating function lists

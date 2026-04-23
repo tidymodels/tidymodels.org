@@ -593,28 +593,28 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package        version  date (UTC) source
-#>  broom          1.0.12   2026-01-27 CRAN (R 4.5.2)
-#>  dials          1.4.3    2026-04-11 CRAN (R 4.5.2)
-#>  dplyr          1.2.1    2026-04-03 CRAN (R 4.5.2)
-#>  ggplot2        4.0.2    2026-02-03 CRAN (R 4.5.2)
-#>  here           1.0.2    2025-09-15 CRAN (R 4.5.0)
-#>  infer          1.1.0    2025-12-18 CRAN (R 4.5.2)
-#>  kableExtra     1.4.0    2024-01-24 CRAN (R 4.5.0)
-#>  lubridate      1.9.5    2026-02-04 CRAN (R 4.5.2)
-#>  nycflights13   1.0.2    2021-04-12 CRAN (R 4.5.0)
-#>  parsnip        1.5.0    2026-04-09 CRAN (R 4.5.2)
-#>  purrr          1.2.2    2026-04-10 CRAN (R 4.5.2)
-#>  recipes        1.3.2    2026-04-02 CRAN (R 4.5.2)
-#>  rlang          1.2.0    2026-04-06 CRAN (R 4.5.2)
-#>  rsample        1.3.2    2026-01-30 CRAN (R 4.5.2)
-#>  skimr          2.2.2    2026-01-10 CRAN (R 4.5.2)
-#>  tibble         3.3.1    2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels     1.4.1    2025-09-08 CRAN (R 4.5.0)
-#>  timeDate       4052.112 2026-01-28 CRAN (R 4.5.2)
-#>  tune           2.1.0    2026-04-17 CRAN (R 4.5.2)
-#>  workflows      1.3.0    2025-08-27 CRAN (R 4.5.0)
-#>  yardstick      1.4.0    2026-04-07 CRAN (R 4.5.2)
+#>  package        version  date (UTC)
+#>  broom          1.0.12   2026-01-27
+#>  dials          1.4.3    2026-04-11
+#>  dplyr          1.2.1    2026-04-03
+#>  ggplot2        4.0.3    2026-04-22
+#>  here           1.0.2    2025-09-15
+#>  infer          1.1.0    2025-12-18
+#>  kableExtra     1.4.0    2024-01-24
+#>  lubridate      1.9.5    2026-02-04
+#>  nycflights13   1.0.2    2021-04-12
+#>  parsnip        1.5.0    2026-04-09
+#>  purrr          1.2.2    2026-04-10
+#>  recipes        1.3.2    2026-04-02
+#>  rlang          1.2.0    2026-04-06
+#>  rsample        1.3.2    2026-01-30
+#>  skimr          2.2.2    2026-01-10
+#>  tibble         3.3.1    2026-01-11
+#>  tidymodels     1.4.1    2025-09-08
+#>  timeDate       4052.112 2026-01-28
+#>  tune           2.1.0    2026-04-17
+#>  workflows      1.3.0    2025-08-27
+#>  yardstick      1.4.0    2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
