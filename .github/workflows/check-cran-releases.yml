@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       packages:
-        description: "Space-separated package names to force re-render (optional)"
+        description: "Space-separated package names to force re-render, or '--all' to re-render everything (optional)"
         required: false
 
 name: Check CRAN releases and re-render
@@ -44,15 +44,22 @@ jobs:
           recorded <- jsonlite::read_json("_versions.json", simplifyVector = TRUE)
 
           # Allow manual override via workflow_dispatch input
-          manual <- "${{ github.event.inputs.packages }}"
-          if (nzchar(trimws(manual))) {
-            pkgs <- trimws(strsplit(manual, " ")[[1]])
-            pkgs <- pkgs[nzchar(pkgs)]
-            cat("Manual override for packages:", paste(pkgs, collapse = ", "), "\n")
-            changes <- paste0("- ", pkgs, ": ", recorded[pkgs], " (manual trigger)")
-            write_output(sprintf("updated_packages=%s\n", paste(pkgs, collapse = " ")))
-            write_output("has_updates=true\n")
-            write_output(sprintf("version_changes<<EOF\n%s\nEOF\n", paste(changes, collapse = "\n")))
+          manual <- trimws("${{ github.event.inputs.packages }}")
+          if (nzchar(manual)) {
+            if (manual == "--all") {
+              cat("Manual override: re-rendering all pages\n")
+              write_output("updated_packages=--all\n")
+              write_output("has_updates=true\n")
+              write_output("version_changes<<EOF\n- (all pages, manual trigger)\nEOF\n")
+            } else {
+              pkgs <- trimws(strsplit(manual, " ")[[1]])
+              pkgs <- pkgs[nzchar(pkgs)]
+              cat("Manual override for packages:", paste(pkgs, collapse = ", "), "\n")
+              changes <- paste0("- ", pkgs, ": ", recorded[pkgs], " (manual trigger)")
+              write_output(sprintf("updated_packages=%s\n", paste(pkgs, collapse = " ")))
+              write_output("has_updates=true\n")
+              write_output(sprintf("version_changes<<EOF\n%s\nEOF\n", paste(changes, collapse = "\n")))
+            }
             quit(save = "no")
           }
 

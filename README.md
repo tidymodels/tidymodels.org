@@ -138,6 +138,7 @@ To re-render only the pages affected by one or more package updates, use `re-ren
 Rscript re-render-package.R ranger
 Rscript re-render-package.R ranger glmnet   # union of affected pages, deduped
 Rscript re-render-package.R tidymodels      # all pages that use tidymodels
+Rscript re-render-package.R --all           # every page on the site
 ```
 
 This reads `package_map.json` to find affected pages, clears their freeze cache, and re-renders them.
@@ -175,6 +176,9 @@ gh workflow run check-cran-releases.yml
 
 # Force re-render for specific packages
 gh workflow run check-cran-releases.yml -f packages="ranger glmnet"
+
+# Re-render every page
+gh workflow run check-cran-releases.yml -f packages="--all"
 ```
 
 ## Generating function lists
