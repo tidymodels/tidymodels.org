@@ -77,7 +77,7 @@ small_session <- function(pkgs = NULL) {
     ) |>
     stringr::str_remove(" @ .*") |>
     stringr::str_replace_all("\\*", " ") |>
-    stringr::str_replace("lib source", "source") |>
+    stringr::str_remove("\\s+(lib\\s+)?source$") |>
     stringr::str_replace(" \\[\\d+\\] ", " ") |>
     stringr::str_remove("\\s+(CRAN|RSPM|Bioconductor|Github|local)(\\s+\\(.*\\))?\\s*$") |>
     stringr::str_subset(

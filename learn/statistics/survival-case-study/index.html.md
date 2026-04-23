@@ -491,29 +491,29 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package        version date (UTC) source
-#>  aorsf          0.1.6   2025-12-11 CRAN (R 4.5.2)
-#>  broom          1.0.12  2026-01-27 CRAN (R 4.5.2)
-#>  censored       0.3.4   2026-04-04 CRAN (R 4.5.2)
-#>  dials          1.4.3   2026-04-11 CRAN (R 4.5.2)
-#>  dplyr          1.2.1   2026-04-03 CRAN (R 4.5.2)
-#>  ggplot2        4.0.2   2026-02-03 CRAN (R 4.5.2)
-#>  glmnet         4.1-10  2025-07-17 CRAN (R 4.5.0)
-#>  htmlwidgets    1.6.4   2023-12-06 CRAN (R 4.5.0)
-#>  infer          1.1.0   2025-12-18 CRAN (R 4.5.2)
-#>  leaflet        2.2.3   2025-09-04 CRAN (R 4.5.0)
-#>  modeldatatoo   0.3.0   2024-03-29 CRAN (R 4.5.0)
-#>  parsnip        1.5.0   2026-04-09 CRAN (R 4.5.2)
-#>  purrr          1.2.2   2026-04-10 CRAN (R 4.5.2)
-#>  recipes        1.3.2   2026-04-02 CRAN (R 4.5.2)
-#>  rlang          1.2.0   2026-04-06 CRAN (R 4.5.2)
-#>  rsample        1.3.2   2026-01-30 CRAN (R 4.5.2)
-#>  sessioninfo    1.2.3   2025-02-05 CRAN (R 4.5.0)
-#>  tibble         3.3.1   2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels     1.4.1   2025-09-08 CRAN (R 4.5.0)
-#>  tune           2.1.0   2026-04-17 CRAN (R 4.5.2)
-#>  workflows      1.3.0   2025-08-27 CRAN (R 4.5.0)
-#>  yardstick      1.4.0   2026-04-07 CRAN (R 4.5.2)
+#>  package        version date (UTC)
+#>  aorsf          0.1.6   2025-12-11
+#>  broom          1.0.12  2026-01-27
+#>  censored       0.3.4   2026-04-04
+#>  dials          1.4.3   2026-04-11
+#>  dplyr          1.2.1   2026-04-03
+#>  ggplot2        4.0.3   2026-04-22
+#>  glmnet         4.1-10  2025-07-17
+#>  htmlwidgets    1.6.4   2023-12-06
+#>  infer          1.1.0   2025-12-18
+#>  leaflet        2.2.3   2025-09-04
+#>  modeldatatoo   0.3.0   2024-03-29
+#>  parsnip        1.5.0   2026-04-09
+#>  purrr          1.2.2   2026-04-10
+#>  recipes        1.3.2   2026-04-02
+#>  rlang          1.2.0   2026-04-06
+#>  rsample        1.3.2   2026-01-30
+#>  sessioninfo    1.2.3   2025-02-05
+#>  tibble         3.3.1   2026-01-11
+#>  tidymodels     1.4.1   2025-09-08
+#>  tune           2.1.0   2026-04-17
+#>  workflows      1.3.0   2025-08-27
+#>  yardstick      1.4.0   2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

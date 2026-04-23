@@ -183,7 +183,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (1 year, 10 months and 10 days) old. There may be a newer version available.
+#> Your H2O cluster version is (1 year, 10 months and 11 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -12256,36 +12256,36 @@ rand_forest_fit |>
 #>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package         version    date (UTC) source
-#>  agua            0.1.4      2024-06-04 CRAN (R 4.5.0)
-#>  baguette        1.1.0      2025-01-28 CRAN (R 4.5.0)
-#>  bonsai          0.4.0      2025-06-25 CRAN (R 4.5.0)
-#>  broom           1.0.12     2026-01-27 CRAN (R 4.5.2)
-#>  censored        0.3.4      2026-04-04 CRAN (R 4.5.2)
-#>  dials           1.4.3      2026-04-11 CRAN (R 4.5.2)
-#>  discrim         1.1.0      2025-12-02 CRAN (R 4.5.2)
-#>  dplyr           1.2.1      2026-04-03 CRAN (R 4.5.2)
-#>  ggplot2         4.0.2      2026-02-03 CRAN (R 4.5.2)
-#>  HSAUR3          1.0-15     2024-08-17 CRAN (R 4.5.0)
-#>  infer           1.1.0      2025-12-18 CRAN (R 4.5.2)
-#>  lme4            2.0-1      2026-03-05 CRAN (R 4.5.2)
-#>  multilevelmod   1.0.0      2022-06-17 CRAN (R 4.5.0)
-#>  parsnip         1.5.0      2026-04-09 CRAN (R 4.5.2)
-#>  plsmod          1.0.0      2022-09-06 CRAN (R 4.5.0)
-#>  poissonreg      1.0.2      2026-04-20 CRAN (R 4.5.2)
-#>  prodlim         2026.03.11 2026-03-11 CRAN (R 4.5.2)
-#>  purrr           1.2.2      2026-04-10 CRAN (R 4.5.2)
-#>  recipes         1.3.2      2026-04-02 CRAN (R 4.5.2)
-#>  rlang           1.2.0      2026-04-06 CRAN (R 4.5.2)
-#>  rsample         1.3.2      2026-01-30 CRAN (R 4.5.2)
-#>  rules           1.0.3      2026-01-27 CRAN (R 4.5.2)
-#>  sparklyr        1.9.4      2026-04-18 CRAN (R 4.5.2)
-#>  survival        3.8-6      2026-01-16 CRAN (R 4.5.2)
-#>  tibble          3.3.1      2026-01-11 CRAN (R 4.5.2)
-#>  tidymodels      1.4.1      2025-09-08 CRAN (R 4.5.0)
-#>  tune            2.1.0      2026-04-17 CRAN (R 4.5.2)
-#>  workflows       1.3.0      2025-08-27 CRAN (R 4.5.0)
-#>  yardstick       1.4.0      2026-04-07 CRAN (R 4.5.2)
+#>  package         version    date (UTC)
+#>  agua            0.1.4      2024-06-04
+#>  baguette        1.1.0      2025-01-28
+#>  bonsai          0.4.0      2025-06-25
+#>  broom           1.0.12     2026-01-27
+#>  censored        0.3.4      2026-04-04
+#>  dials           1.4.3      2026-04-11
+#>  discrim         1.1.0      2025-12-02
+#>  dplyr           1.2.1      2026-04-03
+#>  ggplot2         4.0.3      2026-04-22
+#>  HSAUR3          1.0-15     2024-08-17
+#>  infer           1.1.0      2025-12-18
+#>  lme4            2.0-1      2026-03-05
+#>  multilevelmod   1.0.0      2022-06-17
+#>  parsnip         1.5.0      2026-04-09
+#>  plsmod          1.0.0      2022-09-06
+#>  poissonreg      1.0.2      2026-04-20
+#>  prodlim         2026.03.11 2026-03-11
+#>  purrr           1.2.2      2026-04-10
+#>  recipes         1.3.2      2026-04-02
+#>  rlang           1.2.0      2026-04-06
+#>  rsample         1.3.2      2026-01-30
+#>  rules           1.0.3      2026-01-27
+#>  sparklyr        1.9.4      2026-04-18
+#>  survival        3.8-6      2026-01-16
+#>  tibble          3.3.1      2026-01-11
+#>  tidymodels      1.4.1      2025-09-08
+#>  tune            2.1.0      2026-04-17
+#>  workflows       1.3.0      2025-08-27
+#>  yardstick       1.4.0      2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
