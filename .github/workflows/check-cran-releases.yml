@@ -14,8 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       updated_packages: ${{ steps.check.outputs.updated_packages }}
+      pages: ${{ steps.check.outputs.pages }}
       has_updates: ${{ steps.check.outputs.has_updates }}
       version_changes: ${{ steps.check.outputs.version_changes }}
+      date: ${{ steps.check.outputs.date }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -42,6 +44,19 @@ jobs:
           }
 
           recorded <- jsonlite::read_json("_versions.json", simplifyVector = TRUE)
+          pkg_map  <- jsonlite::read_json("package_map.json")
+
+          resolve_pages <- function(pkgs) {
+            if (identical(pkgs, "--all")) {
+              pages <- sort(unique(unlist(pkg_map, use.names = FALSE)))
+            } else {
+              known <- intersect(pkgs, names(pkg_map))
+              pages <- sort(unique(unlist(pkg_map[known], use.names = FALSE)))
+            }
+            paste(pages, collapse = " ")
+          }
+
+          write_output(sprintf("date=%s\n", format(Sys.Date(), "%Y-%m-%d")))
 
           # Allow manual override via workflow_dispatch input
           manual <- trimws("${{ github.event.inputs.packages }}")
@@ -49,6 +64,7 @@ jobs:
             if (manual == "--all") {
               cat("Manual override: re-rendering all pages\n")
               write_output("updated_packages=--all\n")
+              write_output(sprintf("pages=%s\n", resolve_pages("--all")))
               write_output("has_updates=true\n")
               write_output("version_changes<<EOF\n- (all pages, manual trigger)\nEOF\n")
             } else {
@@ -57,6 +73,7 @@ jobs:
               cat("Manual override for packages:", paste(pkgs, collapse = ", "), "\n")
               changes <- paste0("- ", pkgs, ": ", recorded[pkgs], " (manual trigger)")
               write_output(sprintf("updated_packages=%s\n", paste(pkgs, collapse = " ")))
+              write_output(sprintf("pages=%s\n", resolve_pages(pkgs)))
               write_output("has_updates=true\n")
               write_output(sprintf("version_changes<<EOF\n%s\nEOF\n", paste(changes, collapse = "\n")))
             }
@@ -81,6 +98,7 @@ jobs:
             cat("Updated packages:", paste(updated, collapse = ", "), "\n")
             changes <- paste0("- ", updated, ": ", recorded[updated], " → ", cran_versions[updated])
             write_output(sprintf("updated_packages=%s\n", paste(updated, collapse = " ")))
+            write_output(sprintf("pages=%s\n", resolve_pages(updated)))
             write_output("has_updates=true\n")
             write_output(sprintf("version_changes<<EOF\n%s\nEOF\n", paste(changes, collapse = "\n")))
           }
@@ -88,81 +106,24 @@ jobs:
   rerender:
     needs: check
     if: needs.check.outputs.has_updates == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+    uses: ./.github/workflows/rerender-and-pr.yml
+    secrets: inherit
+    with:
+      pages: ${{ needs.check.outputs.pages }}
+      packages: ${{ needs.check.outputs.updated_packages }}
+      cache-key-suffix: cran
+      pr-title: "Re-render (${{ needs.check.outputs.updated_packages }}) ${{ needs.check.outputs.date }}"
+      pr-context: |
+        Automated re-render triggered by CRAN update.
 
-      - name: Set up render environment
-        uses: ./.github/actions/setup-render
-        with:
-          packages: ${{ needs.check.outputs.updated_packages }}
-          cache-key-suffix: cran
+        **Version changes:**
+        ${{ needs.check.outputs.version_changes }}
+      issue-title: "Automated re-render failed (${{ needs.check.outputs.updated_packages }}) ${{ needs.check.outputs.date }}"
+      issue-body: |
+        The automated re-render triggered by a CRAN update failed.
 
-      - name: Install packages for affected pages
-        id: install
-        run: Rscript install_for_packages.R ${{ needs.check.outputs.updated_packages }}
+        **Version changes:**
+        ${{ needs.check.outputs.version_changes }}
 
-      - name: Get current date
-        id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-
-      - name: Re-render affected pages
-        id: render
-        run: Rscript re-render-package.R ${{ needs.check.outputs.updated_packages }}
-
-      - name: Build render summary for PR
-        id: render_summary
-        if: success()
-        run: Rscript make_render_summary.R
-
-      - name: Open issue on render failure
-        if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh issue create \
-            --repo "${{ github.repository }}" \
-            --title "Automated re-render failed (${{ needs.check.outputs.updated_packages }}) ${{ steps.date.outputs.date }}" \
-            --label "automated re-render,bug" \
-            --body "The automated re-render triggered by a CRAN update failed.
-
-          **Version changes:**
-          ${{ needs.check.outputs.version_changes }}
-
-          **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-          One or more pages failed to render. The freeze cache for those pages has been cleared but not repopulated — a manual re-render may be needed. Check the workflow run above for the full error output."
-
-      - name: Update _versions.json
-        if: success()
-        shell: Rscript {0}
-        run: source("make_versions.R")
-
-      - name: Update package_map.json
-        if: success()
-        run: Rscript make_package_map.R
-
-      - name: Open pull request
-        if: success()
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "cran-rerender/${{ github.run_id }}"
-          commit-message: "re-render pages after CRAN update: ${{ needs.check.outputs.updated_packages }}"
-          title: "Re-render (${{ needs.check.outputs.updated_packages }}) ${{ steps.date.outputs.date }}"
-          body: |
-            Automated re-render triggered by CRAN update.
-
-            **Version changes:**
-            ${{ needs.check.outputs.version_changes }}
-
-            **Rendered pages:**
-            ${{ steps.render_summary.outputs.render_table }}
-
-            Please review the rendered output changes before merging.
-          labels: "automated re-render"
+        One or more pages failed to render. The freeze cache for those pages has been cleared but not repopulated — a manual re-render may be needed.
+      update-metadata: true

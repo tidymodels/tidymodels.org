@@ -8,70 +8,67 @@ on:
 name: Render specific pages
 
 jobs:
-  render:
+  prepare:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
+    outputs:
+      packages: ${{ steps.extract.outputs.packages }}
+      date: ${{ steps.date.outputs.date }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
-      - name: Set up render environment
-        uses: ./.github/actions/setup-render
-        with:
-          packages: ${{ github.event.inputs.pages }}
-          cache-key-suffix: pages
-
-      - name: Install packages for requested pages
-        id: install
-        run: Rscript install_for_pages.R ${{ github.event.inputs.pages }}
 
       - name: Get current date
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
-      - name: Re-render requested pages
-        id: render
-        run: Rscript re-render-pages.R ${{ github.event.inputs.pages }}
-
-      - name: Build render summary for PR
-        id: render_summary
-        if: success()
-        run: Rscript make_render_summary.R
-
-      - name: Open issue on render failure
-        if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh issue create \
-            --repo "${{ github.repository }}" \
-            --title "Manual re-render failed ${{ steps.date.outputs.date }}" \
-            --label "automated re-render,bug" \
-            --body "A manually triggered re-render failed.
-
-          **Pages:** ${{ github.event.inputs.pages }}
-
-          **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-      - name: Open pull request
-        if: success()
-        uses: peter-evans/create-pull-request@v6
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "render-pages/${{ github.run_id }}"
-          commit-message: "re-render pages: ${{ github.event.inputs.pages }}"
-          title: "Re-render pages ${{ steps.date.outputs.date }}"
-          body: |
-            Manually triggered re-render.
+          r-version: release
+          use-public-rspm: true
 
-            **Pages:**
-            ${{ github.event.inputs.pages }}
+      - name: Extract R packages from page YAML
+        id: extract
+        shell: Rscript {0}
+        run: |
+          pages <- strsplit(trimws("${{ github.event.inputs.pages }}"), "\\s+")[[1]]
+          pkgs <- character()
+          for (p in pages) {
+            lines <- tryCatch(readLines(p, warn = FALSE), error = function(e) {
+              message("Warning: could not read ", p, ": ", e$message)
+              character()
+            })
+            if (length(lines) == 0 || lines[1] != "---") next
+            end <- which(lines[-1] == "---")[1] + 1L
+            if (is.na(end)) next
+            front <- lines[seq(2, end - 1)]
+            in_rpkgs <- FALSE
+            for (line in front) {
+              if (grepl("^r-packages:", line)) {
+                in_rpkgs <- TRUE
+              } else if (in_rpkgs && grepl("^\\s+-\\s+\\S", line)) {
+                pkgs <- c(pkgs, trimws(sub("^\\s*-\\s*", "", line)))
+              } else if (in_rpkgs && nzchar(line) && !grepl("^\\s", line)) {
+                in_rpkgs <- FALSE
+              }
+            }
+          }
+          result <- paste(sort(unique(pkgs)), collapse = " ")
+          cat("Extracted packages:", result, "\n")
+          cat(sprintf("packages=%s\n", result), file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
 
-            **Rendered output:**
-            ${{ steps.render_summary.outputs.render_table }}
+  render:
+    needs: prepare
+    uses: ./.github/workflows/rerender-and-pr.yml
+    secrets: inherit
+    with:
+      pages: ${{ github.event.inputs.pages }}
+      packages: ${{ needs.prepare.outputs.packages }}
+      cache-key-suffix: pages
+      pr-title: "Re-render pages ${{ needs.prepare.outputs.date }}"
+      pr-context: "Manually triggered re-render."
+      issue-title: "Manual re-render failed ${{ needs.prepare.outputs.date }}"
+      issue-body: |
+        A manually triggered re-render failed.
 
-            Please review the rendered output changes before merging.
-          labels: "automated re-render"
+        **Pages:** ${{ github.event.inputs.pages }}

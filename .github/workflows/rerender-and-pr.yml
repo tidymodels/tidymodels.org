@@ -1,0 +1,110 @@
+on:
+  workflow_call:
+    inputs:
+      pages:
+        description: "Space-separated .qmd page paths to render"
+        required: true
+        type: string
+      packages:
+        description: "Space-separated R package names (used for environment setup and cache keys)"
+        required: true
+        type: string
+      pr-title:
+        required: true
+        type: string
+      pr-context:
+        description: "Optional markdown block prepended to the PR body (e.g. version changes)"
+        required: false
+        type: string
+        default: ""
+      issue-title:
+        required: true
+        type: string
+      issue-body:
+        required: true
+        type: string
+      update-metadata:
+        description: "Whether to update _versions.json and package_map.json after a successful render"
+        required: false
+        type: boolean
+        default: false
+      cache-key-suffix:
+        description: "Suffix for the setup-render cache key to avoid collisions between callers"
+        required: false
+        type: string
+        default: "rerender"
+
+name: Re-render pages and open PR
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up render environment
+        uses: ./.github/actions/setup-render
+        with:
+          packages: ${{ inputs.packages }}
+          cache-key-suffix: ${{ inputs.cache-key-suffix }}
+
+      - name: Install packages for requested pages
+        id: install
+        env:
+          PAGES: ${{ inputs.pages }}
+        run: Rscript install_for_pages.R $PAGES
+
+      - name: Re-render pages
+        id: render
+        env:
+          PAGES: ${{ inputs.pages }}
+        run: Rscript re-render-pages.R $PAGES
+
+      - name: Build render summary for PR
+        id: render_summary
+        if: success()
+        run: Rscript make_render_summary.R
+
+      - name: Update _versions.json
+        if: success() && inputs.update-metadata
+        shell: Rscript {0}
+        run: source("make_versions.R")
+
+      - name: Update package_map.json
+        if: success() && inputs.update-metadata
+        run: Rscript make_package_map.R
+
+      - name: Open issue on render failure
+        if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "${{ inputs.issue-title }}" \
+            --label "automated re-render,bug" \
+            --body "${{ inputs.issue-body }}
+
+          **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Open pull request
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "rerender/${{ github.run_id }}"
+          commit-message: "re-render: ${{ inputs.packages }}"
+          title: "${{ inputs.pr-title }}"
+          body: |
+            ${{ inputs.pr-context }}
+
+            **Rendered pages:**
+            ${{ steps.render_summary.outputs.render_table }}
+
+            Please review the rendered output changes before merging.
+          labels: "automated re-render"
