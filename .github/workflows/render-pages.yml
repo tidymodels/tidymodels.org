@@ -1,0 +1,77 @@
+on:
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: "Space-separated .qmd page paths to render (e.g. learn/models/parsnip-nnet/index.qmd)"
+        required: true
+
+name: Render specific pages
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up render environment
+        uses: ./.github/actions/setup-render
+        with:
+          packages: ${{ github.event.inputs.pages }}
+          cache-key-suffix: pages
+
+      - name: Install packages for requested pages
+        id: install
+        run: Rscript install_for_pages.R ${{ github.event.inputs.pages }}
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Re-render requested pages
+        id: render
+        run: Rscript re-render-pages.R ${{ github.event.inputs.pages }}
+
+      - name: Build render summary for PR
+        id: render_summary
+        if: success()
+        run: Rscript make_render_summary.R
+
+      - name: Open issue on render failure
+        if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "Manual re-render failed ${{ steps.date.outputs.date }}" \
+            --label "automated re-render,bug" \
+            --body "A manually triggered re-render failed.
+
+          **Pages:** ${{ github.event.inputs.pages }}
+
+          **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Open pull request
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "render-pages/${{ github.run_id }}"
+          commit-message: "re-render pages: ${{ github.event.inputs.pages }}"
+          title: "Re-render pages ${{ steps.date.outputs.date }}"
+          body: |
+            Manually triggered re-render.
+
+            **Pages:**
+            ${{ github.event.inputs.pages }}
+
+            **Rendered output:**
+            ${{ steps.render_summary.outputs.render_table }}
+
+            Please review the rendered output changes before merging.
+          labels: "automated re-render"

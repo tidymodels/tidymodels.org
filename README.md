@@ -134,6 +134,8 @@ We try to do a rerender after a release of a main package.
 
 ## Selective re-render
 
+### By package
+
 To re-render only the pages affected by one or more package updates, use `re-render-package.R`:
 
 ```bash
@@ -144,6 +146,17 @@ Rscript re-render-package.R --all           # every page on the site
 ```
 
 This reads `package_map.json` to find affected pages, clears their freeze cache, and re-renders them.
+
+### By page path
+
+To re-render specific pages directly, use `re-render-pages.R`:
+
+```bash
+Rscript re-render-pages.R learn/models/parsnip-nnet/index.qmd
+Rscript re-render-pages.R learn/models/parsnip-nnet/index.qmd start/resampling/index.qmd
+```
+
+This clears the freeze cache for each page and re-renders it.
 
 ### Supporting files
 
@@ -182,6 +195,17 @@ gh workflow run check-cran-releases.yml -f packages="ranger glmnet"
 # Re-render every page
 gh workflow run check-cran-releases.yml -f packages="--all"
 ```
+
+To re-render specific pages by path (rather than by package), use the `render-pages.yml` workflow:
+
+```bash
+gh workflow run render-pages.yml -f pages="learn/models/parsnip-nnet/index.qmd"
+
+# Multiple pages:
+gh workflow run render-pages.yml -f pages="learn/models/parsnip-nnet/index.qmd start/resampling/index.qmd"
+```
+
+This installs the packages declared in each page's `r-packages:` front matter, clears the freeze cache, renders the pages, and opens a pull request.
 
 ## Generating function lists
 
