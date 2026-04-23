@@ -67,9 +67,6 @@ small_session <- function(pkgs = NULL) {
     x[!ind]
   }
 
-  # Drop the source column before capturing output to avoid CRAN vs RSPM diffs
-  sinfo$packages$source <- NULL
-
   sinfo <- capture.output(sinfo)
 
   sinfo <- sinfo |>
@@ -82,6 +79,7 @@ small_session <- function(pkgs = NULL) {
     stringr::str_replace_all("\\*", " ") |>
     stringr::str_replace("lib source", "source") |>
     stringr::str_replace(" \\[\\d+\\] ", " ") |>
+    stringr::str_remove("\\s+(CRAN|RSPM|Bioconductor|Github|local)(\\s+\\(.*\\))?\\s*$") |>
     stringr::str_subset(
       "Packages attached to the search path",
       negate = TRUE
