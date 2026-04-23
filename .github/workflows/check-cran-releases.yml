@@ -102,18 +102,17 @@ jobs:
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: any::jsonlite any::yaml any::here any::cli
+          packages: any::jsonlite any::yaml any::here any::cli any::pak
 
       - name: Cache R library
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: r-lib-${{ runner.os }}-${{ hashFiles('installs.R') }}
+          key: r-lib-${{ runner.os }}-${{ needs.check.outputs.updated_packages }}
           restore-keys: r-lib-${{ runner.os }}-
 
-      - name: Install all site packages
-        shell: Rscript {0}
-        run: source("installs.R")
+      - name: Install packages for affected pages
+        run: Rscript install_for_packages.R ${{ needs.check.outputs.updated_packages }}
 
       - name: Get current date
         id: date

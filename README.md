@@ -158,11 +158,22 @@ This reads `package_map.json` to find affected pages, clears their freeze cache,
 
 The `check-cran-releases.yml` workflow runs on weekdays at 4am Pacific time. It compares current CRAN versions against `_versions.json` and, if any packages have updated, automatically:
 
-1. Re-renders the affected pages
-2. Updates `_versions.json`
-3. Opens a pull request for review
+1. Installs only the packages needed for the affected pages (via `install_for_packages.R`)
+2. Re-renders the affected pages
+3. Updates `_versions.json` and `package_map.json`
+4. Opens a pull request for review, including the old and new versions of each updated package
 
-You can also trigger it manually from the GitHub Actions UI, optionally specifying a space-separated list of packages to force a re-render regardless of version changes.
+If any page fails to render, an issue is opened instead of a PR, with a link to the failed workflow run. The `_versions.json` and `package_map.json` are not updated on failure, so the workflow will retry on the next run.
+
+You can also trigger it manually from the GitHub Actions UI, or with the `gh` CLI:
+
+```bash
+# Normal version check
+gh workflow run check-cran-releases.yml
+
+# Force re-render for specific packages
+gh workflow run check-cran-releases.yml -f packages="ranger glmnet"
+```
 
 ## Generating function lists
 
