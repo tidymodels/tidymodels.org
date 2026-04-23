@@ -106,6 +106,13 @@ jobs:
           r-version: release
           use-public-rspm: true
 
+      - name: Set up Java (for sparklyr)
+        if: contains(needs.check.outputs.updated_packages, 'sparklyr')
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -117,6 +124,21 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: r-lib-${{ runner.os }}-${{ needs.check.outputs.updated_packages }}
           restore-keys: r-lib-${{ runner.os }}-
+
+      - name: Cache torch installation
+        if: contains(needs.check.outputs.updated_packages, 'brulee')
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/torch
+          key: torch-${{ runner.os }}-${{ hashFiles('_versions.json') }}
+          restore-keys: torch-${{ runner.os }}-
+
+      - name: Cache Spark installation
+        if: contains(needs.check.outputs.updated_packages, 'sparklyr')
+        uses: actions/cache@v4
+        with:
+          path: ~/spark
+          key: spark-4.0-${{ runner.os }}
 
       - name: Install packages for affected pages
         run: Rscript install_for_packages.R ${{ needs.check.outputs.updated_packages }}
