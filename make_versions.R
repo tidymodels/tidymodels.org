@@ -17,11 +17,10 @@ if (!file.exists(map_path)) {
 
 pkgs <- names(jsonlite::read_json(map_path))
 
+installed <- installed.packages()[, "Version"]
+
 versions <- lapply(pkgs, function(pkg) {
-  tryCatch(
-    as.character(packageVersion(pkg)),
-    error = function(e) NA_character_
-  )
+  if (pkg %in% names(installed)) installed[[pkg]] else NA_character_
 })
 names(versions) <- pkgs
 
