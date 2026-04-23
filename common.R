@@ -67,6 +67,9 @@ small_session <- function(pkgs = NULL) {
     x[!ind]
   }
 
+  # Drop the source column before capturing output to avoid CRAN vs RSPM diffs
+  sinfo$packages$source <- NULL
+
   sinfo <- capture.output(sinfo)
 
   sinfo <- sinfo |>
@@ -83,7 +86,7 @@ small_session <- function(pkgs = NULL) {
       "Packages attached to the search path",
       negate = TRUE
     ) |>
-    remove_double_newlines() 
+    remove_double_newlines()
   
   cat(sinfo, sep = "\n")
 }
