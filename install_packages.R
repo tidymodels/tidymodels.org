@@ -25,7 +25,7 @@ install_packages <- function(needed) {
   # sparklyr requires a local Spark installation
   if ("sparklyr" %in% needed) {
     cli::cli_alert_info("Installing Spark for sparklyr...")
-    sparklyr::spark_install(version = "4.0")
+    sparklyr::spark_install()
   }
 
   cli::cli_alert_success("Done.")

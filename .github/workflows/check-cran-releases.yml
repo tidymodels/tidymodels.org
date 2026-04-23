@@ -104,6 +104,7 @@ jobs:
           cache-key-suffix: cran
 
       - name: Install packages for affected pages
+        id: install
         run: Rscript install_for_packages.R ${{ needs.check.outputs.updated_packages }}
 
       - name: Get current date
@@ -115,7 +116,7 @@ jobs:
         run: Rscript re-render-package.R ${{ needs.check.outputs.updated_packages }}
 
       - name: Open issue on render failure
-        if: failure() && steps.render.outcome == 'failure'
+        if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
