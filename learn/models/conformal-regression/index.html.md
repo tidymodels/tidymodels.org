@@ -169,10 +169,10 @@ test_split_res %>% slice(1:5)
 #>    .pred .pred_lower .pred_upper       x       y
 #>    <dbl>       <dbl>       <dbl>   <dbl>   <dbl>
 #> 1  1.30        0.933      1.67    0.621   1.17  
-#> 2 -0.298      -0.665      0.0687 -0.658  -0.302 
-#> 3  0.133      -0.234      0.500  -0.329   0.0970
+#> 2 -0.298      -0.665      0.0693 -0.658  -0.302 
+#> 3  0.133      -0.234      0.501  -0.329   0.0970
 #> 4  1.33        0.964      1.70    0.611   1.21  
-#> 5  1.24        0.874      1.61    0.0145  1.22
+#> 5  1.24        0.873      1.61    0.0145  1.22
 ```
 :::
 
@@ -198,7 +198,7 @@ coverage(test_split_res)
 #> # A tibble: 1 × 1
 #>   coverage
 #>      <dbl>
-#> 1     93.0
+#> 1     93.1
 ```
 :::
 
@@ -235,7 +235,7 @@ collect_metrics(nnet_rs)
 #> # A tibble: 2 × 6
 #>   .metric .estimator  mean     n std_err .config        
 #>   <chr>   <chr>      <dbl> <int>   <dbl> <chr>          
-#> 1 rmse    standard   0.199    10 0.00476 pre0_mod0_post0
+#> 1 rmse    standard   0.199    10 0.00477 pre0_mod0_post0
 #> 2 rsq     standard   0.951    10 0.00425 pre0_mod0_post0
 ```
 :::
@@ -266,11 +266,11 @@ test_cv_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>   .pred_lower  .pred .pred_upper       x       y
 #>         <dbl>  <dbl>       <dbl>   <dbl>   <dbl>
-#> 1       0.960  1.29       1.62    0.621   1.17  
-#> 2      -0.631 -0.304      0.0240 -0.658  -0.302 
-#> 3      -0.190  0.138      0.466  -0.329   0.0970
-#> 4       0.991  1.32       1.65    0.611   1.21  
-#> 5       0.911  1.24       1.57    0.0145  1.22
+#> 1       0.962  1.29       1.62    0.621   1.17  
+#> 2      -0.631 -0.305      0.0221 -0.658  -0.302 
+#> 3      -0.189  0.138      0.465  -0.329   0.0970
+#> 4       0.992  1.32       1.65    0.611   1.21  
+#> 5       0.913  1.24       1.57    0.0145  1.22
 ```
 :::
 
@@ -282,7 +282,7 @@ The results for this method are:
 :::
 :::
 
-At each point, the interval length is 0.66; the previous split conformal interval width was 0.73. This is due to the training set being larger than the calibration set. 
+At each point, the interval length is 0.65; the previous split conformal interval width was 0.73. This is due to the training set being larger than the calibration set. 
 
 Note that the coverage is a little better since it is near 90%:
 
@@ -293,7 +293,7 @@ coverage(test_cv_res)
 #> # A tibble: 1 × 1
 #>   coverage
 #>      <dbl>
-#> 1     89.6
+#> 1     89.5
 ```
 :::
 
@@ -400,9 +400,9 @@ test_quant_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>    .pred .pred_lower .pred_upper      x      y
 #>    <dbl>       <dbl>       <dbl>  <dbl>  <dbl>
-#> 1  0.988       0.574      1.14    0.776  1.10 
+#> 1  0.987       0.574      1.14    0.776  1.10 
 #> 2 -0.327      -0.546     -0.0904 -0.686 -0.180
-#> 3  0.263       0.161      0.459  -0.274  0.364
+#> 3  0.269       0.161      0.459  -0.274  0.364
 #> 4  1.01        0.666      1.23    0.759  1.21 
 #> 5  2.00        1.90       2.12    0.367  1.87
 ```
@@ -467,11 +467,11 @@ If you are interested and would like to learn more, try these resources:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -489,7 +489,7 @@ If you are interested and would like to learn more, try these resources:
 #>  rlang        1.2.0   2026-04-06
 #>  rsample      1.3.2   2026-01-30
 #>  tibble       3.3.1   2026-01-11
-#>  tidymodels   1.4.1   2025-09-08
+#>  tidymodels   1.5.0   2026-04-23
 #>  tune         2.1.0   2026-04-17
 #>  workflows    1.3.0   2025-08-27
 #>  yardstick    1.4.0   2026-04-07

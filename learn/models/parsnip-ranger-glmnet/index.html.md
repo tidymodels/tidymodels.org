@@ -100,8 +100,8 @@ rf_xy_fit
 #> Target node size:                 5 
 #> Variable importance mode:         none 
 #> Splitrule:                        variance 
-#> OOB prediction error (MSE):       0.008500188 
-#> R squared (OOB):                  0.7239116
+#> OOB prediction error (MSE):       0.008381522 
+#> R squared (OOB):                  0.7277659
 ```
 :::
 
@@ -124,9 +124,9 @@ test_results %>% slice(1:5)
 #>   Sale_Price .pred
 #>        <dbl> <dbl>
 #> 1       5.39  5.25
-#> 2       5.28  5.29
+#> 2       5.28  5.28
 #> 3       5.23  5.26
-#> 4       5.21  5.30
+#> 4       5.21  5.31
 #> 5       5.60  5.51
 
 # summarize performance
@@ -134,9 +134,9 @@ test_results %>% metrics(truth = Sale_Price, estimate = .pred)
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 rmse    standard      0.0945
-#> 2 rsq     standard      0.733 
-#> 3 mae     standard      0.0629
+#> 1 rmse    standard      0.0946
+#> 2 rsq     standard      0.732 
+#> 3 mae     standard      0.0626
 ```
 :::
 
@@ -171,8 +171,8 @@ rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
 #> Target node size:                 5 
 #> Variable importance mode:         none 
 #> Splitrule:                        variance 
-#> OOB prediction error (MSE):       0.008402569 
-#> R squared (OOB):                  0.7270823
+#> OOB prediction error (MSE):       0.008424673 
+#> R squared (OOB):                  0.7263644
 ```
 :::
 
@@ -197,8 +197,8 @@ rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
 #>                      Number of trees: 1000
 #> No. of variables tried at each split: 3
 #> 
-#>           Mean of squared residuals: 0.008472074
-#>                     % Var explained: 72.47
+#>           Mean of squared residuals: 0.008478626
+#>                     % Var explained: 72.45
 ```
 :::
 
@@ -241,8 +241,8 @@ rand_forest(mode = "regression", mtry = .preds(), trees = 1000) %>%
 #> Target node size:                 5 
 #> Variable importance mode:         none 
 #> Splitrule:                        variance 
-#> OOB prediction error (MSE):       0.00867085 
-#> R squared (OOB):                  0.7183685
+#> OOB prediction error (MSE):       0.008668059 
+#> R squared (OOB):                  0.7184592
 ```
 :::
 
@@ -371,15 +371,15 @@ test_results
 #>    Sale_Price `random forest` glmnet
 #>         <dbl>           <dbl>  <dbl>
 #>  1       5.39            5.25   5.16
-#>  2       5.28            5.29   5.27
+#>  2       5.28            5.28   5.27
 #>  3       5.23            5.26   5.24
-#>  4       5.21            5.30   5.24
+#>  4       5.21            5.31   5.24
 #>  5       5.60            5.51   5.24
 #>  6       5.32            5.29   5.26
-#>  7       5.17            5.14   5.18
-#>  8       5.06            5.13   5.17
+#>  7       5.17            5.15   5.18
+#>  8       5.06            5.14   5.17
 #>  9       4.98            5.01   5.18
-#> 10       5.11            5.14   5.19
+#> 10       5.11            5.13   5.19
 #> # ℹ 723 more rows
 
 test_results %>% metrics(truth = Sale_Price, estimate = glmnet) 
@@ -412,11 +412,11 @@ This final plot compares the performance of the random forest and regularized re
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
@@ -434,7 +434,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  rlang          1.2.0   2026-04-06
 #>  rsample        1.3.2   2026-01-30
 #>  tibble         3.3.1   2026-01-11
-#>  tidymodels     1.4.1   2025-09-08
+#>  tidymodels     1.5.0   2026-04-23
 #>  tune           2.1.0   2026-04-17
 #>  workflows      1.3.0   2025-08-27
 #>  yardstick      1.4.0   2026-04-07

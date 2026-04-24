@@ -347,16 +347,16 @@ print(bayes_fit, digits = 5)
 #>  predictors:   6
 #> ------
 #>                                Median   MAD_SD  
-#> (Intercept)                     0.03312  0.00950
-#> initial_volume                  0.00155  0.00039
-#> food_regimeLow                  0.01972  0.01304
-#> food_regimeHigh                 0.02226  0.01428
-#> initial_volume:food_regimeLow  -0.00126  0.00051
-#> initial_volume:food_regimeHigh  0.00050  0.00068
+#> (Intercept)                     0.03307  0.00968
+#> initial_volume                  0.00156  0.00041
+#> food_regimeLow                  0.02004  0.01347
+#> food_regimeHigh                 0.02167  0.01473
+#> initial_volume:food_regimeLow  -0.00127  0.00053
+#> initial_volume:food_regimeHigh  0.00052  0.00072
 #> 
 #> Auxiliary parameter(s):
 #>       Median  MAD_SD 
-#> sigma 0.02130 0.00178
+#> sigma 0.02132 0.00188
 #> 
 #> ------
 #> * For help interpreting the printed output see ?print.stanreg
@@ -375,12 +375,12 @@ tidy(bayes_fit, conf.int = TRUE)
 #> # A tibble: 6 × 5
 #>   term                            estimate std.error  conf.low conf.high
 #>   <chr>                              <dbl>     <dbl>     <dbl>     <dbl>
-#> 1 (Intercept)                     0.0331    0.00950   0.0172    0.0481  
-#> 2 initial_volume                  0.00155   0.000389  0.000898  0.00222 
-#> 3 food_regimeLow                  0.0197    0.0130   -0.00174   0.0418  
-#> 4 food_regimeHigh                 0.0223    0.0143   -0.00257   0.0457  
-#> 5 initial_volume:food_regimeLow  -0.00126   0.000509 -0.00212  -0.000420
-#> 6 initial_volume:food_regimeHigh  0.000504  0.000681 -0.000690  0.00169
+#> 1 (Intercept)                     0.0331    0.00968   0.0175    0.0495  
+#> 2 initial_volume                  0.00156   0.000413  0.000880  0.00222 
+#> 3 food_regimeLow                  0.0200    0.0135   -0.00271   0.0412  
+#> 4 food_regimeHigh                 0.0217    0.0147   -0.00391   0.0452  
+#> 5 initial_volume:food_regimeLow  -0.00127   0.000529 -0.00212  -0.000373
+#> 6 initial_volume:food_regimeHigh  0.000521  0.000717 -0.000665  0.00174
 ```
 :::
 
@@ -464,11 +464,11 @@ ggplot(urchins,
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -488,7 +488,7 @@ ggplot(urchins,
 #>  rsample       1.3.2   2026-01-30
 #>  rstanarm      2.32.2  2025-09-30
 #>  tibble        3.3.1   2026-01-11
-#>  tidymodels    1.4.1   2025-09-08
+#>  tidymodels    1.5.0   2026-04-23
 #>  tune          2.1.0   2026-04-17
 #>  workflows     1.3.0   2025-08-27
 #>  yardstick     1.4.0   2026-04-07

@@ -160,7 +160,7 @@ search_res <-
   )
 #> 
 #> ❯  Generating a set of 5 initial parameter results
-#> maximum number of iterations reached 0.02644788 -4.678954e-05maximum number of iterations reached 4.883479e-05 -1.416578e-11maximum number of iterations reached 0.0006198503 -7.83456e-07maximum number of iterations reached 0.02616499 -4.815298e-05maximum number of iterations reached 4.783692e-05 -3.60989e-12maximum number of iterations reached 0.000532615 -6.369734e-07maximum number of iterations reached 0.02563573 -3.389226e-05maximum number of iterations reached 4.597584e-05 -1.521105e-11maximum number of iterations reached 0.0009844145 -1.428014e-06
+#> maximum number of iterations reached 0.02644788 -4.678954e-05maximum number of iterations reached 4.883479e-05 -1.405354e-11maximum number of iterations reached 0.0006198503 -7.83456e-07maximum number of iterations reached 0.02616499 -4.815298e-05maximum number of iterations reached 4.783692e-05 -3.531009e-12maximum number of iterations reached 0.000532615 -6.369734e-07maximum number of iterations reached 0.02563573 -3.389226e-05maximum number of iterations reached 4.597584e-05 -1.51103e-11maximum number of iterations reached 0.0009844145 -1.428013e-06
 #> ✓ Initialization complete
 #> 
 #> i Estimating performance
@@ -374,12 +374,11 @@ search_res <-
 #> i Fold10: preprocessor 1/1, model 1/1 (predictions)
 #> ✓ Estimating performance
 #> i Estimating performance
-#> maximum number of iterations reached 0.01591622 -1.060394e-06
+#> maximum number of iterations reached 0.01591622 -1.060394e-06maximum number of iterations reached 0.01572637 -9.970078e-07
 #> i Fold01: preprocessor 1/1
 #> i Fold01: preprocessor 1/1 (prediction data)
 #> i Fold01: preprocessor 1/1, model 1/1
 #> i Fold01: preprocessor 1/1, model 1/1 (predictions)
-#> maximum number of iterations reached 0.01572637 -9.970078e-07
 #> i Fold02: preprocessor 1/1
 #> i Fold02: preprocessor 1/1 (prediction data)
 #> i Fold02: preprocessor 1/1, model 1/1
@@ -404,6 +403,7 @@ search_res <-
 #> i Fold07: preprocessor 1/1 (prediction data)
 #> i Fold07: preprocessor 1/1, model 1/1
 #> i Fold07: preprocessor 1/1, model 1/1 (predictions)
+#> maximum number of iterations reached 0.01522807 -7.939643e-07
 #> i Fold08: preprocessor 1/1
 #> i Fold08: preprocessor 1/1 (prediction data)
 #> i Fold08: preprocessor 1/1, model 1/1
@@ -412,7 +412,6 @@ search_res <-
 #> i Fold09: preprocessor 1/1 (prediction data)
 #> i Fold09: preprocessor 1/1, model 1/1
 #> i Fold09: preprocessor 1/1, model 1/1 (predictions)
-#> maximum number of iterations reached 0.01522807 -7.939646e-07
 #> i Fold10: preprocessor 1/1
 #> i Fold10: preprocessor 1/1 (prediction data)
 #> i Fold10: preprocessor 1/1, model 1/1
@@ -2335,7 +2334,7 @@ show_best(search_res, metric = "roc_auc")
 #> 2  4.93    0.0310        9 roc_auc binary     0.900    10 0.00933 iter48     48
 #> 3  5.09    0.0309        9 roc_auc binary     0.900    10 0.00934 iter30     30
 #> 4  5.28    0.0245        8 roc_auc binary     0.899    10 0.00982 iter45     45
-#> 5  4.80    0.0385        8 roc_auc binary     0.898    10 0.00996 iter43     43
+#> 5  4.80    0.0385        8 roc_auc binary     0.898    10 0.00995 iter43     43
 ```
 :::
 
@@ -2374,11 +2373,11 @@ autoplot(search_res, type = "parameters") +
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -2396,7 +2395,7 @@ autoplot(search_res, type = "parameters") +
 #>  rsample      1.3.2   2026-01-30
 #>  themis       1.0.3   2025-01-23
 #>  tibble       3.3.1   2026-01-11
-#>  tidymodels   1.4.1   2025-09-08
+#>  tidymodels   1.5.0   2026-04-23
 #>  tune         2.1.0   2026-04-17
 #>  workflows    1.3.0   2025-08-27
 #>  yardstick    1.4.0   2026-04-07
