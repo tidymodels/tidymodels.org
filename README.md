@@ -128,13 +128,14 @@ Some pages use engines that require large external downloads (Spark, torch). The
 
 ### Apache Spark
 
-Spark is pre-installed in CI via `.github/actions/setup-render/action.yml`. Two settings must be kept in sync:
+Spark is pre-installed in CI via `.github/actions/setup-render/action.yml`. When upgrading Spark, update all four of these in lockstep:
 
-- The cache key: `spark-3.5.8-java17-${{ runner.os }}`
-- The version in the cache path and download URL in the Install Spark step: `3.5.8`
-- The `version` argument in `spark_connect()` calls in `learn/models/parsnip-predictions/index.qmd`: `"3.5"`
+- Cache key in `setup-render/action.yml`: `spark-3.5.8-java17-${{ runner.os }}`
+- Cache path and download URL in the Install Spark step of `setup-render/action.yml`: `3.5.8`
+- Version check in `install_packages.R`: `grepl("^3\\.5", ...)`
+- `version` argument in all `spark_connect()` calls in `learn/models/parsnip-predictions/index.qmd`: `"3.5"`
 
-To upgrade Spark, update both of these to the new version. Changing the cache key forces a fresh download on the next run.
+Changing the cache key forces a fresh download on the next CI run. The `install_packages.R` check prevents a redundant download when Spark is already present (either from cache or a prior install).
 
 ## Rerender
 
