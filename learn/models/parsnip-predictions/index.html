@@ -298,7 +298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>the computational <strong>engine</strong> indicates how the model is fit, such as with a specific R package implementation or even methods outside of R like Keras or Stan.</p></li>
 </ul>
 <p>We’ll break the examples up by their mode. For each model, we’ll show different data sets used across the different engines.</p>
-<p>To use code in this article, you will need to install the following packages: agua, baguette, bonsai, censored, discrim, HSAUR3, lme4, multilevelmod, plsmod, poissonreg, prodlim, rules, sparklyr, survival, and tidymodels.</p>
+<p>To use code in this article, you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf.</p>
 <p>There are numerous other “engine” packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We’ll describe these next.</p>
 <section id="external-dependencies" class="level2"><h2 class="anchored" data-anchor-id="external-dependencies">External Dependencies</h2>
 <p>Some models available in parsnip use other computational frameworks for computations. There may be some additional downloads for engines using <strong>catboost</strong>, <strong>Spark</strong>, <strong>h2o</strong>, <strong>tensorflow</strong>/<strong>keras</strong>, and <strong>torch</strong>. You can expand the sections below to get basic installation instructions.</p>
@@ -335,13 +335,13 @@ catboost installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">catboost</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://catboost.ai/">catboost</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">train_pool_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"adult_train.1000"</span>, package <span class="op">=</span> <span class="st">"catboost"</span><span class="op">)</span></span>
 <span><span class="va">test_pool_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"adult_test.1000"</span>, package <span class="op">=</span> <span class="st">"catboost"</span><span class="op">)</span></span>
 <span><span class="va">cd_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"adult.cd"</span>, package <span class="op">=</span> <span class="st">"catboost"</span><span class="op">)</span></span>
-<span><span class="va">train_pool</span> <span class="op">&lt;-</span> <span class="fu">catboost.load_pool</span><span class="op">(</span><span class="va">train_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
-<span><span class="va">test_pool</span> <span class="op">&lt;-</span> <span class="fu">catboost.load_pool</span><span class="op">(</span><span class="va">test_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
+<span><span class="va">train_pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/catboost/man/catboost.load_pool.html">catboost.load_pool</a></span><span class="op">(</span><span class="va">train_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
+<span><span class="va">test_pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/catboost/man/catboost.load_pool.html">catboost.load_pool</a></span><span class="op">(</span><span class="va">test_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
 <span><span class="va">fit_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  iterations <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  loss_function <span class="op">=</span> <span class="st">'Logloss'</span>,</span>
@@ -371,7 +371,7 @@ Apache Spark installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="fu">spark_install</span><span class="op">(</span>version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html">spark_install</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -380,7 +380,7 @@ Apache Spark installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -398,7 +398,7 @@ h2o installation instructions
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>After installation is complete, you can start a local server via <code>h2o::h2o.init()</code>.</p>
+<p>After installation is complete, you can start a local server via <code><a href="https://rdrr.io/pkg/h2o/man/h2o.init.html">h2o::h2o.init()</a></code>.</p>
 <p>The tidymodels <a href="https://agua.tidymodels.org/">agua</a> package contains some helpers and will also need to be installed. You can use its function to start a server too:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -409,10 +409,10 @@ h2o installation instructions
 <span><span class="co">#&gt; The following object is masked from 'package:workflowsets':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     rank_results</span></span>
-<span><span class="fu">h2o_start</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://agua.tidymodels.org/reference/h2o-server.html">h2o_start</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: JAVA not found, H2O may take minutes trying to connect.</span></span>
 <span><span class="co">#&gt; Warning in h2o.clusterInfo(): </span></span>
-<span><span class="co">#&gt; Your H2O cluster version is (1 year, 10 months and 11 days) old. There may be a newer version available.</span></span>
+<span><span class="co">#&gt; Your H2O cluster version is (2 years, 4 months and 4 days) old. There may be a newer version available.</span></span>
 <span><span class="co">#&gt; Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -440,8 +440,8 @@ Tensorflow and Keras installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assumes you are going to use a virtual environment called </span></span>
-<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">virtualenv_list</span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu">use_virtualenv</span><span class="op">(</span><span class="va">pve</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/virtualenv-tools.html">virtualenv_list</a></span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/use_python.html">use_virtualenv</a></span><span class="op">(</span><span class="va">pve</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -516,7 +516,7 @@ Torch installation instructions
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">72</span><span class="op">)</span></span>
 <span><span class="va">cls_group_split</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">HSAUR3</span><span class="fu">::</span><span class="va">toenail</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">HSAUR3</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/HSAUR3/man/toenail.html">toenail</a></span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">group_initial_split</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">patientID</span><span class="op">)</span></span>
 <span><span class="va">cls_group_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">cls_group_split</span><span class="op">)</span></span>
 <span><span class="va">cls_group_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">cls_group_split</span><span class="op">)</span></span></code></pre></div>
@@ -529,16 +529,16 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span><span class="op">)</span></span>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Re-using existing Spark connection to local</span></span>
 <span></span>
 <span><span class="va">tbl_two_class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/two_class_dat.html">two_class_dat</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_bin</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_two_class</span>, training <span class="op">=</span> <span class="fl">0.994</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.994</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">tbl_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_two_class</span>, training <span class="op">=</span> <span class="fl">0.994</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.994</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tbl_sim_mtl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="va">mtl_data</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_mtl</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_sim_mtl</span>, training <span class="op">=</span> <span class="fl">0.967</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.967</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tbl_mtl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_sim_mtl</span>, training <span class="op">=</span> <span class="fl">0.967</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.967</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -753,8 +753,8 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
 <span><span class="co">#&gt;   term  value std.error  used</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 B      271.      4.35    11</span></span>
-<span><span class="co">#&gt; 2 A      237.      5.58    11</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 B      272.      4.35    11</span></span>
+<span><span class="co">#&gt; 2 A      237.      5.57    11</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1193,10 +1193,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1776455818270_9541 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777054161019_1 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               25378         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               25380         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         21         55    35.70000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1212,7 +1212,6 @@ Torch installation instructions
 <span><span class="co">#&gt; AUCPR:  1</span></span>
 <span><span class="co">#&gt; Gini:  1</span></span>
 <span><span class="co">#&gt; R^2:  0.9678452</span></span>
-<span><span class="co">#&gt; AIC:  NaN</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:</span></span>
 <span><span class="co">#&gt;        Class1 Class2    Error    Rate</span></span>
@@ -1308,10 +1307,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1776455818270_9593 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777054161019_53 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               25380         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               25377         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         21         55    35.70000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1327,7 +1326,6 @@ Torch installation instructions
 <span><span class="co">#&gt; AUCPR:  1</span></span>
 <span><span class="co">#&gt; Gini:  1</span></span>
 <span><span class="co">#&gt; R^2:  0.9678452</span></span>
-<span><span class="co">#&gt; AIC:  NaN</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:</span></span>
 <span><span class="co">#&gt;        Class1 Class2    Error    Rate</span></span>
@@ -1477,7 +1475,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__104432ec_2af5_4b30_81e7_8965e76d8ba5, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__cfd6e4ef_3b14_43e2_9c79_9cc4de688e6a, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1836,7 +1834,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__303da3ed_e553_4686_b153_c18585d026df, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__65687f6e_90b6_42c9_9d4b_734c15b34ccc, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -2859,9 +2857,9 @@ Torch installation instructions
 <span><span class="co">#&gt; Number of obs: 1433, groups:  patientID, 219</span></span>
 <span><span class="co">#&gt; Fixed Effects:</span></span>
 <span><span class="co">#&gt;                (Intercept)        treatmentterbinafine  </span></span>
-<span><span class="co">#&gt;                   -4.57420                    -0.51193  </span></span>
+<span><span class="co">#&gt;                  -4.574209                   -0.511919  </span></span>
 <span><span class="co">#&gt;                      visit  treatmentterbinafine:visit  </span></span>
-<span><span class="co">#&gt;                   -0.98725                    -0.00112</span></span></code></pre></div>
+<span><span class="co">#&gt;                  -0.987246                   -0.001121</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3055,7 +3053,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1776455818270_9645 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777054161019_105 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family  link                                regularization</span></span>
 <span><span class="co">#&gt; 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )</span></span>
@@ -3405,14 +3403,14 @@ Torch installation instructions
 <span><span class="co">#&gt;  observations: 1433</span></span>
 <span><span class="co">#&gt; ------</span></span>
 <span><span class="co">#&gt;                            Median MAD_SD</span></span>
-<span><span class="co">#&gt; (Intercept)                -0.628  0.585</span></span>
-<span><span class="co">#&gt; treatmentterbinafine       -0.686  0.821</span></span>
-<span><span class="co">#&gt; visit                      -0.830  0.105</span></span>
-<span><span class="co">#&gt; treatmentterbinafine:visit -0.023  0.143</span></span>
+<span><span class="co">#&gt; (Intercept)                -0.602  0.568</span></span>
+<span><span class="co">#&gt; treatmentterbinafine       -0.705  0.850</span></span>
+<span><span class="co">#&gt; visit                      -0.829  0.104</span></span>
+<span><span class="co">#&gt; treatmentterbinafine:visit -0.020  0.145</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Error terms:</span></span>
 <span><span class="co">#&gt;  Groups    Name        Std.Dev.</span></span>
-<span><span class="co">#&gt;  patientID (Intercept) 4.376   </span></span>
+<span><span class="co">#&gt;  patientID (Intercept) 4.362   </span></span>
 <span><span class="co">#&gt; Num. levels: patientID 219 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ------</span></span>
@@ -3444,31 +3442,31 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 475 × 2</span></span>
 <span><span class="co">#&gt;    `.pred_none or mild` `.pred_moderate or severe`</span></span>
 <span><span class="co">#&gt;                   &lt;dbl&gt;                      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1                0.671                     0.329 </span></span>
-<span><span class="co">#&gt;  2                0.730                     0.270 </span></span>
-<span><span class="co">#&gt;  3                0.796                     0.204 </span></span>
-<span><span class="co">#&gt;  4                0.847                     0.153 </span></span>
-<span><span class="co">#&gt;  5                0.882                     0.118 </span></span>
-<span><span class="co">#&gt;  6                0.909                     0.0908</span></span>
-<span><span class="co">#&gt;  7                0.934                     0.0655</span></span>
-<span><span class="co">#&gt;  8                0.613                     0.387 </span></span>
-<span><span class="co">#&gt;  9                0.681                     0.319 </span></span>
-<span><span class="co">#&gt; 10                0.744                     0.256 </span></span>
+<span><span class="co">#&gt;  1                0.686                     0.314 </span></span>
+<span><span class="co">#&gt;  2                0.749                     0.251 </span></span>
+<span><span class="co">#&gt;  3                0.800                     0.200 </span></span>
+<span><span class="co">#&gt;  4                0.848                     0.152 </span></span>
+<span><span class="co">#&gt;  5                0.889                     0.111 </span></span>
+<span><span class="co">#&gt;  6                0.910                     0.0898</span></span>
+<span><span class="co">#&gt;  7                0.938                     0.0625</span></span>
+<span><span class="co">#&gt;  8                0.622                     0.378 </span></span>
+<span><span class="co">#&gt;  9                0.694                     0.306 </span></span>
+<span><span class="co">#&gt; 10                0.750                     0.250 </span></span>
 <span><span class="co">#&gt; # ℹ 465 more rows</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logistic_reg_fit</span>, type <span class="op">=</span> <span class="st">"conf_int"</span>, new_data <span class="op">=</span> <span class="va">cls_group_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 475 × 4</span></span>
 <span><span class="co">#&gt;    `.pred_lower_none or mild` `.pred_upper_none or mild` .pred_lower_moderate …¹</span></span>
 <span><span class="co">#&gt;                         &lt;dbl&gt;                      &lt;dbl&gt;                   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1                   0.00184                       1.000             0.0000217  </span></span>
-<span><span class="co">#&gt;  2                   0.00417                       1.000             0.00000942 </span></span>
-<span><span class="co">#&gt;  3                   0.00971                       1.000             0.00000412 </span></span>
-<span><span class="co">#&gt;  4                   0.0214                        1.000             0.00000169 </span></span>
-<span><span class="co">#&gt;  5                   0.0465                        1.000             0.000000706</span></span>
-<span><span class="co">#&gt;  6                   0.101                         1.000             0.000000300</span></span>
-<span><span class="co">#&gt;  7                   0.203                         1.000             0.000000120</span></span>
-<span><span class="co">#&gt;  8                   0.000923                      1.000             0.0000440  </span></span>
-<span><span class="co">#&gt;  9                   0.00196                       1.000             0.0000175  </span></span>
-<span><span class="co">#&gt; 10                   0.00447                       1.000             0.00000724 </span></span>
+<span><span class="co">#&gt;  1                   0.00143                       1.000             0.0000238  </span></span>
+<span><span class="co">#&gt;  2                   0.00346                       1.000             0.0000103  </span></span>
+<span><span class="co">#&gt;  3                   0.00812                       1.000             0.00000400 </span></span>
+<span><span class="co">#&gt;  4                   0.0188                        1.000             0.00000177 </span></span>
+<span><span class="co">#&gt;  5                   0.0427                        1.000             0.000000782</span></span>
+<span><span class="co">#&gt;  6                   0.0970                        1.000             0.000000330</span></span>
+<span><span class="co">#&gt;  7                   0.196                         1.000             0.000000137</span></span>
+<span><span class="co">#&gt;  8                   0.000720                      1.000             0.0000465  </span></span>
+<span><span class="co">#&gt;  9                   0.00176                       1.000             0.0000197  </span></span>
+<span><span class="co">#&gt; 10                   0.00422                       1.000             0.00000865 </span></span>
 <span><span class="co">#&gt; # ℹ 465 more rows</span></span>
 <span><span class="co">#&gt; # ℹ abbreviated name: ¹​`.pred_lower_moderate or severe`</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: `.pred_upper_moderate or severe` &lt;dbl&gt;</span></span>
@@ -3791,7 +3789,7 @@ Torch installation instructions
 <span><span class="co">#&gt; dropout proportion: 0 </span></span>
 <span><span class="co">#&gt; batch size: 707 </span></span>
 <span><span class="co">#&gt; learn rate: 0.01 </span></span>
-<span><span class="co">#&gt; validation loss after 17 epochs: 0.406</span></span></code></pre></div>
+<span><span class="co">#&gt; validation loss after 16 epochs: 0.406</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3813,11 +3811,11 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
 <span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1        0.392       0.608 </span></span>
-<span><span class="co">#&gt; 2        0.835       0.165 </span></span>
-<span><span class="co">#&gt; 3        0.440       0.560 </span></span>
-<span><span class="co">#&gt; 4        0.938       0.0620</span></span>
-<span><span class="co">#&gt; 5        0.938       0.0620</span></span>
+<span><span class="co">#&gt; 1        0.391       0.609 </span></span>
+<span><span class="co">#&gt; 2        0.834       0.166 </span></span>
+<span><span class="co">#&gt; 3        0.439       0.561 </span></span>
+<span><span class="co">#&gt; 4        0.936       0.0640</span></span>
+<span><span class="co">#&gt; 5        0.936       0.0640</span></span>
 <span><span class="co">#&gt; 6        0.848       0.152</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -3858,7 +3856,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1776455818270_9647 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1777054161019_107 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -3867,7 +3865,7 @@ Torch installation instructions
 <span><span class="co">#&gt;   mean_weight weight_rms mean_bias bias_rms</span></span>
 <span><span class="co">#&gt; 1          NA         NA        NA       NA</span></span>
 <span><span class="co">#&gt; 2   -0.005244   0.104666  0.478428 0.043014</span></span>
-<span><span class="co">#&gt; 3   -0.005700   0.379508  0.000000 0.017883</span></span>
+<span><span class="co">#&gt; 3   -0.005700   0.379508 -0.000000 0.017883</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialMetrics: deeplearning</span></span>
@@ -4271,7 +4269,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OMultinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1776455818270_9659 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777054161019_119 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;        family        link                                regularization</span></span>
 <span><span class="co">#&gt; 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )</span></span>
@@ -4499,7 +4497,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: naivebayes</span></span>
-<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1776455818270_9660 </span></span>
+<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1777054161019_120 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_response_levels min_apriori_probability max_apriori_probability</span></span>
 <span><span class="co">#&gt; 1                         2                 0.44713                 0.55287</span></span>
@@ -5056,7 +5054,7 @@ Torch installation instructions
 <span><span class="co">#&gt; Target node size:                 10 </span></span>
 <span><span class="co">#&gt; Variable importance mode:         none </span></span>
 <span><span class="co">#&gt; Splitrule:                        gini </span></span>
-<span><span class="co">#&gt; OOB prediction error (Brier s.):  0.1477679</span></span></code></pre></div>
+<span><span class="co">#&gt; OOB prediction error (Brier s.):  0.1489191</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -5078,12 +5076,12 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
 <span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1        0.220       0.780 </span></span>
-<span><span class="co">#&gt; 2        0.837       0.163 </span></span>
-<span><span class="co">#&gt; 3        0.220       0.780 </span></span>
-<span><span class="co">#&gt; 4        0.951       0.0485</span></span>
-<span><span class="co">#&gt; 5        0.785       0.215 </span></span>
-<span><span class="co">#&gt; 6        0.913       0.0868</span></span>
+<span><span class="co">#&gt; 1        0.225       0.775 </span></span>
+<span><span class="co">#&gt; 2        0.865       0.135 </span></span>
+<span><span class="co">#&gt; 3        0.227       0.773 </span></span>
+<span><span class="co">#&gt; 4        0.961       0.0390</span></span>
+<span><span class="co">#&gt; 5        0.761       0.239 </span></span>
+<span><span class="co">#&gt; 6        0.905       0.0947</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rand_forest_fit</span>, type <span class="op">=</span> <span class="st">"conf_int"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in rInfJack(x, inbag.counts): Sample size &lt;=20, no calibration</span></span>
 <span><span class="co">#&gt; performed.</span></span>
@@ -5093,12 +5091,12 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
 <span><span class="co">#&gt;   .pred_lower_Class1 .pred_upper_Class1 .pred_lower_Class2 .pred_upper_Class2</span></span>
 <span><span class="co">#&gt;                &lt;dbl&gt;              &lt;dbl&gt;              &lt;dbl&gt;              &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1            0                    0.477              0.523              1    </span></span>
-<span><span class="co">#&gt; 2            0.604                1                  0                  0.396</span></span>
-<span><span class="co">#&gt; 3            0.01000              0.431              0.569              0.990</span></span>
-<span><span class="co">#&gt; 4            0.846                1                  0                  0.154</span></span>
-<span><span class="co">#&gt; 5            0.469                1                  0                  0.531</span></span>
-<span><span class="co">#&gt; 6          NaN                  NaN                NaN                NaN</span></span></code></pre></div>
+<span><span class="co">#&gt; 1            0.00816              0.443             0.557               0.992</span></span>
+<span><span class="co">#&gt; 2            0.749                0.982             0.0184              0.251</span></span>
+<span><span class="co">#&gt; 3            0                    0.466             0.534               1    </span></span>
+<span><span class="co">#&gt; 4            0.879                1                 0                   0.121</span></span>
+<span><span class="co">#&gt; 5            0.325                1                 0                   0.675</span></span>
+<span><span class="co">#&gt; 6          NaN                  NaN               NaN                 NaN</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -5142,7 +5140,7 @@ Torch installation instructions
 <span><span class="co">#&gt;                  N trees: 500</span></span>
 <span><span class="co">#&gt;       N predictors total: 2</span></span>
 <span><span class="co">#&gt;    N predictors per node: 2</span></span>
-<span><span class="co">#&gt;  Average leaves per tree: 24.076</span></span>
+<span><span class="co">#&gt;  Average leaves per tree: 24.376</span></span>
 <span><span class="co">#&gt; Min observations in leaf: 5</span></span>
 <span><span class="co">#&gt;           OOB stat value: 0.87</span></span>
 <span><span class="co">#&gt;            OOB stat type: AUC-ROC</span></span>
@@ -5170,12 +5168,12 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
 <span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1        0.188       0.812 </span></span>
-<span><span class="co">#&gt; 2        0.870       0.130 </span></span>
-<span><span class="co">#&gt; 3        0.346       0.654 </span></span>
-<span><span class="co">#&gt; 4        0.979       0.0206</span></span>
-<span><span class="co">#&gt; 5        0.940       0.0599</span></span>
-<span><span class="co">#&gt; 6        0.899       0.101</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        0.172       0.828 </span></span>
+<span><span class="co">#&gt; 2        0.884       0.116 </span></span>
+<span><span class="co">#&gt; 3        0.344       0.656 </span></span>
+<span><span class="co">#&gt; 4        0.974       0.0259</span></span>
+<span><span class="co">#&gt; 5        0.937       0.0629</span></span>
+<span><span class="co">#&gt; 6        0.900       0.100</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -5285,10 +5283,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1776455818270_9662 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1777054161019_122 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               92545        13</span></span>
+<span><span class="co">#&gt; 1              50                       50               92546        13</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        20   16.82000        119        170   142.84000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -5305,7 +5303,6 @@ Torch installation instructions
 <span><span class="co">#&gt; AUCPR:  0.8198335</span></span>
 <span><span class="co">#&gt; Gini:  0.7090013</span></span>
 <span><span class="co">#&gt; R^2:  0.3646919</span></span>
-<span><span class="co">#&gt; AIC:  NaN</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:</span></span>
 <span><span class="co">#&gt;        Class1 Class2    Error      Rate</span></span>
@@ -5528,7 +5525,7 @@ Torch installation instructions
 <span><span class="co">#&gt; 3        0.284       0.716 </span></span>
 <span><span class="co">#&gt; 4        0.963       0.0365</span></span>
 <span><span class="co">#&gt; 5        0.892       0.108 </span></span>
-<span><span class="co">#&gt; 6        0.922       0.0784</span></span></code></pre></div>
+<span><span class="co">#&gt; 6        0.922       0.0785</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -5623,7 +5620,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__635d0e03_430e_49f0_84f8_853ddf01616d, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__867f6474_dce8_4bd7_ae2b_96c2e6d0213c, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -5771,7 +5768,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1776455818270_9713 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1777054161019_173 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family  link            regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 binomial logit Lasso (lambda = 0.03081 )                       2328</span></span>
@@ -6210,12 +6207,12 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb260"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span><span class="op">)</span></span>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Re-using existing Spark connection to local</span></span>
 <span></span>
 <span><span class="va">tbl_concrete</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/concrete.html">concrete</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_reg</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_concrete</span>, training <span class="op">=</span> <span class="fl">0.95</span>, test <span class="op">=</span> <span class="fl">0.05</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tbl_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_concrete</span>, training <span class="op">=</span> <span class="fl">0.95</span>, test <span class="op">=</span> <span class="fl">0.05</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6333,8 +6330,8 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
 <span><span class="co">#&gt;   term   value std.error  used</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 age     55.9      2.96    11</span></span>
-<span><span class="co">#&gt; 2 cement  44.1      2.96    11</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 age     55.9      2.98    11</span></span>
+<span><span class="co">#&gt; 2 cement  44.1      2.98    11</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6346,14 +6343,14 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  19.9</span></span>
-<span><span class="co">#&gt; 2  39.1</span></span>
-<span><span class="co">#&gt; 3  28.3</span></span>
-<span><span class="co">#&gt; 4  68.8</span></span>
-<span><span class="co">#&gt; 5  44.1</span></span>
-<span><span class="co">#&gt; 6  36.3</span></span>
-<span><span class="co">#&gt; 7  40.8</span></span>
-<span><span class="co">#&gt; 8  37.0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  20.0</span></span>
+<span><span class="co">#&gt; 2  39.4</span></span>
+<span><span class="co">#&gt; 3  28.4</span></span>
+<span><span class="co">#&gt; 4  68.6</span></span>
+<span><span class="co">#&gt; 5  44.3</span></span>
+<span><span class="co">#&gt; 6  36.4</span></span>
+<span><span class="co">#&gt; 7  40.7</span></span>
+<span><span class="co">#&gt; 8  38.5</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6678,10 +6675,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1776455818270_9869 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777054161019_329 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20469         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20473         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -6752,10 +6749,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1776455818270_9870 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777054161019_330 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20473         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20472         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -6872,7 +6869,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__83e93ddd_99b5_4724_a82a_9f76fc1d15f5, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__fb236124_7572_4375_a8db_4caa2ca5ff8d, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7135,7 +7132,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__b925ac64_e25c_4984_9490_bc757d46ac62, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__d13fe05c_5f92_4691_b0cf_1f86a858a06b, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7820,7 +7817,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1776455818270_9871 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777054161019_331 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family     link                               regularization</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )</span></span>
@@ -8185,9 +8182,9 @@ Torch installation instructions
 <span><span class="co">#&gt;  observations: 132</span></span>
 <span><span class="co">#&gt; ------</span></span>
 <span><span class="co">#&gt;             Median MAD_SD</span></span>
-<span><span class="co">#&gt; (Intercept) 245.6    6.8 </span></span>
-<span><span class="co">#&gt; Diet2       185.7   11.5 </span></span>
-<span><span class="co">#&gt; Diet3       259.2   11.5 </span></span>
+<span><span class="co">#&gt; (Intercept) 245.6    6.7 </span></span>
+<span><span class="co">#&gt; Diet2       185.7   11.2 </span></span>
+<span><span class="co">#&gt; Diet3       259.3   11.1 </span></span>
 <span><span class="co">#&gt; Time          0.5    0.0 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Auxiliary parameter(s):</span></span>
@@ -8196,7 +8193,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Error terms:</span></span>
 <span><span class="co">#&gt;  Groups   Name        Std.Dev.</span></span>
-<span><span class="co">#&gt;  Rat      (Intercept) 17.2    </span></span>
+<span><span class="co">#&gt;  Rat      (Intercept) 16.8    </span></span>
 <span><span class="co">#&gt;  Residual              8.2    </span></span>
 <span><span class="co">#&gt; Num. levels: Rat 12 </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -8229,16 +8226,16 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 44 × 2</span></span>
 <span><span class="co">#&gt;    .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;          &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1        205.        285.</span></span>
-<span><span class="co">#&gt;  2        211.        289.</span></span>
-<span><span class="co">#&gt;  3        214.        292.</span></span>
-<span><span class="co">#&gt;  4        218.        295.</span></span>
-<span><span class="co">#&gt;  5        221.        300.</span></span>
-<span><span class="co">#&gt;  6        225.        303.</span></span>
-<span><span class="co">#&gt;  7        230.        307.</span></span>
+<span><span class="co">#&gt;  1        206.        286.</span></span>
+<span><span class="co">#&gt;  2        209.        290.</span></span>
+<span><span class="co">#&gt;  3        214.        293.</span></span>
+<span><span class="co">#&gt;  4        218.        297.</span></span>
+<span><span class="co">#&gt;  5        221.        302.</span></span>
+<span><span class="co">#&gt;  6        226.        305.</span></span>
+<span><span class="co">#&gt;  7        229.        309.</span></span>
 <span><span class="co">#&gt;  8        230.        309.</span></span>
-<span><span class="co">#&gt;  9        233.        312.</span></span>
-<span><span class="co">#&gt; 10        237.        314.</span></span>
+<span><span class="co">#&gt;  9        234.        313.</span></span>
+<span><span class="co">#&gt; 10        237.        318.</span></span>
 <span><span class="co">#&gt; # ℹ 34 more rows</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -8406,14 +8403,14 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  14.8</span></span>
-<span><span class="co">#&gt; 2  38.5</span></span>
-<span><span class="co">#&gt; 3  32.0</span></span>
-<span><span class="co">#&gt; 4  63.6</span></span>
-<span><span class="co">#&gt; 5  43.5</span></span>
-<span><span class="co">#&gt; 6  42.7</span></span>
-<span><span class="co">#&gt; 7  42.3</span></span>
-<span><span class="co">#&gt; 8  33.1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  14.9</span></span>
+<span><span class="co">#&gt; 2  39.1</span></span>
+<span><span class="co">#&gt; 3  32.2</span></span>
+<span><span class="co">#&gt; 4  66.0</span></span>
+<span><span class="co">#&gt; 5  44.6</span></span>
+<span><span class="co">#&gt; 6  42.3</span></span>
+<span><span class="co">#&gt; 7  42.0</span></span>
+<span><span class="co">#&gt; 8  34.3</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8567,7 +8564,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1776455818270_9872 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1777054161019_332 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -8686,8 +8683,8 @@ Torch installation instructions
 <span><span class="co">#&gt; kknn::train.kknn(formula = strength ~ ., data = data, ks = min_rows(5,     data, 5))</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Type of response variable: continuous</span></span>
-<span><span class="co">#&gt; minimal mean absolute error: 8.257735</span></span>
-<span><span class="co">#&gt; Minimal mean squared error: 115.8737</span></span>
+<span><span class="co">#&gt; minimal mean absolute error: 8.270248</span></span>
+<span><span class="co">#&gt; Minimal mean squared error: 115.9175</span></span>
 <span><span class="co">#&gt; Best kernel: optimal</span></span>
 <span><span class="co">#&gt; Best k: 5</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -9219,7 +9216,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1776455818270_9873 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777054161019_333 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;    family link                               regularization</span></span>
 <span><span class="co">#&gt; 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )</span></span>
@@ -9498,31 +9495,31 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 44 × 1</span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1  251.</span></span>
-<span><span class="co">#&gt;  2  254.</span></span>
-<span><span class="co">#&gt;  3  256.</span></span>
-<span><span class="co">#&gt;  4  259.</span></span>
-<span><span class="co">#&gt;  5  261.</span></span>
-<span><span class="co">#&gt;  6  264.</span></span>
-<span><span class="co">#&gt;  7  267.</span></span>
+<span><span class="co">#&gt;  1  253.</span></span>
+<span><span class="co">#&gt;  2  255.</span></span>
+<span><span class="co">#&gt;  3  257.</span></span>
+<span><span class="co">#&gt;  4  260.</span></span>
+<span><span class="co">#&gt;  5  262.</span></span>
+<span><span class="co">#&gt;  6  265.</span></span>
+<span><span class="co">#&gt;  7  268.</span></span>
 <span><span class="co">#&gt;  8  268.</span></span>
-<span><span class="co">#&gt;  9  270.</span></span>
-<span><span class="co">#&gt; 10  272.</span></span>
+<span><span class="co">#&gt;  9  271.</span></span>
+<span><span class="co">#&gt; 10  273.</span></span>
 <span><span class="co">#&gt; # ℹ 34 more rows</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">poisson_reg_fit</span>, type <span class="op">=</span> <span class="st">"pred_int"</span>, new_data <span class="op">=</span> <span class="va">reg_group_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 44 × 2</span></span>
 <span><span class="co">#&gt;    .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;          &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1        210.        294 </span></span>
-<span><span class="co">#&gt;  2        213         298 </span></span>
-<span><span class="co">#&gt;  3        214         301 </span></span>
-<span><span class="co">#&gt;  4        217         304 </span></span>
-<span><span class="co">#&gt;  5        220         306 </span></span>
-<span><span class="co">#&gt;  6        222         309 </span></span>
-<span><span class="co">#&gt;  7        223         313.</span></span>
-<span><span class="co">#&gt;  8        225         315 </span></span>
-<span><span class="co">#&gt;  9        226         317.</span></span>
-<span><span class="co">#&gt; 10        229         320 </span></span>
+<span><span class="co">#&gt;  1        210         298 </span></span>
+<span><span class="co">#&gt;  2        213         299 </span></span>
+<span><span class="co">#&gt;  3        217.        303.</span></span>
+<span><span class="co">#&gt;  4        217         306 </span></span>
+<span><span class="co">#&gt;  5        221         309 </span></span>
+<span><span class="co">#&gt;  6        222         313 </span></span>
+<span><span class="co">#&gt;  7        225         314 </span></span>
+<span><span class="co">#&gt;  8        227         316 </span></span>
+<span><span class="co">#&gt;  9        225         319 </span></span>
+<span><span class="co">#&gt; 10        229         323 </span></span>
 <span><span class="co">#&gt; # ℹ 34 more rows</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -9646,8 +9643,8 @@ Torch installation instructions
 <span><span class="co">#&gt; Target node size:                 5 </span></span>
 <span><span class="co">#&gt; Variable importance mode:         none </span></span>
 <span><span class="co">#&gt; Splitrule:                        variance </span></span>
-<span><span class="co">#&gt; OOB prediction error (MSE):       92.94531 </span></span>
-<span><span class="co">#&gt; R squared (OOB):                  0.6816071</span></span></code></pre></div>
+<span><span class="co">#&gt; OOB prediction error (MSE):       92.87944 </span></span>
+<span><span class="co">#&gt; R squared (OOB):                  0.6818328</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -9659,28 +9656,28 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  23.6</span></span>
+<span><span class="co">#&gt; 1  23.5</span></span>
 <span><span class="co">#&gt; 2  36.9</span></span>
-<span><span class="co">#&gt; 3  28.4</span></span>
-<span><span class="co">#&gt; 4  56.5</span></span>
-<span><span class="co">#&gt; 5  38.6</span></span>
-<span><span class="co">#&gt; 6  36.5</span></span>
-<span><span class="co">#&gt; 7  38.7</span></span>
-<span><span class="co">#&gt; 8  34.4</span></span>
+<span><span class="co">#&gt; 3  28.6</span></span>
+<span><span class="co">#&gt; 4  56.2</span></span>
+<span><span class="co">#&gt; 5  38.7</span></span>
+<span><span class="co">#&gt; 6  35.1</span></span>
+<span><span class="co">#&gt; 7  38.5</span></span>
+<span><span class="co">#&gt; 8  34.3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rand_forest_fit</span>, type <span class="op">=</span> <span class="st">"conf_int"</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in rInfJack(pred = result$predictions, inbag = inbag.counts, used.trees</span></span>
 <span><span class="co">#&gt; = 1:num.trees): Sample size &lt;=20, no calibration performed.</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 2</span></span>
 <span><span class="co">#&gt;   .pred_lower .pred_upper</span></span>
 <span><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1        18.1        29.1</span></span>
-<span><span class="co">#&gt; 2        32.6        41.1</span></span>
-<span><span class="co">#&gt; 3        24.0        32.9</span></span>
-<span><span class="co">#&gt; 4        45.4        67.7</span></span>
-<span><span class="co">#&gt; 5        33.0        44.3</span></span>
-<span><span class="co">#&gt; 6        32.0        41.0</span></span>
-<span><span class="co">#&gt; 7        35.1        42.3</span></span>
-<span><span class="co">#&gt; 8        28.4        40.3</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        18.7        28.3</span></span>
+<span><span class="co">#&gt; 2        30.9        43.0</span></span>
+<span><span class="co">#&gt; 3        23.6        33.7</span></span>
+<span><span class="co">#&gt; 4        44.1        68.2</span></span>
+<span><span class="co">#&gt; 5        34.1        43.4</span></span>
+<span><span class="co">#&gt; 6        31.1        39.1</span></span>
+<span><span class="co">#&gt; 7        33.2        43.8</span></span>
+<span><span class="co">#&gt; 8        27.1        41.5</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -9723,9 +9720,9 @@ Torch installation instructions
 <span><span class="co">#&gt;                  N trees: 500</span></span>
 <span><span class="co">#&gt;       N predictors total: 2</span></span>
 <span><span class="co">#&gt;    N predictors per node: 2</span></span>
-<span><span class="co">#&gt;  Average leaves per tree: 13.994</span></span>
+<span><span class="co">#&gt;  Average leaves per tree: 14.092</span></span>
 <span><span class="co">#&gt; Min observations in leaf: 5</span></span>
-<span><span class="co">#&gt;           OOB stat value: 0.59</span></span>
+<span><span class="co">#&gt;           OOB stat value: 0.61</span></span>
 <span><span class="co">#&gt;            OOB stat type: RSQ</span></span>
 <span><span class="co">#&gt;      Variable importance: anova</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -9741,14 +9738,14 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  25.2</span></span>
-<span><span class="co">#&gt; 2  36.4</span></span>
-<span><span class="co">#&gt; 3  29.7</span></span>
-<span><span class="co">#&gt; 4  55.5</span></span>
-<span><span class="co">#&gt; 5  42.3</span></span>
-<span><span class="co">#&gt; 6  38.5</span></span>
-<span><span class="co">#&gt; 7  40.7</span></span>
-<span><span class="co">#&gt; 8  52.7</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  25.4</span></span>
+<span><span class="co">#&gt; 2  36.8</span></span>
+<span><span class="co">#&gt; 3  30.4</span></span>
+<span><span class="co">#&gt; 4  56.2</span></span>
+<span><span class="co">#&gt; 5  42.1</span></span>
+<span><span class="co">#&gt; 6  38.0</span></span>
+<span><span class="co">#&gt; 7  40.3</span></span>
+<span><span class="co">#&gt; 8  53.1</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -9852,10 +9849,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1776455818270_9874 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1777054161019_334 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               22986         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               22988         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        13    8.84000         19         48    31.90000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -10081,8 +10078,8 @@ Torch installation instructions
 <span><span class="co">#&gt;                      Number of trees: 500</span></span>
 <span><span class="co">#&gt; No. of variables tried at each split: 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;           Mean of squared residuals: 90.38475</span></span>
-<span><span class="co">#&gt;                     % Var explained: 68.7</span></span></code></pre></div>
+<span><span class="co">#&gt;           Mean of squared residuals: 90.19249</span></span>
+<span><span class="co">#&gt;                     % Var explained: 68.76</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -10099,7 +10096,7 @@ Torch installation instructions
 <span><span class="co">#&gt; 3  28.6</span></span>
 <span><span class="co">#&gt; 4  58.0</span></span>
 <span><span class="co">#&gt; 5  38.3</span></span>
-<span><span class="co">#&gt; 6  35.4</span></span>
+<span><span class="co">#&gt; 6  35.0</span></span>
 <span><span class="co">#&gt; 7  38.1</span></span>
 <span><span class="co">#&gt; 8  33.7</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -10130,7 +10127,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__2d5a6c7a_f904_4535_85d3_86bec2aaff72, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__f2c2fb66_8a63_46c4_a2e6_ef2111018b8e, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -10262,7 +10259,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1776455818270_9875 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1777054161019_335 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family     link           regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Lasso (lambda = 0.9516 )                       1801</span></span>
@@ -10530,7 +10527,7 @@ Torch installation instructions
 <span><span class="co">#&gt;  parameter : epsilon = 0.1  cost C = 1 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Gaussian Radial Basis kernel function. </span></span>
-<span><span class="co">#&gt;  Hyperparameter : sigma =  0.850174270140177 </span></span>
+<span><span class="co">#&gt;  Hyperparameter : sigma =  0.850174270140176 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Support Vectors : 79 </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -10854,7 +10851,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call: prodlim::prodlim(formula = form, data = data)</span></span>
 <span><span class="co">#&gt; Stratified Kaplan-Meier estimator for the conditional event time survival function</span></span>
-<span><span class="co">#&gt; Discrete predictor variable: rpartFactor (0.154174164904031, 0.565650228981439, 0.733631734872791, 1.25726850344687, 2.50720371146533, 6.39341334321542)</span></span>
+<span><span class="co">#&gt; Discrete predictor variable: rpartFactor (0.154174164904031, 0.565650228981438, 0.733631734872791, 1.25726850344687, 2.50720371146533, 6.39341334321542)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Right-censored response of a survival model</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -10866,7 +10863,7 @@ Torch installation instructions
 <span><span class="co">#&gt;  right.censored 84  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $levels</span></span>
-<span><span class="co">#&gt; [1] "0.154174164904031" "0.565650228981439" "0.733631734872791"</span></span>
+<span><span class="co">#&gt; [1] "0.154174164904031" "0.565650228981438" "0.733631734872791"</span></span>
 <span><span class="co">#&gt; [4] "1.25726850344687"  "2.50720371146533"  "6.39341334321542" </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attr(,"class")</span></span>
@@ -11295,10 +11292,10 @@ Torch installation instructions
 <span><span class="co">#&gt;                  N trees: 500</span></span>
 <span><span class="co">#&gt;       N predictors total: 2</span></span>
 <span><span class="co">#&gt;    N predictors per node: 2</span></span>
-<span><span class="co">#&gt;  Average leaves per tree: 12.85</span></span>
+<span><span class="co">#&gt;  Average leaves per tree: 12.722</span></span>
 <span><span class="co">#&gt; Min observations in leaf: 5</span></span>
 <span><span class="co">#&gt;       Min events in leaf: 1</span></span>
-<span><span class="co">#&gt;           OOB stat value: 0.70</span></span>
+<span><span class="co">#&gt;           OOB stat value: 0.71</span></span>
 <span><span class="co">#&gt;            OOB stat type: Harrell's C-index</span></span>
 <span><span class="co">#&gt;      Variable importance: anova</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -11314,11 +11311,11 @@ Torch installation instructions
 <span><span class="co">#&gt; # A tibble: 5 × 1</span></span>
 <span><span class="co">#&gt;   .pred_time</span></span>
 <span><span class="co">#&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1       5.93</span></span>
-<span><span class="co">#&gt; 2       3.85</span></span>
-<span><span class="co">#&gt; 3       4.41</span></span>
-<span><span class="co">#&gt; 4       5.43</span></span>
-<span><span class="co">#&gt; 5       4.34</span></span>
+<span><span class="co">#&gt; 1       6.02</span></span>
+<span><span class="co">#&gt; 2       3.88</span></span>
+<span><span class="co">#&gt; 3       4.36</span></span>
+<span><span class="co">#&gt; 4       5.49</span></span>
+<span><span class="co">#&gt; 5       4.25</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rand_forest_fit</span>, type <span class="op">=</span> <span class="st">"survival"</span>, new_data <span class="op">=</span> <span class="va">cns_test</span>, eval_time <span class="op">=</span> <span class="va">eval_times</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 1</span></span>
 <span><span class="co">#&gt;   .pred           </span></span>
@@ -11344,8 +11341,8 @@ Torch installation instructions
 <span><span class="co">#&gt;   .eval_time .pred_survival</span></span>
 <span><span class="co">#&gt;        &lt;dbl&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1          1          0.999</span></span>
-<span><span class="co">#&gt; 2          3          0.873</span></span>
-<span><span class="co">#&gt; 3          5          0.627</span></span></code></pre></div>
+<span><span class="co">#&gt; 2          3          0.878</span></span>
+<span><span class="co">#&gt; 3          5          0.630</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -12097,42 +12094,70 @@ Torch installation instructions
 </section></section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
-#&gt;  version  R version 4.5.2 (2025-10-31)
+#&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-22
-#&gt;  pandoc   3.8.3
-#&gt;  quarto   1.9.35
+#&gt;  date     2026-04-24
+#&gt;  pandoc   3.1.3
+#&gt;  quarto   1.9.37
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package         version    date (UTC)
 #&gt;  agua            0.1.4      2024-06-04
+#&gt;  aorsf           0.1.6      2025-12-11
 #&gt;  baguette        1.1.0      2025-01-28
 #&gt;  bonsai          0.4.0      2025-06-25
 #&gt;  broom           1.0.12     2026-01-27
+#&gt;  brulee          0.6.0      2025-09-02
+#&gt;  C50             0.2.0      2025-04-03
 #&gt;  censored        0.3.4      2026-04-04
+#&gt;  Cubist          0.6.0      2026-03-02
+#&gt;  dbarts          0.9-33     2026-03-20
 #&gt;  dials           1.4.3      2026-04-11
 #&gt;  discrim         1.1.0      2025-12-02
 #&gt;  dplyr           1.2.1      2026-04-03
+#&gt;  earth           5.3.5      2026-01-11
+#&gt;  flexsurv        2.3.2      2024-08-17
+#&gt;  gee             4.13-29    2024-12-11
 #&gt;  ggplot2         4.0.3      2026-04-22
+#&gt;  glmnet          4.1-10     2025-07-17
+#&gt;  grf             2.6.1      2026-03-04
+#&gt;  h2o             3.44.0.3   2024-01-11
 #&gt;  HSAUR3          1.0-15     2024-08-17
 #&gt;  infer           1.1.0      2025-12-18
+#&gt;  kernlab         0.9-33     2024-08-13
+#&gt;  kknn            1.4.1      2025-05-19
+#&gt;  klaR            1.7-4      2026-02-23
+#&gt;  LiblineaR       2.10-24    2024-09-13
+#&gt;  lightgbm        4.6.0      2025-02-13
 #&gt;  lme4            2.0-1      2026-03-05
+#&gt;  mboost          2.9-11     2024-08-22
+#&gt;  mda             0.5-5      2024-11-07
+#&gt;  mixOmics        6.34.0     2025-10-29 Bioconduc~
 #&gt;  multilevelmod   1.0.0      2022-06-17
+#&gt;  naivebayes      1.0.0      2024-03-16
 #&gt;  parsnip         1.5.0      2026-04-09
+#&gt;  partykit        1.2-27     2026-03-13
 #&gt;  plsmod          1.0.0      2022-09-06
 #&gt;  poissonreg      1.0.2      2026-04-20
 #&gt;  prodlim         2026.03.11 2026-03-11
+#&gt;  pscl            1.5.9      2024-01-31
 #&gt;  purrr           1.2.2      2026-04-10
+#&gt;  quantreg        6.1        2025-03-10
+#&gt;  randomForest    4.7-1.2    2024-09-22
+#&gt;  ranger          0.18.0     2026-01-16
 #&gt;  recipes         1.3.2      2026-04-02
 #&gt;  rlang           1.2.0      2026-04-06
 #&gt;  rsample         1.3.2      2026-01-30
 #&gt;  rules           1.0.3      2026-01-27
 #&gt;  sparklyr        1.9.4      2026-04-18
+#&gt;  sparsediscrim   0.3.0      2021-07-01
 #&gt;  survival        3.8-6      2026-01-16
 #&gt;  tibble          3.3.1      2026-01-11
-#&gt;  tidymodels      1.4.1      2025-09-08
+#&gt;  tidymodels      1.5.0      2026-04-23
 #&gt;  tune            2.1.0      2026-04-17
 #&gt;  workflows       1.3.0      2025-08-27
+#&gt;  xgboost         3.2.1.1    2026-03-18
+#&gt;  xrf             0.3.1      2025-12-17
 #&gt;  yardstick       1.4.0      2026-04-07
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>

@@ -215,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">building_complaints</span> <span class="op">&lt;-</span> <span class="fu">modeldatatoo</span><span class="fu">::</span><span class="fu">data_building_complaints</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">building_complaints</span> <span class="op">&lt;-</span> <span class="fu">modeldatatoo</span><span class="fu">::</span><span class="fu"><a href="https://tidymodels.github.io/modeldatatoo/reference/data_building_complaints.html">data_building_complaints</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">building_complaints</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 4,234</span></span>
 <span><span class="co">#&gt; Columns: 11</span></span>
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">building_complaints</span> <span class="op">&lt;-</span> <span class="va">building_complaints</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    disposition_surv <span class="op">=</span> <span class="fu">Surv</span><span class="op">(</span><span class="va">days_to_disposition</span>, <span class="va">status</span> <span class="op">==</span> <span class="st">"CLOSED"</span><span class="op">)</span>, </span>
+<span>    disposition_surv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">days_to_disposition</span>, <span class="va">status</span> <span class="op">==</span> <span class="st">"CLOSED"</span><span class="op">)</span>, </span>
 <span>    .keep <span class="op">=</span> <span class="st">"unused"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -269,7 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">complaints_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">complaints_split</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">survfit</span><span class="op">(</span><span class="va">disposition_surv</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">complaints_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="va">disposition_surv</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">complaints_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
@@ -531,9 +531,9 @@ Tip
 <span><span class="co">#&gt; # A tibble: 5 × 9</span></span>
 <span><span class="co">#&gt;    mtry min_n .metric         .estimator .eval_time   mean     n std_err .config</span></span>
 <span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;           &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
-<span><span class="co">#&gt; 1     9    27 brier_survival… standard           NA 0.0469     1      NA pre0_m…</span></span>
-<span><span class="co">#&gt; 2     6    23 brier_survival… standard           NA 0.0470     1      NA pre0_m…</span></span>
-<span><span class="co">#&gt; 3     5     6 brier_survival… standard           NA 0.0471     1      NA pre0_m…</span></span>
+<span><span class="co">#&gt; 1     9    27 brier_survival… standard           NA 0.0468     1      NA pre0_m…</span></span>
+<span><span class="co">#&gt; 2     6    23 brier_survival… standard           NA 0.0469     1      NA pre0_m…</span></span>
+<span><span class="co">#&gt; 3     5     6 brier_survival… standard           NA 0.0472     1      NA pre0_m…</span></span>
 <span><span class="co">#&gt; 4     8    10 brier_survival… standard           NA 0.0472     1      NA pre0_m…</span></span>
 <span><span class="co">#&gt; 5     7    40 brier_survival… standard           NA 0.0475     1      NA pre0_m…</span></span>
 <span></span>
@@ -549,7 +549,7 @@ Tip
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The best regularized Cox model performs a little better than the parametric survival model, with an integrated Brier score of 0.0499 compared to 0.0512 for the parametric model. The random forest performs yet a little better with an integrated Brier score of 0.0469.</p>
+<p>The best regularized Cox model performs a little better than the parametric survival model, with an integrated Brier score of 0.0499 compared to 0.0512 for the parametric model. The random forest performs yet a little better with an integrated Brier score of 0.0468.</p>
 </section><section id="the-final-model" class="level2"><h2 class="anchored" data-anchor-id="the-final-model">The final model</h2>
 <p>We chose the random forest model as the final model. So let’s finalize the workflow by replacing the <code><a href="https://hardhat.tidymodels.org/reference/tune.html">tune()</a></code> placeholders with the best hyperparameters.</p>
 <div class="cell" data-layout-align="center">
@@ -618,11 +618,11 @@ Tip
 <span><span class="co">#&gt; # A tibble: 5 × 1</span></span>
 <span><span class="co">#&gt;   .pred_time</span></span>
 <span><span class="co">#&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1       80.7</span></span>
-<span><span class="co">#&gt; 2       46.9</span></span>
-<span><span class="co">#&gt; 3       96.3</span></span>
-<span><span class="co">#&gt; 4       80.2</span></span>
-<span><span class="co">#&gt; 5       79.1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1       78.6</span></span>
+<span><span class="co">#&gt; 2       46.8</span></span>
+<span><span class="co">#&gt; 3       93.5</span></span>
+<span><span class="co">#&gt; 4       78.5</span></span>
+<span><span class="co">#&gt; 5       71.9</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -630,11 +630,11 @@ Tip
 </section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
-#&gt;  version  R version 4.5.2 (2025-10-31)
+#&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-22
-#&gt;  pandoc   3.8.3
-#&gt;  quarto   1.9.35
+#&gt;  date     2026-04-24
+#&gt;  pandoc   3.1.3
+#&gt;  quarto   1.9.37
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package        version date (UTC)
@@ -656,7 +656,7 @@ Tip
 #&gt;  rsample        1.3.2   2026-01-30
 #&gt;  sessioninfo    1.2.3   2025-02-05
 #&gt;  tibble         3.3.1   2026-01-11
-#&gt;  tidymodels     1.4.1   2025-09-08
+#&gt;  tidymodels     1.5.0   2026-04-23
 #&gt;  tune           2.1.0   2026-04-17
 #&gt;  workflows      1.3.0   2025-08-27
 #&gt;  yardstick      1.4.0   2026-04-07

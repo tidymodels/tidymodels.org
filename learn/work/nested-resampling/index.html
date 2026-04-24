@@ -405,13 +405,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The potential problem is that once we pick the tuning parameter associated with the best performance, this performance value is usually quoted as the performance of the model. There is serious potential for <em>optimization bias</em> since we use the same data to tune the model and to assess performance. This would result in an optimistic estimate of performance.</p>
 <p>Nested resampling uses an additional layer of resampling that separates the tuning activities from the process used to estimate the efficacy of the model. An <em>outer</em> resampling scheme is used and, for every split in the outer resample, another full set of resampling splits are created on the original analysis set. For example, if 10-fold cross-validation is used on the outside and 5-fold cross-validation on the inside, a total of 500 models will be fit. The parameter tuning will be conducted 10 times and the best parameters are determined from the average of the 5 assessment sets. This process occurs 10 times.</p>
 <p>Once the tuning results are complete, a model is fit to each of the outer resampling splits using the best parameter associated with that resample. The average of the outer method’s assessment sets are a unbiased estimate of the model.</p>
-<p>We will simulate some regression data to illustrate the methods. The mlbench package has a function <code>mlbench::mlbench.friedman1()</code> that can simulate a complex regression data structure from the <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22Multivariate+adaptive+regression+splines%22&amp;btnG=&amp;as_sdt=1%2C7&amp;as_sdtp=">original MARS publication</a>. A training set size of 100 data points are generated as well as a large set that will be used to characterize how well the resampling procedure performed.</p>
+<p>We will simulate some regression data to illustrate the methods. The mlbench package has a function <code><a href="https://rdrr.io/pkg/mlbench/man/mlbench.friedman1.html">mlbench::mlbench.friedman1()</a></code> that can simulate a complex regression data structure from the <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22Multivariate+adaptive+regression+splines%22&amp;btnG=&amp;as_sdt=1%2C7&amp;as_sdtp=">original MARS publication</a>. A training set size of 100 data points are generated as well as a large set that will be used to characterize how well the resampling procedure performed.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlbench</span><span class="op">)</span></span>
 <span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">mlbench.friedman1</span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.friedman1.html">mlbench.friedman1</a></span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">x</span>, <span class="va">tmp</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
 <span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"y"</span></span>
@@ -499,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>To start, we need to define how the model will be created and measured. Let’s use a radial basis support vector machine model via the function <code>kernlab::ksvm</code>. This model is generally considered to have <em>two</em> tuning parameters: the SVM cost value and the kernel parameter <code>sigma</code>. For illustration purposes here, only the cost value will be tuned and the function <code>kernlab::sigest</code> will be used to estimate <code>sigma</code> during each model fit. This is automatically done by <code>ksvm</code>.</p>
+<p>To start, we need to define how the model will be created and measured. Let’s use a radial basis support vector machine model via the function <code><a href="https://rdrr.io/pkg/kernlab/man/ksvm.html">kernlab::ksvm</a></code>. This model is generally considered to have <em>two</em> tuning parameters: the SVM cost value and the kernel parameter <code>sigma</code>. For illustration purposes here, only the cost value will be tuned and the function <code><a href="https://rdrr.io/pkg/kernlab/man/sigest.html">kernlab::sigest</a></code> will be used to estimate <code>sigma</code> during each model fit. This is automatically done by <code>ksvm</code>.</p>
 <p>After the model is fit to the analysis set, the root-mean squared error (RMSE) is computed on the assessment set. <strong>One important note:</strong> for this model, it is critical to center and scale the predictors before computing dot products. We don’t do this operation here because <code>mlbench.friedman1</code> simulates all of the predictors to be standardized uniform random variables.</p>
 <p>Our function to fit the model and compute the RMSE is:</p>
 <div class="cell" data-layout-align="center">
@@ -647,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">RMSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span><span class="co">#&gt;   1.676   2.089   2.589   2.682   3.220   4.228</span></span></code></pre></div>
+<span><span class="co">#&gt;   1.676   2.090   2.589   2.682   3.220   4.228</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -699,7 +699,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">finalModel</span> <span class="op">&lt;-</span> <span class="fu">ksvm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_dat</span>, C <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">finalModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/kernlab/man/ksvm.html">ksvm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_dat</span>, C <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">large_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">finalModel</span>, <span class="va">large_dat</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">large_dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">large_dat</span><span class="op">$</span><span class="va">y</span> <span class="op">-</span> <span class="va">large_pred</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2.695091</span></span></code></pre></div>
@@ -710,11 +710,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
-#&gt;  version  R version 4.5.2 (2025-10-31)
+#&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-22
-#&gt;  pandoc   3.8.3
-#&gt;  quarto   1.9.35
+#&gt;  date     2026-04-24
+#&gt;  pandoc   3.1.3
+#&gt;  quarto   1.9.37
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
 #&gt;  package      version date (UTC)
@@ -733,7 +733,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;  rsample      1.3.2   2026-01-30
 #&gt;  scales       1.4.0   2025-04-24
 #&gt;  tibble       3.3.1   2026-01-11
-#&gt;  tidymodels   1.4.1   2025-09-08
+#&gt;  tidymodels   1.5.0   2026-04-23
 #&gt;  tune         2.1.0   2026-04-17
 #&gt;  workflows    1.3.0   2025-08-27
 #&gt;  yardstick    1.4.0   2026-04-07
