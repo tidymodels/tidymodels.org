@@ -30,5 +30,5 @@ for (page in args) {
 }
 needed <- sort(unique(needed))
 
-source(file.path(repo_root, "install_packages.R"))
+source(file.path(repo_root, "R/install_packages.R"))
 install_packages(needed)

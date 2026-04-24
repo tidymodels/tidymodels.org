@@ -57,5 +57,5 @@ for (pkg in names(pkg_map)) {
 # Collect all packages needed by affected pages
 needed <- sort(unique(unlist(page_pkgs[pages], use.names = FALSE)))
 
-source(file.path(repo_root, "install_packages.R"))
+source(file.path(repo_root, "R/install_packages.R"))
 install_packages(needed)
