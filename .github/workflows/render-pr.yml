@@ -63,7 +63,7 @@ jobs:
           cache-key-suffix: pr-${{ steps.pr.outputs.branch }}
 
       - name: Install packages for changed pages
-        run: Rscript install_for_pages.R ${{ steps.changed.outputs.pages }}
+        run: Rscript R/install_for_pages.R ${{ steps.changed.outputs.pages }}
 
       - name: Render changed pages
         id: render
