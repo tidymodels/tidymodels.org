@@ -45,7 +45,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: ~/.local/share/torch
-        key: torch-${{ runner.os }}-${{ hashFiles('_versions.json') }}
+        key: torch-${{ runner.os }}-${{ hashFiles('data/_versions.json') }}
         restore-keys: torch-${{ runner.os }}-
 
     - name: Cache Spark installation

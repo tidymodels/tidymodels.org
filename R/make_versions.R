@@ -7,11 +7,11 @@ library(jsonlite)
 library(cli)
 
 repo_root <- here::here()
-map_path  <- file.path(repo_root, "package_map.json")
+map_path  <- file.path(repo_root, "data/package_map.json")
 
 if (!file.exists(map_path)) {
   cli::cli_abort(
-    "{.file package_map.json} not found. Run {.code Rscript make_package_map.R} first."
+    "{.file data/package_map.json} not found. Run {.code Rscript make_package_map.R} first."
   )
 }
 
@@ -28,7 +28,7 @@ names(versions) <- pkgs
 versions <- Filter(Negate(is.na), versions)
 versions <- versions[sort(names(versions))]
 
-out_path <- file.path(repo_root, "_versions.json")
+out_path <- file.path(repo_root, "data/_versions.json")
 jsonlite::write_json(versions, out_path, pretty = TRUE, auto_unbox = TRUE)
 
 cli::cli_alert_success(

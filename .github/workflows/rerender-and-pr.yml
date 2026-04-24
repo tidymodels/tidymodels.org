@@ -57,27 +57,27 @@ jobs:
         id: install
         env:
           PAGES: ${{ inputs.pages }}
-        run: Rscript install_for_pages.R $PAGES
+        run: Rscript R/install_for_pages.R $PAGES
 
       - name: Re-render pages
         id: render
         env:
           PAGES: ${{ inputs.pages }}
-        run: Rscript re-render-pages.R $PAGES
+        run: Rscript R/re-render-pages.R $PAGES
 
       - name: Build render summary for PR
         id: render_summary
         if: success()
-        run: Rscript make_render_summary.R
+        run: Rscript R/make_render_summary.R
 
       - name: Update _versions.json
         if: success() && inputs.update-metadata
         shell: Rscript {0}
-        run: source("make_versions.R")
+        run: source("R/make_versions.R")
 
       - name: Update package_map.json
         if: success() && inputs.update-metadata
-        run: Rscript make_package_map.R
+        run: Rscript R/make_package_map.R
 
       - name: Open issue on render failure
         if: failure() && (steps.render.outcome == 'failure' || steps.install.outcome == 'failure')

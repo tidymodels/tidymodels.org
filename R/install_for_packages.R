@@ -13,11 +13,11 @@ if (length(args) == 0) {
 }
 
 repo_root <- here::here()
-map_path  <- file.path(repo_root, "package_map.json")
+map_path  <- file.path(repo_root, "data/package_map.json")
 
 if (!file.exists(map_path)) {
   cli::cli_abort(
-    "{.file package_map.json} not found. Run {.code Rscript make_package_map.R} first."
+    "{.file data/package_map.json} not found. Run {.code Rscript make_package_map.R} first."
   )
 }
 
@@ -57,5 +57,5 @@ for (pkg in names(pkg_map)) {
 # Collect all packages needed by affected pages
 needed <- sort(unique(unlist(page_pkgs[pages], use.names = FALSE)))
 
-source(file.path(repo_root, "install_packages.R"))
+source(file.path(repo_root, "R/install_packages.R"))
 install_packages(needed)
