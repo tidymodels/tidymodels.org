@@ -13,6 +13,20 @@ This repo is the source of <https://www.tidymodels.org>, and this readme tells y
 
 This repo (and resulting website) is licensed as [CC BY-SA](LICENSE.md).
 
+## Contributing
+
+1. Fork and clone the repo, then install R packages by running `installs.R` and restart R.
+2. Edit the relevant `.qmd` file(s) in `start/`, `learn/`, `find/`, etc.
+3. Render your changes locally with `quarto render <path/to/file.qmd>`, or skip local rendering by opening a PR and commenting:
+   ```
+   /render
+   ```
+   CI will render the changed pages and commit the outputs back to your branch.
+4. Commit the source **and** the rendered outputs (`_freeze/` entries and `.md` files) to your branch.
+5. Open a pull request.
+
+If you're adding a new article to `learn/`, create a folder with an `index.qmd` inside it. If it needs packages beyond the core `tidymodels` meta-package, add them to `installs.R` **and** to the `r-packages:` field in the file's YAML front matter.
+
 ## Requirements to preview the site locally 
 
 ### R packages
