@@ -11,7 +11,7 @@ description: |
   Prepare text data for predictive modeling and tune with both grid and iterative search.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - textrecipes
@@ -252,7 +252,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 102.064 sec elapsed
+#> 77.229 sec elapsed
 
 five_star_glmnet
 #> # Tuning results

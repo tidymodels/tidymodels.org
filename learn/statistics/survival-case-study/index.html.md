@@ -9,7 +9,7 @@ description: |
   Learn how to use tidymodels for survival analysis.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - censored
@@ -468,10 +468,10 @@ predict(complaints_model, new_data = complaints_5, type = "time")
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       78.6
-#> 2       46.8
+#> 1       78.8
+#> 2       46.9
 #> 3       93.5
-#> 4       78.5
+#> 4       78.4
 #> 5       71.9
 ```
 :::

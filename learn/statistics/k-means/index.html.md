@@ -9,7 +9,7 @@ description: |
   Summarize clustering characteristics and estimate the best number of clusters for a data set.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
 ---
