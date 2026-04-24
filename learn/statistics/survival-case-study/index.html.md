@@ -373,9 +373,9 @@ show_best(oblique_res, metric = "brier_survival_integrated", n = 5)
 #> # A tibble: 5 × 9
 #>    mtry min_n .metric         .estimator .eval_time   mean     n std_err .config
 #>   <int> <int> <chr>           <chr>           <dbl>  <dbl> <int>   <dbl> <chr>  
-#> 1     9    27 brier_survival… standard           NA 0.0469     1      NA pre0_m…
-#> 2     6    23 brier_survival… standard           NA 0.0470     1      NA pre0_m…
-#> 3     5     6 brier_survival… standard           NA 0.0471     1      NA pre0_m…
+#> 1     9    27 brier_survival… standard           NA 0.0468     1      NA pre0_m…
+#> 2     6    23 brier_survival… standard           NA 0.0469     1      NA pre0_m…
+#> 3     5     6 brier_survival… standard           NA 0.0472     1      NA pre0_m…
 #> 4     8    10 brier_survival… standard           NA 0.0472     1      NA pre0_m…
 #> 5     7    40 brier_survival… standard           NA 0.0475     1      NA pre0_m…
 
@@ -395,7 +395,7 @@ show_best(coxnet_res, metric = "brier_survival_integrated", n = 5)
 
 :::
 
-The best regularized Cox model performs a little better than the parametric survival model, with an integrated Brier score of 0.0499 compared to 0.0512 for the parametric model. The random forest performs yet a little better with an integrated Brier score of 0.0469.
+The best regularized Cox model performs a little better than the parametric survival model, with an integrated Brier score of 0.0499 compared to 0.0512 for the parametric model. The random forest performs yet a little better with an integrated Brier score of 0.0468.
 
 ## The final model
 
@@ -468,11 +468,11 @@ predict(complaints_model, new_data = complaints_5, type = "time")
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       80.7
-#> 2       46.9
-#> 3       96.3
-#> 4       80.2
-#> 5       79.1
+#> 1       78.6
+#> 2       46.8
+#> 3       93.5
+#> 4       78.5
+#> 5       71.9
 ```
 :::
 
@@ -484,11 +484,11 @@ For more information on survival analysis with tidymodels see the [`survival ana
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
@@ -510,7 +510,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  rsample        1.3.2   2026-01-30
 #>  sessioninfo    1.2.3   2025-02-05
 #>  tibble         3.3.1   2026-01-11
-#>  tidymodels     1.4.1   2025-09-08
+#>  tidymodels     1.5.0   2026-04-23
 #>  tune           2.1.0   2026-04-17
 #>  workflows      1.3.0   2025-08-27
 #>  yardstick      1.4.0   2026-04-07

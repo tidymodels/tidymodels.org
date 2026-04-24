@@ -300,7 +300,7 @@ results <-
 
 summary(results$RMSE)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.676   2.089   2.589   2.682   3.220   4.228
+#>   1.676   2.090   2.589   2.682   3.220   4.228
 ```
 :::
 
@@ -369,11 +369,11 @@ The nested procedure produces a closer estimate to the approximate truth but the
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -392,7 +392,7 @@ The nested procedure produces a closer estimate to the approximate truth but the
 #>  rsample      1.3.2   2026-01-30
 #>  scales       1.4.0   2025-04-24
 #>  tibble       3.3.1   2026-01-11
-#>  tidymodels   1.4.1   2025-09-08
+#>  tidymodels   1.5.0   2026-04-23
 #>  tune         2.1.0   2026-04-17
 #>  workflows    1.3.0   2025-08-27
 #>  yardstick    1.4.0   2026-04-07

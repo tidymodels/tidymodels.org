@@ -18,15 +18,43 @@ format:
 r-packages:
   - tidymodels
   - agua
+  - aorsf
   - baguette
   - bonsai
+  - lightgbm
+  - brulee
+  - C50
   - censored
+  - Cubist
+  - dbarts
   - discrim
+  - earth
+  - flexsurv
+  - gee
+  - glmnet
+  - grf
+  - h2o
+  - kernlab
+  - kknn
+  - klaR
+  - LiblineaR
+  - mboost
+  - mda
+  - mixOmics
   - multilevelmod
+  - naivebayes
+  - partykit
   - plsmod
   - poissonreg
+  - pscl
+  - quantreg
+  - randomForest
+  - ranger
   - rules
+  - sparsediscrim
   - sparklyr
+  - xgboost
+  - xrf
   - HSAUR3
   - lme4
   - prodlim
@@ -45,7 +73,7 @@ This page shows examples of how to *fit* and *predict* with different combinatio
 
 We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-To use code in this article,  you will need to install the following packages: agua, baguette, bonsai, censored, discrim, HSAUR3, lme4, multilevelmod, plsmod, poissonreg, prodlim, rules, sparklyr, survival, and tidymodels. 
+To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
 
 There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
 
@@ -144,7 +172,7 @@ Once that is working, you can get ready to fit models using:
 
 ```{.r .cell-code}
 library(sparklyr)
-sc <- spark_connect("local")
+sc <- spark_connect("local", version = "3.5")
 ```
 :::
 
@@ -183,7 +211,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (1 year, 10 months and 11 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 4 months and 4 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -322,7 +350,7 @@ If using the **Apache Spark** engine, we will need to identify the data source a
 
 ```{.r .cell-code}
 library(sparklyr)
-sc <- spark_connect("local")
+sc <- spark_connect("local", version = "3.5")
 #> Re-using existing Spark connection to local
 
 tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
@@ -553,8 +581,8 @@ bag_tree_fit
 #> # A tibble: 2 × 4
 #>   term  value std.error  used
 #>   <chr> <dbl>     <dbl> <int>
-#> 1 B      271.      4.35    11
-#> 2 A      237.      5.58    11
+#> 1 B      272.      4.35    11
+#> 2 A      237.      5.57    11
 ```
 :::
 
@@ -1004,7 +1032,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_0 
+#> Model ID:  GBM_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               30000         6
@@ -1023,7 +1051,6 @@ boost_tree_fit
 #> AUCPR:  1
 #> Gini:  1
 #> R^2:  0.9678452
-#> AIC:  NaN
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error    Rate
@@ -1123,7 +1150,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_0 
+#> Model ID:  GBM_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               30000         6
@@ -1142,7 +1169,6 @@ boost_tree_fit
 #> AUCPR:  1
 #> Gini:  1
 #> R^2:  0.9678452
-#> AIC:  NaN
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error    Rate
@@ -2715,9 +2741,9 @@ logistic_reg_fit
 #> Number of obs: 1433, groups:  patientID, 219
 #> Fixed Effects:
 #>                (Intercept)        treatmentterbinafine  
-#>                   -4.57420                    -0.51193  
+#>                  -4.574209                   -0.511919  
 #>                      visit  treatmentterbinafine:visit  
-#>                   -0.98725                    -0.00112
+#>                  -0.987246                   -0.001121
 ```
 :::
 
@@ -2918,7 +2944,7 @@ logistic_reg_fit
 #> ==============
 #> 
 #> H2OBinomialModel: glm
-#> Model ID:  GLM_model_R_1776455818270_0 
+#> Model ID:  GLM_model_R_1777054161019_0 
 #> GLM Model: summary
 #>     family  link                                regularization
 #> 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )
@@ -3281,14 +3307,14 @@ logistic_reg_fit |> print(digits = 3)
 #>  observations: 1433
 #> ------
 #>                            Median MAD_SD
-#> (Intercept)                -0.628  0.585
-#> treatmentterbinafine       -0.686  0.821
-#> visit                      -0.830  0.105
-#> treatmentterbinafine:visit -0.023  0.143
+#> (Intercept)                -0.602  0.568
+#> treatmentterbinafine       -0.705  0.850
+#> visit                      -0.829  0.104
+#> treatmentterbinafine:visit -0.020  0.145
 #> 
 #> Error terms:
 #>  Groups    Name        Std.Dev.
-#>  patientID (Intercept) 4.376   
+#>  patientID (Intercept) 4.362   
 #> Num. levels: patientID 219 
 #> 
 #> ------
@@ -3321,31 +3347,31 @@ predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 #> # A tibble: 475 × 2
 #>    `.pred_none or mild` `.pred_moderate or severe`
 #>                   <dbl>                      <dbl>
-#>  1                0.671                     0.329 
-#>  2                0.730                     0.270 
-#>  3                0.796                     0.204 
-#>  4                0.847                     0.153 
-#>  5                0.882                     0.118 
-#>  6                0.909                     0.0908
-#>  7                0.934                     0.0655
-#>  8                0.613                     0.387 
-#>  9                0.681                     0.319 
-#> 10                0.744                     0.256 
+#>  1                0.686                     0.314 
+#>  2                0.749                     0.251 
+#>  3                0.800                     0.200 
+#>  4                0.848                     0.152 
+#>  5                0.889                     0.111 
+#>  6                0.910                     0.0898
+#>  7                0.938                     0.0625
+#>  8                0.622                     0.378 
+#>  9                0.694                     0.306 
+#> 10                0.750                     0.250 
 #> # ℹ 465 more rows
 predict(logistic_reg_fit, type = "conf_int", new_data = cls_group_test)
 #> # A tibble: 475 × 4
 #>    `.pred_lower_none or mild` `.pred_upper_none or mild` .pred_lower_moderate …¹
 #>                         <dbl>                      <dbl>                   <dbl>
-#>  1                   0.00184                       1.000             0.0000217  
-#>  2                   0.00417                       1.000             0.00000942 
-#>  3                   0.00971                       1.000             0.00000412 
-#>  4                   0.0214                        1.000             0.00000169 
-#>  5                   0.0465                        1.000             0.000000706
-#>  6                   0.101                         1.000             0.000000300
-#>  7                   0.203                         1.000             0.000000120
-#>  8                   0.000923                      1.000             0.0000440  
-#>  9                   0.00196                       1.000             0.0000175  
-#> 10                   0.00447                       1.000             0.00000724 
+#>  1                   0.00143                       1.000             0.0000238  
+#>  2                   0.00346                       1.000             0.0000103  
+#>  3                   0.00812                       1.000             0.00000400 
+#>  4                   0.0188                        1.000             0.00000177 
+#>  5                   0.0427                        1.000             0.000000782
+#>  6                   0.0970                        1.000             0.000000330
+#>  7                   0.196                         1.000             0.000000137
+#>  8                   0.000720                      1.000             0.0000465  
+#>  9                   0.00176                       1.000             0.0000197  
+#> 10                   0.00422                       1.000             0.00000865 
 #> # ℹ 465 more rows
 #> # ℹ abbreviated name: ¹​`.pred_lower_moderate or severe`
 #> # ℹ 1 more variable: `.pred_upper_moderate or severe` <dbl>
@@ -3674,7 +3700,7 @@ mlp_fit
 #> dropout proportion: 0 
 #> batch size: 707 
 #> learn rate: 0.01 
-#> validation loss after 17 epochs: 0.406
+#> validation loss after 16 epochs: 0.406
 ```
 :::
 
@@ -3697,11 +3723,11 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.392       0.608 
-#> 2        0.835       0.165 
-#> 3        0.440       0.560 
-#> 4        0.938       0.0620
-#> 5        0.938       0.0620
+#> 1        0.391       0.609 
+#> 2        0.834       0.166 
+#> 3        0.439       0.561 
+#> 4        0.936       0.0640
+#> 5        0.936       0.0640
 #> 6        0.848       0.152
 ```
 :::
@@ -3745,7 +3771,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2OBinomialModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1776455818270_0 
+#> Model ID:  DeepLearning_model_R_1777054161019_0 
 #> Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -3754,7 +3780,7 @@ mlp_fit
 #>   mean_weight weight_rms mean_bias bias_rms
 #> 1          NA         NA        NA       NA
 #> 2   -0.005244   0.104666  0.478428 0.043014
-#> 3   -0.005700   0.379508  0.000000 0.017883
+#> 3   -0.005700   0.379508 -0.000000 0.017883
 #> 
 #> 
 #> H2OBinomialMetrics: deeplearning
@@ -4166,7 +4192,7 @@ multinom_reg_fit
 #> ==============
 #> 
 #> H2OMultinomialModel: glm
-#> Model ID:  GLM_model_R_1776455818270_0 
+#> Model ID:  GLM_model_R_1777054161019_0 
 #> GLM Model: summary
 #>        family        link                                regularization
 #> 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )
@@ -4399,7 +4425,7 @@ naive_Bayes_fit
 #> ==============
 #> 
 #> H2OBinomialModel: naivebayes
-#> Model ID:  NaiveBayes_model_R_1776455818270_0 
+#> Model ID:  NaiveBayes_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_response_levels min_apriori_probability max_apriori_probability
 #> 1                         2                 0.44713                 0.55287
@@ -4965,7 +4991,7 @@ rand_forest_fit
 #> Target node size:                 10 
 #> Variable importance mode:         none 
 #> Splitrule:                        gini 
-#> OOB prediction error (Brier s.):  0.1477679
+#> OOB prediction error (Brier s.):  0.1489191
 ```
 :::
 
@@ -4988,12 +5014,12 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.220       0.780 
-#> 2        0.837       0.163 
-#> 3        0.220       0.780 
-#> 4        0.951       0.0485
-#> 5        0.785       0.215 
-#> 6        0.913       0.0868
+#> 1        0.225       0.775 
+#> 2        0.865       0.135 
+#> 3        0.227       0.773 
+#> 4        0.961       0.0390
+#> 5        0.761       0.239 
+#> 6        0.905       0.0947
 predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 #> Warning in rInfJack(x, inbag.counts): Sample size <=20, no calibration
 #> performed.
@@ -5003,12 +5029,12 @@ predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 #> # A tibble: 6 × 4
 #>   .pred_lower_Class1 .pred_upper_Class1 .pred_lower_Class2 .pred_upper_Class2
 #>                <dbl>              <dbl>              <dbl>              <dbl>
-#> 1            0                    0.477              0.523              1    
-#> 2            0.604                1                  0                  0.396
-#> 3            0.01000              0.431              0.569              0.990
-#> 4            0.846                1                  0                  0.154
-#> 5            0.469                1                  0                  0.531
-#> 6          NaN                  NaN                NaN                NaN
+#> 1            0.00816              0.443             0.557               0.992
+#> 2            0.749                0.982             0.0184              0.251
+#> 3            0                    0.466             0.534               1    
+#> 4            0.879                1                 0                   0.121
+#> 5            0.325                1                 0                   0.675
+#> 6          NaN                  NaN               NaN                 NaN
 ```
 :::
 
@@ -5055,7 +5081,7 @@ rand_forest_fit
 #>                  N trees: 500
 #>       N predictors total: 2
 #>    N predictors per node: 2
-#>  Average leaves per tree: 24.076
+#>  Average leaves per tree: 24.376
 #> Min observations in leaf: 5
 #>           OOB stat value: 0.87
 #>            OOB stat type: AUC-ROC
@@ -5084,12 +5110,12 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.188       0.812 
-#> 2        0.870       0.130 
-#> 3        0.346       0.654 
-#> 4        0.979       0.0206
-#> 5        0.940       0.0599
-#> 6        0.899       0.101
+#> 1        0.172       0.828 
+#> 2        0.884       0.116 
+#> 3        0.344       0.656 
+#> 4        0.974       0.0259
+#> 5        0.937       0.0629
+#> 6        0.900       0.100
 ```
 :::
 
@@ -5205,7 +5231,7 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2OBinomialModel: drf
-#> Model ID:  DRF_model_R_1776455818270_0 
+#> Model ID:  DRF_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               90000        13
@@ -5225,7 +5251,6 @@ rand_forest_fit
 #> AUCPR:  0.8198335
 #> Gini:  0.7090013
 #> R^2:  0.3646919
-#> AIC:  NaN
 #> 
 #> Confusion Matrix (vertical: actual; across: predicted) for F1-optimal threshold:
 #>        Class1 Class2    Error      Rate
@@ -5458,7 +5483,7 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> 3        0.284       0.716 
 #> 4        0.963       0.0365
 #> 5        0.892       0.108 
-#> 6        0.922       0.0784
+#> 6        0.922       0.0785
 ```
 :::
 
@@ -5710,7 +5735,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2OBinomialModel: rulefit
-#> Model ID:  RuleFit_model_R_1776455818270_0 
+#> Model ID:  RuleFit_model_R_1777054161019_0 
 #> Rulefit Model Summary: 
 #>     family  link            regularization number_of_predictors_total
 #> 1 binomial logit Lasso (lambda = 0.03081 )                       2328
@@ -6162,7 +6187,7 @@ If using the **Apache Spark** engine, we will need to identify the data source, 
 
 ```{.r .cell-code}
 library(sparklyr)
-sc <- spark_connect("local")
+sc <- spark_connect("local", version = "3.5")
 #> Re-using existing Spark connection to local
 
 tbl_concrete <- copy_to(sc, modeldata::concrete)
@@ -6292,8 +6317,8 @@ bag_mlp_fit
 #> # A tibble: 2 × 4
 #>   term   value std.error  used
 #>   <chr>  <dbl>     <dbl> <int>
-#> 1 age     55.9      2.96    11
-#> 2 cement  44.1      2.96    11
+#> 1 age     55.9      2.98    11
+#> 2 cement  44.1      2.98    11
 ```
 :::
 
@@ -6306,14 +6331,14 @@ predict(bag_mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  19.9
-#> 2  39.1
-#> 3  28.3
-#> 4  68.8
-#> 5  44.1
-#> 6  36.3
-#> 7  40.8
-#> 8  37.0
+#> 1  20.0
+#> 2  39.4
+#> 3  28.4
+#> 4  68.6
+#> 5  44.3
+#> 6  36.4
+#> 7  40.7
+#> 8  38.5
 ```
 :::
 
@@ -6645,7 +6670,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_0 
+#> Model ID:  GBM_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -6723,7 +6748,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1776455818270_0 
+#> Model ID:  GBM_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -7820,7 +7845,7 @@ linear_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1776455818270_0 
+#> Model ID:  GLM_model_R_1777054161019_0 
 #> GLM Model: summary
 #>     family     link                               regularization
 #> 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )
@@ -8203,9 +8228,9 @@ linear_reg_fit
 #>  observations: 132
 #> ------
 #>             Median MAD_SD
-#> (Intercept) 245.6    6.8 
-#> Diet2       185.7   11.5 
-#> Diet3       259.2   11.5 
+#> (Intercept) 245.6    6.7 
+#> Diet2       185.7   11.2 
+#> Diet3       259.3   11.1 
 #> Time          0.5    0.0 
 #> 
 #> Auxiliary parameter(s):
@@ -8214,7 +8239,7 @@ linear_reg_fit
 #> 
 #> Error terms:
 #>  Groups   Name        Std.Dev.
-#>  Rat      (Intercept) 17.2    
+#>  Rat      (Intercept) 16.8    
 #>  Residual              8.2    
 #> Num. levels: Rat 12 
 #> 
@@ -8248,16 +8273,16 @@ predict(linear_reg_fit, type = "pred_int", new_data = reg_group_test)
 #> # A tibble: 44 × 2
 #>    .pred_lower .pred_upper
 #>          <dbl>       <dbl>
-#>  1        205.        285.
-#>  2        211.        289.
-#>  3        214.        292.
-#>  4        218.        295.
-#>  5        221.        300.
-#>  6        225.        303.
-#>  7        230.        307.
+#>  1        206.        286.
+#>  2        209.        290.
+#>  3        214.        293.
+#>  4        218.        297.
+#>  5        221.        302.
+#>  6        226.        305.
+#>  7        229.        309.
 #>  8        230.        309.
-#>  9        233.        312.
-#> 10        237.        314.
+#>  9        234.        313.
+#> 10        237.        318.
 #> # ℹ 34 more rows
 ```
 :::
@@ -8426,14 +8451,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  14.8
-#> 2  38.5
-#> 3  32.0
-#> 4  63.6
-#> 5  43.5
-#> 6  42.7
-#> 7  42.3
-#> 8  33.1
+#> 1  14.9
+#> 2  39.1
+#> 3  32.2
+#> 4  66.0
+#> 5  44.6
+#> 6  42.3
+#> 7  42.0
+#> 8  34.3
 ```
 :::
 
@@ -8596,7 +8621,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2ORegressionModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1776455818270_0 
+#> Model ID:  DeepLearning_model_R_1777054161019_0 
 #> Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -8717,8 +8742,8 @@ nearest_neighbor_fit
 #> kknn::train.kknn(formula = strength ~ ., data = data, ks = min_rows(5,     data, 5))
 #> 
 #> Type of response variable: continuous
-#> minimal mean absolute error: 8.257735
-#> Minimal mean squared error: 115.8737
+#> minimal mean absolute error: 8.270248
+#> Minimal mean squared error: 115.9175
 #> Best kernel: optimal
 #> Best k: 5
 ```
@@ -9265,7 +9290,7 @@ poisson_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1776455818270_0 
+#> Model ID:  GLM_model_R_1777054161019_0 
 #> GLM Model: summary
 #>    family link                               regularization
 #> 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )
@@ -9557,31 +9582,31 @@ predict(poisson_reg_fit, new_data = reg_group_test)
 #> # A tibble: 44 × 1
 #>    .pred
 #>    <dbl>
-#>  1  251.
-#>  2  254.
-#>  3  256.
-#>  4  259.
-#>  5  261.
-#>  6  264.
-#>  7  267.
+#>  1  253.
+#>  2  255.
+#>  3  257.
+#>  4  260.
+#>  5  262.
+#>  6  265.
+#>  7  268.
 #>  8  268.
-#>  9  270.
-#> 10  272.
+#>  9  271.
+#> 10  273.
 #> # ℹ 34 more rows
 predict(poisson_reg_fit, type = "pred_int", new_data = reg_group_test)
 #> # A tibble: 44 × 2
 #>    .pred_lower .pred_upper
 #>          <dbl>       <dbl>
-#>  1        210.        294 
-#>  2        213         298 
-#>  3        214         301 
-#>  4        217         304 
-#>  5        220         306 
-#>  6        222         309 
-#>  7        223         313.
-#>  8        225         315 
-#>  9        226         317.
-#> 10        229         320 
+#>  1        210         298 
+#>  2        213         299 
+#>  3        217.        303.
+#>  4        217         306 
+#>  5        221         309 
+#>  6        222         313 
+#>  7        225         314 
+#>  8        227         316 
+#>  9        225         319 
+#> 10        229         323 
 #> # ℹ 34 more rows
 ```
 :::
@@ -9702,8 +9727,8 @@ rand_forest_fit
 #> Target node size:                 5 
 #> Variable importance mode:         none 
 #> Splitrule:                        variance 
-#> OOB prediction error (MSE):       92.94531 
-#> R squared (OOB):                  0.6816071
+#> OOB prediction error (MSE):       92.87944 
+#> R squared (OOB):                  0.6818328
 ```
 :::
 
@@ -9716,28 +9741,28 @@ predict(rand_forest_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  23.6
+#> 1  23.5
 #> 2  36.9
-#> 3  28.4
-#> 4  56.5
-#> 5  38.6
-#> 6  36.5
-#> 7  38.7
-#> 8  34.4
+#> 3  28.6
+#> 4  56.2
+#> 5  38.7
+#> 6  35.1
+#> 7  38.5
+#> 8  34.3
 predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 #> Warning in rInfJack(pred = result$predictions, inbag = inbag.counts, used.trees
 #> = 1:num.trees): Sample size <=20, no calibration performed.
 #> # A tibble: 8 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1        18.1        29.1
-#> 2        32.6        41.1
-#> 3        24.0        32.9
-#> 4        45.4        67.7
-#> 5        33.0        44.3
-#> 6        32.0        41.0
-#> 7        35.1        42.3
-#> 8        28.4        40.3
+#> 1        18.7        28.3
+#> 2        30.9        43.0
+#> 3        23.6        33.7
+#> 4        44.1        68.2
+#> 5        34.1        43.4
+#> 6        31.1        39.1
+#> 7        33.2        43.8
+#> 8        27.1        41.5
 ```
 :::
 
@@ -9783,9 +9808,9 @@ rand_forest_fit
 #>                  N trees: 500
 #>       N predictors total: 2
 #>    N predictors per node: 2
-#>  Average leaves per tree: 13.994
+#>  Average leaves per tree: 14.092
 #> Min observations in leaf: 5
-#>           OOB stat value: 0.59
+#>           OOB stat value: 0.61
 #>            OOB stat type: RSQ
 #>      Variable importance: anova
 #> 
@@ -9802,14 +9827,14 @@ predict(rand_forest_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  25.2
-#> 2  36.4
-#> 3  29.7
-#> 4  55.5
-#> 5  42.3
-#> 6  38.5
-#> 7  40.7
-#> 8  52.7
+#> 1  25.4
+#> 2  36.8
+#> 3  30.4
+#> 4  56.2
+#> 5  42.1
+#> 6  38.0
+#> 7  40.3
+#> 8  53.1
 ```
 :::
 
@@ -9919,7 +9944,7 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2ORegressionModel: drf
-#> Model ID:  DRF_model_R_1776455818270_0 
+#> Model ID:  DRF_model_R_1777054161019_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -10160,8 +10185,8 @@ rand_forest_fit
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 1
 #> 
-#>           Mean of squared residuals: 90.38475
-#>                     % Var explained: 68.7
+#>           Mean of squared residuals: 90.19249
+#>                     % Var explained: 68.76
 ```
 :::
 
@@ -10179,7 +10204,7 @@ predict(rand_forest_fit, new_data = reg_test)
 #> 3  28.6
 #> 4  58.0
 #> 5  38.3
-#> 6  35.4
+#> 6  35.0
 #> 7  38.1
 #> 8  33.7
 ```
@@ -10348,7 +10373,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2ORegressionModel: rulefit
-#> Model ID:  RuleFit_model_R_1776455818270_0 
+#> Model ID:  RuleFit_model_R_1777054161019_0 
 #> Rulefit Model Summary: 
 #>     family     link           regularization number_of_predictors_total
 #> 1 gaussian identity Lasso (lambda = 0.9516 )                       1801
@@ -10622,7 +10647,7 @@ svm_rbf_fit
 #>  parameter : epsilon = 0.1  cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.850174270140177 
+#>  Hyperparameter : sigma =  0.850174270140176 
 #> 
 #> Number of Support Vectors : 79 
 #> 
@@ -10959,7 +10984,7 @@ decision_tree_fit
 #> 
 #> Call: prodlim::prodlim(formula = form, data = data)
 #> Stratified Kaplan-Meier estimator for the conditional event time survival function
-#> Discrete predictor variable: rpartFactor (0.154174164904031, 0.565650228981439, 0.733631734872791, 1.25726850344687, 2.50720371146533, 6.39341334321542)
+#> Discrete predictor variable: rpartFactor (0.154174164904031, 0.565650228981438, 0.733631734872791, 1.25726850344687, 2.50720371146533, 6.39341334321542)
 #> 
 #> Right-censored response of a survival model
 #> 
@@ -10971,7 +10996,7 @@ decision_tree_fit
 #>  right.censored 84  
 #> 
 #> $levels
-#> [1] "0.154174164904031" "0.565650228981439" "0.733631734872791"
+#> [1] "0.154174164904031" "0.565650228981438" "0.733631734872791"
 #> [4] "1.25726850344687"  "2.50720371146533"  "6.39341334321542" 
 #> 
 #> attr(,"class")
@@ -11412,10 +11437,10 @@ rand_forest_fit
 #>                  N trees: 500
 #>       N predictors total: 2
 #>    N predictors per node: 2
-#>  Average leaves per tree: 12.85
+#>  Average leaves per tree: 12.722
 #> Min observations in leaf: 5
 #>       Min events in leaf: 1
-#>           OOB stat value: 0.70
+#>           OOB stat value: 0.71
 #>            OOB stat type: Harrell's C-index
 #>      Variable importance: anova
 #> 
@@ -11432,11 +11457,11 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       5.93
-#> 2       3.85
-#> 3       4.41
-#> 4       5.43
-#> 5       4.34
+#> 1       6.02
+#> 2       3.88
+#> 3       4.36
+#> 4       5.49
+#> 5       4.25
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 #> # A tibble: 5 × 1
 #>   .pred           
@@ -11463,8 +11488,8 @@ rand_forest_fit |>
 #>   .eval_time .pred_survival
 #>        <dbl>          <dbl>
 #> 1          1          0.999
-#> 2          3          0.873
-#> 3          5          0.627
+#> 2          3          0.878
+#> 3          5          0.630
 ```
 :::
 
@@ -12249,42 +12274,70 @@ rand_forest_fit |>
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version    date (UTC)
 #>  agua            0.1.4      2024-06-04
+#>  aorsf           0.1.6      2025-12-11
 #>  baguette        1.1.0      2025-01-28
 #>  bonsai          0.4.0      2025-06-25
 #>  broom           1.0.12     2026-01-27
+#>  brulee          0.6.0      2025-09-02
+#>  C50             0.2.0      2025-04-03
 #>  censored        0.3.4      2026-04-04
+#>  Cubist          0.6.0      2026-03-02
+#>  dbarts          0.9-33     2026-03-20
 #>  dials           1.4.3      2026-04-11
 #>  discrim         1.1.0      2025-12-02
 #>  dplyr           1.2.1      2026-04-03
+#>  earth           5.3.5      2026-01-11
+#>  flexsurv        2.3.2      2024-08-17
+#>  gee             4.13-29    2024-12-11
 #>  ggplot2         4.0.3      2026-04-22
+#>  glmnet          4.1-10     2025-07-17
+#>  grf             2.6.1      2026-03-04
+#>  h2o             3.44.0.3   2024-01-11
 #>  HSAUR3          1.0-15     2024-08-17
 #>  infer           1.1.0      2025-12-18
+#>  kernlab         0.9-33     2024-08-13
+#>  kknn            1.4.1      2025-05-19
+#>  klaR            1.7-4      2026-02-23
+#>  LiblineaR       2.10-24    2024-09-13
+#>  lightgbm        4.6.0      2025-02-13
 #>  lme4            2.0-1      2026-03-05
+#>  mboost          2.9-11     2024-08-22
+#>  mda             0.5-5      2024-11-07
+#>  mixOmics        6.34.0     2025-10-29 Bioconduc~
 #>  multilevelmod   1.0.0      2022-06-17
+#>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.5.0      2026-04-09
+#>  partykit        1.2-27     2026-03-13
 #>  plsmod          1.0.0      2022-09-06
 #>  poissonreg      1.0.2      2026-04-20
 #>  prodlim         2026.03.11 2026-03-11
+#>  pscl            1.5.9      2024-01-31
 #>  purrr           1.2.2      2026-04-10
+#>  quantreg        6.1        2025-03-10
+#>  randomForest    4.7-1.2    2024-09-22
+#>  ranger          0.18.0     2026-01-16
 #>  recipes         1.3.2      2026-04-02
 #>  rlang           1.2.0      2026-04-06
 #>  rsample         1.3.2      2026-01-30
 #>  rules           1.0.3      2026-01-27
 #>  sparklyr        1.9.4      2026-04-18
+#>  sparsediscrim   0.3.0      2021-07-01
 #>  survival        3.8-6      2026-01-16
 #>  tibble          3.3.1      2026-01-11
-#>  tidymodels      1.4.1      2025-09-08
+#>  tidymodels      1.5.0      2026-04-23
 #>  tune            2.1.0      2026-04-17
 #>  workflows       1.3.0      2025-08-27
+#>  xgboost         3.2.1.1    2026-03-18
+#>  xrf             0.3.1      2025-12-17
 #>  yardstick       1.4.0      2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────

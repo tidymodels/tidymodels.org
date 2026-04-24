@@ -586,11 +586,11 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version  date (UTC)
@@ -610,7 +610,7 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  rsample        1.3.2    2026-01-30
 #>  skimr          2.2.2    2026-01-10
 #>  tibble         3.3.1    2026-01-11
-#>  tidymodels     1.4.1    2025-09-08
+#>  tidymodels     1.5.0    2026-04-23
 #>  timeDate       4052.112 2026-01-28
 #>  tune           2.1.0    2026-04-17
 #>  workflows      1.3.0    2025-08-27

@@ -305,11 +305,11 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-22
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  date     2026-04-24
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -325,7 +325,7 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 #>  rsample       1.3.2   2026-01-30
 #>  sessioninfo   1.2.3   2025-02-05
 #>  tibble        3.3.1   2026-01-11
-#>  tidymodels    1.4.1   2025-09-08
+#>  tidymodels    1.5.0   2026-04-23
 #>  tune          2.1.0   2026-04-17
 #>  workflows     1.3.0   2025-08-27
 #>  yardstick     1.4.0   2026-04-07
