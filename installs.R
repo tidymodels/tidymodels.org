@@ -8,7 +8,9 @@ packages <- c(
   "blogdown",
   "broom.mixed",
   "brulee",
+  "C50",
   "censored",
+  "Cubist",
   "desirability2",
   "detectors",
   "devtools",
@@ -86,6 +88,7 @@ packages <- c(
   "sparsediscrim",
   "LiblineaR",
   "naivebayes",
+  "xgboost",
   "xrf",
   "pscl",
   "coin",
@@ -94,6 +97,7 @@ packages <- c(
   "agua",
   "bonsai",
   "lightgbm",
+  "grf",
   "h2o",
   "kknn",
   "mboost",
@@ -107,6 +111,9 @@ packages <- c(
 )
 
 pak::pak(packages, upgrade = TRUE)
+
+# Bioconductor packages
+pak::pak("bioc::mixOmics")
 
 # Manually check for dev versions
 # sub("rstudio/", "", packages) |>
