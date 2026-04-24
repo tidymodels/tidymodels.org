@@ -130,8 +130,9 @@ Some pages use engines that require large external downloads (Spark, torch). The
 
 Spark is pre-installed in CI via `.github/actions/setup-render/action.yml`. Two settings must be kept in sync:
 
-- The cache key: `spark-4.1.1-java17-${{ runner.os }}`
-- The version in the cache path and download URL in the Install Spark step: `4.1.1`
+- The cache key: `spark-3.5.8-java17-${{ runner.os }}`
+- The version in the cache path and download URL in the Install Spark step: `3.5.8`
+- The `version` argument in `spark_connect()` calls in `learn/models/parsnip-predictions/index.qmd`: `"3.5"`
 
 To upgrade Spark, update both of these to the new version. Changing the cache key forces a fresh download on the next run.
 

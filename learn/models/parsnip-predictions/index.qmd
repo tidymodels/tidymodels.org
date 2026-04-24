@@ -168,7 +168,7 @@ Once that is working, you can get ready to fit models using:
 #| label: spark-connect
 #| eval: !expr 'run_spark'
 library(sparklyr)
-sc <- spark_connect("local")
+sc <- spark_connect("local", version = "3.5")
 ```
 
 </details>
@@ -320,7 +320,7 @@ If using the **Apache Spark** engine, we will need to identify the data source a
 #| label: spark-bin-data
 #| eval: !expr 'run_spark'
 library(sparklyr)
-sc <- spark_connect("local")
+sc <- spark_connect("local", version = "3.5")
 
 tbl_two_class <- copy_to(sc, modeldata::two_class_dat)
 
@@ -2913,7 +2913,7 @@ If using the **Apache Spark** engine, we will need to identify the data source, 
 #| eval: !expr 'run_spark'
 
 library(sparklyr)
-sc <- spark_connect("local")
+sc <- spark_connect("local", version = "3.5")
 
 tbl_concrete <- copy_to(sc, modeldata::concrete)
 

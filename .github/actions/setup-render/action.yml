@@ -53,15 +53,15 @@ runs:
       id: cache-spark
       uses: actions/cache@v4
       with:
-        path: ~/spark/spark-4.1.1-bin-hadoop3
-        key: spark-4.1.1-java17-${{ runner.os }}
+        path: ~/spark/spark-3.5.8-bin-hadoop3
+        key: spark-3.5.8-java17-${{ runner.os }}
 
     - name: Install Spark
       if: contains(inputs.packages, 'sparklyr') && steps.cache-spark.outputs.cache-hit != 'true'
       shell: bash
       run: |
         mkdir -p "$HOME/spark"
-        curl -fL "https://dlcdn.apache.org/spark/spark-4.1.1/spark-4.1.1-bin-hadoop3.tgz" \
+        curl -fL "https://dlcdn.apache.org/spark/spark-3.5.8/spark-3.5.8-bin-hadoop3.tgz" \
           -o /tmp/spark.tgz
         tar -xzf /tmp/spark.tgz -C "$HOME/spark"
         rm /tmp/spark.tgz
