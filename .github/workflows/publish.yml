@@ -23,6 +23,9 @@ jobs:
           r-version: release
           use-public-rspm: true
 
+      - name: Install system dependencies
+        run: sudo apt-get install -y libglpk-dev
+
       - name: Install downlit
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
