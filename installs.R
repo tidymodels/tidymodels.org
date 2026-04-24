@@ -93,6 +93,7 @@ packages <- c(
   "flexsurv",
   "agua",
   "bonsai",
+  "lightgbm",
   "multilevelmod",
   "sparklyr",
   "HSAUR3",
