@@ -50,14 +50,18 @@ runs:
 
     - name: Cache Spark installation
       if: contains(inputs.packages, 'sparklyr')
+      id: cache-spark
       uses: actions/cache@v4
       with:
-        path: ~/spark
-        key: spark-4.0-java17-${{ runner.os }}
+        path: ~/spark/spark-4.1.1-bin-hadoop3
+        key: spark-4.1.1-java17-${{ runner.os }}
 
     - name: Install Spark
-      if: contains(inputs.packages, 'sparklyr')
-      shell: Rscript {0}
+      if: contains(inputs.packages, 'sparklyr') && steps.cache-spark.outputs.cache-hit != 'true'
+      shell: bash
       run: |
-        if (!requireNamespace("sparklyr", quietly = TRUE)) pak::pkg_install("sparklyr")
-        sparklyr::spark_install(version = "4.0")
+        mkdir -p "$HOME/spark"
+        curl -fL "https://dlcdn.apache.org/spark/spark-4.1.1/spark-4.1.1-bin-hadoop3.tgz" \
+          -o /tmp/spark.tgz
+        tar -xzf /tmp/spark.tgz -C "$HOME/spark"
+        rm /tmp/spark.tgz
