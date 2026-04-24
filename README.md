@@ -15,7 +15,7 @@ This repo (and resulting website) is licensed as [CC BY-SA](LICENSE.md).
 
 ## Contributing
 
-1. Fork and clone the repo, then install R packages by running `installs.R` and restart R.
+1. Fork and clone the repo, then install R packages by running `R/installs.R` and restart R.
 2. Edit the relevant `.qmd` file(s) in `start/`, `learn/`, `find/`, etc.
 3. Render your changes locally with `quarto render <path/to/file.qmd>`, or skip local rendering by opening a PR and commenting:
    ```
@@ -25,7 +25,7 @@ This repo (and resulting website) is licensed as [CC BY-SA](LICENSE.md).
 4. Commit the source **and** the rendered outputs (`_freeze/` entries and `.md` files) to your branch.
 5. Open a pull request.
 
-If you're adding a new article to `learn/`, create a folder with an `index.qmd` inside it. If it needs packages beyond the core `tidymodels` meta-package, add them to `installs.R` **and** to the `r-packages:` field in the file's YAML front matter.
+If you're adding a new article to `learn/`, create a folder with an `index.qmd` inside it. If it needs packages beyond the core `tidymodels` meta-package, add them to `R/installs.R` **and** to the `r-packages:` field in the file's YAML front matter.
 
 ## Requirements to preview the site locally 
 
@@ -50,7 +50,7 @@ When updating the site, the goal is to use the most recent CRAN versions of the 
 1. To install the required packages, run the code within
    
    ```
-   installs.R
+   R/installs.R
    ```
    
    This file will also install the `keras` python libraries and environments. 
@@ -90,8 +90,8 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 This repo uses two Quarto profiles to split behavior between local and CI rendering:
 
-- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `post-render.R` and `post-render-downlit.R`.
-- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Also runs `post-render-downlit.R` so code linking applies to all HTML files including frozen pages.
+- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `R/post-render.R` and `R/post-render-downlit.R`.
+- `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Also runs `R/post-render-downlit.R` so code linking applies to all HTML files including frozen pages.
 
 When adding a script that should only run locally, add it to `_quarto-local.yml`. If it should run in CI, add it to `_quarto-production.yml` and ensure the workflow installs the needed dependencies.
 
@@ -99,7 +99,7 @@ When adding a script that should only run locally, add it to `_quarto-local.yml`
 
 R functions in code blocks are hyperlinked to their documentation via the [downlit](https://downlit.r-lib.org/) package, enabled with `code-link: true` in `_quarto.yml`.
 
-Because `library(tidymodels)` is not automatically expanded by downlit (unlike `library(tidyverse)`), `post-render-downlit.R` explicitly seeds the package list via `tidymodels::tidymodels_packages()` so functions like `step_*`, `tune()`, etc. are linked correctly.
+Because `library(tidymodels)` is not automatically expanded by downlit (unlike `library(tidyverse)`), `R/post-render-downlit.R` explicitly seeds the package list via `tidymodels::tidymodels_packages()` so functions like `step_*`, `tune()`, etc. are linked correctly.
 
 ## Package metadata
 
@@ -122,7 +122,7 @@ Pure prose pages (no R code chunks) do not need this field.
 
 ## Workflow
 
-* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `installs.R` **and** to the `r-packages` field in the new post's YAML front matter.
+* To add a new post to `learn/`, add a new folder with a `index.qmd` file in it and adapt the YAML header from an existing post. If new packages are required to run this post, then add them to the `packages` object in `R/installs.R` **and** to the `r-packages` field in the new post's YAML front matter.
 
 * To preview the site, render it locally with the latest quarto release version.
 
@@ -134,7 +134,7 @@ Pure prose pages (no R code chunks) do not need this field.
 
 * `keep-md: true` is set in `_quarto.yml` so that rendered `.md` files are committed alongside the source. This makes it possible to review in a PR whether code produced different results than before.
 
-* To do a complete rerender, run `re-render.R` script.
+* To do a complete rerender, run `R/re-render.R` script.
 
 ## Heavy engine dependencies
 
@@ -146,10 +146,10 @@ Spark is pre-installed in CI via `.github/actions/setup-render/action.yml`. When
 
 - Cache key in `setup-render/action.yml`: `spark-3.5.8-java17-${{ runner.os }}`
 - Cache path and download URL in the Install Spark step of `setup-render/action.yml`: `3.5.8`
-- Version check in `install_packages.R`: `grepl("^3\\.5", ...)`
+- Version check in `R/install_packages.R`: `grepl("^3\\.5", ...)`
 - `version` argument in all `spark_connect()` calls in `learn/models/parsnip-predictions/index.qmd`: `"3.5"`
 
-Changing the cache key forces a fresh download on the next CI run. The `install_packages.R` check prevents a redundant download when Spark is already present (either from cache or a prior install).
+Changing the cache key forces a fresh download on the next CI run. The `R/install_packages.R` check prevents a redundant download when Spark is already present (either from cache or a prior install).
 
 ## Rerender
 
@@ -157,32 +157,32 @@ We try to do a rerender after a release of a main package.
 
 * Make sure that `all_packages.R` is up to date.
 
-* Run `installs.R` script. Make sure to check that dev versions aren't present.
+* Run `R/installs.R` script. Make sure to check that dev versions aren't present.
 
-* Run `re-render.R` script.
+* Run `R/re-render.R` script.
 
 ## Selective re-render
 
 ### By package
 
-To re-render only the pages affected by one or more package updates, use `re-render-package.R`:
+To re-render only the pages affected by one or more package updates, use `R/re-render-package.R`:
 
 ```bash
-Rscript re-render-package.R ranger
-Rscript re-render-package.R ranger glmnet   # union of affected pages, deduped
-Rscript re-render-package.R tidymodels      # all pages that use tidymodels
-Rscript re-render-package.R --all           # every page on the site
+Rscript R/re-render-package.R ranger
+Rscript R/re-render-package.R ranger glmnet   # union of affected pages, deduped
+Rscript R/re-render-package.R tidymodels      # all pages that use tidymodels
+Rscript R/re-render-package.R --all           # every page on the site
 ```
 
 This reads `package_map.json` to find affected pages, clears their freeze cache, and re-renders them.
 
 ### By page path
 
-To re-render specific pages directly, use `re-render-pages.R`:
+To re-render specific pages directly, use `R/re-render-pages.R`:
 
 ```bash
-Rscript re-render-pages.R learn/models/parsnip-nnet/index.qmd
-Rscript re-render-pages.R learn/models/parsnip-nnet/index.qmd start/resampling/index.qmd
+Rscript R/re-render-pages.R learn/models/parsnip-nnet/index.qmd
+Rscript R/re-render-pages.R learn/models/parsnip-nnet/index.qmd start/resampling/index.qmd
 ```
 
 This clears the freeze cache for each page and re-renders it.
@@ -192,20 +192,20 @@ This clears the freeze cache for each page and re-renders it.
 - `package_map.json`: maps each package to the pages that depend on it. Regenerate after changing any `r-packages:` field:
 
   ```bash
-  Rscript make_package_map.R
+  Rscript R/make_package_map.R
   ```
 
 - `_versions.json`: records the installed package versions at the time of the last render. Update after any re-render:
 
   ```bash
-  Rscript make_versions.R
+  Rscript R/make_versions.R
   ```
 
 ### Automated re-renders via GitHub Actions
 
 The `check-cran-releases.yml` workflow runs on weekdays at 4am Pacific time. It compares current CRAN versions against `_versions.json` and, if any packages have updated, automatically:
 
-1. Installs only the packages needed for the affected pages (via `install_for_packages.R`, which uses the shared `install_packages.R` helper)
+1. Installs only the packages needed for the affected pages (via `R/install_for_packages.R`, which uses the shared `R/install_packages.R` helper)
 2. Re-renders the affected pages
 3. Updates `_versions.json` and `package_map.json`
 4. Opens a pull request for review, including the old and new versions of each updated package
