@@ -177,7 +177,7 @@ Rscript R/re-render-package.R tidymodels      # all pages that use tidymodels
 Rscript R/re-render-package.R --all           # every page on the site
 ```
 
-This reads `package_map.json` to find affected pages, clears their freeze cache, and re-renders them.
+This reads `data/package_map.json` to find affected pages, clears their freeze cache, and re-renders them.
 
 ### By page path
 
@@ -192,13 +192,13 @@ This clears the freeze cache for each page and re-renders it.
 
 ### Supporting files
 
-- `package_map.json`: maps each package to the pages that depend on it. Regenerate after changing any `r-packages:` field:
+- `data/package_map.json`: maps each package to the pages that depend on it. Regenerate after changing any `r-packages:` field:
 
   ```bash
   Rscript R/make_package_map.R
   ```
 
-- `_versions.json`: records the installed package versions at the time of the last render. Update after any re-render:
+- `data/_versions.json`: records the installed package versions at the time of the last render. Update after any re-render:
 
   ```bash
   Rscript R/make_versions.R
@@ -206,14 +206,14 @@ This clears the freeze cache for each page and re-renders it.
 
 ### Automated re-renders via GitHub Actions
 
-The `check-cran-releases.yml` workflow runs on weekdays at 4am Pacific time. It compares current CRAN versions against `_versions.json` and, if any packages have updated, automatically:
+The `check-cran-releases.yml` workflow runs on weekdays at 4am Pacific time. It compares current CRAN versions against `data/_versions.json` and, if any packages have updated, automatically:
 
 1. Installs only the packages needed for the affected pages (via `R/install_for_packages.R`, which uses the shared `R/install_packages.R` helper)
 2. Re-renders the affected pages
-3. Updates `_versions.json` and `package_map.json`
+3. Updates `data/_versions.json` and `data/package_map.json`
 4. Opens a pull request for review, including the old and new versions of each updated package
 
-If any page fails to render, an issue is opened instead of a PR, with a link to the failed workflow run. The `_versions.json` and `package_map.json` are not updated on failure, so the workflow will retry on the next run.
+If any page fails to render, an issue is opened instead of a PR, with a link to the failed workflow run. The `data/_versions.json` and `data/package_map.json` are not updated on failure, so the workflow will retry on the next run.
 
 You can also trigger it manually from the GitHub Actions UI, or with the `gh` CLI:
 

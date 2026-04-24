@@ -9,7 +9,7 @@ description: |
   Use tests of independence and goodness of fit to analyze tables of counts.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - sessioninfo

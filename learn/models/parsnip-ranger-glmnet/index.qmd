@@ -10,7 +10,7 @@ description: |
   Create and train different kinds of regression models with different computational engines.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - ranger

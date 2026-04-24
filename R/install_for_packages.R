@@ -13,11 +13,11 @@ if (length(args) == 0) {
 }
 
 repo_root <- here::here()
-map_path  <- file.path(repo_root, "package_map.json")
+map_path  <- file.path(repo_root, "data/package_map.json")
 
 if (!file.exists(map_path)) {
   cli::cli_abort(
-    "{.file package_map.json} not found. Run {.code Rscript make_package_map.R} first."
+    "{.file data/package_map.json} not found. Run {.code Rscript make_package_map.R} first."
   )
 }
 

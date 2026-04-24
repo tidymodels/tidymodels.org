@@ -8,7 +8,7 @@ description: |
  Write a new recipe step for data preprocessing.
 toc: true
 toc-depth: 3
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
 ---

@@ -6,7 +6,7 @@ description: |
   Find parsnip prediction types for different models and engines.
 toc: true
 toc-depth: 0
-include-after-body: ../../resources.html
+include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 message: FALSE
 warnings: FALSE

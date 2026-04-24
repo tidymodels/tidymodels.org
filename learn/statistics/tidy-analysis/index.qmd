@@ -10,7 +10,7 @@ description: |
   Analyze the results of correlation tests and simple regression models for many data sets at once.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
 ---

@@ -8,7 +8,7 @@ description: |
   Build functions to use in tuning both quantitative and qualitative parameters.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - dials

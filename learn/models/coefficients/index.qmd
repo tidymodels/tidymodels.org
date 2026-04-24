@@ -11,7 +11,7 @@ description: |
   Create models that use coefficients, extract them from fitted models, and visualize them.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - glmnet

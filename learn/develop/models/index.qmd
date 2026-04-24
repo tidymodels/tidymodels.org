@@ -8,7 +8,7 @@ description: |
   Create a parsnip model function from an existing model implementation.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - mda

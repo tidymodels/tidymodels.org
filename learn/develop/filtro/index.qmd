@@ -8,7 +8,7 @@ description: |
  Create a new score class object for feature selection.
 toc: true
 toc-depth: 3
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - filtro
   - modeldata

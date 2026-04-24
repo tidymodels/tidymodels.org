@@ -61,7 +61,7 @@ for (path in qmd_files) {
 
 pkg_map <- pkg_map[sort(names(pkg_map))]
 
-out_path <- here::here("package_map.json")
+out_path <- here::here("data/package_map.json")
 jsonlite::write_json(pkg_map, out_path, pretty = TRUE, auto_unbox = FALSE)
 
 cli::cli_alert_success("Written to {.file package_map.json}")

@@ -8,8 +8,8 @@ write_output <- function(...) {
   cat(..., file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
 }
 
-recorded <- jsonlite::read_json("_versions.json", simplifyVector = TRUE)
-pkg_map  <- jsonlite::read_json("package_map.json")
+recorded <- jsonlite::read_json("data/_versions.json", simplifyVector = TRUE)
+pkg_map  <- jsonlite::read_json("data/package_map.json")
 
 resolve_pages <- function(pkgs) {
   if (identical(pkgs, "--all")) {

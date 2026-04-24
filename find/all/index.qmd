@@ -2,7 +2,7 @@
 title: "Search all of tidymodels"
 toc: true
 toc-depth: 0
-include-after-body: ../../resources.html
+include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 r-packages:
   - tidymodels
