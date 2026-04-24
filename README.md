@@ -122,6 +122,19 @@ Pure prose pages (no R code chunks) do not need this field.
 
 * To do a complete rerender, run `re-render.R` script.
 
+## Heavy engine dependencies
+
+Some pages use engines that require large external downloads (Spark, torch). These are cached in CI to avoid re-downloading on every run.
+
+### Apache Spark
+
+Spark is pre-installed in CI via `.github/actions/setup-render/action.yml`. Two settings must be kept in sync:
+
+- The cache key: `spark-4.0-java17-${{ runner.os }}`
+- The install call: `sparklyr::spark_install(version = "4.0")`
+
+To upgrade Spark, update both the version string in the install call and the version number in the cache key. Changing the cache key will force a fresh download on the next run.
+
 ## Rerender
 
 We try to do a rerender after a release of a main package.

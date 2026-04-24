@@ -54,3 +54,10 @@ runs:
       with:
         path: ~/spark
         key: spark-4.0-java17-${{ runner.os }}
+
+    - name: Install Spark
+      if: contains(inputs.packages, 'sparklyr')
+      shell: Rscript {0}
+      run: |
+        if (!requireNamespace("sparklyr", quietly = TRUE)) pak::pkg_install("sparklyr")
+        sparklyr::spark_install(version = "4.0")
