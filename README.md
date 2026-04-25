@@ -88,12 +88,16 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 * [`make_function_lists/`](make_function_lists/): scripts that generate the CSV reference lists for the find pages. See [Generating function lists](#generating-function-lists) below. `all_packages.csv` in this folder lists all packages in the tidymodels ecosystem and is used by `tidymodels.R` to build the function reference.
 
+* [`about/`](about/): author listing page rendered from `index.qmd` using `authors.yaml` and `template.ejs`.
+
+* [`cheatsheets/`](cheatsheets/): cheatsheet page rendered from a single `index.qmd` file.
+
 
 ## Quarto profiles
 
 This repo uses two Quarto profiles to split behavior between local and CI rendering:
 
-- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts such as `R/post-render.R` and `R/post-render-downlit.R`.
+- `_quarto-local.yml` (default): used when rendering locally. Defines post-render scripts: `learn/models/parsnip-predictions/normalize-h2o-output.R`, `R/post-render.R`, and `R/post-render-downlit.R`.
 - `_quarto-production.yml`: used in CI via `QUARTO_PROFILE: production` in `publish.yml`. Also runs `R/post-render-downlit.R` so code linking applies to all HTML files including frozen pages.
 
 When adding a script that should only run locally, add it to `_quarto-local.yml`. If it should run in CI, add it to `_quarto-production.yml` and ensure the workflow installs the needed dependencies.
@@ -129,7 +133,7 @@ Pure prose pages (no R code chunks) do not need this field.
 
 * To preview the site, render it locally with the latest quarto release version.
 
-* The site is currently rendered locally (macOS), not in CI. Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true` — and those files are what gets deployed. Always include them in your PR.
+* Rendered outputs are committed to the repo — the freeze cache (`_freeze/`) and the `.md` files kept via `keep-md: true`. The `publish.yml` workflow renders and publishes the site on Ubuntu via `quarto-actions/publish`; frozen pages are served from the committed cache rather than re-rendered. Always include rendered outputs in your PR.
 
 * **Rendering in CI via a PR comment:** If you'd prefer not to render locally, comment `/render` on your open PR. A GitHub Actions workflow (`render-pr.yml`) will detect which `.qmd` files changed, install the needed packages, render those pages, and commit the output back to your branch. It posts a comment when done (or links to the failed run on error). Only repo owners, org members, and collaborators can trigger this.
 
