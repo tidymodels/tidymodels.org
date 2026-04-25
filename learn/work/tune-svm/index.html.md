@@ -10,7 +10,7 @@ description: |
   Choose hyperparameters for a model by training on a grid of many possible parameter values.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - mlbench

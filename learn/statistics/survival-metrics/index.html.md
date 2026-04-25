@@ -9,7 +9,7 @@ description: |
   Let's discuss how to compute modern performance metrics for time-to-event models.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - censored

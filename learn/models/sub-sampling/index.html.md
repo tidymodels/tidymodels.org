@@ -9,7 +9,7 @@ description: |
   Improve model performance in imbalanced data sets through undersampling or oversampling.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - klaR

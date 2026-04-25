@@ -10,7 +10,7 @@ description: |
   Build and fit a predictive model with more than one outcome.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - pls

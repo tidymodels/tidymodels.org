@@ -8,7 +8,7 @@ description: |
   Create a new performance metric and integrate it with yardstick functions.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
 ---

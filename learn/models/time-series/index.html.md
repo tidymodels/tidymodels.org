@@ -9,7 +9,7 @@ description: |
   Calculate performance estimates for time series forecasts using resampling.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - timetk

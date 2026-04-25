@@ -5,7 +5,7 @@ description: |
   Find model types and engines to fit and predict clustering methods in the tidymodels framework.
 toc: true
 toc-depth: 0
-include-after-body: ../../resources.html
+include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 r-packages:
   - tidymodels

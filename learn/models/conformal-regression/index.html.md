@@ -11,7 +11,7 @@ description: |
   The probably package has functions to create prediction intervals for regression models.
 toc: true
 toc-depth: 2
-include-after-body: ../../../resources.html
+include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - probably
