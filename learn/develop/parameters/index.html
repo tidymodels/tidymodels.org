@@ -393,8 +393,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Some models and recipe steps contain parameters that dials does not know about. You can construct new quantitative and qualitative parameters using <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param()</a></code> or <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_qual_param()</a></code>, respectively. This article is a guide to creating new parameters.</p>
 </section><section id="quantitative-parameters" class="level2"><h2 class="anchored" data-anchor-id="quantitative-parameters">Quantitative parameters</h2>
 <p>As an example, let’s consider the multivariate adaptive regression spline (<a href="https://en.wikipedia.org/wiki/Multivariate_adaptive_regression_spline">MARS</a>) model, which creates nonlinear features from predictors and adds them to a linear regression models. The earth package is an excellent implementation of this method.</p>
-<p>MARS creates an initial set of features and then prunes them back to an appropriate size. This can be done automatically by <code><a href="https://rdrr.io/pkg/earth/man/earth.html">earth::earth()</a></code> or the number of final terms can be set by the user. The parsnip function <code><a href="https://parsnip.tidymodels.org/reference/mars.html">mars()</a></code> has a parameter called <code>num_terms</code> that defines this.</p>
-<p>What if we want to create a parameter for the number of <em>initial terms</em> included in the model. There is no argument in <code><a href="https://parsnip.tidymodels.org/reference/mars.html">parsnip::mars()</a></code> for this but we will make one now. The argument name in <code><a href="https://rdrr.io/pkg/earth/man/earth.html">earth::earth()</a></code> is <code>nk</code>, which is not very descriptive. Our parameter will be called <code>num_initial_terms</code>.</p>
+<p>MARS creates an initial set of features and then prunes them back to an appropriate size. This can be done automatically by <code>earth::earth()</code> or the number of final terms can be set by the user. The parsnip function <code><a href="https://parsnip.tidymodels.org/reference/mars.html">mars()</a></code> has a parameter called <code>num_terms</code> that defines this.</p>
+<p>What if we want to create a parameter for the number of <em>initial terms</em> included in the model. There is no argument in <code><a href="https://parsnip.tidymodels.org/reference/mars.html">parsnip::mars()</a></code> for this but we will make one now. The argument name in <code>earth::earth()</code> is <code>nk</code>, which is not very descriptive. Our parameter will be called <code>num_initial_terms</code>.</p>
 <p>We use the <code><a href="https://dials.tidymodels.org/reference/new-param.html">new_quant_param()</a></code> function since this is a numeric parameter. The main two arguments to a numeric parameter function are <code>range</code> and <code>trans</code>.</p>
 <p>The <code>range</code> specifies the possible values of the parameter. For our example, a minimal value might be one or two. What is the upper limit? The default in the earth package is</p>
 <div class="cell" data-layout-align="center">
@@ -618,7 +618,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-24
+#&gt;  date     2026-04-25
 #&gt;  pandoc   3.1.3
 #&gt;  quarto   1.9.37
 #&gt; 
@@ -645,7 +645,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+  <div class="resourcesTitle">Resources</div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
+    </div>
+    <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
+    </div>
+    <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
+    </div>
+    <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
+    </div>
+    <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
+  </div>
+</div>
+
+<script>
+  sidebar = document.querySelector('#quarto-margin-sidebar');
+  resources = document.querySelector('.resources');
+  sidebar.appendChild(resources);
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();

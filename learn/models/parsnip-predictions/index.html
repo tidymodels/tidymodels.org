@@ -335,13 +335,13 @@ catboost installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://catboost.ai/">catboost</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">catboost</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">train_pool_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"adult_train.1000"</span>, package <span class="op">=</span> <span class="st">"catboost"</span><span class="op">)</span></span>
 <span><span class="va">test_pool_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"adult_test.1000"</span>, package <span class="op">=</span> <span class="st">"catboost"</span><span class="op">)</span></span>
 <span><span class="va">cd_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"adult.cd"</span>, package <span class="op">=</span> <span class="st">"catboost"</span><span class="op">)</span></span>
-<span><span class="va">train_pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/catboost/man/catboost.load_pool.html">catboost.load_pool</a></span><span class="op">(</span><span class="va">train_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
-<span><span class="va">test_pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/catboost/man/catboost.load_pool.html">catboost.load_pool</a></span><span class="op">(</span><span class="va">test_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
+<span><span class="va">train_pool</span> <span class="op">&lt;-</span> <span class="fu">catboost.load_pool</span><span class="op">(</span><span class="va">train_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
+<span><span class="va">test_pool</span> <span class="op">&lt;-</span> <span class="fu">catboost.load_pool</span><span class="op">(</span><span class="va">test_pool_path</span>, column_description <span class="op">=</span> <span class="va">cd_path</span><span class="op">)</span></span>
 <span><span class="va">fit_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  iterations <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  loss_function <span class="op">=</span> <span class="st">'Logloss'</span>,</span>
@@ -371,7 +371,7 @@ Apache Spark installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html">spark_install</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">spark_install</span><span class="op">(</span>version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -380,7 +380,7 @@ Apache Spark installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -398,7 +398,7 @@ h2o installation instructions
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>After installation is complete, you can start a local server via <code><a href="https://rdrr.io/pkg/h2o/man/h2o.init.html">h2o::h2o.init()</a></code>.</p>
+<p>After installation is complete, you can start a local server via <code>h2o::h2o.init()</code>.</p>
 <p>The tidymodels <a href="https://agua.tidymodels.org/">agua</a> package contains some helpers and will also need to be installed. You can use its function to start a server too:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -409,7 +409,7 @@ h2o installation instructions
 <span><span class="co">#&gt; The following object is masked from 'package:workflowsets':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     rank_results</span></span>
-<span><span class="fu"><a href="https://agua.tidymodels.org/reference/h2o-server.html">h2o_start</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">h2o_start</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: JAVA not found, H2O may take minutes trying to connect.</span></span>
 <span><span class="co">#&gt; Warning in h2o.clusterInfo(): </span></span>
 <span><span class="co">#&gt; Your H2O cluster version is (2 years, 4 months and 4 days) old. There may be a newer version available.</span></span>
@@ -440,8 +440,8 @@ Tensorflow and Keras installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assumes you are going to use a virtual environment called </span></span>
-<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/virtualenv-tools.html">virtualenv_list</a></span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/use_python.html">use_virtualenv</a></span><span class="op">(</span><span class="va">pve</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">virtualenv_list</span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu">use_virtualenv</span><span class="op">(</span><span class="va">pve</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -516,7 +516,7 @@ Torch installation instructions
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">72</span><span class="op">)</span></span>
 <span><span class="va">cls_group_split</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">HSAUR3</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/HSAUR3/man/toenail.html">toenail</a></span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">HSAUR3</span><span class="fu">::</span><span class="va">toenail</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">group_initial_split</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">patientID</span><span class="op">)</span></span>
 <span><span class="va">cls_group_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">cls_group_split</span><span class="op">)</span></span>
 <span><span class="va">cls_group_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">cls_group_split</span><span class="op">)</span></span></code></pre></div>
@@ -529,16 +529,16 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Re-using existing Spark connection to local</span></span>
 <span></span>
 <span><span class="va">tbl_two_class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/two_class_dat.html">two_class_dat</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_two_class</span>, training <span class="op">=</span> <span class="fl">0.994</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.994</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">tbl_bin</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_two_class</span>, training <span class="op">=</span> <span class="fl">0.994</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.994</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tbl_sim_mtl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="va">mtl_data</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_mtl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_sim_mtl</span>, training <span class="op">=</span> <span class="fl">0.967</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.967</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tbl_mtl</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_sim_mtl</span>, training <span class="op">=</span> <span class="fl">0.967</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.967</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1193,10 +1193,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1777071682144_1 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777078254996_1 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               25380         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               25377         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         21         55    35.70000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1307,10 +1307,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1777071682144_53 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777078254996_53 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               25379         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               25380         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         21         55    35.70000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1475,7 +1475,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__973a9db4_92f0_4a6f_ae51_7a5e14c446ed, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__3fed0bd6_b74f_4d87_8cdc_c110a5cc09ae, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1834,7 +1834,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__1625268d_b18f_41d6_b4c6_d8fa70a7ca23, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__30fe71b7_f81f_456e_aaba_f7b4329a4c62, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3053,7 +3053,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1777071682144_105 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777078254996_105 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family  link                                regularization</span></span>
 <span><span class="co">#&gt; 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )</span></span>
@@ -3856,7 +3856,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1777071682144_107 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1777078254996_107 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -4269,7 +4269,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OMultinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1777071682144_119 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777078254996_119 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;        family        link                                regularization</span></span>
 <span><span class="co">#&gt; 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )</span></span>
@@ -4497,7 +4497,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: naivebayes</span></span>
-<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1777071682144_120 </span></span>
+<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1777078254996_120 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_response_levels min_apriori_probability max_apriori_probability</span></span>
 <span><span class="co">#&gt; 1                         2                 0.44713                 0.55287</span></span>
@@ -5283,10 +5283,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1777071682144_122 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1777078254996_122 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               92549        13</span></span>
+<span><span class="co">#&gt; 1              50                       50               92548        13</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        20   16.82000        119        170   142.84000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -5620,7 +5620,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__ce0a8c97_06fe_4a87_8c60_15a763049acd, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__6beda857_1179_4df0_a370_85488ff96d64, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -5768,7 +5768,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1777071682144_173 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1777078254996_173 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family  link            regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 binomial logit Lasso (lambda = 0.03081 )                       2328</span></span>
@@ -6207,12 +6207,12 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb260"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Re-using existing Spark connection to local</span></span>
 <span></span>
 <span><span class="va">tbl_concrete</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/concrete.html">concrete</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_concrete</span>, training <span class="op">=</span> <span class="fl">0.95</span>, test <span class="op">=</span> <span class="fl">0.05</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tbl_reg</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_concrete</span>, training <span class="op">=</span> <span class="fl">0.95</span>, test <span class="op">=</span> <span class="fl">0.05</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6675,10 +6675,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1777071682144_329 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777078254996_329 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20474         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20472         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -6749,7 +6749,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1777071682144_330 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1777078254996_330 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
 <span><span class="co">#&gt; 1              50                       50               20474         6</span></span>
@@ -6869,7 +6869,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__c417b773_ebe9_4566_bde7_088efedd7704, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__18e6fb2d_56c4_49df_bf55_076cdf92d9cd, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7132,7 +7132,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__49d40500_0e6b_40cf_b772_cdf2b1f0cd18, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__8e92b7b2_d9d4_4b3a_83ca_09efb6d2fe88, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7817,7 +7817,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1777071682144_331 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777078254996_331 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family     link                               regularization</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )</span></span>
@@ -8564,7 +8564,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1777071682144_332 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1777078254996_332 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -9216,7 +9216,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1777071682144_333 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1777078254996_333 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;    family link                               regularization</span></span>
 <span><span class="co">#&gt; 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )</span></span>
@@ -9849,10 +9849,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1777071682144_334 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1777078254996_334 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               22986         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               22990         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        13    8.84000         19         48    31.90000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -10127,7 +10127,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__df75d8b7_0edb_4584_884b_fc7f3180b1c7, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__6cfdb02c_377a_4520_ba3e_8068abea5e49, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -10259,7 +10259,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1777071682144_335 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1777078254996_335 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family     link           regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Lasso (lambda = 0.9516 )                       1801</span></span>
@@ -12096,7 +12096,7 @@ Torch installation instructions
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-24
+#&gt;  date     2026-04-25
 #&gt;  pandoc   3.1.3
 #&gt;  quarto   1.9.37
 #&gt; 
@@ -12164,7 +12164,39 @@ Torch installation instructions
 </div>
 
 
-</section></section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+  <div class="resourcesTitle">Resources</div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
+    </div>
+    <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
+    </div>
+    <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
+    </div>
+    <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
+    </div>
+    <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
+  </div>
+</div>
+
+<script>
+  sidebar = document.querySelector('#quarto-margin-sidebar');
+  resources = document.querySelector('.resources');
+  sidebar.appendChild(resources);
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();

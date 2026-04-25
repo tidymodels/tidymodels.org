@@ -456,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>For the first part, the standardized outcomes and predictors need to be formatted into two separate matrices. Since we used <code>retain = TRUE</code> when prepping the recipes, we can <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> with <code>new_data = NULl</code> to get the processed data back out. To save the data as a matrix, the option <code>composition = "matrix"</code> will avoid saving the data as tibbles and use the required format.</p>
 <p>The pls package expects a simple formula to specify the model, but each side of the formula should <em>represent a matrix</em>. In other words, we need a data set with two columns where each column is a matrix. The secret to doing this is to “protect” the two matrices using <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> when adding them to the data frame.</p>
-<p>The calculation for the proportion of variance explained is straightforward for the predictors; the function <code><a href="https://khliland.github.io/pls/reference/coef.mvr.html">pls::explvar()</a></code> will compute that. For the outcomes, the process is more complicated. A ready-made function to compute these is not obvious but there is some code inside of the summary function to do the computation (see below).</p>
+<p>The calculation for the proportion of variance explained is straightforward for the predictors; the function <code>pls::explvar()</code> will compute that. For the outcomes, the process is more complicated. A ready-made function to compute these is not obvious but there is some code inside of the summary function to do the computation (see below).</p>
 <p>The function <code>get_var_explained()</code> shown here will do all these computations and return a data frame with columns <code>components</code>, <code>source</code> (for the predictors, water, etc), and the <code>proportion</code> of variance that is explained by the components.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -478,16 +478,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    measurements <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">x_mat</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="co"># Fit the model</span></span>
-<span>  <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://khliland.github.io/pls/reference/mvr.html">plsr</a></span><span class="op">(</span><span class="va">endpoints</span> <span class="op">~</span> <span class="va">measurements</span>, data <span class="op">=</span> <span class="va">pls_format</span><span class="op">)</span></span>
+<span>  <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">plsr</span><span class="op">(</span><span class="va">endpoints</span> <span class="op">~</span> <span class="va">measurements</span>, data <span class="op">=</span> <span class="va">pls_format</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># Get the proportion of the predictor variance that is explained</span></span>
 <span>  <span class="co"># by the model for different number of components. </span></span>
-<span>  <span class="va">xve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://khliland.github.io/pls/reference/coef.mvr.html">explvar</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">/</span><span class="fl">100</span> </span>
+<span>  <span class="va">xve</span> <span class="op">&lt;-</span> <span class="fu">explvar</span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">/</span><span class="fl">100</span> </span>
 <span></span>
 <span>  <span class="co"># To do the same for the outcome, it is more complex. This code </span></span>
 <span>  <span class="co"># was extracted from pls:::summary.mvr. </span></span>
 <span>  <span class="va">explained</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="fu">pls</span><span class="fu">::</span><span class="fu"><a href="https://khliland.github.io/pls/reference/mvrVal.html">R2</a></span><span class="op">(</span><span class="va">mod</span>, estimate <span class="op">=</span> <span class="st">"train"</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">val</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/drop.html">drop</a></span><span class="op">(</span><span class="fu">pls</span><span class="fu">::</span><span class="fu">R2</span><span class="op">(</span><span class="va">mod</span>, estimate <span class="op">=</span> <span class="st">"train"</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">val</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="co"># transpose so that components are in rows</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -521,7 +521,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">variance_data</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">folds</span><span class="op">[[</span><span class="st">"var"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">components</span> <span class="op">&lt;=</span> <span class="fl">15</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">components</span> <span class="op">&lt;=</span> <span class="fl">15</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">components</span>, <span class="va">source</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">proportion</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; `summarise()` has regrouped the output.</span></span>
@@ -554,7 +554,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-24
+#&gt;  date     2026-04-25
 #&gt;  pandoc   3.1.3
 #&gt;  quarto   1.9.37
 #&gt; 
@@ -582,7 +582,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+  <div class="resourcesTitle">Resources</div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
+    </div>
+    <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
+    </div>
+    <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
+    </div>
+    <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
+    </div>
+    <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
+  </div>
+</div>
+
+<script>
+  sidebar = document.querySelector('#quarto-margin-sidebar');
+  resources = document.querySelector('.resources');
+  sidebar.appendChild(resources);
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();

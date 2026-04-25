@@ -463,7 +463,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">basics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">textrecipes</span><span class="fu">::</span><span class="va"><a href="https://textrecipes.tidymodels.org/reference/count_functions.html">count_functions</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">basics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">textrecipes</span><span class="fu">::</span><span class="va">count_functions</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">basics</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "n_words"    "n_uq_words" "n_charS"    "n_uq_charS" "n_digits"  </span></span>
 <span><span class="co">#&gt; [6] "n_hashtags"</span></span></code></pre></div>
@@ -480,7 +480,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Since we will be using a glmnet model which is <a href="../../../find/sparse/index.html">sparse compatible</a> then we will set <code>sparse = "yes"</code> in <code><a href="https://textrecipes.tidymodels.org/reference/step_texthash.html">step_texthash()</a></code> as we know it will produce plenty of sparse data. In this example, it will lead to a 4 times speed increase.</p>
+<p>Since we will be using a glmnet model which is <a href="../../../find/sparse/index.html">sparse compatible</a> then we will set <code>sparse = "yes"</code> in <code>step_texthash()</code> as we know it will produce plenty of sparse data. In this example, it will lead to a 4 times speed increase.</p>
 </div>
 </div>
 <p>Now, let’s put this all together in one recipe:</p>
@@ -496,17 +496,17 @@ Note
 <span>  <span class="co"># Make a copy of the raw text</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html">step_mutate</a></span><span class="op">(</span>review_raw <span class="op">=</span> <span class="va">review</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Compute the initial features. This removes the `review_raw` column</span></span>
-<span>  <span class="fu"><a href="https://textrecipes.tidymodels.org/reference/step_textfeature.html">step_textfeature</a></span><span class="op">(</span><span class="va">review_raw</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_textfeature</span><span class="op">(</span><span class="va">review_raw</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Make the feature names shorter</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rename_at.html">step_rename_at</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"textfeature_"</span><span class="op">)</span>,</span>
 <span>    fn <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"textfeature_review_raw_"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://textrecipes.tidymodels.org/reference/step_tokenize.html">step_tokenize</a></span><span class="op">(</span><span class="va">review</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://textrecipes.tidymodels.org/reference/step_stopwords.html">step_stopwords</a></span><span class="op">(</span><span class="va">review</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://textrecipes.tidymodels.org/reference/step_stem.html">step_stem</a></span><span class="op">(</span><span class="va">review</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_tokenize</span><span class="op">(</span><span class="va">review</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_stopwords</span><span class="op">(</span><span class="va">review</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_stem</span><span class="op">(</span><span class="va">review</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Here is where the tuning parameter is declared</span></span>
-<span>  <span class="fu"><a href="https://textrecipes.tidymodels.org/reference/step_texthash.html">step_texthash</a></span><span class="op">(</span><span class="va">review</span>, signed <span class="op">=</span> <span class="cn">FALSE</span>, num_terms <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>, sparse <span class="op">=</span> <span class="st">"yes"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">step_texthash</span><span class="op">(</span><span class="va">review</span>, signed <span class="op">=</span> <span class="cn">FALSE</span>, num_terms <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>, sparse <span class="op">=</span> <span class="st">"yes"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Simplify these names</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rename_at.html">step_rename_at</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"review_hash"</span><span class="op">)</span>, fn <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"review_"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co"># Transform the initial feature set</span></span>
@@ -618,7 +618,7 @@ Warning
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">roc_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">roc_auc</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu">tic</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1559</span><span class="op">)</span></span>
 <span><span class="va">five_star_glmnet</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid</a></span><span class="op">(</span></span>
@@ -629,8 +629,8 @@ Warning
 <span>    metrics <span class="op">=</span> <span class="va">roc_scores</span>, </span>
 <span>    control <span class="op">=</span> <span class="va">ctrl</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 77.229 sec elapsed</span></span>
+<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 102.731 sec elapsed</span></span>
 <span></span>
 <span><span class="va">five_star_glmnet</span></span>
 <span><span class="co">#&gt; # Tuning results</span></span>
@@ -1064,7 +1064,7 @@ Note
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.5.3 (2026-03-11)
 #&gt;  language (EN)
-#&gt;  date     2026-04-24
+#&gt;  date     2026-04-25
 #&gt;  pandoc   3.1.3
 #&gt;  quarto   1.9.37
 #&gt; 
@@ -1094,7 +1094,39 @@ Note
 </div>
 
 
-</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><!-- plausible --><script async="" defer data-domain="tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script><div class="section resources">
+  <div class="resourcesTitle">Resources</div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../find/"><i class="fas fa-search fa-xs"></i>  Find</a>
+    </div>
+    <div class="eventDetails">Explore searchable tables of all tidymodels packages and functions.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../books/"><i class="fas fa-book-open fa-xs"></i>  Books</a>
+    </div>
+    <div class="eventDetails">Study up on statistics and modeling with our comprehensive books.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="../../../cheatsheets/"><i class="fas fa-file-alt fa-xs"></i>  Cheatsheets</a>
+    </div>
+    <div class="eventDetails">Quick reference guides for tidymodels packages.</div>
+  </div>
+  <div class="event">
+    <div class="eventTitle">
+      <a href="https://www.tidyverse.org/tags/tidymodels/" target="_blank"><i class="fas fa-bullhorn fa-xs"></i>  News</a>
+    </div>
+    <div class="eventDetails">Hear the latest about tidymodels packages at the <a href="https://www.tidyverse.org/tags/tidymodels/">tidyverse blog</a>.</div>
+  </div>
+</div>
+
+<script>
+  sidebar = document.querySelector('#quarto-margin-sidebar');
+  resources = document.querySelector('.resources');
+  sidebar.appendChild(resources);
+</script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
