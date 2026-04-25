@@ -2,7 +2,6 @@
 title: "Search all of tidymodels"
 toc: true
 toc-depth: 0
-include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 r-packages:
   - tidymodels
@@ -10,6 +9,7 @@ r-packages:
   - DT
   - htmlwidgets
   - glue
+include-after-body: ../../html/resources.html
 ---
 
 Here are all the functions available across all of the tidymodels packages. Click on the link in the topic column to find the relevant reference documentation.

@@ -11,7 +11,6 @@ description: |
   With information on a diabetes patient's stay at a hospital like demographics, diagnostic results, payment, and medications, a hospital can train a machine learning model to predict reasonably well whether a patient will be readmitted within 30 days. What harms to patients could result from using such a model, though?
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 bibliography: refs.bib
 r-packages:
   - tidymodels
@@ -19,6 +18,7 @@ r-packages:
   - baguette
   - GGally
   - desirability2
+include-after-body: ../../../html/resources.html
 ---
 
 ------------------------------------------------------------------------
@@ -638,7 +638,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

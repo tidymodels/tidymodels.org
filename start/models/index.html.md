@@ -466,7 +466,7 @@ ggplot(urchins,
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

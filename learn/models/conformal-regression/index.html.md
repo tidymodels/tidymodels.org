@@ -11,12 +11,12 @@ description: |
   The probably package has functions to create prediction intervals for regression models.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - probably
   - nnet
   - future
+include-after-body: ../../../html/resources.html
 ---
 
 To use code in this article,  you will need to install the following packages: future, nnet, probably, and tidymodels. The probably package should be version 1.0.2 or greater.
@@ -469,7 +469,7 @@ If you are interested and would like to learn more, try these resources:
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

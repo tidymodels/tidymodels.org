@@ -11,9 +11,9 @@ description: |
   Apply bootstrap resampling to estimate uncertainty in model parameters.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
+include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
@@ -60,7 +60,7 @@ summary(nlsfit)
 #> Residual standard error: 2.774 on 30 degrees of freedom
 #> 
 #> Number of iterations to convergence: 1 
-#> Achieved convergence tolerance: 1.941e-08
+#> Achieved convergence tolerance: 1.967e-08
 
 ggplot(mtcars, aes(wt, mpg)) +
     geom_point() +
@@ -265,7 +265,7 @@ ggplot(splines_aug, aes(x, y)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

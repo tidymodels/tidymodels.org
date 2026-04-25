@@ -6,13 +6,13 @@ description: |
   Find `tidy()`, `augment()`, and `glance()` methods for different objects.
 toc: true
 toc-depth: 0
-include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 r-packages:
   - tidymodels
   - readr
   - DT
   - htmlwidgets
+include-after-body: ../../html/resources.html
 ---
 
 Here are all the broom functions available across CRAN packages. Click on the link in the topic column to find more information.

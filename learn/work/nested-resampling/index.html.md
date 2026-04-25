@@ -8,13 +8,13 @@ description: |
   Estimate the best hyperparameters for a model using nested resampling.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - scales
   - mlbench
   - kernlab
   - furrr
+include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
@@ -371,7 +371,7 @@ The nested procedure produces a closer estimate to the approximate truth but the
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
