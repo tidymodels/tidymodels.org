@@ -10,10 +10,10 @@ description: |
   tidymodels has high-level functions to produce bootstrap confidence intervals for performance statistics.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - earth
+include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction 
@@ -283,7 +283,7 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

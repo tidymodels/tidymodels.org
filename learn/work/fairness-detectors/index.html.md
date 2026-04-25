@@ -10,11 +10,11 @@ description: |
   Releases of language models are often soon followed up with detectors, claiming to detect whether text was written by a human or a given language model. A 2023 study argues that GPT detectors disproportionately classify real writing from non-native English writers as AI-generated.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 bibliography: refs.bib
 r-packages:
   - tidymodels
   - detectors
+include-after-body: ../../../html/resources.html
 ---
 
 ------------------------------------------------------------------------
@@ -380,7 +380,7 @@ In all, we've seen that applied fairness analysis is as much a social problem as
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

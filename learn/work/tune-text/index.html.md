@@ -11,13 +11,13 @@ description: |
   Prepare text data for predictive modeling and tune with both grid and iterative search.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - textrecipes
   - stopwords
   - future
   - tictoc
+include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
@@ -252,7 +252,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 77.229 sec elapsed
+#> 102.731 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -698,7 +698,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

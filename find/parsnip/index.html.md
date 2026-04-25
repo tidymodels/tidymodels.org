@@ -5,13 +5,13 @@ description: |
   Find model types, engines, and arguments to fit and predict in the tidymodels framework.
 toc: true
 toc-depth: 0
-include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 r-packages:
   - tidymodels
   - readr
   - DT
   - htmlwidgets
+include-after-body: ../../html/resources.html
 ---
 
 To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [model types and engines](#models).

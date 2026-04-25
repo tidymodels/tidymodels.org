@@ -6,13 +6,13 @@ description: |
   Find recipe steps in the tidymodels framework to help you prep your data for modeling.
 toc: true
 toc-depth: 0
-include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 r-packages:
   - tidymodels
   - readr
   - DT
   - htmlwidgets
+include-after-body: ../../html/resources.html
 ---
 
 To learn about the recipes package, see [*Get Started: Preprocess your data with recipes*](/start/recipes/). The table below allows you to search for recipe steps across tidymodels packages.

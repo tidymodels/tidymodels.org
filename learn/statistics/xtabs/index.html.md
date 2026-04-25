@@ -9,10 +9,10 @@ description: |
   Use tests of independence and goodness of fit to analyze tables of counts.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - sessioninfo
+include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
@@ -307,7 +307,7 @@ chisq_test(ad_data, response = Genotype, p = meta_rates)
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

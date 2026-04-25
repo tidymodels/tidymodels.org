@@ -10,12 +10,12 @@ description: |
   survival models.
 toc: true
 toc-depth: 2
-include-after-body: ../../../../html/resources.html
 r-packages:
   - tidymodels
   - censored
   - prodlim
   - sessioninfo
+include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
@@ -346,7 +346,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.5.3 (2026-03-11)
 #>  language (EN)
-#>  date     2026-04-24
+#>  date     2026-04-25
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
