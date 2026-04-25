@@ -6,7 +6,6 @@ description: |
   Find parsnip prediction types for different models and engines.
 toc: true
 toc-depth: 0
-include-after-body: ../../../html/resources.html
 css: ../styles-find.css
 message: FALSE
 warnings: FALSE
@@ -17,6 +16,7 @@ r-packages:
   - parsnip
   - DT
   - htmlwidgets
+include-after-body: ../../html/resources.html
 ---
 
 To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [prediction types for different models and engines](#models).
