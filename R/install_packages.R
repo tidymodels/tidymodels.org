@@ -13,17 +13,22 @@ install_packages <- function(needed) {
   cli::cli_alert_info("{length(needed)} package{?s} required: {.pkg {needed}}")
 
   # catboost must be installed from GitHub
-  # mixOmics is a Bioconductor package and must be excluded from the main pak
-  # call to avoid a lazy-loading race where mixOmics tries to load ggplot2
-  # before it has finished installing.
+  # mixOmics must be excluded from the pak call and installed separately via
+  # BiocManager — see comment below.
   to_install <- ifelse(needed == "catboost", "catboost/catboost/catboost/R-package", needed)
   to_install <- to_install[to_install != "mixOmics"]
   pak::pak(to_install, upgrade = TRUE)
 
-  # mixOmics must be installed after ggplot2 is fully in place
+  # mixOmics must be installed via BiocManager rather than pak. pak's subprocess
+  # environment for source builds can't resolve ggplot2's shared library,
+  # causing lazy loading to fail. BiocManager uses sequential install.packages()
+  # which resolves library paths correctly.
   if ("mixOmics" %in% needed) {
-    cli::cli_alert_info("Installing mixOmics from Bioconductor...")
-    pak::pak("bioc::mixOmics", upgrade = TRUE)
+    cli::cli_alert_info("Installing mixOmics from Bioconductor via BiocManager...")
+    if (!requireNamespace("BiocManager", quietly = TRUE)) {
+      install.packages("BiocManager")
+    }
+    BiocManager::install("mixOmics", ask = FALSE, update = FALSE)
   }
 
   # torch must be installed explicitly for brulee to work
