@@ -16,33 +16,20 @@ install_packages <- function(needed) {
 
   cli::cli_alert_info("{length(needed)} package{?s} required: {.pkg {needed}}")
 
-  # catboost must be installed from GitHub
-  # mixOmics must be excluded from the pak call and installed separately via
-  # install.packages() — see comment below.
-  to_install <- ifelse(needed == "catboost", "catboost/catboost/catboost/R-package", needed)
-  to_install <- to_install[to_install != "mixOmics"]
-
-  # pak's upgrade = TRUE upgrades ALL installed packages, not just those in
-  # to_install. So even though "mixOmics" is excluded above, pak will still
-  # attempt to upgrade it if a newer version is available — hitting the same
-  # subprocess library path issue. Remove it first so pak has nothing to upgrade.
-  if ("mixOmics" %in% rownames(utils::installed.packages())) {
-    remove.packages("mixOmics")
-  }
-  pak::pak(to_install, upgrade = TRUE)
-
-  # mixOmics must be installed via install.packages() rather than pak.
+  # mixOmics must be pre-installed via install.packages() BEFORE pak runs.
   # pak's subprocess environment for source builds uses a temp library path
   # where rlang.so may be compiled against a different R version, causing
-  # "undefined symbol: SETLENGTH". BiocManager::install() also triggers this
-  # when pak is installed (it uses pak as a backend). Using install.packages()
-  # directly with Bioconductor repos avoids the subprocess entirely.
+  # "undefined symbol: SETLENGTH". This affects both direct and transitive
+  # installation: even if "mixOmics" is excluded from to_install, pak will
+  # still try to build it as a dependency of other packages. Pre-installing
+  # it means pak finds it already present at the latest version and skips it.
+  # BiocManager::install() also triggers the pak subprocess issue when pak is
+  # loaded, so we use install.packages() with explicit Bioconductor repos.
   # Binary packages for new R releases may not be available immediately (e.g.
-  # Bioconductor lags a few weeks behind R minor releases), so we catch failures
-  # and let callers skip pages that depend on this package rather than aborting
-  # the entire render.
+  # Bioconductor lags a few weeks behind R minor releases), so we catch
+  # failures and let callers skip pages that depend on this package.
   if ("mixOmics" %in% needed) {
-    cli::cli_alert_info("Installing mixOmics from Bioconductor via install.packages()...")
+    cli::cli_alert_info("Pre-installing mixOmics via install.packages() (before pak)...")
     if (!requireNamespace("BiocManager", quietly = TRUE)) {
       install.packages("BiocManager")
     }
@@ -61,6 +48,13 @@ install_packages <- function(needed) {
       }
     )
   }
+
+  # catboost must be installed from GitHub.
+  # mixOmics is excluded here — it was handled above.
+  to_install <- ifelse(needed == "catboost", "catboost/catboost/catboost/R-package", needed)
+  to_install <- to_install[to_install != "mixOmics"]
+
+  pak::pak(to_install, upgrade = TRUE)
 
   # torch must be installed explicitly for brulee to work
   if ("brulee" %in% needed) {
