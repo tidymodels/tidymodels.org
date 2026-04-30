@@ -18,9 +18,17 @@ install_packages <- function(needed) {
 
   # catboost must be installed from GitHub
   # mixOmics must be excluded from the pak call and installed separately via
-  # BiocManager — see comment below.
+  # install.packages() — see comment below.
   to_install <- ifelse(needed == "catboost", "catboost/catboost/catboost/R-package", needed)
   to_install <- to_install[to_install != "mixOmics"]
+
+  # pak's upgrade = TRUE upgrades ALL installed packages, not just those in
+  # to_install. So even though "mixOmics" is excluded above, pak will still
+  # attempt to upgrade it if a newer version is available — hitting the same
+  # subprocess library path issue. Remove it first so pak has nothing to upgrade.
+  if ("mixOmics" %in% rownames(utils::installed.packages())) {
+    remove.packages("mixOmics")
+  }
   pak::pak(to_install, upgrade = TRUE)
 
   # mixOmics must be installed via install.packages() rather than pak.
