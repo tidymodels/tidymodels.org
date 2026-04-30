@@ -17,6 +17,7 @@ runs:
       uses: quarto-dev/quarto-actions/setup@v2
 
     - name: Install R
+      id: install-r
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: release
@@ -37,8 +38,8 @@ runs:
       uses: actions/cache@v4
       with:
         path: ${{ env.R_LIBS_USER }}
-        key: r-lib-${{ runner.os }}-${{ inputs.cache-key-suffix }}-${{ inputs.packages }}
-        restore-keys: r-lib-${{ runner.os }}-
+        key: r-lib-${{ runner.os }}-r${{ steps.install-r.outputs.installed-r-version }}-${{ inputs.cache-key-suffix }}-${{ inputs.packages }}
+        restore-keys: r-lib-${{ runner.os }}-r${{ steps.install-r.outputs.installed-r-version }}-
 
     - name: Cache torch installation
       if: contains(inputs.packages, 'brulee')
