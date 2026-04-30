@@ -62,13 +62,31 @@ jobs:
       - name: Re-render pages
         id: render
         env:
-          PAGES: ${{ inputs.pages }}
-        run: Rscript R/re-render-pages.R $PAGES
+          PAGES: ${{ steps.install.outputs.pages || inputs.pages }}
+        run: |
+          if [ -z "$PAGES" ]; then
+            echo "All pages were skipped due to install failures — nothing to render."
+            exit 0
+          fi
+          Rscript R/re-render-pages.R $PAGES
 
       - name: Build render summary for PR
         id: render_summary
         if: success()
         run: Rscript R/make_render_summary.R
+
+      - name: Build skipped pages note
+        id: skipped_note
+        if: success() && steps.install.outputs.skipped_pages != ''
+        run: |
+          note="**Skipped pages (package install failed):**"$'\n'
+          for page in ${{ steps.install.outputs.skipped_pages }}; do
+            note="${note}- \`${page}\`"$'\n'
+          done
+          note="${note}"$'\n'"These pages were not rendered because one or more required packages could not be installed (binaries may not yet be available for this R version). They will be picked up in a future automated re-render."
+          echo "note<<EOF" >> $GITHUB_OUTPUT
+          echo "$note" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Update _versions.json
         if: success() && inputs.update-metadata
@@ -105,6 +123,8 @@ jobs:
 
             **Rendered pages:**
             ${{ steps.render_summary.outputs.render_table }}
+
+            ${{ steps.skipped_note.outputs.note }}
 
             Please review the rendered output changes before merging.
           labels: "automated re-render"

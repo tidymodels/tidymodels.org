@@ -2,12 +2,16 @@
 # Install a vector of R packages, handling special cases.
 # Source this file and call install_packages(needed).
 
+# Install a vector of R packages, handling special cases.
+# Returns a character vector of packages that failed to install (invisibly).
 install_packages <- function(needed) {
   library(cli)
 
+  failed <- character(0)
+
   if (length(needed) == 0) {
     cli::cli_alert_info("No packages to install.")
-    return(invisible())
+    return(invisible(failed))
   }
 
   cli::cli_alert_info("{length(needed)} package{?s} required: {.pkg {needed}}")
@@ -23,12 +27,25 @@ install_packages <- function(needed) {
   # environment for source builds can't resolve ggplot2's shared library,
   # causing lazy loading to fail. BiocManager uses sequential install.packages()
   # which resolves library paths correctly.
+  # Binary packages for new R releases may not be available immediately (e.g.
+  # Bioconductor lags a few weeks behind R minor releases), so we catch failures
+  # and let callers skip pages that depend on this package rather than aborting
+  # the entire render.
   if ("mixOmics" %in% needed) {
     cli::cli_alert_info("Installing mixOmics from Bioconductor via BiocManager...")
     if (!requireNamespace("BiocManager", quietly = TRUE)) {
       install.packages("BiocManager")
     }
-    BiocManager::install("mixOmics", ask = FALSE, update = FALSE)
+    tryCatch(
+      BiocManager::install("mixOmics", ask = FALSE, update = FALSE),
+      error = function(e) {
+        cli::cli_warn(c(
+          "!" = "Failed to install {.pkg mixOmics}: {conditionMessage(e)}",
+          "i" = "Pages that require {.pkg mixOmics} will be skipped."
+        ))
+        failed <<- c(failed, "mixOmics")
+      }
+    )
   }
 
   # torch must be installed explicitly for brulee to work
@@ -47,4 +64,5 @@ install_packages <- function(needed) {
   }
 
   cli::cli_alert_success("Done.")
+  invisible(failed)
 }
