@@ -23,21 +23,27 @@ install_packages <- function(needed) {
   to_install <- to_install[to_install != "mixOmics"]
   pak::pak(to_install, upgrade = TRUE)
 
-  # mixOmics must be installed via BiocManager rather than pak. pak's subprocess
-  # environment for source builds can't resolve ggplot2's shared library,
-  # causing lazy loading to fail. BiocManager uses sequential install.packages()
-  # which resolves library paths correctly.
+  # mixOmics must be installed via install.packages() rather than pak.
+  # pak's subprocess environment for source builds uses a temp library path
+  # where rlang.so may be compiled against a different R version, causing
+  # "undefined symbol: SETLENGTH". BiocManager::install() also triggers this
+  # when pak is installed (it uses pak as a backend). Using install.packages()
+  # directly with Bioconductor repos avoids the subprocess entirely.
   # Binary packages for new R releases may not be available immediately (e.g.
   # Bioconductor lags a few weeks behind R minor releases), so we catch failures
   # and let callers skip pages that depend on this package rather than aborting
   # the entire render.
   if ("mixOmics" %in% needed) {
-    cli::cli_alert_info("Installing mixOmics from Bioconductor via BiocManager...")
+    cli::cli_alert_info("Installing mixOmics from Bioconductor via install.packages()...")
     if (!requireNamespace("BiocManager", quietly = TRUE)) {
       install.packages("BiocManager")
     }
     tryCatch(
-      BiocManager::install("mixOmics", ask = FALSE, update = FALSE),
+      install.packages(
+        "mixOmics",
+        repos = BiocManager::repositories(),
+        dependencies = TRUE
+      ),
       error = function(e) {
         cli::cli_warn(c(
           "!" = "Failed to install {.pkg mixOmics}: {conditionMessage(e)}",
