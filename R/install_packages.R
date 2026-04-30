@@ -73,7 +73,16 @@ install_packages <- function(needed) {
     installed <- sparklyr::spark_installed_versions()
     if (!any(grepl("^3\\.5", installed$spark))) {
       cli::cli_alert_info("Installing Spark for sparklyr...")
-      sparklyr::spark_install(version = "3.5")
+      tryCatch(
+        sparklyr::spark_install(version = "3.5"),
+        error = function(e) {
+          cli::cli_warn(c(
+            "!" = "Failed to install Spark: {conditionMessage(e)}",
+            "i" = "Pages that require {.pkg sparklyr} will be skipped."
+          ))
+          failed <<- c(failed, "sparklyr")
+        }
+      )
     }
   }
 
