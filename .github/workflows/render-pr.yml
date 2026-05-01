@@ -69,7 +69,7 @@ jobs:
         id: render
         run: |
           for page in ${{ steps.changed.outputs.pages }}; do
-            freeze_dir="_freeze/$(dirname $page)"
+            freeze_dir="_freeze/${page%.qmd}"
             [ -d "$freeze_dir" ] && rm -rf "$freeze_dir"
             quarto render "$page" || exit 1
           done
