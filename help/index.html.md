@@ -2,7 +2,7 @@
 title: Get Help
 toc: true
 toc-depth: 1
-include-after-body: ../resources.html
+include-after-body: ../html/resources.html
 ---
 
 ## Asking for help
@@ -17,7 +17,7 @@ Now that you've made a reprex, you need to share it in an appropriate forum. Her
 
 * [__forum.posit.co__](https://forum.posit.co/c/ml/15): This is a warm
   and welcoming place to ask any questions you might have about
-  tidymodels or more generally about modeling, machine learning, and deep learning. (You can also ask questions about the tidyverse and RStudio there, too!)
+  tidymodels or more generally about modeling, machine learning, and deep learning. (You can also ask questions about the tidyverse and Posit there, too!)
   
 * [__Stack Overflow__](https://stackoverflow.com/questions/tagged/tidymodels). You're probably already familiar
   with Stack Overflow from googling; it's a frequent source of answers to

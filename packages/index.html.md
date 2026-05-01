@@ -2,7 +2,7 @@
 title: Tidymodels packages
 toc: true
 toc-depth: 1
-include-after-body: ../resources.html
+include-after-body: ../html/resources.html
 ---
 
 ## Installation and use
@@ -103,7 +103,7 @@ The tidymodels framework also includes many other packages designed for speciali
 
 ### [Create robust models](/learn/models/)
 
-* The [spatialsample](http://spatialsample.tidymodels.org/) package provides resampling functions and classes like rsample, but specialized for spatial data.
+* The [spatialsample](https://spatialsample.tidymodels.org/) package provides resampling functions and classes like rsample, but specialized for spatial data.
 
 * parsnip also has additional packages that contain more model definitions. [discrim](https://discrim.tidymodels.org/) contains definitions for discriminant analysis models, [poissonreg](https://poissonreg.tidymodels.org/) provides definitions for Poisson regression models, [plsmod](https://plsmod.tidymodels.org/) enables linear projection models, and [rules](https://rules.tidymodels.org/) does the same for rule-based classification and regression models. [baguette](https://baguette.tidymodels.org/) creates ensemble models via bagging, and [multilevelmod](https://multilevelmod.tidymodels.org/) provides support for multilevel models (otherwise known as mixed models or hierarchical models). 
 

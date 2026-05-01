@@ -6,7 +6,7 @@ categories:
 type: learn-subsection
 weight: 5
 description: | 
-  Create models that use coefficients, extract them from fitted models, and visualize them.
+  Create models that use case weights, extract them from fitted models, and visualize them.
 toc: true
 toc-depth: 2
 r-packages:

@@ -42,7 +42,7 @@ library(vip)         # for variable importance plots
 ```
 :::
 
-[Test Drive](https://rstudio.cloud/project/2674862)
+[Test Drive](https://posit.cloud/project/2674862)
 
 ## The cell image data, revisited {#data}
 
