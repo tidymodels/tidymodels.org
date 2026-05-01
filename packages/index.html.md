@@ -2,7 +2,7 @@
 title: Tidymodels packages
 toc: true
 toc-depth: 1
-include-after-body: ../resources.html
+include-after-body: ../html/resources.html
 ---
 
 ## Installation and use
