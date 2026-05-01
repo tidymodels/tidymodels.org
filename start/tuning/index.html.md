@@ -224,18 +224,18 @@ tree_res
 #> # Tuning results
 #> # 10-fold cross-validation 
 #> # A tibble: 10 × 4
-#>    splits           id     .metrics          .notes          
-#>    <list>           <chr>  <list>            <list>          
-#>  1 <split [1362/0]> Fold01 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  2 <split [1362/0]> Fold02 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  3 <split [1362/0]> Fold03 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  4 <split [1362/0]> Fold04 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  5 <split [1363/0]> Fold05 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  6 <split [1363/0]> Fold06 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  7 <split [1363/0]> Fold07 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  8 <split [1363/0]> Fold08 <tibble [75 × 6]> <tibble [0 × 4]>
-#>  9 <split [1363/0]> Fold09 <tibble [75 × 6]> <tibble [0 × 4]>
-#> 10 <split [1363/0]> Fold10 <tibble [75 × 6]> <tibble [0 × 4]>
+#>    splits             id     .metrics          .notes          
+#>    <list>             <chr>  <list>            <list>          
+#>  1 <split [1362/152]> Fold01 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  2 <split [1362/152]> Fold02 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  3 <split [1362/152]> Fold03 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  4 <split [1362/152]> Fold04 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  5 <split [1363/151]> Fold05 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  6 <split [1363/151]> Fold06 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  7 <split [1363/151]> Fold07 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  8 <split [1363/151]> Fold08 <tibble [75 × 6]> <tibble [0 × 4]>
+#>  9 <split [1363/151]> Fold09 <tibble [75 × 6]> <tibble [0 × 4]>
+#> 10 <split [1363/151]> Fold10 <tibble [75 × 6]> <tibble [0 × 4]>
 ```
 :::
 
@@ -255,8 +255,8 @@ tree_res %>%
 #>  4    0.0000000001          4 accuracy    binary     0.807    10 0.0119  pre0_m…
 #>  5    0.0000000001          4 brier_class binary     0.143    10 0.00681 pre0_m…
 #>  6    0.0000000001          4 roc_auc     binary     0.852    10 0.0110  pre0_m…
-#>  7    0.0000000001          8 accuracy    binary     0.781    10 0.0120  pre0_m…
-#>  8    0.0000000001          8 brier_class binary     0.160    10 0.00877 pre0_m…
+#>  7    0.0000000001          8 accuracy    binary     0.782    10 0.0121  pre0_m…
+#>  8    0.0000000001          8 brier_class binary     0.159    10 0.00884 pre0_m…
 #>  9    0.0000000001          8 roc_auc     binary     0.853    10 0.0144  pre0_m…
 #> 10    0.0000000001         11 accuracy    binary     0.777    10 0.0132  pre0_m…
 #> # ℹ 65 more rows
@@ -479,35 +479,35 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
 #>  date     2026-05-01
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version    date (UTC)
-#>  broom        1.0.12     2026-01-27
-#>  dials        1.4.3      2026-04-11
-#>  dplyr        1.2.1      2026-04-03
-#>  future       1.70.0     2026-03-14
-#>  ggplot2      4.0.3      2026-04-22
-#>  here         1.0.2      2025-09-15
-#>  infer        1.1.0      2025-12-18
-#>  kableExtra   1.4.0      2024-01-24
-#>  parsnip      1.5.0.9000 2026-04-24
-#>  purrr        1.2.2      2026-04-10
-#>  recipes      1.3.2      2026-04-02
-#>  rlang        1.2.0      2026-04-06
-#>  rpart        4.1.27     2026-03-27
-#>  rpart.plot   3.1.4      2026-01-08
-#>  rsample      1.3.2      2026-01-30
-#>  tibble       3.3.1      2026-01-11
-#>  tidymodels   1.4.1      2025-09-08
-#>  tune         2.1.0.9000 2026-04-27
-#>  vip          0.4.5      2025-12-12
-#>  workflows    1.3.0      2025-08-27
-#>  yardstick    1.4.0      2026-04-07
+#>  package      version date (UTC)
+#>  broom        1.0.12  2026-01-27
+#>  dials        1.4.3   2026-04-11
+#>  dplyr        1.2.1   2026-04-03
+#>  future       1.70.0  2026-03-14
+#>  ggplot2      4.0.3   2026-04-22
+#>  here         1.0.2   2025-09-15
+#>  infer        1.1.0   2025-12-18
+#>  kableExtra   1.4.0   2024-01-24
+#>  parsnip      1.5.0   2026-04-09
+#>  purrr        1.2.2   2026-04-10
+#>  recipes      1.3.2   2026-04-02
+#>  rlang        1.2.0   2026-04-06
+#>  rpart        4.1.27  2026-03-27
+#>  rpart.plot   3.1.4   2026-01-08
+#>  rsample      1.3.2   2026-01-30
+#>  tibble       3.3.1   2026-01-11
+#>  tidymodels   1.5.0   2026-04-23
+#>  tune         2.1.0   2026-04-17
+#>  vip          0.4.6   2026-04-23
+#>  workflows    1.3.0   2025-08-27
+#>  yardstick    1.4.0   2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

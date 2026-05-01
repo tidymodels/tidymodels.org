@@ -61,7 +61,7 @@ where `base` is some constant and `x` is the number of days. To make sure that w
 
 ```{.r .cell-code}
 difftime("2016-01-01", min(Chicago$date))
-#> Time difference of 5457.333 days
+#> Time difference of 5457 days
 ```
 :::
 
@@ -255,29 +255,29 @@ lm_fit
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
 #>  date     2026-05-01
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version    date (UTC)
-#>  broom        1.0.12     2026-01-27
-#>  dials        1.4.3      2026-04-11
-#>  dplyr        1.2.1      2026-04-03
-#>  ggplot2      4.0.3      2026-04-22
-#>  infer        1.1.0      2025-12-18
-#>  parsnip      1.5.0.9000 2026-04-24
-#>  purrr        1.2.2      2026-04-10
-#>  recipes      1.3.2      2026-04-02
-#>  rlang        1.2.0      2026-04-06
-#>  rsample      1.3.2      2026-01-30
-#>  tibble       3.3.1      2026-01-11
-#>  tidymodels   1.4.1      2025-09-08
-#>  tune         2.1.0.9000 2026-04-27
-#>  workflows    1.3.0      2025-08-27
-#>  yardstick    1.4.0      2026-04-07
+#>  package      version date (UTC)
+#>  broom        1.0.12  2026-01-27
+#>  dials        1.4.3   2026-04-11
+#>  dplyr        1.2.1   2026-04-03
+#>  ggplot2      4.0.3   2026-04-22
+#>  infer        1.1.0   2025-12-18
+#>  parsnip      1.5.0   2026-04-09
+#>  purrr        1.2.2   2026-04-10
+#>  recipes      1.3.2   2026-04-02
+#>  rlang        1.2.0   2026-04-06
+#>  rsample      1.3.2   2026-01-30
+#>  tibble       3.3.1   2026-01-11
+#>  tidymodels   1.5.0   2026-04-23
+#>  tune         2.1.0   2026-04-17
+#>  workflows    1.3.0   2025-08-27
+#>  yardstick    1.4.0   2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
