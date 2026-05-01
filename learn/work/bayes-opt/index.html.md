@@ -160,7 +160,7 @@ search_res <-
   )
 #> 
 #> ❯  Generating a set of 5 initial parameter results
-#> maximum number of iterations reached 0.02644788 -4.678954e-05maximum number of iterations reached 4.883479e-05 -1.405354e-11maximum number of iterations reached 0.0006198503 -7.83456e-07maximum number of iterations reached 0.02616499 -4.815298e-05maximum number of iterations reached 4.783692e-05 -3.531009e-12maximum number of iterations reached 0.000532615 -6.369734e-07maximum number of iterations reached 0.02563573 -3.389226e-05maximum number of iterations reached 4.597584e-05 -1.51103e-11maximum number of iterations reached 0.0009844145 -1.428013e-06
+#> maximum number of iterations reached 0.02644788 -4.678954e-05maximum number of iterations reached 4.883479e-05 -1.405376e-11maximum number of iterations reached 0.0006198503 -7.83456e-07maximum number of iterations reached 0.02616499 -4.815298e-05maximum number of iterations reached 4.783692e-05 -3.531675e-12maximum number of iterations reached 0.000532615 -6.369734e-07maximum number of iterations reached 0.02563573 -3.389226e-05maximum number of iterations reached 4.597584e-05 -1.510886e-11maximum number of iterations reached 0.0009844145 -1.428013e-06
 #> ✓ Initialization complete
 #> 
 #> i Estimating performance
@@ -2373,9 +2373,9 @@ autoplot(search_res, type = "parameters") +
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-04-25
+#>  date     2026-05-01
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

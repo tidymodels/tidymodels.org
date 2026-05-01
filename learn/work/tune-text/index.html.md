@@ -15,6 +15,7 @@ r-packages:
   - tidymodels
   - textrecipes
   - stopwords
+  - text2vec
   - future
   - tictoc
 include-after-body: ../../../html/resources.html
@@ -22,7 +23,7 @@ include-after-body: ../../../html/resources.html
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: future, stopwords, textrecipes, tictoc, and tidymodels.
+To use code in this article,  you will need to install the following packages: future, stopwords, text2vec, textrecipes, tictoc, and tidymodels.
 
 This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.
 
@@ -252,7 +253,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 102.731 sec elapsed
+#> 105.676 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -696,9 +697,9 @@ These results might help guide the choice of the `penalty` range if more optimiz
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-04-25
+#>  date     2026-05-01
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
@@ -716,6 +717,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  rlang         1.2.0   2026-04-06
 #>  rsample       1.3.2   2026-01-30
 #>  stopwords     2.3     2021-10-28
+#>  text2vec      0.6.6   2025-12-01
 #>  textrecipes   1.1.0   2025-03-18
 #>  tibble        3.3.1   2026-01-11
 #>  tictoc        1.2.1   2024-03-18
