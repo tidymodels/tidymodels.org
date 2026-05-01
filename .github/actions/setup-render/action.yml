@@ -34,11 +34,16 @@ runs:
       with:
         packages: any::jsonlite any::yaml any::here any::cli any::pak
 
+    - name: Hash packages list for cache key
+      id: pkg-hash
+      shell: bash
+      run: echo "hash=$(echo '${{ inputs.packages }}' | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
     - name: Cache R library
       uses: actions/cache@v4
       with:
         path: ${{ env.R_LIBS_USER }}
-        key: r-lib-${{ runner.os }}-r${{ steps.install-r.outputs.installed-r-version }}-${{ inputs.cache-key-suffix }}-${{ inputs.packages }}
+        key: r-lib-${{ runner.os }}-r${{ steps.install-r.outputs.installed-r-version }}-${{ inputs.cache-key-suffix }}-${{ steps.pkg-hash.outputs.hash }}
         restore-keys: r-lib-${{ runner.os }}-r${{ steps.install-r.outputs.installed-r-version }}-
 
     - name: Cache torch installation
