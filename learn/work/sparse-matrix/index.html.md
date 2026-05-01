@@ -244,9 +244,9 @@ predict(wf_fit, reviews)
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-04-25
+#>  date     2026-05-01
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

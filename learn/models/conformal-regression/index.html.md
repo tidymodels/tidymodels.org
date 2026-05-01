@@ -15,11 +15,12 @@ r-packages:
   - tidymodels
   - probably
   - nnet
+  - quantregForest
   - future
 include-after-body: ../../../html/resources.html
 ---
 
-To use code in this article,  you will need to install the following packages: future, nnet, probably, and tidymodels. The probably package should be version 1.0.2 or greater.
+To use code in this article,  you will need to install the following packages: future, nnet, probably, quantregForest, and tidymodels. The probably package should be version 1.0.2 or greater.
 
 What is [conformal inference](https://en.wikipedia.org/wiki/Conformal_prediction)? It is a collection of statistical methods that are mostly used to construct prediction intervals (or prediction sets) for any type of regression or classification model. The basic idea revolves around some Frequentist theory on how to construct probability statements about whether a new sample could have been from an existing reference distribution.
 
@@ -169,7 +170,7 @@ test_split_res %>% slice(1:5)
 #>    .pred .pred_lower .pred_upper       x       y
 #>    <dbl>       <dbl>       <dbl>   <dbl>   <dbl>
 #> 1  1.30        0.933      1.67    0.621   1.17  
-#> 2 -0.298      -0.665      0.0693 -0.658  -0.302 
+#> 2 -0.298      -0.666      0.0691 -0.658  -0.302 
 #> 3  0.133      -0.234      0.501  -0.329   0.0970
 #> 4  1.33        0.964      1.70    0.611   1.21  
 #> 5  1.24        0.873      1.61    0.0145  1.22
@@ -198,7 +199,7 @@ coverage(test_split_res)
 #> # A tibble: 1 × 1
 #>   coverage
 #>      <dbl>
-#> 1     93.1
+#> 1     93.0
 ```
 :::
 
@@ -266,11 +267,11 @@ test_cv_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>   .pred_lower  .pred .pred_upper       x       y
 #>         <dbl>  <dbl>       <dbl>   <dbl>   <dbl>
-#> 1       0.962  1.29       1.62    0.621   1.17  
-#> 2      -0.631 -0.305      0.0221 -0.658  -0.302 
-#> 3      -0.189  0.138      0.465  -0.329   0.0970
-#> 4       0.992  1.32       1.65    0.611   1.21  
-#> 5       0.913  1.24       1.57    0.0145  1.22
+#> 1       0.960  1.29       1.61    0.621   1.17  
+#> 2      -0.630 -0.304      0.0226 -0.658  -0.302 
+#> 3      -0.189  0.137      0.464  -0.329   0.0970
+#> 4       0.991  1.32       1.64    0.611   1.21  
+#> 5       0.912  1.24       1.57    0.0145  1.22
 ```
 :::
 
@@ -293,7 +294,7 @@ coverage(test_cv_res)
 #> # A tibble: 1 × 1
 #>   coverage
 #>      <dbl>
-#> 1     89.5
+#> 1     89.4
 ```
 :::
 
@@ -400,11 +401,11 @@ test_quant_res %>% slice(1:5)
 #> # A tibble: 5 × 5
 #>    .pred .pred_lower .pred_upper      x      y
 #>    <dbl>       <dbl>       <dbl>  <dbl>  <dbl>
-#> 1  0.987       0.574      1.14    0.776  1.10 
-#> 2 -0.327      -0.546     -0.0904 -0.686 -0.180
-#> 3  0.269       0.161      0.459  -0.274  0.364
+#> 1  0.995       0.574      1.14    0.776  1.10 
+#> 2 -0.328      -0.546     -0.0904 -0.686 -0.180
+#> 3  0.266       0.161      0.459  -0.274  0.364
 #> 4  1.01        0.666      1.23    0.759  1.21 
-#> 5  2.00        1.90       2.12    0.367  1.87
+#> 5  2.01        1.90       2.12    0.367  1.87
 ```
 :::
 
@@ -467,32 +468,33 @@ If you are interested and would like to learn more, try these resources:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-04-25
+#>  date     2026-05-01
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC)
-#>  broom        1.0.12  2026-01-27
-#>  dials        1.4.3   2026-04-11
-#>  dplyr        1.2.1   2026-04-03
-#>  future       1.70.0  2026-03-14
-#>  ggplot2      4.0.3   2026-04-22
-#>  infer        1.1.0   2025-12-18
-#>  nnet         7.3-20  2025-01-01
-#>  parsnip      1.5.0   2026-04-09
-#>  probably     1.2.0   2025-10-16
-#>  purrr        1.2.2   2026-04-10
-#>  recipes      1.3.2   2026-04-02
-#>  rlang        1.2.0   2026-04-06
-#>  rsample      1.3.2   2026-01-30
-#>  tibble       3.3.1   2026-01-11
-#>  tidymodels   1.5.0   2026-04-23
-#>  tune         2.1.0   2026-04-17
-#>  workflows    1.3.0   2025-08-27
-#>  yardstick    1.4.0   2026-04-07
+#>  package          version date (UTC)
+#>  broom            1.0.12  2026-01-27
+#>  dials            1.4.3   2026-04-11
+#>  dplyr            1.2.1   2026-04-03
+#>  future           1.70.0  2026-03-14
+#>  ggplot2          4.0.3   2026-04-22
+#>  infer            1.1.0   2025-12-18
+#>  nnet             7.3-20  2025-01-01
+#>  parsnip          1.5.0   2026-04-09
+#>  probably         1.2.0   2025-10-16
+#>  purrr            1.2.2   2026-04-10
+#>  quantregForest   1.3-7.1 2024-10-07
+#>  recipes          1.3.2   2026-04-02
+#>  rlang            1.2.0   2026-04-06
+#>  rsample          1.3.2   2026-01-30
+#>  tibble           3.3.1   2026-01-11
+#>  tidymodels       1.5.0   2026-04-23
+#>  tune             2.1.0   2026-04-17
+#>  workflows        1.3.0   2025-08-27
+#>  yardstick        1.4.0   2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

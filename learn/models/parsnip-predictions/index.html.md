@@ -43,13 +43,16 @@ r-packages:
   - multilevelmod
   - naivebayes
   - partykit
+  - coin
   - plsmod
   - poissonreg
+  - pec
   - pscl
   - quantreg
   - randomForest
   - ranger
   - rules
+  - sda
   - sparsediscrim
   - sparklyr
   - xgboost
@@ -73,7 +76,7 @@ This page shows examples of how to *fit* and *predict* with different combinatio
 
 We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
+To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
 
 There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
 
@@ -211,7 +214,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 4 months and 4 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 4 months and 10 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -957,11 +960,6 @@ set.seed(644)
 boost_tree_fit <- boost_tree_spec |>
   fit(class ~ ., data = bin_train)
 boost_tree_fit
-#> parsnip model object
-#> 
-#> CatBoost model (1000 trees)
-#> Loss function: Logloss
-#> Fit to 2 feature(s)
 ```
 :::
 
@@ -971,25 +969,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(boost_tree_fit, type = "class", new_data = bin_test)
-#> # A tibble: 6 × 1
-#>   .pred_class
-#>   <fct>      
-#> 1 Class2     
-#> 2 Class1     
-#> 3 Class2     
-#> 4 Class1     
-#> 5 Class1     
-#> 6 Class1
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
-#> # A tibble: 6 × 2
-#>   .pred_Class1 .pred_Class2
-#>          <dbl>        <dbl>
-#> 1        0.291      0.709  
-#> 2        0.836      0.164  
-#> 3        0.344      0.656  
-#> 4        0.998      0.00245
-#> 5        0.864      0.136  
-#> 6        0.902      0.0983
 ```
 :::
 
@@ -1032,7 +1012,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1777078254996_0 
+#> Model ID:  GBM_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               30000         6
@@ -1150,7 +1130,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1777078254996_0 
+#> Model ID:  GBM_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               30000         6
@@ -2944,7 +2924,7 @@ logistic_reg_fit
 #> ==============
 #> 
 #> H2OBinomialModel: glm
-#> Model ID:  GLM_model_R_1777078254996_0 
+#> Model ID:  GLM_model_R_1777599948472_0 
 #> GLM Model: summary
 #>     family  link                                regularization
 #> 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )
@@ -3771,7 +3751,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2OBinomialModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1777078254996_0 
+#> Model ID:  DeepLearning_model_R_1777599948472_0 
 #> Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -4192,7 +4172,7 @@ multinom_reg_fit
 #> ==============
 #> 
 #> H2OMultinomialModel: glm
-#> Model ID:  GLM_model_R_1777078254996_0 
+#> Model ID:  GLM_model_R_1777599948472_0 
 #> GLM Model: summary
 #>        family        link                                regularization
 #> 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )
@@ -4425,7 +4405,7 @@ naive_Bayes_fit
 #> ==============
 #> 
 #> H2OBinomialModel: naivebayes
-#> Model ID:  NaiveBayes_model_R_1777078254996_0 
+#> Model ID:  NaiveBayes_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_response_levels min_apriori_probability max_apriori_probability
 #> 1                         2                 0.44713                 0.55287
@@ -5231,7 +5211,7 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2OBinomialModel: drf
-#> Model ID:  DRF_model_R_1777078254996_0 
+#> Model ID:  DRF_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               90000        13
@@ -5735,7 +5715,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2OBinomialModel: rulefit
-#> Model ID:  RuleFit_model_R_1777078254996_0 
+#> Model ID:  RuleFit_model_R_1777599948472_0 
 #> Rulefit Model Summary: 
 #>     family  link            regularization number_of_predictors_total
 #> 1 binomial logit Lasso (lambda = 0.03081 )                       2328
@@ -6603,11 +6583,6 @@ set.seed(557)
 boost_tree_fit <- boost_tree_spec |>
   fit(strength ~ ., data = reg_train)
 boost_tree_fit
-#> parsnip model object
-#> 
-#> CatBoost model (1000 trees)
-#> Loss function: RMSE
-#> Fit to 2 feature(s)
 ```
 :::
 
@@ -6617,17 +6592,6 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(boost_tree_fit, new_data = reg_test)
-#> # A tibble: 8 × 1
-#>   .pred
-#>   <dbl>
-#> 1  26.6
-#> 2  33.9
-#> 3  27.8
-#> 4  60.6
-#> 5  34.7
-#> 6  36.3
-#> 7  43.6
-#> 8  29.3
 ```
 :::
 
@@ -6670,7 +6634,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1777078254996_0 
+#> Model ID:  GBM_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -6748,7 +6712,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1777078254996_0 
+#> Model ID:  GBM_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -7845,7 +7809,7 @@ linear_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1777078254996_0 
+#> Model ID:  GLM_model_R_1777599948472_0 
 #> GLM Model: summary
 #>     family     link                               regularization
 #> 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )
@@ -8621,7 +8585,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2ORegressionModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1777078254996_0 
+#> Model ID:  DeepLearning_model_R_1777599948472_0 
 #> Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -9290,7 +9254,7 @@ poisson_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1777078254996_0 
+#> Model ID:  GLM_model_R_1777599948472_0 
 #> GLM Model: summary
 #>    family link                               regularization
 #> 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )
@@ -9944,7 +9908,7 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2ORegressionModel: drf
-#> Model ID:  DRF_model_R_1777078254996_0 
+#> Model ID:  DRF_model_R_1777599948472_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -10373,7 +10337,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2ORegressionModel: rulefit
-#> Model ID:  RuleFit_model_R_1777078254996_0 
+#> Model ID:  RuleFit_model_R_1777599948472_0 
 #> Rulefit Model Summary: 
 #>     family     link           regularization number_of_predictors_total
 #> 1 gaussian identity Lasso (lambda = 0.9516 )                       1801
@@ -12274,9 +12238,9 @@ rand_forest_fit |>
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-04-25
+#>  date     2026-05-01
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
@@ -12290,6 +12254,7 @@ rand_forest_fit |>
 #>  brulee          0.6.0      2025-09-02
 #>  C50             0.2.0      2025-04-03
 #>  censored        0.3.4      2026-04-04
+#>  coin            1.4-3      2023-09-27
 #>  Cubist          0.6.0      2026-03-02
 #>  dbarts          0.9-33     2026-03-20
 #>  dials           1.4.3      2026-04-11
@@ -12312,11 +12277,12 @@ rand_forest_fit |>
 #>  lme4            2.0-1      2026-03-05
 #>  mboost          2.9-11     2024-08-22
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.34.0     2025-10-29 Bioconduc~
+#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.0)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.5.0      2026-04-09
 #>  partykit        1.2-27     2026-03-13
+#>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06
 #>  poissonreg      1.0.2      2026-04-20
 #>  prodlim         2026.03.11 2026-03-11
@@ -12329,6 +12295,7 @@ rand_forest_fit |>
 #>  rlang           1.2.0      2026-04-06
 #>  rsample         1.3.2      2026-01-30
 #>  rules           1.0.3      2026-01-27
+#>  sda             1.3.9      2025-04-08
 #>  sparklyr        1.9.4      2026-04-18
 #>  sparsediscrim   0.3.0      2021-07-01
 #>  survival        3.8-6      2026-01-16

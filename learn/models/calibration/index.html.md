@@ -13,13 +13,14 @@ toc-depth: 2
 r-packages:
   - tidymodels
   - probably
+  - betacal
   - discrim
   - klaR
   - future
 include-after-body: ../../../html/resources.html
 ---
 
-To use code in this article,  you will need to install the following packages: discrim, future, klaR, probably, and tidymodels. The probably package should be version 1.0.0 or greater.
+To use code in this article,  you will need to install the following packages: betacal, discrim, future, klaR, probably, and tidymodels. The probably package should be version 1.0.0 or greater.
 
 There are essentially three different parts to a predictive model: 
 
@@ -398,14 +399,15 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-04-25
+#>  date     2026-05-01
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
+#>  betacal      0.1.0   2017-02-25
 #>  broom        1.0.12  2026-01-27
 #>  dials        1.4.3   2026-04-11
 #>  discrim      1.1.0   2025-12-02
