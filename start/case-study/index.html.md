@@ -49,7 +49,7 @@ library(vip)         # for variable importance plots
 ```
 :::
 
-[Test Drive](https://rstudio.cloud/project/2674862)
+[Test Drive](https://posit.cloud/project/2674862)
 
 ## The Hotel Bookings Data {#data}
 
@@ -434,11 +434,11 @@ But, here we are using a single validation set, so parallelization isn't an opti
 ```{.r .cell-code}
 cores <- parallel::detectCores()
 cores
-#> [1] 4
+#> [1] 14
 ```
 :::
 
-We have 4 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
+We have 14 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
 
 ::: {.cell layout-align="center"}
 
@@ -536,11 +536,11 @@ rf_res %>%
 #> # A tibble: 5 × 8
 #>    mtry min_n .metric .estimator  mean     n std_err .config         
 #>   <int> <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
-#> 1     9     3 roc_auc binary     0.927     1      NA pre0_mod09_post0
-#> 2     4     5 roc_auc binary     0.925     1      NA pre0_mod04_post0
-#> 3     8    11 roc_auc binary     0.925     1      NA pre0_mod08_post0
-#> 4    14     8 roc_auc binary     0.924     1      NA pre0_mod13_post0
-#> 5    10    21 roc_auc binary     0.924     1      NA pre0_mod10_post0
+#> 1     9     3 roc_auc binary     0.926     1      NA pre0_mod09_post0
+#> 2     8    11 roc_auc binary     0.926     1      NA pre0_mod08_post0
+#> 3     4     5 roc_auc binary     0.924     1      NA pre0_mod04_post0
+#> 4    10    21 roc_auc binary     0.924     1      NA pre0_mod10_post0
+#> 5     5    19 roc_auc binary     0.924     1      NA pre0_mod05_post0
 ```
 :::
 
@@ -585,16 +585,16 @@ rf_res %>%
 #> # A tibble: 187,500 × 8
 #>    .pred_children .pred_none id         children  .row  mtry min_n .config      
 #>             <dbl>      <dbl> <chr>      <fct>    <int> <int> <int> <chr>        
-#>  1         0.0695      0.930 validation none        13     1    24 pre0_mod01_p…
-#>  2         0.0519      0.948 validation none        20     1    24 pre0_mod01_p…
-#>  3         0.0669      0.933 validation children    22     1    24 pre0_mod01_p…
-#>  4         0.0560      0.944 validation none        23     1    24 pre0_mod01_p…
-#>  5         0.0682      0.932 validation none        31     1    24 pre0_mod01_p…
-#>  6         0.0430      0.957 validation none        38     1    24 pre0_mod01_p…
-#>  7         0.0360      0.964 validation none        39     1    24 pre0_mod01_p…
-#>  8         0.0481      0.952 validation none        50     1    24 pre0_mod01_p…
-#>  9         0.0605      0.940 validation none        54     1    24 pre0_mod01_p…
-#> 10         0.0754      0.925 validation children    57     1    24 pre0_mod01_p…
+#>  1         0.0699      0.930 validation none        13     1    24 pre0_mod01_p…
+#>  2         0.0533      0.947 validation none        20     1    24 pre0_mod01_p…
+#>  3         0.0685      0.932 validation children    22     1    24 pre0_mod01_p…
+#>  4         0.0572      0.943 validation none        23     1    24 pre0_mod01_p…
+#>  5         0.0679      0.932 validation none        31     1    24 pre0_mod01_p…
+#>  6         0.0442      0.956 validation none        38     1    24 pre0_mod01_p…
+#>  7         0.0350      0.965 validation none        39     1    24 pre0_mod01_p…
+#>  8         0.0482      0.952 validation none        50     1    24 pre0_mod01_p…
+#>  9         0.0592      0.941 validation none        54     1    24 pre0_mod01_p…
+#> 10         0.0750      0.925 validation children    57     1    24 pre0_mod01_p…
 #> # ℹ 187,490 more rows
 ```
 :::
@@ -679,7 +679,7 @@ last_rf_fit %>%
 #>   .metric     .estimator .estimate .config        
 #>   <chr>       <chr>          <dbl> <chr>          
 #> 1 accuracy    binary        0.946  pre0_mod0_post0
-#> 2 roc_auc     binary        0.924  pre0_mod0_post0
+#> 2 roc_auc     binary        0.923  pre0_mod0_post0
 #> 3 brier_class binary        0.0423 pre0_mod0_post0
 ```
 :::
@@ -745,35 +745,35 @@ Here are some more ideas for where to go next:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.0 (2026-04-24)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
 #>  date     2026-05-01
-#>  pandoc   3.1.3
-#>  quarto   1.9.37
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version date (UTC)
-#>  broom        1.0.12  2026-01-27
-#>  dials        1.4.3   2026-04-11
-#>  dplyr        1.2.1   2026-04-03
-#>  ggplot2      4.0.3   2026-04-22
-#>  glmnet       4.1-10  2025-07-17
-#>  here         1.0.2   2025-09-15
-#>  infer        1.1.0   2025-12-18
-#>  parsnip      1.5.0   2026-04-09
-#>  purrr        1.2.2   2026-04-10
-#>  ranger       0.18.0  2026-01-16
-#>  readr        2.2.0   2026-02-19
-#>  recipes      1.3.2   2026-04-02
-#>  rlang        1.2.0   2026-04-06
-#>  rsample      1.3.2   2026-01-30
-#>  scales       1.4.0   2025-04-24
-#>  tibble       3.3.1   2026-01-11
-#>  tidymodels   1.5.0   2026-04-23
-#>  tune         2.1.0   2026-04-17
-#>  vip          0.4.6   2026-04-23
-#>  workflows    1.3.0   2025-08-27
-#>  yardstick    1.4.0   2026-04-07
+#>  package      version    date (UTC)
+#>  broom        1.0.12     2026-01-27
+#>  dials        1.4.3      2026-04-11
+#>  dplyr        1.2.1      2026-04-03
+#>  ggplot2      4.0.3      2026-04-22
+#>  glmnet       4.1-10     2025-07-17
+#>  here         1.0.2      2025-09-15
+#>  infer        1.1.0      2025-12-18
+#>  parsnip      1.5.0.9000 2026-04-24
+#>  purrr        1.2.2      2026-04-10
+#>  ranger       0.18.0     2026-01-16
+#>  readr        2.2.0      2026-02-19
+#>  recipes      1.3.2      2026-04-02
+#>  rlang        1.2.0      2026-04-06
+#>  rsample      1.3.2      2026-01-30
+#>  scales       1.4.0      2025-04-24
+#>  tibble       3.3.1      2026-01-11
+#>  tidymodels   1.4.1      2025-09-08
+#>  tune         2.1.0.9000 2026-04-27
+#>  vip          0.4.5      2025-12-12
+#>  workflows    1.3.0      2025-08-27
+#>  yardstick    1.4.0      2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

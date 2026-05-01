@@ -617,7 +617,7 @@ final_model_fit <- extract_workflow(final_model)
 ```
 :::
 
-The `final_model_fit` object is now ready to predict on new data! Models generated with tidymodels are easily versioned, deployed, and monitored using the vetiver framework; learn more about the framework on the [vetiver website](https://vetiver.rstudio.com/get-started/).
+The `final_model_fit` object is now ready to predict on new data! Models generated with tidymodels are easily versioned, deployed, and monitored using the vetiver framework; learn more about the framework on the [vetiver website](https://vetiver.tidymodels.org/get-started/).
 
 In this article, we've demonstrated a fairness-oriented modeling analysis. Modeling with fairness in mind is not simply a numerical optimization problem, but a holistic process of examining the moral meanings of fairness in our problem context and how they are represented---or not represented---by various mathematical notions of fairness. 
 
@@ -636,33 +636,33 @@ Machine learning models can both have significant positive impacts on our lives 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.0 (2026-04-24)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
 #>  date     2026-05-01
-#>  pandoc   3.1.3
-#>  quarto   1.9.37
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package         version date (UTC)
-#>  baguette        1.1.0   2025-01-28
-#>  broom           1.0.12  2026-01-27
-#>  desirability2   0.2.0   2025-08-22
-#>  dials           1.4.3   2026-04-11
-#>  dplyr           1.2.1   2026-04-03
-#>  GGally          2.4.0   2025-08-23
-#>  ggplot2         4.0.3   2026-04-22
-#>  infer           1.1.0   2025-12-18
-#>  parsnip         1.5.0   2026-04-09
-#>  purrr           1.2.2   2026-04-10
-#>  readmission     0.1.0   2023-12-07
-#>  recipes         1.3.2   2026-04-02
-#>  rlang           1.2.0   2026-04-06
-#>  rsample         1.3.2   2026-01-30
-#>  tibble          3.3.1   2026-01-11
-#>  tidymodels      1.5.0   2026-04-23
-#>  tune            2.1.0   2026-04-17
-#>  workflows       1.3.0   2025-08-27
-#>  yardstick       1.4.0   2026-04-07
+#>  package         version    date (UTC)
+#>  baguette        1.1.0      2025-01-28
+#>  broom           1.0.12     2026-01-27
+#>  desirability2   0.2.0      2025-08-22
+#>  dials           1.4.3      2026-04-11
+#>  dplyr           1.2.1      2026-04-03
+#>  GGally          2.4.0      2025-08-23
+#>  ggplot2         4.0.3      2026-04-22
+#>  infer           1.1.0      2025-12-18
+#>  parsnip         1.5.0.9000 2026-04-24
+#>  purrr           1.2.2      2026-04-10
+#>  readmission     0.1.0      2023-12-07
+#>  recipes         1.3.2      2026-04-02
+#>  rlang           1.2.0      2026-04-06
+#>  rsample         1.3.2      2026-01-30
+#>  tibble          3.3.1      2026-01-11
+#>  tidymodels      1.4.1      2025-09-08
+#>  tune            2.1.0.9000 2026-04-27
+#>  workflows       1.3.0      2025-08-27
+#>  yardstick       1.4.0      2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

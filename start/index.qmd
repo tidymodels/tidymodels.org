@@ -11,7 +11,7 @@ Here, learn what you need to get started with tidymodels in five articles, start
 
 To get the most out of tidymodels, we recommend that you start by learning some basics about R and the [tidyverse](https://www.tidyverse.org/) first, then return here when you feel ready. Here are some resources to start learning:
 
--   [Finding Your Way To R](https://education.rstudio.com/learn/), from the RStudio Education team.
+-   [Finding Your Way To R](https://education.posit.co/learn/), from the Posit Education team.
 
 -   [Learn the tidyverse](https://www.tidyverse.org/learn/), from the tidyverse team.
 
