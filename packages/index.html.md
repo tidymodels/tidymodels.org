@@ -29,49 +29,49 @@ include-after-body: ../html/resources.html
 </div>
 </div>
 <div class="package">
-<img class="package-image" src="/images/rsample.png" alt=""></img>
+<img class="package-image" src="/images/rsample.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://rsample.tidymodels.org/">rsample</a></h3>
 <p>rsample provides infrastructure for efficient data splitting and resampling.<a href="https://rsample.tidymodels.org/" aria-hidden="true"> Go to package ...</a></p>
 </div>
 </div>
 <div class="package">
-<img class="package-image" src="/images/parsnip.png" alt=""></img>
+<img class="package-image" src="/images/parsnip.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://parsnip.tidymodels.org/"> parsnip</a></h3>
 <p>parsnip is a tidy, unified interface to models that can be used to try a range of models without getting bogged down in the syntactical minutiae of the underlying packages.<a href="https://parsnip.tidymodels.org/" aria-hidden="true"> Go to package ...</a></p>
 </div>
 </div>  
 <div class="package">
-<img class="package-image" src="/images/recipes.png" alt=""></img>
+<img class="package-image" src="/images/recipes.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://recipes.tidymodels.org/"> recipes</a></h3>
 <p>recipes is a tidy interface to data pre-processing tools for feature engineering.<a href="https://recipes.tidymodels.org/" aria-hidden="true"> Go to package ...</a></p>
 </div>
 </div>
 <div class="package">
-<img class="package-image" src="/images/workflows.png" alt=""></img>
+<img class="package-image" src="/images/workflows.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://workflows.tidymodels.org/"> workflows</a></h3>
 <p>workflows bundle your pre-processing, modeling, and post-processing together.<a href="https://workflows.tidymodels.org/" aria-hidden="true"> Go to package ...</a></p>
 </div>
 </div> 
 <div class="package">
-<img class="package-image" src="/images/tune.png" alt=""></img>
+<img class="package-image" src="/images/tune.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://tune.tidymodels.org/"> tune</a></h3>
 <p>tune helps you optimize the hyperparameters of your model and pre-processing steps.<a href="https://tune.tidymodels.org/" aria-hidden="true"> Go to package ...</a></p>
 </div>
 </div>  
 <div class="package">
-<img class="package-image" src="/images/yardstick.png" alt=""></img>
+<img class="package-image" src="/images/yardstick.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://yardstick.tidymodels.org/"> yardstick</a></h3>
 <p>yardstick measures the effectiveness of models using performance metrics.<a href="https://yardstick.tidymodels.org/" aria-hidden="true"> Go to package ...</a></p>
 </div>
 </div>
 <div class="package">
-<img class="package-image" src="/images/broom.png" alt=""></img>
+<img class="package-image" src="/images/broom.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://broom.tidymodels.org/"> broom</a></h3>
 <p>broom converts the information in common statistical R objects into user-friendly, predictable formats. 
@@ -79,7 +79,7 @@ include-after-body: ../html/resources.html
 </div>
 </div>
 <div class="package">
-<img class="package-image" src="/images/dials.png" alt=""></img>
+<img class="package-image" src="/images/dials.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://dials.tidymodels.org/"> dials</a></h3>
 <p>dials creates and manages tuning parameters and parameter grids. 

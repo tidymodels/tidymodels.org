@@ -15,28 +15,28 @@ page-layout: custom
 
 <a href="https://rsample.tidymodels.org/">
   <div class="filtered r2 c0"></div>
-  <img src="images/rsample.png" alt="rsample hex sticker" class="r2 c0">
+  <img src="images/rsample.svg" alt="rsample hex sticker" class="r2 c0">
 </a>
 
 <a href="https://parsnip.tidymodels.org/">
   <div class="filtered r3 c0"></div>
-  <img src="images/parsnip.png" alt="parsnip hex sticker" class="r3 c0">
+  <img src="images/parsnip.svg" alt="parsnip hex sticker" class="r3 c0">
 </a>
        
         
 <a href="https://recipes.tidymodels.org/">
   <div class="filtered r2 c2"></div>
-  <img src="images/recipes.png" alt="recipes hex sticker" class="r2 c2">
+  <img src="images/recipes.svg" alt="recipes hex sticker" class="r2 c2">
 </a>
 
 <a href="https://tune.tidymodels.org/">
  <div class="filtered r3 c2"></div>
- <img src="images/tune.png" alt="tune hex sticker" class="r3 c2">
+ <img src="images/tune.svg" alt="tune hex sticker" class="r3 c2">
 </a>
 
 <a href="https://yardstick.tidymodels.org/">
   <div class="filtered r4 c2"></div>
-  <img src="images/yardstick.png" alt="yardstick hex sticker" class="r4 c2">
+  <img src="images/yardstick.svg" alt="yardstick hex sticker" class="r4 c2">
 </a>
 :::
 
