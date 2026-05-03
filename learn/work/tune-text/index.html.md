@@ -17,13 +17,12 @@ r-packages:
   - stopwords
   - text2vec
   - future
-  - tictoc
 include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: future, stopwords, text2vec, textrecipes, tictoc, and tidymodels.
+To use code in this article,  you will need to install the following packages: future, stopwords, text2vec, textrecipes, and tidymodels.
 
 This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.
 
@@ -241,19 +240,16 @@ Finally, let's run the grid search:
 ```{.r .cell-code}
 roc_scores <- metric_set(roc_auc)
 
-tictoc::tic()
 set.seed(1559)
-five_star_glmnet <- 
+five_star_glmnet <-
   tune_grid(
-    lr_mod, 
-    pre_proc, 
-    resamples = folds, 
-    grid = five_star_grid, 
-    metrics = roc_scores, 
+    lr_mod,
+    pre_proc,
+    resamples = folds,
+    grid = five_star_grid,
+    metrics = roc_scores,
     control = ctrl
   )
-tictoc::toc()
-#> 102.296 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -720,7 +716,6 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  text2vec      0.6.6   2025-12-01
 #>  textrecipes   1.1.0   2025-03-18
 #>  tibble        3.3.1   2026-01-11
-#>  tictoc        1.2.1   2024-03-18
 #>  tidymodels    1.5.0   2026-04-23
 #>  tune          2.1.0   2026-04-17
 #>  workflows     1.3.0   2025-08-27
