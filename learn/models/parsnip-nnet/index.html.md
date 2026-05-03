@@ -97,7 +97,7 @@ nnet_fit %>% extract_fit_engine()
 #> dropout proportion: 0 
 #> batch size: 2000 
 #> learn rate: 0.1 
-#> training set loss after 1000 epochs: 0.273
+#> training set loss after 62 epochs: 0.271
 ```
 :::
 
@@ -116,11 +116,11 @@ val_results <-
   )
 val_results %>% slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
-#> 1 0.7632082 -0.04012164 Class2      Class2   0.08514048 9.148595e-01
-#> 2 0.9823745 -0.16911637 Class2      Class2   0.05365974 9.463403e-01
-#> 3 1.0558147  0.52817699 Class2      Class2   0.06269209 9.373079e-01
-#> 4 1.2424507  1.10902951 Class2      Class2   0.21773119 7.822688e-01
-#> 5 1.5889815  2.71047720 Class1      Class1   1.00000000 6.978881e-12
+#> 1 0.7632082 -0.04012164 Class2      Class2   0.09109678 9.089032e-01
+#> 2 0.9823745 -0.16911637 Class2      Class2   0.05814141 9.418586e-01
+#> 3 1.0558147  0.52817699 Class2      Class2   0.06625212 9.337479e-01
+#> 4 1.2424507  1.10902951 Class2      Class2   0.22103546 7.789645e-01
+#> 5 1.5889815  2.71047720 Class1      Class1   1.00000000 4.196466e-12
 
 val_results %>% roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
@@ -132,13 +132,13 @@ val_results %>% accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.908
+#> 1 accuracy binary         0.904
 
 val_results %>% conf_mat(truth = class, .pred_class)
 #>           Truth
 #> Prediction Class1 Class2
-#>     Class1    171     15
-#>     Class2     31    283
+#>     Class1    172     18
+#>     Class2     30    280
 ```
 :::
 
@@ -178,7 +178,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-05-01
+#>  date     2026-05-03
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
