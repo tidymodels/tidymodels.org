@@ -17,7 +17,6 @@ r-packages:
   - stopwords
   - text2vec
   - future
-  - tictoc
 include-after-body: ../../../html/resources.html
 ---
 
@@ -211,18 +210,16 @@ Finally, let's run the grid search:
 #| message: false
 roc_scores <- metric_set(roc_auc)
 
-tictoc::tic()
 set.seed(1559)
-five_star_glmnet <- 
+five_star_glmnet <-
   tune_grid(
-    lr_mod, 
-    pre_proc, 
-    resamples = folds, 
-    grid = five_star_grid, 
-    metrics = roc_scores, 
+    lr_mod,
+    pre_proc,
+    resamples = folds,
+    grid = five_star_grid,
+    metrics = roc_scores,
     control = ctrl
   )
-tictoc::toc()
 
 five_star_glmnet
 ```
