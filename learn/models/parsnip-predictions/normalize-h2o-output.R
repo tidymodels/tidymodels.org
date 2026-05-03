@@ -14,10 +14,10 @@ if (!file.exists(target)) {
 lines <- readLines(target, warn = FALSE)
 
 # 1. H2O model IDs: e.g. GBM_model_R_1776455818270_3215
-#    Normalize the trailing session counter to 0
+#    Normalize both the session ID and trailing counter to 0
 lines <- gsub(
-  "((?:GBM|GLM|DRF|DeepLearning|NaiveBayes|RuleFit)_model_R_\\d+)_\\d+",
-  "\\1_0",
+  "((?:GBM|GLM|DRF|DeepLearning|NaiveBayes|RuleFit)_model_R_)\\d+_\\d+",
+  "\\10_0",
   lines,
   perl = TRUE
 )
