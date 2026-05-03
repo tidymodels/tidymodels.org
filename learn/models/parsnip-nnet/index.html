@@ -527,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; dropout proportion: 0 </span></span>
 <span><span class="co">#&gt; batch size: 2000 </span></span>
 <span><span class="co">#&gt; learn rate: 0.1 </span></span>
-<span><span class="co">#&gt; training set loss after 1000 epochs: 0.273</span></span></code></pre></div>
+<span><span class="co">#&gt; training set loss after 62 epochs: 0.271</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -544,11 +544,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="op">)</span></span>
 <span><span class="va">val_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           A           B  class .pred_class .pred_Class1 .pred_Class2</span></span>
-<span><span class="co">#&gt; 1 0.7632082 -0.04012164 Class2      Class2   0.08514048 9.148595e-01</span></span>
-<span><span class="co">#&gt; 2 0.9823745 -0.16911637 Class2      Class2   0.05365974 9.463403e-01</span></span>
-<span><span class="co">#&gt; 3 1.0558147  0.52817699 Class2      Class2   0.06269209 9.373079e-01</span></span>
-<span><span class="co">#&gt; 4 1.2424507  1.10902951 Class2      Class2   0.21773119 7.822688e-01</span></span>
-<span><span class="co">#&gt; 5 1.5889815  2.71047720 Class1      Class1   1.00000000 6.978881e-12</span></span>
+<span><span class="co">#&gt; 1 0.7632082 -0.04012164 Class2      Class2   0.09109678 9.089032e-01</span></span>
+<span><span class="co">#&gt; 2 0.9823745 -0.16911637 Class2      Class2   0.05814141 9.418586e-01</span></span>
+<span><span class="co">#&gt; 3 1.0558147  0.52817699 Class2      Class2   0.06625212 9.337479e-01</span></span>
+<span><span class="co">#&gt; 4 1.2424507  1.10902951 Class2      Class2   0.22103546 7.789645e-01</span></span>
+<span><span class="co">#&gt; 5 1.5889815  2.71047720 Class1      Class1   1.00000000 4.196466e-12</span></span>
 <span></span>
 <span><span class="va">val_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_Class1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
@@ -560,13 +560,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 accuracy binary         0.908</span></span>
+<span><span class="co">#&gt; 1 accuracy binary         0.904</span></span>
 <span></span>
 <span><span class="va">val_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/conf_mat.html">conf_mat</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           Truth</span></span>
 <span><span class="co">#&gt; Prediction Class1 Class2</span></span>
-<span><span class="co">#&gt;     Class1    171     15</span></span>
-<span><span class="co">#&gt;     Class2     31    283</span></span></code></pre></div>
+<span><span class="co">#&gt;     Class1    172     18</span></span>
+<span><span class="co">#&gt;     Class2     30    280</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -605,7 +605,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.6.0 (2026-04-24)
 #&gt;  language (EN)
-#&gt;  date     2026-05-01
+#&gt;  date     2026-05-03
 #&gt;  pandoc   3.1.3
 #&gt;  quarto   1.9.37
 #&gt; 
