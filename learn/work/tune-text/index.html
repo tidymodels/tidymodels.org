@@ -461,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>To use code in this article, you will need to install the following packages: future, stopwords, text2vec, textrecipes, tictoc, and tidymodels.</p>
+<p>To use code in this article, you will need to install the following packages: future, stopwords, text2vec, textrecipes, and tidymodels.</p>
 <p>This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.</p>
 </section><section id="text-as-data" class="level2"><h2 class="anchored" data-anchor-id="text-as-data">Text as data</h2>
 <p>The text data we’ll use in this article are from Amazon:</p>
@@ -684,19 +684,16 @@ Warning
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">roc_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">roc_auc</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu">tic</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1559</span><span class="op">)</span></span>
-<span><span class="va">five_star_glmnet</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">five_star_glmnet</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid</a></span><span class="op">(</span></span>
-<span>    <span class="va">lr_mod</span>, </span>
-<span>    <span class="va">pre_proc</span>, </span>
-<span>    resamples <span class="op">=</span> <span class="va">folds</span>, </span>
-<span>    grid <span class="op">=</span> <span class="va">five_star_grid</span>, </span>
-<span>    metrics <span class="op">=</span> <span class="va">roc_scores</span>, </span>
+<span>    <span class="va">lr_mod</span>,</span>
+<span>    <span class="va">pre_proc</span>,</span>
+<span>    resamples <span class="op">=</span> <span class="va">folds</span>,</span>
+<span>    grid <span class="op">=</span> <span class="va">five_star_grid</span>,</span>
+<span>    metrics <span class="op">=</span> <span class="va">roc_scores</span>,</span>
 <span>    control <span class="op">=</span> <span class="va">ctrl</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu">toc</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 102.296 sec elapsed</span></span>
 <span></span>
 <span><span class="va">five_star_glmnet</span></span>
 <span><span class="co">#&gt; # Tuning results</span></span>
@@ -1151,7 +1148,6 @@ Note
 #&gt;  text2vec      0.6.6   2025-12-01
 #&gt;  textrecipes   1.1.0   2025-03-18
 #&gt;  tibble        3.3.1   2026-01-11
-#&gt;  tictoc        1.2.1   2024-03-18
 #&gt;  tidymodels    1.5.0   2026-04-23
 #&gt;  tune          2.1.0   2026-04-17
 #&gt;  workflows     1.3.0   2025-08-27
