@@ -214,7 +214,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 4 months and 10 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 4 months and 13 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -1012,7 +1012,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1777648177619_0 
+#> Model ID:  GBM_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               30000         6
@@ -1130,7 +1130,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_1777648177619_0 
+#> Model ID:  GBM_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               30000         6
@@ -2924,7 +2924,7 @@ logistic_reg_fit
 #> ==============
 #> 
 #> H2OBinomialModel: glm
-#> Model ID:  GLM_model_R_1777648177619_0 
+#> Model ID:  GLM_model_R_1777835793568_0 
 #> GLM Model: summary
 #>     family  link                                regularization
 #> 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )
@@ -3703,11 +3703,11 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.392       0.608 
+#> 1        0.391       0.609 
 #> 2        0.834       0.166 
 #> 3        0.439       0.561 
-#> 4        0.936       0.0637
-#> 5        0.936       0.0637
+#> 4        0.936       0.0640
+#> 5        0.936       0.0640
 #> 6        0.848       0.152
 ```
 :::
@@ -3751,7 +3751,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2OBinomialModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1777648177619_0 
+#> Model ID:  DeepLearning_model_R_1777835793568_0 
 #> Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -4172,7 +4172,7 @@ multinom_reg_fit
 #> ==============
 #> 
 #> H2OMultinomialModel: glm
-#> Model ID:  GLM_model_R_1777648177619_0 
+#> Model ID:  GLM_model_R_1777835793568_0 
 #> GLM Model: summary
 #>        family        link                                regularization
 #> 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )
@@ -4405,7 +4405,7 @@ naive_Bayes_fit
 #> ==============
 #> 
 #> H2OBinomialModel: naivebayes
-#> Model ID:  NaiveBayes_model_R_1777648177619_0 
+#> Model ID:  NaiveBayes_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_response_levels min_apriori_probability max_apriori_probability
 #> 1                         2                 0.44713                 0.55287
@@ -5211,7 +5211,7 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2OBinomialModel: drf
-#> Model ID:  DRF_model_R_1777648177619_0 
+#> Model ID:  DRF_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               90000        13
@@ -5715,7 +5715,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2OBinomialModel: rulefit
-#> Model ID:  RuleFit_model_R_1777648177619_0 
+#> Model ID:  RuleFit_model_R_1777835793568_0 
 #> Rulefit Model Summary: 
 #>     family  link            regularization number_of_predictors_total
 #> 1 binomial logit Lasso (lambda = 0.03081 )                       2328
@@ -6634,7 +6634,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1777648177619_0 
+#> Model ID:  GBM_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -6712,7 +6712,7 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_1777648177619_0 
+#> Model ID:  GBM_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -7809,7 +7809,7 @@ linear_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1777648177619_0 
+#> Model ID:  GLM_model_R_1777835793568_0 
 #> GLM Model: summary
 #>     family     link                               regularization
 #> 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )
@@ -8585,7 +8585,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2ORegressionModel: deeplearning
-#> Model ID:  DeepLearning_model_R_1777648177619_0 
+#> Model ID:  DeepLearning_model_R_1777835793568_0 
 #> Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -9254,7 +9254,7 @@ poisson_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_1777648177619_0 
+#> Model ID:  GLM_model_R_1777835793568_0 
 #> GLM Model: summary
 #>    family link                               regularization
 #> 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )
@@ -9908,7 +9908,7 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2ORegressionModel: drf
-#> Model ID:  DRF_model_R_1777648177619_0 
+#> Model ID:  DRF_model_R_1777835793568_0 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 #> 1              50                       50               20000         6
@@ -10337,7 +10337,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2ORegressionModel: rulefit
-#> Model ID:  RuleFit_model_R_1777648177619_0 
+#> Model ID:  RuleFit_model_R_1777835793568_0 
 #> Rulefit Model Summary: 
 #>     family     link           regularization number_of_predictors_total
 #> 1 gaussian identity Lasso (lambda = 0.9516 )                       1801
@@ -12240,7 +12240,7 @@ rand_forest_fit |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-05-01
+#>  date     2026-05-03
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

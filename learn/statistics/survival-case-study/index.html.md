@@ -468,10 +468,10 @@ predict(complaints_model, new_data = complaints_5, type = "time")
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       78.8
-#> 2       46.9
+#> 1       78.6
+#> 2       46.8
 #> 3       93.5
-#> 4       78.4
+#> 4       78.5
 #> 5       71.9
 ```
 :::
@@ -486,7 +486,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-05-01
+#>  date     2026-05-03
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 

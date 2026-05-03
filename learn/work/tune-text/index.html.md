@@ -253,7 +253,7 @@ five_star_glmnet <-
     control = ctrl
   )
 tictoc::toc()
-#> 104.146 sec elapsed
+#> 102.296 sec elapsed
 
 five_star_glmnet
 #> # Tuning results
@@ -699,7 +699,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-05-01
+#>  date     2026-05-03
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
