@@ -64,7 +64,7 @@ if (length(updated) == 0) {
   write_output("has_updates=false\n")
 } else {
   cat("Updated packages:", paste(updated, collapse = ", "), "\n")
-  changes <- paste0("- ", updated, ": ", recorded[updated], " → ", cran_versions[updated])
+  changes <- paste0("- ", updated, ": ", unlist(recorded[updated]), " → ", cran_versions[updated])
   write_output(sprintf("updated_packages=%s\n", paste(updated, collapse = " ")))
   write_output(sprintf("pages=%s\n", resolve_pages(updated)))
   write_output("has_updates=true\n")
