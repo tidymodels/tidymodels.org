@@ -11245,6 +11245,10 @@ Now we create the model fit object:
 ```{.r .cell-code}
 proportional_hazards_fit <- proportional_hazards_spec |>
   fit(event_time ~ ., data = cns_train)
+#> Warning: Starting in glmnet 5.1, the default Cox tie-handling method will
+#> change from 'breslow' to 'efron' (matching survival::coxph). To silence this
+#> message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To
+#> preview the v5.1 behavior, pass cox.ties = 'efron'.
 proportional_hazards_fit
 #> parsnip model object
 #> 
@@ -11256,9 +11260,9 @@ proportional_hazards_fit
 #> 2   1 0.82 0.36170
 #> 3   1 1.51 0.32960
 #> 4   1 2.07 0.30030
-#> 5   1 2.54 0.27360
+#> 5   1 2.55 0.27360
 #> 6   1 2.94 0.24930
-#> 7   2 3.28 0.22720
+#> 7   2 3.29 0.22720
 #> 8   2 3.95 0.20700
 #> 9   2 4.50 0.18860
 #> 10  2 4.95 0.17180
@@ -11272,8 +11276,8 @@ proportional_hazards_fit
 #> 18  2 6.69 0.08164
 #> 19  2 6.77 0.07439
 #> 20  2 6.85 0.06778
-#> 21  2 6.91 0.06176
-#> 22  2 6.96 0.05627
+#> 21  2 6.90 0.06176
+#> 22  2 6.95 0.05627
 #> 23  2 7.00 0.05127
 #> 24  2 7.03 0.04672
 #> 25  2 7.06 0.04257
@@ -12240,7 +12244,7 @@ rand_forest_fit |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-05-03
+#>  date     2026-05-04
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
@@ -12264,7 +12268,7 @@ rand_forest_fit |>
 #>  flexsurv        2.3.2      2024-08-17
 #>  gee             4.13-29    2024-12-11
 #>  ggplot2         4.0.3      2026-04-22
-#>  glmnet          4.1-10     2025-07-17
+#>  glmnet          5.0        2026-05-04
 #>  grf             2.6.1      2026-03-04
 #>  h2o             3.44.0.3   2024-01-11
 #>  HSAUR3          1.0-15     2024-08-17

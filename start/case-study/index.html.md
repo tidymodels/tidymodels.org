@@ -747,7 +747,7 @@ Here are some more ideas for where to go next:
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  date     2026-05-03
+#>  date     2026-05-04
 #>  pandoc   3.1.3
 #>  quarto   1.9.37
 #> 
@@ -757,7 +757,7 @@ Here are some more ideas for where to go next:
 #>  dials        1.4.3   2026-04-11
 #>  dplyr        1.2.1   2026-04-03
 #>  ggplot2      4.0.3   2026-04-22
-#>  glmnet       4.1-10  2025-07-17
+#>  glmnet       5.0     2026-05-04
 #>  here         1.0.2   2025-09-15
 #>  infer        1.1.0   2025-12-18
 #>  parsnip      1.5.0   2026-04-09
