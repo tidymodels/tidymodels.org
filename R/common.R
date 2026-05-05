@@ -72,7 +72,7 @@ small_session <- function(pkgs = NULL) {
   sinfo <- sinfo |>
     stringr::str_subset("^ \\[\\d+\\] ", negate = TRUE) |>
     stringr::str_subset(
-      "^ (setting|os|system|ui|collate|ctype|tz)",
+      "^ (setting|os|system|ui|collate|ctype|tz|date)",
       negate = TRUE
     ) |>
     stringr::str_remove(" @ .*") |>
