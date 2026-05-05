@@ -2,13 +2,13 @@ on:
   issue_comment:
     types: [created]
 
-name: Render PR pages
+name: Render all PR pages
 
 jobs:
   render:
     if: >
       github.event.issue.pull_request != null &&
-      github.event.comment.body == '/render' &&
+      github.event.comment.body == '/render-all' &&
       (github.event.comment.author_association == 'OWNER' ||
        github.event.comment.author_association == 'MEMBER' ||
        github.event.comment.author_association == 'COLLABORATOR')
@@ -47,32 +47,18 @@ jobs:
           ref: ${{ steps.pr.outputs.branch }}
           fetch-depth: 0
 
-      - name: Find changed .qmd files
-        id: changed
-        run: |
-          pages=$(git diff --name-only origin/main...HEAD -- '*.qmd' | tr '\n' ' ')
-          echo "pages=$pages" >> $GITHUB_OUTPUT
-          # derive unique package list from r-packages fields in changed files
-          pkgs=$(grep -h "^  - " $pages 2>/dev/null | sort -u | sed 's/^  - //' | tr '\n' ' ' || true)
-          echo "pkgs=$pkgs" >> $GITHUB_OUTPUT
-
       - name: Set up render environment
         uses: ./.github/actions/setup-render
         with:
-          packages: ${{ steps.changed.outputs.pkgs }}
-          cache-key-suffix: pr-${{ steps.pr.outputs.branch }}
+          packages: "--all"
+          cache-key-suffix: pr-all-${{ steps.pr.outputs.branch }}
 
-      - name: Install packages for changed pages
-        run: Rscript R/install_for_pages.R ${{ steps.changed.outputs.pages }}
+      - name: Install all packages
+        run: Rscript R/installs.R
 
-      - name: Render changed pages
+      - name: Render all pages
         id: render
-        run: |
-          for page in ${{ steps.changed.outputs.pages }}; do
-            freeze_dir="_freeze/${page%.qmd}"
-            [ -d "$freeze_dir" ] && rm -rf "$freeze_dir"
-            quarto render "$page" || exit 1
-          done
+        run: Rscript R/re-render.R
 
       - name: Commit rendered output
         run: |
@@ -80,7 +66,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add _freeze/ $(find . -name "*.md" -not -path "./.git/*")
           git diff --cached --quiet && echo "Nothing to commit" || \
-            git commit -m "render changed pages [skip ci]" && git push
+            git commit -m "render all pages [skip ci]" && git push
 
       - name: Comment on PR
         if: always()
@@ -88,10 +74,8 @@ jobs:
         with:
           script: |
             const success = '${{ steps.render.outcome }}' === 'success';
-            const pages = '${{ steps.changed.outputs.pages }}'.trim().split(/\s+/).filter(Boolean);
-            const list = pages.map(p => `- \`${p}\``).join('\n');
             const body = success
-              ? `**Render complete** :white_check_mark:\n\nRendered pages:\n${list}\n\nRendered output has been committed to this branch.`
+              ? `**Render complete** :white_check_mark:\n\nAll pages have been rendered and committed to this branch.`
               : `**Render failed** :x:\n\nCheck the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
