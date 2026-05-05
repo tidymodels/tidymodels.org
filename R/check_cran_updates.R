@@ -49,10 +49,7 @@ if (nzchar(manual)) {
 pkgs <- names(recorded)
 
 db <- available.packages(repos = "https://cloud.r-project.org")
-cran_versions <- setNames(
-  ifelse(pkgs %in% rownames(db), db[pkgs[pkgs %in% rownames(db)], "Version"], NA),
-  pkgs
-)
+cran_versions <- setNames(db[match(pkgs, rownames(db)), "Version"], pkgs)
 
 updated <- pkgs[
   !is.na(cran_versions) &
