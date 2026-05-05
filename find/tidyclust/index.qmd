@@ -32,9 +32,9 @@ tidyclust_models <- read_csv("tidyclust_models.csv")
 ```{r}
 #| label: table-display
 #| echo: false
-tidyclust_models %>% 
-  mutate(package = factor(package)) %>%
-  mutate(mode = factor(mode)) %>%
+tidyclust_models |> 
+  mutate(package = factor(package)) |>
+  mutate(mode = factor(mode)) |>
   datatable(rownames = FALSE,
             class = 'cell-border stripe',
             filter = 'top',

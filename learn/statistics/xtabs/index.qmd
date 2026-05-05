@@ -49,7 +49,7 @@ library(tidymodels) # Includes the infer package
 set.seed(1234)
 
 data(ad_data, package = "modeldata")
-ad_data %>%
+ad_data |>
   select(Genotype, Class)
 ```
 
@@ -62,7 +62,7 @@ To carry out a chi-squared test of independence, we'll examine the association b
 ```{r}
 #| label: "plot-indep"
 #| echo: false
-ad_data %>%
+ad_data |>
   ggplot() +
   aes(y = Genotype, fill = Class) +
   geom_bar(position = "fill") +
@@ -80,8 +80,8 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 #| warning: false
 #| message: false
 # calculate the observed statistic
-observed_indep_statistic <- ad_data %>%
-  specify(Genotype ~ Class) %>%
+observed_indep_statistic <- ad_data |>
+  specify(Genotype ~ Class) |>
   calculate(stat = "Chisq")
 ```
 
@@ -94,10 +94,10 @@ We can `generate()` the null distribution in one of two ways: using randomizatio
 #| warning: false
 #| message: false
 # generate the null distribution using randomization
-null_distribution_simulated <- ad_data %>%
-  specify(Genotype ~ Class) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 5000, type = "permute") %>%
+null_distribution_simulated <- ad_data |>
+  specify(Genotype ~ Class) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5000, type = "permute") |>
   calculate(stat = "Chisq")
 ```
 
@@ -108,9 +108,9 @@ Note that, in the line `specify(Genotype ~ Class)` above, we could use the equiv
 #| warning: false
 #| message: false
 # generate the null distribution by theoretical approximation
-null_distribution_theoretical <- ad_data %>%
-  specify(Genotype ~ Class) %>%
-  hypothesize(null = "independence") %>%
+null_distribution_theoretical <- ad_data |>
+  specify(Genotype ~ Class) |>
+  hypothesize(null = "independence") |>
   # note that we skip the generation step here!
   calculate(stat = "Chisq")
 ```
@@ -122,7 +122,7 @@ To get a sense for what these distributions look like, and where our observed st
 #| warning: false
 #| message: false
 # visualize the null distribution and test statistic!
-null_distribution_simulated %>%
+null_distribution_simulated |>
   visualize() + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")
@@ -135,9 +135,9 @@ We could also visualize the observed statistic against the theoretical null dist
 #| warning: false
 #| message: false
 # visualize the theoretical null distribution and test statistic!
-ad_data %>%
-  specify(Genotype ~ Class) %>%
-  hypothesize(null = "independence") %>%
+ad_data |>
+  specify(Genotype ~ Class) |>
+  hypothesize(null = "independence") |>
   visualize(method = "theoretical") + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")
@@ -150,7 +150,7 @@ To visualize both the randomization-based and theoretical null distributions to 
 #| warning: false
 #| message: false
 # visualize both null distributions and the test statistic!
-null_distribution_simulated %>%
+null_distribution_simulated |>
   visualize(method = "both") + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")
@@ -163,7 +163,7 @@ Either way, it looks like our observed test statistic would be fairly unlikely i
 #| warning: false
 #| message: false
 # calculate the p value from the observed statistic and null distribution
-p_value_independence <- null_distribution_simulated %>%
+p_value_independence <- null_distribution_simulated |>
   get_p_value(obs_stat = observed_indep_statistic,
               direction = "greater")
 
@@ -210,9 +210,9 @@ First, to carry out this hypothesis test, we would calculate our observed statis
 #| warning: false
 #| message: false
 # calculating the null distribution
-observed_gof_statistic <- ad_data %>%
-  specify(response = Genotype) %>%
-  hypothesize(null = "point", p = meta_rates) %>%
+observed_gof_statistic <- ad_data |>
+  specify(response = Genotype) |>
+  hypothesize(null = "point", p = meta_rates) |>
   calculate(stat = "Chisq")
 ```
 
@@ -224,10 +224,10 @@ The observed statistic is `r observed_gof_statistic`. Now, generating a null dis
 #| warning: false
 #| message: false
 # generating a null distribution
-null_distribution_gof <- ad_data %>%
-  specify(response = Genotype) %>%
-  hypothesize(null = "point", p = meta_rates) %>%
-  generate(reps = 5000, type = "simulate") %>%
+null_distribution_gof <- ad_data |>
+  specify(response = Genotype) |>
+  hypothesize(null = "point", p = meta_rates) |>
+  generate(reps = 5000, type = "simulate") |>
   calculate(stat = "Chisq")
 ```
 
@@ -238,7 +238,7 @@ Again, to get a sense for what these distributions look like, and where our obse
 #| warning: false
 #| message: false
 # visualize the null distribution and test statistic!
-null_distribution_gof %>%
+null_distribution_gof |>
   visualize() + 
   shade_p_value(observed_gof_statistic,
                 direction = "greater")
@@ -251,7 +251,7 @@ This statistic seems like it would be unlikely if our rates were the same as the
 #| warning: false
 #| message: false
 # calculate the p-value
-p_value_gof <- null_distribution_gof %>%
+p_value_gof <- null_distribution_gof |>
   get_p_value(observed_gof_statistic,
               direction = "greater")
 

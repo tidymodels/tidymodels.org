@@ -83,7 +83,7 @@ data(cells)
 cells$case <- NULL
 
 dim(cells)
-cells %>% count(class)
+cells |> count(class)
 ```
 
 There is a class imbalance but that will not affect our work here. 
@@ -113,8 +113,8 @@ To demonstrate, let's set up the model:
 #| label: bayes-setup
 
 bayes_wflow <-
-  workflow() %>%
-  add_formula(class ~ .) %>%
+  workflow() |>
+  add_formula(class ~ .) |>
   add_model(naive_Bayes())
 ```
 
@@ -129,7 +129,7 @@ cls_met <- metric_set(roc_auc, brier_class)
 ctrl <- control_resamples(save_pred = TRUE)
 
 bayes_res <-
-  bayes_wflow %>%
+  bayes_wflow |>
   fit_resamples(cells_rs, metrics = cls_met, control = ctrl)
 
 collect_metrics(bayes_res)
@@ -150,7 +150,7 @@ The first clue is the extremely U-shaped distribution of the probability scores 
 #| fig.height: 5
 #| fig.align: center
 
-collect_predictions(bayes_res) %>%
+collect_predictions(bayes_res) |>
   ggplot(aes(.pred_PS)) +
   geom_histogram(col = "white", bins = 40) +
   facet_wrap(~ class, ncol = 1) +
@@ -226,8 +226,8 @@ How do we know if this works? There are a set of `cal_validate_*()` functions th
 logit_val <- cal_validate_logistic(bayes_res, metrics = cls_met, save_pred = TRUE)
 collect_metrics(logit_val)
 
-collect_predictions(logit_val) %>%
-  filter(.type == "calibrated") %>%
+collect_predictions(logit_val) |>
+  filter(.type == "calibrated") |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
   ggtitle("Logistic calibration via GAM")
 ```
@@ -248,8 +248,8 @@ iso_val <- cal_validate_isotonic_boot(bayes_res, metrics = cls_met,
                                       save_pred = TRUE, times = 25)
 collect_metrics(iso_val)
 
-collect_predictions(iso_val) %>%
-  filter(.type == "calibrated") %>%
+collect_predictions(iso_val) |>
+  filter(.type == "calibrated") |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
   ggtitle("Isotonic regression calibration")
 ```
@@ -268,8 +268,8 @@ Finally, we can also test out [Beta calibration](https://scholar.google.com/scho
 beta_val <- cal_validate_beta(bayes_res, metrics = cls_met, save_pred = TRUE)
 collect_metrics(beta_val)
 
-collect_predictions(beta_val) %>%
-  filter(.type == "calibrated") %>%
+collect_predictions(beta_val) |>
+  filter(.type == "calibrated") |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
   ggtitle("Beta calibration")
 ```
@@ -285,7 +285,7 @@ We can also fit the final naive Bayes model to predict the test set:
 #| warning: false
 
 cell_cal <- cal_estimate_beta(bayes_res)
-bayes_fit <- bayes_wflow %>% fit(data = cells_tr)
+bayes_fit <- bayes_wflow |> fit(data = cells_tr)
 ```
 
 The `cell_cal` object can be used to enact the calibration for new predictions (as we'll see in a minute).
@@ -299,7 +299,7 @@ First, we make our ordinary predictions:
 #| warning: false
 
 cell_test_pred <- augment(bayes_fit, new_data = cells_te)
-cell_test_pred %>% cls_met(class, .pred_PS)
+cell_test_pred |> cls_met(class, .pred_PS)
 ```
 
 These metric estimates are very consistent with the resampled performance estimates. 
@@ -314,9 +314,9 @@ We can then use our `cell_cal` object with the `cal_apply()` function:
 #| fig.align: center
 
 cell_test_cal_pred <-
-  cell_test_pred %>%
+  cell_test_pred |>
   cal_apply(cell_cal)
-cell_test_cal_pred %>% dplyr::select(class, starts_with(".pred_"))
+cell_test_cal_pred |> dplyr::select(class, starts_with(".pred_"))
 ```
 
 Note that `cal_apply()` recomputed the hard class predictions in the `.pred_class` column. It is possible that the changes in the probability estimates could invalidate the original hard class estimates. 
@@ -330,8 +330,8 @@ What do the calibrated test set results show?
 #| fig.height: 5
 #| fig.align: center
 
-cell_test_cal_pred %>% cls_met(class, .pred_PS)
-cell_test_cal_pred %>%
+cell_test_cal_pred |> cls_met(class, .pred_PS)
+cell_test_cal_pred |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025)
 ```
 

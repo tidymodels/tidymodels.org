@@ -108,8 +108,8 @@ The rates of the classes are somewhat imbalanced; there are more poorly segmente
 
 ```{r}
 #| label: "rates"
-cells %>% 
-  count(class) %>% 
+cells |> 
+  count(class) |> 
   mutate(prop = n/sum(n))
 ```
 
@@ -130,7 +130,7 @@ The function `rsample::initial_split()` takes the original data and saves the in
 ```{r}
 #| label: "cell-split"
 set.seed(123)
-cell_split <- initial_split(cells %>% select(-case), 
+cell_split <- initial_split(cells |> select(-case), 
                             strata = class)
 ```
 
@@ -145,13 +145,13 @@ nrow(cell_train)
 nrow(cell_train)/nrow(cells)
 
 # training set proportions by class
-cell_train %>% 
-  count(class) %>% 
+cell_train |> 
+  count(class) |> 
   mutate(prop = n/sum(n))
 
 # test set proportions by class
-cell_test %>% 
-  count(class) %>% 
+cell_test |> 
+  count(class) |> 
   mutate(prop = n/sum(n))
 ```
 
@@ -170,8 +170,8 @@ To fit a random forest model on the training set, let's use the [parsnip](https:
 ```{r}
 #| label: "rf-def"
 rf_mod <- 
-  rand_forest(trees = 1000) %>% 
-  set_engine("ranger") %>% 
+  rand_forest(trees = 1000) |> 
+  set_engine("ranger") |> 
   set_mode("classification")
 ```
 
@@ -181,7 +181,7 @@ Starting with this parsnip model object, the `fit()` function can be used with a
 #| label: "rf-fit"
 set.seed(234)
 rf_fit <- 
-  rf_mod %>% 
+  rf_mod |> 
   fit(class ~ ., data = cell_train)
 rf_fit
 ```
@@ -205,10 +205,10 @@ At first glance, it might seem like a good idea to use the training set data to 
 ```{r}
 #| label: "rf-train-pred"
 rf_training_pred <- 
-  predict(rf_fit, cell_train) %>% 
-  bind_cols(predict(rf_fit, cell_train, type = "prob")) %>% 
+  predict(rf_fit, cell_train) |> 
+  bind_cols(predict(rf_fit, cell_train, type = "prob")) |> 
   # Add the true outcome data back in
-  bind_cols(cell_train %>% 
+  bind_cols(cell_train |> 
               select(class))
 ```
 
@@ -216,9 +216,9 @@ Using the yardstick functions, this model has spectacular results, so spectacula
 
 ```{r}
 #| label: "rf-train-perf"
-rf_training_pred %>%                # training set predictions
+rf_training_pred |>                # training set predictions
   roc_auc(truth = class, .pred_PS)
-rf_training_pred %>%                # training set predictions
+rf_training_pred |>                # training set predictions
   accuracy(truth = class, .pred_class)
 ```
 
@@ -227,16 +227,16 @@ Now that we have this model with exceptional performance, we proceed to the test
 ```{r}
 #| label: "rf-test"
 rf_testing_pred <- 
-  predict(rf_fit, cell_test) %>% 
-  bind_cols(predict(rf_fit, cell_test, type = "prob")) %>% 
-  bind_cols(cell_test %>% select(class))
+  predict(rf_fit, cell_test) |> 
+  bind_cols(predict(rf_fit, cell_test, type = "prob")) |> 
+  bind_cols(cell_test |> select(class))
 ```
 
 ```{r}
 #| label: "rf-test-perf"
-rf_testing_pred %>%                   # test set predictions
+rf_testing_pred |>                   # test set predictions
   roc_auc(truth = class, .pred_PS)
-rf_testing_pred %>%                   # test set predictions
+rf_testing_pred |>                   # test set predictions
   accuracy(truth = class, .pred_class)
 ```
 
@@ -277,31 +277,31 @@ set.seed(345)
 folds <- vfold_cv(cell_train)
 
 rf_wf <- 
-  workflow() %>%
-  add_model(rf_mod) %>%
+  workflow() |>
+  add_model(rf_mod) |>
   add_formula(class ~ .)
 
 set.seed(456)
 rf_fit_rs <- fit_resamples(rf_wf, folds)
 
 assessment_size <- 
-  folds %>% 
-  tidy() %>% 
-  group_by(Fold, Data) %>% 
-  count() %>% 
-  ungroup() %>% 
-  filter(Data == "Assessment") %>% 
+  folds |> 
+  tidy() |> 
+  group_by(Fold, Data) |> 
+  count() |> 
+  ungroup() |> 
+  filter(Data == "Assessment") |> 
   select(`assessment size` = n, id = Fold)
 
 assessment_stats <- 
-  collect_metrics(rf_fit_rs, summarize = FALSE) %>%
-  select(id, .estimate, .metric) %>%
+  collect_metrics(rf_fit_rs, summarize = FALSE) |>
+  select(id, .estimate, .metric) |>
   pivot_wider(
     id_cols = c(id),
     names_from = c(.metric),
     values_from = c(.estimate)
-  ) %>%
-  full_join(assessment_size, by = "id") %>% 
+  ) |>
+  full_join(assessment_size, by = "id") |> 
   dplyr::rename(resample = id)
 
 rs_stats <- collect_metrics(rf_fit_rs)
@@ -313,8 +313,8 @@ The final resampling estimates for the model are the **averages** of the perform
 #| label: "rs-table"
 #| echo: false
 #| results: asis
-assessment_stats %>% 
-  kable() %>% 
+assessment_stats |> 
+  kable() |> 
   kable_styling(full_width = FALSE)
 ```
 
@@ -347,13 +347,13 @@ For this example, let's use a `workflow()` that bundles together the random fore
 #| label: "rs"
 #| eval: false
 rf_wf <- 
-  workflow() %>%
-  add_model(rf_mod) %>%
+  workflow() |>
+  add_model(rf_mod) |>
   add_formula(class ~ .)
 
 set.seed(456)
 rf_fit_rs <- 
-  rf_wf %>% 
+  rf_wf |> 
   fit_resamples(folds)
 ```
 

@@ -309,7 +309,7 @@ For example:
 
 ```{r}
 #| label: "mda-code"
-discrim_mixture(sub_classes = 2) %>%
+discrim_mixture(sub_classes = 2) |>
   translate(engine = "mda")
 ```
 
@@ -323,18 +323,18 @@ example_split <- initial_split(two_class_dat, prop = 0.99)
 example_train <- training(example_split)
 example_test  <-  testing(example_split)
 
-mda_spec <- discrim_mixture(sub_classes = 2) %>% 
+mda_spec <- discrim_mixture(sub_classes = 2) |> 
   set_engine("mda")
 
-mda_fit <- mda_spec %>%
+mda_fit <- mda_spec |>
   fit(Class ~ ., data = example_train)
 mda_fit
 
-predict(mda_fit, new_data = example_test, type = "prob") %>%
-  bind_cols(example_test %>% select(Class))
+predict(mda_fit, new_data = example_test, type = "prob") |>
+  bind_cols(example_test |> select(Class))
 
-predict(mda_fit, new_data = example_test) %>% 
- bind_cols(example_test %>% select(Class))
+predict(mda_fit, new_data = example_test) |> 
+ bind_cols(example_test |> select(Class))
 ```
 
 
@@ -390,8 +390,8 @@ set_pred(
 )
 
 # testing:
-linear_reg() %>% 
-  set_engine("rlm") %>% 
+linear_reg() |> 
+  set_engine("rlm") |> 
   fit(mpg ~ ., data = mtcars)
 ```
 
@@ -508,12 +508,12 @@ Once this method is in place, the tuning functions can be used:
 #| message: false
 #| eval: false
 mda_spec <- 
-  discrim_mixture(sub_classes = tune()) %>% 
+  discrim_mixture(sub_classes = tune()) |> 
   set_engine("mda")
 
 set.seed(452)
 cv <- vfold_cv(example_train)
-mda_tune_res <- mda_spec %>%
+mda_tune_res <- mda_spec |>
   tune_grid(Class ~ ., cv, grid = 4)
 show_best(mda_tune_res, metric = "roc_auc")
 ```
@@ -532,9 +532,9 @@ For example, if we fit a linear regression model via `glmnet` and predict for 10
 
 ```{r}
 #| label: "glmnet"
-preds <- linear_reg(penalty = 0.1) %>%
-  set_engine("glmnet") %>% 
-  fit(mpg ~ ., data = mtcars) %>%
+preds <- linear_reg(penalty = 0.1) |>
+  set_engine("glmnet") |> 
+  fit(mpg ~ ., data = mtcars) |>
   multi_predict(new_data = mtcars[1:3, -1], penalty = seq(0.1 / 1:10))
 
 preds
@@ -587,11 +587,11 @@ So that is the default:
 
 ```{r}
 #| label: "glm-alt-show"
-logistic_reg() %>% translate(engine = "glm")
+logistic_reg() |> translate(engine = "glm")
 
 # but you can change it:
-logistic_reg() %>%
-  set_engine("glm", family = binomial(link = "probit")) %>% 
+logistic_reg() |>
+  set_engine("glm", family = binomial(link = "probit")) |> 
   translate()
 ```
 

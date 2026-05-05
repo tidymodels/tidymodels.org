@@ -62,8 +62,8 @@ library(censored)
 library(prodlim)
 
 set.seed(5882)
-sim_dat <- SimSurv(2000) %>%
-  mutate(event_time = Surv(time, event)) %>%
+sim_dat <- SimSurv(2000) |>
+  mutate(event_time = Surv(time, event)) |>
   select(event_time, X1, X2)
 
 set.seed(2)
@@ -78,9 +78,9 @@ We'll need a model to illustrate the code and concepts. Let's fit a bagged survi
 #| label: bag-tree-fit
 set.seed(17)
 bag_tree_fit <- 
-  bag_tree() %>% 
-  set_mode("censored regression") %>% 
-  set_engine("rpart") %>% 
+  bag_tree() |> 
+  set_mode("censored regression") |> 
+  set_engine("rpart") |> 
   fit(event_time ~ ., data = sim_tr)
 bag_tree_fit
 ```
@@ -151,11 +151,11 @@ pch_dot_solid <- 19
 pch_triangle_empty <- 2
 pch_triangle_solid <- 17
 
-df %>% 
+df |> 
   dplyr::mutate(
     obs_status = dplyr::if_else(obs_status == "censored", pch_dot_empty, pch_dot_solid),
     eval_status = dplyr::if_else(eval_status == "censored", pch_triangle_empty, pch_triangle_solid)
-  ) %>% 
+  ) |> 
   ggplot() +
   geom_point(aes(obs_time, obs_id, shape = obs_status, size = I(5))) +
   geom_segment(aes(x = rep(0, 6), y = obs_id, xend = obs_time, yend = obs_id)) +
@@ -188,24 +188,24 @@ For our simulated data, here is what the RKM curve looks like:
 #| label: RKM
 #| echo : false
 dyn_val_pred <- 
-  val_pred %>% 
-  select(.pred, event_time) %>% 
-  add_rowindex() %>% 
+  val_pred |> 
+  select(.pred, event_time) |> 
+  add_rowindex() |> 
   unnest(.pred) 
 
-dyn_val_pred %>% 
-  select(.weight_time, .pred_censored) %>% 
-  distinct() %>% 
+dyn_val_pred |> 
+  select(.weight_time, .pred_censored) |> 
+  distinct() |> 
   ggplot() + 
   geom_step(aes(.weight_time, .pred_censored)) + 
   ylim(0:1) + 
   geom_rug(
-    data = sim_tr %>% filter(event_time[,2] == 1), 
+    data = sim_tr |> filter(event_time[,2] == 1), 
     aes(x = event_time[,1]), 
     alpha = 1 / 2, col = "red"
   ) + 
   geom_rug(
-    data = sim_tr %>% filter(event_time[,2] == 0), 
+    data = sim_tr |> filter(event_time[,2] == 0), 
     aes(x = event_time[,1]), 
     alpha = 1 / 2, col = "blue", sides = "t"
   ) +
@@ -230,13 +230,13 @@ We call this time at which to predict the probability of censoring the _weight t
 ```{r}
 #| label: eval-time-censored
 dyn_val_pred <- 
-  val_pred %>% 
-  select(.pred, event_time) %>% 
-  add_rowindex() %>% 
+  val_pred |> 
+  select(.pred, event_time) |> 
+  add_rowindex() |> 
   unnest(.pred) 
 
-dyn_val_pred %>% 
-  filter(.row == 1 & .eval_time %in% c(1, 2, 4, 5, 10)) %>% 
+dyn_val_pred |> 
+  filter(.row == 1 & .eval_time %in% c(1, 2, 4, 5, 10)) |> 
   select(event_time, .eval_time, .weight_time, .pred_censored, .weight_censored)
 ```
 
@@ -278,7 +278,7 @@ time_as_binary_event <- function(surv, eval_time) {
 }
 
 binary_encoding <- 
-  dyn_val_pred %>% 
+  dyn_val_pred |> 
   mutate(
     obs_class = time_as_binary_event(event_time, .eval_time),
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
@@ -290,8 +290,8 @@ Remember how observations falling into category 3 are removed from the analysis?
 
 ```{r}
 #| label: usable-data
-dyn_val_pred %>% 
-  summarize(num_usable = sum(!is.na(.weight_censored)), .by = c(.eval_time)) %>% 
+dyn_val_pred |> 
+  summarize(num_usable = sum(!is.na(.weight_censored)), .by = c(.eval_time)) |> 
   ggplot() + 
   geom_step(aes(.eval_time, num_usable)) +
   labs(x = "time", y = "number of usable observations") +
@@ -302,8 +302,8 @@ dyn_val_pred %>%
 Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:
 
 ```r
-binary_encoding %>% 
-  filter(.eval_time == 1.00) %>% 
+binary_encoding |> 
+  filter(.eval_time == 1.00) |> 
   conf_mat(truth = obs_class, estimate = pred_class)
 ```
 
@@ -311,8 +311,8 @@ For censored regression problems, we need to additionally use the censoring weig
 
 ```{r}
 #| label: conf-mat-01
-binary_encoding %>%
-  filter(.eval_time == 1.00) %>%
+binary_encoding |>
+  filter(.eval_time == 1.00) |>
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -322,8 +322,8 @@ binary_encoding %>%
 ```{r}
 #| label: conf-mat-01-hide
 #| include: false 
-dat_01 <- binary_encoding %>% filter(.eval_time == 1.00 & !is.na(.weight_censored))
-events_01 <- nrow(dat_01 %>% filter(event_time[,1] <= 1))
+dat_01 <- binary_encoding |> filter(.eval_time == 1.00 & !is.na(.weight_censored))
+events_01 <- nrow(dat_01 |> filter(event_time[,1] <= 1))
 ```
 
 The values in the cells are the sum of the censoring weights, There are `r events_01` actual events (out of `r nrow(dat_01)` usable observations) before this evaluation time, so there are empty cells. Also note that the cell values are close to the actual counts. This early, the predicted censoring probabilities are very close to one so their inverse values are also. 
@@ -334,8 +334,8 @@ Let's shift to an evaluation time of 5.0.
 
 ```{r}
 #| label: conf-mat-05
-binary_encoding %>%
-  filter(.eval_time == 5.00) %>%
+binary_encoding |>
+  filter(.eval_time == 5.00) |>
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -344,12 +344,12 @@ binary_encoding %>%
 ```{r}
 #| label: conf-mat-05-hide
 #| include: false 
-dat_05 <- binary_encoding %>% filter(.eval_time == 5.00 & !is.na(.weight_censored))
-events_05 <- nrow(dat_05 %>% filter(event_time[,1] <= 5))
+dat_05 <- binary_encoding |> filter(.eval_time == 5.00 & !is.na(.weight_censored))
+events_05 <- nrow(dat_05 |> filter(event_time[,1] <= 5))
 cls_set <- metric_set(accuracy, sens, spec)
 stats_05 <- 
-  binary_encoding %>%
-  filter(.eval_time == 5.00) %>%
+  binary_encoding |>
+  filter(.eval_time == 5.00) |>
   cls_set(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -361,8 +361,8 @@ What happends when the evaluation time is 17?
 
 ```{r}
 #| label: conf-mat-17
-binary_encoding %>%
-  filter(.eval_time == 17.00) %>%
+binary_encoding |>
+  filter(.eval_time == 17.00) |>
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -371,11 +371,11 @@ binary_encoding %>%
 ```{r}
 #| label: conf-mat-17-hide
 #| include: false 
-dat_17 <- binary_encoding %>% filter(.eval_time == 17.00 & !is.na(.weight_censored))
-events_17 <- nrow(dat_17 %>% filter(event_time[,1] <= 17))
+dat_17 <- binary_encoding |> filter(.eval_time == 17.00 & !is.na(.weight_censored))
+events_17 <- nrow(dat_17 |> filter(event_time[,1] <= 17))
 stats_17 <- 
-  binary_encoding %>%
-  filter(.eval_time == 17.00) %>%
+  binary_encoding |>
+  filter(.eval_time == 17.00) |>
   cls_set(truth = obs_class,
           estimate = pred_class,
           case_weights = .weight_censored)

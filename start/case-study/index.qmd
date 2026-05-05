@@ -84,7 +84,7 @@ library(tidymodels)
 library(readr)
 
 hotels <- 
-  read_csv("https://tidymodels.org/start/case-study/hotels.csv") %>%
+  read_csv("https://tidymodels.org/start/case-study/hotels.csv") |>
   mutate(across(where(is.character), as.factor))
 
 dim(hotels)
@@ -101,8 +101,8 @@ We will build a model to predict which actual hotel stays included children and/
 
 ```{r}
 #| label: "count-children"
-hotels %>% 
-  count(children) %>% 
+hotels |> 
+  count(children) |> 
   mutate(prop = n/sum(n))
 ```
 
@@ -121,13 +121,13 @@ hotel_other <- training(splits)
 hotel_test  <- testing(splits)
 
 # training set proportions by children
-hotel_other %>% 
-  count(children) %>% 
+hotel_other |> 
+  count(children) |> 
   mutate(prop = n/sum(n))
 
 # test set proportions by children
-hotel_test  %>% 
-  count(children) %>% 
+hotel_test  |> 
+  count(children) |> 
   mutate(prop = n/sum(n))
 ```
 
@@ -171,7 +171,7 @@ To specify a penalized logistic regression model that uses a feature selection p
 ```{r}
 #| label: "logistic-model"
 lr_mod <- 
-  logistic_reg(penalty = tune(), mixture = 1) %>% 
+  logistic_reg(penalty = tune(), mixture = 1) |> 
   set_engine("glmnet")
 ```
 
@@ -203,12 +203,12 @@ holidays <- c("AllSouls", "AshWednesday", "ChristmasEve", "Easter",
               "ChristmasDay", "GoodFriday", "NewYearsDay", "PalmSunday")
 
 lr_recipe <- 
-  recipe(children ~ ., data = hotel_other) %>% 
-  step_date(arrival_date) %>% 
-  step_holiday(arrival_date, holidays = holidays) %>% 
-  step_rm(arrival_date) %>% 
-  step_dummy(all_nominal_predictors()) %>% 
-  step_zv(all_predictors()) %>% 
+  recipe(children ~ ., data = hotel_other) |> 
+  step_date(arrival_date) |> 
+  step_holiday(arrival_date, holidays = holidays) |> 
+  step_rm(arrival_date) |> 
+  step_dummy(all_nominal_predictors()) |> 
+  step_zv(all_predictors()) |> 
   step_normalize(all_predictors())
 ```
 
@@ -219,8 +219,8 @@ As we introduced in [*Preprocess your data with recipes*](/start/recipes/#fit-wo
 ```{r}
 #| label: "logistic-workflow"
 lr_workflow <- 
-  workflow() %>% 
-  add_model(lr_mod) %>% 
+  workflow() |> 
+  add_model(lr_mod) |> 
   add_recipe(lr_recipe)
 ```
 
@@ -232,8 +232,8 @@ Before we fit this model, we need to set up a grid of `penalty` values to tune. 
 #| label: "logistic-grid"
 lr_reg_grid <- tibble(penalty = 10^seq(-4, -1, length.out = 30))
 
-lr_reg_grid %>% top_n(-5) # lowest penalty values
-lr_reg_grid %>% top_n(5)  # highest penalty values
+lr_reg_grid |> top_n(-5) # lowest penalty values
+lr_reg_grid |> top_n(5)  # highest penalty values
 ```
 
 ### Train and tune the model
@@ -245,7 +245,7 @@ Let's use `tune::tune_grid()` to train these 30 penalized logistic regression mo
 #| cache: false
 #| message: false
 lr_res <- 
-  lr_workflow %>% 
+  lr_workflow |> 
   tune_grid(val_set,
             grid = lr_reg_grid,
             control = control_grid(save_pred = TRUE),
@@ -259,8 +259,8 @@ It might be easier to visualize the validation set metrics by plotting the area 
 #| fig-height:  4.25
 #| fig-width:  6
 lr_plot <- 
-  lr_res %>% 
-  collect_metrics() %>% 
+  lr_res |> 
+  collect_metrics() |> 
   ggplot(aes(x = penalty, y = mean)) + 
   geom_point() + 
   geom_line() + 
@@ -277,8 +277,8 @@ Our model performance seems to plateau at the smaller penalty values, so going b
 ```{r}
 #| label: show-top-models
 top_models <-
-  lr_res %>% 
-  show_best(metric = "roc_auc", n = 15) %>% 
+  lr_res |> 
+  show_best(metric = "roc_auc", n = 15) |> 
   arrange(penalty) 
 top_models
 ```
@@ -288,29 +288,29 @@ top_models
 #| echo: false
 # Adding a candidate model ID variable
 top_models <- 
-  top_models %>% 
+  top_models |> 
   mutate(cand_model = row_number())
 
 top_pen <- 
-  lr_res %>% 
-  select_best(metric = "roc_auc") %>% 
+  lr_res |> 
+  select_best(metric = "roc_auc") |> 
   pull(penalty)
 
 top_cand <- 
-  top_models %>% 
-  filter(penalty == top_pen) %>% 
+  top_models |> 
+  filter(penalty == top_pen) |> 
   pull(cand_model)
 
 select_cand <- 12
 
 select_pen <-
-  top_models %>% 
-  filter(cand_model == select_cand) %>% 
+  top_models |> 
+  filter(cand_model == select_cand) |> 
   pull(penalty)
 
 select_roc <- 
-  top_models %>% 
-  filter(cand_model == select_cand) %>% 
+  top_models |> 
+  filter(cand_model == select_cand) |> 
   pull(mean)
 ```
 
@@ -333,9 +333,9 @@ Let's select this value and visualize the validation set ROC curve:
 ```{r}
 #| label: "logistic-best"
 lr_best <- 
-  lr_res %>% 
-  collect_metrics() %>% 
-  arrange(penalty) %>% 
+  lr_res |> 
+  collect_metrics() |> 
+  arrange(penalty) |> 
   slice(12)
 lr_best
 ```
@@ -343,9 +343,9 @@ lr_best
 ```{r}
 #| label: "logistic-roc-curve"
 lr_auc <- 
-  lr_res %>% 
-  collect_predictions(parameters = lr_best) %>% 
-  roc_curve(children, .pred_children) %>% 
+  lr_res |> 
+  collect_predictions(parameters = lr_best) |> 
+  roc_curve(children, .pred_children) |> 
   mutate(model = "Logistic Regression")
 
 autoplot(lr_auc)
@@ -374,8 +374,8 @@ We have `r cores` cores to work with. We can pass this information to the ranger
 ```{r}
 #| label: "rf-model"
 rf_mod <- 
-  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
-  set_engine("ranger", num.threads = cores) %>% 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) |> 
+  set_engine("ranger", num.threads = cores) |> 
   set_mode("classification")
 ```
 
@@ -390,9 +390,9 @@ Unlike penalized logistic regression models, random forest models do not require
 ```{r}
 #| label: "rf-features"
 rf_recipe <- 
-  recipe(children ~ ., data = hotel_other) %>% 
-  step_date(arrival_date) %>% 
-  step_holiday(arrival_date) %>% 
+  recipe(children ~ ., data = hotel_other) |> 
+  step_date(arrival_date) |> 
+  step_holiday(arrival_date) |> 
   step_rm(arrival_date) 
 ```
 
@@ -401,8 +401,8 @@ Adding this recipe to our parsnip model gives us a new workflow for predicting w
 ```{r}
 #| label: "rf-workflow"
 rf_workflow <- 
-  workflow() %>% 
-  add_model(rf_mod) %>% 
+  workflow() |> 
+  add_model(rf_mod) |> 
   add_recipe(rf_recipe)
 ```
 
@@ -428,7 +428,7 @@ We will use a space-filling design to tune, with 25 candidate models:
 #| cache: false
 set.seed(345)
 rf_res <- 
-  rf_workflow %>% 
+  rf_workflow |> 
   tune_grid(val_set,
             grid = 25,
             control = control_grid(save_pred = TRUE),
@@ -441,7 +441,7 @@ Here are our top 5 random forest models, out of the 25 candidates:
 
 ```{r}
 #| label: show-best-rf
-rf_res %>% 
+rf_res |> 
   show_best(metric = "roc_auc")
 ```
 
@@ -460,7 +460,7 @@ Let's select the best model according to the ROC AUC metric. Our final tuning pa
 ```{r}
 #| label: "rf-best"
 rf_best <- 
-  rf_res %>% 
+  rf_res |> 
   select_best(metric = "roc_auc")
 rf_best
 ```
@@ -469,7 +469,7 @@ To calculate the data needed to plot the ROC curve, we use `collect_predictions(
 
 ```{r}
 #| label: collect-all-rf-predictions
-rf_res %>% 
+rf_res |> 
   collect_predictions()
 ```
 
@@ -478,9 +478,9 @@ To filter the predictions for only our best random forest model, we can use the 
 ```{r}
 #| label: "rf-roc"
 rf_auc <- 
-  rf_res %>% 
-  collect_predictions(parameters = rf_best) %>% 
-  roc_curve(children, .pred_children) %>% 
+  rf_res |> 
+  collect_predictions(parameters = rf_best) |> 
+  roc_curve(children, .pred_children) |> 
   mutate(model = "Random Forest")
 ```
 
@@ -488,7 +488,7 @@ Now, we can compare the validation set ROC curves for our top penalized logistic
 
 ```{r}
 #| label: "rf-lr-roc-curve"
-bind_rows(rf_auc, lr_auc) %>% 
+bind_rows(rf_auc, lr_auc) |> 
   ggplot(aes(x = 1 - specificity, y = sensitivity, col = model)) + 
   geom_path(lwd = 1.5, alpha = 0.8) +
   geom_abline(lty = 3) + 
@@ -509,19 +509,19 @@ We'll start by building our parsnip model object again from scratch. We take our
 #| cache: false
 # the last model
 last_rf_mod <- 
-  rand_forest(mtry = 8, min_n = 7, trees = 1000) %>% 
-  set_engine("ranger", num.threads = cores, importance = "impurity") %>% 
+  rand_forest(mtry = 8, min_n = 7, trees = 1000) |> 
+  set_engine("ranger", num.threads = cores, importance = "impurity") |> 
   set_mode("classification")
 
 # the last workflow
 last_rf_workflow <- 
-  rf_workflow %>% 
+  rf_workflow |> 
   update_model(last_rf_mod)
 
 # the last fit
 set.seed(345)
 last_rf_fit <- 
-  last_rf_workflow %>% 
+  last_rf_workflow |> 
   last_fit(splits)
 
 last_rf_fit
@@ -531,7 +531,7 @@ This fitted workflow contains *everything*, including our final metrics based on
 
 ```{r}
 #| label: collect-last-fit-metrics
-last_rf_fit %>% 
+last_rf_fit |> 
   collect_metrics()
 ```
 
@@ -541,8 +541,8 @@ We can access those variable importance scores via the `.workflow` column. We ca
 
 ```{r}
 #| label: "rf-importance"
-last_rf_fit %>% 
-  extract_fit_parsnip() %>% 
+last_rf_fit |> 
+  extract_fit_parsnip() |> 
   vip(num_features = 20)
 ```
 
@@ -552,9 +552,9 @@ Let's generate our last ROC curve to visualize. Since the event we are predictin
 
 ```{r}
 #| label: "test-set-roc-curve"
-last_rf_fit %>% 
-  collect_predictions() %>% 
-  roc_curve(children, .pred_children) %>% 
+last_rf_fit |> 
+  collect_predictions() |> 
+  roc_curve(children, .pred_children) |> 
   autoplot()
 ```
 

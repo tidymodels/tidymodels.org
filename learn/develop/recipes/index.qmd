@@ -328,12 +328,12 @@ Let's use the example data to make sure that it works:
 
 ```{r}
 #| label: "example"
-rec_obj <- recipe(HHV ~ ., data = biomass_tr) %>%
-  step_percentiles(ends_with("gen")) %>%
+rec_obj <- recipe(HHV ~ ., data = biomass_tr) |>
+  step_percentiles(ends_with("gen")) |>
   prep(training = biomass_tr)
 
-biomass_te %>% select(ends_with("gen")) %>% slice(1:2)
-bake(rec_obj, biomass_te %>% slice(1:2), ends_with("gen"))
+biomass_te |> select(ends_with("gen")) |> slice(1:2)
+bake(rec_obj, biomass_te |> slice(1:2), ends_with("gen"))
 
 # Checking to get approximate results:
 mean(biomass_tr$hydrogen <= biomass_te$hydrogen[1])
@@ -344,8 +344,8 @@ The plot below shows how the original hydrogen percentiles line up with the esti
 
 ```{r}
 #| label: "cdf_plot"
-hydrogen_values <- bake(rec_obj, biomass_te, hydrogen) %>%
-  bind_cols(biomass_te %>% select(original = hydrogen))
+hydrogen_values <- bake(rec_obj, biomass_te, hydrogen) |>
+  bind_cols(biomass_te |> select(original = hydrogen))
 
 ggplot(biomass_tr, aes(x = hydrogen)) +
   # Plot the empirical distribution function of the
@@ -407,7 +407,7 @@ print.step_percentiles <-
  }
 
 # Results before `prep()`:
-recipe(HHV ~ ., data = biomass_tr) %>%
+recipe(HHV ~ ., data = biomass_tr) |>
   step_percentiles(ends_with("gen"))
 
 # Results after `prep()`:

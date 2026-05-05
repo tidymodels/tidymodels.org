@@ -32,9 +32,9 @@ parsnip_models <- read_csv("parsnip_models.csv")
 ```{r}
 #| label: table-display
 #| echo: false
-parsnip_models %>% 
-  mutate(package = factor(package)) %>%
-  mutate(mode = factor(mode)) %>%
+parsnip_models |> 
+  mutate(package = factor(package)) |>
+  mutate(mode = factor(mode)) |>
   datatable(rownames = FALSE,
             class = 'cell-border stripe',
             filter = 'top',

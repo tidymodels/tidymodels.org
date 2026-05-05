@@ -96,7 +96,7 @@ Before we start the tuning process, we split our data into training and testing 
 ```{r}
 #| label: "cell-split"
 set.seed(123)
-cell_split <- initial_split(cells %>% select(-case), 
+cell_split <- initial_split(cells |> select(-case), 
                             strata = class)
 cell_train <- training(cell_split)
 cell_test  <- testing(cell_split)
@@ -114,8 +114,8 @@ tune_spec <-
   decision_tree(
     cost_complexity = tune(),
     tree_depth = tune()
-  ) %>% 
-  set_engine("rpart") %>% 
+  ) |> 
+  set_engine("rpart") |> 
   set_mode("classification")
 
 tune_spec
@@ -143,7 +143,7 @@ Here, you can see all 5 values of `cost_complexity` ranging up to `r max(tree_gr
 
 ```{r}
 #| label: count-tree-depth
-tree_grid %>% 
+tree_grid |> 
   count(tree_depth)
 ```
 
@@ -172,12 +172,12 @@ Here we use a `workflow()` with a straightforward formula; if this model require
 #| message: false
 set.seed(345)
 
-tree_wf <- workflow() %>%
-  add_model(tune_spec) %>%
+tree_wf <- workflow() |>
+  add_model(tune_spec) |>
   add_formula(class ~ .)
 
 tree_res <- 
-  tree_wf %>% 
+  tree_wf |> 
   tune_grid(
     resamples = cell_folds,
     grid = tree_grid
@@ -190,7 +190,7 @@ Once we have our tuning results, we can both explore them through visualization 
 
 ```{r}
 #| label: "collect-trees"
-tree_res %>% 
+tree_res |> 
   collect_metrics()
 ```
 
@@ -200,9 +200,9 @@ We might get more out of plotting these results:
 #| label: "best-tree"
 #| fig-width:  8
 #| fig-height:  7
-tree_res %>%
-  collect_metrics() %>%
-  mutate(tree_depth = factor(tree_depth)) %>%
+tree_res |>
+  collect_metrics() |>
+  mutate(tree_depth = factor(tree_depth)) |>
   ggplot(aes(cost_complexity, mean, color = tree_depth)) +
   geom_line(size = 1.5, alpha = 0.6) +
   geom_point(size = 2) +
@@ -215,7 +215,7 @@ We can see that our "stubbiest" tree, with a depth of `r min(tree_grid$tree_dept
 
 ```{r}
 #| label: "show-best-tree"
-tree_res %>%
+tree_res |>
   show_best(metric = "accuracy")
 ```
 
@@ -223,7 +223,7 @@ We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show
 
 ```{r}
 #| label: "select-best-tree"
-best_tree <- tree_res %>%
+best_tree <- tree_res |>
   select_best(metric = "accuracy")
 
 best_tree
@@ -238,7 +238,7 @@ We can update (or "finalize") our workflow object `tree_wf` with the values from
 ```{r}
 #| label: "final-wf"
 final_wf <- 
-  tree_wf %>% 
+  tree_wf |> 
   finalize_workflow(best_tree)
 
 final_wf
@@ -253,15 +253,15 @@ Finally, let's fit this final model to the training data and use our test data t
 ```{r}
 #| label: "last-fit"
 final_fit <- 
-  final_wf %>%
+  final_wf |>
   last_fit(cell_split) 
 
-final_fit %>%
+final_fit |>
   collect_metrics()
 
-final_fit %>%
-  collect_predictions() %>% 
-  roc_curve(class, .pred_PS) %>% 
+final_fit |>
+  collect_predictions() |> 
+  roc_curve(class, .pred_PS) |> 
   autoplot()
 ```
 
@@ -281,8 +281,8 @@ We can create a visualization of the decision tree using another helper function
 #| label: "rpart-plot"
 #| fig-width:  8
 #| fig-height:  5
-final_tree %>%
-  extract_fit_engine() %>%
+final_tree |>
+  extract_fit_engine() |>
   rpart.plot(roundint = FALSE)
 ```
 
@@ -294,8 +294,8 @@ Perhaps we would also like to understand what variables are important in this fi
 #| fig-height:  5
 library(vip)
 
-final_tree %>% 
-  extract_fit_parsnip() %>% 
+final_tree |> 
+  extract_fit_parsnip() |> 
   vip()
 ```
 
