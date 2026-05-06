@@ -270,9 +270,9 @@ What is the RMSE estimate for the non-nested procedure when only the outer resam
 ```{r}
 #| label: "not-nested"
 #| fig-height:  4
-not_nested <- 
+not_nested <-
   map(results$splits, tune_over_cost) |>
-  bind_rows
+  bind_rows()
 
 outer_summary <- not_nested |> 
   group_by(cost) |> 
