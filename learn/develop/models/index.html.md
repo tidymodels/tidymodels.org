@@ -75,13 +75,20 @@ library(tidymodels)
 set_new_model("discrim_mixture")
 set_model_mode(model = "discrim_mixture", mode = "classification")
 set_model_engine(
-  "discrim_mixture", 
-  mode = "classification", 
+  "discrim_mixture",
+  mode = "classification",
   eng = "mda"
 )
-set_dependency("discrim_mixture", eng = "mda", pkg = "mda")
+set_dependency(
+  "discrim_mixture",
+  eng = "mda",
+  pkg = "mda",
+  mode = "classification"
+)
 ```
 :::
+
+Always specify `mode` in `set_dependency()`. If you omit it, the dependency is registered for every mode of that model/engine combination, which can pull unrelated packages into a fit. For example, if a `decision_tree()` `"partykit"` engine is shared between `"censored regression"` and `"classification"` modes, a dependency registered without `mode` for one would be loaded for the other.
 
 These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip: 
 
@@ -456,7 +463,7 @@ The process for adding an engine to an existing model is _almost_ the same as bu
 
 ```{.r .cell-code}
 set_model_engine("linear_reg", "regression", eng = "rlm")
-set_dependency("linear_reg", eng = "rlm", pkg = "MASS")
+set_dependency("linear_reg", eng = "rlm", pkg = "MASS", mode = "regression")
 
 set_fit(
   model = "linear_reg",
@@ -563,7 +570,12 @@ For an example package that uses parsnip definitions, take a look at the [discri
 It is also important for parallel processing support to **list the home package as a dependency**. If the `discrim_mixture()` function lived in a package called `mixedup`, include the line:
 
 ```r
-set_dependency("discrim_mixture", eng = "mda", pkg = "mixedup")
+set_dependency(
+  "discrim_mixture",
+  eng = "mda",
+  pkg = "mixedup",
+  mode = "classification"
+)
 ```
 
 Parallel processing requires this explicit dependency setting. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux will load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a parsnip model is not loaded in the worker processes, the model will not have an entry in parsnip's internal database (and produce an error). 
