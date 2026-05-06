@@ -126,46 +126,47 @@ We can see that children were only in 8.1% of the reservations. This type of cla
 
 ## Data Splitting & Resampling {#data-split}
 
-For a data splitting strategy, let's reserve 25% of the stays to the test set. As in our [*Evaluate your model with resampling*](/start/resampling/#data-split) article, we know our outcome variable `children` is pretty imbalanced so we'll use a stratified random sample:
+For a data splitting strategy, let's use a 3-way split: 60% of the stays to the *training set*, 15% to a *validation set*, and 25% to the *test set*. As in our [*Evaluate your model with resampling*](/start/resampling/#data-split) article, we know our outcome variable `children` is pretty imbalanced so we'll use a stratified random sample:
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 set.seed(123)
-splits      <- initial_split(hotels, strata = children)
+splits      <- initial_validation_split(hotels, strata = children,
+                                        prop = c(0.60, 0.15))
 
-hotel_other <- training(splits)
+hotel_train <- training(splits)
+hotel_val   <- validation(splits)
 hotel_test  <- testing(splits)
+hotel_other <- bind_rows(hotel_train, hotel_val)
 
 # training set proportions by children
-hotel_other |> 
-  count(children) |> 
+hotel_train |>
+  count(children) |>
   mutate(prop = n/sum(n))
 #> # A tibble: 2 × 3
 #>   children     n   prop
 #>   <fct>    <int>  <dbl>
-#> 1 children  3027 0.0807
-#> 2 none     34473 0.919
+#> 1 children  2364 0.0788
+#> 2 none     27636 0.921
 
 # test set proportions by children
-hotel_test  |> 
-  count(children) |> 
+hotel_test  |>
+  count(children) |>
   mutate(prop = n/sum(n))
 #> # A tibble: 2 × 3
 #>   children     n   prop
 #>   <fct>    <int>  <dbl>
-#> 1 children  1011 0.0809
-#> 2 none     11489 0.919
+#> 1 children  1043 0.0834
+#> 2 none     11458 0.917
 ```
 :::
 
+`initial_validation_split()` has a `strata` argument that uses stratified sampling, so we'll have roughly the same proportions of hotel stays with and without children across all three sets.
+
 In our articles so far, we've relied on 10-fold cross-validation as the primary resampling method using [`rsample::vfold_cv()`](https://rsample.tidymodels.org/reference/vfold_cv.html). This has created 10 different resamples of the training set (which we further split into *analysis* and *assessment* sets), producing 10 different performance metrics that we then aggregated.
 
-For this case study, rather than using multiple iterations of resampling, let's create a single resample called a *validation set*. In tidymodels, a validation set is treated as a single iteration of resampling. This will be a split from the 37,500 stays that were not used for testing, which we called `hotel_other`. This split creates two new datasets:
-
--   the set held out for the purpose of measuring performance, called the *validation set*, and
-
--   the remaining data used to fit the model, called the *training set*.
+For this case study, rather than using multiple iterations of resampling, let's use the *validation set* as a single iteration of resampling.
 
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
@@ -173,27 +174,19 @@ For this case study, rather than using multiple iterations of resampling, let's 
 :::
 :::
 
-We'll use the `validation_split()` function to allocate 20% of the `hotel_other` stays to the *validation set* and 30,000 stays to the *training set*. This means that our model performance metrics will be computed on a single set of 7,500 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
+The `validation_set()` function bundles the training and validation portions of our split into an object that emulates a single resample, so we can use it with the same tuning interface we'd use for cross-validation. Our model performance metrics will be computed on a single set of 7,499 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-set.seed(234)
-val_set <- validation_split(hotel_other, 
-                            strata = children, 
-                            prop = 0.80)
-#> Warning: `validation_split()` was deprecated in rsample 1.2.0.
-#> ℹ Please use `initial_validation_split()` instead.
+val_set <- validation_set(splits)
 val_set
-#> # Validation Set Split (0.8/0.2)  using stratification 
 #> # A tibble: 1 × 2
 #>   splits               id        
 #>   <list>               <chr>     
-#> 1 <split [30000/7500]> validation
+#> 1 <split [30000/7499]> validation
 ```
 :::
-
-This function, like `initial_split()`, has the same `strata` argument, which uses stratified sampling to create the resample. This means that we'll have roughly the same proportions of hotel stays with and without children in our new validation and training sets, as compared to the original `hotel_other` proportions.
 
 ## A first model: penalized logistic regression {#first-model}
 
@@ -350,21 +343,21 @@ top_models
 #> # A tibble: 15 × 7
 #>     penalty .metric .estimator  mean     n std_err .config         
 #>       <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
-#>  1 0.000127 roc_auc binary     0.872     1      NA pre0_mod02_post0
-#>  2 0.000161 roc_auc binary     0.872     1      NA pre0_mod03_post0
-#>  3 0.000204 roc_auc binary     0.873     1      NA pre0_mod04_post0
-#>  4 0.000259 roc_auc binary     0.873     1      NA pre0_mod05_post0
-#>  5 0.000329 roc_auc binary     0.874     1      NA pre0_mod06_post0
-#>  6 0.000418 roc_auc binary     0.874     1      NA pre0_mod07_post0
-#>  7 0.000530 roc_auc binary     0.875     1      NA pre0_mod08_post0
-#>  8 0.000672 roc_auc binary     0.875     1      NA pre0_mod09_post0
-#>  9 0.000853 roc_auc binary     0.876     1      NA pre0_mod10_post0
-#> 10 0.00108  roc_auc binary     0.876     1      NA pre0_mod11_post0
-#> 11 0.00137  roc_auc binary     0.876     1      NA pre0_mod12_post0
-#> 12 0.00174  roc_auc binary     0.876     1      NA pre0_mod13_post0
-#> 13 0.00221  roc_auc binary     0.876     1      NA pre0_mod14_post0
-#> 14 0.00281  roc_auc binary     0.875     1      NA pre0_mod15_post0
-#> 15 0.00356  roc_auc binary     0.873     1      NA pre0_mod16_post0
+#>  1 0.0001   roc_auc binary     0.866     1      NA pre0_mod01_post0
+#>  2 0.000127 roc_auc binary     0.866     1      NA pre0_mod02_post0
+#>  3 0.000161 roc_auc binary     0.866     1      NA pre0_mod03_post0
+#>  4 0.000204 roc_auc binary     0.867     1      NA pre0_mod04_post0
+#>  5 0.000259 roc_auc binary     0.867     1      NA pre0_mod05_post0
+#>  6 0.000329 roc_auc binary     0.867     1      NA pre0_mod06_post0
+#>  7 0.000418 roc_auc binary     0.867     1      NA pre0_mod07_post0
+#>  8 0.000530 roc_auc binary     0.867     1      NA pre0_mod08_post0
+#>  9 0.000672 roc_auc binary     0.867     1      NA pre0_mod09_post0
+#> 10 0.000853 roc_auc binary     0.867     1      NA pre0_mod10_post0
+#> 11 0.00108  roc_auc binary     0.867     1      NA pre0_mod11_post0
+#> 12 0.00137  roc_auc binary     0.867     1      NA pre0_mod12_post0
+#> 13 0.00174  roc_auc binary     0.866     1      NA pre0_mod13_post0
+#> 14 0.00221  roc_auc binary     0.865     1      NA pre0_mod14_post0
+#> 15 0.00281  roc_auc binary     0.864     1      NA pre0_mod15_post0
 ```
 :::
 
@@ -372,7 +365,7 @@ top_models
 
 :::
 
-Every candidate model in this tibble likely includes more predictor variables than the model in the row below it. If we used `select_best()`, it would return candidate model 11 with a penalty value of 0.00137, shown with the dotted line below.
+Every candidate model in this tibble likely includes more predictor variables than the model in the row below it. If we used `select_best()`, it would return candidate model 7 with a penalty value of 0.000418, shown with the dotted line below.
 
 ::: {.cell layout-align="center"}
 ::: {.cell-output-display}
@@ -380,7 +373,7 @@ Every candidate model in this tibble likely includes more predictor variables th
 :::
 :::
 
-However, we may want to choose a penalty value further along the x-axis, closer to where we start to see the decline in model performance. For example, candidate model 12 with a penalty value of 0.00174 has effectively the same performance as the numerically best model, but might eliminate more predictors. This penalty value is marked by the solid line above. In general, fewer irrelevant predictors is better. If performance is about the same, we'd prefer to choose a higher penalty value.
+However, we may want to choose a penalty value further along the x-axis, closer to where we start to see the decline in model performance. For example, candidate model 12 with a penalty value of 0.00137 has effectively the same performance as the numerically best model, but might eliminate more predictors. This penalty value is marked by the solid line above. In general, fewer irrelevant predictors is better. If performance is about the same, we'd prefer to choose a higher penalty value.
 
 Let's select this value and visualize the validation set ROC curve:
 
@@ -396,7 +389,7 @@ lr_best
 #> # A tibble: 1 × 7
 #>   penalty .metric .estimator  mean     n std_err .config         
 #>     <dbl> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
-#> 1 0.00137 roc_auc binary     0.876     1      NA pre0_mod12_post0
+#> 1 0.00137 roc_auc binary     0.867     1      NA pre0_mod12_post0
 ```
 :::
 
@@ -536,15 +529,15 @@ rf_res |>
 #> # A tibble: 5 × 8
 #>    mtry min_n .metric .estimator  mean     n std_err .config         
 #>   <int> <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
-#> 1     9     3 roc_auc binary     0.927     1      NA pre0_mod09_post0
-#> 2     4     5 roc_auc binary     0.925     1      NA pre0_mod04_post0
-#> 3     8    11 roc_auc binary     0.925     1      NA pre0_mod08_post0
-#> 4    14     8 roc_auc binary     0.924     1      NA pre0_mod13_post0
-#> 5    10    21 roc_auc binary     0.924     1      NA pre0_mod10_post0
+#> 1     4     5 roc_auc binary     0.921     1      NA pre0_mod04_post0
+#> 2     9     3 roc_auc binary     0.920     1      NA pre0_mod09_post0
+#> 3     5    19 roc_auc binary     0.919     1      NA pre0_mod05_post0
+#> 4     8    11 roc_auc binary     0.919     1      NA pre0_mod08_post0
+#> 5     6    27 roc_auc binary     0.917     1      NA pre0_mod06_post0
 ```
 :::
 
-Right away, we see that these values for area under the ROC look more promising than our top model using penalized logistic regression, which yielded an ROC AUC of 0.876.
+Right away, we see that these values for area under the ROC look more promising than our top model using penalized logistic regression, which yielded an ROC AUC of 0.867.
 
 Plotting the results of the tuning process highlights that both `mtry` (number of predictors at each node) and `min_n` (minimum number of data points required to keep splitting) should be fairly small to optimize performance. However, the range of the y-axis indicates that the model is very robust to the choice of these parameter values --- all but one of the ROC AUC values are greater than 0.90.
 
@@ -571,7 +564,7 @@ rf_best
 #> # A tibble: 1 × 3
 #>    mtry min_n .config         
 #>   <int> <int> <chr>           
-#> 1     9     3 pre0_mod09_post0
+#> 1     4     5 pre0_mod04_post0
 ```
 :::
 
@@ -582,20 +575,20 @@ To calculate the data needed to plot the ROC curve, we use `collect_predictions(
 ```{.r .cell-code}
 rf_res |> 
   collect_predictions()
-#> # A tibble: 187,500 × 8
+#> # A tibble: 187,475 × 8
 #>    .pred_children .pred_none id         children  .row  mtry min_n .config      
 #>             <dbl>      <dbl> <chr>      <fct>    <int> <int> <int> <chr>        
-#>  1         0.0695      0.930 validation none        13     1    24 pre0_mod01_p…
-#>  2         0.0519      0.948 validation none        20     1    24 pre0_mod01_p…
-#>  3         0.0669      0.933 validation children    22     1    24 pre0_mod01_p…
-#>  4         0.0560      0.944 validation none        23     1    24 pre0_mod01_p…
-#>  5         0.0682      0.932 validation none        31     1    24 pre0_mod01_p…
-#>  6         0.0430      0.957 validation none        38     1    24 pre0_mod01_p…
-#>  7         0.0360      0.964 validation none        39     1    24 pre0_mod01_p…
-#>  8         0.0481      0.952 validation none        50     1    24 pre0_mod01_p…
-#>  9         0.0605      0.940 validation none        54     1    24 pre0_mod01_p…
-#> 10         0.0754      0.925 validation children    57     1    24 pre0_mod01_p…
-#> # ℹ 187,490 more rows
+#>  1         0.0357      0.964 validation none     30001     1    24 pre0_mod01_p…
+#>  2         0.0705      0.929 validation none     30002     1    24 pre0_mod01_p…
+#>  3         0.119       0.881 validation none     30003     1    24 pre0_mod01_p…
+#>  4         0.118       0.882 validation none     30004     1    24 pre0_mod01_p…
+#>  5         0.0922      0.908 validation none     30005     1    24 pre0_mod01_p…
+#>  6         0.0499      0.950 validation none     30006     1    24 pre0_mod01_p…
+#>  7         0.0723      0.928 validation none     30007     1    24 pre0_mod01_p…
+#>  8         0.0682      0.932 validation none     30008     1    24 pre0_mod01_p…
+#>  9         0.0587      0.941 validation none     30009     1    24 pre0_mod01_p…
+#> 10         0.0472      0.953 validation none     30010     1    24 pre0_mod01_p…
+#> # ℹ 187,465 more rows
 ```
 :::
 
@@ -664,7 +657,7 @@ last_rf_fit
 #> # A tibble: 1 × 6
 #>   splits                id             .metrics .notes   .predictions .workflow 
 #>   <list>                <chr>          <list>   <list>   <list>       <list>    
-#> 1 <split [37500/12500]> train/test sp… <tibble> <tibble> <tibble>     <workflow>
+#> 1 <split [30000/12501]> train/test sp… <tibble> <tibble> <tibble>     <workflow>
 ```
 :::
 
@@ -678,9 +671,9 @@ last_rf_fit |>
 #> # A tibble: 3 × 4
 #>   .metric     .estimator .estimate .config        
 #>   <chr>       <chr>          <dbl> <chr>          
-#> 1 accuracy    binary        0.946  pre0_mod0_post0
-#> 2 roc_auc     binary        0.924  pre0_mod0_post0
-#> 3 brier_class binary        0.0423 pre0_mod0_post0
+#> 1 accuracy    binary        0.944  pre0_mod0_post0
+#> 2 roc_auc     binary        0.918  pre0_mod0_post0
+#> 3 brier_class binary        0.0443 pre0_mod0_post0
 ```
 :::
 
