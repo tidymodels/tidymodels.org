@@ -110,34 +110,35 @@ We can see that children were only in `r round(mean(hotels$children == "children
 
 ## Data Splitting & Resampling {#data-split}
 
-For a data splitting strategy, let's reserve 25% of the stays to the test set. As in our [*Evaluate your model with resampling*](/start/resampling/#data-split) article, we know our outcome variable `children` is pretty imbalanced so we'll use a stratified random sample:
+For a data splitting strategy, let's use a 3-way split: 60% of the stays to the *training set*, 15% to a *validation set*, and 25% to the *test set*. As in our [*Evaluate your model with resampling*](/start/resampling/#data-split) article, we know our outcome variable `children` is pretty imbalanced so we'll use a stratified random sample:
 
 ```{r}
 #| label: "tr-te-split"
 set.seed(123)
-splits      <- initial_split(hotels, strata = children)
+splits      <- initial_validation_split(hotels, strata = children,
+                                        prop = c(0.60, 0.15))
 
-hotel_other <- training(splits)
+hotel_train <- training(splits)
+hotel_val   <- validation(splits)
 hotel_test  <- testing(splits)
+hotel_other <- bind_rows(hotel_train, hotel_val)
 
 # training set proportions by children
-hotel_other |> 
-  count(children) |> 
+hotel_train |>
+  count(children) |>
   mutate(prop = n/sum(n))
 
 # test set proportions by children
-hotel_test  |> 
-  count(children) |> 
+hotel_test  |>
+  count(children) |>
   mutate(prop = n/sum(n))
 ```
 
+`initial_validation_split()` has a `strata` argument that uses stratified sampling, so we'll have roughly the same proportions of hotel stays with and without children across all three sets.
+
 In our articles so far, we've relied on 10-fold cross-validation as the primary resampling method using [`rsample::vfold_cv()`](https://rsample.tidymodels.org/reference/vfold_cv.html). This has created 10 different resamples of the training set (which we further split into *analysis* and *assessment* sets), producing 10 different performance metrics that we then aggregated.
 
-For this case study, rather than using multiple iterations of resampling, let's create a single resample called a *validation set*. In tidymodels, a validation set is treated as a single iteration of resampling. This will be a split from the `r format(nrow(hotel_other), big.mark = ",")` stays that were not used for testing, which we called `hotel_other`. This split creates two new datasets:
-
--   the set held out for the purpose of measuring performance, called the *validation set*, and
-
--   the remaining data used to fit the model, called the *training set*.
+For this case study, rather than using multiple iterations of resampling, let's use the *validation set* as a single iteration of resampling.
 
 ```{r}
 #| label: "validation-fig"
@@ -147,18 +148,13 @@ For this case study, rather than using multiple iterations of resampling, let's 
 knitr::include_graphics("img/validation-split.svg")
 ```
 
-We'll use the `validation_split()` function to allocate 20% of the `hotel_other` stays to the *validation set* and `r format(nrow(hotel_other) * .8, big.mark = ",")` stays to the *training set*. This means that our model performance metrics will be computed on a single set of `r format(nrow(hotel_other) * .2, big.mark = ",")` hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
+The `validation_set()` function bundles the training and validation portions of our split into an object that emulates a single resample, so we can use it with the same tuning interface we'd use for cross-validation. Our model performance metrics will be computed on a single set of `r format(nrow(hotel_val), big.mark = ",")` hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
 
 ```{r}
 #| label: "validation-set"
-set.seed(234)
-val_set <- validation_split(hotel_other, 
-                            strata = children, 
-                            prop = 0.80)
+val_set <- validation_set(splits)
 val_set
 ```
-
-This function, like `initial_split()`, has the same `strata` argument, which uses stratified sampling to create the resample. This means that we'll have roughly the same proportions of hotel stays with and without children in our new validation and training sets, as compared to the original `hotel_other` proportions.
 
 ## A first model: penalized logistic regression {#first-model}
 
