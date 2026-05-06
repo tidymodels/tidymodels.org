@@ -231,7 +231,7 @@ test_results
 test_results |> metrics(truth = Sale_Price, estimate = glmnet) 
 
 test_results |> 
-  gather(model, prediction, -Sale_Price) |> 
+  pivot_longer(-Sale_Price, names_to = "model", values_to = "prediction") |> 
   ggplot(aes(x = prediction, y = Sale_Price)) + 
   geom_abline(col = "green", lty = 2) + 
   geom_point(alpha = .4) + 

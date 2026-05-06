@@ -272,13 +272,11 @@ tree_res |>
   collect_metrics() |>
   mutate(tree_depth = factor(tree_depth)) |>
   ggplot(aes(cost_complexity, mean, color = tree_depth)) +
-  geom_line(size = 1.5, alpha = 0.6) +
+  geom_line(linewidth = 1.5, alpha = 0.6) +
   geom_point(size = 2) +
   facet_wrap(~ .metric, scales = "free", nrow = 2) +
   scale_x_log10(labels = scales::label_number()) +
   scale_color_viridis_d(option = "plasma", begin = .9, end = 0)
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
 ```
 
 ::: {.cell-output-display}
