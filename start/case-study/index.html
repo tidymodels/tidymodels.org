@@ -333,44 +333,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can see that children were only in 8.1% of the reservations. This type of class imbalance can often wreak havoc on an analysis. While there are several methods for combating this issue using <a href="../../find/recipes/">recipes</a> (search for steps to <code>upsample</code> or <code>downsample</code>) or other more specialized packages like <a href="https://themis.tidymodels.org/">themis</a>, the analyses shown below analyze the data as-is.</p>
 </section><section id="data-split" class="level2"><h2 class="anchored" data-anchor-id="data-split">Data Splitting &amp; Resampling</h2>
-<p>For a data splitting strategy, let’s reserve 25% of the stays to the test set. As in our <a href="../../start/resampling/#data-split"><em>Evaluate your model with resampling</em></a> article, we know our outcome variable <code>children</code> is pretty imbalanced so we’ll use a stratified random sample:</p>
+<p>For a data splitting strategy, let’s use a 3-way split: 60% of the stays to the <em>training set</em>, 15% to a <em>validation set</em>, and 25% to the <em>test set</em>. As in our <a href="../../start/resampling/#data-split"><em>Evaluate your model with resampling</em></a> article, we know our outcome variable <code>children</code> is pretty imbalanced so we’ll use a stratified random sample:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">splits</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split</a></span><span class="op">(</span><span class="va">hotels</span>, strata <span class="op">=</span> <span class="va">children</span><span class="op">)</span></span>
+<span><span class="va">splits</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_validation_split.html">initial_validation_split</a></span><span class="op">(</span><span class="va">hotels</span>, strata <span class="op">=</span> <span class="va">children</span>,</span>
+<span>                                        prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.60</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">hotel_other</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span></span>
+<span><span class="va">hotel_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span></span>
+<span><span class="va">hotel_val</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_validation_split.html">validation</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span></span>
 <span><span class="va">hotel_test</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span></span>
+<span><span class="va">hotel_other</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">hotel_train</span>, <span class="va">hotel_val</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># training set proportions by children</span></span>
-<span><span class="va">hotel_other</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">children</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">hotel_train</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">children</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   children     n   prop</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;    &lt;int&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 children  3027 0.0807</span></span>
-<span><span class="co">#&gt; 2 none     34473 0.919</span></span>
+<span><span class="co">#&gt; 1 children  2364 0.0788</span></span>
+<span><span class="co">#&gt; 2 none     27636 0.921</span></span>
 <span></span>
 <span><span class="co"># test set proportions by children</span></span>
-<span><span class="va">hotel_test</span>  <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">children</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">hotel_test</span>  <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">children</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span><span class="co">#&gt;   children     n   prop</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;    &lt;int&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 children  1011 0.0809</span></span>
-<span><span class="co">#&gt; 2 none     11489 0.919</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 children  1043 0.0834</span></span>
+<span><span class="co">#&gt; 2 none     11458 0.917</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
+<p><code><a href="https://rsample.tidymodels.org/reference/initial_validation_split.html">initial_validation_split()</a></code> has a <code>strata</code> argument that uses stratified sampling, so we’ll have roughly the same proportions of hotel stays with and without children across all three sets.</p>
 <p>In our articles so far, we’ve relied on 10-fold cross-validation as the primary resampling method using <a href="https://rsample.tidymodels.org/reference/vfold_cv.html"><code>rsample::vfold_cv()</code></a>. This has created 10 different resamples of the training set (which we further split into <em>analysis</em> and <em>assessment</em> sets), producing 10 different performance metrics that we then aggregated.</p>
-<p>For this case study, rather than using multiple iterations of resampling, let’s create a single resample called a <em>validation set</em>. In tidymodels, a validation set is treated as a single iteration of resampling. This will be a split from the 37,500 stays that were not used for testing, which we called <code>hotel_other</code>. This split creates two new datasets:</p>
-<ul>
-<li><p>the set held out for the purpose of measuring performance, called the <em>validation set</em>, and</p></li>
-<li><p>the remaining data used to fit the model, called the <em>training set</em>.</p></li>
-</ul>
+<p>For this case study, rather than using multiple iterations of resampling, let’s use the <em>validation set</em> as a single iteration of resampling.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -379,26 +379,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>We’ll use the <code><a href="https://rsample.tidymodels.org/reference/validation_split.html">validation_split()</a></code> function to allocate 20% of the <code>hotel_other</code> stays to the <em>validation set</em> and 30,000 stays to the <em>training set</em>. This means that our model performance metrics will be computed on a single set of 7,500 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.</p>
+<p>The <code><a href="https://rsample.tidymodels.org/reference/validation_set.html">validation_set()</a></code> function bundles the training and validation portions of our split into an object that emulates a single resample, so we can use it with the same tuning interface we’d use for cross-validation. Our model performance metrics will be computed on a single set of 7,499 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">234</span><span class="op">)</span></span>
-<span><span class="va">val_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/validation_split.html">validation_split</a></span><span class="op">(</span><span class="va">hotel_other</span>, </span>
-<span>                            strata <span class="op">=</span> <span class="va">children</span>, </span>
-<span>                            prop <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `validation_split()` was deprecated in rsample 1.2.0.</span></span>
-<span><span class="co">#&gt; ℹ Please use `initial_validation_split()` instead.</span></span>
+<code class="sourceCode R"><span><span class="va">val_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/validation_set.html">validation_set</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span></span>
 <span><span class="va">val_set</span></span>
-<span><span class="co">#&gt; # Validation Set Split (0.8/0.2)  using stratification </span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   splits               id        </span></span>
 <span><span class="co">#&gt;   &lt;list&gt;               &lt;chr&gt;     </span></span>
-<span><span class="co">#&gt; 1 &lt;split [30000/7500]&gt; validation</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 &lt;split [30000/7499]&gt; validation</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>This function, like <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_split()</a></code>, has the same <code>strata</code> argument, which uses stratified sampling to create the resample. This means that we’ll have roughly the same proportions of hotel stays with and without children in our new validation and training sets, as compared to the original <code>hotel_other</code> proportions.</p>
 </section><section id="first-model" class="level2"><h2 class="anchored" data-anchor-id="first-model">A first model: penalized logistic regression</h2>
 <p>Since our outcome variable <code>children</code> is categorical, logistic regression would be a good first model to start. Let’s use a model that can perform feature selection during training. The <a href="https://cran.r-project.org/web/packages/glmnet/index.html">glmnet</a> R package fits a generalized linear model via penalized maximum likelihood. This method of estimating the logistic regression slope parameters uses a <em>penalty</em> on the process so that less relevant predictors are driven towards a value of zero. One of the glmnet penalization methods, called the <a href="https://en.wikipedia.org/wiki/Lasso_(statistics)">lasso method</a>, can actually set the predictor slopes to zero if a large enough penalty is used.</p>
 <section id="build-the-model" class="level3"><h3 class="anchored" data-anchor-id="build-the-model">Build the model</h3>
@@ -536,25 +529,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 15 × 7</span></span>
 <span><span class="co">#&gt;     penalty .metric .estimator  mean     n std_err .config         </span></span>
 <span><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           </span></span>
-<span><span class="co">#&gt;  1 0.000127 roc_auc binary     0.872     1      NA pre0_mod02_post0</span></span>
-<span><span class="co">#&gt;  2 0.000161 roc_auc binary     0.872     1      NA pre0_mod03_post0</span></span>
-<span><span class="co">#&gt;  3 0.000204 roc_auc binary     0.873     1      NA pre0_mod04_post0</span></span>
-<span><span class="co">#&gt;  4 0.000259 roc_auc binary     0.873     1      NA pre0_mod05_post0</span></span>
-<span><span class="co">#&gt;  5 0.000329 roc_auc binary     0.874     1      NA pre0_mod06_post0</span></span>
-<span><span class="co">#&gt;  6 0.000418 roc_auc binary     0.874     1      NA pre0_mod07_post0</span></span>
-<span><span class="co">#&gt;  7 0.000530 roc_auc binary     0.875     1      NA pre0_mod08_post0</span></span>
-<span><span class="co">#&gt;  8 0.000672 roc_auc binary     0.875     1      NA pre0_mod09_post0</span></span>
-<span><span class="co">#&gt;  9 0.000853 roc_auc binary     0.876     1      NA pre0_mod10_post0</span></span>
-<span><span class="co">#&gt; 10 0.00108  roc_auc binary     0.876     1      NA pre0_mod11_post0</span></span>
-<span><span class="co">#&gt; 11 0.00137  roc_auc binary     0.876     1      NA pre0_mod12_post0</span></span>
-<span><span class="co">#&gt; 12 0.00174  roc_auc binary     0.876     1      NA pre0_mod13_post0</span></span>
-<span><span class="co">#&gt; 13 0.00221  roc_auc binary     0.876     1      NA pre0_mod14_post0</span></span>
-<span><span class="co">#&gt; 14 0.00281  roc_auc binary     0.875     1      NA pre0_mod15_post0</span></span>
-<span><span class="co">#&gt; 15 0.00356  roc_auc binary     0.873     1      NA pre0_mod16_post0</span></span></code></pre></div>
+<span><span class="co">#&gt;  1 0.0001   roc_auc binary     0.866     1      NA pre0_mod01_post0</span></span>
+<span><span class="co">#&gt;  2 0.000127 roc_auc binary     0.866     1      NA pre0_mod02_post0</span></span>
+<span><span class="co">#&gt;  3 0.000161 roc_auc binary     0.866     1      NA pre0_mod03_post0</span></span>
+<span><span class="co">#&gt;  4 0.000204 roc_auc binary     0.867     1      NA pre0_mod04_post0</span></span>
+<span><span class="co">#&gt;  5 0.000259 roc_auc binary     0.867     1      NA pre0_mod05_post0</span></span>
+<span><span class="co">#&gt;  6 0.000329 roc_auc binary     0.867     1      NA pre0_mod06_post0</span></span>
+<span><span class="co">#&gt;  7 0.000418 roc_auc binary     0.867     1      NA pre0_mod07_post0</span></span>
+<span><span class="co">#&gt;  8 0.000530 roc_auc binary     0.867     1      NA pre0_mod08_post0</span></span>
+<span><span class="co">#&gt;  9 0.000672 roc_auc binary     0.867     1      NA pre0_mod09_post0</span></span>
+<span><span class="co">#&gt; 10 0.000853 roc_auc binary     0.867     1      NA pre0_mod10_post0</span></span>
+<span><span class="co">#&gt; 11 0.00108  roc_auc binary     0.867     1      NA pre0_mod11_post0</span></span>
+<span><span class="co">#&gt; 12 0.00137  roc_auc binary     0.867     1      NA pre0_mod12_post0</span></span>
+<span><span class="co">#&gt; 13 0.00174  roc_auc binary     0.866     1      NA pre0_mod13_post0</span></span>
+<span><span class="co">#&gt; 14 0.00221  roc_auc binary     0.865     1      NA pre0_mod14_post0</span></span>
+<span><span class="co">#&gt; 15 0.00281  roc_auc binary     0.864     1      NA pre0_mod15_post0</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Every candidate model in this tibble likely includes more predictor variables than the model in the row below it. If we used <code><a href="https://tune.tidymodels.org/reference/show_best.html">select_best()</a></code>, it would return candidate model 11 with a penalty value of 0.00137, shown with the dotted line below.</p>
+<p>Every candidate model in this tibble likely includes more predictor variables than the model in the row below it. If we used <code><a href="https://tune.tidymodels.org/reference/show_best.html">select_best()</a></code>, it would return candidate model 7 with a penalty value of 0.000418, shown with the dotted line below.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -563,7 +556,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>However, we may want to choose a penalty value further along the x-axis, closer to where we start to see the decline in model performance. For example, candidate model 12 with a penalty value of 0.00174 has effectively the same performance as the numerically best model, but might eliminate more predictors. This penalty value is marked by the solid line above. In general, fewer irrelevant predictors is better. If performance is about the same, we’d prefer to choose a higher penalty value.</p>
+<p>However, we may want to choose a penalty value further along the x-axis, closer to where we start to see the decline in model performance. For example, candidate model 12 with a penalty value of 0.00137 has effectively the same performance as the numerically best model, but might eliminate more predictors. This penalty value is marked by the solid line above. In general, fewer irrelevant predictors is better. If performance is about the same, we’d prefer to choose a higher penalty value.</p>
 <p>Let’s select this value and visualize the validation set ROC curve:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -577,7 +570,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 1 × 7</span></span>
 <span><span class="co">#&gt;   penalty .metric .estimator  mean     n std_err .config         </span></span>
 <span><span class="co">#&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           </span></span>
-<span><span class="co">#&gt; 1 0.00137 roc_auc binary     0.876     1      NA pre0_mod12_post0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 0.00137 roc_auc binary     0.867     1      NA pre0_mod12_post0</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -701,15 +694,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 5 × 8</span></span>
 <span><span class="co">#&gt;    mtry min_n .metric .estimator  mean     n std_err .config         </span></span>
 <span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           </span></span>
-<span><span class="co">#&gt; 1     9     3 roc_auc binary     0.927     1      NA pre0_mod09_post0</span></span>
-<span><span class="co">#&gt; 2     4     5 roc_auc binary     0.925     1      NA pre0_mod04_post0</span></span>
-<span><span class="co">#&gt; 3     8    11 roc_auc binary     0.925     1      NA pre0_mod08_post0</span></span>
-<span><span class="co">#&gt; 4    14     8 roc_auc binary     0.924     1      NA pre0_mod13_post0</span></span>
-<span><span class="co">#&gt; 5    10    21 roc_auc binary     0.924     1      NA pre0_mod10_post0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     4     5 roc_auc binary     0.921     1      NA pre0_mod04_post0</span></span>
+<span><span class="co">#&gt; 2     9     3 roc_auc binary     0.920     1      NA pre0_mod09_post0</span></span>
+<span><span class="co">#&gt; 3     5    19 roc_auc binary     0.919     1      NA pre0_mod05_post0</span></span>
+<span><span class="co">#&gt; 4     8    11 roc_auc binary     0.919     1      NA pre0_mod08_post0</span></span>
+<span><span class="co">#&gt; 5     6    27 roc_auc binary     0.917     1      NA pre0_mod06_post0</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Right away, we see that these values for area under the ROC look more promising than our top model using penalized logistic regression, which yielded an ROC AUC of 0.876.</p>
+<p>Right away, we see that these values for area under the ROC look more promising than our top model using penalized logistic regression, which yielded an ROC AUC of 0.867.</p>
 <p>Plotting the results of the tuning process highlights that both <code>mtry</code> (number of predictors at each node) and <code>min_n</code> (minimum number of data points required to keep splitting) should be fairly small to optimize performance. However, the range of the y-axis indicates that the model is very robust to the choice of these parameter values — all but one of the ROC AUC values are greater than 0.90.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -735,7 +728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;    mtry min_n .config         </span></span>
 <span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;           </span></span>
-<span><span class="co">#&gt; 1     9     3 pre0_mod09_post0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     4     5 pre0_mod04_post0</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -745,20 +738,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_res</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 187,500 × 8</span></span>
+<span><span class="co">#&gt; # A tibble: 187,475 × 8</span></span>
 <span><span class="co">#&gt;    .pred_children .pred_none id         children  .row  mtry min_n .config      </span></span>
 <span><span class="co">#&gt;             &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;      &lt;fct&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;        </span></span>
-<span><span class="co">#&gt;  1         0.0695      0.930 validation none        13     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  2         0.0519      0.948 validation none        20     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  3         0.0669      0.933 validation children    22     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  4         0.0560      0.944 validation none        23     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  5         0.0682      0.932 validation none        31     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  6         0.0430      0.957 validation none        38     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  7         0.0360      0.964 validation none        39     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  8         0.0481      0.952 validation none        50     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt;  9         0.0605      0.940 validation none        54     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt; 10         0.0754      0.925 validation children    57     1    24 pre0_mod01_p…</span></span>
-<span><span class="co">#&gt; # ℹ 187,490 more rows</span></span></code></pre></div>
+<span><span class="co">#&gt;  1         0.0357      0.964 validation none     30001     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  2         0.0705      0.929 validation none     30002     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  3         0.119       0.881 validation none     30003     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  4         0.118       0.882 validation none     30004     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  5         0.0922      0.908 validation none     30005     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  6         0.0499      0.950 validation none     30006     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  7         0.0723      0.928 validation none     30007     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  8         0.0682      0.932 validation none     30008     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt;  9         0.0587      0.941 validation none     30009     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt; 10         0.0472      0.953 validation none     30010     1    24 pre0_mod01_p…</span></span>
+<span><span class="co">#&gt; # ℹ 187,465 more rows</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -823,7 +816,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 1 × 6</span></span>
 <span><span class="co">#&gt;   splits                id             .metrics .notes   .predictions .workflow </span></span>
 <span><span class="co">#&gt;   &lt;list&gt;                &lt;chr&gt;          &lt;list&gt;   &lt;list&gt;   &lt;list&gt;       &lt;list&gt;    </span></span>
-<span><span class="co">#&gt; 1 &lt;split [37500/12500]&gt; train/test sp… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;     &lt;workflow&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 &lt;split [30000/12501]&gt; train/test sp… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;     &lt;workflow&gt;</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -836,9 +829,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
 <span><span class="co">#&gt;   .metric     .estimator .estimate .config        </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;          </span></span>
-<span><span class="co">#&gt; 1 accuracy    binary        0.946  pre0_mod0_post0</span></span>
-<span><span class="co">#&gt; 2 roc_auc     binary        0.924  pre0_mod0_post0</span></span>
-<span><span class="co">#&gt; 3 brier_class binary        0.0423 pre0_mod0_post0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 accuracy    binary        0.944  pre0_mod0_post0</span></span>
+<span><span class="co">#&gt; 2 roc_auc     binary        0.918  pre0_mod0_post0</span></span>
+<span><span class="co">#&gt; 3 brier_class binary        0.0443 pre0_mod0_post0</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>

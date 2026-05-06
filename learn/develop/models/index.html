@@ -503,14 +503,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_new_model</a></span><span class="op">(</span><span class="st">"discrim_mixture"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_mode</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"discrim_mixture"</span>, mode <span class="op">=</span> <span class="st">"classification"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_engine</a></span><span class="op">(</span></span>
-<span>  <span class="st">"discrim_mixture"</span>, </span>
-<span>  mode <span class="op">=</span> <span class="st">"classification"</span>, </span>
+<span>  <span class="st">"discrim_mixture"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
 <span>  eng <span class="op">=</span> <span class="st">"mda"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span><span class="st">"discrim_mixture"</span>, eng <span class="op">=</span> <span class="st">"mda"</span>, pkg <span class="op">=</span> <span class="st">"mda"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span></span>
+<span>  <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  pkg <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
+<p>Always specify <code>mode</code> in <code><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency()</a></code>. If you omit it, the dependency is registered for every mode of that model/engine combination, which can pull unrelated packages into a fit. For example, if a <code><a href="https://parsnip.tidymodels.org/reference/decision_tree.html">decision_tree()</a></code> <code>"partykit"</code> engine is shared between <code>"censored regression"</code> and <code>"classification"</code> modes, a dependency registered without <code>mode</code> for one would be loaded for the other.</p>
 <p>These functions should silently finish. There is also a function that can be used to show what aspects of the model have been added to parsnip:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -865,7 +871,7 @@ Warning
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_engine</a></span><span class="op">(</span><span class="st">"linear_reg"</span>, <span class="st">"regression"</span>, eng <span class="op">=</span> <span class="st">"rlm"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span><span class="st">"linear_reg"</span>, eng <span class="op">=</span> <span class="st">"rlm"</span>, pkg <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span><span class="st">"linear_reg"</span>, eng <span class="op">=</span> <span class="st">"rlm"</span>, pkg <span class="op">=</span> <span class="st">"MASS"</span>, mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_fit</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="st">"linear_reg"</span>,</span>
@@ -975,7 +981,12 @@ Warning
 <p>It is also important for parallel processing support to <strong>list the home package as a dependency</strong>. If the <code>discrim_mixture()</code> function lived in a package called <code>mixedup</code>, include the line:</p>
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span><span class="st">"discrim_mixture"</span>, eng <span class="op">=</span> <span class="st">"mda"</span>, pkg <span class="op">=</span> <span class="st">"mixedup"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span></span>
+<span>  <span class="st">"discrim_mixture"</span>,</span>
+<span>  eng <span class="op">=</span> <span class="st">"mda"</span>,</span>
+<span>  pkg <span class="op">=</span> <span class="st">"mixedup"</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"classification"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <p>Parallel processing requires this explicit dependency setting. When parallel worker processes are created, there is heterogeneity across technologies regarding which packages are loaded. Multicore methods on macOS and Linux will load all of the packages that were loaded in the main R process. However, parallel processing using psock clusters have no additional packages loaded. If the home package for a parsnip model is not loaded in the worker processes, the model will not have an entry in parsnip’s internal database (and produce an error).</p>
