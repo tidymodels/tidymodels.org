@@ -35,7 +35,7 @@ Consider a two-class problem where the first class has a very low rate of occurr
 
 ```{.r .cell-code}
 imbal_data <- 
-  readr::read_csv("https://tidymodels.org/learn/models/sub-sampling/imbal_data.csv") %>% 
+  readr::read_csv("https://tidymodels.org/learn/models/sub-sampling/imbal_data.csv") |> 
   mutate(Class = factor(Class))
 dim(imbal_data)
 #> [1] 1200   16
@@ -71,7 +71,7 @@ library(themis)
 set.seed(1234)
 
 imbal_rec <- 
-  recipe(Class ~ ., data = imbal_data) %>%
+  recipe(Class ~ ., data = imbal_data) |>
   step_rose(Class)
 ```
 :::
@@ -83,7 +83,7 @@ For a model, let's use a [quadratic discriminant analysis](https://en.wikipedia.
 ```{.r .cell-code}
 library(discrim)
 qda_mod <- 
-  discrim_regularized(frac_common_cov = 0, frac_identity = 0) %>% 
+  discrim_regularized(frac_common_cov = 0, frac_identity = 0) |> 
   set_engine("klaR")
 ```
 :::
@@ -94,8 +94,8 @@ To keep these objects bound together, they can be combined in a [workflow](https
 
 ```{.r .cell-code}
 qda_rose_wflw <- 
-  workflow() %>% 
-  add_model(qda_mod) %>% 
+  workflow() |> 
+  add_model(qda_mod) |> 
   add_recipe(imbal_rec)
 qda_rose_wflw
 #> ══ Workflow ══════════════════════════════════════════════════════════
@@ -171,8 +171,8 @@ What do the results look like without using ROSE? We can create another workflow
 
 ```{.r .cell-code}
 qda_wflw <- 
-  workflow() %>% 
-  add_model(qda_mod) %>% 
+  workflow() |> 
+  add_model(qda_mod) |> 
   add_formula(Class ~ .)
 
 set.seed(2180)
@@ -194,19 +194,19 @@ Let's plot the metrics for each resample to see how the individual results chang
 
 ```{.r .cell-code}
 no_sampling <- 
-  qda_only_res %>% 
-  collect_metrics(summarize = FALSE) %>% 
-  dplyr::select(-.estimator) %>% 
+  qda_only_res |> 
+  collect_metrics(summarize = FALSE) |> 
+  dplyr::select(-.estimator) |> 
   mutate(sampling = "no_sampling")
 
 with_sampling <- 
-  qda_rose_res %>% 
-  collect_metrics(summarize = FALSE) %>% 
-  dplyr::select(-.estimator) %>% 
+  qda_rose_res |> 
+  collect_metrics(summarize = FALSE) |> 
+  dplyr::select(-.estimator) |> 
   mutate(sampling = "rose")
 
-bind_rows(no_sampling, with_sampling) %>% 
-  mutate(label = paste(id2, id)) %>%  
+bind_rows(no_sampling, with_sampling) |> 
+  mutate(label = paste(id2, id)) |>  
   ggplot(aes(x = sampling, y = .estimate, group = label)) + 
   geom_line(alpha = .4) + 
   facet_wrap(~ .metric, scales = "free_y")

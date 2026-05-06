@@ -370,7 +370,7 @@ For example:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-discrim_mixture(sub_classes = 2) %>%
+discrim_mixture(sub_classes = 2) |>
   translate(engine = "mda")
 #> discrim mixture Model Specification (classification)
 #> 
@@ -395,10 +395,10 @@ example_split <- initial_split(two_class_dat, prop = 0.99)
 example_train <- training(example_split)
 example_test  <-  testing(example_split)
 
-mda_spec <- discrim_mixture(sub_classes = 2) %>% 
+mda_spec <- discrim_mixture(sub_classes = 2) |> 
   set_engine("mda")
 
-mda_fit <- mda_spec %>%
+mda_fit <- mda_spec |>
   fit(Class ~ ., data = example_train)
 mda_fit
 #> parsnip model object
@@ -418,8 +418,8 @@ mda_fit
 #> 
 #> Deviance: 671.391
 
-predict(mda_fit, new_data = example_test, type = "prob") %>%
-  bind_cols(example_test %>% select(Class))
+predict(mda_fit, new_data = example_test, type = "prob") |>
+  bind_cols(example_test |> select(Class))
 #> # A tibble: 8 × 3
 #>   .pred_Class1 .pred_Class2 Class 
 #>          <dbl>        <dbl> <fct> 
@@ -432,8 +432,8 @@ predict(mda_fit, new_data = example_test, type = "prob") %>%
 #> 7       0.793         0.207 Class1
 #> 8       0.0949        0.905 Class2
 
-predict(mda_fit, new_data = example_test) %>% 
- bind_cols(example_test %>% select(Class))
+predict(mda_fit, new_data = example_test) |> 
+ bind_cols(example_test |> select(Class))
 #> # A tibble: 8 × 2
 #>   .pred_class Class 
 #>   <fct>       <fct> 
@@ -501,8 +501,8 @@ set_pred(
 )
 
 # testing:
-linear_reg() %>% 
-  set_engine("rlm") %>% 
+linear_reg() |> 
+  set_engine("rlm") |> 
   fit(mpg ~ ., data = mtcars)
 #> parsnip model object
 #> 
@@ -642,12 +642,12 @@ Once this method is in place, the tuning functions can be used:
 
 ```{.r .cell-code}
 mda_spec <- 
-  discrim_mixture(sub_classes = tune()) %>% 
+  discrim_mixture(sub_classes = tune()) |> 
   set_engine("mda")
 
 set.seed(452)
 cv <- vfold_cv(example_train)
-mda_tune_res <- mda_spec %>%
+mda_tune_res <- mda_spec |>
   tune_grid(Class ~ ., cv, grid = 4)
 show_best(mda_tune_res, metric = "roc_auc")
 ```
@@ -666,9 +666,9 @@ For example, if we fit a linear regression model via `glmnet` and predict for 10
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-preds <- linear_reg(penalty = 0.1) %>%
-  set_engine("glmnet") %>% 
-  fit(mpg ~ ., data = mtcars) %>%
+preds <- linear_reg(penalty = 0.1) |>
+  set_engine("glmnet") |> 
+  fit(mpg ~ ., data = mtcars) |>
   multi_predict(new_data = mtcars[1:3, -1], penalty = seq(0.1 / 1:10))
 
 preds
@@ -744,7 +744,7 @@ So that is the default:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-logistic_reg() %>% translate(engine = "glm")
+logistic_reg() |> translate(engine = "glm")
 #> Logistic Regression Model Specification (classification)
 #> 
 #> Computational engine: glm 
@@ -754,8 +754,8 @@ logistic_reg() %>% translate(engine = "glm")
 #>     family = stats::binomial)
 
 # but you can change it:
-logistic_reg() %>%
-  set_engine("glm", family = binomial(link = "probit")) %>% 
+logistic_reg() |>
+  set_engine("glm", family = binomial(link = "probit")) |> 
   translate()
 #> Logistic Regression Model Specification (classification)
 #> 

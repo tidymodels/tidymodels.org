@@ -80,7 +80,7 @@ The `specify()` function can be used to specify which of the variables in the da
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-gss %>%
+gss |>
   specify(response = age)
 #> Response: age (numeric)
 #> # A tibble: 500 × 1
@@ -105,8 +105,8 @@ On the front end, the output of `specify()` just looks like it selects off the c
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-gss %>%
-  specify(response = age) %>%
+gss |>
+  specify(response = age) |>
   class()
 #> [1] "infer"      "tbl_df"     "tbl"        "data.frame"
 ```
@@ -120,7 +120,7 @@ If you're interested in two variables (`age` and `partyid`, for example) you can
 
 ```{.r .cell-code}
 # as a formula
-gss %>%
+gss |>
   specify(age ~ partyid)
 #> Response: age (numeric)
 #> Explanatory: partyid (factor)
@@ -140,7 +140,7 @@ gss %>%
 #> # ℹ 490 more rows
 
 # with the named arguments
-gss %>%
+gss |>
   specify(response = age, explanatory = partyid)
 #> Response: age (numeric)
 #> Explanatory: partyid (factor)
@@ -167,7 +167,7 @@ If you're doing inference on one proportion or a difference in proportions, you 
 
 ```{.r .cell-code}
 # specifying for inference on proportions
-gss %>%
+gss |>
   specify(response = college, success = "degree")
 #> Response: college (factor)
 #> # A tibble: 500 × 1
@@ -194,8 +194,8 @@ The next step in the infer pipeline is often to declare a null hypothesis using 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-gss %>%
-  specify(college ~ partyid, success = "degree") %>%
+gss |>
+  specify(college ~ partyid, success = "degree") |>
   hypothesize(null = "independence")
 #> Response: college (factor)
 #> Explanatory: partyid (factor)
@@ -222,8 +222,8 @@ If you're doing inference on a point estimate, you will also need to provide one
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-gss %>%
-  specify(response = hours) %>%
+gss |>
+  specify(response = hours) |>
   hypothesize(null = "point", mu = 40)
 #> Response: hours (numeric)
 #> Null Hypothesis: point
@@ -261,9 +261,9 @@ Continuing on with our example above, about the average number of hours worked a
 ```{.r .cell-code}
 set.seed(571)
 
-gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
+gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   generate(reps = 5000, type = "bootstrap")
 #> Response: hours (numeric)
 #> Null Hypothesis: point
@@ -294,9 +294,9 @@ To generate a null distribution for the independence of two variables, we could 
 ```{.r .cell-code}
 set.seed(328)
 
-gss %>%
-  specify(partyid ~ age) %>%
-  hypothesize(null = "independence") %>%
+gss |>
+  specify(partyid ~ age) |>
+  hypothesize(null = "independence") |>
   generate(reps = 5000, type = "permute")
 #> Response: partyid (factor)
 #> Explanatory: age (numeric)
@@ -328,10 +328,10 @@ Depending on whether you're carrying out computation-based inference or theory-b
 ```{.r .cell-code}
 set.seed(265)
 
-gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 5000, type = "bootstrap") %>%
+gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 5000, type = "bootstrap") |>
   calculate(stat = "mean")
 #> Response: hours (numeric)
 #> Null Hypothesis: point
@@ -359,10 +359,10 @@ The output of `calculate()` here shows us the sample statistic (in this case, th
 ```{.r .cell-code}
 set.seed(174)
 
-gss %>%
-  specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 5000, type = "permute") %>%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5000, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 #> Response: age (numeric)
 #> Explanatory: college (factor)
@@ -394,17 +394,17 @@ To illustrate, we'll go back to the example of determining whether the mean numb
 
 ```{.r .cell-code}
 # find the point estimate
-point_estimate <- gss %>%
-  specify(response = hours) %>%
+point_estimate <- gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 
 # generate a null distribution
 set.seed(693)
 
-null_dist <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 5000, type = "bootstrap") %>%
+null_dist <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 5000, type = "bootstrap") |>
   calculate(stat = "mean")
 ```
 :::
@@ -418,7 +418,7 @@ We could initially just visualize the null distribution.
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-null_dist %>%
+null_dist |>
   visualize()
 ```
 
@@ -432,7 +432,7 @@ Where does our sample's observed statistic lie on this distribution? We can use 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-null_dist %>%
+null_dist |>
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 ```
@@ -448,7 +448,7 @@ Notice that infer has also shaded the regions of the null distribution that are 
 
 ```{.r .cell-code}
 # get a two-tailed p-value
-p_value <- null_dist %>%
+p_value <- null_dist |>
   get_p_value(obs_stat = point_estimate, direction = "two_sided")
 
 p_value
@@ -467,7 +467,7 @@ To get a confidence interval around our estimate, we can write:
 
 ```{.r .cell-code}
 # start with the null distribution
-null_dist %>%
+null_dist |>
   # calculate the confidence interval around the point estimate
   get_confidence_interval(point_estimate = point_estimate,
                           # at the 95% confidence level
@@ -494,10 +494,10 @@ Generally, to find a null distribution using theory-based methods, use the same 
 ```{.r .cell-code}
 set.seed(533)
 
-null_f_distn <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 5000, type = "permute") %>%
+null_f_distn <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
+   generate(reps = 5000, type = "permute") |>
    calculate(stat = "F")
 ```
 :::
@@ -507,9 +507,9 @@ To find the null distribution using theory-based methods, instead, skip the `gen
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-null_f_distn_theoretical <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
+null_f_distn_theoretical <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
    calculate(stat = "F")
 ```
 :::
@@ -519,8 +519,8 @@ We'll calculate the observed statistic to make use of in the following visualiza
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
+F_hat <- gss |> 
+  specify(age ~ partyid) |>
   calculate(stat = "F")
 ```
 :::

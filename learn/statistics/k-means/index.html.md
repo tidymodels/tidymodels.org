@@ -41,12 +41,12 @@ centers <- tibble(
 )
 
 labelled_points <- 
-  centers %>%
+  centers |>
   mutate(
     x1 = map2(num_points, x1, rnorm),
     x2 = map2(num_points, x2, rnorm)
-  ) %>% 
-  select(-num_points) %>% 
+  ) |> 
+  select(-num_points) |> 
   unnest(cols = c(x1, x2))
 
 ggplot(labelled_points, aes(x1, x2, color = cluster)) +
@@ -76,7 +76,7 @@ We'll use the built-in `kmeans()` function, which accepts a data frame with all 
 
 ```{.r .cell-code}
 points <- 
-  labelled_points %>% 
+  labelled_points |> 
   select(-cluster)
 
 kclust <- kmeans(points, centers = 3)
@@ -191,7 +191,7 @@ Let's say we want to explore the effect of different choices of `k`, from 1 to 9
 
 ```{.r .cell-code}
 kclusts <- 
-  tibble(k = 1:9) %>%
+  tibble(k = 1:9) |>
   mutate(
     kclust = map(k, ~kmeans(points, .x)),
     tidied = map(kclust, tidy),
@@ -221,15 +221,15 @@ We can turn these into three separate data sets each representing a different ty
 
 ```{.r .cell-code}
 clusters <- 
-  kclusts %>%
+  kclusts |>
   unnest(cols = c(tidied))
 
 assignments <- 
-  kclusts %>% 
+  kclusts |> 
   unnest(cols = c(augmented))
 
 clusterings <- 
-  kclusts %>%
+  kclusts |>
   unnest(cols = c(glanced))
 ```
 :::

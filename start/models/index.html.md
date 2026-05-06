@@ -53,9 +53,9 @@ To start, let's read our urchins data into R, which we'll do by providing [`read
 urchins <-
   # Data were assembled for a tutorial 
   # at https://www.flutterbys.com.au/stats/tut/tut7.5a.html
-  read_csv("https://tidymodels.org/start/models/urchins.csv") %>% 
+  read_csv("https://tidymodels.org/start/models/urchins.csv") |> 
   # Change the names to be a little more verbose
-  setNames(c("food_regime", "initial_volume", "width")) %>% 
+  setNames(c("food_regime", "initial_volume", "width")) |> 
   # Factors are very helpful for modeling, so we convert one column
   mutate(food_regime = factor(food_regime, levels = c("Initial", "Low", "High")))
 #> Rows: 72 Columns: 3
@@ -151,7 +151,7 @@ That is pretty underwhelming since, on its own, it doesn't really do much. Howev
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-linear_reg() %>% 
+linear_reg() |> 
   set_engine("keras")
 #> Linear Regression Model Specification (regression)
 #> 
@@ -174,7 +174,7 @@ From here, the model can be estimated or trained using the [`fit()`](https://par
 
 ```{.r .cell-code}
 lm_fit <- 
-  lm_mod %>% 
+  lm_mod |> 
   fit(width ~ initial_volume * food_regime, data = urchins)
 lm_fit
 #> parsnip model object
@@ -216,7 +216,7 @@ This kind of output can be used to generate a dot-and-whisker plot of our regres
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tidy(lm_fit) %>% 
+tidy(lm_fit) |> 
   dwplot(dot_args = list(size = 2, color = "black"),
          whisker_args = list(color = "black"),
          vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2))
@@ -292,8 +292,8 @@ conf_int_pred
 
 # Now combine: 
 plot_data <- 
-  new_points %>% 
-  bind_cols(mean_pred) %>% 
+  new_points |> 
+  bind_cols(mean_pred) |> 
   bind_cols(conf_int_pred)
 
 # and plot:
@@ -326,7 +326,7 @@ set.seed(123)
 
 # make the parsnip model
 bayes_mod <-   
-  linear_reg() %>% 
+  linear_reg() |> 
   set_engine("stan",
              prior_intercept = prior_dist,
              prior = prior_dist,
@@ -334,7 +334,7 @@ bayes_mod <-
 
 # train the model
 bayes_fit <- 
-  bayes_mod %>% 
+  bayes_mod |> 
   fit(width ~ initial_volume * food_regime, data = urchins)
 
 print(bayes_fit, digits = 5)
@@ -390,8 +390,8 @@ A goal of the tidymodels packages is that the **interfaces to common tasks are s
 
 ```{.r .cell-code}
 bayes_plot_data <- 
-  new_points %>% 
-  bind_cols(predict(bayes_fit, new_data = new_points)) %>% 
+  new_points |> 
+  bind_cols(predict(bayes_fit, new_data = new_points)) |> 
   bind_cols(predict(bayes_fit, new_data = new_points, type = "conf_int"))
 
 ggplot(bayes_plot_data, aes(x = food_regime)) + 
@@ -418,13 +418,13 @@ The extra step of defining the model using a function like `linear_reg()` might 
 
 Also, using the tidymodels framework, we can do some interesting things by incrementally creating a model (instead of using single function call). [Model tuning](/start/tuning/) with tidymodels uses the specification of the model to declare what parts of the model should be tuned. That would be very difficult to do if `linear_reg()` immediately fit the model. 
 
-If you are familiar with the tidyverse, you may have noticed that our modeling code uses the magrittr pipe (`%>%`). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the _data_ as the first argument. For example: 
+If you are familiar with the tidyverse, you may have noticed that our modeling code uses the base R pipe (`|>`). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the _data_ as the first argument. For example:
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-urchins %>% 
-  group_by(food_regime) %>% 
+urchins |> 
+  group_by(food_regime) |> 
   summarize(med_vol = median(initial_volume))
 #> # A tibble: 3 × 2
 #>   food_regime med_vol
@@ -440,7 +440,7 @@ whereas the modeling code uses the pipe to pass around the _model object_:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-bayes_mod %>% 
+bayes_mod |> 
   fit(width ~ initial_volume * food_regime, data = urchins)
 ```
 :::

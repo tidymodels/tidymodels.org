@@ -86,7 +86,7 @@ The standard form for time-to-event data are `Surv` objects which capture the ti
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-building_complaints <- building_complaints %>% 
+building_complaints <- building_complaints |> 
   mutate(
     disposition_surv = Surv(days_to_disposition, status == "CLOSED"), 
     .keep = "unused"
@@ -113,7 +113,7 @@ First, let's pull out the training data and have a brief look at the response us
 ```{.r .cell-code}
 complaints_train <- training(complaints_split)
 
-survfit(disposition_surv ~ 1, data = complaints_train) %>% plot()
+survfit(disposition_surv ~ 1, data = complaints_train) |> plot()
 ```
 
 ::: {.cell-output-display}
@@ -130,8 +130,8 @@ The censored package includes parametric, semi-parametric, and tree-based models
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-survreg_spec <- survival_reg() %>% 
-  set_engine("survival") %>% 
+survreg_spec <- survival_reg() |> 
+  set_engine("survival") |> 
   set_mode("censored regression")
 ```
 :::
@@ -141,10 +141,10 @@ We have several missing values in `complaint_priority` that we are turning into 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rec_other <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
-  step_unknown(complaint_priority) %>% 
-  step_rm(complaint_category) %>% 
-  step_novel(community_board, unit) %>%
+rec_other <- recipe(disposition_surv ~ ., data = complaints_train) |> 
+  step_unknown(complaint_priority) |> 
+  step_rm(complaint_category) |> 
+  step_novel(community_board, unit) |>
   step_other(community_board, unit, threshold = 0.02)
 ```
 :::
@@ -154,8 +154,8 @@ We combine the recipe and the model into a workflow. This allows us to easily re
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-survreg_wflow <- workflow() %>% 
-  add_recipe(rec_other) %>% 
+survreg_wflow <- workflow() |> 
+  add_recipe(rec_other) |> 
   add_model(survreg_spec)
 ```
 :::
@@ -246,8 +246,8 @@ Of the metrics we calculated with these predictions, let's take a look at the AU
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(survreg_res) %>% 
-  filter(.metric == "roc_auc_survival") %>% 
+collect_metrics(survreg_res) |> 
+  filter(.metric == "roc_auc_survival") |> 
   ggplot(aes(.eval_time, mean)) + 
   geom_line() + 
   labs(x = "Evaluation Time", y = "Area Under the ROC Curve")
@@ -263,8 +263,8 @@ We can discriminate between events and non-events reasonably well, especially in
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(survreg_res) %>% 
-  filter(.metric == "brier_survival") %>% 
+collect_metrics(survreg_res) |> 
+  filter(.metric == "brier_survival") |> 
   ggplot(aes(.eval_time, mean)) + 
   geom_line() + 
   labs(x = "Evaluation Time", y = "Brier Score")
@@ -280,7 +280,7 @@ The accuracy of the predicted probabilities is generally good, albeit lowest for
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_metrics(survreg_res) %>% 
+collect_metrics(survreg_res) |> 
   filter(.metric == "brier_survival_integrated")
 #> # A tibble: 1 × 7
 #>   .metric                   .estimator .eval_time   mean     n std_err .config  
@@ -300,13 +300,13 @@ First, let’s create the recipes for these two approaches:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rec_unknown <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
+rec_unknown <- recipe(disposition_surv ~ ., data = complaints_train) |> 
   step_unknown(complaint_priority) 
 
-rec_dummies <- rec_unknown %>% 
-  step_novel(all_nominal_predictors()) %>%
-  step_dummy(all_nominal_predictors()) %>% 
-  step_zv(all_predictors()) %>% 
+rec_dummies <- rec_unknown |> 
+  step_novel(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors()) |> 
+  step_zv(all_predictors()) |> 
   step_normalize(all_numeric_predictors())
 ```
 :::
@@ -318,20 +318,20 @@ For the regularized model, we are using the `"glmnet"` engine for a semi-paramet
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-oblique_spec <- rand_forest(mtry = tune(), min_n = tune()) %>% 
-  set_engine("aorsf") %>% 
+oblique_spec <- rand_forest(mtry = tune(), min_n = tune()) |> 
+  set_engine("aorsf") |> 
   set_mode("censored regression")
 
-oblique_wflow <- workflow() %>% 
-  add_recipe(rec_unknown) %>% 
+oblique_wflow <- workflow() |> 
+  add_recipe(rec_unknown) |> 
   add_model(oblique_spec)
 
-coxnet_spec <- proportional_hazards(penalty = tune()) %>% 
-  set_engine("glmnet") %>% 
+coxnet_spec <- proportional_hazards(penalty = tune()) |> 
+  set_engine("glmnet") |> 
   set_mode("censored regression")
 
-coxnet_wflow <- workflow() %>% 
-  add_recipe(rec_dummies) %>% 
+coxnet_wflow <- workflow() |> 
+  add_recipe(rec_dummies) |> 
   add_model(coxnet_spec)
 ```
 :::
@@ -427,7 +427,7 @@ last_oblique_fit <- last_fit(
   eval_time = evaluation_time_points, 
 )
 
-collect_metrics(last_oblique_fit) %>% 
+collect_metrics(last_oblique_fit) |> 
   filter(.metric == "brier_survival_integrated")
 #> # A tibble: 1 × 5
 #>   .metric                   .estimator .estimate .eval_time .config        
@@ -441,15 +441,15 @@ The Brier score across the different evaluation time points is also very similar
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-brier_val <- collect_metrics(oblique_res) %>% 
-  filter(.metric == "brier_survival") %>% 
-  filter(mtry == param_best$mtry, min_n == param_best$min_n) %>% 
+brier_val <- collect_metrics(oblique_res) |> 
+  filter(.metric == "brier_survival") |> 
+  filter(mtry == param_best$mtry, min_n == param_best$min_n) |> 
   mutate(Data = "Validation") 
-brier_test <- collect_metrics(last_oblique_fit) %>% 
-  filter(.metric == "brier_survival") %>% 
-  mutate(Data = "Testing") %>% 
+brier_test <- collect_metrics(last_oblique_fit) |> 
+  filter(.metric == "brier_survival") |> 
+  mutate(Data = "Testing") |> 
   rename(mean = .estimate)
-bind_rows(brier_val, brier_test) %>% 
+bind_rows(brier_val, brier_test) |> 
   ggplot(aes(.eval_time, mean, col = Data)) + 
   geom_line() + 
   labs(x = "Evaluation Time", y = "Brier Score")
@@ -467,7 +467,7 @@ To finish, we can extract the fitted workflow to either predict directly on new 
 ```{.r .cell-code}
 complaints_model <- extract_workflow(last_oblique_fit)
 
-complaints_5 <- testing(complaints_split) %>% slice(1:5)
+complaints_5 <- testing(complaints_split) |> slice(1:5)
 predict(complaints_model, new_data = complaints_5, type = "time")
 #> # A tibble: 5 × 1
 #>   .pred_time

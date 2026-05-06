@@ -35,9 +35,9 @@ Let's fit a model to a small, two predictor classification data set. The data ar
 library(AppliedPredictiveModeling)
 
 set.seed(321)
-cls_train <- quadBoundaryFunc(2000) %>% select(A = X1, B = X2, class)
-cls_val   <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
-cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
+cls_train <- quadBoundaryFunc(2000) |> select(A = X1, B = X2, class)
+cls_val   <- quadBoundaryFunc( 500) |> select(A = X1, B = X2, class)
+cls_test  <- quadBoundaryFunc( 500) |> select(A = X1, B = X2, class)
 ```
 :::
 
@@ -62,7 +62,7 @@ Let's use a single hidden layer neural network to predict the outcome. To do thi
 
 ```{.r .cell-code}
 biv_rec <- 
-  recipe(class ~ ., data = cls_train) %>%
+  recipe(class ~ ., data = cls_train) |>
   step_normalize(all_predictors())
 ```
 :::
@@ -75,17 +75,17 @@ We can use the brulee package to fit a model with 10 hidden units and a 10% drop
 
 ```{.r .cell-code}
 nnet_spec <- 
-  mlp(epochs = 1000, hidden_units = 10, penalty = 0.01, learn_rate = 0.1) %>% 
-  set_engine("brulee", validation = 0) %>% 
+  mlp(epochs = 1000, hidden_units = 10, penalty = 0.01, learn_rate = 0.1) |> 
+  set_engine("brulee", validation = 0) |> 
   set_mode("classification")
 
 nnet_wflow <- 
-  biv_rec %>% 
+  biv_rec |> 
   workflow(nnet_spec)
 
 set.seed(987)
 nnet_fit <- fit(nnet_wflow, cls_train)
-nnet_fit %>% extract_fit_engine()
+nnet_fit |> extract_fit_engine()
 #> Multilayer perceptron
 #> 
 #> relu activation,
@@ -109,12 +109,12 @@ In parsnip, the `predict()` function can be used to characterize performance on 
 
 ```{.r .cell-code}
 val_results <- 
-  cls_val %>%
+  cls_val |>
   bind_cols(
     predict(nnet_fit, new_data = cls_val),
     predict(nnet_fit, new_data = cls_val, type = "prob")
   )
-val_results %>% slice(1:5)
+val_results |> slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
 #> 1 0.7632082 -0.04012164 Class2      Class2   0.09109678 9.089032e-01
 #> 2 0.9823745 -0.16911637 Class2      Class2   0.05814141 9.418586e-01
@@ -122,19 +122,19 @@ val_results %>% slice(1:5)
 #> 4 1.2424507  1.10902951 Class2      Class2   0.22103546 7.789645e-01
 #> 5 1.5889815  2.71047720 Class1      Class1   1.00000000 4.196466e-12
 
-val_results %>% roc_auc(truth = class, .pred_Class1)
+val_results |> roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
 #> 1 roc_auc binary         0.956
 
-val_results %>% accuracy(truth = class, .pred_class)
+val_results |> accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
 #> 1 accuracy binary         0.904
 
-val_results %>% conf_mat(truth = class, .pred_class)
+val_results |> conf_mat(truth = class, .pred_class)
 #>           Truth
 #> Prediction Class1 Class2
 #>     Class1    172     18
@@ -156,7 +156,7 @@ x_grid <-
 # Make predictions using the transformed predictors but 
 # attach them to the predictors in the original units: 
 x_grid <- 
-  x_grid %>% 
+  x_grid |> 
   bind_cols(predict(nnet_fit, x_grid, type = "prob"))
 
 ggplot(x_grid, aes(x = A, y = B)) + 

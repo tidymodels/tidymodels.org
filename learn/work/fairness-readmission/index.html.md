@@ -81,7 +81,7 @@ Let's start off our analysis with some explanatory summarization and plotting. F
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission %>%
+readmission |>
   count(readmitted)
 #> # A tibble: 2 × 2
 #>   readmitted     n
@@ -96,7 +96,7 @@ readmission %>%
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission %>%
+readmission |>
   count(race)
 #> # A tibble: 6 × 2
 #>   race                 n
@@ -119,12 +119,12 @@ A vast majority of patients are labeled `"Caucasian"` (74.8%) or `"African Ameri
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission %>%
+readmission |>
   # randomly split into groups
-  mutate(., group = sample(1:10, nrow(.), replace = TRUE)) %>%
-  group_by(race, group) %>%
+  mutate(group = sample(1:10, n(), replace = TRUE)) |>
+  group_by(race, group) |>
   # compute proportion readmitted by race + random `group`ing
-  summarize(prop = mean(readmitted == "Yes"), n = n()) %>%
+  summarize(prop = mean(readmitted == "Yes"), n = n()) |>
   # compute variation in the proportion by race.
   # note that, by default, the output from above is grouped by race only.
   summarize(mean = mean(prop), sd = sd(prop), n = sum(n))
@@ -160,7 +160,7 @@ Recoding that data column:
 
 ```{.r .cell-code}
 readmission_collapsed <-
-  readmission %>%
+  readmission |>
   mutate(
     race = case_when(
       !(race %in% c("Caucasian", "African American")) ~ "Other",
@@ -169,7 +169,7 @@ readmission_collapsed <-
     race = factor(race)
   )
 
-readmission_collapsed %>%
+readmission_collapsed |>
   count(race)
 #> # A tibble: 3 × 2
 #>   race                 n
@@ -185,7 +185,7 @@ Plotting distributions of remaining predictors:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission_collapsed %>%
+readmission_collapsed |>
   ggplot(aes(x = age)) +
   geom_bar() +
   facet_grid(rows = vars(admission_source))
@@ -201,7 +201,7 @@ Most patients in this data are in their 60s and 70s. Emergencies account for mos
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission_collapsed %>%
+readmission_collapsed |>
   ggplot(aes(x = insurer)) +
   geom_bar()
 ```
@@ -220,8 +220,8 @@ The payment method is one way in which societal unfairness may be reflected in t
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-readmission_collapsed %>%
-  pivot_longer(starts_with("n_")) %>%
+readmission_collapsed |>
+  pivot_longer(starts_with("n_")) |>
   ggplot(aes(x = value)) +
   geom_histogram() +
   facet_wrap(vars(name), scales = "free_x")
@@ -293,10 +293,10 @@ We'll first define a basic recipe that first sets a factor level for missing val
 
 ```{.r .cell-code}
 recipe_basic <-
-  recipe(readmitted ~ ., data = readmission) %>%
-  step_unknown(all_nominal_predictors()) %>%
-  step_YeoJohnson(all_numeric_predictors()) %>%
-  step_normalize(all_numeric_predictors()) %>%
+  recipe(readmitted ~ ., data = readmission) |>
+  step_unknown(all_nominal_predictors()) |>
+  step_YeoJohnson(all_numeric_predictors()) |>
+  step_normalize(all_numeric_predictors()) |>
   step_dummy(all_nominal_predictors())
 ```
 :::
@@ -319,12 +319,12 @@ age_bin_to_midpoint <- function(age_bin) {
 }
 
 recipe_age <-
-  recipe(readmitted ~ ., data = readmission) %>%
-  step_mutate(age_num = age_bin_to_midpoint(age)) %>%
-  step_rm(age) %>%
-  step_unknown(all_nominal_predictors()) %>%
-  step_YeoJohnson(all_numeric_predictors()) %>%
-  step_normalize(all_numeric_predictors()) %>%
+  recipe(readmitted ~ ., data = readmission) |>
+  step_mutate(age_num = age_bin_to_midpoint(age)) |>
+  step_rm(age) |>
+  step_unknown(all_nominal_predictors()) |>
+  step_YeoJohnson(all_numeric_predictors()) |>
+  step_normalize(all_numeric_predictors()) |>
   step_dummy(all_nominal_predictors())
 ```
 :::
@@ -460,14 +460,14 @@ Now that we've evaluated a number of models with a variety of metrics, we can ex
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-wflow_set_fit %>%
-  collect_metrics() %>%
+wflow_set_fit |>
+  collect_metrics() |>
   pivot_wider(
     id_cols = c(wflow_id, .config), 
     names_from = .metric, 
     values_from = mean
-  ) %>%
-  select(-c(wflow_id, .config)) %>%
+  ) |>
+  select(-c(wflow_id, .config)) |>
   ggpairs() +
   theme(axis.text.x = element_text(angle = 45, vjust = .8, hjust = .9))
 ```
@@ -484,7 +484,7 @@ More concretely, we can rank the model configurations to examine only the most p
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rank_results(wflow_set_fit, rank_metric = "roc_auc") %>%
+rank_results(wflow_set_fit, rank_metric = "roc_auc") |>
   filter(.metric == "roc_auc")
 #> # A tibble: 42 × 9
 #>    wflow_id .config         .metric  mean std_err     n preprocessor model  rank
@@ -531,15 +531,15 @@ To choose a model that performs well both with respect to a typical performance 
 ```{.r .cell-code}
 best_params <-
   # extract the tuning results for the boosted tree model
-  extract_workflow_set_result(wflow_set_fit, "age_bt") %>%
+  extract_workflow_set_result(wflow_set_fit, "age_bt") |>
   # collect the metrics associated with it
-  collect_metrics() %>%
+  collect_metrics() |>
   # pivot the metrics so that each is in a column
   pivot_wider(
     id_cols = c(mtry, learn_rate), 
     names_from = .metric, 
     values_from = mean
-  ) %>%
+  ) |>
   mutate(
     # higher roc values are better; detect max and min from the data
     d_roc     = d_max(roc_auc, use_data = TRUE),
@@ -547,7 +547,7 @@ best_params <-
     d_e_odds  = d_min(equalized_odds, use_data = TRUE),
     # compute overall desirability based on d_roc and d_e_odds
     d_overall = d_overall(across(starts_with("d_")))
-  ) %>%
+  ) |>
   # pick the model with the highest desirability value
   slice_max(d_overall)
 ```
@@ -574,7 +574,7 @@ We can use that tibble to finalize a workflow that we'll use to generate our fin
 
 ```{.r .cell-code}
 final_model_config <-
-  extract_workflow(wflow_set_fit, "age_bt") %>%
+  extract_workflow(wflow_set_fit, "age_bt") |>
   finalize_workflow(best_params)
 ```
 :::

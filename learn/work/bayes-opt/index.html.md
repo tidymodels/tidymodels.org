@@ -49,7 +49,7 @@ library(modeldata)
 data(cells)
 
 set.seed(2369)
-tr_te_split <- initial_split(cells %>% select(-case), prop = 3/4)
+tr_te_split <- initial_split(cells |> select(-case), prop = 3/4)
 cell_train <- training(tr_te_split)
 cell_test  <- testing(tr_te_split)
 
@@ -68,10 +68,10 @@ Since the predictors are highly correlated, we can used a recipe to convert the 
 library(themis)
 
 cell_pre_proc <-
-  recipe(class ~ ., data = cell_train) %>%
-  step_YeoJohnson(all_predictors()) %>%
-  step_normalize(all_predictors()) %>%
-  step_pca(all_predictors(), num_comp = tune()) %>%
+  recipe(class ~ ., data = cell_train) |>
+  step_YeoJohnson(all_predictors()) |>
+  step_normalize(all_predictors()) |>
+  step_pca(all_predictors(), num_comp = tune()) |>
   step_downsample(class)
 ```
 :::
@@ -82,7 +82,7 @@ In this analysis, we will use a support vector machine to model the data. Let's 
 
 ```{.r .cell-code}
 svm_mod <-
-  svm_rbf(mode = "classification", cost = tune(), rbf_sigma = tune()) %>%
+  svm_rbf(mode = "classification", cost = tune(), rbf_sigma = tune()) |>
   set_engine("kernlab")
 ```
 :::
@@ -93,8 +93,8 @@ These two objects (the recipe and model) will be combined into a single object v
 
 ```{.r .cell-code}
 svm_wflow <-
-  workflow() %>%
-  add_model(svm_mod) %>%
+  workflow() |>
+  add_model(svm_mod) |>
   add_recipe(cell_pre_proc)
 ```
 :::
@@ -122,7 +122,7 @@ The default range for the number of PCA components is rather small for this data
 
 ```{.r .cell-code}
 svm_set <- 
-  svm_set %>% 
+  svm_set |> 
   update(num_comp = num_comp(c(0L, 20L)))
 ```
 :::
@@ -146,7 +146,7 @@ We'll use another acquisition function, _expected improvement_, that determines 
 ```{.r .cell-code}
 set.seed(12)
 search_res <-
-  svm_wflow %>% 
+  svm_wflow |> 
   tune_bayes(
     resamples = folds,
     # To use non-default parameter ranges
@@ -2299,7 +2299,7 @@ As with grid search, we can summarize the results over resamples:
 
 ```{.r .cell-code}
 estimates <- 
-  collect_metrics(search_res) %>% 
+  collect_metrics(search_res) |> 
   arrange(.iter)
 
 estimates

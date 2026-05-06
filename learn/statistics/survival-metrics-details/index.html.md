@@ -47,8 +47,8 @@ library(censored)
 library(prodlim)
 
 set.seed(5882)
-sim_dat <- SimSurv(2000) %>%
-  mutate(event_time = Surv(time, event)) %>%
+sim_dat <- SimSurv(2000) |>
+  mutate(event_time = Surv(time, event)) |>
   select(event_time, X1, X2)
 
 set.seed(2)
@@ -65,9 +65,9 @@ We'll need a model to illustrate the code and concepts. Let's fit a bagged survi
 ```{.r .cell-code}
 set.seed(17)
 bag_tree_fit <- 
-  bag_tree() %>% 
-  set_mode("censored regression") %>% 
-  set_engine("rpart") %>% 
+  bag_tree() |> 
+  set_mode("censored regression") |> 
+  set_engine("rpart") |> 
   fit(event_time ~ ., data = sim_tr)
 bag_tree_fit
 #> parsnip model object
@@ -180,13 +180,13 @@ We call this time at which to predict the probability of censoring the _weight t
 
 ```{.r .cell-code}
 dyn_val_pred <- 
-  val_pred %>% 
-  select(.pred, event_time) %>% 
-  add_rowindex() %>% 
+  val_pred |> 
+  select(.pred, event_time) |> 
+  add_rowindex() |> 
   unnest(.pred) 
 
-dyn_val_pred %>% 
-  filter(.row == 1 & .eval_time %in% c(1, 2, 4, 5, 10)) %>% 
+dyn_val_pred |> 
+  filter(.row == 1 & .eval_time %in% c(1, 2, 4, 5, 10)) |> 
   select(event_time, .eval_time, .weight_time, .pred_censored, .weight_censored)
 #> # A tibble: 5 × 5
 #>   event_time .eval_time .weight_time .pred_censored .weight_censored
@@ -232,7 +232,7 @@ time_as_binary_event <- function(surv, eval_time) {
 }
 
 binary_encoding <- 
-  dyn_val_pred %>% 
+  dyn_val_pred |> 
   mutate(
     obs_class = time_as_binary_event(event_time, .eval_time),
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
@@ -246,8 +246,8 @@ Remember how observations falling into category 3 are removed from the analysis?
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-dyn_val_pred %>% 
-  summarize(num_usable = sum(!is.na(.weight_censored)), .by = c(.eval_time)) %>% 
+dyn_val_pred |> 
+  summarize(num_usable = sum(!is.na(.weight_censored)), .by = c(.eval_time)) |> 
   ggplot() + 
   geom_step(aes(.eval_time, num_usable)) +
   labs(x = "time", y = "number of usable observations") +
@@ -263,8 +263,8 @@ dyn_val_pred %>%
 Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:
 
 ```r
-binary_encoding %>% 
-  filter(.eval_time == 1.00) %>% 
+binary_encoding |> 
+  filter(.eval_time == 1.00) |> 
   conf_mat(truth = obs_class, estimate = pred_class)
 ```
 
@@ -273,8 +273,8 @@ For censored regression problems, we need to additionally use the censoring weig
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-binary_encoding %>%
-  filter(.eval_time == 1.00) %>%
+binary_encoding |>
+  filter(.eval_time == 1.00) |>
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -294,8 +294,8 @@ Let's shift to an evaluation time of 5.0.
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-binary_encoding %>%
-  filter(.eval_time == 5.00) %>%
+binary_encoding |>
+  filter(.eval_time == 5.00) |>
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
@@ -313,8 +313,8 @@ What happends when the evaluation time is 17?
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-binary_encoding %>%
-  filter(.eval_time == 17.00) %>%
+binary_encoding |>
+  filter(.eval_time == 17.00) |>
   conf_mat(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)

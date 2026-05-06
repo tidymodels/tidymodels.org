@@ -103,7 +103,7 @@ To demonstrate, we'll use a multivariate adaptive regression spline ([MARS](http
 
 ```{.r .cell-code}
 mars_spec <- 
-  mars(num_terms = tune(), prod_degree = 2, prune_method = "none") %>% 
+  mars(num_terms = tune(), prod_degree = 2, prune_method = "none") |> 
   set_mode("regression")
 ```
 :::
@@ -117,7 +117,7 @@ grid <- tibble(num_terms = 2:50)
 ctrl <- control_grid(save_pred = TRUE)
 
 mars_res <- 
-  mars_spec %>% 
+  mars_spec |> 
   tune_grid(
     time_to_delivery ~ .,
     resamples = delivery_rs,
@@ -189,7 +189,7 @@ The results have columns for the mean of the sampling distribution (`.estimate`)
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-mars_boot %>% 
+mars_boot |> 
   ggplot(aes(num_terms)) + 
     geom_line(aes(y = .estimate)) + 
     geom_point(aes(y = .estimate), cex = 1 / 2) + 
@@ -213,11 +213,11 @@ Suppose the MARS model was the best we could do for these data. We would then fi
 
 ```{.r .cell-code}
 mars_final_spec <- 
-  mars(num_terms = 40, prod_degree = 2, prune_method = "none") %>% 
+  mars(num_terms = 40, prod_degree = 2, prune_method = "none") |> 
   set_mode("regression")
 
 mars_test_res <- 
-  mars_final_spec %>% 
+  mars_final_spec |> 
   last_fit(time_to_delivery ~ ., split = delivery_split)
 
 collect_metrics(mars_test_res)
@@ -234,7 +234,7 @@ These values are pretty consistent with what the validation set (and its confide
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-mars_boot %>% filter(num_terms == 40)
+mars_boot |> filter(num_terms == 40)
 #> # A tibble: 2 × 7
 #>   num_terms .metric .estimator .lower .estimate .upper .config         
 #>       <int> <chr>   <chr>       <dbl>     <dbl>  <dbl> <chr>           

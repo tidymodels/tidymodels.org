@@ -35,7 +35,7 @@ tidymodels_prefer()
 set.seed(1)
 reference_data <- tibble(data = rnorm(1000))
 
-reference_data %>% 
+reference_data |> 
   ggplot(aes(x = data)) +
   geom_line(stat = "density")
 ```
@@ -54,7 +54,7 @@ If we thought that 1,000 were a sufficient sample size, we might compute some qu
 ```{.r .cell-code}
 quants <- quantile(reference_data$data, probs = c(0.05, 0.95))
 
-reference_data %>% 
+reference_data |> 
   ggplot(aes(x = data)) +
   geom_line(stat = "density") + 
   geom_vline(xintercept = quants, col = "red", lty = 2)
@@ -77,7 +77,7 @@ Let's make a simple example to illustrate the results. We'll simulate a data set
 
 ```{.r .cell-code}
 make_data <- function(n, std_dev = 1 / 5) {
-  tibble(x = runif(n, min = -1)) %>%
+  tibble(x = runif(n, min = -1)) |>
     mutate(
       y = (x^3) + 2 * exp(-6 * (x - 0.3)^2),
       y = y + rnorm(n, sd = std_dev)
@@ -88,7 +88,7 @@ n <- 1000
 set.seed(8383)
 train_data <- make_data(n)
 
-train_data %>% 
+train_data |> 
   ggplot(aes(x, y)) + 
   geom_point(alpha = 1 / 10)
 ```
@@ -105,12 +105,12 @@ We'll use these data as a training set and fit a model:
 ```{.r .cell-code}
 set.seed(484)
 nnet_wflow <- 
-  workflow(y ~ x, mlp(hidden_units = 4) %>% set_mode("regression"))
+  workflow(y ~ x, mlp(hidden_units = 4) |> set_mode("regression"))
 
-nnet_fit <- nnet_wflow %>% fit(train_data)
+nnet_fit <- nnet_wflow |> fit(train_data)
 nnet_pred <- augment(nnet_fit, train_data)
 
-train_data %>% 
+train_data |> 
   ggplot(aes(x)) + 
   geom_point(aes(y = y), alpha = 1 / 10) +
   geom_line(data = nnet_pred, aes(y = .pred),
@@ -162,10 +162,10 @@ To get predictions on new data, we use the standard `predict()` method on this o
 ```{.r .cell-code}
 # Produce 90% prediction intervals
 test_split_res <- 
-  predict(split_int, test_data, level = 0.90) %>% 
+  predict(split_int, test_data, level = 0.90) |> 
   bind_cols(test_data)
 
-test_split_res %>% slice(1:5)
+test_split_res |> slice(1:5)
 #> # A tibble: 5 × 5
 #>    .pred .pred_lower .pred_upper       x       y
 #>    <dbl>       <dbl>       <dbl>   <dbl>   <dbl>
@@ -191,8 +191,8 @@ Since we know the outcome values, we can compute the coverage for this particula
 
 ```{.r .cell-code}
 coverage <- function(x) {
-  x %>% 
-    mutate(in_bound = .pred_lower <= y & .pred_upper >= y) %>% 
+  x |> 
+    mutate(in_bound = .pred_lower <= y & .pred_upper >= y) |> 
     summarise(coverage = mean(in_bound) * 100)
 }
 coverage(test_split_res)
@@ -229,7 +229,7 @@ set.seed(493)
 folds <- vfold_cv(train_data)
 
 nnet_rs <- 
-  nnet_wflow %>% 
+  nnet_wflow |> 
   fit_resamples(folds, control = ctrl)
 
 collect_metrics(nnet_rs)
@@ -260,10 +260,10 @@ cv_int
 
 # Produce 90% prediction intervals
 test_cv_res <- 
-  predict(cv_int, test_data, level = 0.90) %>% 
+  predict(cv_int, test_data, level = 0.90) |> 
   bind_cols(test_data)
 
-test_cv_res %>% slice(1:5)
+test_cv_res |> slice(1:5)
 #> # A tibble: 5 × 5
 #>   .pred_lower  .pred .pred_upper       x       y
 #>         <dbl>  <dbl>       <dbl>   <dbl>   <dbl>
@@ -308,14 +308,14 @@ To demonstrate, we can take the previous simulation system and induce a variance
 
 ```{.r .cell-code}
 make_variable_data <- function(n, std_dev = 1 / 5) {
-  tibble(x = runif(n, min = -1)) %>%
+  tibble(x = runif(n, min = -1)) |>
     mutate(
       y = (x^3) + 2 * exp(-6 * (x - 0.3)^2),
       y = y + rnorm(n, sd = std_dev * abs(x))
     )
 }
 
-make_variable_data(1000) %>% 
+make_variable_data(1000) |> 
   ggplot(aes(x, y)) + 
   geom_point(alpha = 1 / 5)
 ```
@@ -335,7 +335,7 @@ train_variable_data <- make_variable_data(n)
 cal_variable_data <- make_variable_data(250)
 test_variable_data <- make_variable_data(10000)
 
-nnet_variable_fit <- nnet_wflow %>% fit(train_variable_data)
+nnet_variable_fit <- nnet_wflow |> fit(train_variable_data)
 nnet_variable_pred <- augment(nnet_variable_fit, train_variable_data)
 ```
 :::
@@ -394,10 +394,10 @@ quant_int
 #> Use `predict(object, new_data)` to compute prediction intervals
 
 test_quant_res <- 
-  predict(quant_int, test_variable_data) %>% 
+  predict(quant_int, test_variable_data) |> 
   bind_cols(test_variable_data)
 
-test_quant_res %>% slice(1:5)
+test_quant_res |> slice(1:5)
 #> # A tibble: 5 × 5
 #>    .pred .pred_lower .pred_upper      x      y
 #>    <dbl>       <dbl>       <dbl>  <dbl>  <dbl>

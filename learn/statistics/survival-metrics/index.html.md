@@ -54,7 +54,7 @@ library(censored)
 
 building_complaints <- modeldatatoo::data_building_complaints()
 
-building_complaints <- building_complaints %>% 
+building_complaints <- building_complaints |> 
   mutate(
     disposition_surv = Surv(days_to_disposition, status == "CLOSED"), 
     .keep = "unused"
@@ -72,18 +72,18 @@ We'll need a model to illustrate the code and concepts. Let's fit a basic Weibul
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-survreg_spec <- survival_reg() %>% 
-  set_engine("survival") %>% 
+survreg_spec <- survival_reg() |> 
+  set_engine("survival") |> 
   set_mode("censored regression")
 
-other_rec <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
-  step_unknown(complaint_priority) %>% 
-  step_rm(complaint_category) %>% 
-  step_novel(community_board, unit) %>%
+other_rec <- recipe(disposition_surv ~ ., data = complaints_train) |> 
+  step_unknown(complaint_priority) |> 
+  step_rm(complaint_category) |> 
+  step_novel(community_board, unit) |>
   step_other(community_board, unit, threshold = 0.02)
 
-survreg_wflow <- workflow() %>% 
-  add_recipe(other_rec) %>% 
+survreg_wflow <- workflow() |> 
+  add_recipe(other_rec) |> 
   add_model(survreg_spec)
 
 complaints_fit <- fit(survreg_wflow, data = complaints_train)
@@ -187,7 +187,7 @@ Since the evaluation times and the case weights are within the `.pred` column, t
 
 ```{.r .cell-code}
 brier_scores <-
-  val_pred %>% 
+  val_pred |> 
   brier_survival(truth = disposition_surv, .pred)
 brier_scores
 #> # A tibble: 21 × 4
@@ -212,7 +212,7 @@ Over time:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-brier_scores %>% 
+brier_scores |> 
   ggplot(aes(.eval_time, .estimate)) + 
   geom_hline(yintercept = 1 / 4, col = "red", lty = 3) +
   geom_line() +
@@ -232,7 +232,7 @@ Instead of thinking in 21 dimensions, there is also an _integrated_ Brier score.
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-val_pred %>% brier_survival_integrated(truth = disposition_surv, .pred)
+val_pred |> brier_survival_integrated(truth = disposition_surv, .pred)
 #> # A tibble: 1 × 3
 #>   .metric                   .estimator .estimate
 #>   <chr>                     <chr>          <dbl>
@@ -281,7 +281,7 @@ Since this is a dynamic metric, we compute the AUC for each evaluation time. The
 
 ```{.r .cell-code}
 roc_scores <-
-  val_pred %>% 
+  val_pred |> 
   roc_auc_survival(truth = disposition_surv, .pred)
 roc_scores
 #> # A tibble: 21 × 4
@@ -306,7 +306,7 @@ Over time:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-roc_scores %>% 
+roc_scores |> 
   ggplot(aes(.eval_time, .estimate)) + 
   geom_hline(yintercept = 1 / 2, col = "red", lty = 3) +
   geom_line() +

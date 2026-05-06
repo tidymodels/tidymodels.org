@@ -61,7 +61,7 @@ cells$case <- NULL
 
 dim(cells)
 #> [1] 2019   57
-cells %>% count(class)
+cells |> count(class)
 #> # A tibble: 2 × 2
 #>   class     n
 #>   <fct> <int>
@@ -98,8 +98,8 @@ To demonstrate, let's set up the model:
 
 ```{.r .cell-code}
 bayes_wflow <-
-  workflow() %>%
-  add_formula(class ~ .) %>%
+  workflow() |>
+  add_formula(class ~ .) |>
   add_model(naive_Bayes())
 ```
 :::
@@ -114,7 +114,7 @@ cls_met <- metric_set(roc_auc, brier_class)
 ctrl <- control_resamples(save_pred = TRUE)
 
 bayes_res <-
-  bayes_wflow %>%
+  bayes_wflow |>
   fit_resamples(cells_rs, metrics = cls_met, control = ctrl)
 
 collect_metrics(bayes_res)
@@ -137,7 +137,7 @@ The first clue is the extremely U-shaped distribution of the probability scores 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-collect_predictions(bayes_res) %>%
+collect_predictions(bayes_res) |>
   ggplot(aes(.pred_PS)) +
   geom_histogram(col = "white", bins = 40) +
   facet_wrap(~ class, ncol = 1) +
@@ -227,8 +227,8 @@ collect_metrics(logit_val)
 #> 3 brier_class calibrated   binary     0.155    10 0.00603 config 
 #> 4 roc_auc     calibrated   binary     0.852    10 0.00947 config
 
-collect_predictions(logit_val) %>%
-  filter(.type == "calibrated") %>%
+collect_predictions(logit_val) |>
+  filter(.type == "calibrated") |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
   ggtitle("Logistic calibration via GAM")
 ```
@@ -257,8 +257,8 @@ collect_metrics(iso_val)
 #> 3 brier_class calibrated   binary     0.151    10 0.00511 config 
 #> 4 roc_auc     calibrated   binary     0.853    10 0.00922 config
 
-collect_predictions(iso_val) %>%
-  filter(.type == "calibrated") %>%
+collect_predictions(iso_val) |>
+  filter(.type == "calibrated") |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
   ggtitle("Isotonic regression calibration")
 ```
@@ -285,8 +285,8 @@ collect_metrics(beta_val)
 #> 3 brier_class calibrated   binary     0.146    10 0.00438 config 
 #> 4 roc_auc     calibrated   binary     0.853    10 0.00931 config
 
-collect_predictions(beta_val) %>%
-  filter(.type == "calibrated") %>%
+collect_predictions(beta_val) |>
+  filter(.type == "calibrated") |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
   ggtitle("Beta calibration")
 ```
@@ -306,7 +306,7 @@ We can also fit the final naive Bayes model to predict the test set:
 
 ```{.r .cell-code}
 cell_cal <- cal_estimate_beta(bayes_res)
-bayes_fit <- bayes_wflow %>% fit(data = cells_tr)
+bayes_fit <- bayes_wflow |> fit(data = cells_tr)
 ```
 :::
 
@@ -320,7 +320,7 @@ First, we make our ordinary predictions:
 
 ```{.r .cell-code}
 cell_test_pred <- augment(bayes_fit, new_data = cells_te)
-cell_test_pred %>% cls_met(class, .pred_PS)
+cell_test_pred |> cls_met(class, .pred_PS)
 #> # A tibble: 2 × 3
 #>   .metric     .estimator .estimate
 #>   <chr>       <chr>          <dbl>
@@ -337,9 +337,9 @@ We can then use our `cell_cal` object with the `cal_apply()` function:
 
 ```{.r .cell-code}
 cell_test_cal_pred <-
-  cell_test_pred %>%
+  cell_test_pred |>
   cal_apply(cell_cal)
-cell_test_cal_pred %>% dplyr::select(class, starts_with(".pred_"))
+cell_test_cal_pred |> dplyr::select(class, starts_with(".pred_"))
 #> # A tibble: 505 × 4
 #>    class .pred_class .pred_PS .pred_WS
 #>    <fct> <fct>          <dbl>    <dbl>
@@ -364,13 +364,13 @@ What do the calibrated test set results show?
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-cell_test_cal_pred %>% cls_met(class, .pred_PS)
+cell_test_cal_pred |> cls_met(class, .pred_PS)
 #> # A tibble: 2 × 3
 #>   .metric     .estimator .estimate
 #>   <chr>       <chr>          <dbl>
 #> 1 roc_auc     binary         0.839
 #> 2 brier_class binary         0.154
-cell_test_cal_pred %>%
+cell_test_cal_pred |>
   cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025)
 ```
 

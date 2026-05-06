@@ -160,13 +160,13 @@ svm_rmse <- function(object, cost = 1) {
   set.seed(1234)
   y_col <- ncol(object$data)
   mod <- 
-    svm_rbf(mode = "regression", cost = cost) %>% 
-    set_engine("kernlab") %>% 
+    svm_rbf(mode = "regression", cost = cost) |> 
+    set_engine("kernlab") |> 
     fit(y ~ ., data = analysis(object))
   
   holdout_pred <- 
-    predict(mod, assessment(object) %>% dplyr::select(-y)) %>% 
-    bind_cols(assessment(object) %>% dplyr::select(y))
+    predict(mod, assessment(object) |> dplyr::select(-y)) |> 
+    bind_cols(assessment(object) |> dplyr::select(y))
   rmse(holdout_pred, truth = y, estimate = .pred)$.estimate
 }
 
@@ -182,7 +182,7 @@ For the nested resampling, a model needs to be fit for each tuning parameter and
 ```{.r .cell-code}
 # `object` will be an `rsplit` object for the bootstrap samples
 tune_over_cost <- function(object) {
-  tibble(cost = 2 ^ seq(-2, 8, by = 1)) %>% 
+  tibble(cost = 2 ^ seq(-2, 8, by = 1)) |> 
     mutate(RMSE = map_dbl(cost, rmse_wrapper, object = object))
 }
 ```
@@ -196,10 +196,10 @@ Since this will be called across the set of outer cross-validation splits, anoth
 # `object` is an `rsplit` object in `results$inner_resamples` 
 summarize_tune_results <- function(object) {
   # Return row-bound tibble that has the 25 bootstrap results
-  map_df(object$splits, tune_over_cost) %>%
+  map_df(object$splits, tune_over_cost) |>
     # For each value of the tuning parameter, compute the 
     # average RMSE which is the inner bootstrap estimate. 
-    group_by(cost) %>%
+    group_by(cost) |>
     summarize(mean_RMSE = mean(RMSE, na.rm = TRUE),
               n = length(RMSE),
               .groups = "drop")
@@ -237,7 +237,7 @@ Let's make a plot of the averaged results to see what the relationship is betwee
 ```{.r .cell-code}
 library(scales)
 
-pooled_inner <- tuning_results %>% bind_rows
+pooled_inner <- tuning_results |> bind_rows()
 
 best_cost <- function(dat) dat[which.min(dat$mean_RMSE),]
 
@@ -268,12 +268,12 @@ To determine the best parameter estimate for each of the outer resampling iterat
 
 ```{.r .cell-code}
 cost_vals <- 
-  tuning_results %>% 
-  map_df(best_cost) %>% 
+  tuning_results |> 
+  map_df(best_cost) |> 
   select(cost)
 
 results <- 
-  bind_cols(results, cost_vals) %>% 
+  bind_cols(results, cost_vals) |> 
   mutate(cost = factor(cost, levels = paste(2 ^ seq(-2, 8, by = 1))))
 
 ggplot(results, aes(x = cost)) + 
@@ -295,7 +295,7 @@ Now that we have these estimates, we can compute the outer resampling results fo
 
 ```{.r .cell-code}
 results <- 
-  results %>% 
+  results |> 
   mutate(RMSE = map2_dbl(splits, cost, svm_rmse))
 
 summary(results$RMSE)
@@ -311,12 +311,12 @@ What is the RMSE estimate for the non-nested procedure when only the outer resam
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-not_nested <- 
-  map(results$splits, tune_over_cost) %>%
-  bind_rows
+not_nested <-
+  map(results$splits, tune_over_cost) |>
+  bind_rows()
 
-outer_summary <- not_nested %>% 
-  group_by(cost) %>% 
+outer_summary <- not_nested |> 
+  group_by(cost) |> 
   summarize(outer_RMSE = mean(RMSE), n = length(RMSE))
 
 outer_summary

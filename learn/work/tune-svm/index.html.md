@@ -79,7 +79,7 @@ Let's remove these two problematic variables:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-Ionosphere <- Ionosphere %>% select(-V1, -V2)
+Ionosphere <- Ionosphere |> select(-V1, -V2)
 ```
 :::
 
@@ -91,8 +91,8 @@ To demonstrate, we'll fit a radial basis function support vector machine to thes
 
 ```{.r .cell-code}
 svm_mod <-
-  svm_rbf(cost = tune(), rbf_sigma = tune()) %>%
-  set_mode("classification") %>%
+  svm_rbf(cost = tune(), rbf_sigma = tune()) |>
+  set_mode("classification") |>
   set_engine("kernlab")
 ```
 :::
@@ -108,9 +108,9 @@ Let's create a simple recipe here:
 
 ```{.r .cell-code}
 iono_rec <-
-  recipe(Class ~ ., data = Ionosphere)  %>%
+  recipe(Class ~ ., data = Ionosphere)  |>
   # remove any zero variance predictors
-  step_zv(all_predictors()) %>% 
+  step_zv(all_predictors()) |> 
   # remove any linear combinations
   step_lincomb(all_numeric())
 ```
@@ -157,7 +157,7 @@ First, we can use the formula interface:
 ```{.r .cell-code}
 set.seed(35)
 formula_res <-
-  svm_mod %>% 
+  svm_mod |> 
   tune_grid(
     Class ~ .,
     resamples = iono_rs,
@@ -190,9 +190,9 @@ The `.metrics` column contains tibbles of the performance metrics for each tunin
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-formula_res %>% 
-  select(.metrics) %>% 
-  slice(1) %>% 
+formula_res |> 
+  select(.metrics) |> 
+  slice(1) |> 
   pull(1)
 #> [[1]]
 #> # A tibble: 10 × 6
@@ -260,7 +260,7 @@ Next, we can use the same syntax but pass a *recipe* in as the pre-processor arg
 ```{.r .cell-code}
 set.seed(325)
 recipe_res <-
-  svm_mod %>% 
+  svm_mod |> 
   tune_grid(
     iono_rec,
     resamples = iono_rs,
@@ -335,7 +335,7 @@ We can obtain the hold-out sets for all the resamples augmented with the predict
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-augment(recipe_res) %>%
+augment(recipe_res) |>
   ggplot(aes(V3, .pred_good, color = Class)) +
   geom_point(show.legend = FALSE) +
   facet_wrap(~Class)

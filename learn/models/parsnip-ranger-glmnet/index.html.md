@@ -77,8 +77,8 @@ Let's start with the non-formula interface:
 preds <- c("Longitude", "Latitude", "Lot_Area", "Neighborhood", "Year_Sold")
 
 rf_xy_fit <- 
-  rf_defaults %>%
-  set_engine("ranger") %>%
+  rf_defaults |>
+  set_engine("ranger") |>
   fit_xy(
     x = ames_train[, preds],
     y = log10(ames_train$Sale_Price)
@@ -113,13 +113,13 @@ For regression models, we can use the basic `predict()` method, which returns a 
 
 ```{.r .cell-code}
 test_results <- 
-  ames_test %>%
-  select(Sale_Price) %>%
-  mutate(Sale_Price = log10(Sale_Price)) %>%
+  ames_test |>
+  select(Sale_Price) |>
+  mutate(Sale_Price = log10(Sale_Price)) |>
   bind_cols(
     predict(rf_xy_fit, new_data = ames_test[, preds])
   )
-test_results %>% slice(1:5)
+test_results |> slice(1:5)
 #> # A tibble: 5 × 2
 #>   Sale_Price .pred
 #>        <dbl> <dbl>
@@ -130,7 +130,7 @@ test_results %>% slice(1:5)
 #> 5       5.60  5.51
 
 # summarize performance
-test_results %>% metrics(truth = Sale_Price, estimate = .pred) 
+test_results |> metrics(truth = Sale_Price, estimate = .pred) 
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
@@ -150,8 +150,8 @@ Now, for illustration, let's use the formula method using some new parameter val
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
-  set_engine("ranger") %>%
+rand_forest(mode = "regression", mtry = 3, trees = 1000) |>
+  set_engine("ranger") |>
   fit(
     log10(Sale_Price) ~ Longitude + Latitude + Lot_Area + Neighborhood + Year_Sold,
     data = ames_train
@@ -182,8 +182,8 @@ Suppose that we would like to use the randomForest package instead of ranger. To
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rand_forest(mode = "regression", mtry = 3, trees = 1000) %>%
-  set_engine("randomForest") %>%
+rand_forest(mode = "regression", mtry = 3, trees = 1000) |>
+  set_engine("randomForest") |>
   fit(
     log10(Sale_Price) ~ Longitude + Latitude + Lot_Area + Neighborhood + Year_Sold,
     data = ames_train
@@ -220,8 +220,8 @@ For example, let's use an expression with the `.preds()` descriptor to fit a bag
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rand_forest(mode = "regression", mtry = .preds(), trees = 1000) %>%
-  set_engine("ranger") %>%
+rand_forest(mode = "regression", mtry = .preds(), trees = 1000) |>
+  set_engine("ranger") |>
   fit(
     log10(Sale_Price) ~ Longitude + Latitude + Lot_Area + Neighborhood + Year_Sold,
     data = ames_train
@@ -259,20 +259,20 @@ norm_recipe <-
   recipe(
     Sale_Price ~ Longitude + Latitude + Lot_Area + Neighborhood + Year_Sold, 
     data = ames_train
-  ) %>%
-  step_other(Neighborhood) %>% 
-  step_dummy(all_nominal()) %>%
-  step_center(all_predictors()) %>%
-  step_scale(all_predictors()) %>%
-  step_log(Sale_Price, base = 10) %>% 
+  ) |>
+  step_other(Neighborhood) |> 
+  step_dummy(all_nominal()) |>
+  step_center(all_predictors()) |>
+  step_scale(all_predictors()) |>
+  step_log(Sale_Price, base = 10) |> 
   # estimate the means and standard deviations
   prep(training = ames_train, retain = TRUE)
 
 # Now let's fit the model using the processed version of the data
 
 glmn_fit <- 
-  linear_reg(penalty = 0.001, mixture = 0.5) %>% 
-  set_engine("glmnet") %>%
+  linear_reg(penalty = 0.001, mixture = 0.5) |> 
+  set_engine("glmnet") |>
   fit(Sale_Price ~ ., data = bake(norm_recipe, new_data = NULL))
 glmn_fit
 #> parsnip model object
@@ -360,10 +360,10 @@ To get the predictions for this specific value of `lambda` (aka `penalty`):
 test_normalized <- bake(norm_recipe, new_data = ames_test, all_predictors())
 
 test_results <- 
-  test_results %>%
-  rename(`random forest` = .pred) %>%
+  test_results |>
+  rename(`random forest` = .pred) |>
   bind_cols(
-    predict(glmn_fit, new_data = test_normalized) %>%
+    predict(glmn_fit, new_data = test_normalized) |>
       rename(glmnet = .pred)
   )
 test_results
@@ -382,7 +382,7 @@ test_results
 #> 10       5.11            5.13   5.19
 #> # ℹ 723 more rows
 
-test_results %>% metrics(truth = Sale_Price, estimate = glmnet) 
+test_results |> metrics(truth = Sale_Price, estimate = glmnet) 
 #> # A tibble: 3 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
@@ -390,8 +390,8 @@ test_results %>% metrics(truth = Sale_Price, estimate = glmnet)
 #> 2 rsq     standard      0.391 
 #> 3 mae     standard      0.0979
 
-test_results %>% 
-  gather(model, prediction, -Sale_Price) %>% 
+test_results |> 
+  gather(model, prediction, -Sale_Price) |> 
   ggplot(aes(x = prediction, y = Sale_Price)) + 
   geom_abline(col = "green", lty = 2) + 
   geom_point(alpha = .4) + 

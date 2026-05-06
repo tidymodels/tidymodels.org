@@ -93,7 +93,7 @@ Before we start the tuning process, we split our data into training and testing 
 
 ```{.r .cell-code}
 set.seed(123)
-cell_split <- initial_split(cells %>% select(-case), 
+cell_split <- initial_split(cells |> select(-case), 
                             strata = class)
 cell_train <- training(cell_split)
 cell_test  <- testing(cell_split)
@@ -113,8 +113,8 @@ tune_spec <-
   decision_tree(
     cost_complexity = tune(),
     tree_depth = tune()
-  ) %>% 
-  set_engine("rpart") %>% 
+  ) |> 
+  set_engine("rpart") |> 
   set_mode("classification")
 
 tune_spec
@@ -169,7 +169,7 @@ Here, you can see all 5 values of `cost_complexity` ranging up to 0.1. These val
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tree_grid %>% 
+tree_grid |> 
   count(tree_depth)
 #> # A tibble: 5 × 2
 #>   tree_depth     n
@@ -209,12 +209,12 @@ Here we use a `workflow()` with a straightforward formula; if this model require
 ```{.r .cell-code}
 set.seed(345)
 
-tree_wf <- workflow() %>%
-  add_model(tune_spec) %>%
+tree_wf <- workflow() |>
+  add_model(tune_spec) |>
   add_formula(class ~ .)
 
 tree_res <- 
-  tree_wf %>% 
+  tree_wf |> 
   tune_grid(
     resamples = cell_folds,
     grid = tree_grid
@@ -244,7 +244,7 @@ Once we have our tuning results, we can both explore them through visualization 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tree_res %>% 
+tree_res |> 
   collect_metrics()
 #> # A tibble: 75 × 8
 #>    cost_complexity tree_depth .metric     .estimator  mean     n std_err .config
@@ -268,9 +268,9 @@ We might get more out of plotting these results:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tree_res %>%
-  collect_metrics() %>%
-  mutate(tree_depth = factor(tree_depth)) %>%
+tree_res |>
+  collect_metrics() |>
+  mutate(tree_depth = factor(tree_depth)) |>
   ggplot(aes(cost_complexity, mean, color = tree_depth)) +
   geom_line(size = 1.5, alpha = 0.6) +
   geom_point(size = 2) +
@@ -291,7 +291,7 @@ We can see that our "stubbiest" tree, with a depth of 1, is the worst model acco
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tree_res %>%
+tree_res |>
   show_best(metric = "accuracy")
 #> # A tibble: 5 × 8
 #>   cost_complexity tree_depth .metric  .estimator  mean     n std_err .config    
@@ -309,7 +309,7 @@ We can also use the [`select_best()`](https://tune.tidymodels.org/reference/show
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-best_tree <- tree_res %>%
+best_tree <- tree_res |>
   select_best(metric = "accuracy")
 
 best_tree
@@ -330,7 +330,7 @@ We can update (or "finalize") our workflow object `tree_wf` with the values from
 
 ```{.r .cell-code}
 final_wf <- 
-  tree_wf %>% 
+  tree_wf |> 
   finalize_workflow(best_tree)
 
 final_wf
@@ -362,10 +362,10 @@ Finally, let's fit this final model to the training data and use our test data t
 
 ```{.r .cell-code}
 final_fit <- 
-  final_wf %>%
+  final_wf |>
   last_fit(cell_split) 
 
-final_fit %>%
+final_fit |>
   collect_metrics()
 #> # A tibble: 3 × 4
 #>   .metric     .estimator .estimate .config        
@@ -374,9 +374,9 @@ final_fit %>%
 #> 2 roc_auc     binary         0.840 pre0_mod0_post0
 #> 3 brier_class binary         0.148 pre0_mod0_post0
 
-final_fit %>%
-  collect_predictions() %>% 
-  roc_curve(class, .pred_PS) %>% 
+final_fit |>
+  collect_predictions() |> 
+  roc_curve(class, .pred_PS) |> 
   autoplot()
 ```
 
@@ -430,8 +430,8 @@ We can create a visualization of the decision tree using another helper function
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-final_tree %>%
-  extract_fit_engine() %>%
+final_tree |>
+  extract_fit_engine() |>
   rpart.plot(roundint = FALSE)
 ```
 
@@ -447,8 +447,8 @@ Perhaps we would also like to understand what variables are important in this fi
 ```{.r .cell-code}
 library(vip)
 
-final_tree %>% 
-  extract_fit_parsnip() %>% 
+final_tree |> 
+  extract_fit_parsnip() |> 
   vip()
 ```
 

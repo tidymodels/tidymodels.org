@@ -75,8 +75,8 @@ Suppose you want to test for correlations individually *within* each tree. You c
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-Orange %>% 
-  group_by(Tree) %>%
+Orange |> 
+  group_by(Tree) |>
   summarize(correlation = cor(age, circumference))
 #> # A tibble: 5 × 2
 #>   Tree  correlation
@@ -131,7 +131,7 @@ Often, we want to perform multiple tests or fit multiple models, each on a diffe
 
 ```{.r .cell-code}
 nested <- 
-  Orange %>% 
+  Orange |> 
   nest(data = c(age, circumference))
 ```
 :::
@@ -141,7 +141,7 @@ Then we perform a correlation test for each nested tibble using `purrr::map()`:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-nested %>% 
+nested |> 
   mutate(test = map(data, ~ cor.test(.x$age, .x$circumference)))
 #> # A tibble: 5 × 3
 #>   Tree  data             test   
@@ -159,7 +159,7 @@ This results in a list-column of S3 objects. We want to tidy each of the objects
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-nested %>% 
+nested |> 
   mutate(
     test = map(data, ~ cor.test(.x$age, .x$circumference)), # S3 list-col
     tidied = map(test, tidy)
@@ -180,13 +180,13 @@ Finally, we want to unnest the tidied data frames so we can see the results in a
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-Orange %>% 
-  nest(data = c(age, circumference)) %>% 
+Orange |> 
+  nest(data = c(age, circumference)) |> 
   mutate(
     test = map(data, ~ cor.test(.x$age, .x$circumference)), # S3 list-col
     tidied = map(test, tidy)
-  ) %>% 
-  unnest(cols = tidied) %>% 
+  ) |> 
+  unnest(cols = tidied) |> 
   select(-data, -test)
 #> # A tibble: 5 × 9
 #>   Tree  estimate statistic   p.value parameter conf.low conf.high method        
@@ -249,13 +249,13 @@ Now we can handle multiple regressions at once using exactly the same workflow a
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-Orange %>%
-  nest(data = c(-Tree)) %>% 
+Orange |>
+  nest(data = c(-Tree)) |> 
   mutate(
     fit = map(data, ~ lm(age ~ circumference, data = .x)),
     tidied = map(fit, tidy)
-  ) %>% 
-  unnest(tidied) %>% 
+  ) |> 
+  unnest(tidied) |> 
   select(-data, -fit)
 #> # A tibble: 10 × 6
 #>    Tree  term          estimate std.error statistic   p.value
@@ -296,13 +296,13 @@ mtcars
 #> 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
 #> # ℹ 22 more rows
 
-mtcars %>%
-  nest(data = c(-am)) %>% 
+mtcars |>
+  nest(data = c(-am)) |> 
   mutate(
     fit = map(data, ~ lm(wt ~ mpg + qsec + gear, data = .x)),  # S3 list-col
     tidied = map(fit, tidy)
-  ) %>% 
-  unnest(tidied) %>% 
+  ) |> 
+  unnest(tidied) |> 
   select(-data, -fit)
 #> # A tibble: 8 × 6
 #>      am term        estimate std.error statistic  p.value
@@ -324,8 +324,8 @@ What if you want not just the `tidy()` output, but the `augment()` and `glance()
 
 ```{.r .cell-code}
 regressions <- 
-  mtcars %>%
-  nest(data = c(-am)) %>% 
+  mtcars |>
+  nest(data = c(-am)) |> 
   mutate(
     fit = map(data, ~ lm(wt ~ mpg + qsec + gear, data = .x)),
     tidied = map(fit, tidy),
@@ -333,8 +333,8 @@ regressions <-
     augmented = map(fit, augment)
   )
 
-regressions %>% 
-  select(tidied) %>% 
+regressions |> 
+  select(tidied) |> 
   unnest(tidied)
 #> # A tibble: 8 × 5
 #>   term        estimate std.error statistic  p.value
@@ -348,8 +348,8 @@ regressions %>%
 #> 7 qsec          0.0919    0.0983    0.935  0.365   
 #> 8 gear          0.147     0.368     0.398  0.696
 
-regressions %>% 
-  select(glanced) %>% 
+regressions |> 
+  select(glanced) |> 
   unnest(glanced)
 #> # A tibble: 2 × 12
 #>   r.squared adj.r.squared sigma statistic  p.value    df    logLik   AIC   BIC
@@ -358,8 +358,8 @@ regressions %>%
 #> 2     0.625         0.550 0.522      8.32 0.00170      3 -12.4      34.7  39.4
 #> # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 
-regressions %>% 
-  select(augmented) %>% 
+regressions |> 
+  select(augmented) |> 
   unnest(augmented)
 #> # A tibble: 32 × 10
 #>       wt   mpg  qsec  gear .fitted  .resid  .hat .sigma  .cooksd .std.resid

@@ -127,7 +127,7 @@ num_initial_terms()
 
 # Sample from the parameter:
 set.seed(4832856)
-num_initial_terms() %>% value_sample(5)
+num_initial_terms() |> value_sample(5)
 #> [1]  6  4  9 10  4
 ```
 :::
@@ -152,7 +152,7 @@ num_initial_terms <- function(range = c(1L, unknown()), trans = NULL) {
 num_initial_terms()
 
 # Can we sample? 
-num_initial_terms() %>% value_sample(5)
+num_initial_terms() |> value_sample(5)
 ```
 :::
 
@@ -186,7 +186,7 @@ get_initial_mars_terms <- function(object, x) {
 }
 
 # Use the mtcars are the finalize the upper bound: 
-num_initial_terms() %>% get_initial_mars_terms(x = mtcars[, -1])
+num_initial_terms() |> get_initial_mars_terms(x = mtcars[, -1])
 #> # Initial MARS Terms (quantitative)
 #> Range: [1, 21]
 ```
@@ -208,7 +208,7 @@ num_initial_terms <- function(range = c(1L, unknown()), trans = NULL) {
   )
 }
 
-num_initial_terms() %>% finalize(x = mtcars[, -1])
+num_initial_terms() |> finalize(x = mtcars[, -1])
 #> # Initial MARS Terms (quantitative)
 #> Range: [1, 21]
 ```
@@ -263,7 +263,7 @@ aggregation()
 #> Aggregation Method (qualitative)
 #> 5 possible values include:
 #> 'none', 'min', 'max', 'mean', and 'sum'
-aggregation() %>% value_sample(3)
+aggregation() |> value_sample(3)
 #> [1] "min"  "sum"  "mean"
 ```
 :::

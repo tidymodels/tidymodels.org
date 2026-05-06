@@ -119,13 +119,13 @@ library(zoo)       # for `as.yearmon`
 
 fit_model <- function(x, ...) {
   # suggested by Matt Dancho:
-  x %>%
-    analysis() %>%
-    # Since the first day changes over resamples, adjust it
-    # based on the first date value in the data frame 
-    tk_ts(start = .$date[[1]] %>% as.yearmon(), 
-          frequency = 12, 
-          silent = TRUE) %>%
+  dat <- analysis(x)
+  # Since the first day changes over resamples, adjust the start
+  # based on the first date value in the data frame
+  dat |>
+    tk_ts(start = as.yearmon(dat$date[[1]]),
+          frequency = 12,
+          silent = TRUE) |>
     auto.arima(...)
 }
 ```
@@ -140,7 +140,7 @@ roll_rs$arima <- map(roll_rs$splits, fit_model)
 
 # For example:
 roll_rs$arima[[1]]
-#> Series: . 
+#> Series: tk_ts(dat, start = as.yearmon(dat$date[[1]]), frequency = 12, silent = TRUE) 
 #> ARIMA(4,1,1)(0,1,2)[12] 
 #> 
 #> Coefficients:
@@ -189,7 +189,7 @@ For the extrapolation error, the model and split objects are required. Using the
 get_extrap <- function(split, mod) {
   n <- nrow(assessment(split))
   # Get assessment data
-  pred_dat <- assessment(split) %>%
+  pred_dat <- assessment(split) |>
     mutate(
       pred = as.vector(forecast(mod, h = n)$mean),
       pct_error = ( S4248SM144NCEN - pred ) / S4248SM144NCEN * 100
@@ -211,9 +211,9 @@ What do these error estimates look like over time?
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-roll_rs %>%
-  select(interpolation, extrapolation, start_date) %>%
-  pivot_longer(cols = matches("ation"), names_to = "error", values_to = "MAPE") %>%
+roll_rs |>
+  select(interpolation, extrapolation, start_date) |>
+  pivot_longer(cols = matches("ation"), names_to = "error", values_to = "MAPE") |>
   ggplot(aes(x = start_date, y = MAPE, col = error)) + 
   geom_point() + 
   geom_line()
@@ -235,9 +235,9 @@ The example below demonstrates this idea by splitting `drinks` into a nested set
 ```{.r .cell-code}
 # The idea is to nest by the period to roll over,
 # which in this case is the year.
-roll_rs_annual <- drinks %>%
-  mutate(year = as.POSIXlt(date)$year + 1900) %>%
-  nest(data = c(date, S4248SM144NCEN)) %>%
+roll_rs_annual <- drinks |>
+  mutate(year = as.POSIXlt(date)$year + 1900) |>
+  nest(data = c(date, S4248SM144NCEN)) |>
   rolling_origin(
     initial = 20, 
     assess = 1, 

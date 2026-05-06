@@ -127,8 +127,8 @@ The rates of the classes are somewhat imbalanced; there are more poorly segmente
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-cells %>% 
-  count(class) %>% 
+cells |> 
+  count(class) |> 
   mutate(prop = n/sum(n))
 #> # A tibble: 2 × 3
 #>   class     n  prop
@@ -156,7 +156,7 @@ The function `rsample::initial_split()` takes the original data and saves the in
 
 ```{.r .cell-code}
 set.seed(123)
-cell_split <- initial_split(cells %>% select(-case), 
+cell_split <- initial_split(cells |> select(-case), 
                             strata = class)
 ```
 :::
@@ -175,8 +175,8 @@ nrow(cell_train)/nrow(cells)
 #> [1] 0.7498762
 
 # training set proportions by class
-cell_train %>% 
-  count(class) %>% 
+cell_train |> 
+  count(class) |> 
   mutate(prop = n/sum(n))
 #> # A tibble: 2 × 3
 #>   class     n  prop
@@ -185,8 +185,8 @@ cell_train %>%
 #> 2 WS      539 0.356
 
 # test set proportions by class
-cell_test %>% 
-  count(class) %>% 
+cell_test |> 
+  count(class) |> 
   mutate(prop = n/sum(n))
 #> # A tibble: 2 × 3
 #>   class     n  prop
@@ -212,8 +212,8 @@ To fit a random forest model on the training set, let's use the [parsnip](https:
 
 ```{.r .cell-code}
 rf_mod <- 
-  rand_forest(trees = 1000) %>% 
-  set_engine("ranger") %>% 
+  rand_forest(trees = 1000) |> 
+  set_engine("ranger") |> 
   set_mode("classification")
 ```
 :::
@@ -225,7 +225,7 @@ Starting with this parsnip model object, the `fit()` function can be used with a
 ```{.r .cell-code}
 set.seed(234)
 rf_fit <- 
-  rf_mod %>% 
+  rf_mod |> 
   fit(class ~ ., data = cell_train)
 rf_fit
 #> parsnip model object
@@ -267,10 +267,10 @@ At first glance, it might seem like a good idea to use the training set data to 
 
 ```{.r .cell-code}
 rf_training_pred <- 
-  predict(rf_fit, cell_train) %>% 
-  bind_cols(predict(rf_fit, cell_train, type = "prob")) %>% 
+  predict(rf_fit, cell_train) |> 
+  bind_cols(predict(rf_fit, cell_train, type = "prob")) |> 
   # Add the true outcome data back in
-  bind_cols(cell_train %>% 
+  bind_cols(cell_train |> 
               select(class))
 ```
 :::
@@ -280,13 +280,13 @@ Using the yardstick functions, this model has spectacular results, so spectacula
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rf_training_pred %>%                # training set predictions
+rf_training_pred |>                # training set predictions
   roc_auc(truth = class, .pred_PS)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
 #> 1 roc_auc binary         1.000
-rf_training_pred %>%                # training set predictions
+rf_training_pred |>                # training set predictions
   accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
@@ -301,22 +301,22 @@ Now that we have this model with exceptional performance, we proceed to the test
 
 ```{.r .cell-code}
 rf_testing_pred <- 
-  predict(rf_fit, cell_test) %>% 
-  bind_cols(predict(rf_fit, cell_test, type = "prob")) %>% 
-  bind_cols(cell_test %>% select(class))
+  predict(rf_fit, cell_test) |> 
+  bind_cols(predict(rf_fit, cell_test, type = "prob")) |> 
+  bind_cols(cell_test |> select(class))
 ```
 :::
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rf_testing_pred %>%                   # test set predictions
+rf_testing_pred |>                   # test set predictions
   roc_auc(truth = class, .pred_PS)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
 #> 1 roc_auc binary         0.891
-rf_testing_pred %>%                   # test set predictions
+rf_testing_pred |>                   # test set predictions
   accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
@@ -489,13 +489,13 @@ For this example, let's use a `workflow()` that bundles together the random fore
 
 ```{.r .cell-code}
 rf_wf <- 
-  workflow() %>%
-  add_model(rf_mod) %>%
+  workflow() |>
+  add_model(rf_mod) |>
   add_formula(class ~ .)
 
 set.seed(456)
 rf_fit_rs <- 
-  rf_wf %>% 
+  rf_wf |> 
   fit_resamples(folds)
 ```
 :::
@@ -542,13 +542,13 @@ Think about these values we now have for accuracy and AUC. These performance met
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-rf_testing_pred %>%                   # test set predictions
+rf_testing_pred |>                   # test set predictions
   roc_auc(truth = class, .pred_PS)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
 #> 1 roc_auc binary         0.891
-rf_testing_pred %>%                   # test set predictions
+rf_testing_pred |>                   # test set predictions
   accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
