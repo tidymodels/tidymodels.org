@@ -548,7 +548,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># Sample from the parameter:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4832856</span><span class="op">)</span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  6  4  9 10  4</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -571,7 +571,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Can we sample? </span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -603,7 +603,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Use the mtcars are the finalize the upper bound: </span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">get_initial_mars_terms</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">get_initial_mars_terms</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
 <span><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -624,7 +624,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/finalize.html">finalize</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu">num_initial_terms</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dials.tidymodels.org/reference/finalize.html">finalize</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Initial MARS Terms (quantitative)</span></span>
 <span><span class="co">#&gt; Range: [1, 21]</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -674,7 +674,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Aggregation Method (qualitative)</span></span>
 <span><span class="co">#&gt; 5 possible values include:</span></span>
 <span><span class="co">#&gt; 'none', 'min', 'max', 'mean', and 'sum'</span></span>
-<span><span class="fu">aggregation</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu">aggregation</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dials.tidymodels.org/reference/value_validate.html">value_sample</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "min"  "sum"  "mean"</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>

@@ -546,13 +546,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">fit_model</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># suggested by Matt Dancho:</span></span>
-<span>  <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="co"># Since the first day changes over resamples, adjust it</span></span>
-<span>    <span class="co"># based on the first date value in the data frame </span></span>
-<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">as.yearmon</span><span class="op">(</span><span class="op">)</span>, </span>
-<span>          frequency <span class="op">=</span> <span class="fl">12</span>, </span>
-<span>          silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="co"># Since the first day changes over resamples, adjust the start</span></span>
+<span>  <span class="co"># based on the first date value in the data frame</span></span>
+<span>  <span class="va">dat</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="fu">as.yearmon</span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>          frequency <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>          silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">auto.arima</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
@@ -566,7 +566,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># For example:</span></span>
 <span><span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Series: . </span></span>
+<span><span class="co">#&gt; Series: tk_ts(dat, start = as.yearmon(dat$date[[1]]), frequency = 12, silent = TRUE) </span></span>
 <span><span class="co">#&gt; ARIMA(4,1,1)(0,1,2)[12] </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
@@ -613,7 +613,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="va">get_extrap</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">split</span>, <span class="va">mod</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="co"># Get assessment data</span></span>
-<span>  <span class="va">pred_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">pred_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>      pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu">forecast</span><span class="op">(</span><span class="va">mod</span>, h <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">$</span><span class="va">mean</span><span class="op">)</span>,</span>
 <span>      pct_error <span class="op">=</span> <span class="op">(</span> <span class="va">S4248SM144NCEN</span> <span class="op">-</span> <span class="va">pred</span> <span class="op">)</span> <span class="op">/</span> <span class="va">S4248SM144NCEN</span> <span class="op">*</span> <span class="fl">100</span></span>
@@ -634,9 +634,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">roll_rs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">interpolation</span>, <span class="va">extrapolation</span>, <span class="va">start_date</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">matches</a></span><span class="op">(</span><span class="st">"ation"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"error"</span>, values_to <span class="op">=</span> <span class="st">"MAPE"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">roll_rs</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">interpolation</span>, <span class="va">extrapolation</span>, <span class="va">start_date</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">matches</a></span><span class="op">(</span><span class="st">"ation"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"error"</span>, values_to <span class="op">=</span> <span class="st">"MAPE"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">MAPE</span>, col <span class="op">=</span> <span class="va">error</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -657,9 +657,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The idea is to nest by the period to roll over,</span></span>
 <span><span class="co"># which in this case is the year.</span></span>
-<span><span class="va">roll_rs_annual</span> <span class="op">&lt;-</span> <span class="va">drinks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">$</span><span class="va">year</span> <span class="op">+</span> <span class="fl">1900</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">S4248SM144NCEN</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">roll_rs_annual</span> <span class="op">&lt;-</span> <span class="va">drinks</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXlt</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">$</span><span class="va">year</span> <span class="op">+</span> <span class="fl">1900</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">S4248SM144NCEN</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rsample.tidymodels.org/reference/rolling_origin.html">rolling_origin</a></span><span class="op">(</span></span>
 <span>    initial <span class="op">=</span> <span class="fl">20</span>, </span>
 <span>    assess <span class="op">=</span> <span class="fl">1</span>, </span>

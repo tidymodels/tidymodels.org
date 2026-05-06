@@ -263,9 +263,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code class="sourceCode R"><span><span class="va">urchins</span> <span class="op">&lt;-</span></span>
 <span>  <span class="co"># Data were assembled for a tutorial </span></span>
 <span>  <span class="co"># at https://www.flutterbys.com.au/stats/tut/tut7.5a.html</span></span>
-<span>  <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://tidymodels.org/start/models/urchins.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://tidymodels.org/start/models/urchins.csv"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Change the names to be a little more verbose</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"food_regime"</span>, <span class="st">"initial_volume"</span>, <span class="st">"width"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"food_regime"</span>, <span class="st">"initial_volume"</span>, <span class="st">"width"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Factors are very helpful for modeling, so we convert one column</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>food_regime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">food_regime</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Initial"</span>, <span class="st">"Low"</span>, <span class="st">"High"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 72 Columns: 3</span></span>
@@ -355,7 +355,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -376,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">lm_mod</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="va">lm_mod</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">width</span> <span class="op">~</span> <span class="va">initial_volume</span> <span class="op">*</span> <span class="va">food_regime</span>, data <span class="op">=</span> <span class="va">urchins</span><span class="op">)</span></span>
 <span><span class="va">lm_fit</span></span>
 <span><span class="co">#&gt; parsnip model object</span></span>
@@ -416,7 +416,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">lm_fit</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">lm_fit</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dwplot</span><span class="op">(</span>dot_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>,</span>
 <span>         whisker_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>,</span>
 <span>         vline <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>, colour <span class="op">=</span> <span class="st">"grey50"</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -486,8 +486,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># Now combine: </span></span>
 <span><span class="va">plot_data</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">new_points</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">mean_pred</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="va">new_points</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">mean_pred</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">conf_int_pred</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># and plot:</span></span>
@@ -519,7 +519,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># make the parsnip model</span></span>
 <span><span class="va">bayes_mod</span> <span class="op">&lt;-</span>   </span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"stan"</span>,</span>
 <span>             prior_intercept <span class="op">=</span> <span class="va">prior_dist</span>,</span>
 <span>             prior <span class="op">=</span> <span class="va">prior_dist</span>,</span>
@@ -527,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="co"># train the model</span></span>
 <span><span class="va">bayes_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">bayes_mod</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="va">bayes_mod</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">width</span> <span class="op">~</span> <span class="va">initial_volume</span> <span class="op">*</span> <span class="va">food_regime</span>, data <span class="op">=</span> <span class="va">urchins</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">bayes_fit</span>, digits <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
@@ -580,8 +580,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bayes_plot_data</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">new_points</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">new_points</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="va">new_points</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">new_points</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">bayes_fit</span>, new_data <span class="op">=</span> <span class="va">new_points</span>, type <span class="op">=</span> <span class="st">"conf_int"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">bayes_plot_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">food_regime</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -615,12 +615,12 @@ Note
 </section><section id="why" class="level2"><h2 class="anchored" data-anchor-id="why">Why does it work that way?</h2>
 <p>The extra step of defining the model using a function like <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code> might seem superfluous since a call to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> is much more succinct. However, the problem with standard modeling functions is that they don’t separate what you want to do from the execution. For example, the process of executing a formula has to happen repeatedly across model calls even when the formula does not change; we can’t recycle those computations.</p>
 <p>Also, using the tidymodels framework, we can do some interesting things by incrementally creating a model (instead of using single function call). <a href="../../start/tuning/">Model tuning</a> with tidymodels uses the specification of the model to declare what parts of the model should be tuned. That would be very difficult to do if <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code> immediately fit the model.</p>
-<p>If you are familiar with the tidyverse, you may have noticed that our modeling code uses the magrittr pipe (<code>%&gt;%</code>). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the <em>data</em> as the first argument. For example:</p>
+<p>If you are familiar with the tidyverse, you may have noticed that our modeling code uses the base R pipe (<code>|&gt;</code>). With dplyr and other tidyverse packages, the pipe works well because all of the functions take the <em>data</em> as the first argument. For example:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">urchins</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">food_regime</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">urchins</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">food_regime</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>med_vol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">initial_volume</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
 <span><span class="co">#&gt;   food_regime med_vol</span></span>
@@ -635,7 +635,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bayes_mod</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">bayes_mod</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">width</span> <span class="op">~</span> <span class="va">initial_volume</span> <span class="op">*</span> <span class="va">food_regime</span>, data <span class="op">=</span> <span class="va">urchins</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
