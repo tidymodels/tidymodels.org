@@ -110,12 +110,12 @@ library(zoo)       # for `as.yearmon`
 
 fit_model <- function(x, ...) {
   # suggested by Matt Dancho:
-  x |>
-    analysis() |>
-    # Since the first day changes over resamples, adjust it
-    # based on the first date value in the data frame 
-    tk_ts(start = .$date[[1]] |> as.yearmon(), 
-          frequency = 12, 
+  dat <- analysis(x)
+  # Since the first day changes over resamples, adjust the start
+  # based on the first date value in the data frame
+  dat |>
+    tk_ts(start = as.yearmon(dat$date[[1]]),
+          frequency = 12,
           silent = TRUE) |>
     auto.arima(...)
 }

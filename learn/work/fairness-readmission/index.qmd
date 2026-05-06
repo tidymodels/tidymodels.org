@@ -125,7 +125,7 @@ set.seed(1)
 #| warning: false
 readmission |>
   # randomly split into groups
-  mutate(., group = sample(1:10, nrow(.), replace = TRUE)) |>
+  mutate(group = sample(1:10, n(), replace = TRUE)) |>
   group_by(race, group) |>
   # compute proportion readmitted by race + random `group`ing
   summarize(prop = mean(readmitted == "Yes"), n = n()) |>
