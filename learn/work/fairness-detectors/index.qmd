@@ -84,7 +84,7 @@ This analysis will focus on the `kind`, `.pred_AI`, `.pred_class`, and `native` 
 Initially, we can tabulate the observed and predicted classes:
 
 ```{r count-kind-pred}
-detectors %>%
+detectors |>
   count(kind, .pred_class)
 ```
 
@@ -93,7 +93,7 @@ A perfect detector would predict that all essays written by AI were written by A
 Adding `native` into the tabulation:
 
 ```{r count-native-kind-pred}
-detectors %>% 
+detectors |> 
   count(native, kind, .pred_class)
 ```
 
@@ -102,8 +102,8 @@ Note that, for essays written by AI (`kind == "AI"`), the `native` variable isn'
 For essays written by `Human`s, a plot perhaps better demonstrates the disparity:
 
 ```{r plot-human-preds}
-detectors %>% 
-  filter(!is.na(native)) %>%
+detectors |> 
+  filter(!is.na(native)) |>
   ggplot(aes(x = native, fill = .pred_class)) +
   geom_bar() +
   labs(x = "Native English Writer", fill = "Predicted Class")
@@ -112,10 +112,10 @@ detectors %>%
 Most of the essays written by non-native English writers are incorrectly classified as written by AI, while nearly all of the essays written by native English writers are correctly classified as written by humans. The same effect can be seen in the underlying probability distributions:
 
 ```{r plot-human-preds-by-native}
-detectors %>%
-  filter(!is.na(native)) %>%
+detectors |>
+  filter(!is.na(native)) |>
   mutate(native = case_when(native == "Yes" ~ "Native English writer",
-                            native == "No" ~ "Non-native English writer")) %>%
+                            native == "No" ~ "Non-native English writer")) |>
   ggplot(aes(.pred_AI, fill = native)) +
   geom_histogram(bins = 30, show.legend = FALSE) +
   facet_wrap(vars(native), scales = "free_y", nrow = 2) +
@@ -127,10 +127,10 @@ Again, note that *all of the plotted essays were written by humans*. An effectiv
 The above plots aggregate observations across several `detectors`, though. Do some GPT detectors classify essays written by non-native English writers just as well as those from native English writers? We can recreate the above plot to examine this question by faceting across `detectors`.
 
 ```{r plot-human-preds-by-native-detector}
-detectors %>%
-  filter(!is.na(native)) %>%
+detectors |>
+  filter(!is.na(native)) |>
   mutate(native = case_when(native == "Yes" ~ "Native English writer",
-                            native == "No" ~ "Non-native English writer")) %>%
+                            native == "No" ~ "Non-native English writer")) |>
   ggplot(aes(.pred_AI, fill = native)) +
   geom_histogram(bins = 30) +
   facet_grid(vars(native), vars(detector), scales = "free_y") +
@@ -163,10 +163,10 @@ Imagine, first, the position that the most fair detection model is one that reli
 In this case, we calculate a chosen performance metric for each detector, across all of the data, and then consider the most performant detectors:
 
 ```{r roc-aucs}
-detectors %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
-  arrange(desc(.estimate)) %>%
+detectors |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
+  arrange(desc(.estimate)) |>
   head(3)
 ```
 
@@ -205,15 +205,15 @@ equal_opportunity_by_native
 The function `equal_opportunity_by_native()` is a yardstick metric function like any other, except it knows to temporarily group by and summarize across a data-column called `native`. Applying it:
 
 ```{r eq-opp}
-detectors %>%
-  filter(kind == "Human") %>%
-  group_by(detector) %>%
+detectors |>
+  filter(kind == "Human") |>
+  group_by(detector) |>
   equal_opportunity_by_native(
     truth = kind, 
     estimate = .pred_class, 
     event_level = "second"
-  ) %>%
-  arrange(.estimate) %>%
+  ) |>
+  arrange(.estimate) |>
   head(3)
 ```
 
@@ -235,20 +235,20 @@ In this case, we could *first* ensure that a model detects GPT-generated work wi
 
 ```{r perf-dets}
 performant_detectors <- 
-  detectors %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
-  arrange(desc(.estimate)) %>%
+  detectors |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
+  arrange(desc(.estimate)) |>
   head(3)
 
-detectors %>%
-  filter(kind == "Human", detector %in% performant_detectors$detector) %>%
-  group_by(detector) %>%
+detectors |>
+  filter(kind == "Human", detector %in% performant_detectors$detector) |>
+  group_by(detector) |>
   equal_opportunity_by_native(
     truth = kind, 
     estimate = .pred_class, 
     event_level = "second"
-  ) %>%
+  ) |>
   arrange(.estimate)
 ```
 
@@ -256,21 +256,21 @@ We could also reverse the process, reflecting the belief that it is more unfair 
 
 ```{r eq-opp-dets}
 equal_opportunity_detectors <- 
-  detectors %>%
-  filter(kind == "Human") %>%
-  group_by(detector) %>%
+  detectors |>
+  filter(kind == "Human") |>
+  group_by(detector) |>
   equal_opportunity_by_native(
     truth = kind, 
     estimate = .pred_class, 
     event_level = "second"
-  ) %>%
-  arrange(.estimate) %>%
+  ) |>
+  arrange(.estimate) |>
   head(3)
 
-detectors %>%
-  filter(detector %in% equal_opportunity_detectors$detector) %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
+detectors |>
+  filter(detector %in% equal_opportunity_detectors$detector) |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
   arrange(desc(.estimate))
 ```
 
@@ -283,9 +283,9 @@ In the preceding section, we saw that the recommended detector we identify depen
 ```{r rocs}
 #| include: false
 rocs <- 
-  detectors %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
+  detectors |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
   arrange(desc(.estimate))
 ```
 

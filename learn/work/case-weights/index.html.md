@@ -32,7 +32,7 @@ To demonstrate we will use the Chicago data from the modeldata package.
 library(tidymodels)
 data(Chicago)
 
-Chicago <- Chicago %>%
+Chicago <- Chicago |>
   select(ridership, date, one_of(stations))
 ```
 :::
@@ -72,7 +72,7 @@ Using this information we can visualize the weight curve, to see if we like the 
 ```{.r .cell-code}
 tibble_days <- tibble(days = 0:5457)
 
-tibble_days %>%
+tibble_days |>
   ggplot(aes(days)) +
   geom_function(fun = ~ 0.99 ^ .x)
 ```
@@ -91,8 +91,8 @@ Let us try a few more values to find
 ```{.r .cell-code}
 map_dfr(
   c(0.99, 0.999, 0.9999),
-  ~ tibble_days %>% mutate(base = factor(.x), value = .x ^ days)
-) %>%
+  ~ tibble_days |> mutate(base = factor(.x), value = .x ^ days)
+) |>
   ggplot(aes(days, value, group = base, color = base)) +
   geom_line()
 ```
@@ -122,7 +122,7 @@ We then modify `Chicago` to add a weight column, explicitly making it an importa
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-Chicago <- Chicago %>%
+Chicago <- Chicago |>
   mutate(weight = weights_from_dates(date, "2016-01-01"),
          weight = importance_weights(weight))
 ```
@@ -137,8 +137,8 @@ We start by splitting up our data into a training and testing set based on the d
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-Chicago_train <- Chicago %>% filter(date < "2016-01-01")
-Chicago_test <- Chicago %>% filter(date >= "2016-01-01")
+Chicago_train <- Chicago |> filter(date < "2016-01-01")
+Chicago_test <- Chicago |> filter(date >= "2016-01-01")
 ```
 :::
 
@@ -148,14 +148,14 @@ Next, we are going to create a recipe. The weights won't have any influence on t
 
 ```{.r .cell-code}
 base_recipe <-
-  recipe(ridership ~ ., data = Chicago_train) %>%
+  recipe(ridership ~ ., data = Chicago_train) |>
   # Create date features
-  step_date(date) %>%
-  step_holiday(date, keep_original_cols = FALSE) %>%
+  step_date(date) |>
+  step_holiday(date, keep_original_cols = FALSE) |>
   # Remove any columns with a single unique value
-  step_zv(all_predictors()) %>%
+  step_zv(all_predictors()) |>
   # Normalize all the numerical features
-  step_normalize(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors()) |>
   # Perform PCA to reduce the correlation bet the stations
   step_pca(all_numeric_predictors(), threshold = 0.95)
 ```
@@ -167,7 +167,7 @@ Next we need to build the rest of the workflow. We use a linear regression speci
 
 ```{.r .cell-code}
 lm_spec <-
-  linear_reg() %>%
+  linear_reg() |>
   set_engine("lm")
 ```
 :::
@@ -178,9 +178,9 @@ and we add these together in the workflow. To activate the case weights, we use 
 
 ```{.r .cell-code}
 lm_wflow <-
-  workflow() %>% 
-  add_case_weights(weight) %>%
-  add_recipe(base_recipe) %>%
+  workflow() |> 
+  add_case_weights(weight) |>
+  add_recipe(base_recipe) |>
   add_model(lm_spec)
 
 lm_wflow

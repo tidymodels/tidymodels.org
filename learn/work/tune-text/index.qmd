@@ -117,28 +117,28 @@ Now, let's put this all together in one recipe:
 library(textrecipes)
 
 pre_proc <-
-  recipe(score ~ product + review, data = training_data) %>%
+  recipe(score ~ product + review, data = training_data) |>
   # Do not use the product ID as a predictor
-  update_role(product, new_role = "id") %>%
+  update_role(product, new_role = "id") |>
   # Make a copy of the raw text
-  step_mutate(review_raw = review) %>%
+  step_mutate(review_raw = review) |>
   # Compute the initial features. This removes the `review_raw` column
-  step_textfeature(review_raw) %>%
+  step_textfeature(review_raw) |>
   # Make the feature names shorter
   step_rename_at(
     starts_with("textfeature_"),
     fn = ~ gsub("textfeature_review_raw_", "", .)
-  ) %>%
-  step_tokenize(review)  %>%
-  step_stopwords(review) %>%
-  step_stem(review) %>%
+  ) |>
+  step_tokenize(review)  |>
+  step_stopwords(review) |>
+  step_stem(review) |>
   # Here is where the tuning parameter is declared
-  step_texthash(review, signed = FALSE, num_terms = tune(), sparse = "yes") %>%
+  step_texthash(review, signed = FALSE, num_terms = tune(), sparse = "yes") |>
   # Simplify these names
-  step_rename_at(starts_with("review_hash"), fn = ~ gsub("review_", "", .)) %>%
+  step_rename_at(starts_with("review_hash"), fn = ~ gsub("review_", "", .)) |>
   # Transform the initial feature set
-  step_YeoJohnson(one_of(!!basics)) %>%
-  step_zv(all_predictors()) %>%
+  step_YeoJohnson(one_of(!!basics)) |>
+  step_zv(all_predictors()) |>
   step_scale(all_predictors())
 ```
 
@@ -151,7 +151,7 @@ The preprocessing recipe is long and complex (often typical for working with tex
 ```{r}
 #| label: "lr"
 lr_mod <-
-  logistic_reg(penalty = tune(), mixture = tune()) %>%
+  logistic_reg(penalty = tune(), mixture = tune()) |>
   set_engine("glmnet")
 ```
 
@@ -229,7 +229,7 @@ What do the results look like? Let's get the resampling estimates of the area un
 ```{r}
 #| label: "grid-roc"
 grid_roc <- 
-  collect_metrics(five_star_glmnet) %>% 
+  collect_metrics(five_star_glmnet) |> 
   arrange(desc(mean))
 grid_roc
 ```
@@ -272,8 +272,8 @@ To use this, we have to merge the recipe and `parsnip` model object into a workf
 ```{r}
 #| label: "wflow"
 five_star_wflow <-
-  workflow() %>%
-  add_recipe(pre_proc) %>%
+  workflow() |>
+  add_recipe(pre_proc) |>
   add_model(lr_mod)
 ```
 
@@ -282,8 +282,8 @@ Then we can extract and manipulate the corresponding parameter set:
 ```{r}
 #| label: "search-set"
 five_star_set <-
-  five_star_wflow %>%
-  extract_parameter_set_dials() %>%
+  five_star_wflow |>
+  extract_parameter_set_dials() |>
   update(
     num_terms = hash_range, 
     penalty = penalty(c(-3, 0)),
@@ -357,8 +357,8 @@ More nested tibbles! Let's `unnest()` the `five_star_glmnet$.extracts` column:
 #| label: "unnest"
 library(tidyr)
 extracted <- 
-  five_star_glmnet %>% 
-  dplyr::select(id, .extracts) %>% 
+  five_star_glmnet |> 
+  dplyr::select(id, .extracts) |> 
   unnest(cols = .extracts)
 extracted
 ```
@@ -369,9 +369,9 @@ One thing to realize here is that `tune_grid()` [may not fit all of the models](
 ```{r}
 #| label: "select-best"
 extracted <- 
-  extracted %>% 
-  dplyr::select(-penalty) %>% 
-  inner_join(params, by = c("num_terms", "mixture")) %>% 
+  extracted |> 
+  dplyr::select(-penalty) |> 
+  inner_join(params, by = c("num_terms", "mixture")) |> 
   # Now remove it from the final results
   dplyr::select(-penalty)
 extracted
@@ -382,7 +382,7 @@ Now we can get at the results that we want using another `unnest()`:
 ```{r}
 #| label: "final-unnest"
 extracted <- 
-  extracted %>% 
+  extracted |> 
   unnest(col = .extracts) # <- these contain a `penalty` column
 extracted
 ```

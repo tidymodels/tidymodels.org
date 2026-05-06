@@ -66,7 +66,7 @@ Many base R functions that deal with multivariate outcomes using a formula requi
 
 ```{.r .cell-code}
 norm_rec <- 
-  recipe(water + fat + protein ~ ., data = meats) %>%
+  recipe(water + fat + protein ~ ., data = meats) |>
   step_normalize(everything()) 
 ```
 :::
@@ -84,7 +84,7 @@ set.seed(57343)
 folds <- vfold_cv(meats, repeats = 10)
 
 folds <- 
-  folds %>%
+  folds |>
   mutate(recipes = map(splits, prepper, recipe = norm_rec))
 ```
 :::
@@ -133,13 +133,13 @@ get_var_explained <- function(recipe, ...) {
   # To do the same for the outcome, it is more complex. This code 
   # was extracted from pls:::summary.mvr. 
   explained <- 
-    drop(pls::R2(mod, estimate = "train", intercept = FALSE)$val) %>% 
+    drop(pls::R2(mod, estimate = "train", intercept = FALSE)$val) |> 
     # transpose so that components are in rows
-    t() %>% 
-    as_tibble() %>%
+    t() |> 
+    as_tibble() |>
     # Add the predictor proportions
-    mutate(predictors = cumsum(xve) %>% as.vector(),
-           components = seq_along(xve)) %>%
+    mutate(predictors = cumsum(xve) |> as.vector(),
+           components = seq_along(xve)) |>
     # Put into a tidy format that is tall
     pivot_longer(
       cols = c(-components),
@@ -156,7 +156,7 @@ We compute this data frame for each resample and save the results in the differe
 
 ```{.r .cell-code}
 folds <- 
-  folds %>%
+  folds |>
   mutate(var = map(recipes, get_var_explained),
          var = unname(var))
 ```
@@ -168,9 +168,9 @@ To extract and aggregate these data, simple row binding can be used to stack the
 
 ```{.r .cell-code}
 variance_data <- 
-  bind_rows(folds[["var"]]) %>%
-  filter(components <= 15) %>%
-  group_by(components, source) %>%
+  bind_rows(folds[["var"]]) |>
+  filter(components <= 15) |>
+  group_by(components, source) |>
   summarize(proportion = mean(proportion))
 #> `summarise()` has regrouped the output.
 #> ℹ Summaries were computed grouped by components and source.

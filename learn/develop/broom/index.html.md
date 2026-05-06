@@ -145,7 +145,7 @@ This object contains the model coefficients as a table, where the information gi
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-trees_model_tidy <- summary(trees_model)$coefficients %>% 
+trees_model_tidy <- summary(trees_model)$coefficients |> 
   as_tibble(rownames = "term")
 
 trees_model_tidy
@@ -189,8 +189,8 @@ With these considerations in mind, a reasonable `tidy()` method for `lm()` might
 ```{.r .cell-code}
 tidy.lm <- function(x, conf.int = FALSE, conf.level = 0.95, ...) {
   
-  result <- summary(x)$coefficients %>%
-    tibble::as_tibble(rownames = "term") %>%
+  result <- summary(x)$coefficients |>
+    tibble::as_tibble(rownames = "term") |>
     dplyr::rename(estimate = Estimate,
                   std.error = `Std. Error`,
                   statistic = `t value`,
@@ -377,7 +377,7 @@ As with `glance()` methods, it's fine (and encouraged!) to include common metric
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-se.fit <- predict(trees_model, newdata = trees, se.fit = TRUE)$se.fit %>%
+se.fit <- predict(trees_model, newdata = trees, se.fit = TRUE)$se.fit |>
   unname()
 
 head(se.fit)

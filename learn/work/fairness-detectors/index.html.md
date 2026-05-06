@@ -82,7 +82,7 @@ Initially, we can tabulate the observed and predicted classes:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>%
+detectors |>
   count(kind, .pred_class)
 #> # A tibble: 4 × 3
 #>   kind  .pred_class     n
@@ -101,7 +101,7 @@ Adding `native` into the tabulation:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>% 
+detectors |> 
   count(native, kind, .pred_class)
 #> # A tibble: 6 × 4
 #>   native kind  .pred_class     n
@@ -122,8 +122,8 @@ For essays written by `Human`s, a plot perhaps better demonstrates the disparity
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>% 
-  filter(!is.na(native)) %>%
+detectors |> 
+  filter(!is.na(native)) |>
   ggplot(aes(x = native, fill = .pred_class)) +
   geom_bar() +
   labs(x = "Native English Writer", fill = "Predicted Class")
@@ -139,10 +139,10 @@ Most of the essays written by non-native English writers are incorrectly classif
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>%
-  filter(!is.na(native)) %>%
+detectors |>
+  filter(!is.na(native)) |>
   mutate(native = case_when(native == "Yes" ~ "Native English writer",
-                            native == "No" ~ "Non-native English writer")) %>%
+                            native == "No" ~ "Non-native English writer")) |>
   ggplot(aes(.pred_AI, fill = native)) +
   geom_histogram(bins = 30, show.legend = FALSE) +
   facet_wrap(vars(native), scales = "free_y", nrow = 2) +
@@ -161,10 +161,10 @@ The above plots aggregate observations across several `detectors`, though. Do so
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>%
-  filter(!is.na(native)) %>%
+detectors |>
+  filter(!is.na(native)) |>
   mutate(native = case_when(native == "Yes" ~ "Native English writer",
-                            native == "No" ~ "Non-native English writer")) %>%
+                            native == "No" ~ "Non-native English writer")) |>
   ggplot(aes(.pred_AI, fill = native)) +
   geom_histogram(bins = 30) +
   facet_grid(vars(native), vars(detector), scales = "free_y") +
@@ -204,10 +204,10 @@ In this case, we calculate a chosen performance metric for each detector, across
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
-  arrange(desc(.estimate)) %>%
+detectors |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
+  arrange(desc(.estimate)) |>
   head(3)
 #> # A tibble: 3 × 4
 #>   detector      .metric .estimator .estimate
@@ -259,15 +259,15 @@ The function `equal_opportunity_by_native()` is a yardstick metric function like
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-detectors %>%
-  filter(kind == "Human") %>%
-  group_by(detector) %>%
+detectors |>
+  filter(kind == "Human") |>
+  group_by(detector) |>
   equal_opportunity_by_native(
     truth = kind, 
     estimate = .pred_class, 
     event_level = "second"
-  ) %>%
-  arrange(.estimate) %>%
+  ) |>
+  arrange(.estimate) |>
   head(3)
 #> # A tibble: 3 × 5
 #>   detector  .metric           .by    .estimator .estimate
@@ -298,20 +298,20 @@ In this case, we could *first* ensure that a model detects GPT-generated work wi
 
 ```{.r .cell-code}
 performant_detectors <- 
-  detectors %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
-  arrange(desc(.estimate)) %>%
+  detectors |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
+  arrange(desc(.estimate)) |>
   head(3)
 
-detectors %>%
-  filter(kind == "Human", detector %in% performant_detectors$detector) %>%
-  group_by(detector) %>%
+detectors |>
+  filter(kind == "Human", detector %in% performant_detectors$detector) |>
+  group_by(detector) |>
   equal_opportunity_by_native(
     truth = kind, 
     estimate = .pred_class, 
     event_level = "second"
-  ) %>%
+  ) |>
   arrange(.estimate)
 #> # A tibble: 3 × 5
 #>   detector      .metric           .by    .estimator .estimate
@@ -328,21 +328,21 @@ We could also reverse the process, reflecting the belief that it is more unfair 
 
 ```{.r .cell-code}
 equal_opportunity_detectors <- 
-  detectors %>%
-  filter(kind == "Human") %>%
-  group_by(detector) %>%
+  detectors |>
+  filter(kind == "Human") |>
+  group_by(detector) |>
   equal_opportunity_by_native(
     truth = kind, 
     estimate = .pred_class, 
     event_level = "second"
-  ) %>%
-  arrange(.estimate) %>%
+  ) |>
+  arrange(.estimate) |>
   head(3)
 
-detectors %>%
-  filter(detector %in% equal_opportunity_detectors$detector) %>%
-  group_by(detector) %>%
-  roc_auc(truth = kind, .pred_AI) %>%
+detectors |>
+  filter(detector %in% equal_opportunity_detectors$detector) |>
+  group_by(detector) |>
+  roc_auc(truth = kind, .pred_AI) |>
   arrange(desc(.estimate))
 #> # A tibble: 3 × 4
 #>   detector  .metric .estimator .estimate

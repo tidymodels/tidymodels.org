@@ -190,8 +190,8 @@ solubility_resampled <- bind_rows(
   .id = "resample"
 )
 
-solubility_resampled %>%
-  group_by(resample) %>%
+solubility_resampled |>
+  group_by(resample) |>
   mse(solubility, prediction)
 #> # A tibble: 10 × 4
 #>    resample .metric .estimator .estimate
@@ -515,16 +515,16 @@ miss_rate.data.frame <- function(data,
 
 ```{.r .cell-code}
 # Macro weighted automatically selected
-fold1 %>%
+fold1 |>
   miss_rate(obs, pred)
 
 # Switch to micro
-fold1 %>%
+fold1 |>
   miss_rate(obs, pred, estimator = "micro")
 
 # Macro weighted by resample
-hpc_cv %>%
-  group_by(Resample) %>%
+hpc_cv |>
+  group_by(Resample) |>
   miss_rate(obs, pred, estimator = "macro_weighted")
 
 # Error handling

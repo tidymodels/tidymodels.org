@@ -52,9 +52,9 @@ Let's fit a model to a small, two predictor classification data set. The data ar
 library(AppliedPredictiveModeling)
 
 set.seed(321)
-cls_train <- quadBoundaryFunc(2000) %>% select(A = X1, B = X2, class)
-cls_val   <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
-cls_test  <- quadBoundaryFunc( 500) %>% select(A = X1, B = X2, class)
+cls_train <- quadBoundaryFunc(2000) |> select(A = X1, B = X2, class)
+cls_val   <- quadBoundaryFunc( 500) |> select(A = X1, B = X2, class)
+cls_test  <- quadBoundaryFunc( 500) |> select(A = X1, B = X2, class)
 ```
 
 A plot of the data shows two right-skewed predictors: 
@@ -73,7 +73,7 @@ Let's use a single hidden layer neural network to predict the outcome. To do thi
 ```{r}
 #| label: "biv--proc"
 biv_rec <- 
-  recipe(class ~ ., data = cls_train) %>%
+  recipe(class ~ ., data = cls_train) |>
   step_normalize(all_predictors())
 ```
 
@@ -84,17 +84,17 @@ We can use the brulee package to fit a model with 10 hidden units and a 10% drop
 ```{r}
 #| label: "biv-nnet"
 nnet_spec <- 
-  mlp(epochs = 1000, hidden_units = 10, penalty = 0.01, learn_rate = 0.1) %>% 
-  set_engine("brulee", validation = 0) %>% 
+  mlp(epochs = 1000, hidden_units = 10, penalty = 0.01, learn_rate = 0.1) |> 
+  set_engine("brulee", validation = 0) |> 
   set_mode("classification")
 
 nnet_wflow <- 
-  biv_rec %>% 
+  biv_rec |> 
   workflow(nnet_spec)
 
 set.seed(987)
 nnet_fit <- fit(nnet_wflow, cls_train)
-nnet_fit %>% extract_fit_engine()
+nnet_fit |> extract_fit_engine()
 ```
 
 ## Model performance
@@ -104,18 +104,18 @@ In parsnip, the `predict()` function can be used to characterize performance on 
 ```{r}
 #| label: "biv--perf"
 val_results <- 
-  cls_val %>%
+  cls_val |>
   bind_cols(
     predict(nnet_fit, new_data = cls_val),
     predict(nnet_fit, new_data = cls_val, type = "prob")
   )
-val_results %>% slice(1:5)
+val_results |> slice(1:5)
 
-val_results %>% roc_auc(truth = class, .pred_Class1)
+val_results |> roc_auc(truth = class, .pred_Class1)
 
-val_results %>% accuracy(truth = class, .pred_class)
+val_results |> accuracy(truth = class, .pred_class)
 
-val_results %>% conf_mat(truth = class, .pred_class)
+val_results |> conf_mat(truth = class, .pred_class)
 ```
 
 Let's also create a grid to get a visual sense of the class boundary for the test set.
@@ -134,7 +134,7 @@ x_grid <-
 # Make predictions using the transformed predictors but 
 # attach them to the predictors in the original units: 
 x_grid <- 
-  x_grid %>% 
+  x_grid |> 
   bind_cols(predict(nnet_fit, x_grid, type = "prob"))
 
 ggplot(x_grid, aes(x = A, y = B)) + 

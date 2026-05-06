@@ -67,8 +67,8 @@ Suppose you want to test for correlations individually *within* each tree. You c
 
 ```{r}
 #| label: correlation-by-tree
-Orange %>% 
-  group_by(Tree) %>%
+Orange |> 
+  group_by(Tree) |>
   summarize(correlation = cor(age, circumference))
 ```
 
@@ -94,7 +94,7 @@ Often, we want to perform multiple tests or fit multiple models, each on a diffe
 ```{r}
 #| label: nest-by-tree
 nested <- 
-  Orange %>% 
+  Orange |> 
   nest(data = c(age, circumference))
 ```
 
@@ -102,7 +102,7 @@ Then we perform a correlation test for each nested tibble using `purrr::map()`:
 
 ```{r}
 #| label: map-cor-test
-nested %>% 
+nested |> 
   mutate(test = map(data, ~ cor.test(.x$age, .x$circumference)))
 ```
 
@@ -110,7 +110,7 @@ This results in a list-column of S3 objects. We want to tidy each of the objects
 
 ```{r}
 #| label: map-tidy-cor-test
-nested %>% 
+nested |> 
   mutate(
     test = map(data, ~ cor.test(.x$age, .x$circumference)), # S3 list-col
     tidied = map(test, tidy)
@@ -121,13 +121,13 @@ Finally, we want to unnest the tidied data frames so we can see the results in a
 
 ```{r}
 #| label: unnest-cor-test
-Orange %>% 
-  nest(data = c(age, circumference)) %>% 
+Orange |> 
+  nest(data = c(age, circumference)) |> 
   mutate(
     test = map(data, ~ cor.test(.x$age, .x$circumference)), # S3 list-col
     tidied = map(test, tidy)
-  ) %>% 
-  unnest(cols = tidied) %>% 
+  ) |> 
+  unnest(cols = tidied) |> 
   select(-data, -test)
 ```
 
@@ -152,13 +152,13 @@ Now we can handle multiple regressions at once using exactly the same workflow a
 
 ```{r}
 #| label: nest-map-lm-orange
-Orange %>%
-  nest(data = c(-Tree)) %>% 
+Orange |>
+  nest(data = c(-Tree)) |> 
   mutate(
     fit = map(data, ~ lm(age ~ circumference, data = .x)),
     tidied = map(fit, tidy)
-  ) %>% 
-  unnest(tidied) %>% 
+  ) |> 
+  unnest(tidied) |> 
   select(-data, -fit)
 ```
 
@@ -170,13 +170,13 @@ data(mtcars)
 mtcars <- as_tibble(mtcars)  # to play nicely with list-cols
 mtcars
 
-mtcars %>%
-  nest(data = c(-am)) %>% 
+mtcars |>
+  nest(data = c(-am)) |> 
   mutate(
     fit = map(data, ~ lm(wt ~ mpg + qsec + gear, data = .x)),  # S3 list-col
     tidied = map(fit, tidy)
-  ) %>% 
-  unnest(tidied) %>% 
+  ) |> 
+  unnest(tidied) |> 
   select(-data, -fit)
 ```
 
@@ -185,8 +185,8 @@ What if you want not just the `tidy()` output, but the `augment()` and `glance()
 ```{r}
 #| label: nest-map-lm-mtcars
 regressions <- 
-  mtcars %>%
-  nest(data = c(-am)) %>% 
+  mtcars |>
+  nest(data = c(-am)) |> 
   mutate(
     fit = map(data, ~ lm(wt ~ mpg + qsec + gear, data = .x)),
     tidied = map(fit, tidy),
@@ -194,16 +194,16 @@ regressions <-
     augmented = map(fit, augment)
   )
 
-regressions %>% 
-  select(tidied) %>% 
+regressions |> 
+  select(tidied) |> 
   unnest(tidied)
 
-regressions %>% 
-  select(glanced) %>% 
+regressions |> 
+  select(glanced) |> 
   unnest(glanced)
 
-regressions %>% 
-  select(augmented) %>% 
+regressions |> 
+  select(augmented) |> 
   unnest(augmented)
 ```
 

@@ -34,7 +34,7 @@ Below is all the model engine combinations that support sparse data. It is known
 ```{r}
 #| label: list-models
 #| echo: false
-models <- models %>%
+models <- models |>
   mutate(
  url = str_remove(topic, "<a href='"),
  url = str_remove(url, "' target=.*")

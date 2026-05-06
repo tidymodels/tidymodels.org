@@ -71,7 +71,7 @@ library(censored)
 
 building_complaints <- modeldatatoo::data_building_complaints()
 
-building_complaints <- building_complaints %>% 
+building_complaints <- building_complaints |> 
   mutate(
     disposition_surv = Surv(days_to_disposition, status == "CLOSED"), 
     .keep = "unused"
@@ -87,18 +87,18 @@ We'll need a model to illustrate the code and concepts. Let's fit a basic Weibul
 
 ```{r}
 #| label: fit
-survreg_spec <- survival_reg() %>% 
-  set_engine("survival") %>% 
+survreg_spec <- survival_reg() |> 
+  set_engine("survival") |> 
   set_mode("censored regression")
 
-other_rec <- recipe(disposition_surv ~ ., data = complaints_train) %>% 
-  step_unknown(complaint_priority) %>% 
-  step_rm(complaint_category) %>% 
-  step_novel(community_board, unit) %>%
+other_rec <- recipe(disposition_surv ~ ., data = complaints_train) |> 
+  step_unknown(complaint_priority) |> 
+  step_rm(complaint_category) |> 
+  step_novel(community_board, unit) |>
   step_other(community_board, unit, threshold = 0.02)
 
-survreg_wflow <- workflow() %>% 
-  add_recipe(other_rec) %>% 
+survreg_wflow <- workflow() |> 
+  add_recipe(other_rec) |> 
   add_model(survreg_spec)
 
 complaints_fit <- fit(survreg_wflow, data = complaints_train)
@@ -166,7 +166,7 @@ Since the evaluation times and the case weights are within the `.pred` column, t
 ```{r}
 #| label: val-pred-brier
 brier_scores <-
-  val_pred %>% 
+  val_pred |> 
   brier_survival(truth = disposition_surv, .pred)
 brier_scores
 ```
@@ -175,7 +175,7 @@ Over time:
 
 ```{r}
 #| label: brier-scores
-brier_scores %>% 
+brier_scores |> 
   ggplot(aes(.eval_time, .estimate)) + 
   geom_hline(yintercept = 1 / 4, col = "red", lty = 3) +
   geom_line() +
@@ -183,13 +183,13 @@ brier_scores %>%
   labs(x = "time", y = "Brier score")
 ```
 
-This shows the worst predictions (relatively speaking) occur at `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".eval_time")` days with a corresponding Brier score of `r brier_scores %>% slice_max(.estimate, n = 1) %>% pluck(".estimate") %>% signif(digits = 3)`. Performance gets steadily better over (evaluation) time. 
+This shows the worst predictions (relatively speaking) occur at `r brier_scores |> slice_max(.estimate, n = 1) |> pluck(".eval_time")` days with a corresponding Brier score of `r brier_scores |> slice_max(.estimate, n = 1) |> pluck(".estimate") |> signif(digits = 3)`. Performance gets steadily better over (evaluation) time. 
 
 Instead of thinking in `r length(time_points)` dimensions, there is also an _integrated_ Brier score. This required evaluation times as inputs but instead of returning each result, it takes the area under the above curve. The syntax is the same, but the result has a single row: 
 
 ```{r}
 #| label: val-pred-brier-int
-val_pred %>% brier_survival_integrated(truth = disposition_surv, .pred)
+val_pred |> brier_survival_integrated(truth = disposition_surv, .pred)
 ```
 
 Again, smaller values are better. 
@@ -227,10 +227,10 @@ time_as_binary_event <- function(surv, eval_time) {
 
 # Unnest the list columns and convert the event time data to binary format 
 binary_encoding <- 
-  val_pred %>% 
-  select(.pred, disposition_surv) %>% 
-  add_rowindex() %>% 
-  unnest(.pred) %>% 
+  val_pred |> 
+  select(.pred, disposition_surv) |> 
+  add_rowindex() |> 
+  unnest(.pred) |> 
   mutate(
     obs_class = time_as_binary_event(disposition_surv, .eval_time),
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
@@ -239,8 +239,8 @@ binary_encoding <-
   )
 
 early_data <- 
-  binary_encoding %>% 
-  filter(.eval_time == 10 & !is.na(.weight_censored)) %>% 
+  binary_encoding |> 
+  filter(.eval_time == 10 & !is.na(.weight_censored)) |> 
   select(.eval_time, .pred_survival, .weight_censored, obs_class, pred_class, 
          .pred_event, disposition_surv)
 
@@ -256,7 +256,7 @@ if (!file.exists("binary_encoding.RData")) {
 #| out-width: 70%
 #| fig-width: 7
 #| fig-height: 7
-early_data %>% 
+early_data |> 
   ggplot(aes(x = 1 - .pred_survival, weight = .weight_censored)) + 
   geom_vline(xintercept = 1 / 2, col = "blue", lty = 2) +
   geom_histogram(col = "white", bins = 30) + 
@@ -272,19 +272,19 @@ early_data %>%
 #| include: false 
 cls_set <- metric_set(accuracy, sens, spec)
 stats_early <- 
-  early_data %>%
+  early_data |>
   mutate(
     pred_class = if_else(.pred_survival >= 1 / 2, "non-event", "event"),
     pred_class = factor(pred_class, levels = c("event", "non-event"))
-  ) %>% 
+  ) |> 
   cls_set(truth = obs_class,
            estimate = pred_class,
            case_weights = .weight_censored)
 
 pred_early <- augment(complaints_fit, complaints_val, eval_time = 10)
 
-curve_early <- pred_early %>% roc_curve_survival(truth = disposition_surv, .pred)
-auc_early <- pred_early %>% roc_auc_survival(truth = disposition_surv, .pred)
+curve_early <- pred_early |> roc_curve_survival(truth = disposition_surv, .pred)
+auc_early <- pred_early |> roc_auc_survival(truth = disposition_surv, .pred)
 ```
 
 More probability values are to the left of the 50% cutoff for the true non-events. The true events tend to have larger probabilities but are not nearly as clearly distributed to the right of the cutoff as the non-events are to the left of the cutoff. Using this cutoff, the sensitivity would be `r round(stats_early$.estimate[2] * 100, 1)`% and the specificity would be `r round(stats_early$.estimate[3] * 100, 1)`%. There are other possible cutoffs for the survival probabilities. Maybe one of these would have better statistics. 
@@ -298,7 +298,7 @@ For our example at evaluation time $t = 10.00$, the ROC curve is:
 ```{r}
 #| label: roc-early
 #| echo: false
-curve_early %>% 
+curve_early |> 
   ggplot(aes(1 - specificity, sensitivity)) +
   geom_abline(col = "red", lty = 3) +
   geom_step(direction = "vh") +
@@ -312,7 +312,7 @@ Since this is a dynamic metric, we compute the AUC for each evaluation time. The
 ```{r}
 #| label: val-pred-roc
 roc_scores <-
-  val_pred %>% 
+  val_pred |> 
   roc_auc_survival(truth = disposition_surv, .pred)
 roc_scores
 ```
@@ -321,7 +321,7 @@ Over time:
 
 ```{r}
 #| label: roc-scores
-roc_scores %>% 
+roc_scores |> 
   ggplot(aes(.eval_time, .estimate)) + 
   geom_hline(yintercept = 1 / 2, col = "red", lty = 3) +
   geom_line() +
@@ -352,7 +352,7 @@ example_data <-
   )
 
 p_ex_dens <- 
-  example_data %>% 
+  example_data |> 
   ggplot(aes(.pred_event, col = class, fill = class)) + 
   stat_density(alpha = 1 / 4, trim = TRUE, adjust = 1.2) + 
   lims(x = 0:1) +
@@ -386,16 +386,16 @@ The figure on the right shows a _calibration plot_ for the same data (see [this 
 if (!file.exists("auc_plot_data.RData")) {
   
   get_binary_data <- function(eval_time) {
-    binary_encoding %>%
-      filter(.eval_time == eval_time & !is.na(.weight_censored)) %>%
+    binary_encoding |>
+      filter(.eval_time == eval_time & !is.na(.weight_censored)) |>
       select(.eval_time, .pred_survival, .weight_censored, obs_class, pred_class,
              .pred_event, disposition_surv)
   }
   
   get_roc_curves <- function(time) {
     pred_vals <- augment(complaints_fit, complaints_val, eval_time = time)
-    pred_vals %>%
-      roc_curve_survival(truth = disposition_surv, .pred) %>%
+    pred_vals |>
+      roc_curve_survival(truth = disposition_surv, .pred) |>
       mutate(.eval_time = time)
     
   }
@@ -407,14 +407,14 @@ if (!file.exists("auc_plot_data.RData")) {
 }
 
 auc_100 <- 
-  binary_encoding %>% 
-  dplyr::filter(.eval_time %in% c(100) & !is.na(obs_class)) %>% 
-  roc_auc(obs_class, .pred_event, case_weights = .weight_censored) %>% 
+  binary_encoding |> 
+  dplyr::filter(.eval_time %in% c(100) & !is.na(obs_class)) |> 
+  roc_auc(obs_class, .pred_event, case_weights = .weight_censored) |> 
   pluck(".estimate")
 small_100 <- 
-  binary_encoding %>% 
-  dplyr::filter(.eval_time %in% c(100) & !is.na(obs_class)) %>% 
-  summarize(min = min(.pred_event)) %>% 
+  binary_encoding |> 
+  dplyr::filter(.eval_time %in% c(100) & !is.na(obs_class)) |> 
+  summarize(min = min(.pred_event)) |> 
   pluck("min")
 ```
 
@@ -426,8 +426,8 @@ small_100 <-
 if (!file.exists("cal_plot_data")) {
   
   get_binary_data <- function(eval_time) {
-    binary_encoding %>%
-      filter(.eval_time == eval_time & !is.na(.weight_censored)) %>%
+    binary_encoding |>
+      filter(.eval_time == eval_time & !is.na(.weight_censored)) |>
       select(.eval_time, .pred_survival, .weight_censored, obs_class, 
              pred_class, .pred_event, disposition_surv)
   }
@@ -486,8 +486,8 @@ if (!file.exists("cal_plot_data")) {
       cuts$lower_cut,
       cuts$mid,
       cuts$upper_cut
-    ) %>%
-      mutate(.eval_time = eval_time) %>%
+    ) |>
+      mutate(.eval_time = eval_time) |>
       dplyr::filter(!is.na(observed))
   }
   
@@ -509,8 +509,8 @@ For the NY building complaint data, let’s look at evaluation times of 10 and 1
 #| label: cal-hist
 #| echo: false
 #| warning: false
-binary_encoding %>% 
-  dplyr::filter(.eval_time %in% c(10, 100) & !is.na(obs_class)) %>%
+binary_encoding |> 
+  dplyr::filter(.eval_time %in% c(10, 100) & !is.na(obs_class)) |>
   ggplot(aes(x = 1 - .pred_survival, weight = .weight_censored)) + 
   geom_vline(xintercept = 1 / 2, col = "blue", lty = 2) +
   geom_histogram(col = "white", bins = 20) + 
@@ -529,15 +529,15 @@ The calibration plots are below with the size of the points being proportional t
 #| echo: false
 #| fig-height: 4
 below_85 <- 
-  cal_plot_data %>%
-  dplyr::filter(.eval_time %in% c(100)) %>% 
-  mutate(below_85 = ifelse(`sum of weights` <= 85, 0, `sum of weights`)) %>% 
-  select(`sum of weights`, below_85) %>% 
+  cal_plot_data |>
+  dplyr::filter(.eval_time %in% c(100)) |> 
+  mutate(below_85 = ifelse(`sum of weights` <= 85, 0, `sum of weights`)) |> 
+  select(`sum of weights`, below_85) |> 
   colMeans()
 
-cal_plot_data %>%
-  dplyr::filter(.eval_time %in% c(10, 100)) %>%
-  mutate(time_label = paste("Evaluation time:", .eval_time)) %>% 
+cal_plot_data |>
+  dplyr::filter(.eval_time %in% c(10, 100)) |>
+  mutate(time_label = paste("Evaluation time:", .eval_time)) |> 
   ggplot(aes(expected, observed)) +
   geom_abline(col = "green", lty = 2) +
   geom_point(aes(size = `sum of weights`)) +
@@ -556,9 +556,9 @@ What about the ROC curves produced by these data? They are:
 #| label: roc-both
 #| echo: false
 
-auc_plot_data %>%
-  dplyr::filter(.eval_time %in% c(10, 100)) %>%
-  mutate(time_label = paste("Evaluation time:", .eval_time)) %>% 
+auc_plot_data |>
+  dplyr::filter(.eval_time %in% c(10, 100)) |>
+  mutate(time_label = paste("Evaluation time:", .eval_time)) |> 
   ggplot(aes(1 - specificity, sensitivity, col = time_label)) +
   geom_abline(col = "red", lty = 3) +
   geom_step() +

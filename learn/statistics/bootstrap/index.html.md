@@ -114,12 +114,12 @@ fit_nls_on_bootstrap <- function(split) {
 }
 
 boot_models <-
-  boots %>% 
+  boots |> 
   mutate(model = map(splits, fit_nls_on_bootstrap),
          coef_info = map(model, tidy))
 
 boot_coefs <- 
-  boot_models %>% 
+  boot_models |> 
   unnest(coef_info)
 ```
 :::
@@ -191,9 +191,9 @@ We can use `augment()` to visualize the uncertainty in the fitted curve. Since t
 
 ```{.r .cell-code}
 boot_aug <- 
-  boot_models %>% 
-  sample_n(200) %>% 
-  mutate(augmented = map(model, augment)) %>% 
+  boot_models |> 
+  sample_n(200) |> 
+  mutate(augmented = map(model, augment)) |> 
   unnest(augmented)
 
 boot_aug
@@ -238,13 +238,13 @@ fit_spline_on_bootstrap <- function(split) {
 }
 
 boot_splines <- 
-  boots %>% 
-  sample_n(200) %>% 
+  boots |> 
+  sample_n(200) |> 
   mutate(spline = map(splits, fit_spline_on_bootstrap),
          aug_train = map(spline, augment))
 
 splines_aug <- 
-  boot_splines %>% 
+  boot_splines |> 
   unnest(aug_train)
 
 ggplot(splines_aug, aes(x, y)) +

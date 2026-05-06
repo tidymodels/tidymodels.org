@@ -45,7 +45,7 @@ theme_set(theme_bw())
 
 data(Chicago)
 
-Chicago <- Chicago %>% select(ridership, Clark_Lake, Austin, Harlem)
+Chicago <- Chicago |> select(ridership, Clark_Lake, Austin, Harlem)
 ```
 :::
 
@@ -129,9 +129,9 @@ We'll use the latter option and then tidy this model object as we did in the pre
 
 ```{.r .cell-code}
 get_lm_coefs <- function(x) {
-  x %>% 
+  x |> 
     # get the lm model object
-    extract_fit_engine() %>% 
+    extract_fit_engine() |> 
     # transform its format
     tidy()
 }
@@ -145,7 +145,7 @@ This argument is then passed to `fit_resamples()`:
 
 ```{.r .cell-code}
 lm_res <- 
-  lm_spec %>% 
+  lm_spec |> 
   fit_resamples(ridership ~ ., resamples = bt, control = tidy_ctrl)
 lm_res
 #> # Resampling results
@@ -195,8 +195,8 @@ These nested columns can be flattened via the purrr `unnest()` function:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-lm_res %>% 
-  select(id, .extracts) %>% 
+lm_res |> 
+  select(id, .extracts) |> 
   unnest(.extracts) 
 #> # A tibble: 5 × 3
 #>   id         .extracts        .config        
@@ -215,12 +215,12 @@ We still have a column of nested tibbles, so we can run the same command again t
 
 ```{.r .cell-code}
 lm_coefs <- 
-  lm_res %>% 
-  select(id, .extracts) %>% 
-  unnest(.extracts) %>% 
+  lm_res |> 
+  select(id, .extracts) |> 
+  unnest(.extracts) |> 
   unnest(.extracts)
 
-lm_coefs %>% select(id, term, estimate, p.value)
+lm_coefs |> select(id, term, estimate, p.value)
 #> # A tibble: 20 × 4
 #>    id         term        estimate   p.value
 #>    <chr>      <chr>          <dbl>     <dbl>
@@ -252,8 +252,8 @@ That's better! Now, let's plot the model coefficients for each resample:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-lm_coefs %>%
-  filter(term != "(Intercept)") %>% 
+lm_coefs |>
+  filter(term != "(Intercept)") |> 
   ggplot(aes(x = term, y = estimate, group = id, col = id)) +  
   geom_hline(yintercept = 0, lty = 3) + 
   geom_line(alpha = 0.3, lwd = 1.2) + 
@@ -286,7 +286,7 @@ The glmnet model has two primary tuning parameters, the total amount of penaliza
 
 ```{.r .cell-code}
 glmnet_spec <- 
-  linear_reg(penalty = 0.1, mixture = 0.95) %>% 
+  linear_reg(penalty = 0.1, mixture = 0.95) |> 
   set_engine("glmnet")
 ```
 :::
@@ -303,8 +303,8 @@ Let's combine the model specification with a formula in a model `workflow()` and
 
 ```{.r .cell-code}
 glmnet_wflow <- 
-  workflow() %>% 
-  add_model(glmnet_spec) %>% 
+  workflow() |> 
+  add_model(glmnet_spec) |> 
   add_formula(ridership ~ .)
 
 glmnet_fit <- fit(glmnet_wflow, Chicago)
@@ -386,10 +386,10 @@ This glmnet fit contains multiple penalty values which depend on the data set; c
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-glmnet_fit %>% 
-  extract_fit_engine() %>% 
-  tidy() %>% 
-  rename(penalty = lambda) %>%   # <- for consistent naming
+glmnet_fit |> 
+  extract_fit_engine() |> 
+  tidy() |> 
+  rename(penalty = lambda) |>   # <- for consistent naming
   filter(term != "(Intercept)")
 #> # A tibble: 99 × 5
 #>    term        step estimate penalty dev.ratio
@@ -470,11 +470,11 @@ We can pass these as an engine argument and then update our previous workflow ob
 
 ```{.r .cell-code}
 glmnet_tune_spec <- 
-  linear_reg(penalty = tune(), mixture = tune()) %>% 
+  linear_reg(penalty = tune(), mixture = tune()) |> 
   set_engine("glmnet", path_values = pen_vals)
 
 glmnet_wflow <- 
-  glmnet_wflow %>% 
+  glmnet_wflow |> 
   update_model(glmnet_tune_spec)
 ```
 :::
@@ -485,15 +485,15 @@ Now we will use an extraction function similar to when we used ordinary least sq
 
 ```{.r .cell-code}
 get_glmnet_coefs <- function(x) {
-  x %>% 
-    extract_fit_engine() %>% 
-    tidy(return_zeros = TRUE) %>% 
+  x |> 
+    extract_fit_engine() |> 
+    tidy(return_zeros = TRUE) |> 
     rename(penalty = lambda)
 }
 parsnip_ctrl <- control_grid(extract = get_glmnet_coefs)
 
 glmnet_res <- 
-  glmnet_wflow %>% 
+  glmnet_wflow |> 
   tune_grid(
     resamples = bt,
     grid = grid,
@@ -518,7 +518,7 @@ As noted before, the elements of the main `.extracts` column have an embedded li
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-glmnet_res$.extracts[[1]] %>% head()
+glmnet_res$.extracts[[1]] |> head()
 #> # A tibble: 6 × 4
 #>   penalty mixture .extracts         .config         
 #>     <dbl>   <dbl> <list>            <chr>           
@@ -529,7 +529,7 @@ glmnet_res$.extracts[[1]] %>% head()
 #> 5 0.00464     0.1 <tibble [40 × 5]> pre0_mod05_post0
 #> 6 0.00464     1   <tibble [40 × 5]> pre0_mod06_post0
 
-glmnet_res$.extracts[[1]]$.extracts[[1]] %>% head()
+glmnet_res$.extracts[[1]]$.extracts[[1]] |> head()
 #> # A tibble: 6 × 5
 #>   term         step estimate penalty dev.ratio
 #>   <chr>       <dbl>    <dbl>   <dbl>     <dbl>
@@ -547,10 +547,10 @@ As before, we'll have to use a double `unnest()`. Since the penalty value is in 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-glmnet_res %>% 
-  select(id, .extracts) %>% 
-  unnest(.extracts) %>% 
-  select(id, mixture, .extracts) %>%  # <- removes the first penalty column
+glmnet_res |> 
+  select(id, .extracts) |> 
+  unnest(.extracts) |> 
+  select(id, mixture, .extracts) |>  # <- removes the first penalty column
   unnest(.extracts)
 ```
 :::
@@ -577,17 +577,17 @@ For this reason, we'll add a `slice(1)` when grouping by `id` and `mixture`. Thi
 
 ```{.r .cell-code}
 glmnet_coefs <- 
-  glmnet_res %>% 
-  select(id, .extracts) %>% 
-  unnest(.extracts) %>% 
-  select(id, mixture, .extracts) %>% 
-  group_by(id, mixture) %>%          # ┐
-  slice(1) %>%                       # │ Remove the redundant results
-  ungroup() %>%                      # ┘
+  glmnet_res |> 
+  select(id, .extracts) |> 
+  unnest(.extracts) |> 
+  select(id, mixture, .extracts) |> 
+  group_by(id, mixture) |>          # ┐
+  slice(1) |>                       # │ Remove the redundant results
+  ungroup() |>                      # ┘
   unnest(.extracts)
 
-glmnet_coefs %>% 
-  select(id, penalty, mixture, term, estimate) %>% 
+glmnet_coefs |> 
+  select(id, penalty, mixture, term, estimate) |> 
   filter(term != "(Intercept)")
 #> # A tibble: 300 × 5
 #>    id         penalty mixture term       estimate
@@ -611,9 +611,9 @@ Now we have the coefficients. Let's look at how they behave as more regularizati
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-glmnet_coefs %>% 
-  filter(term != "(Intercept)") %>% 
-  mutate(mixture = format(mixture)) %>% 
+glmnet_coefs |> 
+  filter(term != "(Intercept)") |> 
+  mutate(mixture = format(mixture)) |> 
   ggplot(aes(x = penalty, y = estimate, col = mixture, groups = id)) + 
   geom_hline(yintercept = 0, lty = 3) +
   geom_line(alpha = 0.5, lwd = 1.2) + 

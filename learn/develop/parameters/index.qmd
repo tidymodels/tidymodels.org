@@ -108,7 +108,7 @@ num_initial_terms()
 
 # Sample from the parameter:
 set.seed(4832856)
-num_initial_terms() %>% value_sample(5)
+num_initial_terms() |> value_sample(5)
 ```
 
 ### Finalizing parameters
@@ -132,7 +132,7 @@ num_initial_terms <- function(range = c(1L, unknown()), trans = NULL) {
 num_initial_terms()
 
 # Can we sample? 
-num_initial_terms() %>% value_sample(5)
+num_initial_terms() |> value_sample(5)
 ```
 
 The `finalize` argument of `num_initial_terms()` can take a function that uses data to set the range. For example, the package already includes a few functions for finalization:
@@ -155,7 +155,7 @@ get_initial_mars_terms <- function(object, x) {
 }
 
 # Use the mtcars are the finalize the upper bound: 
-num_initial_terms() %>% get_initial_mars_terms(x = mtcars[, -1])
+num_initial_terms() |> get_initial_mars_terms(x = mtcars[, -1])
 ```
 
 Once we add this function to the object, the general `finalize()` method can be used:
@@ -173,7 +173,7 @@ num_initial_terms <- function(range = c(1L, unknown()), trans = NULL) {
   )
 }
 
-num_initial_terms() %>% finalize(x = mtcars[, -1])
+num_initial_terms() |> finalize(x = mtcars[, -1])
 ```
 
 ## Qualitative parameters
@@ -217,7 +217,7 @@ We can use our `aggregation` parameters with dials functions.
 ```{r}
 #| label: "aggregation-use"
 aggregation()
-aggregation() %>% value_sample(3)
+aggregation() |> value_sample(3)
 ```
 
 ## Session information {#session-info}

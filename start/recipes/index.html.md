@@ -68,21 +68,21 @@ Let's use the [nycflights13 data](https://github.com/hadley/nycflights13) to pre
 set.seed(123)
 
 flight_data <- 
-  flights %>% 
+  flights |> 
   mutate(
     # Convert the arrival delay to a factor
     arr_delay = ifelse(arr_delay >= 30, "late", "on_time"),
     arr_delay = factor(arr_delay),
     # We will use the date (not date-time) in the recipe below
     date = lubridate::as_date(time_hour)
-  ) %>% 
+  ) |> 
   # Include the weather data
-  inner_join(weather, by = c("origin", "time_hour")) %>% 
+  inner_join(weather, by = c("origin", "time_hour")) |> 
   # Only retain the specific columns we will use
   select(dep_time, flight, origin, dest, air_time, distance, 
-         carrier, date, arr_delay, time_hour) %>% 
+         carrier, date, arr_delay, time_hour) |> 
   # Exclude missing data
-  na.omit() %>% 
+  na.omit() |> 
   # For creating models, it is better to have qualitative columns
   # encoded as factors (instead of character strings)
   mutate_if(is.character, as.factor)
@@ -94,8 +94,8 @@ We can see that about 16% of the flights in this data set arrived more than 30 m
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flight_data %>% 
-  count(arr_delay) %>% 
+flight_data |> 
+  count(arr_delay) |> 
   mutate(prop = n/sum(n))
 #> # A tibble: 2 × 3
 #>   arr_delay      n  prop
@@ -135,7 +135,7 @@ Third, there are 104 flight destinations contained in `dest` and 16 distinct `ca
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flight_data %>% 
+flight_data |> 
   skimr::skim(dest, carrier) 
 ```
 
@@ -143,16 +143,16 @@ flight_data %>%
 
 Table: Data summary
 
-|                         |           |
-|:------------------------|:----------|
-|Name                     |Piped data |
-|Number of rows           |325819     |
-|Number of columns        |10         |
-|_______________________  |           |
-|Column type frequency:   |           |
-|factor                   |2          |
-|________________________ |           |
-|Group variables          |None       |
+|                         |            |
+|:------------------------|:-----------|
+|Name                     |flight_data |
+|Number of rows           |325819      |
+|Number of columns        |10          |
+|_______________________  |            |
+|Column type frequency:   |            |
+|factor                   |2           |
+|________________________ |            |
+|Group variables          |None        |
 
 **Variable type: factor**
 
@@ -213,7 +213,7 @@ Now we can add [roles](https://recipes.tidymodels.org/reference/roles.html) to t
 
 ```{.r .cell-code}
 flights_rec <- 
-  recipe(arr_delay ~ ., data = train_data) %>% 
+  recipe(arr_delay ~ ., data = train_data) |> 
   update_role(flight, time_hour, new_role = "ID") 
 ```
 :::
@@ -249,8 +249,8 @@ Now we can start adding steps onto our recipe using the pipe operator. Perhaps i
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flight_data %>% 
-  distinct(date) %>% 
+flight_data |> 
+  distinct(date) |> 
   mutate(numeric_date = as.numeric(date)) 
 #> # A tibble: 364 × 2
 #>    date       numeric_date
@@ -283,9 +283,9 @@ Let's do all three of these by adding steps to our recipe:
 
 ```{.r .cell-code}
 flights_rec <- 
-  recipe(arr_delay ~ ., data = train_data) %>% 
-  update_role(flight, time_hour, new_role = "ID") %>% 
-  step_date(date, features = c("dow", "month")) %>%               
+  recipe(arr_delay ~ ., data = train_data) |> 
+  update_role(flight, time_hour, new_role = "ID") |> 
+  step_date(date, features = c("dow", "month")) |>               
   step_holiday(date, 
                holidays = timeDate::listHolidays("US"), 
                keep_original_cols = FALSE)
@@ -344,12 +344,12 @@ But, unlike the standard model formula methods in R, a recipe **does not** autom
 
 ```{.r .cell-code}
 flights_rec <- 
-  recipe(arr_delay ~ ., data = train_data) %>% 
-  update_role(flight, time_hour, new_role = "ID") %>% 
-  step_date(date, features = c("dow", "month")) %>%               
+  recipe(arr_delay ~ ., data = train_data) |> 
+  update_role(flight, time_hour, new_role = "ID") |> 
+  step_date(date, features = c("dow", "month")) |>               
   step_holiday(date, 
                holidays = timeDate::listHolidays("US"), 
-               keep_original_cols = FALSE) %>% 
+               keep_original_cols = FALSE) |> 
   step_dummy(all_nominal_predictors())
 ```
 :::
@@ -365,8 +365,8 @@ We need one final step to add to our recipe. Since `carrier` and `dest` have som
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-test_data %>% 
-  distinct(dest) %>% 
+test_data |> 
+  distinct(dest) |> 
   anti_join(train_data)
 #> Joining with `by = join_by(dest)`
 #> # A tibble: 1 × 1
@@ -382,13 +382,13 @@ When the recipe is applied to the training set, a column is made for LEX because
 
 ```{.r .cell-code}
 flights_rec <- 
-  recipe(arr_delay ~ ., data = train_data) %>% 
-  update_role(flight, time_hour, new_role = "ID") %>% 
-  step_date(date, features = c("dow", "month")) %>%               
+  recipe(arr_delay ~ ., data = train_data) |> 
+  update_role(flight, time_hour, new_role = "ID") |> 
+  step_date(date, features = c("dow", "month")) |>               
   step_holiday(date, 
                holidays = timeDate::listHolidays("US"), 
-               keep_original_cols = FALSE) %>% 
-  step_dummy(all_nominal_predictors()) %>% 
+               keep_original_cols = FALSE) |> 
+  step_dummy(all_nominal_predictors()) |> 
   step_zv(all_predictors())
 ```
 :::
@@ -403,7 +403,7 @@ Let's use logistic regression to model the flight data. As we saw in [*Build a M
 
 ```{.r .cell-code}
 lr_mod <- 
-  logistic_reg() %>% 
+  logistic_reg() |> 
   set_engine("glm")
 ```
 :::
@@ -422,8 +422,8 @@ To simplify this process, we can use a *model workflow*, which pairs a model and
 
 ```{.r .cell-code}
 flights_wflow <- 
-  workflow() %>% 
-  add_model(lr_mod) %>% 
+  workflow() |> 
+  add_model(lr_mod) |> 
   add_recipe(flights_rec)
 
 flights_wflow
@@ -452,7 +452,7 @@ Now, there is a single function that can be used to prepare the recipe and train
 
 ```{.r .cell-code}
 flights_fit <- 
-  flights_wflow %>% 
+  flights_wflow |> 
   fit(data = train_data)
 ```
 :::
@@ -462,8 +462,8 @@ This object has the finalized recipe and fitted model objects inside. You may wa
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flights_fit %>% 
-  extract_fit_parsnip() %>% 
+flights_fit |> 
+  extract_fit_parsnip() |> 
   tidy()
 #> # A tibble: 157 × 5
 #>    term                         estimate std.error statistic  p.value
@@ -526,7 +526,7 @@ flights_aug <-
   augment(flights_fit, test_data)
 
 # The data look like: 
-flights_aug %>%
+flights_aug |>
   select(arr_delay, time_hour, flight, .pred_class, .pred_on_time)
 #> # A tibble: 81,455 × 5
 #>    arr_delay time_hour           flight .pred_class .pred_on_time
@@ -554,8 +554,8 @@ To generate a ROC curve, we need the predicted class probabilities for `late` an
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flights_aug %>% 
-  roc_curve(truth = arr_delay, .pred_late) %>% 
+flights_aug |> 
+  roc_curve(truth = arr_delay, .pred_late) |> 
   autoplot()
 ```
 
@@ -569,7 +569,7 @@ Similarly, `roc_auc()` estimates the area under the curve:
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flights_aug %>% 
+flights_aug |> 
   roc_auc(truth = arr_delay, .pred_late)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
