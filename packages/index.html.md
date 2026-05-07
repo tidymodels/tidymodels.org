@@ -21,7 +21,7 @@ include-after-body: ../html/resources.html
 </div>
 <div class="packages">
 <div class="package">
-<img class="package-image" src="/images/tidymodels.png" alt=""></img>
+<img class="package-image" src="/images/tidymodels.svg" alt=""></img>
 <div class="package-info">
 <h3><a href="https://tidymodels.tidymodels.org/"> tidymodels</a></h3>
 <p>tidymodels is a meta-package that installs and load the core packages listed below that you need for modeling and machine learning.
