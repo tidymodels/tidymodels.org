@@ -10,7 +10,7 @@ This repo is the source of <https://www.tidymodels.org>, and this readme tells y
 * If you see any larger problems, an issue is probably better: that way we can 
   discuss the problem before you commit any time to it.
 
-This repo (and resulting website) is licensed as [CC BY-SA](LICENSE.md).
+This repo (and resulting website) is licensed as [CC BY-SA](LICENSE.md). Third-party icon artwork (Font Awesome Free, Bootstrap Icons) is attributed in [NOTICE.md](NOTICE.md).
 
 ## Contributing
 
