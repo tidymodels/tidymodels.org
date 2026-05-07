@@ -92,6 +92,8 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 * [`cheatsheets/`](cheatsheets/): cheatsheet page rendered from a single `index.qmd` file.
 
+* [`fonts/`](fonts/): self-hosted web fonts (Lato + Source Code Pro, latin subset). See [Fonts](#fonts) below.
+
 
 ## Quarto profiles
 
@@ -280,6 +282,20 @@ Rscript make_function_lists/parsnip.R
 Rscript make_function_lists/sparse.R
 Rscript make_function_lists/tidyclust.R
 ```
+
+## Fonts
+
+Web fonts are self-hosted from [`fonts/`](fonts/) — we do not load anything from `fonts.googleapis.com`. The included fonts are Lato (300, 400, 700, italic 400) and Source Code Pro (400), latin subset only.
+
+The `@font-face` rules live in [`fonts/fonts.css`](fonts/fonts.css), loaded via `format.html.css` in `_quarto.yml`. The cosmo theme's bundled Source Sans Pro `@import` is suppressed by `$web-font-path: "";` in [`styles.scss`](styles.scss).
+
+To add a new font weight or family:
+
+1. Download the woff2 file from [google-webfonts-helper](https://gwfh.mranftl.com/fonts) or directly from `fonts.googleapis.com` (use a browser User-Agent so you get woff2 instead of TTF).
+2. Drop the file in `fonts/`.
+3. Add a `@font-face` rule to `fonts/fonts.css` with `font-display: swap`. Use a same-directory relative URL: `src: url('lato-700.woff2') format('woff2');`.
+
+**Don't put `@font-face` rules in `styles.scss`.** Quarto's SCSS pre-parser mangles the `url()` paths (drops a slash from the rewritten relative path). Keep them in the plain CSS file.
 
 ## Styling
 
