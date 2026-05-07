@@ -5,6 +5,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="Tidymodels is a collection of R packages for modeling and machine learning using tidyverse principles.">
 <title>tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
@@ -62,9 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/quarto.js" type="module"></script><script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="site_libs/quarto-html/popper.min.js"></script><script src="site_libs/quarto-html/tippy.umd.min.js"></script><script src="site_libs/quarto-html/anchor.min.js"></script><link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script><link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c872eb91d08d600fb62c30a0891b5722.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -91,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><link rel="stylesheet" href="fonts/fonts.css">
 </head>
 <body class="nav-fixed quarto-light">
 
@@ -136,10 +135,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./find/index.html"> 
 <span class="menu-text">Find</span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/tidymodels/"> <i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
-<span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/tidymodels/"> 
+<span class="menu-text"><svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></span></a>
   </li>  
 </ul>
 </div> <!-- /navcollapse -->
@@ -154,50 +152,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="FrontPage">
+<div id="FrontPage" role="main">
 <div class="band first">
 <div class="bandContent">
 <div class="hexBadges">
-<a href="https://tidymodels.tidymodels.org/">
-<div>
-
-</div>
-</a><p><a href="https://tidymodels.tidymodels.org/"><img src="images/tidymodels.png" alt="tidymodels hex sticker" class="r1 c0"></a></p>
-<a href="https://rsample.tidymodels.org/">
-<div class="filtered r2 c0">
-
-</div>
-</a><p><a href="https://rsample.tidymodels.org/"><img src="images/rsample.svg" alt="rsample hex sticker" class="r2 c0"></a></p>
-<a href="https://parsnip.tidymodels.org/">
-<div class="filtered r3 c0">
-
-</div>
-</a><p><a href="https://parsnip.tidymodels.org/"><img src="images/parsnip.svg" alt="parsnip hex sticker" class="r3 c0"></a></p>
-<a href="https://recipes.tidymodels.org/">
-<div class="filtered r2 c2">
-
-</div>
-</a><p><a href="https://recipes.tidymodels.org/"><img src="images/recipes.svg" alt="recipes hex sticker" class="r2 c2"></a></p>
-<a href="https://tune.tidymodels.org/">
-<div class="filtered r3 c2">
-
-</div>
-</a><p><a href="https://tune.tidymodels.org/"><img src="images/tune.svg" alt="tune hex sticker" class="r3 c2"></a></p>
-<a href="https://yardstick.tidymodels.org/">
-<div class="filtered r4 c2">
-
-</div>
-</a><p><a href="https://yardstick.tidymodels.org/"><img src="images/yardstick.svg" alt="yardstick hex sticker" class="r4 c2"></a></p>
+<p><a href="https://tidymodels.tidymodels.org/"><img src="images/tidymodels.svg" alt="tidymodels hex sticker" class="r1 c0" width="120" height="139"></a> <a href="https://rsample.tidymodels.org/"><img src="images/rsample.svg" alt="rsample hex sticker" class="r2 c0" width="120" height="139"></a> <a href="https://parsnip.tidymodels.org/"><img src="images/parsnip.svg" alt="parsnip hex sticker" class="r3 c0" width="120" height="139"></a> <a href="https://recipes.tidymodels.org/"><img src="images/recipes.svg" alt="recipes hex sticker" class="r2 c2" width="120" height="139"></a> <a href="https://tune.tidymodels.org/"><img src="images/tune.svg" alt="tune hex sticker" class="r3 c2" width="120" height="139"></a> <a href="https://yardstick.tidymodels.org/"><img src="images/yardstick.svg" alt="yardstick hex sticker" class="r4 c2" width="120" height="139"></a></p>
 </div>
 <div class="blurb">
 <p><span class="tagline">TIDYMODELS</span></p>
 <p>The tidymodels framework is a collection of packages for modeling and machine learning using <a href="https://www.tidyverse.org/">tidyverse</a> principles.</p>
 <p>Install tidymodels with:</p>
-<div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidymodels"</span><span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
 </div>
 </div>
 </div>
@@ -206,20 +172,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="blurb">
 <p><span class="tagline">LEARN TIDYMODELS</span></p>
 <p>Whether you are just starting out today or have years of experience with modeling, tidymodels offers a consistent, flexible framework for your work.</p>
-<p><img src="images/cover.png" class="bookCover img-fluid" alt="Parsnip set your engine, illustrated by Allison Horst"></p>
+<p><picture><source srcset="images/cover.webp" type="image/webp"><img class="bookCover" src="images/cover.png" alt="Parsnip set your engine, illustrated by Allison Horst" width="1200" height="700"></source></picture></p>
 </div>
 <div class="blurb">
+<!-- Icons below are inlined SVG (Font Awesome Free 6 Solid) instead of the Quarto fa shortcode, so the page does not load FA's CSS or 154 KB woff2. Sizing/color come from .icon-inline in styles.scss. -->
 <div class="event">
+<!-- icon: fa-flag-checkered -->
 <div class="eventTitle">
-<a href="start/"><i class="fa-solid fa-flag-checkered" aria-label="flag-checkered"></i>  Get Started</a>
+<a href="start/"><svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M32 0C49.7 0 64 14.3 64 32l0 16 69-17.2c38.1-9.5 78.3-5.1 113.5 12.5c46.3 23.2 100.8 23.2 147.1 0l9.6-4.8C423.8 28.1 448 43.1 448 66.1l0 279.7c0 13.3-8.3 25.3-20.8 30l-34.7 13c-46.2 17.3-97.6 14.6-141.7-7.4c-37.9-19-81.3-23.7-122.5-13.4L64 384l0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-80 0-66L0 64 0 32C0 14.3 14.3 0 32 0zM64 187.1l64-13.9 0 65.5L64 252.6 64 318l48.8-12.2c5.1-1.3 10.1-2.4 15.2-3.3l0-63.9 38.9-8.4c8.3-1.8 16.7-2.5 25.1-2.1l0-64c13.6 .4 27.2 2.6 40.4 6.4l23.6 6.9 0 66.7-41.7-12.3c-7.3-2.1-14.8-3.4-22.3-3.8l0 71.4c21.8 1.9 43.3 6.7 64 14.4l0-69.8 22.7 6.7c13.5 4 27.3 6.4 41.3 7.4l0-64.2c-7.8-.8-15.6-2.3-23.2-4.5l-40.8-12 0-62c-13-3.8-25.8-8.8-38.2-15c-8.2-4.1-16.9-7-25.8-8.8l0 72.4c-13-.4-26 .8-38.7 3.6L128 173.2 128 98 64 114l0 73.1zM320 335.7c16.8 1.5 33.9-.7 50-6.8l14-5.2 0-71.7-7.9 1.8c-18.4 4.3-37.3 5.7-56.1 4.5l0 77.4zm64-149.4l0-70.8c-20.9 6.1-42.4 9.1-64 9.1l0 69.4c13.9 1.4 28 .5 41.7-2.6l22.3-5.2z"></path></svg>  Get Started</a>
 </div>
 <div class="eventDetails">
 What do you need to know to start using tidymodels? Learn what you need in 5 articles, starting with how to create a model and ending with a beginning-to-end modeling case study.
 </div>
 </div>
 <div class="event">
+<!-- icon: fa-lightbulb -->
 <div class="eventTitle">
-<a href="learn/"><i class="fa-solid fa-lightbulb" aria-label="lightbulb"></i>  Learn</a>
+<a href="learn/"><svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 384 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"></path></svg>  Learn</a>
 </div>
 <div class="eventDetails">
 After you are comfortable with the basics, you can learn how to go farther with tidymodels in your modeling and machine learning projects.
@@ -231,7 +200,7 @@ After you are comfortable with the basics, you can learn how to go farther with 
 <div class="band third">
 <div class="bandContent">
 <div class="hideOnMobile">
-<img class="bee1" src="images/parsnip-flagger.jpg" alt="">
+<picture><source srcset="images/parsnip-flagger.webp" type="image/webp"><img class="bee1" src="images/parsnip-flagger.jpg" alt="" width="220" height="203"></source></picture>
 </div>
 <div class="blurb">
 <p><span class="tagline">STAY UP TO DATE</span></p>
@@ -254,68 +223,6 @@ After you are comfortable with the basics, you can learn how to go farther with 
       icon: icon
     };
     anchorJS.add('.anchored');
-    const isCodeAnnotation = (el) => {
-      for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
-      }
-      return false;
-    }
-    const onCopySuccess = function(e) {
-      // button target
-      const button = e.trigger;
-      // don't keep focus
-      button.blur();
-      // flash "checked"
-      button.classList.add('code-copy-button-checked');
-      var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
-      let tooltip;
-      if (window.bootstrap) {
-        button.setAttribute("data-bs-toggle", "tooltip");
-        button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
-        tooltip.show();    
-      }
-      setTimeout(function() {
-        if (tooltip) {
-          tooltip.hide();
-          button.removeAttribute("data-bs-title");
-          button.removeAttribute("data-bs-toggle");
-          button.removeAttribute("data-bs-placement");
-        }
-        button.setAttribute("title", currentTitle);
-        button.classList.remove('code-copy-button-checked');
-      }, 1000);
-      // clear code selection
-      e.clearSelection();
-    }
-    const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-      text: getTextToCopy
-    });
-    clipboard.on('success', onCopySuccess);
-    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-        text: getTextToCopy,
-        container: window.document.getElementById('quarto-embedded-source-code-modal')
-      });
-      clipboardModal.on('success', onCopySuccess);
-    }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
         var filterRegex = new RegExp("https:\/\/www\.tidymodels\.org");
@@ -652,13 +559,9 @@ After you are comfortable with the basics, you can learn how to go farther with 
 </div>   
     <div class="nav-footer-center">
        
-    <div class="toc-actions"><ul>
-<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
-<li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
-</ul></div>
-</div>
+    </div>
     <div class="nav-footer-right">
-<p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
+<p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button" aria-label="Back to top"> <!-- icon: fa-chevron-up (Font Awesome Free 6 Solid) — inlined SVG instead of the Quarto fa shortcode so we don't pull in FA's CSS / 154 KB woff2 --> <svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg></a></p>
 </div>
   </div>
 </footer>

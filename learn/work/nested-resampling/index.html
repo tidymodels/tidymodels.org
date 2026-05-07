@@ -63,9 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-37bbcc8683ea02a8ad5216de92ac41e7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -92,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><link rel="stylesheet" href="../../../fonts/fonts.css">
 </head>
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
@@ -137,10 +135,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../../find/index.html"> 
 <span class="menu-text">Find</span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/tidymodels/"> <i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
-<span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/tidymodels/"> 
+<span class="menu-text"><svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></span></a>
   </li>  
 </ul>
 </div> <!-- /navcollapse -->
@@ -471,13 +468,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The potential problem is that once we pick the tuning parameter associated with the best performance, this performance value is usually quoted as the performance of the model. There is serious potential for <em>optimization bias</em> since we use the same data to tune the model and to assess performance. This would result in an optimistic estimate of performance.</p>
 <p>Nested resampling uses an additional layer of resampling that separates the tuning activities from the process used to estimate the efficacy of the model. An <em>outer</em> resampling scheme is used and, for every split in the outer resample, another full set of resampling splits are created on the original analysis set. For example, if 10-fold cross-validation is used on the outside and 5-fold cross-validation on the inside, a total of 500 models will be fit. The parameter tuning will be conducted 10 times and the best parameters are determined from the average of the 5 assessment sets. This process occurs 10 times.</p>
 <p>Once the tuning results are complete, a model is fit to each of the outer resampling splits using the best parameter associated with that resample. The average of the outer method’s assessment sets are a unbiased estimate of the model.</p>
-<p>We will simulate some regression data to illustrate the methods. The mlbench package has a function <code>mlbench::mlbench.friedman1()</code> that can simulate a complex regression data structure from the <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22Multivariate+adaptive+regression+splines%22&amp;btnG=&amp;as_sdt=1%2C7&amp;as_sdtp=">original MARS publication</a>. A training set size of 100 data points are generated as well as a large set that will be used to characterize how well the resampling procedure performed.</p>
+<p>We will simulate some regression data to illustrate the methods. The mlbench package has a function <code><a href="https://rdrr.io/pkg/mlbench/man/mlbench.friedman1.html">mlbench::mlbench.friedman1()</a></code> that can simulate a complex regression data structure from the <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22Multivariate+adaptive+regression+splines%22&amp;btnG=&amp;as_sdt=1%2C7&amp;as_sdtp=">original MARS publication</a>. A training set size of 100 data points are generated as well as a large set that will be used to characterize how well the resampling procedure performed.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlbench</span><span class="op">)</span></span>
 <span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">mlbench.friedman1</span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.friedman1.html">mlbench.friedman1</a></span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">x</span>, <span class="va">tmp</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
 <span>  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"y"</span></span>
@@ -565,7 +562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>To start, we need to define how the model will be created and measured. Let’s use a radial basis support vector machine model via the function <code>kernlab::ksvm</code>. This model is generally considered to have <em>two</em> tuning parameters: the SVM cost value and the kernel parameter <code>sigma</code>. For illustration purposes here, only the cost value will be tuned and the function <code>kernlab::sigest</code> will be used to estimate <code>sigma</code> during each model fit. This is automatically done by <code>ksvm</code>.</p>
+<p>To start, we need to define how the model will be created and measured. Let’s use a radial basis support vector machine model via the function <code><a href="https://rdrr.io/pkg/kernlab/man/ksvm.html">kernlab::ksvm</a></code>. This model is generally considered to have <em>two</em> tuning parameters: the SVM cost value and the kernel parameter <code>sigma</code>. For illustration purposes here, only the cost value will be tuned and the function <code><a href="https://rdrr.io/pkg/kernlab/man/sigest.html">kernlab::sigest</a></code> will be used to estimate <code>sigma</code> during each model fit. This is automatically done by <code>ksvm</code>.</p>
 <p>After the model is fit to the analysis set, the root-mean squared error (RMSE) is computed on the assessment set. <strong>One important note:</strong> for this model, it is critical to center and scale the predictors before computing dot products. We don’t do this operation here because <code>mlbench.friedman1</code> simulates all of the predictors to be standardized uniform random variables.</p>
 <p>Our function to fit the model and compute the RMSE is:</p>
 <div class="cell" data-layout-align="center">
@@ -765,7 +762,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">finalModel</span> <span class="op">&lt;-</span> <span class="fu">ksvm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_dat</span>, C <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">finalModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/kernlab/man/ksvm.html">ksvm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_dat</span>, C <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">large_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">finalModel</span>, <span class="va">large_dat</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">large_dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">large_dat</span><span class="op">$</span><span class="va">y</span> <span class="op">-</span> <span class="va">large_pred</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2.695091</span></span></code></pre></div>
@@ -1252,7 +1249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></div>
 </div>
     <div class="nav-footer-right">
-<p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
+<p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button" aria-label="Back to top"> <!-- icon: fa-chevron-up (Font Awesome Free 6 Solid) — inlined SVG instead of the Quarto fa shortcode so we don't pull in FA's CSS / 154 KB woff2 --> <svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg></a></p>
 </div>
   </div>
 </footer>

@@ -63,9 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8348b2d5c2bb4a73246cdd5819180553.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-37bbcc8683ea02a8ad5216de92ac41e7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -92,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><link rel="stylesheet" href="../../../fonts/fonts.css">
 </head>
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
@@ -137,10 +135,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../../find/index.html"> 
 <span class="menu-text">Find</span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/tidymodels/"> <i class="bi bi-github" role="img" aria-label="GitHub">
-</i> 
-<span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/tidymodels/"> 
+<span class="menu-text"><svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></span></a>
   </li>  
 </ul>
 </div> <!-- /navcollapse -->
@@ -536,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the <code>auto.arima()</code> function from the forecast package. The rsample functions <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis()</a></code> and <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment()</a></code> return a data frame, so another step converts the data to a <code>ts</code> object called <code>mod_dat</code> using a function in the timetk package.</p>
+<p>This resampling scheme has 58 splits of the data so that there will be 58 ARIMA models that are fit. To create the models, we use the <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html">auto.arima()</a></code> function from the forecast package. The rsample functions <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis()</a></code> and <code><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment()</a></code> return a data frame, so another step converts the data to a <code>ts</code> object called <code>mod_dat</code> using a function in the timetk package.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -550,10 +547,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="co"># Since the first day changes over resamples, adjust the start</span></span>
 <span>  <span class="co"># based on the first date value in the data frame</span></span>
 <span>  <span class="va">dat</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="fu">as.yearmon</span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_ts.html">tk_ts</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.yearmon</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>          frequency <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>          silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">auto.arima</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html">auto.arima</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -588,7 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <em>Extrapolation</em> or <em>forecast</em> error evaluates the performance of the model on the data from the following year (that were not used in the model fit).</li>
 </ul>
-<p>In each case, the mean absolute percent error (MAPE) is the statistic used to characterize the model fits. The interpolation error can be computed from the <code>Arima</code> object. To make things easy, let’s use the sweep package’s <code>sw_glance()</code> function:</p>
+<p>In each case, the mean absolute percent error (MAPE) is the statistic used to characterize the model fits. The interpolation error can be computed from the <code>Arima</code> object. To make things easy, let’s use the sweep package’s <code><a href="https://business-science.github.io/sweep/reference/sw_glance.html">sw_glance()</a></code> function:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -597,7 +594,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">roll_rs</span><span class="op">$</span><span class="va">interpolation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span></span>
 <span>  <span class="va">roll_rs</span><span class="op">$</span><span class="va">arima</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> </span>
-<span>    <span class="fu">sw_glance</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[[</span><span class="st">"MAPE"</span><span class="op">]</span><span class="op">]</span></span>
+<span>    <span class="fu"><a href="https://business-science.github.io/sweep/reference/sw_glance.html">sw_glance</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[[</span><span class="st">"MAPE"</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">roll_rs</span><span class="op">$</span><span class="va">interpolation</span><span class="op">)</span></span>
@@ -615,7 +612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="co"># Get assessment data</span></span>
 <span>  <span class="va">pred_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">assessment</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>      pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu">forecast</span><span class="op">(</span><span class="va">mod</span>, h <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">$</span><span class="va">mean</span><span class="op">)</span>,</span>
+<span>      pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">mod</span>, h <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">$</span><span class="va">mean</span><span class="op">)</span>,</span>
 <span>      pct_error <span class="op">=</span> <span class="op">(</span> <span class="va">S4248SM144NCEN</span> <span class="op">-</span> <span class="va">pred</span> <span class="op">)</span> <span class="op">/</span> <span class="va">S4248SM144NCEN</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">pred_dat</span><span class="op">$</span><span class="va">pct_error</span><span class="op">)</span><span class="op">)</span></span>
@@ -1193,7 +1190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></div>
 </div>
     <div class="nav-footer-right">
-<p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button"> <i class="fa-solid fa-chevron-up" aria-label="chevron-up"></i> </a></p>
+<p><a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button" aria-label="Back to top"> <!-- icon: fa-chevron-up (Font Awesome Free 6 Solid) — inlined SVG instead of the Quarto fa shortcode so we don't pull in FA's CSS / 154 KB woff2 --> <svg class="icon-inline" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg></a></p>
 </div>
   </div>
 </footer>
