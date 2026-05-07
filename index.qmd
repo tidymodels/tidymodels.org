@@ -5,7 +5,7 @@ code-copy: false
 description: "Tidymodels is a collection of R packages for modeling and machine learning using tidyverse principles."
 ---
 
-::::: {#FrontPage}
+::::: {#FrontPage role="main"}
 
 :::: {.band .first}
 :::: {.bandContent}
