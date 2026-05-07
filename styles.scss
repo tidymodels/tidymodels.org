@@ -6,7 +6,8 @@ $theme-grey: #DDDDDD;
 $theme-black: #1a162d;
 $theme-code-bg: rgba(233,236,239,.3);
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Source+Code+Pro&display=swap');
+// Suppress cosmo's default Source Sans Pro Google Fonts import — we use Lato.
+$web-font-path: "";
 
 // Colors ----------------------------------------------------------------------
 $link-color: $theme-cranberry;
@@ -25,14 +26,33 @@ $code-color: $theme-blue;
 $navbar-bg: $theme-white;
 
 $footer-bg: rgba($theme-cranberry, 0.2);
-$footer-fg: $theme-cranberry;
+$footer-fg: darken($theme-cranberry, 12%);
 
 /*-- scss:rules --*/
+
+// @font-face rules for self-hosted Lato + Source Code Pro live in fonts/fonts.css
+// (loaded via format.html.css in _quarto.yml). They live there because Quarto's
+// SCSS pre-parser mangles url() paths in @font-face when written here.
 
 // General ---------------------------------------------------------------------
 
 a {
   text-decoration: none;
+}
+
+// Inline SVG icons — used in place of Font Awesome / Bootstrap Icons to keep
+// the front page from loading their CSS and woff2 font files. Currently used by:
+//   * fa-flag-checkered + fa-lightbulb in index.qmd (FA Free 6 Solid)
+//   * fa-chevron-up in _quarto.yml page-footer (FA Free 6 Solid)
+//   * github mark in _quarto.yml navbar (Bootstrap Icons github)
+// To add another inlined icon, paste the <svg> with class="icon-inline" and
+// `aria-hidden="true"`; sizing/color come from this rule.
+.icon-inline {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  fill: currentColor;
 }
 
 // Headers ---------------------------------------------------------------------
