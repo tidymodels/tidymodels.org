@@ -10,35 +10,12 @@ code-copy: false
 :::: {.bandContent}
 
 ::: {.hexBadges}
-<a href="https://tidymodels.tidymodels.org/">
-  <div class=""></div>
-  <img src="images/tidymodels.svg" alt="tidymodels hex sticker" class="r1 c0" width="120" height="139">
-</a>
-
-<a href="https://rsample.tidymodels.org/">
-  <div class="filtered r2 c0"></div>
-  <img src="images/rsample.svg" alt="rsample hex sticker" class="r2 c0" width="120" height="139">
-</a>
-
-<a href="https://parsnip.tidymodels.org/">
-  <div class="filtered r3 c0"></div>
-  <img src="images/parsnip.svg" alt="parsnip hex sticker" class="r3 c0" width="120" height="139">
-</a>
-
-<a href="https://recipes.tidymodels.org/">
-  <div class="filtered r2 c2"></div>
-  <img src="images/recipes.svg" alt="recipes hex sticker" class="r2 c2" width="120" height="139">
-</a>
-
-<a href="https://tune.tidymodels.org/">
- <div class="filtered r3 c2"></div>
- <img src="images/tune.svg" alt="tune hex sticker" class="r3 c2" width="120" height="139">
-</a>
-
-<a href="https://yardstick.tidymodels.org/">
-  <div class="filtered r4 c2"></div>
-  <img src="images/yardstick.svg" alt="yardstick hex sticker" class="r4 c2" width="120" height="139">
-</a>
+<a href="https://tidymodels.tidymodels.org/"><img src="images/tidymodels.svg" alt="tidymodels hex sticker" class="r1 c0" width="120" height="139"></a>
+<a href="https://rsample.tidymodels.org/"><img src="images/rsample.svg" alt="rsample hex sticker" class="r2 c0" width="120" height="139"></a>
+<a href="https://parsnip.tidymodels.org/"><img src="images/parsnip.svg" alt="parsnip hex sticker" class="r3 c0" width="120" height="139"></a>
+<a href="https://recipes.tidymodels.org/"><img src="images/recipes.svg" alt="recipes hex sticker" class="r2 c2" width="120" height="139"></a>
+<a href="https://tune.tidymodels.org/"><img src="images/tune.svg" alt="tune hex sticker" class="r3 c2" width="120" height="139"></a>
+<a href="https://yardstick.tidymodels.org/"><img src="images/yardstick.svg" alt="yardstick hex sticker" class="r4 c2" width="120" height="139"></a>
 :::
 
 ::: {.blurb}
