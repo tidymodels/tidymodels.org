@@ -40,6 +40,21 @@ a {
   text-decoration: none;
 }
 
+// Inline SVG icons — used in place of Font Awesome / Bootstrap Icons to keep
+// the front page from loading their CSS and woff2 font files. Currently used by:
+//   * fa-flag-checkered + fa-lightbulb in index.qmd (FA Free 6 Solid)
+//   * fa-chevron-up in _quarto.yml page-footer (FA Free 6 Solid)
+//   * github mark in _quarto.yml navbar (Bootstrap Icons github)
+// To add another inlined icon, paste the <svg> with class="icon-inline" and
+// `aria-hidden="true"`; sizing/color come from this rule.
+.icon-inline {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  fill: currentColor;
+}
+
 // Headers ---------------------------------------------------------------------
 
 #title-block-header.quarto-title-block.default .quarto-title .title {
