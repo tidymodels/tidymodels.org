@@ -32,7 +32,7 @@ parsnip_models <- read_csv("parsnip_models.csv")
 ```{r}
 #| label: table-display
 #| echo: false
-parsnip_models |> 
+parsnip_models |>
   mutate(package = factor(package)) |>
   mutate(mode = factor(mode)) |>
   datatable(rownames = FALSE,
@@ -41,3 +41,4 @@ parsnip_models |>
             escape = FALSE,
             options = list(pageLength = 25))
 ```
+
