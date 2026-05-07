@@ -2,6 +2,7 @@
 page-layout: custom
 repo-actions: false
 code-copy: false
+description: "Tidymodels is a collection of R packages for modeling and machine learning using tidyverse principles."
 ---
 
 ::::: {#FrontPage}
