@@ -6,10 +6,13 @@ source(here::here("make_function_lists/_utils.R"))
 
 # ------------------------------------------------------------------------------
 
-parsnip_pkgs <- revdepcheck::cran_revdeps(
+avail <- get_available_packages()
+parsnip_pkgs <- tools::package_dependencies(
   "parsnip",
-  dependencies = c("Depends", "Imports")
-)
+  reverse = TRUE,
+  which = c("Depends", "Imports"),
+  db = avail
+)$parsnip
 parsnip_pkgs <- c(parsnip_pkgs, "parsnip")
 
 # These ignore the tidymodels design principles and/or don't work with the
@@ -57,9 +60,12 @@ origin_pkg <- rlang::env_get_list(
       ~ {
         pkg <- intersect(.x, parsnip_pkgs)
         if (length(pkg) == 0) {
-          pkg <- "parsnip"
+          return("parsnip")
         }
-        pkg
+        if (length(pkg) > 1) {
+          pkg <- setdiff(pkg, "parsnip")
+        }
+        pkg[1]
       }
     )
   ) %>%
@@ -77,9 +83,6 @@ model_list <-
   dplyr::mutate(
     functions = glue("details_{model}_{engine}")
   )
-
-# Cache available packages to avoid repeated CRAN metadata fetches
-avail <- get_available_packages()
 
 parsnip_model_info <-
   purrr::map_dfr(
