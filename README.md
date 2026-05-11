@@ -88,7 +88,7 @@ The source of the website is a collection of `.qmd` files stored in the folders 
 
 * [`make_function_lists/`](make_function_lists/): scripts that generate the CSV reference lists for the find pages. See [Generating function lists](#generating-function-lists) below. `all_packages.csv` in this folder lists all packages in the tidymodels ecosystem and is used by `tidymodels.R` to build the function reference.
 
-* [`about/`](about/): author listing page rendered from `index.qmd` using `authors.yaml` and `template.ejs`.
+* [`about/`](about/): author listing page rendered from `index.qmd` using `authors.yaml` and `template.ejs`. Also contains [`about/surveys/`](about/surveys/): a small landing page (`surveys/index.qmd`) that links to archived reports of past tidymodels priorities surveys. Each `priorities-YYYY/` subfolder holds the original R Markdown source (`index.Rmd`) plus a self-contained rendered `index.html` (and figure files). The HTML, figure, and CSV assets are surfaced on the site via globs in the `resources:` list of `_quarto.yml`; the `.Rmd` files are kept as archival source and are not re-rendered by Quarto.
 
 * [`cheatsheets/`](cheatsheets/): cheatsheet page rendered from a single `index.qmd` file.
 
