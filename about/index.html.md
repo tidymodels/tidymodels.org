@@ -11,3 +11,7 @@ include-after-body: ../html/resources.html
 
 ::: {#team-listings}
 :::
+
+## Community priorities surveys
+
+The tidymodels team has periodically fielded short community surveys to gather feedback on development priorities. See the [reports from past surveys](surveys/index.qmd).
