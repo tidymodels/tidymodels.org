@@ -1,6 +1,7 @@
 ---
 title: Priorities surveys
-toc: false
+toc: true
+toc-depth: 1
 include-after-body: ../../html/resources.html
 ---
 
