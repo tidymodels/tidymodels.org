@@ -427,11 +427,11 @@ But, here we are using a single validation set, so parallelization isn't an opti
 ```{.r .cell-code}
 cores <- parallel::detectCores()
 cores
-#> [1] 14
+#> [1] 4
 ```
 :::
 
-We have 14 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
+We have 4 cores to work with. We can pass this information to the ranger engine when we set up our parsnip `rand_forest()` model. To enable parallel processing, we can pass engine-specific arguments like `num.threads` to ranger when we set the engine:
 
 ::: {.cell layout-align="center"}
 
@@ -530,9 +530,9 @@ rf_res |>
 #>    mtry min_n .metric .estimator  mean     n std_err .config         
 #>   <int> <int> <chr>   <chr>      <dbl> <int>   <dbl> <chr>           
 #> 1     4     5 roc_auc binary     0.921     1      NA pre0_mod04_post0
-#> 2     9     3 roc_auc binary     0.919     1      NA pre0_mod09_post0
-#> 3     8    11 roc_auc binary     0.919     1      NA pre0_mod08_post0
-#> 4     5    19 roc_auc binary     0.919     1      NA pre0_mod05_post0
+#> 2     9     3 roc_auc binary     0.920     1      NA pre0_mod09_post0
+#> 3     5    19 roc_auc binary     0.919     1      NA pre0_mod05_post0
+#> 4     8    11 roc_auc binary     0.919     1      NA pre0_mod08_post0
 #> 5     6    27 roc_auc binary     0.917     1      NA pre0_mod06_post0
 ```
 :::
@@ -578,16 +578,16 @@ rf_res |>
 #> # A tibble: 187,475 × 8
 #>    .pred_children .pred_none id         children  .row  mtry min_n .config      
 #>             <dbl>      <dbl> <chr>      <fct>    <int> <int> <int> <chr>        
-#>  1         0.0347      0.965 validation none     30001     1    24 pre0_mod01_p…
-#>  2         0.0685      0.932 validation none     30002     1    24 pre0_mod01_p…
+#>  1         0.0357      0.964 validation none     30001     1    24 pre0_mod01_p…
+#>  2         0.0705      0.929 validation none     30002     1    24 pre0_mod01_p…
 #>  3         0.119       0.881 validation none     30003     1    24 pre0_mod01_p…
-#>  4         0.122       0.878 validation none     30004     1    24 pre0_mod01_p…
-#>  5         0.0935      0.907 validation none     30005     1    24 pre0_mod01_p…
-#>  6         0.0502      0.950 validation none     30006     1    24 pre0_mod01_p…
-#>  7         0.0684      0.932 validation none     30007     1    24 pre0_mod01_p…
-#>  8         0.0684      0.932 validation none     30008     1    24 pre0_mod01_p…
-#>  9         0.0599      0.940 validation none     30009     1    24 pre0_mod01_p…
-#> 10         0.0454      0.955 validation none     30010     1    24 pre0_mod01_p…
+#>  4         0.118       0.882 validation none     30004     1    24 pre0_mod01_p…
+#>  5         0.0922      0.908 validation none     30005     1    24 pre0_mod01_p…
+#>  6         0.0499      0.950 validation none     30006     1    24 pre0_mod01_p…
+#>  7         0.0723      0.928 validation none     30007     1    24 pre0_mod01_p…
+#>  8         0.0682      0.932 validation none     30008     1    24 pre0_mod01_p…
+#>  9         0.0587      0.941 validation none     30009     1    24 pre0_mod01_p…
+#> 10         0.0472      0.953 validation none     30010     1    24 pre0_mod01_p…
 #> # ℹ 187,465 more rows
 ```
 :::
@@ -673,7 +673,7 @@ last_rf_fit |>
 #>   <chr>       <chr>          <dbl> <chr>          
 #> 1 accuracy    binary        0.944  pre0_mod0_post0
 #> 2 roc_auc     binary        0.918  pre0_mod0_post0
-#> 3 brier_class binary        0.0444 pre0_mod0_post0
+#> 3 brier_class binary        0.0443 pre0_mod0_post0
 ```
 :::
 
@@ -738,34 +738,34 @@ Here are some more ideas for where to go next:
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.9.37
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package      version    date (UTC)
-#>  broom        1.0.12     2026-01-27
-#>  dials        1.4.3      2026-04-11
-#>  dplyr        1.2.1      2026-04-03
-#>  ggplot2      4.0.3      2026-04-22
-#>  glmnet       4.1-10     2025-07-17
-#>  here         1.0.2      2025-09-15
-#>  infer        1.1.0      2025-12-18
-#>  parsnip      1.5.0      2026-04-09
-#>  purrr        1.2.2      2026-04-10
-#>  ranger       0.18.0     2026-01-16
-#>  readr        2.2.0      2026-02-19
-#>  recipes      1.3.2      2026-04-02
-#>  rlang        1.2.0      2026-04-06
-#>  rsample      1.3.2      2026-01-30
-#>  scales       1.4.0      2025-04-24
-#>  tibble       3.3.1      2026-01-11
-#>  tidymodels   1.4.1      2025-09-08
-#>  tune         2.1.0.9000 2026-04-27
-#>  vip          0.4.5      2025-12-12
-#>  workflows    1.3.0      2025-08-27
-#>  yardstick    1.4.0      2026-04-07
+#>  package      version date (UTC)
+#>  broom        1.0.12  2026-01-27
+#>  dials        1.4.3   2026-04-11
+#>  dplyr        1.2.1   2026-04-03
+#>  ggplot2      4.0.3   2026-04-22
+#>  glmnet       5.0     2026-05-04
+#>  here         1.0.2   2025-09-15
+#>  infer        1.1.0   2025-12-18
+#>  parsnip      1.5.0   2026-04-09
+#>  purrr        1.2.2   2026-04-10
+#>  ranger       0.18.0  2026-01-16
+#>  readr        2.2.0   2026-02-19
+#>  recipes      1.3.2   2026-04-02
+#>  rlang        1.2.0   2026-04-06
+#>  rsample      1.3.2   2026-01-30
+#>  scales       1.4.0   2025-04-24
+#>  tibble       3.3.1   2026-01-11
+#>  tidymodels   1.5.0   2026-04-23
+#>  tune         2.1.0   2026-04-17
+#>  vip          0.4.6   2026-04-23
+#>  workflows    1.3.0   2025-08-27
+#>  yardstick    1.4.0   2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
