@@ -70,7 +70,7 @@ Whether you are just starting out today or have years of experience with modelin
 ::: {.blurb}
 [STAY UP TO DATE]{.tagline}
 
-Hear about the latest tidymodels news at the [tidyverse blog](https://www.tidyverse.org/tags/tidymodels/).
+Hear about the latest tidymodels news at the [Posit open source blog](https://opensource.posit.co/).
 :::
 ::::
 ::::
