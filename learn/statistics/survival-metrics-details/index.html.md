@@ -351,7 +351,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version    date (UTC)
-#>  broom         1.0.12     2026-01-27
+#>  broom         1.0.13     2026-05-14
 #>  censored      0.3.4      2026-04-04
 #>  dials         1.4.3      2026-04-11
 #>  dplyr         1.2.1      2026-04-03

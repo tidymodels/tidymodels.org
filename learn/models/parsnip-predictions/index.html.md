@@ -214,7 +214,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 4 months and 15 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 4 months and 23 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -12253,7 +12253,7 @@ rand_forest_fit |>
 #>  aorsf           0.1.6      2025-12-11
 #>  baguette        1.1.0      2025-01-28
 #>  bonsai          0.4.0      2025-06-25
-#>  broom           1.0.12     2026-01-27
+#>  broom           1.0.13     2026-05-14
 #>  brulee          0.6.0      2025-09-02
 #>  C50             0.2.0      2025-04-03
 #>  censored        0.3.4      2026-04-04

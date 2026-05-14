@@ -407,7 +407,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
 #>  betacal      0.1.0   2017-02-25
-#>  broom        1.0.12  2026-01-27
+#>  broom        1.0.13  2026-05-14
 #>  dials        1.4.3   2026-04-11
 #>  discrim      1.1.0   2025-12-02
 #>  dplyr        1.2.1   2026-04-03

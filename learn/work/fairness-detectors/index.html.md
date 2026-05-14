@@ -385,7 +385,7 @@ In all, we've seen that applied fairness analysis is as much a social problem as
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
-#>  broom        1.0.12  2026-01-27
+#>  broom        1.0.13  2026-05-14
 #>  detectors    0.1.0   2023-10-26
 #>  dials        1.4.3   2026-04-11
 #>  dplyr        1.2.1   2026-04-03

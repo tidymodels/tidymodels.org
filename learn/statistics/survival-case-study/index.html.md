@@ -496,7 +496,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
 #>  aorsf          0.1.6   2025-12-11
-#>  broom          1.0.12  2026-01-27
+#>  broom          1.0.13  2026-05-14
 #>  censored       0.3.4   2026-04-04
 #>  dials          1.4.3   2026-04-11
 #>  dplyr          1.2.1   2026-04-03
