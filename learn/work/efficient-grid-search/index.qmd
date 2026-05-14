@@ -467,6 +467,18 @@ mixed_grid|>
 
 Recall that this is only really an issue when our model has submodel parameters and is inefficient to train. As a counterexample, the aforementioned glmnet model fits generalized linear models (e.g., linear or logistic regression) but includes a penalty parameter that can reduce model complexity, lowering the risk of overfitting. From a single model, it can quickly produce predictions for a large number of predictions across a sequence of penalty values. As with the tree example, an SFD would negate the submodel benefit, but the glmnet model trains very quickly, so an SFD would still be effective for tuning.
 
+Currently, there are no tidymodels methods for making mixed grids. You would create one manaully using `grid_space_filling()` and tidyr's `crossing()`: 
+
+```r
+sfd_grid <- 
+  parameters(neighbors(), min_n()) |> 
+  grid_space_filling(size = 30, type = "uniform")
+
+mixed_grid <- 
+  sfd_grid |> 
+  crossing(trees = value_seq(trees(), 30))
+```
+
 ## Postprocessing
 
 Postprocessing methods transform predictions to make them more useful. We can think of them as being estimated or not. As was mentioed in the first section, if we have a classification model with two possible classes, we might want to adjust the rule that converts the predicted class probabilities to "event" or "no event". This enables us to optimize for what we care about (e.g., sensitivity or specificity). For this example, we are not estimating a parameter to test a potential threshold; we simply apply something like `ifelse(prob >= threshold, "event", "no event")` to transform the class predictions.
