@@ -158,7 +158,7 @@ However, there is a much better solution to make the computations as inexpensive
 
 ### Solution: Stagewise Estimation and Conditional Execution
 
-We can separate our hyperparameters into three possible sets for the three possible stages of the pipeline: preprocessing, the supervised model, and postprocessing. In our example, we have a single tuning parameter for preprocessing and the supervised model.
+We can separate our hyperparameters into three possible sets for the three possible stages of the pipeline: preprocessing, the supervised model, and postprocessing. In our example, we have a single tuning parameter each for preprocessing and the supervised model.
 
 Stagewise execution is the process of incrementally fitting our pipeline for each of the three possible stages. We first "fit" the preprocessor (UMAP), then give the UMAP results to our boosted tree.
 
@@ -270,11 +270,11 @@ This conditional execution strategy seems like a simple solution, and it is. How
 
 ## Problem: Curse of Dimensionality
 
-Part of the problem with the conventional wisdom that "grid search is massively inefficient" is the Curse of Dimensionality. As the problem dimensions increase, the volume of the search space becomes vast. In our case, this means that, as we add more tuning parameters, the parameter space explodes exponentially. For example, if we wanted to evaluate four values of each of $p$ tuning parameters, we would need $p^d$ combinations. With four parameters that are evaluated on five distinct points, the grid would have 1,024 rows.
+Part of the problem with the conventional wisdom that "grid search is massively inefficient" is the Curse of Dimensionality. As the problem dimensions increase, the volume of the search space becomes vast. In our case, this means that, as we add more tuning parameters, the parameter space explodes exponentially. For example, if we wanted to evaluate $d$ values of each of $p$ tuning parameters, we would need $d^p$ combinations. With five parameters that are evaluated on four distinct points, the grid would have 1,024 rows.
 
 It's a difficult situation as long as you don't think about the problem very hard. There are two ways to avoid this issue:
 
-- [Parallelize](http://tmwr.org/grid-search#parallel-processing) the tasks. If I can do 10 things at once, the cost of doing more drops significantly. Grid search is an "embarrassingly parallel" problem, and running the computations in parallel can produce speedups of several-fold. This is not hard to do in R or tidymodels.
+- [Parallelize](http://tmwr.org/grid-search#parallel-processing) the tasks. If we can do 10 things at once, the cost of doing more drops significantly. Grid search is an "embarrassingly parallel" problem, and running the computations in parallel can produce speedups of several-fold magnitude. This is not hard to do in R or tidymodels.
 - *You don't have to use regular grids*.
 
 For the second point, let's talk about *Space-filling designs* ([SFD](https://aml4td.org/chapters/grid-search.html#sec-irregular-grid)).
@@ -444,7 +444,7 @@ Another option is a mixture of space-filling points and a regular grid.
 
 A mixed grid would create a space-filling design for the parameters that cannot exploit submodels and then, for each design point in that grid, create a dense sequence of values for the submodel parameter. This may significantly increase the number of grid points evaluated, but limits the number of models that are fit.
 
-Here's an example with many more grid points (900), but trains on the same number of grid points as the 3D grid in the previous section (30).
+Here's an example with many more grid points (900), but trains on the same number of models as the 3D grid in the previous section (30).
 
 ```{r}
 #| label: mixed
@@ -481,10 +481,10 @@ mixed_grid <-
 
 ## Postprocessing
 
-Postprocessing methods transform predictions to make them more useful. We can think of them as being estimated or not. As was mentioed in the first section, if we have a classification model with two possible classes, we might want to adjust the rule that converts the predicted class probabilities to "event" or "no event". This enables us to optimize for what we care about (e.g., sensitivity or specificity). For this example, we are not estimating a parameter to test a potential threshold; we simply apply something like `ifelse(prob >= threshold, "event", "no event")` to transform the class predictions.
+Postprocessing methods transform predictions to make them more useful. We can think of them as being either estimated or not. As was mentioned in the first section, if we have a classification model with two possible classes, we might want to adjust the rule that converts the predicted class probabilities to "event" or "no event". This enables us to optimize for what we care about (e.g., sensitivity or specificity). For this example, we are not estimating a parameter to test a potential threshold; we simply apply something like `ifelse(prob >= threshold, "event", "no event")` to transform the class predictions.
 
-An example of an estimated postprocessor is calibration. Here, we use a model to estimate when we are underpredicting the outcome, and then make a correction to eliminate those errors. For example, in a regression model, if we are consistently underpredicting samples whose outcomes are at the high end of the distribution, we can estimate that error and subtract it when we make predictions in that range. It's actually more complicated than that, but this explanation gives you what you need to know for this discussion.
+An example of an estimated postprocessor is calibration. Here, we use a model to estimate when we are underpredicting the outcome, and then make a correction to eliminate those errors. For example, in a regression model, if we are consistently underpredicting samples whose outcomes are at the high end of the distribution, we can estimate that error and add it when we make predictions in that range. It's actually more complicated than that, but this covers the ideas relevant for this discussion.
 
 The most efficient way to execute these computations when we need to tune the postprocess is another case of conditional execution. For each combination of modeling and preprocessing parameters, we loop over the postprocessing tuning parameters to estimate (if needed) and apply the transformations.
 
-The only real speed-up comes when the postprocessor is *not* estimated. In that case, there is a slight efficiency boost by storing all predictions in a data frame and applying the transformation to them all at once. For example, if I tuned by probability threshold over 50 values, I can row-bind them into a single data frame and use an efficient in-line application of `ifelse()`. It just saves us a `for` loop, but these small efficiencies can add up.
+The only real speed-up comes when the postprocessor is *not* estimated. In that case, there is a slight efficiency boost by storing all predictions in a data frame and applying the transformation to them all at once. For example, if we tuned a probability threshold over 50 values, we can row-bind them into a single data frame and use an efficient in-line application of `ifelse()`. It just saves us a `for` loop, but these small efficiencies can add up.
