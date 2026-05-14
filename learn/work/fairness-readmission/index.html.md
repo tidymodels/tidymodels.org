@@ -644,7 +644,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version date (UTC)
 #>  baguette        1.1.0   2025-01-28
-#>  broom           1.0.12  2026-01-27
+#>  broom           1.0.13  2026-05-14
 #>  desirability2   0.2.0   2025-08-22
 #>  dials           1.4.3   2026-04-11
 #>  dplyr           1.2.1   2026-04-03

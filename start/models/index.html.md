@@ -471,7 +471,7 @@ ggplot(urchins,
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
-#>  broom         1.0.12  2026-01-27
+#>  broom         1.0.13  2026-05-14
 #>  broom.mixed   0.2.9.7 2026-02-17
 #>  dials         1.4.3   2026-04-11
 #>  dotwhisker    0.8.4   2025-05-06

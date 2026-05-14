@@ -376,7 +376,7 @@ The nested procedure produces a closer estimate to the approximate truth but the
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
-#>  broom        1.0.12  2026-01-27
+#>  broom        1.0.13  2026-05-14
 #>  dials        1.4.3   2026-04-11
 #>  dplyr        1.2.1   2026-04-03
 #>  furrr        0.4.0   2026-03-31

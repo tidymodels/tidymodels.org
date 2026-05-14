@@ -232,7 +232,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
-#>  broom        1.0.12  2026-01-27
+#>  broom        1.0.13  2026-05-14
 #>  dials        1.4.3   2026-04-11
 #>  discrim      1.1.0   2025-12-02
 #>  dplyr        1.2.1   2026-04-03
