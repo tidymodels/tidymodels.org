@@ -752,7 +752,7 @@ Here are some more ideas for where to go next:
 #>  glmnet       5.0     2026-05-04
 #>  here         1.0.2   2025-09-15
 #>  infer        1.1.0   2025-12-18
-#>  parsnip      1.5.0   2026-04-09
+#>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  ranger       0.18.0  2026-01-16
 #>  readr        2.2.0   2026-02-19

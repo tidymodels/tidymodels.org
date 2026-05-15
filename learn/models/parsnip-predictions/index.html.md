@@ -214,7 +214,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 4 months and 23 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 4 months and 24 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -12283,7 +12283,7 @@ rand_forest_fit |>
 #>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.0)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
-#>  parsnip         1.5.0      2026-04-09
+#>  parsnip         1.6.0      2026-05-14
 #>  partykit        1.2-27     2026-03-13
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06

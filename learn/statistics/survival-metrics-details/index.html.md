@@ -357,7 +357,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #>  dplyr         1.2.1      2026-04-03
 #>  ggplot2       4.0.3      2026-04-22
 #>  infer         1.1.0      2025-12-18
-#>  parsnip       1.5.0      2026-04-09
+#>  parsnip       1.6.0      2026-05-14
 #>  prodlim       2026.03.11 2026-03-11
 #>  purrr         1.2.2      2026-04-10
 #>  recipes       1.3.2      2026-04-02

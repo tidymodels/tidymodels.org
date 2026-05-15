@@ -651,7 +651,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  GGally          2.4.0   2025-08-23
 #>  ggplot2         4.0.3   2026-04-22
 #>  infer           1.1.0   2025-12-18
-#>  parsnip         1.5.0   2026-04-09
+#>  parsnip         1.6.0   2026-05-14
 #>  purrr           1.2.2   2026-04-10
 #>  readmission     0.1.0   2023-12-07
 #>  recipes         1.3.2   2026-04-02

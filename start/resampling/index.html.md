@@ -579,7 +579,7 @@ The performance metrics from the test set are much closer to the performance met
 #>  here         1.0.2   2025-09-15
 #>  infer        1.1.0   2025-12-18
 #>  kableExtra   1.4.0   2024-01-24
-#>  parsnip      1.5.0   2026-04-09
+#>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  ranger       0.18.0  2026-01-16
 #>  recipes      1.3.2   2026-04-02

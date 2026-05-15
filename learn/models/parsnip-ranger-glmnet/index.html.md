@@ -425,7 +425,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  ggplot2        4.0.3   2026-04-22
 #>  glmnet         5.0     2026-05-04
 #>  infer          1.1.0   2025-12-18
-#>  parsnip        1.5.0   2026-04-09
+#>  parsnip        1.6.0   2026-05-14
 #>  purrr          1.2.2   2026-04-10
 #>  randomForest   4.7-1.2 2024-09-22
 #>  ranger         0.18.0  2026-01-16

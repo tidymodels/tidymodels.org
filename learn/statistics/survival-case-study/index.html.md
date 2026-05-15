@@ -506,7 +506,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  infer          1.1.0   2025-12-18
 #>  leaflet        2.2.3   2025-09-04
 #>  modeldatatoo   0.3.0   2024-03-29
-#>  parsnip        1.5.0   2026-04-09
+#>  parsnip        1.6.0   2026-05-14
 #>  purrr          1.2.2   2026-04-10
 #>  recipes        1.3.2   2026-04-02
 #>  rlang          1.2.0   2026-04-06
