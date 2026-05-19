@@ -1,44 +1,54 @@
 ---
 title: Search parsnip models
 weight: 2
-description: | 
+description: |
   Find model types, engines, and arguments to fit and predict in the tidymodels framework.
 toc: true
 toc-depth: 0
-css: ../styles-find.css
+listing:
+  id: parsnip-list
+  contents: items.yml
+  template: card.ejs.md
+  sort: ["title"]
+  sort-ui: [title, model, engine, mode, package]
+  filter-ui: true
+  categories: false
+  page-size: 25
 r-packages:
   - tidymodels
   - readr
-  - DT
-  - htmlwidgets
+  - yaml
 include-after-body: ../../html/resources.html
+format:
+  html:
+    css: cards.css
+    include-in-header:
+      - text: |
+          <script src="filters.js" defer></script>
 ---
 
-To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [model types and engines](#models).
+To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the filters below to find [model types and engines](#models).
 
 ```{r}
-#| label: load-packages
+#| label: build-items
 #| include: false
-
-library(tidymodels)
 library(readr)
-library(DT)
-library(htmlwidgets)
-setWidgetIdSeed(1234)
-tidymodels_prefer()
-parsnip_models <- read_csv("parsnip_models.csv")
+library(yaml)
+
+x <- read_csv("parsnip_models.csv", show_col_types = FALSE)
+x[is.na(x)] <- ""
+items <- lapply(seq_len(nrow(x)), function(i) {
+  list(
+    title = x$title[i],
+    model = x$model[i],
+    engine = x$engine[i],
+    mode = as.character(x$mode[i]),
+    package = x$package[i],
+    url = x$url[i]
+  )
+})
+write_yaml(items, "items.yml")
 ```
 
-```{r}
-#| label: table-display
-#| echo: false
-parsnip_models |>
-  mutate(package = factor(package)) |>
-  mutate(mode = factor(mode)) |>
-  datatable(rownames = FALSE,
-            class = 'cell-border stripe',
-            filter = 'top',
-            escape = FALSE,
-            options = list(pageLength = 25))
-```
-
+::: {#parsnip-list}
+:::
