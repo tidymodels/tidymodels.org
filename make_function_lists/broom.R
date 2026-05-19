@@ -28,11 +28,20 @@ broom_functions <-
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%
-  dplyr::select(-functions)
+  dplyr::rename(func = functions) %>%
+  dplyr::select(title, func, url, package)
 
-write_csv(
-  broom_functions,
-  file = here::here("find/broom/broom_functions.csv")
-)
+broom_functions[is.na(broom_functions)] <- ""
 
-cli::cli_alert_success("Generated find/broom/broom_functions.csv")
+items <- lapply(seq_len(nrow(broom_functions)), function(i) {
+  list(
+    title = broom_functions$title[i],
+    func = broom_functions$func[i],
+    package = as.character(broom_functions$package[i]),
+    url = broom_functions$url[i]
+  )
+})
+
+yaml::write_yaml(items, here::here("find/broom/items.yml"))
+
+cli::cli_alert_success("Generated find/broom/items.yml")
