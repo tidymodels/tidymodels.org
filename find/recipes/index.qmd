@@ -2,43 +2,33 @@
 subtitle: Recipes
 title: Search recipe steps
 weight: 3
-description: | 
+description: |
   Find recipe steps in the tidymodels framework to help you prep your data for modeling.
 toc: true
 toc-depth: 0
-css: ../styles-find.css
-r-packages:
-  - tidymodels
-  - readr
-  - DT
-  - htmlwidgets
+listing:
+  id: recipes-list
+  contents: items.yml
+  template: card.ejs.md
+  sort: ["title"]
+  sort-ui: [title, func, package]
+  filter-ui: true
+  categories: false
+  page-size: 25
 include-after-body: ../../html/resources.html
+format:
+  html:
+    css: ../listing-cards.css
+    include-in-header:
+      - text: |
+          <script src="../listing-filters.js" defer></script>
 ---
 
+To learn about the recipes package, see [*Get Started: Preprocess your data with recipes*](/start/recipes/). Use the filter below to search for recipe steps across tidymodels packages.
 
-To learn about the recipes package, see [*Get Started: Preprocess your data with recipes*](/start/recipes/). The table below allows you to search for recipe steps across tidymodels packages.
+<div class="listing-filter-bar"
+     data-listing-id="recipes-list"
+     data-fields="package:Package"></div>
 
-
-```{r}
-#| label: load-packages
-#| include: false
-
-library(tidymodels)
-library(readr)
-library(DT)
-library(htmlwidgets)
-setWidgetIdSeed(1234)
-tidymodels_prefer()
-recipe_functions <- read_csv("recipe_functions.csv")
-```
-
-```{r}
-#| label: table-display
-#| echo: false
-recipe_functions |> 
-  datatable(rownames = FALSE,
-            class = 'cell-border stripe',
-            filter = 'top',
-            escape = FALSE,
-            options = list(pageLength = 25))
-```
+::: {#recipes-list}
+:::
