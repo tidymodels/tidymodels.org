@@ -120,12 +120,11 @@ parsnip_models <-
       dplyr::select(title, model, engine, topic, mode, package = pkg)
   ) %>%
   dplyr::mutate(
-    model = paste0("<code>", model, "</code>"),
-    engine = paste0("<code>", engine, "</code>"),
-    title = gsub("General Interface for ", "", title)
+    title = gsub("General Interface for ", "", title),
+    url = sub(".*href='([^']+)'.*", "\\1", topic)
   ) %>%
   dplyr::arrange(model, engine) %>%
-  dplyr::select(title, model, engine, topic, mode, package)
+  dplyr::select(title, model, engine, url, mode, package)
 
 write_csv(
   parsnip_models,

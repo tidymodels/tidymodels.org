@@ -90,6 +90,7 @@ packages <- c(
   "naivebayes",
   "xgboost",
   "xrf",
+  "yaml",
   "pscl",
   "coin",
   "pec",
