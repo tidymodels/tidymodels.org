@@ -14,41 +14,20 @@ listing:
   filter-ui: true
   categories: false
   page-size: 25
-r-packages:
-  - tidymodels
-  - readr
-  - yaml
 include-after-body: ../../html/resources.html
 format:
   html:
-    css: cards.css
+    css: ../listing-cards.css
     include-in-header:
       - text: |
-          <script src="filters.js" defer></script>
+          <script src="../listing-filters.js" defer></script>
 ---
 
-To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the filters below to find [model types and engines](#models).
+To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the filters below to find model types and engines.
 
-```{r}
-#| label: build-items
-#| include: false
-library(readr)
-library(yaml)
-
-x <- read_csv("parsnip_models.csv", show_col_types = FALSE)
-x[is.na(x)] <- ""
-items <- lapply(seq_len(nrow(x)), function(i) {
-  list(
-    title = x$title[i],
-    model = x$model[i],
-    engine = x$engine[i],
-    mode = as.character(x$mode[i]),
-    package = x$package[i],
-    url = x$url[i]
-  )
-})
-write_yaml(items, "items.yml")
-```
+<div class="listing-filter-bar"
+     data-listing-id="parsnip-list"
+     data-fields="model:Model,engine:Engine,mode:Mode,package:Package"></div>
 
 ::: {#parsnip-list}
 :::

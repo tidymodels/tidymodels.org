@@ -126,9 +126,19 @@ parsnip_models <-
   dplyr::arrange(model, engine) %>%
   dplyr::select(title, model, engine, url, mode, package)
 
-write_csv(
-  parsnip_models,
-  file = here::here("find/parsnip/parsnip_models.csv")
-)
+parsnip_models[is.na(parsnip_models)] <- ""
 
-cli::cli_alert_success("Generated find/parsnip/parsnip_models.csv")
+items <- lapply(seq_len(nrow(parsnip_models)), function(i) {
+  list(
+    title = parsnip_models$title[i],
+    model = parsnip_models$model[i],
+    engine = parsnip_models$engine[i],
+    mode = as.character(parsnip_models$mode[i]),
+    package = parsnip_models$package[i],
+    url = parsnip_models$url[i]
+  )
+})
+
+yaml::write_yaml(items, here::here("find/parsnip/items.yml"))
+
+cli::cli_alert_success("Generated find/parsnip/items.yml")

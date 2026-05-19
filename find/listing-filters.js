@@ -1,10 +1,36 @@
+// Generic faceted multi-select filters for Quarto custom listings.
+//
+// Each page that wants filters declares a placeholder element near its
+// listing with the listing id and fields to filter on:
+//
+//   <div class="listing-filter-bar"
+//        data-listing-id="parsnip-list"
+//        data-fields="model:Model,engine:Engine,mode:Mode,package:Package">
+//   </div>
+//
+// data-fields is a comma-separated list of `field:Label` pairs. The field
+// name must match the metadata key in items.yml; "listing-" is prepended
+// automatically when looking up values via List.js.
+
 window.addEventListener("load", () => {
-  const list = window["quarto-listings"] && window["quarto-listings"]["listing-parsnip-list"];
+  document.querySelectorAll(".listing-filter-bar[data-listing-id]")
+    .forEach(setupFilterBar);
+});
+
+function setupFilterBar(bar) {
+  const listingId = bar.dataset.listingId;
+  const list = window["quarto-listings"] &&
+    window["quarto-listings"]["listing-" + listingId];
   if (!list) return;
 
-  const fields = ["model", "engine", "mode", "package"];
+  const fieldDefs = (bar.dataset.fields || "").split(",").map(s => {
+    const [field, label] = s.split(":").map(x => x.trim());
+    return { field, label: label || field };
+  }).filter(d => d.field);
+
+  const fields = fieldDefs.map(d => d.field);
   const state = Object.fromEntries(fields.map(f => [f, new Set()]));
-  const controls = {}; // field -> { summary, label, checkboxes: Map(value -> {input, label}) }
+  const controls = {};
 
   function itemPasses(item, skipField) {
     for (const f of fields) {
@@ -43,7 +69,7 @@ window.addEventListener("load", () => {
     }
   }
 
-  function buildMultiSelect(field, labelText) {
+  function buildMultiSelect({ field, label: labelText }) {
     const key = "listing-" + field;
     const values = Array.from(new Set(list.items.map(it => it.values()[key])))
       .filter(v => v && v !== ".na.character")
@@ -94,12 +120,7 @@ window.addEventListener("load", () => {
     return wrap;
   }
 
-  const bar = document.createElement("div");
-  bar.className = "listing-filter-bar";
-  for (const [f, label] of [["model", "Model"], ["engine", "Engine"], ["mode", "Mode"], ["package", "Package"]]) {
-    bar.appendChild(buildMultiSelect(f, label));
+  for (const def of fieldDefs) {
+    bar.appendChild(buildMultiSelect(def));
   }
-
-  const listing = document.getElementById("listing-parsnip-list");
-  if (listing && listing.parentNode) listing.parentNode.insertBefore(bar, listing);
-});
+}
