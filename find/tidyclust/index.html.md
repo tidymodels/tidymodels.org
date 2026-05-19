@@ -1,29 +1,33 @@
 ---
 title: Search tidyclust models
 weight: 2
-description: | 
+description: |
   Find model types and engines to fit and predict clustering methods in the tidymodels framework.
 toc: true
 toc-depth: 0
-css: ../styles-find.css
-r-packages:
-  - tidymodels
-  - readr
-  - DT
-  - htmlwidgets
+listing:
+  id: tidyclust-list
+  contents: items.yml
+  template: card.ejs.md
+  sort: ["title"]
+  sort-ui: [title, model, engine, mode, package]
+  filter-ui: true
+  categories: false
+  page-size: 25
 include-after-body: ../../html/resources.html
+format:
+  html:
+    css: ../listing-cards.css
+    include-in-header:
+      - text: |
+          <script src="../listing-filters.js" defer></script>
 ---
 
-To learn about the tidyclust package, click on the link in the topic column. Use the tables below to find [model types and engines](#models).
+To learn about the tidyclust package, click any title below to open its reference documentation. Use the filters to narrow the model types and engines.
 
-::: {.cell}
-::: {.cell-output-display}
+<div class="listing-filter-bar"
+     data-listing-id="tidyclust-list"
+     data-fields="model:Model,engine:Engine,mode:Mode,package:Package"></div>
 
-```{=html}
-<div class="datatables html-widget html-fill-item" id="htmlwidget-1b4ff99564eb6e8884a5" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-1b4ff99564eb6e8884a5">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\" disabled=\"\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;partition&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\" disabled=\"\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;tidyclust&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["Hierarchical (Agglomerative) Clustering via stats","K-means via ClusterR","K-means via clustMixType","K-means via klaR","K-means via stats"],["<code>hier_clust<\/code>","<code>k_means<\/code>","<code>k_means<\/code>","<code>k_means<\/code>","<code>k_means<\/code>"],["<code>stats<\/code>","<code>ClusterR<\/code>","<code>clustMixType<\/code>","<code>klaR<\/code>","<code>stats<\/code>"],["<a href='https://tidyclust.tidymodels.org//reference/details_hier_clust_stats.html' target='_blank'><tt>details_hier_clust_stats<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_ClusterR.html' target='_blank'><tt>details_k_means_ClusterR<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_clustMixType.html' target='_blank'><tt>details_k_means_clustMixType<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_klaR.html' target='_blank'><tt>details_k_means_klaR<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_stats.html' target='_blank'><tt>details_k_means_stats<\/tt><\/a>"],["partition","partition","partition","partition","partition"],["tidyclust","tidyclust","tidyclust","tidyclust","tidyclust"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>title<\/th>\n      <th>model<\/th>\n      <th>engine<\/th>\n      <th>topic<\/th>\n      <th>mode<\/th>\n      <th>package<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":25,"columnDefs":[{"name":"title","targets":0},{"name":"model","targets":1},{"name":"engine","targets":2},{"name":"topic","targets":3},{"name":"mode","targets":4},{"name":"package","targets":5}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true}},"evals":[],"jsHooks":[]}</script>
-```
-
+::: {#tidyclust-list}
 :::
-:::
-

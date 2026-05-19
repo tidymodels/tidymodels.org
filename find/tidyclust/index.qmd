@@ -1,43 +1,33 @@
 ---
 title: Search tidyclust models
 weight: 2
-description: | 
+description: |
   Find model types and engines to fit and predict clustering methods in the tidymodels framework.
 toc: true
 toc-depth: 0
-css: ../styles-find.css
-r-packages:
-  - tidymodels
-  - readr
-  - DT
-  - htmlwidgets
+listing:
+  id: tidyclust-list
+  contents: items.yml
+  template: card.ejs.md
+  sort: ["title"]
+  sort-ui: [title, model, engine, mode, package]
+  filter-ui: true
+  categories: false
+  page-size: 25
 include-after-body: ../../html/resources.html
+format:
+  html:
+    css: ../listing-cards.css
+    include-in-header:
+      - text: |
+          <script src="../listing-filters.js" defer></script>
 ---
 
-To learn about the tidyclust package, click on the link in the topic column. Use the tables below to find [model types and engines](#models).
+To learn about the tidyclust package, click any title below to open its reference documentation. Use the filters to narrow the model types and engines.
 
-```{r}
-#| label: load-packages
-#| include: false
+<div class="listing-filter-bar"
+     data-listing-id="tidyclust-list"
+     data-fields="model:Model,engine:Engine,mode:Mode,package:Package"></div>
 
-library(tidymodels)
-library(readr)
-library(DT)
-library(htmlwidgets)
-setWidgetIdSeed(1234)
-tidymodels_prefer()
-tidyclust_models <- read_csv("tidyclust_models.csv")
-```
-
-```{r}
-#| label: table-display
-#| echo: false
-tidyclust_models |> 
-  mutate(package = factor(package)) |>
-  mutate(mode = factor(mode)) |>
-  datatable(rownames = FALSE,
-            class = 'cell-border stripe',
-            filter = 'top',
-            escape = FALSE,
-            options = list(pageLength = 25))
-```
+::: {#tidyclust-list}
+:::
