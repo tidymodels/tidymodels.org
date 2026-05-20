@@ -89,8 +89,6 @@ include-after-body: ../html/resources.html
 </div>
 </div>
 
-Learn more about the tidymodels metapackage itself at <https://tidymodels.tidymodels.org/>.
-
 ## Specialized packages
 
 The tidymodels framework also includes many other packages designed for specialized data analysis and modeling tasks. They are not loaded automatically with `library(tidymodels)`, so you'll need to load each one with its own call to `library()`. These packages include: 
