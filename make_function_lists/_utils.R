@@ -344,7 +344,7 @@ sort_out_urls <- function(x) {
       ),
       topic = glue("<a href='{url}' target='_blank'><tt>{functions}</tt></a>")
     ) %>%
-    dplyr::select(title, functions, topic, package) %>%
+    dplyr::select(title, functions, topic, url, package) %>%
     dplyr::mutate(package = as.factor(package)) %>%
     dplyr::filter(!grepl("deprecated", tolower(title))) %>%
     dplyr::arrange(tolower(gsub("[[:punct:]]", "", title)))

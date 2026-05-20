@@ -1,44 +1,33 @@
 ---
 title: Search parsnip models
 weight: 2
-description: | 
+description: |
   Find model types, engines, and arguments to fit and predict in the tidymodels framework.
 toc: true
 toc-depth: 0
-css: ../styles-find.css
-r-packages:
-  - tidymodels
-  - readr
-  - DT
-  - htmlwidgets
+listing:
+  id: parsnip-list
+  contents: items.yml
+  template: card.ejs.md
+  sort: ["title"]
+  sort-ui: [title, model, engine, mode, package]
+  filter-ui: true
+  categories: false
+  page-size: 25
 include-after-body: ../../html/resources.html
+format:
+  html:
+    css: ../listing-cards.css
+    include-in-header:
+      - text: |
+          <script src="../listing-filters.js" defer></script>
 ---
 
-To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the tables below to find [model types and engines](#models).
+To learn about the parsnip package, see [*Get Started: Build a Model*](/start/models/). Use the filters below to find model types and engines.
 
-```{r}
-#| label: load-packages
-#| include: false
+<div class="listing-filter-bar"
+     data-listing-id="parsnip-list"
+     data-fields="model:Model,engine:Engine,mode:Mode,package:Package"></div>
 
-library(tidymodels)
-library(readr)
-library(DT)
-library(htmlwidgets)
-setWidgetIdSeed(1234)
-tidymodels_prefer()
-parsnip_models <- read_csv("parsnip_models.csv")
-```
-
-```{r}
-#| label: table-display
-#| echo: false
-parsnip_models |>
-  mutate(package = factor(package)) |>
-  mutate(mode = factor(mode)) |>
-  datatable(rownames = FALSE,
-            class = 'cell-border stripe',
-            filter = 'top',
-            escape = FALSE,
-            options = list(pageLength = 25))
-```
-
+::: {#parsnip-list}
+:::

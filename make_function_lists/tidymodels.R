@@ -20,11 +20,20 @@ tidymodels_functions <-
   ) %>%
   sort_out_urls() %>%
   dplyr::filter(!grepl("^\\.", functions)) %>%
-  dplyr::select(-functions)
+  dplyr::rename(func = functions) %>%
+  dplyr::select(title, func, url, package)
 
-write_csv(
-  tidymodels_functions,
-  file = here::here("find/all/tidymodels_functions.csv")
-)
+tidymodels_functions[is.na(tidymodels_functions)] <- ""
 
-cli::cli_alert_success("Generated find/all/tidymodels_functions.csv")
+items <- lapply(seq_len(nrow(tidymodels_functions)), function(i) {
+  list(
+    title = tidymodels_functions$title[i],
+    func = tidymodels_functions$func[i],
+    package = as.character(tidymodels_functions$package[i]),
+    url = tidymodels_functions$url[i]
+  )
+})
+
+yaml::write_yaml(items, here::here("find/all/items.yml"))
+
+cli::cli_alert_success("Generated find/all/items.yml")

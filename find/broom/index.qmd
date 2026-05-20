@@ -2,42 +2,33 @@
 subtitle: Broom
 title: Search broom methods
 weight: 3
-description: | 
+description: |
   Find `tidy()`, `augment()`, and `glance()` methods for different objects.
 toc: true
 toc-depth: 0
-css: ../styles-find.css
-r-packages:
-  - tidymodels
-  - readr
-  - DT
-  - htmlwidgets
+listing:
+  id: broom-list
+  contents: items.yml
+  template: card.ejs.md
+  sort: ["title"]
+  sort-ui: [title, func, package]
+  filter-ui: true
+  categories: false
+  page-size: 25
 include-after-body: ../../html/resources.html
+format:
+  html:
+    css: ../listing-cards.css
+    include-in-header:
+      - text: |
+          <script src="../listing-filters.js" defer></script>
 ---
 
-Here are all the broom functions available across CRAN packages. Click on the link in the topic column to find more information.
+Here are all the broom functions available across CRAN packages. Click on a title to open its documentation.
 
+<div class="listing-filter-bar"
+     data-listing-id="broom-list"
+     data-fields="package:Package"></div>
 
-
-```{r}
-#| label: load-packages
-#| include: false
-
-library(tidymodels)
-library(DT)
-library(htmlwidgets)
-setWidgetIdSeed(1234)
-tidymodels_prefer()
-broom_functions <- readr::read_csv("broom_functions.csv")
-```
-
-```{r}
-#| label: table-display
-#| echo: false
-broom_functions |> 
-  datatable(rownames = FALSE,
-            class = 'cell-border stripe',
-            filter = 'top',
-            escape = FALSE,
-            options = list(pageLength = 25))
-```
+::: {#broom-list}
+:::

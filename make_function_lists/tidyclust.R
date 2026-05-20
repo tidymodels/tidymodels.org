@@ -73,16 +73,24 @@ tidyclust_models <-
   dplyr::filter(grepl("^details_", functions)) %>%
   dplyr::inner_join(origin_pkg, by = "functions") %>%
   dplyr::mutate(
-    model = paste0("<code>", model, "</code>"),
-    engine = paste0("<code>", engine, "</code>"),
     title = gsub("General Interface for ", "", title)
   ) %>%
   dplyr::arrange(model, engine) %>%
-  dplyr::select(title, model, engine, topic, mode, package)
+  dplyr::select(title, model, engine, url, mode, package)
 
-write_csv(
-  tidyclust_models,
-  file = here::here("find/tidyclust/tidyclust_models.csv")
-)
+tidyclust_models[is.na(tidyclust_models)] <- ""
 
-cli::cli_alert_success("Generated find/tidyclust/tidyclust_models.csv")
+items <- lapply(seq_len(nrow(tidyclust_models)), function(i) {
+  list(
+    title = tidyclust_models$title[i],
+    model = tidyclust_models$model[i],
+    engine = tidyclust_models$engine[i],
+    mode = as.character(tidyclust_models$mode[i]),
+    package = as.character(tidyclust_models$package[i]),
+    url = tidyclust_models$url[i]
+  )
+})
+
+yaml::write_yaml(items, here::here("find/tidyclust/items.yml"))
+
+cli::cli_alert_success("Generated find/tidyclust/items.yml")

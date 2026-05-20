@@ -36,11 +36,20 @@ recipe_functions <-
     .progress = TRUE
   ) %>%
   sort_out_urls() %>%
-  dplyr::select(-functions)
+  dplyr::rename(func = functions) %>%
+  dplyr::select(title, func, url, package)
 
-write_csv(
-  recipe_functions,
-  file = here::here("find/recipes/recipe_functions.csv")
-)
+recipe_functions[is.na(recipe_functions)] <- ""
 
-cli::cli_alert_success("Generated find/recipes/recipe_functions.csv")
+items <- lapply(seq_len(nrow(recipe_functions)), function(i) {
+  list(
+    title = recipe_functions$title[i],
+    func = recipe_functions$func[i],
+    package = as.character(recipe_functions$package[i]),
+    url = recipe_functions$url[i]
+  )
+})
+
+yaml::write_yaml(items, here::here("find/recipes/items.yml"))
+
+cli::cli_alert_success("Generated find/recipes/items.yml")
