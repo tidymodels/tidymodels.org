@@ -25,7 +25,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../">
 <link href="../../images/favicons/favicon.ico" rel="icon">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/quarto-listing/list.min.js"></script><script src="../../site_libs/quarto-listing/quarto-listing.js"></script><script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a9c94084e156453ce75ecc8ff7b2041c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-76af9550d8f97e208b60ece3b5ab827e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -55,15 +55,61 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><link href="../../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
-<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="../../site_libs/datatables-binding-0.34.0/datatables.js"></script><script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="../../site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet">
-<script src="../../site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script><link href="../../site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet">
-<script src="../../site_libs/selectize-0.12.0/selectize.min.js"></script><link href="../../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
-<script src="../../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script><link rel="stylesheet" href="../../fonts/fonts.css">
-<link rel="stylesheet" href="../styles-find.css">
+}</script><script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-tidyclust-list .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-model','listing-engine','listing-mode','listing-package','listing-url',{ data: ['index'] },{ data: ['categories'] }],
+      
+      searchColumns: ["listing-title","listing-model","listing-engine","listing-mode","listing-package","listing-url"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-tidyclust-list'] = new List('listing-tidyclust-list', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script><script src="../listing-filters.js" defer></script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../fonts/fonts.css">
+<link rel="stylesheet" href="../listing-cards.css">
 </head>
 <body class="nav-fixed quarto-light">
 
@@ -144,13 +190,128 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><p>To learn about the tidyclust package, click on the link in the topic column. Use the tables below to find <a href="#models">model types and engines</a>.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-1b4ff99564eb6e8884a5" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-1b4ff99564eb6e8884a5">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\" disabled=\"\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;partition&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\" disabled=\"\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;tidyclust&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["Hierarchical (Agglomerative) Clustering via stats","K-means via ClusterR","K-means via clustMixType","K-means via klaR","K-means via stats"],["<code>hier_clust<\/code>","<code>k_means<\/code>","<code>k_means<\/code>","<code>k_means<\/code>","<code>k_means<\/code>"],["<code>stats<\/code>","<code>ClusterR<\/code>","<code>clustMixType<\/code>","<code>klaR<\/code>","<code>stats<\/code>"],["<a href='https://tidyclust.tidymodels.org//reference/details_hier_clust_stats.html' target='_blank'><tt>details_hier_clust_stats<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_ClusterR.html' target='_blank'><tt>details_k_means_ClusterR<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_clustMixType.html' target='_blank'><tt>details_k_means_clustMixType<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_klaR.html' target='_blank'><tt>details_k_means_klaR<\/tt><\/a>","<a href='https://tidyclust.tidymodels.org//reference/details_k_means_stats.html' target='_blank'><tt>details_k_means_stats<\/tt><\/a>"],["partition","partition","partition","partition","partition"],["tidyclust","tidyclust","tidyclust","tidyclust","tidyclust"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>title<\/th>\n      <th>model<\/th>\n      <th>engine<\/th>\n      <th>topic<\/th>\n      <th>mode<\/th>\n      <th>package<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":25,"columnDefs":[{"name":"title","targets":0},{"name":"model","targets":1},{"name":"engine","targets":2},{"name":"topic","targets":3},{"name":"mode","targets":4},{"name":"package","targets":5}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true}},"evals":[],"jsHooks":[]}</script>
+</header><p>To learn about the tidyclust package, click any title below to open its reference documentation. Use the filters to narrow the model types and engines.</p>
+<div class="listing-filter-bar" data-listing-id="tidyclust-list" data-fields="model:Model,engine:Engine,mode:Mode,package:Package">
+
+</div>
+<div id="listing-tidyclust-list" class="quarto-listing quarto-listing-container-custom">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+    <select id="listing-tidyclust-list-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-tidyclust-list'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})"><option value="" disabled selected hidden="">Order By</option>
+<option value="index" data-direction="asc">Default</option>
+<option value="listing-title" data-direction="asc">
+        Title
+      </option>
+<option value="listing-model" data-direction="asc">
+        model
+      </option>
+<option value="listing-engine" data-direction="asc">
+        engine
+      </option>
+<option value="listing-mode" data-direction="asc">
+        mode
+      </option>
+<option value="listing-package" data-direction="asc">
+        package
+      </option></select>
+</div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
 </div>
 </div>
+<div class="parsnip-cards list">
+
+  <div class="parsnip-card">
+    <span class="listing-package" hidden="">tidyclust</span>
+    <span class="listing-mode" hidden="">partition</span>
+    <span class="listing-model" hidden="">hier_clust</span>
+    <span class="listing-engine" hidden="">stats</span>
+    <span class="listing-title" hidden="">Hierarchical (Agglomerative) Clustering via stats</span>
+    <div class="parsnip-card-title">
+      <a href="https://tidyclust.tidymodels.org//reference/details_hier_clust_stats.html" target="_blank">Hierarchical (Agglomerative) Clustering via stats<svg class="icon-inline card-link-icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 --><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg></a>
+    </div>
+    <div class="parsnip-card-meta">
+      <span><strong>model:</strong> <code>hier_clust</code></span>
+      <span><strong>engine:</strong> <code>stats</code></span>
+      <span><strong>mode:</strong> partition</span>
+      <span><strong>package:</strong> tidyclust</span>
+    </div>
+  </div>
+
+  <div class="parsnip-card">
+    <span class="listing-package" hidden="">tidyclust</span>
+    <span class="listing-mode" hidden="">partition</span>
+    <span class="listing-model" hidden="">k_means</span>
+    <span class="listing-engine" hidden="">ClusterR</span>
+    <span class="listing-title" hidden="">K-means via ClusterR</span>
+    <div class="parsnip-card-title">
+      <a href="https://tidyclust.tidymodels.org//reference/details_k_means_ClusterR.html" target="_blank">K-means via ClusterR<svg class="icon-inline card-link-icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 --><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg></a>
+    </div>
+    <div class="parsnip-card-meta">
+      <span><strong>model:</strong> <code>k_means</code></span>
+      <span><strong>engine:</strong> <code>ClusterR</code></span>
+      <span><strong>mode:</strong> partition</span>
+      <span><strong>package:</strong> tidyclust</span>
+    </div>
+  </div>
+
+  <div class="parsnip-card">
+    <span class="listing-package" hidden="">tidyclust</span>
+    <span class="listing-mode" hidden="">partition</span>
+    <span class="listing-model" hidden="">k_means</span>
+    <span class="listing-engine" hidden="">clustMixType</span>
+    <span class="listing-title" hidden="">K-means via clustMixType</span>
+    <div class="parsnip-card-title">
+      <a href="https://tidyclust.tidymodels.org//reference/details_k_means_clustMixType.html" target="_blank">K-means via clustMixType<svg class="icon-inline card-link-icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 --><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg></a>
+    </div>
+    <div class="parsnip-card-meta">
+      <span><strong>model:</strong> <code>k_means</code></span>
+      <span><strong>engine:</strong> <code>clustMixType</code></span>
+      <span><strong>mode:</strong> partition</span>
+      <span><strong>package:</strong> tidyclust</span>
+    </div>
+  </div>
+
+  <div class="parsnip-card">
+    <span class="listing-package" hidden="">tidyclust</span>
+    <span class="listing-mode" hidden="">partition</span>
+    <span class="listing-model" hidden="">k_means</span>
+    <span class="listing-engine" hidden="">klaR</span>
+    <span class="listing-title" hidden="">K-means via klaR</span>
+    <div class="parsnip-card-title">
+      <a href="https://tidyclust.tidymodels.org//reference/details_k_means_klaR.html" target="_blank">K-means via klaR<svg class="icon-inline card-link-icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 --><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg></a>
+    </div>
+    <div class="parsnip-card-meta">
+      <span><strong>model:</strong> <code>k_means</code></span>
+      <span><strong>engine:</strong> <code>klaR</code></span>
+      <span><strong>mode:</strong> partition</span>
+      <span><strong>package:</strong> tidyclust</span>
+    </div>
+  </div>
+
+  <div class="parsnip-card">
+    <span class="listing-package" hidden="">tidyclust</span>
+    <span class="listing-mode" hidden="">partition</span>
+    <span class="listing-model" hidden="">k_means</span>
+    <span class="listing-engine" hidden="">stats</span>
+    <span class="listing-title" hidden="">K-means via stats</span>
+    <div class="parsnip-card-title">
+      <a href="https://tidyclust.tidymodels.org//reference/details_k_means_stats.html" target="_blank">K-means via stats<svg class="icon-inline card-link-icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" aria-hidden="true"><!--! Font Awesome Free 6.7.2 --><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"></path></svg></a>
+    </div>
+    <div class="parsnip-card-meta">
+      <span><strong>model:</strong> <code>k_means</code></span>
+      <span><strong>engine:</strong> <code>stats</code></span>
+      <span><strong>mode:</strong> partition</span>
+      <span><strong>package:</strong> tidyclust</span>
+    </div>
+  </div>
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+
 
 
 
