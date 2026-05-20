@@ -17,6 +17,15 @@ window.addEventListener("load", () => {
     .forEach(setupFilterBar);
 });
 
+function clampPanel(panel) {
+  panel.style.left = "";
+  const rect = panel.getBoundingClientRect();
+  const overflow = rect.right - window.innerWidth + 8;
+  if (overflow > 0) {
+    panel.style.left = `-${overflow}px`;
+  }
+}
+
 function setupFilterBar(bar) {
   const listingId = bar.dataset.listingId;
   const list = window["quarto-listings"] &&
@@ -109,6 +118,7 @@ function setupFilterBar(bar) {
 
     summary.addEventListener("click", () => {
       panel.hidden = !panel.hidden;
+      if (!panel.hidden) clampPanel(panel);
     });
     document.addEventListener("click", e => {
       if (!wrap.contains(e.target)) panel.hidden = true;

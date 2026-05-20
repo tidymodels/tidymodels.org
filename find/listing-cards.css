@@ -6,6 +6,10 @@
   border-radius: 4px;
   background: #fff;
   cursor: pointer;
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .listing-filter-panel {
   position: absolute;
@@ -20,12 +24,20 @@
   padding: 0.4rem 0.6rem;
   z-index: 10;
   min-width: 12rem;
+  max-width: calc(100vw - 1rem);
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 .listing-filter-panel label {
   display: block;
-  padding: 0.15rem 0;
+  padding: 0.4rem 0;
   cursor: pointer;
+  min-height: 2.5rem;
+  line-height: 1.4;
+}
+.listing-filter-panel input[type="checkbox"] {
+  min-width: 1rem;
+  min-height: 1rem;
+  margin-right: 0.4rem;
 }
 .parsnip-cards { display: flex; flex-direction: column; gap: 0; }
 .parsnip-card {
@@ -52,3 +64,14 @@
 }
 .parsnip-card-meta code { background: #f5f5f5; padding: 0 0.25rem; border-radius: 3px; }
 .parsnip-card-meta-2 { grid-template-columns: repeat(2, 1fr); }
+
+@media (max-width: 640px) {
+  .parsnip-card-meta { grid-template-columns: repeat(2, 1fr); }
+  .listing-filter-summary { max-width: calc(100vw - 2rem); }
+}
+
+@media (max-width: 480px) {
+  .parsnip-card-meta,
+  .parsnip-card-meta-2 { grid-template-columns: 1fr; }
+  .listing-filter-summary { padding: 0.5rem 0.7rem; }
+}
