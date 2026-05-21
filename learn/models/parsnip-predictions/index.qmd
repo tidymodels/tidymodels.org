@@ -260,8 +260,8 @@ There are other options for installation. See [https://tensorflow.rstudio.com/in
 #| label: setup-keras
 #| eval: !expr 'run_keras'
 # Assumes you are going to use a virtual environment called 
-pve <- grep("tensorflow", reticulate::virtualenv_list(), value = TRUE)
-reticulate::use_virtualenv(pve)
+pve <- grep("keras|tensorflow", reticulate::virtualenv_list(), value = TRUE)
+if (length(pve)) reticulate::use_virtualenv(pve[[1]])
 ```
 
 </details>

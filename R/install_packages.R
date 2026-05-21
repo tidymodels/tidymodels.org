@@ -70,7 +70,7 @@ install_packages <- function(needed) {
 
   # keras3 requires a Python virtualenv with tensorflow
   if ("keras3" %in% needed) {
-    have_venv <- "r-tensorflow" %in% reticulate::virtualenv_list()
+    have_venv <- "r-keras" %in% reticulate::virtualenv_list()
     if (!have_venv) {
       cli::cli_alert_info("Installing keras (tensorflow) Python environment...")
       tryCatch(

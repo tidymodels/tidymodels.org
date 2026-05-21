@@ -151,7 +151,7 @@ Some pages use engines that require large external downloads (Spark, torch, kera
 
 ### Keras / TensorFlow
 
-When a page lists `keras3` in its `r-packages:`, `R/install_packages.R` calls `keras3::install_keras(backend = "tensorflow")` to create the `r-tensorflow` Python virtualenv. The venv is cached in CI at `~/.virtualenvs/r-tensorflow` via `.github/actions/setup-render/action.yml`. The cache key is invalidated when `data/_versions.json` changes.
+When a page lists `keras3` in its `r-packages:`, `R/install_packages.R` calls `keras3::install_keras(backend = "tensorflow")` to create the `r-keras` Python virtualenv. The venv is cached in CI at `~/.virtualenvs/r-keras` via `.github/actions/setup-render/action.yml`. The cache key is invalidated when `data/_versions.json` changes.
 
 ### Apache Spark
 
