@@ -76,7 +76,7 @@ model_list <-
   dplyr::mutate(
     mode = factor(
       mode,
-      levels = c("classification", "regression", "censored regression")
+      levels = c("classification", "regression", "censored regression", "quantile regression")
     )
   ) %>%
   dplyr::left_join(origin_pkg, by = c("engine", "mode", "model")) %>%
