@@ -58,6 +58,7 @@ r-packages:
   - xgboost
   - xrf
   - HSAUR3
+  - keras3
   - lme4
   - prodlim
   - survival
@@ -76,7 +77,7 @@ This page shows examples of how to *fit* and *predict* with different combinatio
 
 We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
+To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, keras3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
 
 There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
 
@@ -214,7 +215,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 4 months and 24 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 5 months and 1 day) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -249,8 +250,8 @@ There are other options for installation. See [https://tensorflow.rstudio.com/in
 
 ```{.r .cell-code}
 # Assumes you are going to use a virtual environment called 
-pve <- grep("tensorflow", reticulate::virtualenv_list(), value = TRUE)
-reticulate::use_virtualenv(pve)
+pve <- grep("keras|tensorflow", reticulate::virtualenv_list(), value = TRUE)
+if (length(pve)) reticulate::use_virtualenv(pve[[1]])
 ```
 :::
 
@@ -3021,7 +3022,7 @@ We create a model specification via:
 ```{.r .cell-code}
 logistic_reg_spec <- logistic_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("keras")
+  set_engine("keras3")
 ```
 :::
 
@@ -3041,6 +3042,20 @@ logistic_reg_fit <- logistic_reg_spec |>
 
 ```{.r .cell-code}
 logistic_reg_fit
+#> parsnip model object
+#> 
+#> Model: "sequential"
+#> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+#> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
+#> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+#> │ dense (Dense)                     │ (None, 1)                │             3 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dense_1 (Dense)                   │ (None, 1)                │             2 │
+#> └───────────────────────────────────┴──────────────────────────┴───────────────┘
+#>  Total params: 17 (72.00 B)
+#>  Trainable params: 5 (20.00 B)
+#>  Non-trainable params: 0 (0.00 B)
+#>  Optimizer params: 12 (52.00 B)
 ```
 :::
 
@@ -3050,7 +3065,27 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
+#> 1/1 - 0s - 36ms/step
+#> # A tibble: 6 × 1
+#>   .pred_class
+#>   <fct>      
+#> 1 Class1     
+#> 2 Class2     
+#> 3 Class2     
+#> 4 Class2     
+#> 5 Class2     
+#> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
+#> 1/1 - 0s - 22ms/step
+#> # A tibble: 6 × 2
+#>   .pred_Class1 .pred_Class2
+#>          <dbl>        <dbl>
+#> 1       0.703         0.297
+#> 2       0.283         0.717
+#> 3       0.471         0.529
+#> 4       0.0275        0.973
+#> 5       0.0950        0.905
+#> 6       0.351         0.649
 ```
 :::
 
@@ -3844,7 +3879,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("keras")
+  set_engine("keras3")
 ```
 :::
 
@@ -3864,6 +3899,20 @@ mlp_fit <- mlp_spec |>
 
 ```{.r .cell-code}
 mlp_fit
+#> parsnip model object
+#> 
+#> Model: "sequential_1"
+#> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+#> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
+#> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+#> │ dense_2 (Dense)                   │ (None, 5)                │            15 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dense_3 (Dense)                   │ (None, 1)                │             6 │
+#> └───────────────────────────────────┴──────────────────────────┴───────────────┘
+#>  Total params: 65 (264.00 B)
+#>  Trainable params: 21 (84.00 B)
+#>  Non-trainable params: 0 (0.00 B)
+#>  Optimizer params: 44 (180.00 B)
 ```
 :::
 
@@ -3873,7 +3922,27 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
+#> 1/1 - 0s - 42ms/step
+#> # A tibble: 6 × 1
+#>   .pred_class
+#>   <fct>      
+#> 1 Class1     
+#> 2 Class2     
+#> 3 Class2     
+#> 4 Class2     
+#> 5 Class2     
+#> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
+#> 1/1 - 0s - 25ms/step
+#> # A tibble: 6 × 2
+#>   .pred_Class1 .pred_Class2
+#>          <dbl>        <dbl>
+#> 1        0.575        0.425
+#> 2        0.387        0.613
+#> 3        0.448        0.552
+#> 4        0.327        0.673
+#> 5        0.338        0.662
+#> 6        0.412        0.588
 ```
 :::
 
@@ -4268,7 +4337,7 @@ We create a model specification via:
 ```{.r .cell-code}
 multinom_reg_spec <- multinom_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("keras")
+  set_engine("keras3")
 ```
 :::
 
@@ -4286,6 +4355,20 @@ multinom_reg_fit <- multinom_reg_spec |>
 
 ```{.r .cell-code}
 multinom_reg_fit
+#> parsnip model object
+#> 
+#> Model: "sequential_2"
+#> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+#> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
+#> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+#> │ dense_4 (Dense)                   │ (None, 1)                │             3 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dense_5 (Dense)                   │ (None, 3)                │             6 │
+#> └───────────────────────────────────┴──────────────────────────┴───────────────┘
+#>  Total params: 29 (120.00 B)
+#>  Trainable params: 9 (36.00 B)
+#>  Non-trainable params: 0 (0.00 B)
+#>  Optimizer params: 20 (84.00 B)
 ```
 :::
 
@@ -4295,7 +4378,31 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
+#> 1/1 - 0s - 39ms/step
+#> # A tibble: 8 × 1
+#>   .pred_class
+#>   <fct>      
+#> 1 three      
+#> 2 three      
+#> 3 <NA>       
+#> 4 <NA>       
+#> 5 <NA>       
+#> 6 three      
+#> 7 three      
+#> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
+#> 1/1 - 0s - 23ms/step
+#> # A tibble: 8 × 3
+#>   .pred_one .pred_two .pred_three
+#>       <dbl>     <dbl>       <dbl>
+#> 1     0.320    0.545        0.135
+#> 2     0.360    0.363        0.276
+#> 3     0.357    0.284        0.359
+#> 4     0.208    0.0548       0.737
+#> 5     0.312    0.156        0.531
+#> 6     0.334    0.506        0.161
+#> 7     0.346    0.462        0.193
+#> 8     0.328    0.523        0.149
 ```
 :::
 
@@ -7870,7 +7977,7 @@ We create a model specification via:
 ```{.r .cell-code}
 linear_reg_spec <- linear_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("keras")
+  set_engine("keras3")
 ```
 :::
 
@@ -7891,6 +7998,20 @@ linear_reg_fit
 
 ```{.r .cell-code}
 linear_reg_fit
+#> parsnip model object
+#> 
+#> Model: "sequential_3"
+#> ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+#> ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃
+#> ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+#> │ dense_6 (Dense)                   │ (None, 1)                │             3 │
+#> ├───────────────────────────────────┼──────────────────────────┼───────────────┤
+#> │ dense_7 (Dense)                   │ (None, 1)                │             2 │
+#> └───────────────────────────────────┴──────────────────────────┴───────────────┘
+#>  Total params: 17 (72.00 B)
+#>  Trainable params: 5 (20.00 B)
+#>  Non-trainable params: 0 (0.00 B)
+#>  Optimizer params: 12 (52.00 B)
 ```
 :::
 
@@ -7900,6 +8021,18 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
+#> 1/1 - 0s - 36ms/step
+#> # A tibble: 8 × 1
+#>     .pred
+#>     <dbl>
+#> 1 -0.431 
+#> 2  0.147 
+#> 3 -0.808 
+#> 4  1.10  
+#> 5  0.0963
+#> 6  0.0726
+#> 7  0.134 
+#> 8  0.556
 ```
 :::
 
@@ -8639,7 +8772,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("keras")
+  set_engine("keras3")
 ```
 :::
 
@@ -8659,6 +8792,17 @@ mlp_fit <- mlp_spec |>
 
 ```{.r .cell-code}
 linear_reg_fit
+#> parsnip model object
+#> 
+#> Formula: compressive_strength ~ .
+#> 
+#> Coefficients:
+#>        (Intercept)             cement blast_furnace_slag            fly_ash 
+#>       -21.80239627         0.12003251         0.10399582         0.08747677 
+#>              water   superplasticizer   coarse_aggregate     fine_aggregate 
+#>        -0.15701342         0.28531613         0.01777782         0.02018358 
+#>                age 
+#>         0.11678247
 ```
 :::
 
@@ -8668,6 +8812,18 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
+#> 1/1 - 0s - 37ms/step
+#> # A tibble: 8 × 1
+#>     .pred
+#>     <dbl>
+#> 1 -0.0432
+#> 2 -0.143 
+#> 3 -0.0172
+#> 4 -0.155 
+#> 5 -0.104 
+#> 6 -0.106 
+#> 7 -0.112 
+#> 8 -0.138
 ```
 :::
 
@@ -12272,6 +12428,7 @@ rand_forest_fit |>
 #>  h2o             3.44.0.3   2024-01-11
 #>  HSAUR3          1.0-15     2024-08-17
 #>  infer           1.1.0      2025-12-18
+#>  keras3          1.5.1      2026-02-13
 #>  kernlab         0.9-33     2024-08-13
 #>  kknn            1.4.1      2025-05-19
 #>  klaR            1.7-4      2026-02-23
@@ -12309,6 +12466,17 @@ rand_forest_fit |>
 #>  xgboost         3.2.1.1    2026-03-18
 #>  xrf             0.3.1      2025-12-17
 #>  yardstick       1.4.0      2026-04-07
+#> 
+#> ─ Python configuration ─────────────────────────────────────────────
+#>  python:         /home/runner/.virtualenvs/r-keras/bin/python
+#>  libpython:      /opt/hostedtoolcache/Python/3.11.15/x64/lib/libpython3.11.so
+#>  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
+#>  version:        3.11.15 (main, Mar  3 2026, 16:10:12) [GCC 13.3.0]
+#>  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
+#>  numpy_version:  1.26.4
+#>  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
+#>  
+#>  NOTE: Python version was forced by use_python() function
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
