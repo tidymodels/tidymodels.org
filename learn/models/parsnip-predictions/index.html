@@ -561,7 +561,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>the computational <strong>engine</strong> indicates how the model is fit, such as with a specific R package implementation or even methods outside of R like Keras or Stan.</p></li>
 </ul>
 <p>We’ll break the examples up by their mode. For each model, we’ll show different data sets used across the different engines.</p>
-<p>To use code in this article, you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf.</p>
+<p>To use code in this article, you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, keras3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf.</p>
 <p>There are numerous other “engine” packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We’ll describe these next.</p>
 <section id="external-dependencies" class="level2"><h2 class="anchored" data-anchor-id="external-dependencies">External Dependencies</h2>
 <p>Some models available in parsnip use other computational frameworks for computations. There may be some additional downloads for engines using <strong>catboost</strong>, <strong>Spark</strong>, <strong>h2o</strong>, <strong>tensorflow</strong>/<strong>keras</strong>, and <strong>torch</strong>. You can expand the sections below to get basic installation instructions.</p>
@@ -675,7 +675,7 @@ h2o installation instructions
 <span><span class="fu"><a href="https://agua.tidymodels.org/reference/h2o-server.html">h2o_start</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: JAVA not found, H2O may take minutes trying to connect.</span></span>
 <span><span class="co">#&gt; Warning in h2o.clusterInfo(): </span></span>
-<span><span class="co">#&gt; Your H2O cluster version is (2 years, 4 months and 24 days) old. There may be a newer version available.</span></span>
+<span><span class="co">#&gt; Your H2O cluster version is (2 years, 5 months and 1 day) old. There may be a newer version available.</span></span>
 <span><span class="co">#&gt; Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -703,8 +703,8 @@ Tensorflow and Keras installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assumes you are going to use a virtual environment called </span></span>
-<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">virtualenv_list</span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu">use_virtualenv</span><span class="op">(</span><span class="va">pve</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"keras|tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">virtualenv_list</span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pve</span><span class="op">)</span><span class="op">)</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">use_virtualenv</span><span class="op">(</span><span class="va">pve</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1433,10 +1433,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1778854320740_1 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1779406254026_1 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               25377         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               25379         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         21         55    35.70000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1547,10 +1547,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1778854320740_53 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1779406254026_53 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               25380         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               25378         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         21         55    35.70000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1715,7 +1715,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__597dc1be_79f4_48e8_afde_b7f5a84fa8b9, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__5011cf72_7564_456d_b7ab_6e43a0b2fbfc, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -2074,7 +2074,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__b9a49270_ddb1_4531_9b6c_3ccd5a77b816, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__300f4824_0433_457f_84b9_e238b8864df7, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3293,7 +3293,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1778854320740_105 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1779406254026_105 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family  link                                regularization</span></span>
 <span><span class="co">#&gt; 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )</span></span>
@@ -3388,7 +3388,7 @@ Torch installation instructions
 <div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">logistic_reg_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/logistic_reg.html">logistic_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># This model only works with a single mode, so we don't need to set the mode.</span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras3"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3406,7 +3406,21 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">logistic_reg_fit</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">logistic_reg_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model: "sequential"</span></span>
+<span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span></span>
+<span><span class="co">#&gt; ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃</span></span>
+<span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span></span>
+<span><span class="co">#&gt; │ dense (Dense)                     │ (None, 1)                │             3 │</span></span>
+<span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
+<span><span class="co">#&gt; │ dense_1 (Dense)                   │ (None, 1)                │             2 │</span></span>
+<span><span class="co">#&gt; └───────────────────────────────────┴──────────────────────────┴───────────────┘</span></span>
+<span><span class="co">#&gt;  Total params: 17 (72.00 B)</span></span>
+<span><span class="co">#&gt;  Trainable params: 5 (20.00 B)</span></span>
+<span><span class="co">#&gt;  Non-trainable params: 0 (0.00 B)</span></span>
+<span><span class="co">#&gt;  Optimizer params: 12 (52.00 B)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3415,7 +3429,27 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logistic_reg_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logistic_reg_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1/1 - 0s - 36ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
+<span><span class="co">#&gt;   .pred_class</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
+<span><span class="co">#&gt; 1 Class1     </span></span>
+<span><span class="co">#&gt; 2 Class2     </span></span>
+<span><span class="co">#&gt; 3 Class2     </span></span>
+<span><span class="co">#&gt; 4 Class2     </span></span>
+<span><span class="co">#&gt; 5 Class2     </span></span>
+<span><span class="co">#&gt; 6 Class2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logistic_reg_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
+<span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1       0.703         0.297</span></span>
+<span><span class="co">#&gt; 2       0.283         0.717</span></span>
+<span><span class="co">#&gt; 3       0.471         0.529</span></span>
+<span><span class="co">#&gt; 4       0.0275        0.973</span></span>
+<span><span class="co">#&gt; 5       0.0950        0.905</span></span>
+<span><span class="co">#&gt; 6       0.351         0.649</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4096,7 +4130,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1778854320740_107 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1779406254026_107 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -4187,7 +4221,7 @@ Torch installation instructions
 <code class="sourceCode R"><span><span class="va">mlp_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/mlp.html">mlp</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># We need to set the mode since this model works with multiple modes.</span></span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras3"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4205,7 +4239,21 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mlp_fit</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mlp_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model: "sequential_1"</span></span>
+<span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span></span>
+<span><span class="co">#&gt; ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃</span></span>
+<span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span></span>
+<span><span class="co">#&gt; │ dense_2 (Dense)                   │ (None, 5)                │            15 │</span></span>
+<span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
+<span><span class="co">#&gt; │ dense_3 (Dense)                   │ (None, 1)                │             6 │</span></span>
+<span><span class="co">#&gt; └───────────────────────────────────┴──────────────────────────┴───────────────┘</span></span>
+<span><span class="co">#&gt;  Total params: 65 (264.00 B)</span></span>
+<span><span class="co">#&gt;  Trainable params: 21 (84.00 B)</span></span>
+<span><span class="co">#&gt;  Non-trainable params: 0 (0.00 B)</span></span>
+<span><span class="co">#&gt;  Optimizer params: 44 (180.00 B)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4214,7 +4262,27 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1/1 - 0s - 42ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
+<span><span class="co">#&gt;   .pred_class</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
+<span><span class="co">#&gt; 1 Class1     </span></span>
+<span><span class="co">#&gt; 2 Class2     </span></span>
+<span><span class="co">#&gt; 3 Class2     </span></span>
+<span><span class="co">#&gt; 4 Class2     </span></span>
+<span><span class="co">#&gt; 5 Class2     </span></span>
+<span><span class="co">#&gt; 6 Class2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 25ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
+<span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1        0.575        0.425</span></span>
+<span><span class="co">#&gt; 2        0.387        0.613</span></span>
+<span><span class="co">#&gt; 3        0.448        0.552</span></span>
+<span><span class="co">#&gt; 4        0.327        0.673</span></span>
+<span><span class="co">#&gt; 5        0.338        0.662</span></span>
+<span><span class="co">#&gt; 6        0.412        0.588</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4509,7 +4577,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OMultinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1778854320740_119 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1779406254026_119 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;        family        link                                regularization</span></span>
 <span><span class="co">#&gt; 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )</span></span>
@@ -4603,7 +4671,7 @@ Torch installation instructions
 <div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">multinom_reg_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/multinom_reg.html">multinom_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># This model only works with a single mode, so we don't need to set the mode.</span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras3"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4619,7 +4687,21 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">multinom_reg_fit</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">multinom_reg_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model: "sequential_2"</span></span>
+<span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span></span>
+<span><span class="co">#&gt; ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃</span></span>
+<span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span></span>
+<span><span class="co">#&gt; │ dense_4 (Dense)                   │ (None, 1)                │             3 │</span></span>
+<span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
+<span><span class="co">#&gt; │ dense_5 (Dense)                   │ (None, 3)                │             6 │</span></span>
+<span><span class="co">#&gt; └───────────────────────────────────┴──────────────────────────┴───────────────┘</span></span>
+<span><span class="co">#&gt;  Total params: 29 (120.00 B)</span></span>
+<span><span class="co">#&gt;  Trainable params: 9 (36.00 B)</span></span>
+<span><span class="co">#&gt;  Non-trainable params: 0 (0.00 B)</span></span>
+<span><span class="co">#&gt;  Optimizer params: 20 (84.00 B)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4628,7 +4710,31 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">multinom_reg_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">mtl_test</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">multinom_reg_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">mtl_test</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1/1 - 0s - 39ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
+<span><span class="co">#&gt;   .pred_class</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
+<span><span class="co">#&gt; 1 three      </span></span>
+<span><span class="co">#&gt; 2 three      </span></span>
+<span><span class="co">#&gt; 3 &lt;NA&gt;       </span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt;       </span></span>
+<span><span class="co">#&gt; 5 &lt;NA&gt;       </span></span>
+<span><span class="co">#&gt; 6 three      </span></span>
+<span><span class="co">#&gt; 7 three      </span></span>
+<span><span class="co">#&gt; 8 three</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">multinom_reg_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">mtl_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 23ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
+<span><span class="co">#&gt;   .pred_one .pred_two .pred_three</span></span>
+<span><span class="co">#&gt;       &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     0.320    0.545        0.135</span></span>
+<span><span class="co">#&gt; 2     0.360    0.363        0.276</span></span>
+<span><span class="co">#&gt; 3     0.357    0.284        0.359</span></span>
+<span><span class="co">#&gt; 4     0.208    0.0548       0.737</span></span>
+<span><span class="co">#&gt; 5     0.312    0.156        0.531</span></span>
+<span><span class="co">#&gt; 6     0.334    0.506        0.161</span></span>
+<span><span class="co">#&gt; 7     0.346    0.462        0.193</span></span>
+<span><span class="co">#&gt; 8     0.328    0.523        0.149</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -4737,7 +4843,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: naivebayes</span></span>
-<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1778854320740_120 </span></span>
+<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1779406254026_120 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_response_levels min_apriori_probability max_apriori_probability</span></span>
 <span><span class="co">#&gt; 1                         2                 0.44713                 0.55287</span></span>
@@ -5523,10 +5629,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1778854320740_122 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1779406254026_122 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               92542        13</span></span>
+<span><span class="co">#&gt; 1              50                       50               92546        13</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        20   16.82000        119        170   142.84000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -5860,7 +5966,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__328321c1_ec75_438e_9131_ec18f14ebadc, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__010ef8a5_4cf6_41fb_bb59_34d8b3d80a16, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6008,7 +6114,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1778854320740_173 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1779406254026_173 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family  link            regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 binomial logit Lasso (lambda = 0.03081 )                       2328</span></span>
@@ -6899,10 +7005,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1778854320740_329 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1779406254026_329 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20472         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20473         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -6973,10 +7079,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1778854320740_330 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1779406254026_330 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20475         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20473         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -7093,7 +7199,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__634b7677_c9c3_4d2c_9843_7518b6b04543, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__be743287_1095_4f67_9f6b_98c1ea4fe6cf, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7356,7 +7462,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__1b5f24db_908b_494d_acca_640cbd3f0686, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__56bdfc5b_d610_46ee_9406_6a164a661667, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8041,7 +8147,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1778854320740_331 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1779406254026_331 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family     link                               regularization</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )</span></span>
@@ -8100,7 +8206,7 @@ Torch installation instructions
 <div class="sourceCode" id="cb343"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">linear_reg_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># This model only works with a single mode, so we don't need to set the mode.</span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras3"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8119,7 +8225,21 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">linear_reg_fit</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">linear_reg_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model: "sequential_3"</span></span>
+<span><span class="co">#&gt; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span></span>
+<span><span class="co">#&gt; ┃ Layer (type)                      ┃ Output Shape             ┃       Param # ┃</span></span>
+<span><span class="co">#&gt; ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span></span>
+<span><span class="co">#&gt; │ dense_6 (Dense)                   │ (None, 1)                │             3 │</span></span>
+<span><span class="co">#&gt; ├───────────────────────────────────┼──────────────────────────┼───────────────┤</span></span>
+<span><span class="co">#&gt; │ dense_7 (Dense)                   │ (None, 1)                │             2 │</span></span>
+<span><span class="co">#&gt; └───────────────────────────────────┴──────────────────────────┴───────────────┘</span></span>
+<span><span class="co">#&gt;  Total params: 17 (72.00 B)</span></span>
+<span><span class="co">#&gt;  Trainable params: 5 (20.00 B)</span></span>
+<span><span class="co">#&gt;  Non-trainable params: 0 (0.00 B)</span></span>
+<span><span class="co">#&gt;  Optimizer params: 12 (52.00 B)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8127,7 +8247,19 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb346"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">linear_reg_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">linear_reg_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 36ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
+<span><span class="co">#&gt;     .pred</span></span>
+<span><span class="co">#&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 -0.431 </span></span>
+<span><span class="co">#&gt; 2  0.147 </span></span>
+<span><span class="co">#&gt; 3 -0.808 </span></span>
+<span><span class="co">#&gt; 4  1.10  </span></span>
+<span><span class="co">#&gt; 5  0.0963</span></span>
+<span><span class="co">#&gt; 6  0.0726</span></span>
+<span><span class="co">#&gt; 7  0.134 </span></span>
+<span><span class="co">#&gt; 8  0.556</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8788,7 +8920,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1778854320740_332 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1779406254026_332 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -8840,7 +8972,7 @@ Torch installation instructions
 <code class="sourceCode R"><span><span class="va">mlp_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/mlp.html">mlp</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># We need to set the mode since this model works with multiple modes.</span></span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"keras3"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8858,7 +8990,18 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb383"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">linear_reg_fit</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">linear_reg_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;        (Intercept)             cement blast_furnace_slag            fly_ash </span></span>
+<span><span class="co">#&gt;       -21.80239627         0.12003251         0.10399582         0.08747677 </span></span>
+<span><span class="co">#&gt;              water   superplasticizer   coarse_aggregate     fine_aggregate </span></span>
+<span><span class="co">#&gt;        -0.15701342         0.28531613         0.01777782         0.02018358 </span></span>
+<span><span class="co">#&gt;                age </span></span>
+<span><span class="co">#&gt;         0.11678247</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8866,7 +9009,19 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb384"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 37ms/step</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
+<span><span class="co">#&gt;     .pred</span></span>
+<span><span class="co">#&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 -0.0432</span></span>
+<span><span class="co">#&gt; 2 -0.143 </span></span>
+<span><span class="co">#&gt; 3 -0.0172</span></span>
+<span><span class="co">#&gt; 4 -0.155 </span></span>
+<span><span class="co">#&gt; 5 -0.104 </span></span>
+<span><span class="co">#&gt; 6 -0.106 </span></span>
+<span><span class="co">#&gt; 7 -0.112 </span></span>
+<span><span class="co">#&gt; 8 -0.138</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -9440,7 +9595,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1778854320740_333 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1779406254026_333 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;    family link                               regularization</span></span>
 <span><span class="co">#&gt; 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )</span></span>
@@ -10073,10 +10228,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1778854320740_334 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1779406254026_334 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               22989         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               22987         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        13    8.84000         19         48    31.90000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -10351,7 +10506,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__78b14789_e011_4ad2_8e65_d49c74b3ed21, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__493b9474_16e3_454f_bb33_8f3b2f825ce3, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -10483,7 +10638,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1778854320740_335 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1779406254026_335 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family     link           regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Lasso (lambda = 0.9516 )                       1801</span></span>
@@ -12352,6 +12507,7 @@ Torch installation instructions
 #&gt;  h2o             3.44.0.3   2024-01-11
 #&gt;  HSAUR3          1.0-15     2024-08-17
 #&gt;  infer           1.1.0      2025-12-18
+#&gt;  keras3          1.5.1      2026-02-13
 #&gt;  kernlab         0.9-33     2024-08-13
 #&gt;  kknn            1.4.1      2025-05-19
 #&gt;  klaR            1.7-4      2026-02-23
@@ -12389,6 +12545,17 @@ Torch installation instructions
 #&gt;  xgboost         3.2.1.1    2026-03-18
 #&gt;  xrf             0.3.1      2025-12-17
 #&gt;  yardstick       1.4.0      2026-04-07
+#&gt; 
+#&gt; ─ Python configuration ─────────────────────────────────────────────
+#&gt;  python:         /home/runner/.virtualenvs/r-keras/bin/python
+#&gt;  libpython:      /opt/hostedtoolcache/Python/3.11.15/x64/lib/libpython3.11.so
+#&gt;  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
+#&gt;  version:        3.11.15 (main, Mar  3 2026, 16:10:12) [GCC 13.3.0]
+#&gt;  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
+#&gt;  numpy_version:  1.26.4
+#&gt;  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
+#&gt;  
+#&gt;  NOTE: Python version was forced by use_python() function
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
