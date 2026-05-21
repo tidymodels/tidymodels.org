@@ -268,6 +268,16 @@ p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
   }
 }
 
+.quarto-grid-item {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: rgba($theme-cranberry, 0.5);
+  }
+}
+
 .quarto-grid-item .listing-categories .listing-category:hover {
   border-color: rgba($theme-cranberry, 0.5);
   color: $theme-cranberry;
@@ -355,6 +365,10 @@ p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
 
     a {
       color: $theme-black;
+
+      &:hover {
+        color: $theme-cranberry;
+      }
     }
 
     .eventDetails {
