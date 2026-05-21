@@ -68,6 +68,24 @@ install_packages <- function(needed) {
     torch::install_torch()
   }
 
+  # keras3 requires a Python virtualenv with tensorflow
+  if ("keras3" %in% needed) {
+    have_venv <- "r-keras" %in% reticulate::virtualenv_list()
+    if (!have_venv) {
+      cli::cli_alert_info("Installing keras (tensorflow) Python environment...")
+      tryCatch(
+        keras3::install_keras(backend = "tensorflow"),
+        error = function(e) {
+          cli::cli_warn(c(
+            "!" = "Failed to install keras: {conditionMessage(e)}",
+            "i" = "Pages that require {.pkg keras3} will be skipped."
+          ))
+          failed <<- c(failed, "keras3")
+        }
+      )
+    }
+  }
+
   # sparklyr requires a local Spark installation
   if ("sparklyr" %in% needed) {
     installed <- sparklyr::spark_installed_versions()

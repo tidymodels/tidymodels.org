@@ -30,7 +30,7 @@ packages <- c(
   "glue",
   "htmlwidgets",
   "kableExtra",
-  "keras",
+  "keras3",
   "kernlab",
   "klaR",
   "leaflet",
@@ -127,7 +127,7 @@ pak::pak("bioc::mixOmics")
 library(brulee)
 
 # Setup keras
-library(keras)
+library(keras3)
 
-install_keras(method = "virtualenv")
+install_keras(backend = "tensorflow")
 

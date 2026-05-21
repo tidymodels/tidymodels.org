@@ -54,6 +54,14 @@ runs:
         key: torch-${{ runner.os }}-${{ hashFiles('data/_versions.json') }}
         restore-keys: torch-${{ runner.os }}-
 
+    - name: Cache keras virtualenv
+      if: contains(inputs.packages, 'keras3')
+      uses: actions/cache@v4
+      with:
+        path: ~/.virtualenvs/r-keras
+        key: keras-${{ runner.os }}-${{ hashFiles('data/_versions.json') }}
+        restore-keys: keras-${{ runner.os }}-
+
     - name: Cache Spark installation
       if: contains(inputs.packages, 'sparklyr')
       id: cache-spark

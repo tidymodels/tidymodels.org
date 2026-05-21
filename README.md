@@ -147,7 +147,11 @@ Pure prose pages (no R code chunks) do not need this field.
 
 ## Heavy engine dependencies
 
-Some pages use engines that require large external downloads (Spark, torch). These are cached in CI to avoid re-downloading on every run.
+Some pages use engines that require large external downloads (Spark, torch, keras/tensorflow). These are cached in CI to avoid re-downloading on every run.
+
+### Keras / TensorFlow
+
+When a page lists `keras3` in its `r-packages:`, `R/install_packages.R` calls `keras3::install_keras(backend = "tensorflow")` to create the `r-keras` Python virtualenv. The venv is cached in CI at `~/.virtualenvs/r-keras` via `.github/actions/setup-render/action.yml`. The cache key is invalidated when `data/_versions.json` changes.
 
 ### Apache Spark
 
