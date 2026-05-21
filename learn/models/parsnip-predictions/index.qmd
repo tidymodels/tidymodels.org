@@ -58,6 +58,7 @@ r-packages:
   - xgboost
   - xrf
   - HSAUR3
+  - keras3
   - lme4
   - prodlim
   - survival
@@ -75,7 +76,7 @@ source(here::here("R/common.R"))
 # Indicates to enable or not running Spark code
 run_spark <- TRUE
 run_h2o <- TRUE
-run_keras <- FALSE
+run_keras <- TRUE
 run_catboost <- rlang::is_installed("catboost")
 run_grf <- rlang::is_installed("parsnip", version = "1.3.3.9000")
 ```
@@ -1579,7 +1580,7 @@ We create a model specification via:
 #| label: spec-keras-logistic-reg-classification
 logistic_reg_spec <- logistic_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("keras")
+  set_engine("keras3")
 ```
 
 Now we create the model fit object:
@@ -1926,7 +1927,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("classification") |>
-  set_engine("keras")
+  set_engine("keras3")
 ```
 
 Now we create the model fit object:
@@ -2097,7 +2098,7 @@ We create a model specification via:
 #| label: spec-keras-multinom-reg-classification
 multinom_reg_spec <- multinom_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("keras")
+  set_engine("keras3")
 ```
 
 Now we create the model fit object:
@@ -3798,7 +3799,7 @@ We create a model specification via:
 #| label: spec-keras-linear-reg-regression
 linear_reg_spec <- linear_reg() |> 
   # This model only works with a single mode, so we don't need to set the mode.
-  set_engine("keras")
+  set_engine("keras3")
 ```
 
 Now we create the model fit object:
@@ -4180,7 +4181,7 @@ We create a model specification via:
 mlp_spec <- mlp() |>
   # We need to set the mode since this model works with multiple modes.
   set_mode("regression") |>
-  set_engine("keras")
+  set_engine("keras3")
 ```
 
 Now we create the model fit object:
