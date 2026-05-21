@@ -1,6 +1,7 @@
 ---
 title: "Fair prediction of hospital readmission: a machine learning fairness case study"
 categories:
+  - tuning and workflows
   - yardstick
   - fairness
   - tuning
