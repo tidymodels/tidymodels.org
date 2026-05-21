@@ -26,6 +26,7 @@ packages <- c(
   "furrr",
   "future",
   "GGally",
+  "ggforce",
   "glmnet",
   "glue",
   "htmlwidgets",
@@ -43,6 +44,7 @@ packages <- c(
   "nycflights13",
   "parsnip",
   "partykit",
+  "patchwork",
   "pkgdown",
   "pls",
   "plsmod",
@@ -130,4 +132,3 @@ library(brulee)
 library(keras)
 
 install_keras(method = "virtualenv")
-
