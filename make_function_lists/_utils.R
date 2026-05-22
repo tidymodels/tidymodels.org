@@ -306,6 +306,18 @@ get_pkg_info <- function(
 # use an internal function in urlchecker to essentially ping the potential url
 
 sort_out_urls <- function(x) {
+  # Normalize URLs: strip trailing slashes and upgrade common tidymodels/CRAN URLs
+  # to https. Without this, pkgdown URLs declared with a trailing slash produce
+  # double-slash links like `pkg.tidymodels.org//reference/...`.
+  normalize_url <- function(u) {
+    if (length(u) == 0) return(u)
+    u <- ifelse(is.na(u), u, sub("/+$", "", u))
+    u <- ifelse(is.na(u), u, sub("^http://", "https://", u))
+    u
+  }
+  x <- x %>%
+    dplyr::mutate(all_urls = purrr::map(all_urls, normalize_url))
+
   test_urls <-
     x %>%
     dplyr::group_by(package) %>%
@@ -313,8 +325,7 @@ sort_out_urls <- function(x) {
     dplyr::ungroup() %>%
     tidyr::unnest(all_urls) %>%
     dplyr::mutate(
-      URL = purrr::map_chr(all_urls, ~ glue("{.x[[1]]}/reference/index.html")),
-      URL = gsub("//", "/", URL, fixed = TRUE)
+      URL = purrr::map_chr(all_urls, ~ glue("{.x[[1]]}/reference/index.html"))
     ) %>%
     dplyr::select(URL, Parent = functions, package, all_urls)
   url_check_fails <-
