@@ -1,6 +1,7 @@
 ---
 title: "Tuning text models"
 categories:
+  - tuning and workflows
   - tuning
   - regression
   - sparse data

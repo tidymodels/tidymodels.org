@@ -1,6 +1,7 @@
 ---
 title: "Iterative Bayesian optimization of a classification model"
 categories:
+  - tuning and workflows
   - tuning
   - SVMs
 type: learn-subsection

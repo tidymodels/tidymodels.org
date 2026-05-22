@@ -1,6 +1,7 @@
 ---
 title: "Model tuning using a sparse matrix"
 categories:
+ - tuning and workflows
  - tuning
  - classification
  - sparse data
