@@ -1,6 +1,7 @@
 ---
 title: "Multivariate analysis using partial least squares"
 categories:
+  - model fitting
   - pre-processing
   - multivariate analysis
   - correlation

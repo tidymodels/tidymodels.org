@@ -1,6 +1,7 @@
 ---
 title: "Nested resampling"
 categories:
+  - tuning and workflows
   - SVMs
 type: learn-subsection
 weight: 2

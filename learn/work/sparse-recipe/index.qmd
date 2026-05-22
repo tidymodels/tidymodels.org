@@ -1,6 +1,7 @@
 ---
 title: "Using recipes to create sparse data"
 categories:
+ - tuning and workflows
  - tuning
  - classification
  - sparse data

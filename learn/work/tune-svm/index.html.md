@@ -1,6 +1,7 @@
 ---
 title: "Model tuning via grid search"
 categories:
+  - tuning and workflows
   - tuning
   - SVMs
   - classification

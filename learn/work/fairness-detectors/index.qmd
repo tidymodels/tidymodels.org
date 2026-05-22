@@ -1,6 +1,7 @@
 ---
 title: "Are GPT detectors fair? A machine learning fairness case study"
 categories:
+  - tuning and workflows
   - yardstick
   - fairness
   - classification

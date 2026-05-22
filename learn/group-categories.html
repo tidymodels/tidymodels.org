@@ -1,0 +1,56 @@
+<script>
+(function () {
+  const UMBRELLAS = [
+    "statistical analysis",
+    "model fitting",
+    "developer tools",
+    "tuning and workflows",
+  ];
+
+  function nameOf(el) {
+    // category text is like "statistical analysis (8)" — strip the count
+    return el.textContent.replace(/\s*\(\d+\)\s*$/, "").trim().toLowerCase();
+  }
+
+  function group() {
+    const cloud = document.querySelector(".quarto-listing-category.category-unnumbered");
+    if (!cloud || cloud.dataset.grouped === "1") return;
+
+    const items = Array.from(cloud.querySelectorAll(".category"));
+    if (items.length === 0) return;
+
+    const umbrellaEls = items.filter((el) => UMBRELLAS.includes(nameOf(el)));
+    if (umbrellaEls.length === 0) return;
+
+    const group = document.createElement("div");
+    group.className = "quarto-listing-category category-sections";
+
+    const heading = document.createElement("h6");
+    heading.className = "quarto-listing-category-subtitle";
+    heading.textContent = "Sections";
+    group.appendChild(heading);
+
+    // preserve the order defined in UMBRELLAS
+    UMBRELLAS.forEach((name) => {
+      const el = umbrellaEls.find((e) => nameOf(e) === name);
+      if (el) {
+        group.appendChild(el);
+      }
+    });
+
+    const topicsHeading = document.createElement("h6");
+    topicsHeading.className = "quarto-listing-category-subtitle";
+    topicsHeading.textContent = "Topics";
+
+    cloud.parentNode.insertBefore(group, cloud);
+    cloud.insertBefore(topicsHeading, cloud.firstChild);
+    cloud.dataset.grouped = "1";
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", group);
+  } else {
+    group();
+  }
+})();
+</script>

@@ -1,6 +1,7 @@
 ---
 title: "Creating case weights based on time"
 categories:
+  - tuning and workflows
   - model fitting
   - time series
 type: learn-subsection

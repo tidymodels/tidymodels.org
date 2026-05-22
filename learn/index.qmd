@@ -14,6 +14,7 @@ listing:
         - "../start/resampling/index.qmd"
         - "../start/tuning/index.qmd"
         - "../start/case-study/index.qmd"
+include-after-body: group-categories.html
 ---
 
 After you know [what you need to get started](/start/) with tidymodels, you can learn more and go further. Find articles here to help you solve specific problems using the tidymodels framework. 

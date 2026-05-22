@@ -1,6 +1,7 @@
 ---
 title: "Conformal inference for regression models"
 categories:
+  - model fitting
   - probably
   - parsnip
   - tuning
