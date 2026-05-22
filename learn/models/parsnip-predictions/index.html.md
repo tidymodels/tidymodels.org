@@ -3065,7 +3065,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3076,7 +3076,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3922,7 +3922,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 42ms/step
+#> 1/1 - 0s - 39ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3933,7 +3933,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 23ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4378,7 +4378,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 39ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4391,7 +4391,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 23ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8021,7 +8021,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8812,7 +8812,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 38ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12408,7 +12408,7 @@ rand_forest_fit |>
 #>  agua            0.1.4      2024-06-04
 #>  aorsf           0.1.6      2025-12-11
 #>  baguette        1.1.0      2025-01-28
-#>  bonsai          0.4.0      2025-06-25
+#>  bonsai          0.4.1      2026-05-21
 #>  broom           1.0.13     2026-05-14
 #>  brulee          0.6.0      2025-09-02
 #>  C50             0.2.0      2025-04-03
