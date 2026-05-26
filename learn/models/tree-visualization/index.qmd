@@ -1,0 +1,55 @@
+---
+title: "Tree Visualization"
+categories:
+  - model fitting
+  - pre-processing
+  - multivariate analysis
+  - correlation
+type: learn-subsection
+weight: 6
+description: | 
+  Visualize trees.
+  
+toc: true
+toc-depth: 2
+r-packages:
+  - tidymodels
+  - pls
+  - sessioninfo
+include-after-body: ../../../html/resources.html
+---
+
+```{r}
+#| label: "setup"
+#| include: false
+#| message: false
+#| warning: false
+source(here::here("R/common.R"))
+```
+
+```{r}
+#| label: "load"
+#| include: false
+library(pls)
+library(tidymodels)
+library(sessioninfo)
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
+
+theme_set(theme_bw() + theme(legend.position = "top"))
+```
+
+
+## Introduction
+
+`r article_req_pkgs(pkgs)`
+Hello
+
+
+## Session information {#session-info}
+
+```{r}
+#| label: "si"
+#| echo: false
+small_session(pkgs)
+```
+ 
