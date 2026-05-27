@@ -1,20 +1,23 @@
 ---
-title: "Tree Visualization"
+title: "Decision Tree Visualization"
 categories:
   - model fitting
-  - pre-processing
   - multivariate analysis
-  - correlation
+  - decision trees
 type: learn-subsection
 weight: 6
 description: | 
-  Visualize trees.
+  Visualize decision trees using different R packages and approaches.
   
 toc: true
 toc-depth: 2
 r-packages:
   - tidymodels
-  - pls
+  - rpart
+  - partykit
+  - rpart.plot
+  - ggplot2
+  - parttree
   - sessioninfo
 include-after-body: ../../../html/resources.html
 ---
@@ -30,8 +33,12 @@ source(here::here("R/common.R"))
 ```{r}
 #| label: "load"
 #| include: false
-library(pls)
 library(tidymodels)
+library(rpart)
+library(partykit)
+library(rpart.plot)
+library(parttree)
+library(ggplot2)
 library(sessioninfo)
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
@@ -42,8 +49,23 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 ## Introduction
 
 `r article_req_pkgs(pkgs)`
-Hello
 
+Decision trees are widely used because they are easy to interpret and can
+capture nonlinear relationships between predictors and outcomes. Once a
+tree model has been fit, visualization becomes an important step for
+understanding splits, predictions, and decision boundaries.
+
+Different R packages provide different approaches to tree visualization.
+Some focus on simple structural displays, while others emphasize
+publication-quality graphics or integration with the `ggplot2`
+ecosystem.
+
+This article compares and discusses several common methods for visualizing decision
+trees in R:
+  - `plot.rpart()`
+  - `partykit::plot()`
+  - `rpart.plot::rpart.plot()`
+  - `parttree::geom_parttree()`
 
 ## Session information {#session-info}
 
