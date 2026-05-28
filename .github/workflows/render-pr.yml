@@ -29,6 +29,11 @@ jobs:
               pull_number: context.issue.number
             });
             core.setOutput('branch', pr.data.head.ref);
+            core.setOutput('repo', pr.data.head.repo.full_name);
+            core.setOutput('sha', pr.data.head.sha);
+            const isFork = pr.data.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}`;
+            core.setOutput('is_fork', String(isFork));
+            core.setOutput('maintainer_can_modify', String(pr.data.maintainer_can_modify === true));
 
       - name: React to comment
         uses: actions/github-script@v7
@@ -44,13 +49,20 @@ jobs:
       - name: Check out PR branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.pr.outputs.branch }}
+          repository: ${{ steps.pr.outputs.repo }}
+          ref: ${{ steps.pr.outputs.sha }}
           fetch-depth: 0
+          token: ${{ secrets.RENDER_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Fetch base for diff
+        run: |
+          git remote add base https://github.com/${{ github.repository }}.git || true
+          git fetch base main --depth=1
 
       - name: Find changed .qmd files
         id: changed
         run: |
-          pages=$(git diff --name-only origin/main...HEAD -- '*.qmd' | tr '\n' ' ')
+          pages=$(git diff --name-only base/main...HEAD -- '*.qmd' | tr '\n' ' ')
           echo "pages=$pages" >> $GITHUB_OUTPUT
           # derive unique package list from r-packages fields in changed files
           pkgs=$(grep -h "^  - " $pages 2>/dev/null | sort -u | sed 's/^  - //' | tr '\n' ' ' || true)
@@ -77,13 +89,35 @@ jobs:
           done
 
       - name: Commit rendered output
+        id: push
         if: steps.changed.outputs.pages != ''
+        env:
+          IS_FORK: ${{ steps.pr.outputs.is_fork }}
+          MAINTAINER_CAN_MODIFY: ${{ steps.pr.outputs.maintainer_can_modify }}
+          HEAD_REPO: ${{ steps.pr.outputs.repo }}
+          HEAD_BRANCH: ${{ steps.pr.outputs.branch }}
+          RENDER_PAT: ${{ secrets.RENDER_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add _freeze/ $(find . -name "*.md" -not -path "./.git/*")
-          git diff --cached --quiet && echo "Nothing to commit" || \
-            git commit -m "render changed pages [skip ci]" && git push
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            echo "pushed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          git commit -m "render changed pages [skip ci]"
+          if [ "$IS_FORK" = "true" ]; then
+            if [ "$MAINTAINER_CAN_MODIFY" != "true" ] || [ -z "$RENDER_PAT" ]; then
+              echo "Cannot push to fork: maintainer_can_modify=$MAINTAINER_CAN_MODIFY, RENDER_PAT set=$([ -n "$RENDER_PAT" ] && echo yes || echo no)"
+              echo "pushed=false" >> $GITHUB_OUTPUT
+              echo "reason=fork_no_push" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+            git remote set-url origin "https://x-access-token:${RENDER_PAT}@github.com/${HEAD_REPO}.git"
+          fi
+          git push origin "HEAD:${HEAD_BRANCH}"
+          echo "pushed=true" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
         if: always()
@@ -91,15 +125,26 @@ jobs:
         with:
           script: |
             const pages = '${{ steps.changed.outputs.pages }}'.trim().split(/\s+/).filter(Boolean);
+            const renderOutcome = '${{ steps.render.outcome }}';
+            const pushOutcome = '${{ steps.push.outcome }}';
+            const pushed = '${{ steps.push.outputs.pushed }}' === 'true';
+            const pushReason = '${{ steps.push.outputs.reason }}';
+            const runUrl = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
             let body;
             if (pages.length === 0) {
               body = `**No .qmd files changed** — nothing to render.`;
-            } else {
-              const success = '${{ steps.render.outcome }}' === 'success';
+            } else if (renderOutcome !== 'success') {
               const list = pages.map(p => `- \`${p}\``).join('\n');
-              body = success
-                ? `**Render complete** :white_check_mark:\n\nRendered pages:\n${list}\n\nRendered output has been committed to this branch.`
-                : `**Render failed** :x:\n\nCheck the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.`;
+              body = `**Render failed** :x:\n\nPages:\n${list}\n\nCheck the [workflow run](${runUrl}) for details.`;
+            } else {
+              const list = pages.map(p => `- \`${p}\``).join('\n');
+              if (pushed) {
+                body = `**Render complete** :white_check_mark:\n\nRendered pages:\n${list}\n\nRendered output has been committed to this branch.`;
+              } else if (pushReason === 'fork_no_push') {
+                body = `**Render complete** :white_check_mark:\n\nRendered pages:\n${list}\n\nThis PR is from a fork, so the rendered output could not be pushed back automatically. Please render locally and push, or enable "Allow edits by maintainers" and ask a maintainer to re-run \`/render\` (requires \`RENDER_PAT\` secret). See the [workflow run](${runUrl}) for the rendered artifacts.`;
+              } else {
+                body = `**Render complete** :white_check_mark:\n\nRendered pages:\n${list}\n\nNo new output to commit.`;
+              }
             }
             await github.rest.issues.createComment({
               owner: context.repo.owner,
