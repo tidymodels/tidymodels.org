@@ -24,6 +24,7 @@ include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
+
 To use code in this article,  you will need to install the following packages: ggplot2, parttree, partykit, rattle, rpart, rpart.plot, sessioninfo, and tidymodels.
 
 Decision trees are widely used because they are easy to interpret and can capture nonlinear relationships between predictors and outcomes. Once a tree model has been fit, visualization becomes an important step for understanding splits, predictions, and decision boundaries.
@@ -41,6 +42,7 @@ Let's compare and discuss several common methods for visualizing decision trees 
 We will fit a simple classification tree using the penguins data set from modeldata and compare visualization results.
 
 ## Fit a decision tree
+
 We first fit a classification tree using rpart through tidymodels.
 
 ::: {.cell layout-align="center"}
@@ -87,6 +89,7 @@ tree_obj <- extract_fit_engine(tree_fit)
 :::
 
 ## `plot.rpart()` {#plot-rpart}
+
 The default plotting functions in rpart provide a quick way to inspect the structure of a tree.
 
 ::: {.cell layout-align="center"}
@@ -106,6 +109,7 @@ text(tree_obj, use.n = TRUE, cex = 0.8)
 This approach is simple and lightweight, making it useful for quick exploration. However, the default styling is fairly minimal and can be hard to customize for presentations or publication-quality graphics.
 
 ## `plot.party()` {#plot-party}
+
 The partykit package provides cleaner default tree visualizations and more flexible formatting options.
 
 ::: {.cell layout-align="center"}
@@ -152,6 +156,7 @@ In this example:
 These changes are subtle for this example, but they can become more useful when working with larger trees that contain longer labels or many terminal nodes.
 
 ## `rpart.plot()` {#rpart-plot}
+
 The rpart.plot package is designed specifically for decision tree visualization and includes several built-in styling improvements.
 
 ::: {.cell layout-align="center"}
@@ -199,6 +204,7 @@ This example shows a few ways to adjust the appearance of the tree.
 These options mostly affect how the tree is displayed and labeled. Different settings may be more useful depending on the complexity of the tree.
 
 ## `geom_parttree()` {#geom-parttree}
+
 The parttree package focuses on visualizing decision boundaries rather than the tree structure itself. It integrates naturally with ggplot2.
 
 ::: {.cell layout-align="center"}
@@ -235,6 +241,7 @@ One limitation is that partition plots become harder to interpret as the number 
 Because `geom_parttree()` only works with one or two predictors at a time, we fit a smaller tree for this example.
 
 ## `fancyRpartPlot()` {#fancy-rpart}
+
 The `fancyRpartPlot()` function from the rattle package creates a more stylized version of a decision tree, which looks pretty similar to the output from `rpart.plot`.
 
 ::: {.cell layout-align="center"}
@@ -274,6 +281,7 @@ Compared to the default rpart plots, this style is much more visually distinct a
 One limitation is that the styling can become crowded for larger trees with many nodes or long labels. However, for smaller and medium-sized trees, the additional formatting can improve readability.
 
 ## Regression tree example
+
 Although this article has focused on classification trees, many visualization methods also support regression trees. In regression trees, terminal nodes display predicted numeric values instead of class labels or class probabilities. Below is an example using `rpart.plot()` to visualize a regression tree.
 
 ::: {.cell layout-align="center"}
@@ -306,6 +314,7 @@ The first split separates penguins based on whether `flipper_length_mm < 207`. P
 The percentages below each node show the proportion of observations in that node. The terminal nodes at the bottom contain the final predicted body mass values.
 
 ## Comparing visualization methods
+
 Each visualization approach emphasizes different aspects of the model.
 
 | Function | Package | Strength | Regression Trees |
@@ -322,35 +331,36 @@ Each visualization approach emphasizes different aspects of the model.
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.1 (2025-06-13)
+#>  version  R version 4.5.2 (2025-10-31)
 #>  language (EN)
-#>  pandoc   3.4
-#>  quarto   1.6.42
+#>  pandoc   3.8.3
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package       version date (UTC)
-#>  broom         1.0.13  2026-05-14
-#>  dials         1.4.3   2026-04-11
-#>  dplyr         1.2.1   2026-04-03
-#>  ggplot2       4.0.3   2026-04-22
-#>  infer         1.1.0   2025-12-18
-#>  parsnip       1.6.0   2026-05-14
-#>  parttree      0.1.3   2026-03-31
-#>  partykit      1.2-27  2026-03-13
-#>  purrr         1.2.2   2026-04-10
-#>  rattle        5.6.2   2026-02-08
-#>  recipes       1.3.2   2026-04-02
-#>  rlang         1.2.0   2026-04-06
-#>  rpart         4.1.27  2026-03-27
-#>  rpart.plot    3.1.4   2026-01-08
-#>  rsample       1.3.2   2026-01-30
-#>  sessioninfo   1.2.3   2025-02-05
-#>  tibble        3.3.1   2026-01-11
-#>  tidymodels    1.5.0   2026-04-23
-#>  tune          2.1.0   2026-04-17
-#>  workflows     1.3.0   2025-08-27
-#>  yardstick     1.4.0   2026-04-07
+#>  package       version     date (UTC)
+#>  broom         1.0.12.9000 2026-05-12
+#>  dials         1.4.3       2026-04-11
+#>  dplyr         1.2.1       2026-04-03
+#>  ggplot2       4.0.3       2026-04-22
+#>  infer         1.1.0       2025-12-18
+#>  parsnip       1.6.0       2026-05-14
+#>  parttree      0.1.3       2026-03-31
+#>  partykit      1.2-27      2026-03-13
+#>  purrr         1.2.2       2026-04-10
+#>  rattle        5.6.2       2026-02-08
+#>  recipes       1.3.2       2026-04-02
+#>  rlang         1.2.0       2026-04-06
+#>  rpart         4.1.27      2026-03-27
+#>  rpart.plot    3.1.4       2026-01-08
+#>  rsample       1.3.2       2026-01-30
+#>  sessioninfo   1.2.3       2025-02-05
+#>  tibble        3.3.1       2026-01-11
+#>  tidymodels    1.4.1       2025-09-08
+#>  tune          2.1.0.9000  2026-04-27
+#>  workflows     1.3.0       2025-08-27
+#>  yardstick     1.4.0       2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+

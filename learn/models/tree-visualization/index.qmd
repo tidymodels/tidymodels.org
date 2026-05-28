@@ -49,8 +49,8 @@ pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 theme_set(theme_bw() + theme(legend.position = "top"))
 ```
 
-
 ## Introduction
+
 `r article_req_pkgs(pkgs)`
 
 Decision trees are widely used because they are easy to interpret and can capture nonlinear relationships between predictors and outcomes. Once a tree model has been fit, visualization becomes an important step for understanding splits, predictions, and decision boundaries.
@@ -67,9 +67,10 @@ Let's compare and discuss several common methods for visualizing decision trees 
   
 We will fit a simple classification tree using the penguins data set from modeldata and compare visualization results.
 
-
 ## Fit a decision tree
+
 We first fit a classification tree using rpart through tidymodels.
+
 ```{r}
 #| label: fit-tree
 
@@ -88,15 +89,18 @@ tree_fit <-
 
 tree_fit
 ```
+
 Several visualization packages work directly with the underlying rpart object, so we extract it here.
+
 ```{r}
 #| label: extract
 tree_obj <- extract_fit_engine(tree_fit)
 ```
 
-
 ## `plot.rpart()` {#plot-rpart}
+
 The default plotting functions in rpart provide a quick way to inspect the structure of a tree.
+
 ```{r}
 #| label: plot-rpart
 #| fig-width: 8
@@ -109,11 +113,13 @@ par(mar = c(2, 2, 2, 2))
 plot(tree_obj, uniform = TRUE, margin = 0.1)
 text(tree_obj, use.n = TRUE, cex = 0.8)
 ```
+
 This approach is simple and lightweight, making it useful for quick exploration. However, the default styling is fairly minimal and can be hard to customize for presentations or publication-quality graphics.
 
-
 ## `plot.party()` {#plot-party}
+
 The partykit package provides cleaner default tree visualizations and more flexible formatting options.
+
 ```{r}
 #| label: plot-partykit
 
@@ -121,11 +127,13 @@ party_obj <- as.party(tree_obj)
 
 plot(party_obj)
 ```
+
 Compared to the base rpart plot, the layout is often easier to read and the node labels are displayed more clearly. This makes partykit a good option when readability is important.
 
 partykit automatically includes more information inside the terminal nodes. For example, each terminal node shows the predicted class along with the distribution of observations within that node.
 
 The appearance of the plot can also be adjusted with additional plotting arguments.
+
 ```{r}
 #| label: plot-partykit-custom
 
@@ -136,6 +144,7 @@ plot(
   ep_args = list(justmin = 15)
 )
 ```
+
 In this example:
 
 - `abbreviate = FALSE` prevents split labels from being shortened
@@ -144,9 +153,10 @@ In this example:
 
 These changes are subtle for this example, but they can become more useful when working with larger trees that contain longer labels or many terminal nodes.
 
-
 ## `rpart.plot()` {#rpart-plot}
+
 The rpart.plot package is designed specifically for decision tree visualization and includes several built-in styling improvements.
+
 ```{r}
 #| label: plot-rpart-plot-basic
 
@@ -155,7 +165,9 @@ rpart.plot(
   roundint = FALSE
 )
 ```
+
 The appearance can also be customized with additional arguments.
+
 ```{r}
 #| label: plot-rpart-plot-custom
 #| warning: false
@@ -169,6 +181,7 @@ rpart.plot(
   roundint = FALSE
 )
 ```
+
 This example shows a few ways to adjust the appearance of the tree.
 
 - `type = 4` changes where the split labels are placed. Instead of being directly on the branches, the split conditions are displayed above them.
@@ -179,9 +192,10 @@ This example shows a few ways to adjust the appearance of the tree.
 
 These options mostly affect how the tree is displayed and labeled. Different settings may be more useful depending on the complexity of the tree.
 
-
 ## `geom_parttree()` {#geom-parttree}
+
 The parttree package focuses on visualizing decision boundaries rather than the tree structure itself. It integrates naturally with ggplot2.
+
 ```{r}
 #| label: plot-parttree
 
@@ -201,6 +215,7 @@ penguins |>
   geom_point(alpha = 0.7) +
   geom_parttree(data = parttree_obj)
 ```
+
 In this plot, the background partitions represent the decision regions created by the tree model. Each region corresponds to the predicted class for observations that fall within that section of the predictor space.
 
 Unlike the previous methods, this approach emphasizes how the model separates observations rather than the exact tree splits. This can make it easier to understand the overall behavior of the model, especially for low-dimensional data.
@@ -209,8 +224,8 @@ One limitation is that partition plots become harder to interpret as the number 
 
 Because `geom_parttree()` only works with one or two predictors at a time, we fit a smaller tree for this example.
 
-
 ## `fancyRpartPlot()` {#fancy-rpart}
+
 The `fancyRpartPlot()` function from the rattle package creates a more stylized version of a decision tree, which looks pretty similar to the output from `rpart.plot`.
 
 ```{r}
@@ -222,6 +237,7 @@ fancyRpartPlot(
   sub = ""
 )
 ```
+
 The tree is read from top to bottom:
 
 - The top node is called the **root node** and contains all observations in the data set.
@@ -244,9 +260,10 @@ Compared to the default rpart plots, this style is much more visually distinct a
 
 One limitation is that the styling can become crowded for larger trees with many nodes or long labels. However, for smaller and medium-sized trees, the additional formatting can improve readability.
 
-
 ## Regression tree example
+
 Although this article has focused on classification trees, many visualization methods also support regression trees. In regression trees, terminal nodes display predicted numeric values instead of class labels or class probabilities. Below is an example using `rpart.plot()` to visualize a regression tree.
+
 ```{r}
 #| label: regression-tree
 
@@ -264,14 +281,15 @@ rpart.plot(
   roundint = FALSE
 )
 ```
+
 In this regression tree, the numbers inside the nodes represent the predicted body mass in grams. For example, the top node predicts an average body mass of about `4202` grams across all penguins.
 
 The first split separates penguins based on whether `flipper_length_mm < 207`. Penguins with shorter flippers move to the left side of the tree and tend to have lower predicted body mass values, while penguins with longer flippers move to the right side and tend to have higher predicted body mass values.
 
 The percentages below each node show the proportion of observations in that node. The terminal nodes at the bottom contain the final predicted body mass values.
 
-
 ## Comparing visualization methods
+
 Each visualization approach emphasizes different aspects of the model.
 
 | Function | Package | Strength | Regression Trees |
@@ -282,8 +300,8 @@ Each visualization approach emphasizes different aspects of the model.
 | `geom_parttree()` | parttree | Decision boundary visualization for predictor space partitions | Limited |
 | `fancyRpartPlot()` | rattle | More visually distinct and presentation-friendly tree diagrams | Yes |
 
-
 ## Session information {#session-info}
+
 ```{r}
 #| label: "si"
 #| echo: false
