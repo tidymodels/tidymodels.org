@@ -34,6 +34,7 @@ source(here::here("R/common.R"))
 ```{r}
 #| label: "load"
 #| include: false
+
 library(tidymodels)
 library(modeldata)
 library(rpart)
@@ -71,6 +72,7 @@ We will fit a simple classification tree using the penguins data set from modeld
 We first fit a classification tree using rpart through tidymodels.
 ```{r}
 #| label: fit-tree
+
 data(penguins)
 
 penguins <- penguins |>
@@ -114,6 +116,7 @@ This approach is simple and lightweight, making it useful for quick exploration.
 The partykit package provides cleaner default tree visualizations and more flexible formatting options.
 ```{r}
 #| label: plot-partykit
+
 party_obj <- as.party(tree_obj)
 
 plot(party_obj)
@@ -146,6 +149,7 @@ These changes are subtle for this example, but they can become more useful when 
 The rpart.plot package is designed specifically for decision tree visualization and includes several built-in styling improvements.
 ```{r}
 #| label: plot-rpart-plot-basic
+
 rpart.plot(
   tree_obj,
   roundint = FALSE
@@ -165,7 +169,6 @@ rpart.plot(
   roundint = FALSE
 )
 ```
-
 This example shows a few ways to adjust the appearance of the tree.
 
 - `type = 4` changes where the split labels are placed. Instead of being directly on the branches, the split conditions are displayed above them.
@@ -181,6 +184,7 @@ These options mostly affect how the tree is displayed and labeled. Different set
 The parttree package focuses on visualizing decision boundaries rather than the tree structure itself. It integrates naturally with ggplot2.
 ```{r}
 #| label: plot-parttree
+
 penguins_parttree <-
   decision_tree(cost_complexity = 0.01) |>
   set_engine("rpart") |>
@@ -285,4 +289,3 @@ Each visualization approach emphasizes different aspects of the model.
 #| echo: false
 small_session(pkgs)
 ```
- 
