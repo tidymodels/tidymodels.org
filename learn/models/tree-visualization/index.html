@@ -5,8 +5,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="Use tests of independence and goodness of fit to analyze tables of counts.">
-<title>Statistical analysis of contingency tables – tidymodels</title>
+<meta name="description" content="Visualize decision trees using different R packages and approaches.">
+<title>Decision Tree Visualization – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -90,32 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script><link rel="stylesheet" href="../../../fonts/fonts.css">
+}</script><link rel="stylesheet" href="../../../fonts/fonts.css">
 </head>
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
@@ -174,8 +149,8 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb">
-<li class="breadcrumb-item"><a href="../../../learn/statistics/bootstrap/index.html">Perform Statistical Analyses</a></li>
-<li class="breadcrumb-item"><a href="../../../learn/statistics/xtabs/index.html">Statistical analysis of contingency tables</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/bootstrap-metrics/index.html">Create Robust Models</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/tree-visualization/index.html">Decision Tree Visualization</a></li>
 </ol></nav><a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -191,13 +166,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">Perform Statistical Analyses</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/statistics/bootstrap/index.html" class="sidebar-item-text sidebar-link">
@@ -242,7 +217,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../learn/statistics/xtabs/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../../learn/statistics/xtabs/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistical analysis of contingency tables</span></a>
   </div>
 </li>
@@ -250,13 +225,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Create Robust Models</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/models/bootstrap-metrics/index.html" class="sidebar-item-text sidebar-link">
@@ -319,7 +294,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../learn/models/tree-visualization/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../learn/models/tree-visualization/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Decision Tree Visualization</span></a>
   </div>
 </li>
@@ -446,30 +421,37 @@ window.Quarto = {
    
   <ul class="collapse">
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#test-of-independence" id="toc-test-of-independence" class="nav-link" data-scroll-target="#test-of-independence">Test of independence</a></li>
-  <li><a href="#goodness-of-fit" id="toc-goodness-of-fit" class="nav-link" data-scroll-target="#goodness-of-fit">Goodness of fit</a></li>
+  <li><a href="#fit-a-decision-tree" id="toc-fit-a-decision-tree" class="nav-link" data-scroll-target="#fit-a-decision-tree">Fit a decision tree</a></li>
+  <li><a href="#plot-rpart" id="toc-plot-rpart" class="nav-link" data-scroll-target="#plot-rpart"><code>plot.rpart()</code></a></li>
+  <li><a href="#plot-party" id="toc-plot-party" class="nav-link" data-scroll-target="#plot-party"><code>plot.party()</code></a></li>
+  <li><a href="#rpart-plot" id="toc-rpart-plot" class="nav-link" data-scroll-target="#rpart-plot"><code>rpart.plot()</code></a></li>
+  <li><a href="#geom-parttree" id="toc-geom-parttree" class="nav-link" data-scroll-target="#geom-parttree"><code>geom_parttree()</code></a></li>
+  <li><a href="#fancy-rpart" id="toc-fancy-rpart" class="nav-link" data-scroll-target="#fancy-rpart"><code>fancyRpartPlot()</code></a></li>
+  <li><a href="#regression-tree-example" id="toc-regression-tree-example" class="nav-link" data-scroll-target="#regression-tree-example">Regression tree example</a></li>
+  <li><a href="#comparing-visualization-methods" id="toc-comparing-visualization-methods" class="nav-link" data-scroll-target="#comparing-visualization-methods">Comparing visualization methods</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
 <div class="toc-actions"><ul class="collapse">
-<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/statistics/xtabs/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/tree-visualization/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
 <li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
 </ul></div></nav>
 </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb">
-<li class="breadcrumb-item"><a href="../../../learn/statistics/bootstrap/index.html">Perform Statistical Analyses</a></li>
-<li class="breadcrumb-item"><a href="../../../learn/statistics/xtabs/index.html">Statistical analysis of contingency tables</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/bootstrap-metrics/index.html">Create Robust Models</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/tree-visualization/index.html">Decision Tree Visualization</a></li>
 </ol></nav><div class="quarto-title">
-<h1 class="title">Statistical analysis of contingency tables</h1>
+<h1 class="title">Decision Tree Visualization</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">statistical analysis</div>
-    <div class="quarto-category">hypothesis testing</div>
+    <div class="quarto-category">visualization</div>
+    <div class="quarto-category">multivariate analysis</div>
+    <div class="quarto-category">decision trees</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>Use tests of independence and goodness of fit to analyze tables of counts.</p>
+    <p>Visualize decision trees using different R packages and approaches.</p>
   </div>
 </div>
 
@@ -484,296 +466,358 @@ window.Quarto = {
 
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This article only requires that you have the tidymodels package installed.</p>
-<p>In this vignette, we’ll walk through conducting a <span class="math inline">\(\chi^2\)</span> (chi-squared) test of independence and a chi-squared goodness of fit test using infer. We’ll start out with a chi-squared test of independence, which can be used to test the association between two categorical variables. Then, we’ll move on to a chi-squared goodness of fit test, which tests how well the distribution of one categorical variable can be approximated by some theoretical distribution.</p>
-<p>Throughout this vignette, we’ll make use of the <code>ad_data</code> data set (available in the modeldata package, which is part of tidymodels). This data set is related to cognitive impairment in 333 patients from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3079734/">Craig-Schapiro <em>et al</em> (2011)</a>. See <code><a href="https://modeldata.tidymodels.org/reference/ad_data.html">?ad_data</a></code> for more information on the variables included and their source. One of the main research questions in these data were how a person’s genetics related to the Apolipoprotein E gene affect their cognitive skills. The data shows:</p>
+<p>To use code in this article, you will need to install the following packages: ggplot2, parttree, partykit, rattle, rpart, rpart.plot, sessioninfo, and tidymodels.</p>
+<p>Decision trees are widely used because they are easy to interpret and can capture nonlinear relationships between predictors and outcomes. Once a tree model has been fit, visualization becomes an important step for understanding splits, predictions, and decision boundaries.</p>
+<p>R has several different tools for plotting trees. Some produce simple base R graphics, while others focus on cleaner layouts or integration with ggplot2. This article walks through a few common approaches and highlights the strengths of each one.</p>
+<p>Let’s compare and discuss several common methods for visualizing decision trees in R:</p>
+<ul>
+<li><a href="#plot-rpart"><code>plot.rpart()</code></a></li>
+<li><a href="#plot-party"><code>plot.party()</code></a></li>
+<li><a href="#rpart-plot"><code>rpart.plot()</code></a></li>
+<li><a href="#geom-parttree"><code>geom_parttree()</code></a></li>
+<li><a href="#fancy-rpart"><code>fancyRpartPlot()</code></a></li>
+</ul>
+<p>We will fit a simple classification tree using the penguins data set from modeldata and compare visualization results.</p>
+</section><section id="fit-a-decision-tree" class="level2"><h2 class="anchored" data-anchor-id="fit-a-decision-tree">Fit a decision tree</h2>
+<p>We first fit a classification tree using rpart through tidymodels.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span> <span class="co"># Includes the infer package</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ad_data</span>, package <span class="op">=</span> <span class="st">"modeldata"</span><span class="op">)</span></span>
-<span><span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Genotype</span>, <span class="va">Class</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 333 × 2</span></span>
-<span><span class="co">#&gt;    Genotype Class   </span></span>
-<span><span class="co">#&gt;    &lt;fct&gt;    &lt;fct&gt;   </span></span>
-<span><span class="co">#&gt;  1 E3E3     Control </span></span>
-<span><span class="co">#&gt;  2 E3E4     Control </span></span>
-<span><span class="co">#&gt;  3 E3E4     Control </span></span>
-<span><span class="co">#&gt;  4 E3E4     Control </span></span>
-<span><span class="co">#&gt;  5 E3E3     Control </span></span>
-<span><span class="co">#&gt;  6 E4E4     Impaired</span></span>
-<span><span class="co">#&gt;  7 E2E3     Control </span></span>
-<span><span class="co">#&gt;  8 E2E3     Control </span></span>
-<span><span class="co">#&gt;  9 E3E3     Control </span></span>
-<span><span class="co">#&gt; 10 E2E3     Impaired</span></span>
-<span><span class="co">#&gt; # ℹ 323 more rows</span></span></code></pre></div>
+<span><span class="va">penguins</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">bill_length_mm</span>, <span class="va">bill_depth_mm</span>,</span>
+<span>         <span class="va">flipper_length_mm</span>, <span class="va">body_mass_g</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree_fit</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/decision_tree.html">decision_tree</a></span><span class="op">(</span>cost_complexity <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; n= 342 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; node), split, n, loss, yval, (yprob)</span></span>
+<span><span class="co">#&gt;       * denotes terminal node</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 1) root 342 191 Adelie (0.441520468 0.198830409 0.359649123)  </span></span>
+<span><span class="co">#&gt;   2) flipper_length_mm&lt; 206.5 213  64 Adelie (0.699530516 0.295774648 0.004694836)  </span></span>
+<span><span class="co">#&gt;     4) bill_length_mm&lt; 43.35 150   5 Adelie (0.966666667 0.033333333 0.000000000) *</span></span>
+<span><span class="co">#&gt;     5) bill_length_mm&gt;=43.35 63   5 Chinstrap (0.063492063 0.920634921 0.015873016) *</span></span>
+<span><span class="co">#&gt;   3) flipper_length_mm&gt;=206.5 129   7 Gentoo (0.015503876 0.038759690 0.945736434)  </span></span>
+<span><span class="co">#&gt;     6) bill_depth_mm&gt;=17.65 7   2 Chinstrap (0.285714286 0.714285714 0.000000000) *</span></span>
+<span><span class="co">#&gt;     7) bill_depth_mm&lt; 17.65 122   0 Gentoo (0.000000000 0.000000000 1.000000000) *</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The three main genetic variants are called E2, E3, and E4. The values in <code>Genotype</code> represent the genetic makeup of patients based on what they inherited from their parents (i.e, a value of “E2E4” means E2 from one parent and E4 from the other).</p>
-</section><section id="test-of-independence" class="level2"><h2 class="anchored" data-anchor-id="test-of-independence">Test of independence</h2>
-<p>To carry out a chi-squared test of independence, we’ll examine the association between their cognitive ability (impaired and healthy) and the genetic makeup. This is what the relationship looks like in the sample data:</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figs/plot-indep-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>If there were no relationship, we would expect to see the purple bars reaching to the same length, regardless of cognitive ability. Are the differences we see here, though, just due to random noise?</p>
-<p>First, to calculate the observed statistic, we can use <code><a href="https://infer.tidymodels.org/reference/specify.html">specify()</a></code> and <code><a href="https://infer.tidymodels.org/reference/calculate.html">calculate()</a></code>.</p>
+<p>Several visualization packages work directly with the underlying rpart object, so we extract it here.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># calculate the observed statistic</span></span>
-<span><span class="va">observed_indep_statistic</span> <span class="op">&lt;-</span> <span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span><span class="va">Genotype</span> <span class="op">~</span> <span class="va">Class</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tree_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="va">tree_fit</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 21.5774809. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between cognitive ability and genetics.</p>
-<p>We can <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code> the null distribution in one of two ways: using randomization or theory-based methods. The randomization approach permutes the response and explanatory variables, so that each person’s genetics is matched up with a random cognitive rating from the sample in order to break up any association between the two.</p>
+</section><section id="plot-rpart" class="level2"><h2 class="anchored" data-anchor-id="plot-rpart"><code>plot.rpart()</code></h2>
+<p>The default plotting functions in rpart provide a quick way to inspect the structure of a tree.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># generate the null distribution using randomization</span></span>
-<span><span class="va">null_distribution_simulated</span> <span class="op">&lt;-</span> <span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span><span class="va">Genotype</span> <span class="op">~</span> <span class="va">Class</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">5000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tree_obj</span>, uniform <span class="op">=</span> <span class="cn">TRUE</span>, margin <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">tree_obj</span>, use.n <span class="op">=</span> <span class="cn">TRUE</span>, cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figs/plot-rpart-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
 </div>
-<p>Note that, in the line <code>specify(Genotype ~ Class)</code> above, we could use the equivalent syntax <code>specify(response = Genotype, explanatory = Class)</code>. The same goes in the code below, which generates the null distribution using theory-based methods instead of randomization.</p>
+</div>
+</div>
+<p>This approach is simple and lightweight, making it useful for quick exploration. However, the default styling is fairly minimal and can be hard to customize for presentations or publication-quality graphics.</p>
+</section><section id="plot-party" class="level2"><h2 class="anchored" data-anchor-id="plot-party"><code>plot.party()</code></h2>
+<p>The partykit package provides cleaner default tree visualizations and more flexible formatting options.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># generate the null distribution by theoretical approximation</span></span>
-<span><span class="va">null_distribution_theoretical</span> <span class="op">&lt;-</span> <span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span><span class="va">Genotype</span> <span class="op">~</span> <span class="va">Class</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># note that we skip the generation step here!</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">party_obj</span> <span class="op">&lt;-</span> <span class="fu">as.party</span><span class="op">(</span><span class="va">tree_obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">party_obj</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figs/plot-partykit-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
 </div>
-<p>To get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="https://infer.tidymodels.org/reference/visualize.html">visualize()</a></code>:</p>
+</div>
+</div>
+<p>Compared to the base rpart plot, the layout is often easier to read and the node labels are displayed more clearly. This makes partykit a good option when readability is important.</p>
+<p>partykit automatically includes more information inside the terminal nodes. For example, each terminal node shows the predicted class along with the distribution of observations within that node.</p>
+<p>The appearance of the plot can also be adjusted with additional plotting arguments.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># visualize the null distribution and test statistic!</span></span>
-<span><span class="va">null_distribution_simulated</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,</span>
-<span>                direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">party_obj</span>,</span>
+<span>  ip_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>abbreviate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  tp_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  ep_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>justmin <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figs/visualize-indep-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-partykit-custom-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code> and <code><a href="https://infer.tidymodels.org/reference/calculate.html">calculate()</a></code> steps when using the theoretical approach, and that we now need to provide <code>method = "theoretical"</code> to <code><a href="https://infer.tidymodels.org/reference/visualize.html">visualize()</a></code>.</p>
+<p>In this example:</p>
+<ul>
+<li>
+<code>abbreviate = FALSE</code> prevents split labels from being shortened</li>
+<li>
+<code>id = FALSE</code> removes terminal node numbers for a cleaner display</li>
+<li>
+<code>ep_args = list(justmin = 15)</code> adds vertical spacing to split labels, easier to read when the split conditions are long.</li>
+</ul>
+<p>These changes are subtle for this example, but they can become more useful when working with larger trees that contain longer labels or many terminal nodes.</p>
+</section><section id="rpart-plot" class="level2"><h2 class="anchored" data-anchor-id="rpart-plot"><code>rpart.plot()</code></h2>
+<p>The rpart.plot package is designed specifically for decision tree visualization and includes several built-in styling improvements.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># visualize the theoretical null distribution and test statistic!</span></span>
-<span><span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span><span class="va">Genotype</span> <span class="op">~</span> <span class="va">Class</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/visualize.html">visualize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"theoretical"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,</span>
-<span>                direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">tree_obj</span>,</span>
+<span>  roundint <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figs/visualize-indep-theor-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-rpart-plot-basic-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into <code><a href="https://infer.tidymodels.org/reference/visualize.html">visualize()</a></code>, and further provide <code>method = "both"</code>.</p>
+<p>The appearance can also be customized with additional arguments.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># visualize both null distributions and the test statistic!</span></span>
-<span><span class="va">null_distribution_simulated</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/visualize.html">visualize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,</span>
-<span>                direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">tree_obj</span>,</span>
+<span>  type <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  extra <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  under <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  faclen <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  roundint <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figs/visualize-indep-both-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-rpart-plot-custom-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Either way, it looks like our observed test statistic would be fairly unlikely if there were actually no association between cognition and genotype. More exactly, we can calculate the p-value:</p>
+<p>This example shows a few ways to adjust the appearance of the tree.</p>
+<ul>
+<li>
+<code>type = 4</code> changes where the split labels are placed. Instead of being directly on the branches, the split conditions are displayed above them.</li>
+<li>
+<code>extra = 2</code> adds the predicted class label to each terminal node.</li>
+<li>
+<code>under = TRUE</code> places some of the node information underneath the node box rather than squeezing everything inside it.</li>
+<li>
+<code>faclen = 0</code> keeps class names from being shortened, so labels like <code>"versicolor"</code> remain fully visible.</li>
+<li>
+<code>roundint = FALSE</code> suppresses warnings that can appear when plotting tidymodels-based trees with <code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot()</a></code>.</li>
+</ul>
+<p>These options mostly affect how the tree is displayed and labeled. Different settings may be more useful depending on the complexity of the tree.</p>
+</section><section id="geom-parttree" class="level2"><h2 class="anchored" data-anchor-id="geom-parttree"><code>geom_parttree()</code></h2>
+<p>The parttree package focuses on visualizing decision boundaries rather than the tree structure itself. It integrates naturally with ggplot2.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># calculate the p value from the observed statistic and null distribution</span></span>
-<span><span class="va">p_value_independence</span> <span class="op">&lt;-</span> <span class="va">null_distribution_simulated</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed_indep_statistic</span>,</span>
-<span>              direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">penguins_parttree</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/decision_tree.html">decision_tree</a></span><span class="op">(</span>cost_complexity <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span></span>
+<span>    <span class="va">species</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">bill_depth_mm</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">penguins</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">p_value_independence</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
-<span><span class="co">#&gt;   p_value</span></span>
-<span><span class="co">#&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  0.0006</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>Thus, if there were really no relationship between cognition and genotype, the probability that we would see a statistic as or more extreme than 21.5774809 is approximately 6^{-4}.</p>
-<p>Note that, equivalently to the steps shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://infer.tidymodels.org/reference/chisq_test.html">chisq_test</a></span><span class="op">(</span><span class="va">ad_data</span>, <span class="va">Genotype</span> <span class="op">~</span> <span class="va">Class</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span><span class="co">#&gt;   statistic chisq_df  p_value</span></span>
-<span><span class="co">#&gt;       &lt;dbl&gt;    &lt;int&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1      21.6        5 0.000630</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-</section><section id="goodness-of-fit" class="level2"><h2 class="anchored" data-anchor-id="goodness-of-fit">Goodness of fit</h2>
-<p>Now, moving on to a chi-squared goodness of fit test, we’ll take a look at just the genotype data. Many papers have investigated the relationship of Apolipoprotein E to diseases. For example, <a href="https://annals.org/aim/article-abstract/717641/meta-analysis-apolipoprotein-e-genotypes-risk-coronary-heart-disease">Song <em>et al</em> (2004)</a> conducted a meta-analysis of numerous studies that looked at this gene and heart disease. In their paper, they describe the frequency of the different genotypes across many samples. For the cognition study, it might be interesting to see if our sample of genotypes was consistent with this literature (treating the rates, for this analysis, as known).</p>
-<p>The rates of the meta-analysis and our observed data are:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Song, Y., Stampfer, M. J., &amp; Liu, S. (2004). Meta-Analysis: Apolipoprotein E </span></span>
-<span><span class="co"># Genotypes and Risk for Coronary Heart Disease. Annals of Internal Medicine, </span></span>
-<span><span class="co"># 141(2), 137.</span></span>
-<span><span class="va">meta_rates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"E2E2"</span> <span class="op">=</span> <span class="fl">0.71</span>, <span class="st">"E2E3"</span> <span class="op">=</span> <span class="fl">11.4</span>, <span class="st">"E2E4"</span> <span class="op">=</span> <span class="fl">2.32</span>,</span>
-<span>                <span class="st">"E3E3"</span> <span class="op">=</span> <span class="fl">61.0</span>, <span class="st">"E3E4"</span> <span class="op">=</span> <span class="fl">22.6</span>, <span class="st">"E4E4"</span> <span class="op">=</span> <span class="fl">2.22</span><span class="op">)</span></span>
-<span><span class="va">meta_rates</span> <span class="op">&lt;-</span> <span class="va">meta_rates</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">meta_rates</span><span class="op">)</span> <span class="co"># these add up to slightly &gt; 100%</span></span>
+<span><span class="va">parttree_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="va">penguins_parttree</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">obs_rates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">ad_data</span><span class="op">$</span><span class="va">Genotype</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ad_data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">obs_rates</span>, <span class="va">meta_rates</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      obs_rates meta_rates</span></span>
-<span><span class="co">#&gt; E2E2      0.60       0.71</span></span>
-<span><span class="co">#&gt; E2E3     11.11      11.37</span></span>
-<span><span class="co">#&gt; E2E4      2.40       2.31</span></span>
-<span><span class="co">#&gt; E3E3     50.15      60.85</span></span>
-<span><span class="co">#&gt; E3E4     31.83      22.54</span></span>
-<span><span class="co">#&gt; E4E4      3.90       2.21</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>Suppose our null hypothesis is that <code>Genotype</code> follows the same frequency distribution as the meta-analysis. Lets now test whether this difference in distributions is statistically significant.</p>
-<p>First, to carry out this hypothesis test, we would calculate our observed statistic.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># calculating the null distribution</span></span>
-<span><span class="va">observed_gof_statistic</span> <span class="op">&lt;-</span> <span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">Genotype</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, p <span class="op">=</span> <span class="va">meta_rates</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>The observed statistic is 23.3838483. Now, generating a null distribution, by just dropping in a call to <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code>:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># generating a null distribution</span></span>
-<span><span class="va">null_distribution_gof</span> <span class="op">&lt;-</span> <span class="va">ad_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">Genotype</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, p <span class="op">=</span> <span class="va">meta_rates</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">5000</span>, type <span class="op">=</span> <span class="st">"simulate"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>Again, to get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="https://infer.tidymodels.org/reference/visualize.html">visualize()</a></code>:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># visualize the null distribution and test statistic!</span></span>
-<span><span class="va">null_distribution_gof</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span>,</span>
-<span>                direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">bill_length_mm</span>, <span class="va">bill_depth_mm</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_parttree</span><span class="op">(</span>data <span class="op">=</span> <span class="va">parttree_obj</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figs/visualize-indep-gof-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="figs/plot-parttree-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This statistic seems like it would be unlikely if our rates were the same as the rates from the meta-analysis! How unlikely, though? Calculating the p-value:</p>
+<p>In this plot, the background partitions represent the decision regions created by the tree model. Each region corresponds to the predicted class for observations that fall within that section of the predictor space.</p>
+<p>Unlike the previous methods, this approach emphasizes how the model separates observations rather than the exact tree splits. This can make it easier to understand the overall behavior of the model, especially for low-dimensional data.</p>
+<p>One limitation is that partition plots become harder to interpret as the number of predictors increases, since only a small number of variables can be displayed at once.</p>
+<p>Because <code>geom_parttree()</code> only works with one or two predictors at a time, we fit a smaller tree for this example.</p>
+</section><section id="fancy-rpart" class="level2"><h2 class="anchored" data-anchor-id="fancy-rpart"><code>fancyRpartPlot()</code></h2>
+<p>The <code>fancyRpartPlot()</code> function from the rattle package creates a more stylized version of a decision tree, which looks pretty similar to the output from <code>rpart.plot</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># calculate the p-value</span></span>
-<span><span class="va">p_value_gof</span> <span class="op">&lt;-</span> <span class="va">null_distribution_gof</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span>,</span>
-<span>              direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">fancyRpartPlot</span><span class="op">(</span></span>
+<span>  <span class="va">tree_obj</span>,</span>
+<span>  sub <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figs/plot-fancyrpart-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The tree is read from top to bottom:</p>
+<ul>
+<li><p>The top node is called the <strong>root node</strong> and contains all observations in the data set.</p></li>
+<li><p>Each split asks a question about one predictor variable. For example, the first split asks whether <code>flipper_length_mm &lt; 207</code>.</p></li>
+<li><p>Observations that satisfy the condition follow the left branch labeled <code>"yes"</code>, while observations that do not satisfy the condition follow the right branch labeled <code>"no"</code>.</p></li>
+<li><p>The nodes at the bottom of the tree are called <strong>terminal nodes</strong> or <strong>leaf nodes</strong>. These contain the final predicted class.</p></li>
+</ul>
+<p>In each node:</p>
+<ul>
+<li>The large text at the top shows the predicted species</li>
+<li>The numbers below represent the class probabilities for <code>Adelie</code>, <code>Chinstrap</code>, and <code>Gentoo</code>
+</li>
+<li>The percentage at the bottom shows the proportion of observations that fall into that node</li>
+</ul>
+<p>For example, the leftmost terminal node predicts <code>Adelie</code> with probability <code>0.97</code>, meaning most observations in that node belong to the <code>Adelie</code> species.</p>
+<p>Compared to the default rpart plots, this style is much more visually distinct and easier to follow at a glance. The use of color also makes the predicted classes easier to identify.</p>
+<p>One limitation is that the styling can become crowded for larger trees with many nodes or long labels. However, for smaller and medium-sized trees, the additional formatting can improve readability.</p>
+</section><section id="regression-tree-example" class="level2"><h2 class="anchored" data-anchor-id="regression-tree-example">Regression tree example</h2>
+<p>Although this article has focused on classification trees, many visualization methods also support regression trees. In regression trees, terminal nodes display predicted numeric values instead of class labels or class probabilities. Below is an example using <code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot()</a></code> to visualize a regression tree.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reg_fit</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/decision_tree.html">decision_tree</a></span><span class="op">(</span>cost_complexity <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">body_mass_g</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">flipper_length_mm</span>,</span>
+<span>      data <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">p_value_gof</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
-<span><span class="co">#&gt;   p_value</span></span>
-<span><span class="co">#&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1   0.001</span></span></code></pre></div>
+<span><span class="va">reg_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">reg_tree</span>,</span>
+<span>  roundint <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
-</div>
-<p>Thus, if each genotype occurred at the same rate as the Song paper, the probability that we would see a distribution like the one we did is approximately 0.001.</p>
-<p>Again, equivalently to the steps shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out chi-squared goodness of fit tests on tidy data. The syntax goes like this:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://infer.tidymodels.org/reference/chisq_test.html">chisq_test</a></span><span class="op">(</span><span class="va">ad_data</span>, response <span class="op">=</span> <span class="va">Genotype</span>, p <span class="op">=</span> <span class="va">meta_rates</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
-<span><span class="co">#&gt;   statistic chisq_df  p_value</span></span>
-<span><span class="co">#&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1      23.4        5 0.000285</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figs/regression-tree-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-</section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
+</div>
+<p>In this regression tree, the numbers inside the nodes represent the predicted body mass in grams. For example, the top node predicts an average body mass of about <code>4202</code> grams across all penguins.</p>
+<p>The first split separates penguins based on whether <code>flipper_length_mm &lt; 207</code>. Penguins with shorter flippers move to the left side of the tree and tend to have lower predicted body mass values, while penguins with longer flippers move to the right side and tend to have higher predicted body mass values.</p>
+<p>The percentages below each node show the proportion of observations in that node. The terminal nodes at the bottom contain the final predicted body mass values.</p>
+</section><section id="comparing-visualization-methods" class="level2"><h2 class="anchored" data-anchor-id="comparing-visualization-methods">Comparing visualization methods</h2>
+<p>Each visualization approach emphasizes different aspects of the model.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Package</th>
+<th>Strength</th>
+<th>Regression Trees</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>plot.rpart()</code></td>
+<td>rpart</td>
+<td>Fast and simple, useful for a quick check</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td><code>plot.party()</code></td>
+<td>partykit</td>
+<td>Cleaner layouts and improved readability</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot()</a></code></td>
+<td>rpart.plot</td>
+<td>Readable and detailed tree summaries</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td><code>geom_parttree()</code></td>
+<td>parttree</td>
+<td>Decision boundary visualization for predictor space partitions</td>
+<td>Limited</td>
+</tr>
+<tr class="odd">
+<td><code>fancyRpartPlot()</code></td>
+<td>rattle</td>
+<td>More visually distinct and presentation-friendly tree diagrams</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table></section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
-#&gt;  version  R version 4.6.0 (2026-04-24)
+#&gt;  version  R version 4.5.2 (2025-10-31)
 #&gt;  language (EN)
-#&gt;  pandoc   3.1.3
-#&gt;  quarto   1.9.37
+#&gt;  pandoc   3.8.3
+#&gt;  quarto   1.9.35
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package       version date (UTC)
-#&gt;  broom         1.0.13  2026-05-14
-#&gt;  dials         1.4.3   2026-04-11
-#&gt;  dplyr         1.2.1   2026-04-03
-#&gt;  ggplot2       4.0.3   2026-04-22
-#&gt;  infer         1.1.0   2025-12-18
-#&gt;  parsnip       1.6.0   2026-05-14
-#&gt;  purrr         1.2.2   2026-04-10
-#&gt;  recipes       1.3.2   2026-04-02
-#&gt;  rlang         1.2.0   2026-04-06
-#&gt;  rsample       1.3.2   2026-01-30
-#&gt;  sessioninfo   1.2.3   2025-02-05
-#&gt;  tibble        3.3.1   2026-01-11
-#&gt;  tidymodels    1.5.0   2026-04-23
-#&gt;  tune          2.1.0   2026-04-17
-#&gt;  workflows     1.3.0   2025-08-27
-#&gt;  yardstick     1.4.0   2026-04-07
+#&gt;  package       version     date (UTC)
+#&gt;  broom         1.0.12.9000 2026-05-12
+#&gt;  dials         1.4.3       2026-04-11
+#&gt;  dplyr         1.2.1       2026-04-03
+#&gt;  ggplot2       4.0.3       2026-04-22
+#&gt;  infer         1.1.0       2025-12-18
+#&gt;  parsnip       1.6.0       2026-05-14
+#&gt;  parttree      0.1.3       2026-03-31
+#&gt;  partykit      1.2-27      2026-03-13
+#&gt;  purrr         1.2.2       2026-04-10
+#&gt;  rattle        5.6.2       2026-02-08
+#&gt;  recipes       1.3.2       2026-04-02
+#&gt;  rlang         1.2.0       2026-04-06
+#&gt;  rpart         4.1.27      2026-03-27
+#&gt;  rpart.plot    3.1.4       2026-01-08
+#&gt;  rsample       1.3.2       2026-01-30
+#&gt;  sessioninfo   1.2.3       2025-02-05
+#&gt;  tibble        3.3.1       2026-01-11
+#&gt;  tidymodels    1.4.1       2025-09-08
+#&gt;  tune          2.1.0.9000  2026-04-27
+#&gt;  workflows     1.3.0       2025-08-27
+#&gt;  yardstick     1.4.0       2026-04-07
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
@@ -1219,7 +1263,7 @@ window.Quarto = {
     <div class="nav-footer-center">
        
     <div class="toc-actions d-sm-block d-md-none"><ul>
-<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/statistics/xtabs/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/tree-visualization/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
 <li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
 </ul></div>
 </div>
