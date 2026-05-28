@@ -59,11 +59,11 @@ R has several different tools for plotting trees. Some produce simple base R gra
 
 Let's compare and discuss several common methods for visualizing decision trees in R:
 
-  - [`plot.rpart()`](#base-r-visualization-with-plotrpart)
-  - [`plot.party()`](#visualization-with-plotparty)
-  - [`rpart.plot()`](#visualization-with-rpartplot)
-  - [`geom_parttree()`](#visualization-with-geomparttree)
-  - [`fancyRpartPlot()`](#visualization-with-fancyrpartplot)
+  - [`plot.rpart()`](#plot-rpart)
+  - [`plot.party()`](#plot-party)
+  - [`rpart.plot()`](#rpart-plot)
+  - [`geom_parttree()`](#geom-parttree)
+  - [`fancyRpartPlot()`](#fancy-rpart)
   
 We will fit a simple classification tree using the penguins data set from modeldata and compare visualization results.
 
@@ -95,7 +95,7 @@ tree_obj <- extract_fit_engine(tree_fit)
 ```
 
 
-## Base R visualization with `plot.rpart()`
+## Base R visualization with `plot.rpart()` {#plot-rpart}
 The default plotting functions in rpart provide a quick way to inspect the structure of a tree.
 ```{r}
 #| label: plot-rpart
@@ -112,7 +112,7 @@ text(tree_obj, use.n = TRUE, cex = 0.8)
 This approach is simple and lightweight, making it useful for quick exploration. However, the default styling is fairly minimal and can be hard to customize for presentations or publication-quality graphics.
 
 
-## Visualization with `plot.party()`
+## Visualization with `plot.party()` {#plot-party}
 The partykit package provides cleaner default tree visualizations and more flexible formatting options.
 ```{r}
 #| label: plot-partykit
@@ -145,7 +145,7 @@ In this example:
 These changes are subtle for this example, but they can become more useful when working with larger trees that contain longer labels or many terminal nodes.
 
 
-## Visualization with `rpart.plot()`
+## Visualization with `rpart.plot()` {#rpart-plot}
 The rpart.plot package is designed specifically for decision tree visualization and includes several built-in styling improvements.
 ```{r}
 #| label: plot-rpart-plot-basic
@@ -180,7 +180,7 @@ This example shows a few ways to adjust the appearance of the tree.
 These options mostly affect how the tree is displayed and labeled. Different settings may be more useful depending on the complexity of the tree.
 
 
-## Visualization with `geom_parttree()`
+## Visualization with `geom_parttree()` {#geom-parttree}
 The parttree package focuses on visualizing decision boundaries rather than the tree structure itself. It integrates naturally with ggplot2.
 ```{r}
 #| label: plot-parttree
@@ -210,7 +210,7 @@ One limitation is that partition plots become harder to interpret as the number 
 Because `geom_parttree()` only works with one or two predictors at a time, we fit a smaller tree for this example.
 
 
-## Visualization with `fancyRpartPlot()`
+## Visualization with `fancyRpartPlot()` {#fancy-rpart}
 The `fancyRpartPlot()` function from the rattle package creates a more stylized version of a decision tree, which looks pretty similar to the output from `rpart.plot`.
 
 ```{r}
