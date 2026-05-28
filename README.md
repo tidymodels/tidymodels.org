@@ -26,6 +26,18 @@ This repo (and resulting website) is licensed as [CC BY-SA](LICENSE.md). Third-p
 
 If you're adding a new article to `learn/`, create a folder with an `index.qmd` inside it. If it needs packages beyond the core `tidymodels` meta-package, add them to `R/installs.R` **and** to the `r-packages:` field in the file's YAML front matter.
 
+Regenerate `data/package_map.json` and commit any changes. From the shell:
+
+```bash
+Rscript R/make_package_map.R
+```
+
+Or from an R session:
+
+```r
+source("R/make_package_map.R")
+```
+
 ## Adding a new package to the ecosystem
 
 If you're adding a new package to the tidymodels ecosystem, add it to `make_function_lists/all_packages.csv` (one package name per row), then regenerate the function lists with `Rscript make_function_lists/run_all.R`.
