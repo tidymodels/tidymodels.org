@@ -1,0 +1,64 @@
+---
+title: "Model Monitoring Using Slider"
+categories:
+  - visualization
+  - multivariate analysis
+  - decision trees
+type: learn-subsection
+weight: 6
+description: | 
+  
+  
+toc: true
+toc-depth: 2
+r-packages:
+  - tidymodels
+  - rpart
+  - partykit
+  - rpart.plot
+  - ggplot2
+  - parttree
+  - rattle
+  - sessioninfo
+include-after-body: ../../../html/resources.html
+---
+
+```{r}
+#| label: "setup"
+#| include: false
+#| message: false
+#| warning: false
+source(here::here("R/common.R"))
+```
+
+```{r}
+#| label: "load"
+#| include: false
+
+library(tidymodels)
+library(modeldata)
+library(rpart)
+library(partykit)
+library(rpart.plot)
+library(parttree)
+library(ggplot2)
+library(rattle)
+library(sessioninfo)
+pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
+
+theme_set(theme_bw() + theme(legend.position = "top"))
+```
+
+## Introduction
+
+`r article_req_pkgs(pkgs)`
+
+
+
+## Session information {#session-info}
+
+```{r}
+#| label: "si"
+#| echo: false
+small_session(pkgs)
+```
