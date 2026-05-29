@@ -331,34 +331,34 @@ Each visualization approach emphasizes different aspects of the model.
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  pandoc   3.8.3
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.9.38
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
-#>  package       version     date (UTC)
-#>  broom         1.0.12.9000 2026-05-12
-#>  dials         1.4.3       2026-04-11
-#>  dplyr         1.2.1       2026-04-03
-#>  ggplot2       4.0.3       2026-04-22
-#>  infer         1.1.0       2025-12-18
-#>  parsnip       1.6.0       2026-05-14
-#>  parttree      0.1.3       2026-03-31
-#>  partykit      1.2-27      2026-03-13
-#>  purrr         1.2.2       2026-04-10
-#>  rattle        5.6.2       2026-02-08
-#>  recipes       1.3.2       2026-04-02
-#>  rlang         1.2.0       2026-04-06
-#>  rpart         4.1.27      2026-03-27
-#>  rpart.plot    3.1.4       2026-01-08
-#>  rsample       1.3.2       2026-01-30
-#>  sessioninfo   1.2.3       2025-02-05
-#>  tibble        3.3.1       2026-01-11
-#>  tidymodels    1.4.1       2025-09-08
-#>  tune          2.1.0.9000  2026-04-27
-#>  workflows     1.3.0       2025-08-27
-#>  yardstick     1.4.0       2026-04-07
+#>  package       version date (UTC)
+#>  broom         1.0.13  2026-05-14
+#>  dials         1.4.3   2026-04-11
+#>  dplyr         1.2.1   2026-04-03
+#>  ggplot2       4.0.3   2026-04-22
+#>  infer         1.1.0   2025-12-18
+#>  parsnip       1.6.0   2026-05-14
+#>  parttree      0.1.3   2026-03-31
+#>  partykit      1.2-27  2026-03-13
+#>  purrr         1.2.2   2026-04-10
+#>  rattle        5.6.2   2026-02-08
+#>  recipes       1.3.2   2026-04-02
+#>  rlang         1.2.0   2026-04-06
+#>  rpart         4.1.27  2026-03-27
+#>  rpart.plot    3.1.4   2026-01-08
+#>  rsample       1.3.2   2026-01-30
+#>  sessioninfo   1.2.3   2025-02-05
+#>  tibble        3.3.1   2026-01-11
+#>  tidymodels    1.5.0   2026-04-23
+#>  tune          2.1.0   2026-04-17
+#>  workflows     1.3.0   2025-08-27
+#>  yardstick     1.4.0   2026-04-07
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
