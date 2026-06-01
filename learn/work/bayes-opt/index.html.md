@@ -2377,7 +2377,7 @@ autoplot(search_res, type = "parameters") +
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.37
+#>  quarto   1.9.38
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -2390,7 +2390,7 @@ autoplot(search_res, type = "parameters") +
 #>  kernlab      0.9-33  2024-08-13
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
-#>  recipes      1.3.2   2026-04-02
+#>  recipes      1.3.3   2026-05-30
 #>  rlang        1.2.0   2026-04-06
 #>  rsample      1.3.2   2026-01-30
 #>  themis       1.0.3   2025-01-23

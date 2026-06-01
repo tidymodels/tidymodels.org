@@ -640,7 +640,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.37
+#>  quarto   1.9.38
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version date (UTC)
@@ -655,7 +655,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  parsnip         1.6.0   2026-05-14
 #>  purrr           1.2.2   2026-04-10
 #>  readmission     0.1.0   2023-12-07
-#>  recipes         1.3.2   2026-04-02
+#>  recipes         1.3.3   2026-05-30
 #>  rlang           1.2.0   2026-04-06
 #>  rsample         1.3.2   2026-01-30
 #>  tibble          3.3.1   2026-01-11
