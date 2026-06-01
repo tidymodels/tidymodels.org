@@ -348,7 +348,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  partykit      1.2-27  2026-03-13
 #>  purrr         1.2.2   2026-04-10
 #>  rattle        5.6.2   2026-02-08
-#>  recipes       1.3.2   2026-04-02
+#>  recipes       1.3.3   2026-05-30
 #>  rlang         1.2.0   2026-04-06
 #>  rpart         4.1.27  2026-03-27
 #>  rpart.plot    3.1.4   2026-01-08

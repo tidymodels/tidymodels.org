@@ -415,7 +415,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.37
+#>  quarto   1.9.38
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
@@ -429,7 +429,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  purrr          1.2.2   2026-04-10
 #>  randomForest   4.7-1.2 2024-09-22
 #>  ranger         0.18.0  2026-01-16
-#>  recipes        1.3.2   2026-04-02
+#>  recipes        1.3.3   2026-05-30
 #>  rlang          1.2.0   2026-04-06
 #>  rsample        1.3.2   2026-01-30
 #>  tibble         3.3.1   2026-01-11
