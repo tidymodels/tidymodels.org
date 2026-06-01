@@ -234,7 +234,6 @@ In practice, monitoring systems rarely track a single metric. Suppose we want bo
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# Alter your compute function to return a tidy data frame including the window's end date
 compute_metrics <- function(dat) {
 
   tibble(
@@ -319,7 +318,7 @@ ggplot(
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-10-1.svg){fig-align='center' width=672}
+![](figs/accuracy-over-time-plot-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -343,7 +342,7 @@ ggplot(
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-11-1.svg){fig-align='center' width=672}
+![](figs/roc-auc-over-time-plot-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -367,7 +366,7 @@ ggplot(
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-12-1.svg){fig-align='center' width=672}
+![](figs/log-loss-over-time-plot-1.svg){fig-align='center' width=672}
 :::
 :::
 
@@ -416,7 +415,7 @@ ggplot(
 ```
 
 ::: {.cell-output-display}
-![](figs/unnamed-chunk-14-1.svg){fig-align='center' width=672}
+![](figs/fixed-window-accuracy-plot-1.svg){fig-align='center' width=672}
 :::
 :::
 

@@ -34,7 +34,6 @@ source(here::here("R/common.R"))
 #| include: false
 
 library(tidymodels)
-library(modeldata)
 library(purrr)
 library(slider)
 library(lubridate)
@@ -67,6 +66,8 @@ In this article, we will build a simple monitoring workflow to track model perfo
 To demonstrate this monitoring workflow, we will create a synthetic classification problem. The first part of the data represents observations that were available when the model was developed, while the remaining observations represent new data arriving after deployment. To make the example more realistic, we will introduce a change in the underlying relationship between the predictors and outcome, causing model performance to gradually decline over time.
 
 ```{r}
+#| label: simulate-data
+
 set.seed(123) 
 n <- 1500 
 sim_data <- tibble(
@@ -108,6 +109,8 @@ The relationship between the predictors and outcome changes later in the data. A
 Suppose that the first 600 observations were available when the model was developed. At this point, we will pretend the model has been deployed. The remaining observations represent future data arriving after deployment.
 
 ```{r}
+#| label: split-monitor-data
+
 train_data <-
   sim_data %>%
   slice_head(n = 600)
@@ -118,6 +121,8 @@ monitor_data <-
 ```
 
 ```{r}
+#| label: fit-logistic-model
+
 # We fit a logistic regression model:
 log_fit <-
   logistic_reg() %>%
@@ -135,6 +140,8 @@ log_fit
 As new observations arrive, the deployed model generates predictions. Each observation now contains: a timestamp, the true outcome, the predicted class, predicted probabilities. This structure is common in production monitoring systems and forms the basis of our analysis.
 
 ```{r}
+#| label: generate-predictions
+
 monitor_data <- log_fit %>% 
   augment(new_data = monitor_data)
 
@@ -158,6 +165,8 @@ Metrics computed within these windows are typically more stable and easier to in
 The basic idea behind slider is straightforward: apply the same function repeatedly across a series of moving windows. In our monitoring workflow, each window represents a rolling 14-day period of observations. We start by creating these windows using the observation date as the time index.
 
 ```{r}
+#| label: create-rolling-windows
+
 windows <- slide_index(
   .x = monitor_data,
   .i = monitor_data$date,
@@ -170,6 +179,8 @@ length(windows)
 ```
 
 ```{r}
+#| label: inspect-window
+
 # inspect one window
 windows[[50]] %>% glimpse()
 ```
@@ -199,7 +210,8 @@ Because we use `identity()`, slider returns each window unchanged. This creates 
 In practice, monitoring systems rarely track a single metric. Suppose we want both accuracy and ROC AUC.
 
 ```{r}
-# Alter your compute function to return a tidy data frame including the window's end date
+#| label: compute-metrics
+
 compute_metrics <- function(dat) {
 
   tibble(
@@ -231,11 +243,15 @@ compute_metrics <- function(dat) {
 Each monitoring window now produces a tibble rather than a single value. The `map()` family of functions from purrr allows us to repeatedly apply the same calculation to every rolling window.
 
 ```{r}
+#| label: example-window-metrics
+
 windows[[50]] %>% 
   compute_metrics()
 ```
 
 ```{r}
+#| label: monitoring-results
+
 # Apply the function across all windows.
 # The result is a list of tibbles.
 
@@ -250,6 +266,8 @@ monitoring_results %>%
 ## Visualizing accuracy through time
 
 ```{r}
+#| label: accuracy-over-time-plot
+
 ggplot(
   monitoring_results,
   aes(date, accuracy)
@@ -267,6 +285,8 @@ The goal of monitoring is to understand how model performance changes over time.
 ## Visualizing ROC AUC through time
 
 ```{r}
+#| label: roc-auc-over-time-plot
+
 ggplot(
   monitoring_results,
   aes(date, roc_auc)
@@ -284,6 +304,8 @@ ggplot(
 Unlike accuracy, log loss focuses on how well the predicted probabilities match the observed outcomes. Rising log loss can be a sign that the model is becoming less confident or less well calibrated, even when accuracy has not changed very much.
 
 ```{r}
+#| label: log-loss-over-time-plot
+
 ggplot(
   monitoring_results,
   aes(date, log_loss)
@@ -299,6 +321,8 @@ ggplot(
 ## Fixed windows comparisons
 
 ```{r}
+#| label: fixed-window-results
+
 fixed_results <-
   monitor_data %>%
   mutate(
@@ -322,6 +346,8 @@ fixed_results <-
 ```
 
 ```{r}
+#| label: fixed-window-accuracy-plot
+
 ggplot(
   fixed_results,
   aes(date, accuracy)
@@ -379,7 +405,6 @@ In this article, we used:
   - ggplot2 to visualize how performance changes over time.
 
 While our example focused on a single model, the same approach can be extended to monitor many models and metrics in a production environment.
-
 
 ## Session information {#session-info}
 
