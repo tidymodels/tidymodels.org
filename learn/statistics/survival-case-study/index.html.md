@@ -511,7 +511,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  recipes        1.3.3   2026-05-30
 #>  rlang          1.2.0   2026-04-06
 #>  rsample        1.3.2   2026-01-30
-#>  sessioninfo    1.2.3   2025-02-05
+#>  sessioninfo    1.2.4   2026-06-04
 #>  tibble         3.3.1   2026-01-11
 #>  tidymodels     1.5.0   2026-04-23
 #>  tune           2.1.0   2026-04-17
