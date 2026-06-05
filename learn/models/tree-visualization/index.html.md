@@ -353,7 +353,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  rpart         4.1.27  2026-03-27
 #>  rpart.plot    3.1.4   2026-01-08
 #>  rsample       1.3.2   2026-01-30
-#>  sessioninfo   1.2.3   2025-02-05
+#>  sessioninfo   1.2.4   2026-06-04
 #>  tibble        3.3.1   2026-01-11
 #>  tidymodels    1.5.0   2026-04-23
 #>  tune          2.1.0   2026-04-17
