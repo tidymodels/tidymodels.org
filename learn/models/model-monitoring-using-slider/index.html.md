@@ -1,29 +1,26 @@
 ---
-title: "Model Monitoring Using Slider"
+title: "Monitoring model performance over time using slider"
 categories:
-  - visualization
-  - multivariate analysis
-  - decision trees
+  - classification
+  - time series
+  - yardstick
 type: learn-subsection
 weight: 6
-description: | 
+description: |
     Use slider and purrr to evaluate model performance over time
-  
+
 toc: true
 toc-depth: 2
 r-packages:
   - tidymodels
   - slider
-  - purrr
-  - lubridate
-  - ggplot2
   - sessioninfo
 include-after-body: ../../../html/resources.html
 ---
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: ggplot2, lubridate, purrr, sessioninfo, slider, and tidymodels.
+To use code in this article,  you will need to install the following packages: sessioninfo, slider, and tidymodels.
 
 Many modeling workflows end once a model has been evaluated on a test set. After selecting a final model for deployment, it is easy to think the work is finished. In practice, deployment is often the beginning of a new stage in the model lifecycle.
 
@@ -36,7 +33,7 @@ As new data arrives, users may start asking questions such as:
 
 Answering these questions requires more than a single test set evaluation. Instead, we need a way to continuously monitor model performance as new observations become available.
 
-In this article, we will build a simple monitoring workflow to track model performance over time and identify potential signs of drift.
+In this article, we will build a simple monitoring workflow that takes timestamped predictions, splits them into regular time intervals with the slider package, computes performance metrics for each interval with purrr, and plots the results over time.
 
 ## Simulating incoming observations
 
@@ -45,22 +42,27 @@ To demonstrate this monitoring workflow, we will create a synthetic classificati
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-set.seed(123) 
-n <- 1500 
+set.seed(123)
+n <- 6000
 sim_data <- tibble(
-  date = seq.Date(
-    from = as.Date("2022-01-01"),
-    by = "day",
-    length.out = n
-  ),
+  date = sort(sample(
+    seq.Date(
+      from = as.Date("2022-01-01"),
+      by = "day",
+      length.out = 730
+    ),
+    size = n,
+    replace = TRUE
+  )),
   x1 = rnorm(n),
   x2 = rnorm(n)
 ) %>%
   mutate(
+    drifted = date >= as.Date("2023-01-01"),
     signal = if_else(
-      row_number() <= 900,
-      2 * x1 - x2,
-      0.75 * x1 - 0.25 * x2
+      drifted,
+      0.5 * x1 - 0.25 * x2,
+      2 * x1 - x2
     ),
     probability = plogis(signal),
     outcome = factor(
@@ -68,33 +70,37 @@ sim_data <- tibble(
         runif(n) < probability,
         "yes",
         "no"
-      )
+      ),
+      levels = c("yes", "no")
     )
   ) %>%
   select(
+    -drifted,
     -signal,
     -probability
   )
 
 sim_data
-#> # A tibble: 1,500 × 4
-#>    date            x1     x2 outcome
-#>    <date>       <dbl>  <dbl> <fct>  
-#>  1 2022-01-01 -0.560  -0.821 no     
-#>  2 2022-01-02 -0.230  -0.307 yes    
-#>  3 2022-01-03  1.56   -0.902 yes    
-#>  4 2022-01-04  0.0705  0.627 no     
-#>  5 2022-01-05  0.129   1.12  yes    
-#>  6 2022-01-06  1.72    2.13  yes    
-#>  7 2022-01-07  0.461   0.366 yes    
-#>  8 2022-01-08 -1.27   -0.875 no     
-#>  9 2022-01-09 -0.687   1.02  no     
-#> 10 2022-01-10 -0.446   0.905 yes    
-#> # ℹ 1,490 more rows
+#> # A tibble: 6,000 × 4
+#>    date            x1      x2 outcome
+#>    <date>       <dbl>   <dbl> <fct>  
+#>  1 2022-01-01  0.602  -0.727  yes    
+#>  2 2022-01-01  0.480   1.31   yes    
+#>  3 2022-01-01  0.215  -0.510  yes    
+#>  4 2022-01-01 -2.54   -1.34   no     
+#>  5 2022-01-01  0.0464  0.191  no     
+#>  6 2022-01-01 -0.0509  0.601  no     
+#>  7 2022-01-01 -1.81    0.130  no     
+#>  8 2022-01-01  0.788   0.0570 no     
+#>  9 2022-01-01 -1.48   -0.746  no     
+#> 10 2022-01-01 -0.348  -0.733  yes    
+#> # ℹ 5,990 more rows
 ```
 :::
 
-The relationship between the predictors and outcome changes later in the data. A model trained on earlier observations will gradually become less effective. This behavior resembles one form of concept drift, where the process generating the outcome changes over time.
+We generate several observations per day so that each evaluation window contains enough data for a stable estimate. The relationship between the predictors and outcome weakens partway through the series (on 2023-01-01). A model trained on the earlier, stronger relationship will gradually become less effective afterwards. This behavior resembles one form of concept drift, where the process generating the outcome changes over time.
+
+Notice that we set the factor levels so that `"yes"` is the first level. yardstick treats the first level as the event of interest by default, so ordering the levels here means we won't need to set `event_level` every time we compute a metric.
 
 ## Training a model
 
@@ -119,7 +125,6 @@ monitor_data <-
 # We fit a logistic regression model:
 log_fit <-
   logistic_reg() %>%
-  set_engine("glm") %>%
   fit(
     outcome ~ x1 + x2,
     data = train_data
@@ -134,59 +139,65 @@ log_fit
 #> 
 #> Coefficients:
 #> (Intercept)           x1           x2  
-#>     0.04441      2.11480     -0.96107  
+#>     -0.1431      -2.1029       1.0656  
 #> 
 #> Degrees of Freedom: 599 Total (i.e. Null);  597 Residual
-#> Null Deviance:	    831.5 
-#> Residual Deviance: 511.4 	AIC: 517.4
+#> Null Deviance:	    830.1 
+#> Residual Deviance: 511.6 	AIC: 517.6
 ```
 :::
 
+Since `"glm"` is the default engine for `logistic_reg()`, we don't need to set it explicitly with `set_engine()`.
+
 ## Generating predictions
 
-As new observations arrive, the deployed model generates predictions. Each observation now contains: a timestamp, the true outcome, the predicted class, predicted probabilities. This structure is common in production monitoring systems and forms the basis of our analysis.
+As new observations arrive, the deployed model generates predictions. Each observation now contains: a timestamp, the original predictors, the true outcome, the predicted class, and predicted probabilities. This structure is common in production monitoring systems and forms the basis of our analysis.
+
+We use `augment()` rather than `predict()` so that the predicted class, predicted probabilities, and the original columns are all returned together in a single data frame in a safe way.
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-monitor_data <- log_fit %>% 
+monitor_data <- log_fit %>%
   augment(new_data = monitor_data)
 
 colnames(monitor_data)
-#> [1] ".pred_class" ".pred_no"    ".pred_yes"   "date"        "x1"         
+#> [1] ".pred_class" ".pred_yes"   ".pred_no"    "date"        "x1"         
 #> [6] "x2"          "outcome"
 ```
 :::
 
 ## Why use time windows
 
-Looking at predictions one at a time is usually not very informative. If a model makes a mistake today, that does not necessarily mean anything is wrong. Instead, we generally summarize performance across a larger set of observations. For example:
+Looking at predictions one at a time is usually not very informative. If a model makes a mistake today, that does not necessarily mean anything is wrong. Instead, we generally summarize performance across a larger set of observations. For example, we might check performance every two weeks:
 
-Window | Dates
--------|------------------
-1      | Jan 1 - Jan 14
-2      | Jan 15 - Jan 28
-3      | Jan 29 - Feb 11
+| Window | Dates           |
+|--------|-----------------|
+| 1      | Jan 1 – Jan 14  |
+| 2      | Jan 15 – Jan 28 |
+| 3      | Jan 29 – Feb 11 |
 
 Metrics computed within these windows are typically more stable and easier to interpret than metrics based on individual predictions. The next challenge is creating these windows efficiently and applying the same calculations to each one. This is where the slider package becomes useful.
 
-## Creating rolling windows with slider
+## Splitting the data with slider
 
-The basic idea behind slider is straightforward: apply the same function repeatedly across a series of moving windows. In our monitoring workflow, each window represents a rolling 14-day period of observations. We start by creating these windows using the observation date as the time index.
+The slider package applies a function across a series of windows defined over an index. To check performance every two weeks, we use `slide_period()`, which groups observations into consecutive calendar periods. Here we ask for non-overlapping two-week blocks by sliding over `"week"` periods, two at a time.
+
+We pass `.f = identity` so that slider simply returns the observations in each window, leaving the metric calculations for the next step.
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-windows <- slide_index(
+windows <- slide_period(
   .x = monitor_data,
   .i = monitor_data$date,
-  .before = 13,
-  .complete = TRUE,
+  .period = "week",
+  .every = 2,
   .f = identity
-) %>%
-  compact()
+)
+
 length(windows)
-#> [1] 887
+#> [1] 48
 ```
 :::
 
@@ -194,260 +205,176 @@ length(windows)
 
 ```{.r .cell-code}
 # inspect one window
-windows[[50]] %>% glimpse()
-#> Rows: 14
+windows[[10]] %>% glimpse()
+#> Rows: 113
 #> Columns: 7
-#> $ .pred_class <fct> yes, no, no, yes, no, yes, no, yes, yes, yes, no, yes, yes…
-#> $ .pred_no    <dbl> 0.09792387, 0.98937309, 0.78571279, 0.29503143, 0.99073120…
-#> $ .pred_yes   <dbl> 0.902076130, 0.010626913, 0.214287214, 0.704968565, 0.0092…
-#> $ date        <date> 2023-10-12, 2023-10-13, 2023-10-14, 2023-10-15, 2023-10-1…
-#> $ x1          <dbl> 0.9899716, -1.9385047, 0.1071904, 0.6087790, -1.4508243, 0…
-#> $ x2          <dbl> -0.085849546, 0.497932993, 1.633989657, 0.479451881, 1.714…
-#> $ outcome     <fct> no, no, no, no, no, yes, no, yes, yes, yes, no, yes, yes, …
+#> $ .pred_class <fct> yes, yes, no, yes, yes, yes, yes, yes, yes, no, yes, yes, …
+#> $ .pred_yes   <dbl> 0.88959258, 0.59985201, 0.02340663, 0.67147866, 0.94093421…
+#> $ .pred_no    <dbl> 0.11040742, 0.40014799, 0.97659337, 0.32852134, 0.05906579…
+#> $ date        <date> 2022-07-07, 2022-07-07, 2022-07-07, 2022-07-07, 2022-07-0…
+#> $ x1          <dbl> 1.10213613, -0.84578332, -1.56364555, -0.02407925, 0.58946…
+#> $ x2          <dbl> 0.3511203, -1.9147686, 0.5498216, -0.5841380, -1.3002671, …
+#> $ outcome     <fct> yes, no, no, yes, yes, yes, yes, no, no, yes, yes, no, yes…
 ```
 :::
 
-Each element of windows is a data frame containing observations from a two-week period. The result is a list where:
+Each element of `windows` is a data frame containing the observations from one two-week period. The result is a list where element 1 holds the first window, element 2 the next, and so on. This list is the foundation for our monitoring workflow.
 
-  - element 1 contains observations from the first complete window,
-  - element 2 contains observations from the next window, and so on.
-  
-This list will serve as the foundation for our monitoring workflow.
+## Understanding `slide_period()`
 
-## Understanding `slide_index()`
+The `slide_period()` function has several important arguments:
 
-The `slide_index()` function has several important arguments.
-Here:
+  - `.x` is the object being sliced,
+  - `.i` is the index used to define the windows (here, the observation date),
+  - `.period` is the calendar unit used to group observations (here, `"week"`),
+  - `.every` controls how many periods make up each window. We set `.every = 2` to get two-week blocks,
+  - `.f` is the function applied to each window. Using `identity()` returns each window unchanged.
 
-  - .x specifies the object being sliced,
-  - .i specifies the index variable,
-  - .before controls the size of the rolling window: We set .before = 13 because slider includes the current observation in each window. As a result, each window contains the current day plus the previous 13 days, for a total of 14 days.
-  - .complete = TRUE removes incomplete windows,
-  - .f specifies the function applied to each window.
-  
-Because we use `identity()`, slider returns each window unchanged. This creates a collection of evaluation periods that we can analyze independently.
+If you wanted *rolling* (overlapping) windows instead of fixed blocks, `slide_index()` with the `.before` argument lets each window reach back a fixed number of days from the current observation.
 
 ## Computing metrics with purrr
 
-In practice, monitoring systems rarely track a single metric. Suppose we want both accuracy and ROC AUC.
+In practice, monitoring systems rarely track a single metric. Here we track three: accuracy, ROC AUC, and log loss. Rather than calling each metric function separately, we bundle them into a metric set with `metric_set()`. Calling the resulting function stacks the metrics vertically into a single tidy tibble.
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-compute_metrics <- function(dat) {
+monitor_metrics <- metric_set(accuracy, roc_auc, mn_log_loss)
 
-  tibble(
-    date = max(dat$date),
-
-    accuracy =
-      accuracy_vec(
-        dat$outcome,
-        dat$.pred_class
-      ),
-
-    roc_auc =
-      roc_auc_vec(
-        dat$outcome,
-        dat$.pred_yes,
-        event_level = "second"
-      ),
-
-    log_loss =
-      mn_log_loss_vec(
-        dat$outcome,
-        dat$.pred_yes,
-        event_level = "second"
-      )
-  )
+compute_window_metrics <- function(dat) {
+  monitor_metrics(
+    dat,
+    truth = outcome,
+    estimate = .pred_class,
+    .pred_yes
+  ) %>%
+    mutate(date = max(dat$date), .before = 1)
 }
 ```
 :::
 
-Each monitoring window now produces a tibble rather than a single value. The `map()` family of functions from purrr allows us to repeatedly apply the same calculation to every rolling window.
+We can apply it to a single window:
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-windows[[50]] %>% 
-  compute_metrics()
-#> # A tibble: 1 × 4
-#>   date       accuracy roc_auc log_loss
-#>   <date>        <dbl>   <dbl>    <dbl>
-#> 1 2023-10-25    0.857   0.918    0.382
+windows[[10]] %>%
+  compute_window_metrics()
+#> # A tibble: 3 × 4
+#>   date       .metric     .estimator .estimate
+#>   <date>     <chr>       <chr>          <dbl>
+#> 1 2022-07-20 accuracy    binary         0.752
+#> 2 2022-07-20 roc_auc     binary         0.853
+#> 3 2022-07-20 mn_log_loss binary         0.502
 ```
 :::
 
+The `map()` family of functions from purrr lets us apply the same calculation to every window, and `list_rbind()` stacks the results into one tibble.
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-# Apply the function across all windows.
-# The result is a list of tibbles.
-
 monitoring_results <-
   windows %>%
-  map(compute_metrics) %>%
+  map(compute_window_metrics) %>%
   list_rbind()
+
 monitoring_results %>%
-  slice_head(n = 5)
-#> # A tibble: 5 × 4
-#>   date       accuracy roc_auc log_loss
-#>   <date>        <dbl>   <dbl>    <dbl>
-#> 1 2023-09-06    0.786   0.848    0.459
-#> 2 2023-09-07    0.786   0.818    0.476
-#> 3 2023-09-08    0.786   0.848    0.439
-#> 4 2023-09-09    0.786   0.818    0.445
-#> 5 2023-09-10    0.786   0.818    0.454
+  slice_head(n = 6)
+#> # A tibble: 6 × 4
+#>   date       .metric     .estimator .estimate
+#>   <date>     <chr>       <chr>          <dbl>
+#> 1 2022-03-16 accuracy    binary         0.875
+#> 2 2022-03-16 roc_auc     binary         0.883
+#> 3 2022-03-16 mn_log_loss binary         0.413
+#> 4 2022-03-30 accuracy    binary         0.765
+#> 5 2022-03-30 roc_auc     binary         0.854
+#> 6 2022-03-30 mn_log_loss binary         0.476
 ```
 :::
 
-## Visualizing accuracy through time
+## Visualizing performance through time
+
+The goal of monitoring is to understand how model performance changes over time. Because all three metrics share the same tidy structure, we can show them together in a single faceted plot.
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 ggplot(
   monitoring_results,
-  aes(date, accuracy)
+  aes(date, .estimate)
 ) +
-  geom_line() +
+  geom_point(alpha = 0.5) +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~ .metric, scales = "free_y", ncol = 1) +
   labs(
-    title = "Model Accuracy Over Time",
+    title = "Model Performance Over Time",
     x = NULL,
-    y = "Accuracy"
+    y = NULL
   )
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
 ::: {.cell-output-display}
-![](figs/accuracy-over-time-plot-1.svg){fig-align='center' width=672}
+![](figs/metrics-over-time-plot-1.svg){fig-align='center' width=672}
 :::
 :::
 
-The goal of monitoring is to understand how model performance changes over time. In this example, accuracy gradually declines as newer observations arrive. Because we intentionally introduced a change in the data-generating process, this pattern is expected. In a real-world setting, a similar decline could indicate concept drift, changing customer behavior, shifts in the target population, or other changes in the environment where the model is being used.
+In this example, accuracy and ROC AUC gradually decline while log loss rises as newer observations arrive. Because we intentionally introduced a change in the data-generating process, this pattern is expected. In a real-world setting, a similar decline could indicate concept drift, changing customer behavior, shifts in the target population, or other changes in the environment where the model is being used.
 
-## Visualizing ROC AUC through time
-
-::: {.cell layout-align="center"}
-
-```{.r .cell-code}
-ggplot(
-  monitoring_results,
-  aes(date, roc_auc)
-) +
-  geom_line() +
-  labs(
-    title = "Model ROC AUC Over Time",
-    x = NULL,
-    y = "ROC AUC"
-  )
-```
-
-::: {.cell-output-display}
-![](figs/roc-auc-over-time-plot-1.svg){fig-align='center' width=672}
-:::
-:::
-
-## Visualizing log-loss through time
+Even with enough observations per window, individual windows still show some variability, so the points bounce around the underlying trend. There is a tradeoff here: smaller windows react more quickly to change but are noisier, while larger windows are more stable but slower to reveal a shift. Adding a smoothed trend line (here with `geom_smooth()`) makes the overall direction easier to read through that window-to-window noise.
 
 Unlike accuracy, log loss focuses on how well the predicted probabilities match the observed outcomes. Rising log loss can be a sign that the model is becoming less confident or less well calibrated, even when accuracy has not changed very much.
 
-::: {.cell layout-align="center"}
+## An alternative: `sliding_period()` from rsample
 
-```{.r .cell-code}
-ggplot(
-  monitoring_results,
-  aes(date, log_loss)
-) +
-  geom_line() +
-  labs(
-    title = "Model Log Loss Over Time",
-    x = NULL,
-    y = "Log Loss"
-  )
-```
-
-::: {.cell-output-display}
-![](figs/log-loss-over-time-plot-1.svg){fig-align='center' width=672}
-:::
-:::
-
-## Fixed windows comparisons
+If you already work with tidymodels resampling, rsample provides `sliding_period()`, which expresses the same idea as a resampling scheme. It returns an `rset` of splits rather than a list of data frames, and because it works with the date index directly it handles gaps and non-sequential time values nicely.
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-fixed_results <-
+monitor_rs <-
   monitor_data %>%
+  sliding_period(
+    index = date,
+    period = "week",
+    lookback = 1,
+    step = 2,
+    skip = 1
+  )
+
+monitor_rs %>%
   mutate(
-    interval = floor_date(date, "month")
+    metrics = map(splits, ~ compute_window_metrics(analysis(.x)))
   ) %>%
-  group_by(interval) %>%
-  summarise(
-    accuracy =
-      accuracy_vec(outcome, .pred_class),
-
-    roc_auc =
-      roc_auc_vec(
-        outcome,
-        .pred_yes,
-        event_level = "second"
-      ),
-
-    date = max(date),
-    .groups = "drop"
-  )
+  select(metrics) %>%
+  unnest(metrics) %>%
+  slice_head(n = 6)
+#> # A tibble: 6 × 4
+#>   date       .metric     .estimator .estimate
+#>   <date>     <chr>       <chr>          <dbl>
+#> 1 2022-03-30 accuracy    binary         0.765
+#> 2 2022-03-30 roc_auc     binary         0.854
+#> 3 2022-03-30 mn_log_loss binary         0.476
+#> 4 2022-04-13 accuracy    binary         0.813
+#> 5 2022-04-13 roc_auc     binary         0.884
+#> 6 2022-04-13 mn_log_loss binary         0.429
 ```
 :::
 
-::: {.cell layout-align="center"}
-
-```{.r .cell-code}
-ggplot(
-  fixed_results,
-  aes(date, accuracy)
-) +
-  geom_line() +
-  geom_point() +
-  labs(
-    title = "Accuracy Using Fixed Monthly Windows",
-    x = NULL,
-    y = "Accuracy"
-  )
-```
-
-::: {.cell-output-display}
-![](figs/fixed-window-accuracy-plot-1.svg){fig-align='center' width=672}
-:::
-:::
-
-Rolling windows tend to produce smoother performance curves because consecutive windows share many of the same observations. Fixed windows, on the other hand, divide the data into non-overlapping time periods and are often easier to summarize in reports or dashboards. Both approaches are widely used in practice, and the best choice depends on the goals of the monitoring system.
-
-For example, 
-
-Rolling window:
-| Window | Dates |
-|---------|---------|
-| 1 | Jan 1 – Jan 14 |
-| 2 | Jan 2 – Jan 15 |
-| 3 | Jan 3 – Jan 16 |
-
-Fixed window:
-| Window | Dates |
-|---------|---------|
-| 1 | Jan 1 – Jan 14 |
-| 2 | Jan 15 – Jan 28 |
-| 3 | Jan 29 – Feb 11 |
+Here `lookback = 1` includes the current week plus the previous week (two weeks total) and `step = 2` advances two weeks at a time, giving the same non-overlapping windows as the slider approach above. We also set `skip = 1`, which drops the first resample (`skip` is applied before `step` thins the rest). Use whichever fits your workflow: slider is lightweight and general purpose, while `sliding_period()` slots naturally into a tidymodels resampling pipeline.
 
 ## Drift interpretation
 
 Monitoring metrics rarely remain perfectly stable.
 Several patterns commonly appear:
 
-| Pattern | Possible interpretation |
-|----------|----------|
-| Stable metrics | The model continues to perform as expected |
-| Gradual decline | The relationship between predictors and outcomes may be changing (concept drift) |
-| Sudden drop | A data quality issue, system change, or major population shift |
-| Increased volatility | Small sample sizes or an unstable process |
+| Pattern              | Possible interpretation                                                              |
+|----------------------|--------------------------------------------------------------------------------------|
+| Stable metrics       | The model continues to perform as expected                                           |
+| Gradual decline      | The relationship between predictors and outcomes may be changing (concept drift)     |
+| Sudden drop          | A data quality issue, system change, or major population shift                       |
+| Increased volatility | Small sample sizes or an unstable process                                            |
 
 Monitoring does not automatically identify the cause of performance degradation. Instead, it provides an early warning signal that further investigation may be needed.
 
@@ -458,7 +385,7 @@ Model evaluation does not end once a model is deployed. As new data arrives, per
 In this article, we used:
 
   - tidymodels to train a model and generate predictions,
-  - slider to create rolling evaluation windows,
+  - slider to split timestamped predictions into regular evaluation windows,
   - purrr to compute performance metrics across those windows, and
   - ggplot2 to visualize how performance changes over time.
 
@@ -470,10 +397,10 @@ While our example focused on a single model, the same approach can be extended t
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.5.1 (2025-06-13)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  pandoc   3.4
-#>  quarto   1.6.42
+#>  pandoc   3.8.3
+#>  quarto   1.9.38
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -482,10 +409,9 @@ While our example focused on a single model, the same approach can be extended t
 #>  dplyr         1.2.1   2026-04-03
 #>  ggplot2       4.0.3   2026-04-22
 #>  infer         1.1.0   2025-12-18
-#>  lubridate     1.9.5   2026-02-04
 #>  parsnip       1.6.0   2026-05-14
 #>  purrr         1.2.2   2026-04-10
-#>  recipes       1.3.2   2026-04-02
+#>  recipes       1.3.3   2026-05-30
 #>  rlang         1.2.0   2026-04-06
 #>  rsample       1.3.2   2026-01-30
 #>  sessioninfo   1.2.3   2025-02-05
@@ -499,3 +425,4 @@ While our example focused on a single model, the same approach can be extended t
 #> ────────────────────────────────────────────────────────────────────
 ```
 :::
+
