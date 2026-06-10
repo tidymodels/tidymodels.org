@@ -258,6 +258,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../learn/models/model-monitoring-using-slider/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Monitoring model performance over time using slider</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../learn/models/parsnip-nnet/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Classification models using a neural network</span></a>
   </div>
@@ -580,7 +586,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">split_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_split.html">int_conformal_split</a></span><span class="op">(</span><span class="va">nnet_fit</span>, <span class="va">cal_data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">split_int</span> <span class="op">&lt;-</span> <span class="fu">int_conformal_split</span><span class="op">(</span><span class="va">nnet_fit</span>, <span class="va">cal_data</span><span class="op">)</span></span>
 <span><span class="va">split_int</span></span>
 <span><span class="co">#&gt; Split Conformal inference</span></span>
 <span><span class="co">#&gt; preprocessor: formula </span></span>
@@ -675,7 +681,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cv_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_cv.html">int_conformal_cv</a></span><span class="op">(</span><span class="va">nnet_rs</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cv_int</span> <span class="op">&lt;-</span> <span class="fu">int_conformal_cv</span><span class="op">(</span><span class="va">nnet_rs</span><span class="op">)</span></span>
 <span><span class="va">cv_int</span></span>
 <span><span class="co">#&gt; Conformal inference via CV+</span></span>
 <span><span class="co">#&gt; preprocessor: formula </span></span>
@@ -788,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>However, there are obvious areas where it is either too wide or too narrow.</p>
 <p>Conformalized quantile regression (<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Conformalized+quantile+regression%22">Romano <em>et al</em> (2019)</a>) is a method to produce intervals that can properly scale the intervals based on what was observed in the training data. It fits an initial <a href="https://en.wikipedia.org/wiki/Quantile_regression">quantile regression</a> model to do so and also required a split data set, such as our calibration data.</p>
 <p>The original work used basic quantile regression models. For tidymodels, we’ll use <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22Quantile+Regression+Forests%22">quantile regression forests</a>. The reason being that some models require nonlinear terms, interactions, and other features to model the data adequately. Users would have to have a parallel modeling process for that model. Random forests for quantile regression are very adaptable, low maintenance, and are robust to tuning parameter specification. There are both minor and major downsides, as seen below.</p>
-<p>The function for this, <code><a href="https://probably.tidymodels.org/reference/int_conformal_quantile.html">int_conformal_quantile()</a></code>, has a slightly different interface than the previous functions:</p>
+<p>The function for this, <code>int_conformal_quantile()</code>, has a slightly different interface than the previous functions:</p>
 <ul>
 <li>It requires both the training and calibration sets.</li>
 <li>The confidence level must be set in advance.</li>
@@ -798,7 +804,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">quant_int</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://probably.tidymodels.org/reference/int_conformal_quantile.html">int_conformal_quantile</a></span><span class="op">(</span></span>
+<span>  <span class="fu">int_conformal_quantile</span><span class="op">(</span></span>
 <span>    <span class="va">nnet_variable_fit</span>, </span>
 <span>    train_data <span class="op">=</span> <span class="va">train_variable_data</span>,</span>
 <span>    cal_data <span class="op">=</span> <span class="va">cal_variable_data</span>, </span>

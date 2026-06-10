@@ -5,8 +5,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="Create a new score class object for feature selection.">
-<title>Create your own score class object – tidymodels</title>
+<meta name="description" content="Use slider and purrr to evaluate model performance over time">
+<title>Monitoring model performance over time using slider – tidymodels</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -149,8 +149,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb">
-<li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li>
-<li class="breadcrumb-item"><a href="../../../learn/develop/filtro/index.html">Create your own score class object</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/bootstrap-metrics/index.html">Create Robust Models</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/model-monitoring-using-slider/index.html">Monitoring model performance over time using slider</a></li>
 </ol></nav><a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -225,13 +225,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Create Robust Models</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/models/bootstrap-metrics/index.html" class="sidebar-item-text sidebar-link">
@@ -258,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../learn/models/model-monitoring-using-slider/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../learn/models/model-monitoring-using-slider/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Monitoring model performance over time using slider</span></a>
   </div>
 </li>
@@ -308,13 +308,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
  <span class="menu-text">Develop custom modeling tools</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../learn/develop/broom/index.html" class="sidebar-item-text sidebar-link">
@@ -323,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../learn/develop/filtro/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../../learn/develop/filtro/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Create your own score class object</span></a>
   </div>
 </li>
@@ -425,35 +425,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
-  <ul>
+  <ul class="collapse">
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#parent-class-general-scoring-object" id="toc-parent-class-general-scoring-object" class="nav-link" data-scroll-target="#parent-class-general-scoring-object">Parent class (General scoring object)</a></li>
-  <li><a href="#subclass-custom-scoring-object" id="toc-subclass-custom-scoring-object" class="nav-link" data-scroll-target="#subclass-custom-scoring-object">Subclass (Custom scoring object)</a></li>
-  <li><a href="#fitting-or-estimating-feature-score" id="toc-fitting-or-estimating-feature-score" class="nav-link" data-scroll-target="#fitting-or-estimating-feature-score">Fitting (or estimating) feature score</a></li>
-  <li><a href="#defining-s7-methods" id="toc-defining-s7-methods" class="nav-link" data-scroll-target="#defining-s7-methods">Defining S7 methods</a></li>
-  <li><a href="#documenting-s7-methods" id="toc-documenting-s7-methods" class="nav-link" data-scroll-target="#documenting-s7-methods">Documenting S7 methods</a></li>
-  <li><a href="#accessing-results-after-fitting" id="toc-accessing-results-after-fitting" class="nav-link" data-scroll-target="#accessing-results-after-fitting">Accessing results after fitting</a></li>
+  <li><a href="#simulating-incoming-observations" id="toc-simulating-incoming-observations" class="nav-link" data-scroll-target="#simulating-incoming-observations">Simulating incoming observations</a></li>
+  <li><a href="#training-a-model" id="toc-training-a-model" class="nav-link" data-scroll-target="#training-a-model">Training a model</a></li>
+  <li><a href="#generating-predictions" id="toc-generating-predictions" class="nav-link" data-scroll-target="#generating-predictions">Generating predictions</a></li>
+  <li><a href="#why-use-time-windows" id="toc-why-use-time-windows" class="nav-link" data-scroll-target="#why-use-time-windows">Why use time windows</a></li>
+  <li><a href="#splitting-the-data-with-slider" id="toc-splitting-the-data-with-slider" class="nav-link" data-scroll-target="#splitting-the-data-with-slider">Splitting the data with slider</a></li>
+  <li><a href="#understanding-slide_period" id="toc-understanding-slide_period" class="nav-link" data-scroll-target="#understanding-slide_period">Understanding <code>slide_period()</code></a></li>
+  <li><a href="#computing-metrics-with-purrr" id="toc-computing-metrics-with-purrr" class="nav-link" data-scroll-target="#computing-metrics-with-purrr">Computing metrics with purrr</a></li>
+  <li><a href="#visualizing-performance-through-time" id="toc-visualizing-performance-through-time" class="nav-link" data-scroll-target="#visualizing-performance-through-time">Visualizing performance through time</a></li>
+  <li><a href="#an-alternative-sliding_period-from-rsample" id="toc-an-alternative-sliding_period-from-rsample" class="nav-link" data-scroll-target="#an-alternative-sliding_period-from-rsample">An alternative: <code>sliding_period()</code> from rsample</a></li>
+  <li><a href="#drift-interpretation" id="toc-drift-interpretation" class="nav-link" data-scroll-target="#drift-interpretation">Drift interpretation</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session information</a></li>
   </ul>
-<div class="toc-actions"><ul>
-<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/filtro/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<div class="toc-actions"><ul class="collapse">
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/model-monitoring-using-slider/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
 <li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
 </ul></div></nav>
 </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb">
-<li class="breadcrumb-item"><a href="../../../learn/develop/broom/index.html">Develop custom modeling tools</a></li>
-<li class="breadcrumb-item"><a href="../../../learn/develop/filtro/index.html">Create your own score class object</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/bootstrap-metrics/index.html">Create Robust Models</a></li>
+<li class="breadcrumb-item"><a href="../../../learn/models/model-monitoring-using-slider/index.html">Monitoring model performance over time using slider</a></li>
 </ol></nav><div class="quarto-title">
-<h1 class="title">Create your own score class object</h1>
+<h1 class="title">Monitoring model performance over time using slider</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">developer tools</div>
+    <div class="quarto-category">classification</div>
+    <div class="quarto-category">time series</div>
+    <div class="quarto-category">yardstick</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>Create a new score class object for feature selection.</p>
+    <p>Use slider and purrr to evaluate model performance over time</p>
   </div>
 </div>
 
@@ -468,429 +475,405 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>To use code in this article, you will need to install the following packages: filtro, modeldata, and S7.</p>
-<p>Currently, there are 6 filters in filtro and many existing score objects. A list of existing scoring objects <a href="https://filtro.tidymodels.org/articles/filtro.html#available-score-objects-and-filter-methods">can be found here</a>. However, you might need to define your own scoring objects. This article serves as a guide to creating new scoring objects and computing feature scores before performing ranking and selection.</p>
-<p>For reference, filtro is tidy tools to apply filter-based supervised feature selection methods. It provides functions to rank and select a specified proportion or a fixed number of features using built-in methods and the desirability function.</p>
-<p>Regarding scoring objects:</p>
-<p>There is a parent class <code>class_score</code>, which defines the fixed properties that are shared across all subclasses. The parent class is already implemented, and serves as the infrastructure we build on when we make our own scoring class object.</p>
-<p>Therefore, the general procedure is to:</p>
-<ol type="1">
-<li><p>Create a subclass <code>class_score_*</code> that inherts from <code>class_score</code>. This subclass introduces additional, method- or score-specific properties, as opposed to the general characteristics already defined in the parent class.</p></li>
-<li><p>Implement the scoring method in <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>, which computes feature score. The <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> generic refers to the subclass from step 1 to use the appropriate <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method.</p></li>
-</ol>
-<p>The hierarchy can be visualized as:</p>
-<pre><code>class_score
-└─&gt; class_score_* 
- └─&gt; fit()</code></pre>
-<p>Additionally, we provide guidance on documenting an S7 method.</p>
-</section><section id="parent-class-general-scoring-object" class="level2"><h2 class="anchored" data-anchor-id="parent-class-general-scoring-object">Parent class (General scoring object)</h2>
-<p>All the subclasses (custom scoring objects) share the same parent class named <code>class_score</code>. The parent class is already implemented, and we need this to build our own scoring class object:</p>
+<p>To use code in this article, you will need to install the following packages: sessioninfo, slider, and tidymodels.</p>
+<p>Many modeling workflows end once a model has been evaluated on a test set. After selecting a final model for deployment, it is easy to think the work is finished. In practice, deployment is often the beginning of a new stage in the model lifecycle.</p>
+<p>As new data arrives, users may start asking questions such as:</p>
+<ul>
+<li>Is the model performing as well as it did when it was deployed?</li>
+<li>Has performance changed over time?</li>
+<li>Are there signs of drift?</li>
+<li>Should the model be retrained?</li>
+</ul>
+<p>Answering these questions requires more than a single test set evaluation. Instead, we need a way to continuously monitor model performance as new observations become available.</p>
+<p>In this article, we will build a simple monitoring workflow that takes timestamped predictions, splits them into regular time intervals with the slider package, computes performance metrics for each interval with purrr, and plots the results over time.</p>
+</section><section id="simulating-incoming-observations" class="level2"><h2 class="anchored" data-anchor-id="simulating-incoming-observations">Simulating incoming observations</h2>
+<p>To demonstrate this monitoring workflow, we will create a synthetic classification problem. The first part of the data represents observations that were available when the model was developed, while the remaining observations represent new data arriving after deployment. To make the example more realistic, we will introduce a change in the underlying relationship between the predictors and outcome, causing model performance to gradually decline over time.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">6000</span></span>
+<span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.Date.html">seq.Date</a></span><span class="op">(</span></span>
+<span>      from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2022-01-01"</span><span class="op">)</span>,</span>
+<span>      by <span class="op">=</span> <span class="st">"day"</span>,</span>
+<span>      length.out <span class="op">=</span> <span class="fl">730</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="va">n</span>,</span>
+<span>    replace <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span><span class="op">)</span>,</span>
+<span>  x1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>,</span>
+<span>  x2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    drifted <span class="op">=</span> <span class="va">date</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2023-01-01"</span><span class="op">)</span>,</span>
+<span>    signal <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span></span>
+<span>      <span class="va">drifted</span>,</span>
+<span>      <span class="fl">0.5</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">-</span> <span class="fl">0.25</span> <span class="op">*</span> <span class="va">x2</span>,</span>
+<span>      <span class="fl">2</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">-</span> <span class="va">x2</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    probability <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">signal</span><span class="op">)</span>,</span>
+<span>    outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">probability</span>,</span>
+<span>        <span class="st">"yes"</span>,</span>
+<span>        <span class="st">"no"</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="st">"no"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span></span>
+<span>    <span class="op">-</span><span class="va">drifted</span>,</span>
+<span>    <span class="op">-</span><span class="va">signal</span>,</span>
+<span>    <span class="op">-</span><span class="va">probability</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">sim_data</span></span>
+<span><span class="co">#&gt; # A tibble: 6,000 × 4</span></span>
+<span><span class="co">#&gt;    date            x1      x2 outcome</span></span>
+<span><span class="co">#&gt;    &lt;date&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;  </span></span>
+<span><span class="co">#&gt;  1 2022-01-01  0.602  -0.727  yes    </span></span>
+<span><span class="co">#&gt;  2 2022-01-01  0.480   1.31   yes    </span></span>
+<span><span class="co">#&gt;  3 2022-01-01  0.215  -0.510  yes    </span></span>
+<span><span class="co">#&gt;  4 2022-01-01 -2.54   -1.34   no     </span></span>
+<span><span class="co">#&gt;  5 2022-01-01  0.0464  0.191  no     </span></span>
+<span><span class="co">#&gt;  6 2022-01-01 -0.0509  0.601  no     </span></span>
+<span><span class="co">#&gt;  7 2022-01-01 -1.81    0.130  no     </span></span>
+<span><span class="co">#&gt;  8 2022-01-01  0.788   0.0570 no     </span></span>
+<span><span class="co">#&gt;  9 2022-01-01 -1.48   -0.746  no     </span></span>
+<span><span class="co">#&gt; 10 2022-01-01 -0.348  -0.733  yes    </span></span>
+<span><span class="co">#&gt; # ℹ 5,990 more rows</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+<p>We generate several observations per day so that each evaluation window contains enough data for a stable estimate. The relationship between the predictors and outcome weakens partway through the series (on 2023-01-01). A model trained on the earlier, stronger relationship will gradually become less effective afterwards. This behavior resembles one form of concept drift, where the process generating the outcome changes over time.</p>
+<p>Notice that we set the factor levels so that <code>"yes"</code> is the first level. yardstick treats the first level as the event of interest by default, so ordering the levels here means we won’t need to set <code>event_level</code> every time we compute a metric.</p>
+</section><section id="training-a-model" class="level2"><h2 class="anchored" data-anchor-id="training-a-model">Training a model</h2>
+<p>Suppose that the first 600 observations were available when the model was developed. At this point, we will pretend the model has been deployed. The remaining observations represent future data arriving after deployment.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Call the parent class</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/filtro">filtro</a></span><span class="op">)</span> </span>
-<span><span class="va">class_score</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">train_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">sim_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">monitor_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">sim_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">600</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>These are the fixed properties (attributes) for this object:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">class_score</span><span class="op">)</span></span>
-<span><span class="co">#&gt; function (outcome_type = c("numeric", "factor"), predictor_type = c("numeric", </span></span>
-<span><span class="co">#&gt; "factor"), case_weights = logical(0), range = integer(0), inclusive = logical(0), </span></span>
-<span><span class="co">#&gt;     fallback_value = integer(0), score_type = character(0), transform_fn = function() NULL, </span></span>
-<span><span class="co">#&gt;     direction = character(0), deterministic = logical(0), tuning = logical(0), </span></span>
-<span><span class="co">#&gt;     calculating_fn = function() NULL, label = character(0), packages = character(0), </span></span>
-<span><span class="co">#&gt;     results = data.frame()) </span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># We fit a logistic regression model:</span></span>
+<span><span class="va">log_fit</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/logistic_reg.html">logistic_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span></span>
+<span>    <span class="va">outcome</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">train_data</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">log_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:  stats::glm(formula = outcome ~ x1 + x2, family = stats::binomial, </span></span>
+<span><span class="co">#&gt;     data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)           x1           x2  </span></span>
+<span><span class="co">#&gt;     -0.1431      -2.1029       1.0656  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Degrees of Freedom: 599 Total (i.e. Null);  597 Residual</span></span>
+<span><span class="co">#&gt; Null Deviance:       830.1 </span></span>
+<span><span class="co">#&gt; Residual Deviance: 511.6     AIC: 517.6</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>For example:</p>
-<ul>
-<li><p><code>case_weights</code>: Does the method accpet case weights? It is <code>TRUE</code> or <code>FALSE</code>.</p></li>
-<li><p><code>fallback_value</code>: What is a value that can be used for the statistic so that it will never be eliminated? For example, <code>0</code> or <code>Inf</code>.</p></li>
-<li><p><code>direction</code>: What direction of values indicates the most important values? For example, <code>minimize</code> or <code>maximum</code>.</p></li>
-<li><p><code>results</code>: A slot for the results once the method is fitted. Initially, this is an empty data frame.</p></li>
-</ul>
-<p>For details on its constructor and its remaining properties, please refer to the package documentation or <a href="https://github.com/tidymodels/filtro/blob/main/R/class_score.R">check it out here</a>.</p>
-</section><section id="subclass-custom-scoring-object" class="level2"><h2 class="anchored" data-anchor-id="subclass-custom-scoring-object">Subclass (Custom scoring object)</h2>
-<p>All custom scoring objects implemented in filtro are subclasses of the parent class <code>class_score</code>, meaning that they all inherit the parent class’s fixed properties. When creating a new scoring object, we do so by defining another subclass of this parent class.</p>
-<pre><code>class_score
-└─&gt; class_score_aov (example shown)
-└─&gt; class_score_cor
-└─&gt; ... </code></pre>
-<p>As an example, we demonstrate how to create a custom scoring object for ANOVA F-test named <code>class_score_aov</code>.</p>
-<p>For reference, the ANOVA F-test filter computes feature score using analysis of variance (ANOVA) hypothesis tests, powered by <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. The <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function fits a linear model and returns a summary containing the F-statistic and p-value, which can be used to evaluate feature importance.</p>
-<p>By setting <code>parent = class_score</code>, the subclass <code>class_score_aov</code> inherits all of the fixed properties from the parent class. Additional, implementation-specific properties can be added using the <code>properties =</code> argument. For example:</p>
+<p>Since <code>"glm"</code> is the default engine for <code><a href="https://parsnip.tidymodels.org/reference/logistic_reg.html">logistic_reg()</a></code>, we don’t need to set it explicitly with <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine()</a></code>.</p>
+</section><section id="generating-predictions" class="level2"><h2 class="anchored" data-anchor-id="generating-predictions">Generating predictions</h2>
+<p>As new observations arrive, the deployed model generates predictions. Each observation now contains: a timestamp, the original predictors, the true outcome, the predicted class, and predicted probabilities. This structure is common in production monitoring systems and forms the basis of our analysis.</p>
+<p>We use <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> rather than <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> so that the predicted class, predicted probabilities, and the original columns are all returned together in a single data frame in a safe way.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">monitor_data</span> <span class="op">&lt;-</span> <span class="va">log_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">monitor_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">monitor_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] ".pred_class" ".pred_yes"   ".pred_no"    "date"        "x1"         </span></span>
+<span><span class="co">#&gt; [6] "x2"          "outcome"</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+</section><section id="why-use-time-windows" class="level2"><h2 class="anchored" data-anchor-id="why-use-time-windows">Why use time windows</h2>
+<p>Looking at predictions one at a time is usually not very informative. If a model makes a mistake today, that does not necessarily mean anything is wrong. Instead, we generally summarize performance across a larger set of observations. For example, we might check performance every two weeks:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Window</th>
+<th>Dates</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Jan 1 – Jan 14</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Jan 15 – Jan 28</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Jan 29 – Feb 11</td>
+</tr>
+</tbody>
+</table>
+<p>Metrics computed within these windows are typically more stable and easier to interpret than metrics based on individual predictions. The next challenge is creating these windows efficiently and applying the same calculations to each one. This is where the slider package becomes useful.</p>
+</section><section id="splitting-the-data-with-slider" class="level2"><h2 class="anchored" data-anchor-id="splitting-the-data-with-slider">Splitting the data with slider</h2>
+<p>The slider package applies a function across a series of windows defined over an index. To check performance every two weeks, we use <code>slide_period()</code>, which groups observations into consecutive calendar periods. Here we ask for non-overlapping two-week blocks by sliding over <code>"week"</code> periods, two at a time.</p>
+<p>We pass <code>.f = identity</code> so that slider simply returns the observations in each window, leaving the metric calculations for the next step.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create a subclass named 'class_score_aov'</span></span>
-<span><span class="va">class_score_aov</span> <span class="op">&lt;-</span> <span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html">new_class</a></span><span class="op">(</span></span>
-<span>  <span class="st">"class_score_aov"</span>,</span>
-<span>  parent <span class="op">=</span> <span class="va">class_score</span>,</span>
-<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    neg_log10 <span class="op">=</span> <span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_property.html">new_property</a></span><span class="op">(</span><span class="fu">S7</span><span class="fu">::</span><span class="va"><a href="https://rconsortium.github.io/S7/reference/base_classes.html">class_logical</a></span>, default <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">windows</span> <span class="op">&lt;-</span> <span class="fu">slide_period</span><span class="op">(</span></span>
+<span>  .x <span class="op">=</span> <span class="va">monitor_data</span>,</span>
+<span>  .i <span class="op">=</span> <span class="va">monitor_data</span><span class="op">$</span><span class="va">date</span>,</span>
+<span>  .period <span class="op">=</span> <span class="st">"week"</span>,</span>
+<span>  .every <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  .f <span class="op">=</span> <span class="va">identity</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">windows</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 48</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>In addition to the properties inherited from the parent class (discussed in the previous section), <code>class_score_aov</code> also includes the following property:</p>
-<ul>
-<li>
-<code>neg_log10</code>: Represent the score as <code>-log10(p_value)</code>? It is <code>TRUE</code> or <code>FALSE</code>.</li>
-</ul>
-<p>For the ANOVA F-test filter, users can represent the score using either the</p>
-<ul>
-<li><p>p-value or</p></li>
-<li><p>F-statistic.</p></li>
-</ul>
-<p>We demonstrate how to create these instances (objects) accordingly.</p>
-<p><code>score_aov_pval</code> is created as an instance of the <code>class_score_aov</code> subclass by calling its constructor and specifying its properties:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># ANOVA p-value</span></span>
-<span><span class="va">score_aov_pval</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://filtro.tidymodels.org/reference/class_score.html">class_score_aov</a></span><span class="op">(</span></span>
-<span>    outcome_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    predictor_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    case_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>    fallback_value <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>    score_type <span class="op">=</span> <span class="st">"aov_pval"</span>,</span>
-<span>    direction <span class="op">=</span> <span class="st">"maximize"</span>,</span>
-<span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    label <span class="op">=</span> <span class="st">"ANOVA p-values"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># inspect one window</span></span>
+<span><span class="va">windows</span><span class="op">[[</span><span class="fl">10</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 113</span></span>
+<span><span class="co">#&gt; Columns: 7</span></span>
+<span><span class="co">#&gt; $ .pred_class &lt;fct&gt; yes, yes, no, yes, yes, yes, yes, yes, yes, no, yes, yes, …</span></span>
+<span><span class="co">#&gt; $ .pred_yes   &lt;dbl&gt; 0.88959258, 0.59985201, 0.02340663, 0.67147866, 0.94093421…</span></span>
+<span><span class="co">#&gt; $ .pred_no    &lt;dbl&gt; 0.11040742, 0.40014799, 0.97659337, 0.32852134, 0.05906579…</span></span>
+<span><span class="co">#&gt; $ date        &lt;date&gt; 2022-07-07, 2022-07-07, 2022-07-07, 2022-07-07, 2022-07-0…</span></span>
+<span><span class="co">#&gt; $ x1          &lt;dbl&gt; 1.10213613, -0.84578332, -1.56364555, -0.02407925, 0.58946…</span></span>
+<span><span class="co">#&gt; $ x2          &lt;dbl&gt; 0.3511203, -1.9147686, 0.5498216, -0.5841380, -1.3002671, …</span></span>
+<span><span class="co">#&gt; $ outcome     &lt;fct&gt; yes, no, no, yes, yes, yes, yes, no, no, yes, yes, no, yes…</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Once instantiated, individual properties can be accessed via <code>object@</code>. For example:</p>
+<p>Each element of <code>windows</code> is a data frame containing the observations from one two-week period. The result is a list where element 1 holds the first window, element 2 the next, and so on. This list is the foundation for our monitoring workflow.</p>
+</section><section id="understanding-slide_period" class="level2"><h2 class="anchored" data-anchor-id="understanding-slide_period">Understanding <code>slide_period()</code>
+</h2>
+<p>The <code>slide_period()</code> function has several important arguments:</p>
+<ul>
+<li>
+<code>.x</code> is the object being sliced,</li>
+<li>
+<code>.i</code> is the index used to define the windows (here, the observation date),</li>
+<li>
+<code>.period</code> is the calendar unit used to group observations (here, <code>"week"</code>),</li>
+<li>
+<code>.every</code> controls how many periods make up each window. We set <code>.every = 2</code> to get two-week blocks,</li>
+<li>
+<code>.f</code> is the function applied to each window. Using <code><a href="https://rdrr.io/r/base/identity.html">identity()</a></code> returns each window unchanged.</li>
+</ul>
+<p>If you wanted <em>rolling</em> (overlapping) windows instead of fixed blocks, <code>slide_index()</code> with the <code>.before</code> argument lets each window reach back a fixed number of days from the current observation.</p>
+</section><section id="computing-metrics-with-purrr" class="level2"><h2 class="anchored" data-anchor-id="computing-metrics-with-purrr">Computing metrics with purrr</h2>
+<p>In practice, monitoring systems rarely track a single metric. Here we track three: accuracy, ROC AUC, and log loss. Rather than calling each metric function separately, we bundle them into a metric set with <code><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set()</a></code>. Calling the resulting function stacks the metrics vertically into a single tidy tibble.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">case_weights</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span>
-<span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">fallback_value</span></span>
-<span><span class="co">#&gt; [1] Inf</span></span>
-<span><span class="va">score_aov_pval</span><span class="op">@</span><span class="va">direction</span></span>
-<span><span class="co">#&gt; [1] "maximize"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">monitor_metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/metric_set.html">metric_set</a></span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">roc_auc</span>, <span class="va">mn_log_loss</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">compute_window_metrics</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">monitor_metrics</span><span class="op">(</span></span>
+<span>    <span class="va">dat</span>,</span>
+<span>    truth <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>    estimate <span class="op">=</span> <span class="va">.pred_class</span>,</span>
+<span>    <span class="va">.pred_yes</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Note that by default, the returned p-value is transformed to <code>-log10(p_value)</code>, which means larger values correspond to more important predictors. This is why the fallback value is set to <code>Inf</code> and the direction is set to <code>"maximize"</code>.</p>
-<p><code>score_aov_fstat</code> is another instance of the <code>class_score_aov</code> subclass:</p>
+<p>We can apply it to a single window:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># ANOVA F-statistic</span></span>
-<span><span class="va">score_aov_fstat</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://filtro.tidymodels.org/reference/class_score.html">class_score_aov</a></span><span class="op">(</span></span>
-<span>    outcome_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    predictor_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    case_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>    fallback_value <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>    score_type <span class="op">=</span> <span class="st">"aov_fstat"</span>,</span>
-<span>    direction <span class="op">=</span> <span class="st">"maximize"</span>,</span>
-<span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    label <span class="op">=</span> <span class="st">"ANOVA F-statistics"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">windows</span><span class="op">[[</span><span class="fl">10</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">compute_window_metrics</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span><span class="co">#&gt;   date       .metric     .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;date&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2022-07-20 accuracy    binary         0.752</span></span>
+<span><span class="co">#&gt; 2 2022-07-20 roc_auc     binary         0.853</span></span>
+<span><span class="co">#&gt; 3 2022-07-20 mn_log_loss binary         0.502</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>The F-statistic is not transformed, nor does it provide an option for transformation. Nevertheless, it also uses a fallback value of <code>Inf</code> with the direction set to <code>"maximize"</code>, since larger F-statistic values indicate more important predictors.</p>
-</section><section id="fitting-or-estimating-feature-score" class="level2"><h2 class="anchored" data-anchor-id="fitting-or-estimating-feature-score">Fitting (or estimating) feature score</h2>
-<p>So far, we have covered how to construct a parent class, create a custom subclass, and instantiate objects for the ANOVA F-test filter.</p>
-<p>We now discuss the dual role of <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>: it functions both as a <em>generic</em> and as the <em>methods</em> used to fit (or estimate) feature score.</p>
-<ol type="1">
-<li><p>The <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> generic is re-exported from generics. It inspects the class of the object passed and dispatches to the appropriate method.</p></li>
-<li><p>We also define multiple methods named <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>. Each <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method performs the actual fitting or score estimation for a specific class of object.</p></li>
-</ol>
-<p>In other words, when <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> is called, the generic refers to the custom scoring object <code>class_score_*</code> to determine which method to dispatch. The actual scoring computation is performed within the dispatched method.</p>
-<pre><code>class_score
-└─&gt; class_score_aov (example shown)
- └─&gt; fit()
-└─&gt; class_score_cor
- └─&gt; fit()
-└─&gt; ... </code></pre>
-<p>Let’s use the ANOVA F-test filter again as an example:</p>
+<p>The <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> family of functions from purrr lets us apply the same calculation to every window, and <code><a href="https://purrr.tidyverse.org/reference/list_c.html">list_rbind()</a></code> stacks the results into one tibble.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">monitoring_results</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">windows</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">compute_window_metrics</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/list_c.html">list_rbind</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">monitoring_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   date       .metric     .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;date&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2022-03-16 accuracy    binary         0.875</span></span>
+<span><span class="co">#&gt; 2 2022-03-16 roc_auc     binary         0.883</span></span>
+<span><span class="co">#&gt; 3 2022-03-16 mn_log_loss binary         0.413</span></span>
+<span><span class="co">#&gt; 4 2022-03-30 accuracy    binary         0.765</span></span>
+<span><span class="co">#&gt; 5 2022-03-30 roc_auc     binary         0.854</span></span>
+<span><span class="co">#&gt; 6 2022-03-30 mn_log_loss binary         0.476</span></span></code></pre></div>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+</section><section id="visualizing-performance-through-time" class="level2"><h2 class="anchored" data-anchor-id="visualizing-performance-through-time">Visualizing performance through time</h2>
+<p>The goal of monitoring is to understand how model performance changes over time. Because all three metrics share the same tidy structure, we can show them together in a single faceted plot.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># User-level example: Check the class of the object</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">score_aov_pval</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "filtro::class_score_aov" "filtro::class_score"    </span></span>
-<span><span class="co">#&gt; [3] "S7_object"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">score_aov_fstat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "filtro::class_score_aov" "filtro::class_score"    </span></span>
-<span><span class="co">#&gt; [3] "S7_object"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">monitoring_results</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">.estimate</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.metric</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Model Performance Over Time"</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    y <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figs/metrics-over-time-plot-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
 </div>
-<p>Both instances (objects) belong to the custom scoring object <code>class_score_aov</code>. Therefore, when <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> is called, the method for <code>class_score_aov</code> is dispatched, performing the actual fitting using the ANOVA F-test:</p>
+</div>
+</div>
+<p>In this example, accuracy and ROC AUC gradually decline while log loss rises as newer observations arrive. Because we intentionally introduced a change in the data-generating process, this pattern is expected. In a real-world setting, a similar decline could indicate concept drift, changing customer behavior, shifts in the target population, or other changes in the environment where the model is being used.</p>
+<p>Even with enough observations per window, individual windows still show some variability, so the points bounce around the underlying trend. There is a tradeoff here: smaller windows react more quickly to change but are noisier, while larger windows are more stable but slower to reveal a shift. Adding a smoothed trend line (here with <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth()</a></code>) makes the overall direction easier to read through that window-to-window noise.</p>
+<p>Unlike accuracy, log loss focuses on how well the predicted probabilities match the observed outcomes. Rising log loss can be a sign that the model is becoming less confident or less well calibrated, even when accuracy has not changed very much.</p>
+</section><section id="an-alternative-sliding_period-from-rsample" class="level2"><h2 class="anchored" data-anchor-id="an-alternative-sliding_period-from-rsample">An alternative: <code>sliding_period()</code> from rsample</h2>
+<p>If you already work with tidymodels resampling, rsample provides <code><a href="https://rsample.tidymodels.org/reference/slide-resampling.html">sliding_period()</a></code>, which expresses the same idea as a resampling scheme. It returns an <code>rset</code> of splits rather than a list of data frames, and because it works with the date index directly it handles gaps and non-sequential time values nicely.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># User-level example: Method dispatch for objects of class `class_score_aov`</span></span>
-<span><span class="va">score_aov_pval</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames</span><span class="op">)</span></span>
-<span><span class="va">score_aov_fstat</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames</span><span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-</section><section id="defining-s7-methods" class="level2"><h2 class="anchored" data-anchor-id="defining-s7-methods">Defining S7 methods</h2>
-<p>For users to use the <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method described above, we need to define a S7 method that implements the scoring logic.</p>
-<p>The following code defines the <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method specifically for the <code>class_score_aov</code> subclass, specifying how feature score should be computed using ANOVA F-test:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Define the scoring method for `class_score_aov`</span></span>
-<span><span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/method.html">method</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">class_score_aov</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  <span class="va">formula</span>,</span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">case_weights</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># This is where you add the rest of the code for this implementation </span></span>
-<span></span>
-<span>  <span class="va">object</span><span class="op">@</span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">res</span></span>
-<span>  <span class="va">object</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>We would want to do something similar to define a S7 method for other <code>class_score_*</code> subclass.</p>
-</section><section id="documenting-s7-methods" class="level2"><h2 class="anchored" data-anchor-id="documenting-s7-methods">Documenting S7 methods</h2>
-<p>Documentation for S7 methods is still a work in progress, but our current best approach is as follows:</p>
-<ul>
-<li><p>We re-export the <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> generic from generics.</p></li>
-<li><p>Instead of documenting each <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method, we document it in the “Details” section and the “Estimating the scores” subsection of the documentation for the corresponding object (instance) <code>score_*</code>.</p></li>
-</ul>
-<p>The code below opens the help page for the <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> generic:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># User-level example: Help page for `fit()` generic</span></span>
-<span><span class="op">?</span><span class="va">fit</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>The code below opens the help page for specific <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># User-level example: Help page for `fit()` method along with the documentation for the specific object</span></span>
-<span><span class="op">?</span><span class="va">score_aov_pval</span></span>
-<span><span class="op">?</span><span class="va">score_aov_fstat</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>For users to access the help page using <code>?</code> as described above, the <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method needs to be exported using <code>#' @export</code>, but it is not documented directly.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#' @export</span></span>
-<span><span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/method.html">method</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">class_score_aov</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># Include the rest of the function here</span></span>
-<span></span>
-<span>  <span class="va">object</span><span class="op">@</span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">res</span></span>
-<span>  <span class="va">object</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>Instead, documentation is provided in the “Details” section and the “Estimating the scores” subsection of the documentation for the <code>score_aov_pval</code> object.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#' Scoring via analysis of variance hypothesis tests</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @description</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' @name score_aov_pval</span></span>
-<span><span class="co">#' @family class score metrics</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @details</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' These objects are used when either:</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' ...</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' ## Estimating the scores</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' In \pkg{filtro}, the `score_*` objects define a scoring method (e.g., data</span></span>
-<span><span class="co">#' input requirements, package dependencies, etc). To compute the scores for</span></span>
-<span><span class="co">#' a specific data set, the `fit()` method is used. The main arguments for</span></span>
-<span><span class="co">#' these functions are:</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#'   \describe{</span></span>
-<span><span class="co">#'     \item{`object`}{A score class object (e.g., `score_aov_pval`).}</span></span>
-<span><span class="co">#'     \item{`formula`}{A standard R formula with a single outcome on the right-hand side and one or more predictors (or `.`) on the left-hand side. The data are processed via [stats::model.frame()]}</span></span>
-<span><span class="co">#'     \item{`data`}{A data frame containing the relevant columns defined by the formula.}</span></span>
-<span><span class="co">#'     \item{`...`}{Further arguments passed to or from other methods.}</span></span>
-<span><span class="co">#'     \item{`case_weights`}{A quantitative vector of case weights that is the same length as the number of rows in `data`. The default of `NULL` indicates that there are no case weights.}</span></span>
-<span><span class="co">#'   }</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' ...</span></span>
-<span><span class="co">#' </span></span>
-<span><span class="co">#' @export</span></span>
-<span><span class="va">score_aov_pval</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://filtro.tidymodels.org/reference/class_score.html">class_score_aov</a></span><span class="op">(</span></span>
-<span>    outcome_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    predictor_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    case_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>    fallback_value <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>    score_type <span class="op">=</span> <span class="st">"aov_pval"</span>,</span>
-<span>    transform_fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span>,</span>
-<span>    direction <span class="op">=</span> <span class="st">"maximize"</span>,</span>
-<span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    label <span class="op">=</span> <span class="st">"ANOVA p-values"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>We can have the <code>score_aov_fstat</code> object share the same help page as <code>score_aov_pval</code> by using <code>#' @name</code>. This avoids repeated documentation for similar or related objects.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#' @name score_aov_pval</span></span>
-<span><span class="co">#' @export</span></span>
-<span><span class="va">score_aov_fstat</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://filtro.tidymodels.org/reference/class_score.html">class_score_aov</a></span><span class="op">(</span></span>
-<span>    outcome_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    predictor_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"numeric"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span>
-<span>    case_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>    inclusive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>    fallback_value <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>    score_type <span class="op">=</span> <span class="st">"aov_fstat"</span>,</span>
-<span>    transform_fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span>,</span>
-<span>    direction <span class="op">=</span> <span class="st">"maximize"</span>,</span>
-<span>    deterministic <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    tuning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    label <span class="op">=</span> <span class="st">"ANOVA F-statistics"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-</section><section id="accessing-results-after-fitting" class="level2"><h2 class="anchored" data-anchor-id="accessing-results-after-fitting">Accessing results after fitting</h2>
-<p>Once the method has been fitted via <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code>, the data frame of results can be accessed via <code>object@results</code>.</p>
-<p>We use a subset of the Ames data set from the {modeldata} package for demonstration. The goal is to predict housing sale price. <code>Sale_Price</code> is the outcome and is numeric.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span></span>
-<span><span class="va">ames_subset</span> <span class="op">&lt;-</span> <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/ames.html">ames</a></span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Use a subset of data for demonstration</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span></span>
-<span>    <span class="va">Sale_Price</span>,</span>
-<span>    <span class="va">MS_SubClass</span>,</span>
-<span>    <span class="va">MS_Zoning</span>,</span>
-<span>    <span class="va">Lot_Frontage</span>,</span>
-<span>    <span class="va">Lot_Area</span>,</span>
-<span>    <span class="va">Street</span></span>
+<code class="sourceCode R"><span><span class="va">monitor_rs</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">monitor_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rsample.tidymodels.org/reference/slide-resampling.html">sliding_period</a></span><span class="op">(</span></span>
+<span>    index <span class="op">=</span> <span class="va">date</span>,</span>
+<span>    period <span class="op">=</span> <span class="st">"week"</span>,</span>
+<span>    lookback <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    step <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    skip <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">ames_subset</span> <span class="op">&lt;-</span> <span class="va">ames_subset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="va">monitor_rs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    metrics <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">splits</span>, <span class="op">~</span> <span class="fu">compute_window_metrics</span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html">unnest</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   date       .metric     .estimator .estimate</span></span>
+<span><span class="co">#&gt;   &lt;date&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2022-03-30 accuracy    binary         0.765</span></span>
+<span><span class="co">#&gt; 2 2022-03-30 roc_auc     binary         0.854</span></span>
+<span><span class="co">#&gt; 3 2022-03-30 mn_log_loss binary         0.476</span></span>
+<span><span class="co">#&gt; 4 2022-04-13 accuracy    binary         0.813</span></span>
+<span><span class="co">#&gt; 5 2022-04-13 roc_auc     binary         0.884</span></span>
+<span><span class="co">#&gt; 6 2022-04-13 mn_log_loss binary         0.429</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>Next, we fit the score as we discuss before:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Specify ANOVA p-value and fit score</span></span>
-<span><span class="va">ames_aov_pval_res</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">score_aov_pval</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_subset</span><span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Specify ANOVA F-statistic and fit score</span></span>
-<span><span class="va">ames_aov_fstat_res</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">score_aov_fstat</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_subset</span><span class="op">)</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<p>Recall that individual properties of an object can be accessed using <code>object@</code>. Once the method has been fitted, the resulting data frame can be accessed via <code>object@results</code>:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ames_aov_pval_res</span><span class="op">@</span><span class="va">results</span></span>
-<span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
-<span><span class="co">#&gt;   name      score outcome    predictor   </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;       </span></span>
-<span><span class="co">#&gt; 1 aov_pval 237.   Sale_Price MS_SubClass </span></span>
-<span><span class="co">#&gt; 2 aov_pval 130.   Sale_Price MS_Zoning   </span></span>
-<span><span class="co">#&gt; 3 aov_pval  NA    Sale_Price Lot_Frontage</span></span>
-<span><span class="co">#&gt; 4 aov_pval  NA    Sale_Price Lot_Area    </span></span>
-<span><span class="co">#&gt; 5 aov_pval   5.75 Sale_Price Street</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ames_aov_fstat_res</span><span class="op">@</span><span class="va">results</span></span>
-<span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
-<span><span class="co">#&gt;   name      score outcome    predictor   </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;       </span></span>
-<span><span class="co">#&gt; 1 aov_fstat  94.5 Sale_Price MS_SubClass </span></span>
-<span><span class="co">#&gt; 2 aov_fstat 115.  Sale_Price MS_Zoning   </span></span>
-<span><span class="co">#&gt; 3 aov_fstat  NA   Sale_Price Lot_Frontage</span></span>
-<span><span class="co">#&gt; 4 aov_fstat  NA   Sale_Price Lot_Area    </span></span>
-<span><span class="co">#&gt; 5 aov_fstat  22.9 Sale_Price Street</span></span></code></pre></div>
-<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
-</div>
-</div>
+<p>Here <code>lookback = 1</code> includes the current week plus the previous week (two weeks total) and <code>step = 2</code> advances two weeks at a time, giving the same non-overlapping windows as the slider approach above. We also set <code>skip = 1</code>, which drops the first resample (<code>skip</code> is applied before <code>step</code> thins the rest). Use whichever fits your workflow: slider is lightweight and general purpose, while <code><a href="https://rsample.tidymodels.org/reference/slide-resampling.html">sliding_period()</a></code> slots naturally into a tidymodels resampling pipeline.</p>
+</section><section id="drift-interpretation" class="level2"><h2 class="anchored" data-anchor-id="drift-interpretation">Drift interpretation</h2>
+<p>Monitoring metrics rarely remain perfectly stable. Several patterns commonly appear:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 79%">
+</colgroup>
+<thead><tr class="header">
+<th>Pattern</th>
+<th>Possible interpretation</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Stable metrics</td>
+<td>The model continues to perform as expected</td>
+</tr>
+<tr class="even">
+<td>Gradual decline</td>
+<td>The relationship between predictors and outcomes may be changing (concept drift)</td>
+</tr>
+<tr class="odd">
+<td>Sudden drop</td>
+<td>A data quality issue, system change, or major population shift</td>
+</tr>
+<tr class="even">
+<td>Increased volatility</td>
+<td>Small sample sizes or an unstable process</td>
+</tr>
+</tbody>
+</table>
+<p>Monitoring does not automatically identify the cause of performance degradation. Instead, it provides an early warning signal that further investigation may be needed.</p>
+</section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Model evaluation does not end once a model is deployed. As new data arrives, performance should be monitored regularly to detect drift and identify when retraining may be needed.</p>
+<p>In this article, we used:</p>
+<ul>
+<li>tidymodels to train a model and generate predictions,</li>
+<li>slider to split timestamped predictions into regular evaluation windows,</li>
+<li>purrr to compute performance metrics across those windows, and</li>
+<li>ggplot2 to visualize how performance changes over time.</li>
+</ul>
+<p>While our example focused on a single model, the same approach can be extended to monitor many models and metrics in a production environment.</p>
 </section><section id="session-info" class="level2"><h2 class="anchored" data-anchor-id="session-info">Session information</h2>
 <div class="cell" data-layout-align="center">
-<pre><code>#&gt; 
-#&gt; Attaching package: 'dplyr'
-#&gt; The following objects are masked from 'package:stats':
-#&gt; 
-#&gt;     filter, lag
-#&gt; The following objects are masked from 'package:base':
-#&gt; 
-#&gt;     intersect, setdiff, setequal, union
-#&gt; ─ Session info ─────────────────────────────────────────────────────
+<pre><code>#&gt; ─ Session info ─────────────────────────────────────────────────────
 #&gt;  version  R version 4.6.0 (2026-04-24)
 #&gt;  language (EN)
-#&gt;  pandoc   3.1.3
-#&gt;  quarto   1.9.37
+#&gt;  pandoc   3.8.3
+#&gt;  quarto   1.9.38
 #&gt; 
 #&gt; ─ Packages ─────────────────────────────────────────────────────────
-#&gt;  package     version date (UTC)
-#&gt;  dplyr       1.2.1   2026-04-03
-#&gt;  filtro      0.2.0   2025-08-26
-#&gt;  modeldata   1.5.1   2025-08-22
-#&gt;  purrr       1.2.2   2026-04-10
-#&gt;  rlang       1.2.0   2026-04-06
-#&gt;  S7          0.2.2   2026-04-22
-#&gt;  tibble      3.3.1   2026-01-11
+#&gt;  package       version date (UTC)
+#&gt;  broom         1.0.13  2026-05-14
+#&gt;  dials         1.4.3   2026-04-11
+#&gt;  dplyr         1.2.1   2026-04-03
+#&gt;  ggplot2       4.0.3   2026-04-22
+#&gt;  infer         1.1.0   2025-12-18
+#&gt;  parsnip       1.6.0   2026-05-14
+#&gt;  purrr         1.2.2   2026-04-10
+#&gt;  recipes       1.3.3   2026-05-30
+#&gt;  rlang         1.2.0   2026-04-06
+#&gt;  rsample       1.3.2   2026-01-30
+#&gt;  sessioninfo   1.2.3   2025-02-05
+#&gt;  slider        0.3.3   2025-11-14
+#&gt;  tibble        3.3.1   2026-01-11
+#&gt;  tidymodels    1.5.0   2026-04-23
+#&gt;  tune          2.1.0   2026-04-17
+#&gt;  workflows     1.3.0   2025-08-27
+#&gt;  yardstick     1.4.0   2026-04-07
 #&gt; 
 #&gt; ────────────────────────────────────────────────────────────────────</code></pre>
 </div>
@@ -1336,7 +1319,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="nav-footer-center">
        
     <div class="toc-actions d-sm-block d-md-none"><ul>
-<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/develop/filtro/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
+<li><a href="https://github.com/tidymodels/tidymodels.org/edit/main/learn/models/model-monitoring-using-slider/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li>
 <li><a href="https://github.com/tidymodels/tidymodels.org/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li>
 </ul></div>
 </div>
