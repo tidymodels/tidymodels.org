@@ -62,6 +62,7 @@ packages <- c(
   "scales",
   "sessioninfo",
   "skimr",
+  "slider",
   "sparsevctrs",
   "spatialsample",
   "stacks",
