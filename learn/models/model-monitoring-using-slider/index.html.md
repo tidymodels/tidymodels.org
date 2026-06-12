@@ -399,7 +399,7 @@ While our example focused on a single model, the same approach can be extended t
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.0 (2026-04-24)
 #>  language (EN)
-#>  pandoc   3.8.3
+#>  pandoc   3.1.3
 #>  quarto   1.9.38
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
@@ -414,7 +414,7 @@ While our example focused on a single model, the same approach can be extended t
 #>  recipes       1.3.3   2026-05-30
 #>  rlang         1.2.0   2026-04-06
 #>  rsample       1.3.2   2026-01-30
-#>  sessioninfo   1.2.3   2025-02-05
+#>  sessioninfo   1.2.4   2026-06-04
 #>  slider        0.3.3   2025-11-14
 #>  tibble        3.3.1   2026-01-11
 #>  tidymodels    1.5.0   2026-04-23
