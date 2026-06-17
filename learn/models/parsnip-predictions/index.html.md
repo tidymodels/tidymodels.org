@@ -215,7 +215,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 5 months and 22 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 5 months and 27 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -2527,12 +2527,15 @@ logistic_reg_fit
 #> parsnip model object
 #> 
 #> Logistic regression
-#> 
-#> 785 samples, 2 features, 2 classes 
-#> class weights Class1=1, Class2=1 
-#> weight decay: 0.001 
-#> batch size: 707 
-#> validation loss after 1 epoch: 0.283
+#>   Samples: 785
+#>   Predictors: 2
+#>   Classes: "Class1" and "Class2"
+#>   Learning Rate: 1
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Device: "cpu"
+#>   # Parameters: 6
+#>   validation loss after 4 epochs: 0.286
 ```
 :::
 
@@ -2555,12 +2558,12 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.412       0.588 
-#> 2        0.854       0.146 
-#> 3        0.537       0.463 
-#> 4        0.971       0.0294
-#> 5        0.896       0.104 
-#> 6        0.848       0.152
+#> 1        0.411       0.589 
+#> 2        0.850       0.150 
+#> 3        0.536       0.464 
+#> 4        0.969       0.0305
+#> 5        0.894       0.106 
+#> 6        0.843       0.157
 ```
 :::
 
@@ -3065,7 +3068,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 29ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3076,7 +3079,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 18ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3636,17 +3639,19 @@ mlp_fit
 #> parsnip model object
 #> 
 #> Multilayer perceptron
-#> 
-#> relu activation,
-#> 3 hidden units,
-#> 17 model parameters
-#> 785 samples, 2 features, 2 classes 
-#> class weights Class1=1, Class2=1 
-#> weight decay: 0.001 
-#> dropout proportion: 0 
-#> batch size: 707 
-#> learn rate: 0.01 
-#> validation loss after 5 epochs: 0.427
+#>   Samples: 785
+#>   Predictors: 2
+#>   Classes: "Class1" and "Class2"
+#>   Activation: "relu"
+#>   # Hidden Units: 3
+#>   Learning Rate: 0.01, Schedule: "none"
+#>   Stopping iterations: 5
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Optimizer: "LBFGS"
+#>   Device: "cpu"
+#>   # Parameters: 17
+#>   validation loss after 10 epochs: 0.449
 ```
 :::
 
@@ -3661,7 +3666,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #>   <fct>      
 #> 1 Class2     
 #> 2 Class1     
-#> 3 Class1     
+#> 3 Class2     
 #> 4 Class1     
 #> 5 Class1     
 #> 6 Class1
@@ -3669,12 +3674,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.387       0.613 
-#> 2        0.854       0.146 
-#> 3        0.540       0.460 
-#> 4        0.941       0.0589
-#> 5        0.882       0.118 
-#> 6        0.842       0.158
+#> 1        0.400       0.600 
+#> 2        0.859       0.141 
+#> 3        0.471       0.529 
+#> 4        0.976       0.0240
+#> 5        0.948       0.0518
+#> 6        0.836       0.164
 ```
 :::
 
@@ -3705,17 +3710,19 @@ mlp_fit
 #> parsnip model object
 #> 
 #> Multilayer perceptron
-#> 
-#> c(relu,relu) activation,
-#> c(3,3) hidden units,
-#> 29 model parameters
-#> 785 samples, 2 features, 2 classes 
-#> class weights Class1=1, Class2=1 
-#> weight decay: 0.001 
-#> dropout proportion: 0 
-#> batch size: 707 
-#> learn rate: 0.01 
-#> validation loss after 16 epochs: 0.406
+#>   Samples: 785
+#>   Predictors: 2
+#>   Classes: "Class1" and "Class2"
+#>   Activation: "relu" and "relu"
+#>   # Hidden Units: 3 and 3
+#>   Learning Rate: 0.01, Schedule: "none"
+#>   Stopping iterations: 5
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Optimizer: "LBFGS"
+#>   Device: "cpu"
+#>   # Parameters: 29
+#>   validation loss after 11 epochs: 0.429
 ```
 :::
 
@@ -3730,7 +3737,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #>   <fct>      
 #> 1 Class2     
 #> 2 Class1     
-#> 3 Class2     
+#> 3 Class1     
 #> 4 Class1     
 #> 5 Class1     
 #> 6 Class1
@@ -3738,12 +3745,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.391       0.609 
-#> 2        0.834       0.166 
-#> 3        0.439       0.561 
-#> 4        0.936       0.0640
-#> 5        0.936       0.0640
-#> 6        0.848       0.152
+#> 1        0.394       0.606 
+#> 2        0.903       0.0972
+#> 3        0.520       0.480 
+#> 4        0.942       0.0583
+#> 5        0.934       0.0662
+#> 6        0.896       0.104
 ```
 :::
 
@@ -3922,7 +3929,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 40ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3933,7 +3940,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 23ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4048,12 +4055,15 @@ multinom_reg_fit
 #> parsnip model object
 #> 
 #> Multinomial regression
-#> 
-#> 192 samples, 2 features, 3 classes 
-#> class weights one=1, two=1, three=1 
-#> weight decay: 0.001 
-#> batch size: 173 
-#> validation loss after 1 epoch: 0.953
+#>   Samples: 192
+#>   Predictors: 2
+#>   Classes: "one", "two", and "three"
+#>   Learning Rate: 1
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Device: "cpu"
+#>   # Parameters: 9
+#>   validation loss after 2 epochs: 0.954
 ```
 :::
 
@@ -4078,14 +4088,14 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
-#> 1   0.131     0.190        0.679 
-#> 2   0.303     0.174        0.523 
-#> 3   0.358     0.192        0.449 
-#> 4   0.983     0.00125      0.0154
-#> 5   0.948     0.00275      0.0491
-#> 6   0.00344   0.796        0.200 
-#> 7   0.0611    0.420        0.518 
-#> 8   0.443     0.0390       0.518
+#> 1   0.133     0.190        0.677 
+#> 2   0.304     0.175        0.521 
+#> 3   0.359     0.193        0.448 
+#> 4   0.983     0.00134      0.0161
+#> 5   0.946     0.00293      0.0506
+#> 6   0.00368   0.792        0.204 
+#> 7   0.0627    0.419        0.519 
+#> 8   0.442     0.0399       0.518
 ```
 :::
 
@@ -4378,7 +4388,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4391,7 +4401,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -7431,11 +7441,14 @@ linear_reg_fit
 #> parsnip model object
 #> 
 #> Linear regression
-#> 
-#> 92 samples, 2 features, numeric outcome 
-#> weight decay: 0.001 
-#> batch size: 83 
-#> scaled validation loss after 1 epoch: 235
+#>   Samples: 92
+#>   Predictors: 2
+#>   Learning Rate: 1
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Device: "cpu"
+#>   # Parameters: 3
+#>   scaled validation loss after 1 epoch: 235
 ```
 :::
 
@@ -8021,7 +8034,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 29ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8586,16 +8599,18 @@ mlp_fit
 #> parsnip model object
 #> 
 #> Multilayer perceptron
-#> 
-#> relu activation,
-#> 3 hidden units,
-#> 13 model parameters
-#> 92 samples, 2 features, numeric outcome 
-#> weight decay: 0.001 
-#> dropout proportion: 0 
-#> batch size: 83 
-#> learn rate: 0.01 
-#> scaled validation loss after 9 epochs: 0.189
+#>   Samples: 92
+#>   Predictors: 2
+#>   Activation: "relu"
+#>   # Hidden Units: 3
+#>   Learning Rate: 0.01, Schedule: "none"
+#>   Stopping iterations: 5
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Optimizer: "LBFGS"
+#>   Device: "cpu"
+#>   # Parameters: 13
+#>   scaled validation loss after 3 epochs: 0.501
 ```
 :::
 
@@ -8608,14 +8623,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  23.1
-#> 2  39.4
-#> 3  26.9
-#> 4  56.4
-#> 5  32.9
-#> 6  37.2
-#> 7  38.4
-#> 8  40.1
+#> 1  32.1
+#> 2  33.9
+#> 3  27.1
+#> 4  44.8
+#> 5  37.0
+#> 6  35.2
+#> 7  35.8
+#> 8  41.7
 ```
 :::
 
@@ -8646,16 +8661,18 @@ mlp_fit
 #> parsnip model object
 #> 
 #> Multilayer perceptron
-#> 
-#> c(relu,relu) activation,
-#> c(3,3) hidden units,
-#> 25 model parameters
-#> 92 samples, 2 features, numeric outcome 
-#> weight decay: 0.001 
-#> dropout proportion: 0 
-#> batch size: 83 
-#> learn rate: 0.01 
-#> scaled validation loss after 3 epochs: 0.379
+#>   Samples: 92
+#>   Predictors: 2
+#>   Activation: "relu" and "relu"
+#>   # Hidden Units: 3 and 3
+#>   Learning Rate: 0.01, Schedule: "none"
+#>   Stopping iterations: 5
+#>   % Validation: 0.1
+#>   Penalty: 0.001, 0% L1
+#>   Optimizer: "LBFGS"
+#>   Device: "cpu"
+#>   # Parameters: 25
+#>   scaled validation loss after 25 epochs: 0.229
 ```
 :::
 
@@ -8668,14 +8685,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  23.5
-#> 2  32.6
-#> 3  24.6
-#> 4  50.5
-#> 5  46.7
-#> 6  33.8
-#> 7  37.0
-#> 8  50.5
+#> 1  26.1
+#> 2  42.4
+#> 3  22.3
+#> 4  55.9
+#> 5  35.2
+#> 6  38.3
+#> 7  39.4
+#> 8  42.1
 ```
 :::
 
@@ -8812,7 +8829,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 30ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12410,7 +12427,7 @@ rand_forest_fit |>
 #>  baguette        1.1.0      2025-01-28
 #>  bonsai          0.4.1      2026-05-21
 #>  broom           1.0.13     2026-05-14
-#>  brulee          0.6.0      2025-09-02
+#>  brulee          1.0.0      2026-06-17
 #>  C50             0.2.0      2025-04-03
 #>  censored        0.3.4      2026-04-04
 #>  coin            1.4-3      2023-09-27
@@ -12437,7 +12454,7 @@ rand_forest_fit |>
 #>  lme4            2.0-1      2026-03-05
 #>  mboost          2.9-11     2024-08-22
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.0)
+#>  mixOmics        6.36.0     2026-04-28 Bioconduc~
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
