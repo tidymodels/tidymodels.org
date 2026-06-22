@@ -87,17 +87,18 @@ set.seed(987)
 nnet_fit <- fit(nnet_wflow, cls_train)
 nnet_fit |> extract_fit_engine()
 #> Multilayer perceptron
-#> 
-#> relu activation,
-#> 10 hidden units,
-#> 52 model parameters
-#> 2,000 samples, 2 features, 2 classes 
-#> class weights Class1=1, Class2=1 
-#> weight decay: 0.01 
-#> dropout proportion: 0 
-#> batch size: 2000 
-#> learn rate: 0.1 
-#> training set loss after 62 epochs: 0.271
+#>   Samples: 2,000
+#>   Predictors: 2
+#>   Classes: "Class1" and "Class2"
+#>   Activation: "relu"
+#>   # Hidden Units: 10
+#>   Learning Rate: 0.1, Schedule: "none"
+#>   Stopping iterations: 5
+#>   Penalty: 0.01, 0% L1
+#>   Optimizer: "LBFGS"
+#>   Device: "cpu"
+#>   # Parameters: 52
+#>   training set loss after 23 epochs: 0.371
 ```
 :::
 
@@ -116,29 +117,29 @@ val_results <-
   )
 val_results |> slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
-#> 1 0.7632082 -0.04012164 Class2      Class2   0.09109678 9.089032e-01
-#> 2 0.9823745 -0.16911637 Class2      Class2   0.05814141 9.418586e-01
-#> 3 1.0558147  0.52817699 Class2      Class2   0.06625212 9.337479e-01
-#> 4 1.2424507  1.10902951 Class2      Class2   0.22103546 7.789645e-01
-#> 5 1.5889815  2.71047720 Class1      Class1   1.00000000 4.196466e-12
+#> 1 0.7632082 -0.04012164 Class2      Class2   0.06376461   0.93623537
+#> 2 0.9823745 -0.16911637 Class2      Class2   0.05803119   0.94196880
+#> 3 1.0558147  0.52817699 Class2      Class2   0.08680119   0.91319883
+#> 4 1.2424507  1.10902951 Class2      Class2   0.32360590   0.67639410
+#> 5 1.5889815  2.71047720 Class1      Class1   0.98543501   0.01456501
 
 val_results |> roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
 #>   .metric .estimator .estimate
 #>   <chr>   <chr>          <dbl>
-#> 1 roc_auc binary         0.956
+#> 1 roc_auc binary         0.958
 
 val_results |> accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.904
+#> 1 accuracy binary         0.908
 
 val_results |> conf_mat(truth = class, .pred_class)
 #>           Truth
 #> Prediction Class1 Class2
-#>     Class1    172     18
-#>     Class2     30    280
+#>     Class1    172     16
+#>     Class2     30    282
 ```
 :::
 
@@ -185,7 +186,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #>  package                     version date (UTC)
 #>  AppliedPredictiveModeling   1.1-7   2018-05-22
 #>  broom                       1.0.13  2026-05-14
-#>  brulee                      0.6.0   2025-09-02
+#>  brulee                      1.0.0   2026-06-17
 #>  dials                       1.4.3   2026-04-11
 #>  dplyr                       1.2.1   2026-04-03
 #>  ggplot2                     4.0.3   2026-04-22
