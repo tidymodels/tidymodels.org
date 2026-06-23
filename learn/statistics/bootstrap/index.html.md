@@ -60,7 +60,7 @@ summary(nlsfit)
 #> Residual standard error: 2.774 on 30 degrees of freedom
 #> 
 #> Number of iterations to convergence: 1 
-#> Achieved convergence tolerance: 1.941e-08
+#> Achieved convergence tolerance: 1.967e-08
 
 ggplot(mtcars, aes(wt, mpg)) +
     geom_point() +
@@ -271,7 +271,7 @@ ggplot(splines_aug, aes(x, y)) +
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
 #>  broom        1.0.13  2026-05-14
-#>  dials        1.4.3   2026-04-11
+#>  dials        1.4.4   2026-06-22
 #>  dplyr        1.2.1   2026-04-03
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18

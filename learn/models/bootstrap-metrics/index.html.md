@@ -289,7 +289,7 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
 #>  broom        1.0.13  2026-05-14
-#>  dials        1.4.3   2026-04-11
+#>  dials        1.4.4   2026-06-22
 #>  dplyr        1.2.1   2026-04-03
 #>  earth        5.3.5   2026-01-11
 #>  ggplot2      4.0.3   2026-04-22
