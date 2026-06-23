@@ -3068,7 +3068,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3079,7 +3079,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3929,7 +3929,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 39ms/step
+#> 1/1 - 0s - 40ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4388,7 +4388,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 38ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4401,7 +4401,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8034,7 +8034,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8829,7 +8829,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12433,7 +12433,7 @@ rand_forest_fit |>
 #>  coin            1.4-3      2023-09-27
 #>  Cubist          0.6.0      2026-03-02
 #>  dbarts          0.9-33     2026-03-20
-#>  dials           1.4.3      2026-04-11
+#>  dials           1.4.4      2026-06-22
 #>  discrim         1.1.0      2025-12-02
 #>  dplyr           1.2.1      2026-04-03
 #>  earth           5.3.5      2026-01-11

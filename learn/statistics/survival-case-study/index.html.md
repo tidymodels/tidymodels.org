@@ -472,10 +472,10 @@ predict(complaints_model, new_data = complaints_5, type = "time")
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       78.8
-#> 2       46.9
+#> 1       78.6
+#> 2       46.8
 #> 3       93.5
-#> 4       78.4
+#> 4       78.5
 #> 5       71.9
 ```
 :::
@@ -498,7 +498,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  aorsf          0.1.6   2025-12-11
 #>  broom          1.0.13  2026-05-14
 #>  censored       0.3.4   2026-04-04
-#>  dials          1.4.3   2026-04-11
+#>  dials          1.4.4   2026-06-22
 #>  dplyr          1.2.1   2026-04-03
 #>  ggplot2        4.0.3   2026-04-22
 #>  glmnet         5.0     2026-05-04

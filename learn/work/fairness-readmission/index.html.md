@@ -647,7 +647,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  baguette        1.1.0   2025-01-28
 #>  broom           1.0.13  2026-05-14
 #>  desirability2   0.2.0   2025-08-22
-#>  dials           1.4.3   2026-04-11
+#>  dials           1.4.4   2026-06-22
 #>  dplyr           1.2.1   2026-04-03
 #>  GGally          2.4.0   2025-08-23
 #>  ggplot2         4.0.3   2026-04-22
