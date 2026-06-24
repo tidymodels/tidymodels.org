@@ -220,12 +220,6 @@ tidy(lm_fit) |>
   dwplot(dot_args = list(size = 2, color = "black"),
          whisker_args = list(color = "black"),
          vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2))
-#> Warning: Using the `size` aesthetic with geom_segment was deprecated in
-#> ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` aesthetic instead.
-#> ℹ The deprecated feature was likely used in the dotwhisker package.
-#>   Please report the issue at
-#>   <https://github.com/fsolt/dotwhisker/issues>.
 ```
 
 ::: {.cell-output-display}
@@ -474,7 +468,7 @@ ggplot(urchins,
 #>  broom         1.0.13  2026-05-14
 #>  broom.mixed   0.2.9.7 2026-02-17
 #>  dials         1.4.4   2026-06-22
-#>  dotwhisker    0.8.4   2025-05-06
+#>  dotwhisker    0.8.6   2026-06-24
 #>  dplyr         1.2.1   2026-04-03
 #>  ggplot2       4.0.3   2026-04-22
 #>  here          1.0.2   2025-09-15
