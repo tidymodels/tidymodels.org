@@ -51,6 +51,7 @@ r-packages:
   - quantreg
   - randomForest
   - ranger
+  - rstanarm
   - rules
   - sda
   - sparsediscrim
@@ -77,7 +78,7 @@ This page shows examples of how to *fit* and *predict* with different combinatio
 
 We'll break the examples up by their mode. For each model, we'll show different data sets used across the different engines. 
 
-To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, keras3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
+To use code in this article,  you will need to install the following packages: agua, aorsf, baguette, bonsai, brulee, C50, censored, coin, Cubist, dbarts, discrim, earth, flexsurv, gee, glmnet, grf, h2o, HSAUR3, keras3, kernlab, kknn, klaR, LiblineaR, lightgbm, lme4, mboost, mda, mixOmics, multilevelmod, naivebayes, partykit, pec, plsmod, poissonreg, prodlim, pscl, quantreg, randomForest, ranger, rstanarm, rules, sda, sparklyr, sparsediscrim, survival, tidymodels, xgboost, and xrf. 
 
 There are numerous other "engine" packages that are required. If you use a model that is missing one or more installed packages, parsnip will prompt you to install them. There are some packages that require non-standard installation or rely on external dependencies. We'll describe these next. 
 
@@ -215,7 +216,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 6 months and 2 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 6 months and 11 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3068,7 +3069,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3079,7 +3080,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 23ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3651,7 +3652,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 17
-#>   validation loss after 10 epochs: 0.449
+#>   validation loss after 9 epochs: 0.449
 ```
 :::
 
@@ -3674,12 +3675,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.400       0.600 
-#> 2        0.859       0.141 
-#> 3        0.471       0.529 
-#> 4        0.976       0.0240
-#> 5        0.948       0.0518
-#> 6        0.836       0.164
+#> 1        0.398       0.602 
+#> 2        0.851       0.149 
+#> 3        0.468       0.532 
+#> 4        0.976       0.0243
+#> 5        0.946       0.0537
+#> 6        0.824       0.176
 ```
 :::
 
@@ -3745,12 +3746,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.394       0.606 
-#> 2        0.903       0.0972
-#> 3        0.520       0.480 
-#> 4        0.942       0.0583
-#> 5        0.934       0.0662
-#> 6        0.896       0.104
+#> 1        0.378       0.622 
+#> 2        0.902       0.0985
+#> 3        0.521       0.479 
+#> 4        0.932       0.0683
+#> 5        0.917       0.0834
+#> 6        0.898       0.102
 ```
 :::
 
@@ -3929,7 +3930,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 50ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3940,7 +3941,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 23ms/step
+#> 1/1 - 0s - 31ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4063,7 +4064,7 @@ multinom_reg_fit
 #>   Penalty: 0.001, 0% L1
 #>   Device: "cpu"
 #>   # Parameters: 9
-#>   validation loss after 2 epochs: 0.954
+#>   validation loss after 3 epochs: 0.954
 ```
 :::
 
@@ -4089,11 +4090,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
 #> 1   0.133     0.190        0.677 
-#> 2   0.304     0.175        0.521 
+#> 2   0.304     0.174        0.521 
 #> 3   0.359     0.193        0.448 
 #> 4   0.983     0.00134      0.0161
 #> 5   0.946     0.00293      0.0506
-#> 6   0.00368   0.792        0.204 
+#> 6   0.00369   0.792        0.204 
 #> 7   0.0627    0.419        0.519 
 #> 8   0.442     0.0399       0.518
 ```
@@ -4388,7 +4389,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 46ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4401,7 +4402,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 29ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8034,7 +8035,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8610,7 +8611,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 13
-#>   scaled validation loss after 3 epochs: 0.501
+#>   scaled validation loss after 3 epochs: 0.481
 ```
 :::
 
@@ -8623,12 +8624,12 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  32.1
+#> 1  32.2
 #> 2  33.9
-#> 3  27.1
-#> 4  44.8
+#> 3  27.3
+#> 4  44.7
 #> 5  37.0
-#> 6  35.2
+#> 6  35.3
 #> 7  35.8
 #> 8  41.7
 ```
@@ -8672,7 +8673,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 25
-#>   scaled validation loss after 25 epochs: 0.229
+#>   scaled validation loss after 29 epochs: 0.208
 ```
 :::
 
@@ -8685,14 +8686,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  26.1
-#> 2  42.4
-#> 3  22.3
-#> 4  55.9
-#> 5  35.2
-#> 6  38.3
-#> 7  39.4
-#> 8  42.1
+#> 1  25.7
+#> 2  42.0
+#> 3  24.3
+#> 4  57.8
+#> 5  34.9
+#> 6  39.8
+#> 7  40.9
+#> 8  41.5
 ```
 :::
 
@@ -8829,7 +8830,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 39ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12415,7 +12416,7 @@ rand_forest_fit |>
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.0 (2026-04-24)
+#>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
 #>  quarto   1.9.38
@@ -12430,7 +12431,7 @@ rand_forest_fit |>
 #>  brulee          1.0.0      2026-06-17
 #>  C50             0.2.0      2025-04-03
 #>  censored        0.3.4      2026-04-04
-#>  coin            1.4-3      2023-09-27
+#>  coin            1.4-4      2026-06-30
 #>  Cubist          0.6.0      2026-03-02
 #>  dbarts          0.9-33     2026-03-20
 #>  dials           1.4.4      2026-06-22
@@ -12454,7 +12455,7 @@ rand_forest_fit |>
 #>  lme4            2.0-1      2026-03-05
 #>  mboost          2.9-11     2024-08-22
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.0)
+#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
@@ -12471,6 +12472,7 @@ rand_forest_fit |>
 #>  recipes         1.3.3      2026-05-30
 #>  rlang           1.2.0      2026-04-06
 #>  rsample         1.3.2      2026-01-30
+#>  rstanarm        2.32.2     2025-09-30
 #>  rules           1.0.3      2026-01-27
 #>  sda             1.3.9      2025-04-08
 #>  sparklyr        1.9.5      2026-06-20
@@ -12488,7 +12490,7 @@ rand_forest_fit |>
 #>  python:         /home/runner/.virtualenvs/r-keras/bin/python
 #>  libpython:      /opt/hostedtoolcache/Python/3.11.15/x64/lib/libpython3.11.so
 #>  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
-#>  version:        3.11.15 (main, Mar  3 2026, 16:10:12) [GCC 13.3.0]
+#>  version:        3.11.15 (main, Jun 16 2026, 21:41:52) [GCC 13.3.0]
 #>  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
 #>  numpy_version:  1.26.4
 #>  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
