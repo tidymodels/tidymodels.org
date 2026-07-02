@@ -490,11 +490,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>One result of class imbalance when there are two classes is that the default probability cutoff of 50% is inappropriate; a different cutoff that is more extreme might be able to achieve good performance.</p>
 </section><section id="subsampling-the-data" class="level2"><h2 class="anchored" data-anchor-id="subsampling-the-data">Subsampling the data</h2>
 <p>One way to alleviate this issue is to <em>subsample</em> the data. There are a number of ways to do this but the most simple one is to <em>sample down</em> (undersample) the majority class data until it occurs with the same frequency as the minority class. While it may seem counterintuitive, throwing out a large percentage of your data can be effective at producing a useful model that can recognize both the majority and minority classes. In some cases, this even means that the overall performance of the model is better (e.g. improved area under the ROC curve). However, subsampling almost always produces models that are <em>better calibrated</em>, meaning that the distributions of the class probabilities are more well behaved. As a result, the default 50% cutoff is much more likely to produce better sensitivity and specificity values than they would otherwise.</p>
-<p>Let’s explore subsampling using <code><a href="https://themis.tidymodels.org/reference/step_rose.html">themis::step_rose()</a></code> in a recipe for the simulated data. It uses the ROSE (random over sampling examples) method from <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22training+and+assessing+classification+rules+with+imbalanced+data%22">Menardi, G. and Torelli, N. (2014)</a>. This is an example of an oversampling strategy, rather than undersampling.</p>
+<p>Let’s explore subsampling using <code>themis::step_rose()</code> in a recipe for the simulated data. It uses the ROSE (random over sampling examples) method from <a href="https://scholar.google.com/scholar?hl=en&amp;q=%22training+and+assessing+classification+rules+with+imbalanced+data%22">Menardi, G. and Torelli, N. (2014)</a>. This is an example of an oversampling strategy, rather than undersampling.</p>
 <p>In terms of workflow:</p>
 <ul>
 <li>It is extremely important that subsampling occurs <em>inside of resampling</em>. Otherwise, the resampling process can produce <a href="https://topepo.github.io/caret/subsampling-for-class-imbalances.html#resampling">poor estimates of model performance</a>.</li>
-<li>The subsampling process should only be applied to the analysis set. The assessment set should reflect the event rates seen “in the wild” and, for this reason, the <code>skip</code> argument to <code><a href="https://themis.tidymodels.org/reference/step_downsample.html">step_downsample()</a></code> and other subsampling recipes steps has a default of <code>TRUE</code>.</li>
+<li>The subsampling process should only be applied to the analysis set. The assessment set should reflect the event rates seen “in the wild” and, for this reason, the <code>skip</code> argument to <code>step_downsample()</code> and other subsampling recipes steps has a default of <code>TRUE</code>.</li>
 </ul>
 <p>Here is a simple recipe implementing oversampling:</p>
 <div class="cell" data-layout-align="center">
@@ -506,7 +506,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">imbal_rec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">imbal_data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://themis.tidymodels.org/reference/step_rose.html">step_rose</a></span><span class="op">(</span><span class="va">Class</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">step_rose</span><span class="op">(</span><span class="va">Class</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
