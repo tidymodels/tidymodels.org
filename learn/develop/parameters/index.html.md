@@ -274,7 +274,7 @@ aggregation() |> value_sample(3)
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.0 (2026-04-24)
+#>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
 #>  quarto   1.9.38
@@ -289,7 +289,7 @@ aggregation() |> value_sample(3)
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.3.3   2026-05-30
-#>  rlang        1.2.0   2026-04-06
+#>  rlang        1.3.0   2026-07-05
 #>  rsample      1.3.2   2026-01-30
 #>  scales       1.4.0   2025-04-24
 #>  tibble       3.3.1   2026-01-11
