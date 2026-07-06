@@ -216,7 +216,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 6 months and 12 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 6 months and 15 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3069,7 +3069,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3080,7 +3080,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3930,7 +3930,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 47ms/step
+#> 1/1 - 0s - 40ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3941,7 +3941,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 30ms/step
+#> 1/1 - 0s - 25ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4389,7 +4389,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 43ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4402,7 +4402,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 27ms/step
+#> 1/1 - 0s - 23ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8830,7 +8830,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 41ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12470,7 +12470,7 @@ rand_forest_fit |>
 #>  randomForest    4.7-1.2    2024-09-22
 #>  ranger          0.18.0     2026-01-16
 #>  recipes         1.3.3      2026-05-30
-#>  rlang           1.2.0      2026-04-06
+#>  rlang           1.3.0      2026-07-05
 #>  rsample         1.3.2      2026-01-30
 #>  rstanarm        2.32.2     2025-09-30
 #>  rules           1.0.3      2026-01-27
