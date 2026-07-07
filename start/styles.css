@@ -21,5 +21,16 @@ div.sidebar-item-container {
   counter-increment: section;
   content: counter(section, decimal) "";
   padding-right: 0.5em;
-  color:  #CA225E; /* $theme-cranberry */
+  color:  #BA355F; /* $theme-cranberry */
+}
+
+/* Dark theme — plain CSS, so cranberry ramp values are inlined as literals. */
+.quarto-dark .sidebar-menu-container {
+  border-right-color: rgba(221, 221, 221, 0.2);
+}
+.quarto-dark div.sidebar-item-container {
+  color: rgba(221, 221, 221, 0.6);
+}
+.quarto-dark .sidebar-item:not(:first-child)::before {
+  color: #CB6585; /* cranberry-light-3, 4.80:1 on dark */
 }
