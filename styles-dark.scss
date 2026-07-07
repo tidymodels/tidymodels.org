@@ -67,4 +67,40 @@ $navbar-bg:       $surface-dark;
       color: $cranberry-light-3;
     }
   }
+
+  // Front page — bands and the event card hardcode light surfaces in
+  // styles-frontpage.scss. Override them here and drop the decorative
+  // tidy-back-*.svg backgrounds (light-canvas illustrations with white
+  // strokes that clash on the dark surface).
+  #FrontPage {
+
+    .event {
+      background-color: rgba($cranberry-light-1, 0.06);
+      border-color: rgba($cranberry-light-1, 0.15);
+      color: $ink-inverse;
+    }
+
+    .band.first .bandContent,
+    .band.third .bandContent {
+      background-color: transparent;
+      background-image: none;
+    }
+
+    .band.second {
+      background-color: $surface-dark;
+      border-top-color: rgba($ink-inverse, 0.15);
+      border-bottom-color: rgba($ink-inverse, 0.15);
+
+      .bandContent {
+        background-color: transparent;
+        background-image: none;
+        color: $ink-inverse;
+      }
+    }
+
+    .band.first,
+    .band.third {
+      background-color: $surface-dark;
+    }
+  }
 }
