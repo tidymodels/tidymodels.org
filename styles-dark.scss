@@ -1,0 +1,70 @@
+/*-- scss:defaults --*/
+
+// Dark theme overrides. The shared cranberry ramp is defined in _cranberry.scss
+// (layered ahead of this file). Surface derives from the existing tidymodels
+// ink (#1A162D) so the color family stays intact. Contrast ratios are against
+// that dark surface. See Tidymodels-ColorGuidance-Accessibility-2025.
+
+$body-bg:         $surface-dark;      // #1A162D
+$body-color:      $ink-inverse;       // #DDDDDD, 12.92:1 AAA
+$link-color:      $cranberry-light-3; // #CB6585, 4.80:1 AA
+$link-hover-color:$cranberry-light-2; // #DB96AC, 7.50:1 AAA
+$code-color:      $theme-blue-dark;   // #919BCD, 6.50:1 AA (default blue fails at 2.72:1)
+$navbar-bg:       $surface-dark;
+
+/*-- scss:rules --*/
+
+// Overrides for surfaces hardcoded to light in styles.scss / styles-frontpage.scss.
+// Scoped under .quarto-dark so they win on specificity regardless of source order.
+.quarto-dark {
+
+  h2 {
+    color: $ink-inverse;
+  }
+
+  // code chunks + inline code — dark translucent tint instead of the light grey
+  div.sourceCode,
+  p code:not(.sourceCode),
+  li code:not(.sourceCode),
+  td code:not(.sourceCode),
+  #session-info div pre code {
+    background-color: rgba($cranberry-light-1, 0.08);
+    border-color: rgba($cranberry-light-1, 0.12);
+  }
+
+  #session-info div pre code {
+    color: $ink-inverse;
+  }
+
+  // output tables — flip the odd (white) rows and bottom border to dark surface
+  .cell-output-display table {
+    thead {
+      background-color: rgba($cranberry-base, 0.25);
+    }
+
+    tbody {
+      tr:nth-of-type(even) > * {
+        background-color: rgba($cranberry-light-1, 0.08);
+        --bs-table-accent-bg: rgba($cranberry-light-1, 0.08);
+      }
+
+      tr:nth-of-type(odd) > * {
+        background-color: $surface-dark;
+        --bs-table-accent-bg: $surface-dark;
+      }
+
+      tr:last-of-type {
+        border-bottom-color: rgba($ink-inverse, 0.2);
+      }
+    }
+  }
+
+  // sidebar resource stickies
+  .section.resources .event a {
+    color: $ink-inverse;
+
+    &:hover {
+      color: $cranberry-light-3;
+    }
+  }
+}

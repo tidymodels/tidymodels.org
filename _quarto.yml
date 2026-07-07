@@ -102,13 +102,23 @@ format:
     include-after-body: html/plausible.html
     code-link: true
     css: fonts/fonts.css
+    respect-user-color-scheme: true
     grid:
       body-width: 840px
-
-theme:
-  - cosmo
-  # _cranberry.scss defines the shared color ramp. Quarto emits `scss:defaults`
-  # from later-listed files first, so it must come after the files that use it.
-  - styles.scss
-  - styles-frontpage.scss
-  - _cranberry.scss
+    # _cranberry.scss defines the shared color ramp. Quarto emits `scss:defaults`
+    # from later-listed files first, so it must come after the files that use it.
+    theme:
+      light:
+        - cosmo
+        - styles.scss
+        - styles-frontpage.scss
+        - _cranberry.scss
+      dark:
+        # styles-dark.scss is listed before styles.scss so its `scss:defaults`
+        # overrides win; its `scss:rules` are scoped under `.quarto-dark` so they
+        # win on specificity rather than source order.
+        - cosmo
+        - styles-dark.scss
+        - styles.scss
+        - styles-frontpage.scss
+        - _cranberry.scss
