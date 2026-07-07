@@ -184,7 +184,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package                     version date (UTC)
-#>  AppliedPredictiveModeling   1.1-7   2018-05-22
+#>  AppliedPredictiveModeling   1.2.0   2026-07-06
 #>  broom                       1.0.13  2026-05-14
 #>  brulee                      1.1.0   2026-07-02
 #>  dials                       1.4.4   2026-06-22
