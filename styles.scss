@@ -1,16 +1,18 @@
 /*-- scss:defaults --*/
-$theme-cranberry: #CA225E;
-$theme-blue: #4758AB;
-$theme-white: #FFFFFF;
+// Color ramp ($cranberry-*, $theme-blue, $surface-*, $ink*) is defined in
+// _cranberry.scss, layered ahead of this file in _quarto.yml.
+$theme-cranberry: $cranberry-base; // #BA355F
+$theme-white: $surface-light;
 $theme-grey: #DDDDDD;
-$theme-black: #1a162d;
+$theme-black: $ink; // #1a162d
 $theme-code-bg: rgba(233,236,239,.3);
 
 // Suppress cosmo's default Source Sans Pro Google Fonts import — we use Lato.
 $web-font-path: "";
 
 // Colors ----------------------------------------------------------------------
-$link-color: $theme-cranberry;
+$link-color: $cranberry-base;
+$link-hover-color: $cranberry-dark-1; // 8.43:1 AAA on white
 
 // Fonts -----------------------------------------------------------------------
 $font-family-sans-serif: 'Lato', sans-serif;
@@ -26,7 +28,7 @@ $code-color: $theme-blue;
 $navbar-bg: $theme-white;
 
 $footer-bg: rgba($theme-cranberry, 0.2);
-$footer-fg: darken($theme-cranberry, 12%);
+$footer-fg: $cranberry-dark-1; // 8.43:1 AAA on white
 
 /*-- scss:rules --*/
 
@@ -38,6 +40,12 @@ $footer-fg: darken($theme-cranberry, 12%);
 
 a {
   text-decoration: none;
+}
+
+// Accessible keyboard focus indicator (≥3:1, per the cranberry guidance).
+:focus-visible {
+  outline: 2px solid $cranberry-base;
+  outline-offset: 2px;
 }
 
 // Inline SVG icons — used in place of Font Awesome / Bootstrap Icons to keep
@@ -228,7 +236,7 @@ p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
 
   thead {
     font-weight: 600;
-    background-color: rgba($theme-cranberry, 0.15);
+    background-color: $cranberry-light-1; // L1 fill, ≥12:1 with ink text
 
     tr th {
       padding: 15px 13px;
@@ -242,8 +250,8 @@ p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
 
   tbody {
     tr:nth-of-type(even) > * {
-      background-color: rgba($theme-cranberry, 0.03);
-      --bs-table-accent-bg: rgba($theme-cranberry, 0.03);
+      background-color: rgba($cranberry-light-1, 0.25);
+      --bs-table-accent-bg: rgba($cranberry-light-1, 0.25);
     }
 
     tr:nth-of-type(odd) > * {
