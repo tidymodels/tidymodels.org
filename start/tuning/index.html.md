@@ -491,7 +491,7 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  ggplot2      4.0.3   2026-04-22
 #>  here         1.0.2   2025-09-15
 #>  infer        1.1.0   2025-12-18
-#>  kableExtra   1.4.0   2024-01-24
+#>  kableExtra   1.4.1   2026-07-08
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.3.3   2026-05-30
