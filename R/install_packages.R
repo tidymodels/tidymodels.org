@@ -65,6 +65,19 @@ install_packages <- function(needed) {
     )
   }
 
+  # rstan/rstanarm link against RcppParallel's binary ABI. pak's
+  # `upgrade = TRUE` can bump RcppParallel (or StanHeaders/loo) without
+  # rebuilding rstan/rstanarm, leaving stale binaries that fail to load
+  # ("Please install the rstanarm package to use this engine"). If the
+  # Stan stack no longer loads, rebuild it from source so it links against
+  # the current dependency versions.
+  if ("rstanarm" %in% needed) {
+    if (!requireNamespace("rstanarm", quietly = TRUE)) {
+      cli::cli_alert_info("rstanarm failed to load; rebuilding rstan/rstanarm from source...")
+      install.packages(c("rstan", "rstanarm"), type = "source")
+    }
+  }
+
   # torch must be installed explicitly for brulee to work
   if ("brulee" %in% needed) {
     cli::cli_alert_info("Installing torch backend for brulee...")
