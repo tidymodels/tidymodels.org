@@ -402,7 +402,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -411,7 +411,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  dials        1.4.4   2026-06-22
 #>  discrim      1.1.0   2025-12-02
 #>  dplyr        1.2.1   2026-04-03
-#>  future       1.70.0  2026-03-14
+#>  future       1.75.0  2026-07-20
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  klaR         1.7-4   2026-02-23
