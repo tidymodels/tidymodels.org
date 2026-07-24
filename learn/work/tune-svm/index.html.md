@@ -356,18 +356,18 @@ augment(recipe_res) |>
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
 #>  broom        1.0.13  2026-05-14
 #>  dials        1.4.4   2026-06-22
 #>  dplyr        1.2.1   2026-04-03
-#>  future       1.70.0  2026-03-14
+#>  future       1.75.0  2026-07-20
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  kernlab      0.9-33  2024-08-13
-#>  mlbench      2.1-8   2026-03-26
+#>  mlbench      2.1-10  2026-07-24
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.3.3   2026-05-30

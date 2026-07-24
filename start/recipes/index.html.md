@@ -589,7 +589,7 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version  date (UTC)
