@@ -216,7 +216,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 6 months and 19 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 7 months and 13 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3069,7 +3069,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 29ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3080,7 +3080,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 18ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3930,7 +3930,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 38ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3941,7 +3941,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 24ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4389,7 +4389,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4402,7 +4402,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8035,7 +8035,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 29ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8830,7 +8830,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12419,7 +12419,7 @@ rand_forest_fit |>
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version    date (UTC)
@@ -12428,7 +12428,7 @@ rand_forest_fit |>
 #>  baguette        1.1.0      2025-01-28
 #>  bonsai          0.4.1      2026-05-21
 #>  broom           1.0.13     2026-05-14
-#>  brulee          1.1.0      2026-07-02
+#>  brulee          1.1.1      2026-07-13
 #>  C50             0.2.0      2025-04-03
 #>  censored        0.3.4      2026-04-04
 #>  coin            1.4-5      2026-07-10
@@ -12439,7 +12439,7 @@ rand_forest_fit |>
 #>  dplyr           1.2.1      2026-04-03
 #>  earth           5.3.5      2026-01-11
 #>  flexsurv        2.3.2      2024-08-17
-#>  gee             4.13-29    2024-12-11
+#>  gee             4.13-30    2026-08-03
 #>  ggplot2         4.0.3      2026-04-22
 #>  glmnet          5.0        2026-05-04
 #>  grf             2.6.1      2026-03-04
@@ -12451,15 +12451,15 @@ rand_forest_fit |>
 #>  kknn            1.4.1      2025-05-19
 #>  klaR            1.7-4      2026-02-23
 #>  LiblineaR       2.10-24    2024-09-13
-#>  lightgbm        4.6.0      2025-02-13
-#>  lme4            2.0-1      2026-03-05
-#>  mboost          2.9-11     2024-08-22
+#>  lightgbm        4.7.0      2026-07-18
+#>  lme4            2.0-6      2026-07-16
+#>  mboost          2.9-13     2026-07-17
 #>  mda             0.5-5      2024-11-07
 #>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
-#>  partykit        1.2-27     2026-03-13
+#>  partykit        1.2-29     2026-07-17
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06
 #>  poissonreg      1.0.2      2026-04-20
