@@ -228,7 +228,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -246,7 +246,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  rlang        1.3.0   2026-07-05
 #>  ROSE         0.0-4   2021-06-14
 #>  rsample      1.3.2   2026-01-30
-#>  themis       1.0.3   2025-01-23
+#>  themis       1.1.0   2026-08-02
 #>  tibble       3.3.1   2026-01-11
 #>  tidymodels   1.5.0   2026-04-23
 #>  tune         2.1.0   2026-04-17
