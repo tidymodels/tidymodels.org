@@ -8,6 +8,19 @@ toc: false
 
 ::: {.quarto-post .image-right}
 ::: {.thumbnail}
+[![](ml-tidymodels.png){.thumbnail-image .card-img fig-alt="Machine learning with tidymodels cheatsheet"}](https://opensource.posit.co/resources/cheatsheets/ml-tidymodels/){target="_blank"}
+[Link to PDF](https://opensource.posit.co/resources/cheatsheets/ml-tidymodels/ml-tidymodels.pdf){.small .text-muted target="_blank"}
+:::
+::: {.body}
+### [Machine learning with tidymodels](https://opensource.posit.co/resources/cheatsheets/ml-tidymodels/){target="_blank"} {.no-anchor .listing-title}
+::: {.listing-description}
+An overview of the tidymodels framework
+:::
+:::
+:::
+
+::: {.quarto-post .image-right}
+::: {.thumbnail}
 [![](ml-create-models.png){.thumbnail-image .card-img fig-alt="Creating Models cheatsheet"}](https://opensource.posit.co/resources/cheatsheets/ml-create-models/){target="_blank"}
 [Link to PDF](https://opensource.posit.co/resources/cheatsheets/ml-create-models/ml-create-models.pdf){.small .text-muted target="_blank"}
 :::
