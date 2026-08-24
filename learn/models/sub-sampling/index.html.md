@@ -242,7 +242,7 @@ This visually demonstrates that the subsampling mostly affects metrics that use 
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  readr        2.2.0   2026-02-19
-#>  recipes      1.3.3   2026-05-30
+#>  recipes      1.4.0   2026-08-24
 #>  rlang        1.3.0   2026-07-05
 #>  ROSE         0.0-4   2021-06-14
 #>  rsample      1.3.2   2026-01-30

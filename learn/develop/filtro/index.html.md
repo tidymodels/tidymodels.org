@@ -487,18 +487,18 @@ ames_aov_fstat_res@results
 #> 
 #>     intersect, setdiff, setequal, union
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.0 (2026-04-24)
+#>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.9.37
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package     version date (UTC)
 #>  dplyr       1.2.1   2026-04-03
 #>  filtro      0.2.0   2025-08-26
-#>  modeldata   1.5.1   2025-08-22
+#>  modeldata   1.6.0   2026-08-21
 #>  purrr       1.2.2   2026-04-10
-#>  rlang       1.2.0   2026-04-06
+#>  rlang       1.3.0   2026-07-05
 #>  S7          0.2.2   2026-04-22
 #>  tibble      3.3.1   2026-01-11
 #> 
