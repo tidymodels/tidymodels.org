@@ -216,7 +216,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 7 months and 29 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 8 months and 3 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3069,7 +3069,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 30ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3080,7 +3080,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 18ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3930,7 +3930,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 41ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3941,7 +3941,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4389,7 +4389,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4402,7 +4402,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 23ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8035,7 +8035,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 29ms/step
+#> 1/1 - 0s - 79ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8830,7 +8830,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 32ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12433,11 +12433,11 @@ rand_forest_fit |>
 #>  censored        0.3.4      2026-04-04
 #>  coin            1.4-5      2026-07-10
 #>  Cubist          0.6.0      2026-03-02
-#>  dbarts          0.9-33     2026-03-20
+#>  dbarts          0.9-34     2026-08-21
 #>  dials           1.4.4      2026-06-22
 #>  discrim         1.1.0      2025-12-02
 #>  dplyr           1.2.1      2026-04-03
-#>  earth           5.3.5      2026-01-11
+#>  earth           5.3.6      2026-08-21
 #>  flexsurv        2.3.2      2024-08-17
 #>  gee             4.13-30    2026-08-03
 #>  ggplot2         4.0.3      2026-04-22
@@ -12459,7 +12459,7 @@ rand_forest_fit |>
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
-#>  partykit        1.2-29     2026-07-17
+#>  partykit        1.3-0      2026-08-22
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06
 #>  poissonreg      1.0.2      2026-04-20
@@ -12469,7 +12469,7 @@ rand_forest_fit |>
 #>  quantreg        6.1        2025-03-10
 #>  randomForest    4.7-1.2    2024-09-22
 #>  ranger          0.18.0     2026-01-16
-#>  recipes         1.3.3      2026-05-30
+#>  recipes         1.4.0      2026-08-24
 #>  rlang           1.3.0      2026-07-05
 #>  rsample         1.3.2      2026-01-30
 #>  rstanarm        2.32.2     2025-09-30
@@ -12477,7 +12477,7 @@ rand_forest_fit |>
 #>  sda             1.3.9      2025-04-08
 #>  sparklyr        1.9.5      2026-06-20
 #>  sparsediscrim   0.3.0      2021-07-01
-#>  survival        3.8-9      2026-07-08
+#>  survival        3.8-11     2026-08-21
 #>  tibble          3.3.1      2026-01-11
 #>  tidymodels      1.5.0      2026-04-23
 #>  tune            2.1.0      2026-04-17
@@ -12488,9 +12488,9 @@ rand_forest_fit |>
 #> 
 #> ─ Python configuration ─────────────────────────────────────────────
 #>  python:         /home/runner/.virtualenvs/r-keras/bin/python
-#>  libpython:      /opt/hostedtoolcache/Python/3.11.15/x64/lib/libpython3.11.so
+#>  libpython:      /opt/hostedtoolcache/Python/3.11.16/x64/lib/libpython3.11.so
 #>  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
-#>  version:        3.11.15 (main, Jun 16 2026, 21:41:52) [GCC 13.3.0]
+#>  version:        3.11.16 (main, Aug 13 2026, 02:46:14) [GCC 13.3.0]
 #>  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
 #>  numpy_version:  2.4.6
 #>  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras

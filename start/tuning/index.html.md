@@ -494,10 +494,10 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  kableExtra   1.4.1      2026-07-08
 #>  parsnip      1.6.0      2026-05-14
 #>  purrr        1.2.2      2026-04-10
-#>  recipes      1.3.3      2026-05-30
+#>  recipes      1.4.0      2026-08-24
 #>  rlang        1.3.0      2026-07-05
 #>  rpart        4.1.27     2026-03-27
-#>  rpart.plot   3.1.4      2026-01-08
+#>  rpart.plot   3.1.5      2026-08-21
 #>  rsample      1.3.2      2026-01-30
 #>  tibble       3.3.1      2026-01-11
 #>  tidymodels   1.5.0      2026-04-23
