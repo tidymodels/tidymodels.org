@@ -45,4 +45,17 @@ A guide to preprocessing data with recipes
 :::
 :::
 
+::: {.quarto-post .image-right}
+::: {.thumbnail}
+[![](ml-measure-performance.png){.thumbnail-image .card-img fig-alt="Measure Model Performance cheatsheet"}](https://opensource.posit.co/resources/cheatsheets/ml-measure-performance/){target="_blank"}
+[Link to PDF](https://opensource.posit.co/resources/cheatsheets/ml-measure-performance/ml-measure-performance.pdf){.small .text-muted target="_blank"}
+:::
+::: {.body}
+### [Measure Model Performance](https://opensource.posit.co/resources/cheatsheets/ml-measure-performance/){target="_blank"} {.no-anchor .listing-title}
+::: {.listing-description}
+A guide to measuring model performance with yardstick
+:::
+:::
+:::
+
 :::
