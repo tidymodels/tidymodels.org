@@ -29,7 +29,14 @@ jobs:
       - name: Install downlit
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: any::downlit any::xml2 any::rmarkdown any::tidymodels
+          packages: any::downlit any::xml2 any::rmarkdown any::tidymodels any::BiocManager
+
+      - name: Install mixOmics
+        # mixOmics is a Bioconductor package referenced in code that
+        # R/post-render-downlit.R links against; it must be loadable for
+        # downlit to resolve its function references, even though this
+        # workflow otherwise relies on the committed freeze cache.
+        run: Rscript -e 'install.packages("mixOmics", repos = BiocManager::repositories(), dependencies = TRUE)'
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
