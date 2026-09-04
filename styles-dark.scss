@@ -112,5 +112,13 @@ $navbar-bg:       $surface-dark;
     .band.third {
       background-color: $surface-dark;
     }
+
+    // The light-mode flagger has a ground shadow baked into the artwork, which
+    // is invisible against the dark surface. The .dark-content variant ships
+    // without it and gets a soft cranberry glow instead, so the character still
+    // separates from the background.
+    .bee1 {
+      filter: drop-shadow(0 3px 8px rgba($cranberry-base, 0.3));
+    }
   }
 }
