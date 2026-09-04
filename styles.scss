@@ -90,6 +90,12 @@ h3, h4, h5 {
   font-weight: 400;
 }
 
+// inline code in headings inherits the generic `code{background-color:#f8f9fa}`
+// box, which reads as a stray grey block against the heading's own weight/size.
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+  background-color: transparent;
+}
+
 // Navigation ------------------------------------------------------------------
 
 .navbar {
@@ -275,6 +281,16 @@ p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
 }
 
 // categories ------------------------------------------------------------------
+
+// quarto's own opacity:0.6 (applied to the inherited body-color) comes out to
+// 3.53:1 on the white surface, failing AA for this small uppercase text.
+// Replace opacity with an explicit alpha color so light/dark can be tuned
+// independently instead of scaling whatever text color happens to inherit.
+.quarto-title .quarto-categories .quarto-category {
+  opacity: 1;
+  color: rgba(#343a40, 0.8); // 6.24:1 AA (bootstrap's default $body-color)
+  border-color: rgba(#343a40, 0.8);
+}
 
 .quarto-title .quarto-categories .quarto-category:hover {
   border-color: rgba($theme-cranberry, 0.5);

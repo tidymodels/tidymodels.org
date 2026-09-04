@@ -22,17 +22,72 @@ $navbar-bg:       $surface-dark;
     color: $ink-inverse;
   }
 
+  // listing category title/subtitle — styles.scss uses the base cranberry
+  // (3.14:1 solid, 2.14:1 at the subtitle's 0.7 alpha) which was tuned for
+  // the white surface. Re-point to the lighter ramp step (4.80:1 AA solid).
+  .quarto-listing-category-title,
+  .quarto-listing-category-subtitle {
+    color: $cranberry-light-3;
+  }
+
+  .quarto-listing-category .category:hover {
+    color: rgba($cranberry-light-3, 0.8);
+  }
+
+  .quarto-listing-category .category.active {
+    color: $cranberry-light-3;
+  }
+
+  // page-header categories (.quarto-title .quarto-categories .quarto-category)
+  // — styles.scss sets an explicit light-surface alpha color here (see that
+  // file for why opacity was dropped); re-point it to the dark ramp.
+  .quarto-title .quarto-categories .quarto-category {
+    color: rgba($ink-inverse, 0.8);
+    border-color: rgba($ink-inverse, 0.8);
+  }
+
+  // <details>/<summary> — quarto hardcodes the same #6c757d (3.74:1 on the
+  // dark surface) used for the listing-category pills above.
+  details > summary {
+    color: rgba($ink-inverse, 0.8);
+  }
+
+  // active tabset tab — the --bs-nav-tabs-link-active-color custom property
+  // falls back to bootstrap's near-black default, rendering as plain black
+  // text on the dark surface (effectively invisible).
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link {
+    color: $ink-inverse;
+  }
+
+  // DT widgets — the DT package ships its own patch CSS
+  // (jquery.dataTables.extra.css) hardcoding `div.datatables { color: #333 }`
+  // as a light-theme fallback (see rstudio/DT#447). Almost everything inside
+  // (paginate buttons, filter/info text, table cells) uses color:inherit, so
+  // this one rule was making the whole widget nearly invisible (1.39:1) on
+  // the dark surface. The "disabled" pager state uses `!important`, so match it.
+  div.datatables {
+    color: $ink-inverse;
+
+    .paginate_button.disabled {
+      color: rgba($ink-inverse, 0.4) !important;
+    }
+  }
+
   // code chunks + inline code — dark translucent tint instead of the light grey
   div.sourceCode,
   p code:not(.sourceCode),
   li code:not(.sourceCode),
   td code:not(.sourceCode),
-  #session-info div pre code {
+  pre code:not(.sourceCode) {
     background-color: rgba($cranberry-light-1, 0.08);
     border-color: rgba($cranberry-light-1, 0.12);
   }
 
-  #session-info div pre code {
+  // bare `<pre><code>` blocks (no .sourceCode class, e.g. hand-typed ASCII
+  // trees) aren't touched by the highlighting theme and default to plain
+  // black text, invisible on the dark surface.
+  pre code:not(.sourceCode) {
     color: $ink-inverse;
   }
 
@@ -44,6 +99,23 @@ $navbar-bg:       $surface-dark;
     border-right-color: rgba($ink-inverse, 0.2);
     border-top-color: rgba($ink-inverse, 0.2);
     border-bottom-color: rgba($ink-inverse, 0.2);
+  }
+
+  // listing category pills — quarto hardcodes color:#6c757d (3.74:1) and
+  // border-color:#dee2e6 (13.48:1), the same "designed for a light surface"
+  // hardcoding as the callout borders above. The base rule needs the fully
+  // qualified selector: quarto's own `.quarto-grid-item .listing-categories
+  // .listing-category` (3 classes) otherwise outranks a plain `.listing-category`.
+  .listing-category,
+  .quarto-grid-item .listing-categories .listing-category,
+  div.quarto-post .listing-categories .listing-category {
+    color: rgba($ink-inverse, 0.8); // 8.61:1, matches the #8 sidebar bump
+    border-color: rgba($ink-inverse, 0.2);
+  }
+
+  .quarto-grid-item .listing-categories .listing-category:hover {
+    border-color: rgba($cranberry-light-3, 0.5);
+    color: $cranberry-light-3;
   }
 
   // output tables — flip the odd (white) rows and bottom border to dark surface
