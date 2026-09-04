@@ -36,6 +36,16 @@ $navbar-bg:       $surface-dark;
     color: $ink-inverse;
   }
 
+  // callouts — quarto hardcodes the non-accent border sides to #dee2e6
+  // (bootstrap-c129b319c92200c1a2b571473e67f09d.min.css .callout-style-default /
+  // .callout-style-simple), which reads as a white outline on the dark surface.
+  // Leave border-left-color alone: it carries the per-type accent (note/tip/etc).
+  .callout {
+    border-right-color: rgba($ink-inverse, 0.2);
+    border-top-color: rgba($ink-inverse, 0.2);
+    border-bottom-color: rgba($ink-inverse, 0.2);
+  }
+
   // output tables — flip the odd (white) rows and bottom border to dark surface
   .cell-output-display table {
     thead {
