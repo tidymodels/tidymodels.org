@@ -502,7 +502,7 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  tibble       3.3.1      2026-01-11
 #>  tidymodels   1.5.0      2026-04-23
 #>  tune         2.1.0      2026-04-17
-#>  vip          0.5.0.9000 2026-08-18
+#>  vip          0.5.0.9000 2026-09-04
 #>  workflows    1.3.0      2025-08-27
 #>  yardstick    1.4.0      2026-04-07
 #> 
