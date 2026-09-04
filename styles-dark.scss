@@ -79,17 +79,28 @@ $footer-fg:       $cranberry-light-2; // #DB96AC, 6.40:1 AA (default $cranberry-
   div.sourceCode,
   p code:not(.sourceCode),
   li code:not(.sourceCode),
-  td code:not(.sourceCode),
-  pre code:not(.sourceCode) {
+  td code:not(.sourceCode) {
     background-color: rgba($cranberry-light-1, 0.08);
     border-color: rgba($cranberry-light-1, 0.12);
   }
 
   // bare `<pre><code>` blocks (no .sourceCode class, e.g. hand-typed ASCII
   // trees) aren't touched by the highlighting theme and default to plain
-  // black text, invisible on the dark surface.
+  // black text, invisible on the dark surface. No background tint here
+  // (unlike the inline-code selectors above) — plain pre/code stays transparent.
   pre code:not(.sourceCode) {
     color: $ink-inverse;
+    background-color: transparent;
+  }
+
+  // #session-info uses an ID selector (styles.scss), which otherwise beats
+  // the class-scoped rule above regardless of dark-mode nesting: text is
+  // #5E5E5E on the light $theme-code-bg tint, 1.10:1 once blended over the
+  // dark surface.
+  #session-info div pre code {
+    color: $ink-inverse;
+    background-color: rgba($cranberry-light-1, 0.08);
+    border-color: rgba($cranberry-light-1, 0.12);
   }
 
   // callouts — quarto hardcodes the non-accent border sides to #dee2e6
