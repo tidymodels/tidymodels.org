@@ -151,9 +151,11 @@ $navbar-bg:       $surface-dark;
   }
 
   // Front page — bands and the event card hardcode light surfaces in
-  // styles-frontpage.scss. Override them here and drop the decorative
+  // styles-frontpage.scss. Override them here, swapping the decorative
   // tidy-back-*.svg backgrounds (light-canvas illustrations with white
-  // strokes that clash on the dark surface).
+  // strokes that clashed on the dark surface) for -dark variants with the
+  // cranberry accents lightened to $cranberry-light-3 and the white strokes
+  // softened to a translucent $ink-inverse.
   #FrontPage {
 
     .event {
@@ -162,10 +164,14 @@ $navbar-bg:       $surface-dark;
       color: $ink-inverse;
     }
 
-    .band.first .bandContent,
+    .band.first .bandContent {
+      background-color: transparent;
+      background-image: url(images/tidy-back-01-dark.svg);
+    }
+
     .band.third .bandContent {
       background-color: transparent;
-      background-image: none;
+      background-image: url(images/tidy-back-03-dark.svg);
     }
 
     .band.second {
@@ -175,7 +181,7 @@ $navbar-bg:       $surface-dark;
 
       .bandContent {
         background-color: transparent;
-        background-image: none;
+        background-image: url(images/tidy-back-02-dark.svg);
         color: $ink-inverse;
       }
     }
