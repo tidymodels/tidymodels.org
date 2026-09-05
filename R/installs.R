@@ -87,9 +87,7 @@ packages <- c(
   "timetk",
   "torch",
   "tune",
-  # vip was archived from CRAN on 2026-07-08, so install it from GitHub
-  # temporarily until it returns to CRAN (see also R/install_packages.R).
-  "bgreenwell/vip",
+  "vip",
   "zoo",
   "DT",
   "mars",
@@ -120,13 +118,16 @@ packages <- c(
   "HSAUR3",
   "lme4",
   "survival",
-  "gee"
+  "gee",
+  "mixOmics"
 )
 
-pak::pak(packages, upgrade = TRUE)
-
-# Bioconductor packages
-pak::pak("bioc::mixOmics")
+# Reuse the same install logic as the incremental re-render scripts, so a
+# full install also gets the special-case handling (vip's GitHub source,
+# mixOmics via Bioconductor, torch/keras/Spark backends, rstanarm rebuilds)
+# instead of just a bare pak::pak() call.
+source(here::here("R/install_packages.R"))
+install_packages(packages)
 
 # Manually check for dev versions
 # sub("rstudio/", "", packages) |>
@@ -134,12 +135,4 @@ pak::pak("bioc::mixOmics")
 #   setdiff(c()) |>
 #   sapply(packageVersion) |>
 #   purrr::keep(\(x) any(x >= 9000))
-
-# Running `library(brulee)` will trigger installation of torch
-library(brulee)
-
-# Setup keras
-library(keras3)
-
-install_keras(backend = "tensorflow")
 
