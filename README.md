@@ -176,6 +176,10 @@ Spark is pre-installed in CI via `.github/actions/setup-render/action.yml`. When
 
 Changing the cache key forces a fresh download on the next CI run. The `R/install_packages.R` check prevents a redundant download when Spark is already present (either from cache or a prior install).
 
+### rstan / rstanarm
+
+`rstan` and `rstanarm` are compiled against `RcppParallel`'s binary ABI. When `pak::pak(..., upgrade = TRUE)` bumps `RcppParallel` (or `StanHeaders`/`loo`) without rebuilding `rstan`/`rstanarm` (because their own versions didn't change), the stale binaries fail to load and parsnip reports "Please install the rstanarm package to use this engine." `R/install_packages.R` guards against this: when `rstanarm` is needed, it checks that the package still loads and, if not, rebuilds `rstan` and `rstanarm` from source against the current dependency versions.
+
 ## Rerender
 
 We try to do a rerender after a release of a main package.

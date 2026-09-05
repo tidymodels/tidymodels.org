@@ -17,9 +17,12 @@ install_packages <- function(needed) {
   cli::cli_alert_info("{length(needed)} package{?s} required: {.pkg {needed}}")
 
   # catboost must be installed from GitHub
+  # vip was archived from CRAN on 2026-07-08, so install it from GitHub
+  # temporarily until it returns to CRAN.
   # mixOmics must be excluded from the pak call and installed separately via
   # install.packages() — see comment below.
   to_install <- ifelse(needed == "catboost", "catboost/catboost/catboost/R-package", needed)
+  to_install <- ifelse(to_install == "vip", "bgreenwell/vip", to_install)
   to_install <- to_install[to_install != "mixOmics"]
 
   # pak's upgrade = TRUE upgrades ALL installed packages, not just those in
@@ -60,6 +63,19 @@ install_packages <- function(needed) {
         failed <<- c(failed, "mixOmics")
       }
     )
+  }
+
+  # rstan/rstanarm link against RcppParallel's binary ABI. pak's
+  # `upgrade = TRUE` can bump RcppParallel (or StanHeaders/loo) without
+  # rebuilding rstan/rstanarm, leaving stale binaries that fail to load
+  # ("Please install the rstanarm package to use this engine"). If the
+  # Stan stack no longer loads, rebuild it from source so it links against
+  # the current dependency versions.
+  if ("rstanarm" %in% needed) {
+    if (!requireNamespace("rstanarm", quietly = TRUE)) {
+      cli::cli_alert_info("rstanarm failed to load; rebuilding rstan/rstanarm from source...")
+      install.packages(c("rstan", "rstanarm"), type = "source")
+    }
   }
 
   # torch must be installed explicitly for brulee to work

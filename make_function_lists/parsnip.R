@@ -20,7 +20,6 @@ parsnip_pkgs <- c(parsnip_pkgs, "parsnip")
 excl <- c(
   "additive",
   "bayesian",
-  "cuda.ml",
   "SSLR",
   "workflowsets",
   "workflows",
