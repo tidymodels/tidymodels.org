@@ -95,6 +95,7 @@ The default plotting functions in rpart provide a quick way to inspect the struc
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 par(mar = c(2, 2, 2, 2))
 
 plot(tree_obj, uniform = TRUE, margin = 0.1)
@@ -117,6 +118,7 @@ The partykit package provides cleaner default tree visualizations and more flexi
 ```{.r .cell-code}
 party_obj <- as.party(tree_obj)
 
+par_transparent()
 plot(party_obj)
 ```
 
@@ -134,6 +136,7 @@ The appearance of the plot can also be adjusted with additional plotting argumen
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 plot(
   party_obj,
   ip_args = list(abbreviate = FALSE),
@@ -162,6 +165,7 @@ The rpart.plot package is designed specifically for decision tree visualization 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 rpart.plot(
   tree_obj,
   roundint = FALSE
@@ -178,6 +182,7 @@ The appearance can also be customized with additional arguments.
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 rpart.plot(
   tree_obj,
   type = 4,
@@ -247,6 +252,7 @@ The `fancyRpartPlot()` function from the rattle package creates a more stylized 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 fancyRpartPlot(
   tree_obj,
   sub = ""
@@ -296,6 +302,7 @@ reg_fit <-
 
 reg_tree <- extract_fit_engine(reg_fit)
 
+par_transparent()
 rpart.plot(
   reg_tree,
   roundint = FALSE
@@ -333,8 +340,8 @@ Each visualization approach emphasizes different aspects of the model.
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  pandoc   3.10
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -345,10 +352,10 @@ Each visualization approach emphasizes different aspects of the model.
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.0   2026-05-14
 #>  parttree      0.1.3   2026-03-31
-#>  partykit      1.2-27  2026-03-13
+#>  partykit      1.3-0   2026-08-22
 #>  purrr         1.2.2   2026-04-10
 #>  rattle        5.6.2   2026-02-08
-#>  recipes       1.3.3   2026-05-30
+#>  recipes       1.4.0   2026-08-24
 #>  rlang         1.3.0   2026-07-05
 #>  rpart         4.1.27  2026-03-27
 #>  rpart.plot    3.1.4   2026-01-08

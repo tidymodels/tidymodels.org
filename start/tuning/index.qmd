@@ -45,7 +45,7 @@ library(kableExtra)
 library(vip)
 library(future)
 
-theme_set(theme_bw())
+theme_set(theme_tidymodels_transparent())
 
 plan(multisession, workers = parallel::detectCores())
 
@@ -281,6 +281,7 @@ We can create a visualization of the decision tree using another helper function
 #| label: "rpart-plot"
 #| fig-width:  8
 #| fig-height:  5
+par_transparent()
 final_tree |>
   extract_fit_engine() |>
   rpart.plot(roundint = FALSE)

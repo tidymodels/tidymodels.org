@@ -41,7 +41,7 @@ plan(multisession, workers = parallel::detectCores())
 
 
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 ## Introduction
@@ -263,7 +263,7 @@ early_data |>
   facet_wrap(~obs_class, ncol = 1) +
   lims(x = 0:1) +
   labs(x = "predicted probability of event at or before 10 weeks\n(1 - probability of 10 week survival)", y = "sum of weights") +
-  theme_bw()
+  theme_tidymodels_transparent()
 ```
 
 
@@ -517,7 +517,7 @@ binary_encoding |>
   facet_grid(obs_class ~ .eval_time) +
   lims(x = 0:1) +
   labs(x = "predicted probability of event at or before eval time") +
-  theme_bw()
+  theme_tidymodels_transparent()
 ```
 
 The range of probabilities at 10 days is almost the entire range, and there is moderate separation between the two. However, at 100 days, the smallest probability prediction is `r round(small_100, 2)`. 

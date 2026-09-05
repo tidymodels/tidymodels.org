@@ -60,7 +60,7 @@ summary(nlsfit)
 #> Residual standard error: 2.774 on 30 degrees of freedom
 #> 
 #> Number of iterations to convergence: 1 
-#> Achieved convergence tolerance: 1.967e-08
+#> Achieved convergence tolerance: 6.813e-09
 
 ggplot(mtcars, aes(wt, mpg)) +
     geom_point() +
@@ -265,8 +265,8 @@ ggplot(splines_aug, aes(x, y)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  pandoc   3.10
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -277,7 +277,7 @@ ggplot(splines_aug, aes(x, y)) +
 #>  infer        1.1.0   2025-12-18
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
-#>  recipes      1.3.3   2026-05-30
+#>  recipes      1.4.0   2026-08-24
 #>  rlang        1.3.0   2026-07-05
 #>  rsample      1.3.2   2026-01-30
 #>  tibble       3.3.1   2026-01-11

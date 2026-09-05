@@ -124,11 +124,6 @@ mars_res <-
     grid = grid,
     control = ctrl
   )
-#> 
-#> Attaching package: 'plotrix'
-#> The following object is masked from 'package:scales':
-#> 
-#>     rescale
 ```
 :::
 
@@ -219,6 +214,11 @@ mars_final_spec <-
 mars_test_res <- 
   mars_final_spec |> 
   last_fit(time_to_delivery ~ ., split = delivery_split)
+#> 
+#> Attaching package: 'plotrix'
+#> The following object is masked from 'package:scales':
+#> 
+#>     rescale
 
 collect_metrics(mars_test_res)
 #> # A tibble: 2 × 4
@@ -283,20 +283,20 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  pandoc   3.10
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
 #>  broom        1.0.13  2026-05-14
 #>  dials        1.4.4   2026-06-22
 #>  dplyr        1.2.1   2026-04-03
-#>  earth        5.3.5   2026-01-11
+#>  earth        5.3.6   2026-08-21
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
-#>  recipes      1.3.3   2026-05-30
+#>  recipes      1.4.0   2026-08-24
 #>  rlang        1.3.0   2026-07-05
 #>  rsample      1.3.2   2026-01-30
 #>  tibble       3.3.1   2026-01-11

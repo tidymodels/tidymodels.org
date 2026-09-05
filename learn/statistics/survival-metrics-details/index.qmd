@@ -32,7 +32,7 @@ source(here::here("R/common.R"))
 library(tidymodels)
 library(sessioninfo)
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 ## Introduction
@@ -169,7 +169,7 @@ df |>
   scale_x_continuous(limits = c(0, 7)) +
   scale_y_continuous(limits = c(0.5, 2.5)) +
   labs(x = "Time", y = "Sample") +
-  theme_bw() +
+  theme_tidymodels_transparent() +
   theme(axis.text.y = element_blank(), legend.position = "top") +
   facet_grid(~ eval_time) 
 ```
@@ -210,7 +210,7 @@ dyn_val_pred |>
     alpha = 1 / 2, col = "blue", sides = "t"
   ) +
   labs(x = "time", y = "probability of being censored") +
-  theme_bw()
+  theme_tidymodels_transparent()
 ```
 
 The red rug on the bottom shows the training point event times and the blue values at the top represent the times for the censored training set observations. As (evaluation) time increases, we pass more and more observed time points, and the probability of being censored, i.e., the probability of an observation to fall into category 2, decreases.
@@ -296,7 +296,7 @@ dyn_val_pred |>
   geom_step(aes(.eval_time, num_usable)) +
   labs(x = "time", y = "number of usable observations") +
   lims(y = c(0, nrow(sim_val))) +
-  theme_bw()
+  theme_tidymodels_transparent()
 ```
 
 Keeping this in mind, let's look at what happens with the data points we can use. Let's start with an evaluation time of 1.00. To compute the confusion matrix for a classification problem, we would simply use:

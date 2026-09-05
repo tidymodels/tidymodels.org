@@ -13,7 +13,10 @@ toc: true
 toc-depth: 3
 format:
   html:
-    theme: ["style.scss"]
+    # Mapping shape (not a bare list) so it merges into the site's light/dark themes.
+    theme:
+      light: ["style.scss"]
+      dark: ["style.scss"]
 r-packages:
   - tidymodels
   - agua
@@ -66,6 +69,11 @@ r-packages:
 include-after-body: ../../../html/resources.html
 ---
 
+
+
+
+
+
 # Introduction
 
 This page shows examples of how to *fit* and *predict* with different combinations of model, mode, and engine. As a reminder, in parsnip, 
@@ -94,6 +102,7 @@ catboost is a popular boosting framework. Unfortunately, the R package is not av
 
 The following code can be used to install and test the package (which requires the glue package to be installed): 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -119,7 +128,9 @@ system(inst)
 ```
 :::
 
+
 To test, fit an example model: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -144,6 +155,7 @@ fit_params
 ```
 :::
 
+
 </details>
 
 <details>
@@ -154,6 +166,7 @@ To use [Apache Spark](https://spark.apache.org/) as an engine, we will first ins
 
 To install, first install sparklyr:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -161,7 +174,9 @@ install.packages("sparklyr")
 ```
 :::
 
+
 and then install the Spark backend. For example, you might use: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -171,7 +186,9 @@ spark_install(version = "4.0")
 ```
 :::
 
+
 Once that is working, you can get ready to fit models using: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -181,6 +198,7 @@ sc <- spark_connect("local", version = "3.5")
 ```
 :::
 
+
 </details>
 
 <details>
@@ -188,6 +206,7 @@ sc <- spark_connect("local", version = "3.5")
 <summary>h2o installation instructions</summary>
 
 h2o.ai offers a Java-based high-performance computing server for machine learning. This can be run locally or externally. There are general installation instructions at [https://docs.h2o.ai/](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html). There is a package on CRAN, but you can also install directly from [h2o](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/downloading.html#install-in-r) via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -200,9 +219,11 @@ install.packages(
 ```
 :::
 
+
 After installation is complete, you can start a local server via `h2o::h2o.init()`. 
 
 The tidymodels [agua](https://agua.tidymodels.org/) package contains some helpers and will also need to be installed. You can use its function to start a server too:
+
 
 ::: {.cell layout-align="center"}
 
@@ -216,10 +237,11 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 6 months and 15 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 8 months and 15 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
+
 
 </details>
 
@@ -229,12 +251,14 @@ h2o_start()
 
 R's tensorflow and keras3 packages call Python directly. To enable this, you'll have to install both components: 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 install.packages("keras3")
 ```
 :::
+
 
 Once that is done, use: 
 
@@ -245,7 +269,9 @@ keras3::install_keras(backend = "tensorflow")
 ```
 :::
 
+
 There are other options for installation. See [https://tensorflow.rstudio.com/install/index.html](https://tensorflow.rstudio.com/install/index.html) for more details. 
+
 
 ::: {.cell layout-align="center"}
 
@@ -255,6 +281,7 @@ pve <- grep("keras|tensorflow", reticulate::virtualenv_list(), value = TRUE)
 if (length(pve)) reticulate::use_virtualenv(pve[[1]])
 ```
 :::
+
 
 </details>
 
@@ -272,19 +299,22 @@ Choosing "Yes" will do the _one-time_ installation.
 
 To get started, let's load the tidymodels package: 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 library(tidymodels)
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 :::
+
 
 # Classification Models
 
 ## Example data
 
 To demonstrate classification, let's make small training and test sets for a binary outcome. We'll center and scale the data since some models require the same units.
+
 
 ::: {.cell layout-align="center"}
 
@@ -308,7 +338,9 @@ bin_test <- bake(bin_rec, new_data = testing(bin_split))
 ```
 :::
 
+
 For models that _only_ work for three or more classes, we'll simulate:
+
 
 ::: {.cell layout-align="center"}
 
@@ -333,7 +365,9 @@ mtl_test <- testing(mtl_split)
 ```
 :::
 
+
 Finally, we have some models that handle hierarchical data, where some rows are statistically correlated with other rows. For these examples, we'll use data from a clinical trial where patients were followed over time. The outcome is binary. The data are in the HSAUR3 package. We'll split these data in a way where all rows for a specific subject are either in the training or test sets: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -347,9 +381,11 @@ cls_group_test <- testing(cls_group_split)
 ```
 :::
 
+
 There are 219 subjects in the training set and 75 in the test set. 
 
 If using the **Apache Spark** engine, we will need to identify the data source and then use it to create the splits. For this article, we will copy the `two_class_dat` and the `mtl_data` data sets into the Spark session.
+
 
 ::: {.cell layout-align="center"}
 
@@ -368,6 +404,7 @@ tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed 
 ```
 :::
 
+
 ## Models
 
 ### Bagged MARS (`bag_mars()`) 
@@ -378,6 +415,7 @@ tbl_mtl <- sdf_random_split(tbl_sim_mtl, training = 0.967, test = 1-0.967, seed 
 
 This engine requires the baguette extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -385,7 +423,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -397,7 +437,9 @@ bag_mars_spec <- bag_mars() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -429,7 +471,9 @@ bag_mars_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -457,6 +501,7 @@ predict(bag_mars_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Bagged Neural Networks (`bag_mlp()`) 
@@ -467,6 +512,7 @@ predict(bag_mars_fit, type = "prob", new_data = bin_test)
 
 This engine requires the baguette extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -474,7 +520,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -486,7 +534,9 @@ bag_mlp_spec <- bag_mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -510,7 +560,9 @@ bag_mlp_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -538,6 +590,7 @@ predict(bag_mlp_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Bagged Decision Trees (`bag_tree()`) 
@@ -548,6 +601,7 @@ predict(bag_mlp_fit, type = "prob", new_data = bin_test)
 
 This engine requires the baguette extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -555,7 +609,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -567,7 +623,9 @@ bag_tree_spec <- bag_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -586,12 +644,14 @@ bag_tree_fit
 #> # A tibble: 2 × 4
 #>   term  value std.error  used
 #>   <chr> <dbl>     <dbl> <int>
-#> 1 B      272.      4.35    11
-#> 2 A      237.      5.57    11
+#> 1 B      271.      4.35    11
+#> 2 A      237.      5.58    11
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -619,9 +679,11 @@ predict(bag_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `C5.0` 
 
 This engine requires the baguette extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -630,7 +692,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -641,7 +705,9 @@ bag_tree_spec <- bag_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -665,7 +731,9 @@ bag_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -693,6 +761,7 @@ predict(bag_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Bayesian Additive Regression Trees (`bart()`)
@@ -702,6 +771,7 @@ predict(bag_tree_fit, type = "prob", new_data = bin_test)
 ## `dbarts`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -713,7 +783,9 @@ bart_spec <- bart() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -731,7 +803,9 @@ bart_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -779,6 +853,7 @@ predict(bart_fit, type = "pred_int", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Boosted Decision Trees (`boost_tree()`)
@@ -788,6 +863,7 @@ predict(bart_fit, type = "pred_int", new_data = bin_test)
 ## `xgboost`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -799,7 +875,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -832,7 +910,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -860,9 +940,11 @@ predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `C5.0` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -873,7 +955,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -901,7 +985,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -929,9 +1015,11 @@ predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `catboost` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -940,7 +1028,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -952,7 +1042,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -962,22 +1054,49 @@ set.seed(644)
 boost_tree_fit <- boost_tree_spec |>
   fit(class ~ ., data = bin_train)
 boost_tree_fit
+#> parsnip model object
+#> 
+#> CatBoost model (1000 trees)
+#> Loss function: Logloss
+#> Fit to 2 feature(s)
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(boost_tree_fit, type = "class", new_data = bin_test)
+#> # A tibble: 6 × 1
+#>   .pred_class
+#>   <fct>      
+#> 1 Class2     
+#> 2 Class1     
+#> 3 Class2     
+#> 4 Class1     
+#> 5 Class1     
+#> 6 Class1
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
+#> # A tibble: 6 × 2
+#>   .pred_Class1 .pred_Class2
+#>          <dbl>        <dbl>
+#> 1        0.291      0.709  
+#> 2        0.836      0.164  
+#> 3        0.344      0.656  
+#> 4        0.998      0.00245
+#> 5        0.864      0.136  
+#> 6        0.902      0.0983
 ```
 :::
+
 
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -986,7 +1105,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -998,7 +1119,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1014,10 +1137,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_0_0 
+#> Model ID:  GBM_model_R_1788361685496_4568 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               30000         6
+#> 1              50                       50               25376         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         21         55    35.70000
 #> 
@@ -1065,7 +1188,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1093,9 +1218,11 @@ predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `h2o_gbm` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1104,7 +1231,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1116,7 +1245,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1132,10 +1263,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2OBinomialModel: gbm
-#> Model ID:  GBM_model_R_0_0 
+#> Model ID:  GBM_model_R_1788361685496_4620 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               30000         6
+#> 1              50                       50               25380         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         21         55    35.70000
 #> 
@@ -1183,7 +1314,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1211,9 +1344,11 @@ predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `lightgbm` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1222,7 +1357,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1234,7 +1371,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1252,7 +1391,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1280,9 +1421,11 @@ predict(boost_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1293,7 +1436,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1307,11 +1452,13 @@ boost_tree_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> GBTClassificationModel: uid = gradient_boosted_trees__00000000_0000_0000_0000_000000000000, numTrees=20, numClasses=2, numFeatures=2
+#> GBTClassificationModel: uid = gradient_boosted_trees__ede4b8a9_7581_470a_a994_d6e1445073e0, numTrees=20, numClasses=2, numFeatures=2
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1343,6 +1490,7 @@ predict(boost_tree_fit, type = "prob", new_data = tbl_bin$test)
 ```
 :::
 
+
 :::
 
 ### C5 Rules (`C5_rules()`)
@@ -1353,6 +1501,7 @@ predict(boost_tree_fit, type = "prob", new_data = tbl_bin$test)
 
 This engine requires the rules extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -1360,7 +1509,9 @@ library(rules)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1371,7 +1522,9 @@ C5_rules_spec <- C5_rules()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1399,7 +1552,9 @@ C5_rules_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1427,6 +1582,7 @@ predict(C5_rules_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Decision Tree (`decision_tree()`)
@@ -1436,6 +1592,7 @@ predict(C5_rules_fit, type = "prob", new_data = bin_test)
 ## `rpart`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1447,7 +1604,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1472,7 +1631,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1500,9 +1661,11 @@ predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `C5.0` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1513,7 +1676,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1538,7 +1703,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1566,9 +1733,11 @@ predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1577,7 +1746,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1589,7 +1760,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1623,7 +1796,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1651,9 +1826,12 @@ predict(decision_tree_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1664,7 +1842,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1676,11 +1856,13 @@ decision_tree_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> DecisionTreeClassificationModel: uid=decision_tree_classifier__00000000_0000_0000_0000_000000000000, depth=5, numNodes=43, numClasses=2, numFeatures=2
+#> DecisionTreeClassificationModel: uid=decision_tree_classifier__35d078c8_3621_4661_b3b6_a65805ab76bd, depth=5, numNodes=43, numClasses=2, numFeatures=2
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1712,6 +1894,7 @@ predict(decision_tree_fit, type = "prob", new_data = tbl_bin$test)
 ```
 :::
 
+
 :::
 
 ### Flexible Discriminant Analysis (`discrim_flexible()`)
@@ -1722,6 +1905,7 @@ predict(decision_tree_fit, type = "prob", new_data = tbl_bin$test)
 
 This engine requires the discrim extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -1729,7 +1913,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1740,7 +1926,9 @@ discrim_flexible_spec <- discrim_flexible()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1763,7 +1951,9 @@ discrim_flexible_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1791,6 +1981,7 @@ predict(discrim_flexible_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Linear Discriminant Analysis (`discrim_linear()`)
@@ -1801,6 +1992,7 @@ predict(discrim_flexible_fit, type = "prob", new_data = bin_test)
 
 This engine requires the discrim extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -1808,7 +2000,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1819,7 +2013,9 @@ discrim_linear_spec <- discrim_linear()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1848,7 +2044,9 @@ discrim_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1876,9 +2074,11 @@ predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `mda` 
 
 This engine requires the discrim extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1887,7 +2087,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1898,7 +2100,9 @@ discrim_linear_spec <- discrim_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1924,7 +2128,9 @@ discrim_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1952,9 +2158,11 @@ predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `sda` 
 
 This engine requires the discrim extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1963,7 +2171,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -1974,7 +2184,9 @@ discrim_linear_spec <- discrim_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2008,7 +2220,9 @@ discrim_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2036,9 +2250,11 @@ predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `sparsediscrim` 
 
 This engine requires the discrim extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2047,7 +2263,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2058,7 +2276,9 @@ discrim_linear_spec <- discrim_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2078,7 +2298,9 @@ discrim_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2106,6 +2328,7 @@ predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Quandratic Discriminant Analysis (`discrim_quad()`)
@@ -2116,6 +2339,7 @@ predict(discrim_linear_fit, type = "prob", new_data = bin_test)
 
 This engine requires the discrim extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -2123,7 +2347,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2134,7 +2360,9 @@ discrim_quad_spec <- discrim_quad()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2158,7 +2386,9 @@ discrim_quad_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2186,9 +2416,11 @@ predict(discrim_quad_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `sparsediscrim` 
 
 This engine requires the discrim extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2197,7 +2429,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2208,7 +2442,9 @@ discrim_quad_spec <- discrim_quad() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2228,7 +2464,9 @@ discrim_quad_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2256,6 +2494,7 @@ predict(discrim_quad_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Regularized Discriminant Analysis (`discrim_regularized()`)
@@ -2266,6 +2505,7 @@ predict(discrim_quad_fit, type = "prob", new_data = bin_test)
 
 This engine requires the discrim extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -2273,7 +2513,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2284,7 +2526,9 @@ discrim_regularized_spec <- discrim_regularized()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2311,7 +2555,9 @@ discrim_regularized_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2339,6 +2585,7 @@ predict(discrim_regularized_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Generalized Additive Models (`gen_additive_mod()`)
@@ -2348,6 +2595,7 @@ predict(discrim_regularized_fit, type = "prob", new_data = bin_test)
 ## `mgcv`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2359,7 +2607,9 @@ gen_additive_mod_spec <- gen_additive_mod() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2384,7 +2634,9 @@ gen_additive_mod_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2422,6 +2674,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Logistic Regression (`logistic_reg()`)
@@ -2432,6 +2685,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = bin_test)
 
 We create a model specification via:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -2441,7 +2695,9 @@ logistic_reg_spec <- logistic_reg()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2464,7 +2720,9 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2502,9 +2760,11 @@ predict(logistic_reg_fit, type = "conf_int", new_data = bin_test)
 ```
 :::
 
+
 ## `brulee` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2515,7 +2775,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2534,13 +2796,15 @@ logistic_reg_fit
 #>   Learning Rate: 1
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 6
-#>   validation loss after 4 epochs: 0.286
+#>   validation loss after 3 epochs: 0.286
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2562,15 +2826,17 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 #> 1        0.411       0.589 
 #> 2        0.850       0.150 
 #> 3        0.536       0.464 
-#> 4        0.969       0.0305
+#> 4        0.969       0.0306
 #> 5        0.894       0.106 
 #> 6        0.843       0.157
 ```
 :::
 
+
 ## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2580,7 +2846,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2591,7 +2859,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2642,7 +2912,9 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2680,9 +2952,11 @@ predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 ```
 :::
 
+
 ## `glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2691,7 +2965,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2702,7 +2978,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2726,13 +3004,15 @@ logistic_reg_fit
 #> Number of obs: 1433, groups:  patientID, 219
 #> Fixed Effects:
 #>                (Intercept)        treatmentterbinafine  
-#>                  -4.574209                   -0.511919  
+#>                   -4.57420                    -0.51193  
 #>                      visit  treatmentterbinafine:visit  
-#>                  -0.987246                   -0.001121
+#>                   -0.98725                    -0.00112
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2770,9 +3050,11 @@ predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 ```
 :::
 
+
 ## `glmnet` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2783,7 +3065,9 @@ logistic_reg_spec <- logistic_reg(penalty = 0.01) |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2865,7 +3149,9 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2893,9 +3179,11 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2904,7 +3192,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2915,7 +3205,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -2929,7 +3221,7 @@ logistic_reg_fit
 #> ==============
 #> 
 #> H2OBinomialModel: glm
-#> Model ID:  GLM_model_R_0_0 
+#> Model ID:  GLM_model_R_1788361685496_4672 
 #> GLM Model: summary
 #>     family  link                                regularization
 #> 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )
@@ -2989,7 +3281,9 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3017,9 +3311,11 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `keras` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3030,7 +3326,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3041,6 +3339,8 @@ logistic_reg_fit <- logistic_reg_spec |>
   fit(class ~ ., data = bin_train)
 ```
 :::
+
+
 
 ::: {.cell layout-align="center"}
 
@@ -3063,13 +3363,15 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 13ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3080,7 +3382,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 7ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3093,9 +3395,11 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `LiblineaR` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3106,7 +3410,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3141,7 +3447,9 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3169,9 +3477,11 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `stan` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3182,7 +3492,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3213,7 +3525,9 @@ logistic_reg_fit |> print(digits = 3)
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3285,9 +3599,11 @@ predict(logistic_reg_fit, type = "pred_int", new_data = cls_group_test)
 ```
 :::
 
+
 ## `stan_glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3296,7 +3612,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3307,7 +3625,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3326,14 +3646,14 @@ logistic_reg_fit |> print(digits = 3)
 #>  observations: 1433
 #> ------
 #>                            Median MAD_SD
-#> (Intercept)                -0.602  0.568
-#> treatmentterbinafine       -0.705  0.850
-#> visit                      -0.829  0.104
-#> treatmentterbinafine:visit -0.020  0.145
+#> (Intercept)                -0.621  0.547
+#> treatmentterbinafine       -0.658  0.753
+#> visit                      -0.831  0.106
+#> treatmentterbinafine:visit -0.020  0.139
 #> 
 #> Error terms:
 #>  Groups    Name        Std.Dev.
-#>  patientID (Intercept) 4.362   
+#>  patientID (Intercept) 4.351   
 #> Num. levels: patientID 219 
 #> 
 #> ------
@@ -3342,7 +3662,9 @@ logistic_reg_fit |> print(digits = 3)
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3366,31 +3688,31 @@ predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 #> # A tibble: 475 × 2
 #>    `.pred_none or mild` `.pred_moderate or severe`
 #>                   <dbl>                      <dbl>
-#>  1                0.686                     0.314 
-#>  2                0.749                     0.251 
-#>  3                0.800                     0.200 
-#>  4                0.848                     0.152 
-#>  5                0.889                     0.111 
-#>  6                0.910                     0.0898
-#>  7                0.938                     0.0625
+#>  1                0.672                     0.328 
+#>  2                0.732                     0.268 
+#>  3                0.786                     0.214 
+#>  4                0.834                     0.166 
+#>  5                0.876                     0.124 
+#>  6                0.902                     0.0982
+#>  7                0.930                     0.0705
 #>  8                0.622                     0.378 
-#>  9                0.694                     0.306 
-#> 10                0.750                     0.250 
+#>  9                0.685                     0.315 
+#> 10                0.737                     0.263 
 #> # ℹ 465 more rows
 predict(logistic_reg_fit, type = "conf_int", new_data = cls_group_test)
 #> # A tibble: 475 × 4
 #>    `.pred_lower_none or mild` `.pred_upper_none or mild` .pred_lower_moderate …¹
 #>                         <dbl>                      <dbl>                   <dbl>
-#>  1                   0.00143                       1.000             0.0000238  
-#>  2                   0.00346                       1.000             0.0000103  
-#>  3                   0.00812                       1.000             0.00000400 
-#>  4                   0.0188                        1.000             0.00000177 
-#>  5                   0.0427                        1.000             0.000000782
-#>  6                   0.0970                        1.000             0.000000330
-#>  7                   0.196                         1.000             0.000000137
-#>  8                   0.000720                      1.000             0.0000465  
-#>  9                   0.00176                       1.000             0.0000197  
-#> 10                   0.00422                       1.000             0.00000865 
+#>  1                   0.00122                       1.000            0.0000147   
+#>  2                   0.00299                       1.000            0.00000629  
+#>  3                   0.00710                       1.000            0.00000249  
+#>  4                   0.0163                        1.000            0.00000107  
+#>  5                   0.0385                        1.000            0.000000438 
+#>  6                   0.0802                        1.000            0.000000196 
+#>  7                   0.170                         1.000            0.0000000805
+#>  8                   0.000746                      1.000            0.0000314   
+#>  9                   0.00159                       1.000            0.0000133   
+#> 10                   0.00351                       1.000            0.00000578  
 #> # ℹ 465 more rows
 #> # ℹ abbreviated name: ¹​`.pred_lower_moderate or severe`
 #> # ℹ 1 more variable: `.pred_upper_moderate or severe` <dbl>
@@ -3414,9 +3736,11 @@ predict(logistic_reg_fit, type = "pred_int", new_data = cls_group_test)
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3426,7 +3750,9 @@ logistic_reg_spec <- logistic_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3444,7 +3770,9 @@ logistic_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3476,6 +3804,7 @@ predict(logistic_reg_fit, type = "prob", new_data = tbl_bin$test)
 ```
 :::
 
+
 :::
 
 ### Multivariate Adaptive Regression Splines (`mars()`)
@@ -3485,6 +3814,7 @@ predict(logistic_reg_fit, type = "prob", new_data = tbl_bin$test)
 ## `earth`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3496,7 +3826,9 @@ mars_spec <- mars() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3518,7 +3850,9 @@ mars_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3546,6 +3880,7 @@ predict(mars_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Neural Networks (`mlp()`)
@@ -3555,6 +3890,7 @@ predict(mars_fit, type = "prob", new_data = bin_test)
 ## `nnet`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3566,7 +3902,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3585,7 +3923,9 @@ mlp_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3613,9 +3953,11 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `brulee` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3627,7 +3969,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3650,13 +3994,15 @@ mlp_fit
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
 #>   Optimizer: "LBFGS"
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 17
-#>   validation loss after 10 epochs: 0.449
+#>   validation loss after 9 epochs: 0.449
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3675,18 +4021,20 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.400       0.600 
-#> 2        0.859       0.141 
-#> 3        0.471       0.529 
-#> 4        0.976       0.0240
-#> 5        0.948       0.0518
-#> 6        0.836       0.164
+#> 1        0.398       0.602 
+#> 2        0.854       0.146 
+#> 3        0.467       0.533 
+#> 4        0.976       0.0238
+#> 5        0.947       0.0526
+#> 6        0.829       0.171
 ```
 :::
+
 
 ## `brulee_two_layer` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3698,7 +4046,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3721,13 +4071,15 @@ mlp_fit
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
 #>   Optimizer: "LBFGS"
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 29
-#>   validation loss after 11 epochs: 0.424
+#>   validation loss after 10 epochs: 0.433
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3746,18 +4098,20 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.394       0.606 
-#> 2        0.903       0.0972
-#> 3        0.520       0.480 
-#> 4        0.942       0.0583
-#> 5        0.934       0.0662
-#> 6        0.896       0.104
+#> 1        0.384       0.616 
+#> 2        0.911       0.0888
+#> 3        0.539       0.461 
+#> 4        0.929       0.0715
+#> 5        0.918       0.0819
+#> 6        0.910       0.0899
 ```
 :::
+
 
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3766,7 +4120,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3778,7 +4134,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3794,7 +4152,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2OBinomialModel: deeplearning
-#> Model ID:  DeepLearning_model_R_0_0 
+#> Model ID:  DeepLearning_model_R_1788361685496_4674 
 #> Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -3803,7 +4161,7 @@ mlp_fit
 #>   mean_weight weight_rms mean_bias bias_rms
 #> 1          NA         NA        NA       NA
 #> 2   -0.005244   0.104666  0.478428 0.043014
-#> 3   -0.005700   0.379508 -0.000000 0.017883
+#> 3   -0.005700   0.379508  0.000000 0.017883
 #> 
 #> 
 #> H2OBinomialMetrics: deeplearning
@@ -3849,7 +4207,9 @@ mlp_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3877,9 +4237,11 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `keras` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3891,7 +4253,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3902,6 +4266,8 @@ mlp_fit <- mlp_spec |>
   fit(class ~ ., data = bin_train)
 ```
 :::
+
+
 
 ::: {.cell layout-align="center"}
 
@@ -3924,13 +4290,15 @@ mlp_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 13ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3941,7 +4309,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 7ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3954,6 +4322,7 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Multinom Regression (`multinom_reg()`)
@@ -3964,6 +4333,7 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 
 We create a model specification via:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -3973,7 +4343,9 @@ multinom_reg_spec <- multinom_reg()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -3998,7 +4370,9 @@ multinom_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4030,9 +4404,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 :::
 
+
 ## `brulee` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4043,7 +4419,9 @@ multinom_reg_spec <- multinom_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4062,13 +4440,15 @@ multinom_reg_fit
 #>   Learning Rate: 1
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 9
-#>   validation loss after 2 epochs: 0.954
+#>   validation loss after 3 epochs: 0.954
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4090,7 +4470,7 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
 #> 1   0.133     0.190        0.677 
-#> 2   0.304     0.175        0.521 
+#> 2   0.304     0.174        0.521 
 #> 3   0.359     0.193        0.448 
 #> 4   0.983     0.00134      0.0161
 #> 5   0.946     0.00293      0.0506
@@ -4100,9 +4480,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 :::
 
+
 ## `glmnet` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4113,7 +4495,9 @@ multinom_reg_spec <- multinom_reg(penalty = 0.01) |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4184,7 +4568,9 @@ multinom_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4216,9 +4602,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4227,7 +4615,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4238,7 +4628,9 @@ multinom_reg_spec <- multinom_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4252,7 +4644,7 @@ multinom_reg_fit
 #> ==============
 #> 
 #> H2OMultinomialModel: glm
-#> Model ID:  GLM_model_R_0_0 
+#> Model ID:  GLM_model_R_1788361685496_4686 
 #> GLM Model: summary
 #>        family        link                                regularization
 #> 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )
@@ -4307,7 +4699,9 @@ multinom_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4339,9 +4733,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 :::
 
+
 ## `keras` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4352,7 +4748,9 @@ multinom_reg_spec <- multinom_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4361,6 +4759,8 @@ multinom_reg_fit <- multinom_reg_spec |>
   fit(class ~ ., data = mtl_train)
 ```
 :::
+
+
 
 ::: {.cell layout-align="center"}
 
@@ -4383,13 +4783,15 @@ multinom_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 12ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4402,7 +4804,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 23ms/step
+#> 1/1 - 0s - 7ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -4417,9 +4819,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4429,7 +4833,9 @@ multinom_reg_spec <- multinom_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4449,7 +4855,9 @@ multinom_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4481,6 +4889,7 @@ predict(multinom_reg_fit, type = "prob", new_data = tbl_mtl$test)
 ```
 :::
 
+
 :::
 
 ### Naive Bayes (`naive_Bayes()`)
@@ -4491,6 +4900,7 @@ predict(multinom_reg_fit, type = "prob", new_data = tbl_mtl$test)
 
 This engine requires the agua extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -4498,7 +4908,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4509,7 +4921,9 @@ naive_Bayes_spec <- naive_Bayes() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4523,7 +4937,7 @@ naive_Bayes_fit
 #> ==============
 #> 
 #> H2OBinomialModel: naivebayes
-#> Model ID:  NaiveBayes_model_R_0_0 
+#> Model ID:  NaiveBayes_model_R_1788361685496_4687 
 #> Model Summary: 
 #>   number_of_response_levels min_apriori_probability max_apriori_probability
 #> 1                         2                 0.44713                 0.55287
@@ -4571,7 +4985,9 @@ naive_Bayes_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4599,9 +5015,11 @@ predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `klaR` 
 
 This engine requires the discrim extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4610,7 +5028,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4621,7 +5041,9 @@ naive_Bayes_spec <- naive_Bayes()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4631,7 +5053,9 @@ naive_Bayes_fit <- naive_Bayes_spec |>
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4659,9 +5083,11 @@ predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `naivebayes` 
 
 This engine requires the discrim extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4670,7 +5096,9 @@ library(discrim)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4681,7 +5109,9 @@ naive_Bayes_spec <- naive_Bayes() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4783,7 +5213,9 @@ naive_Bayes_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4811,6 +5243,7 @@ predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### K-Nearest Neighbors (`nearest_neighbor()`)
@@ -4820,6 +5253,7 @@ predict(naive_Bayes_fit, type = "prob", new_data = bin_test)
 ## `kknn`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4831,7 +5265,9 @@ nearest_neighbor_spec <- nearest_neighbor() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4852,7 +5288,9 @@ nearest_neighbor_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4880,6 +5318,7 @@ predict(nearest_neighbor_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Null Model (`null_model()`)
@@ -4889,6 +5328,7 @@ predict(nearest_neighbor_fit, type = "prob", new_data = bin_test)
 ## `parsnip`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4900,7 +5340,9 @@ null_model_spec <- null_model() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4915,7 +5357,9 @@ null_model_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4943,6 +5387,7 @@ predict(null_model_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Partial Least Squares (`pls()`)
@@ -4953,6 +5398,7 @@ predict(null_model_fit, type = "prob", new_data = bin_test)
 
 This engine requires the plsmod extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -4960,7 +5406,9 @@ library(plsmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -4972,7 +5420,9 @@ pls_spec <- pls() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5013,7 +5463,9 @@ pls_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5041,6 +5493,7 @@ predict(pls_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Random Forests (`rand_forest()`)
@@ -5050,6 +5503,7 @@ predict(pls_fit, type = "prob", new_data = bin_test)
 ## `ranger`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5064,7 +5518,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5089,11 +5545,13 @@ rand_forest_fit
 #> Target node size:                 10 
 #> Variable importance mode:         none 
 #> Splitrule:                        gini 
-#> OOB prediction error (Brier s.):  0.1489191
+#> OOB prediction error (Brier s.):  0.1477679
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5112,12 +5570,12 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.225       0.775 
-#> 2        0.865       0.135 
-#> 3        0.227       0.773 
-#> 4        0.961       0.0390
-#> 5        0.761       0.239 
-#> 6        0.905       0.0947
+#> 1        0.220       0.780 
+#> 2        0.837       0.163 
+#> 3        0.220       0.780 
+#> 4        0.951       0.0485
+#> 5        0.785       0.215 
+#> 6        0.913       0.0868
 predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 #> Warning in rInfJack(x, inbag.counts): Sample size <=20, no calibration
 #> performed.
@@ -5127,18 +5585,20 @@ predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 #> # A tibble: 6 × 4
 #>   .pred_lower_Class1 .pred_upper_Class1 .pred_lower_Class2 .pred_upper_Class2
 #>                <dbl>              <dbl>              <dbl>              <dbl>
-#> 1            0.00816              0.443             0.557               0.992
-#> 2            0.749                0.982             0.0184              0.251
-#> 3            0                    0.466             0.534               1    
-#> 4            0.879                1                 0                   0.121
-#> 5            0.325                1                 0                   0.675
-#> 6          NaN                  NaN               NaN                 NaN
+#> 1            0                    0.477              0.523              1    
+#> 2            0.604                1                  0                  0.396
+#> 3            0.01000              0.431              0.569              0.990
+#> 4            0.846                1                  0                  0.154
+#> 5            0.469                1                  0                  0.531
+#> 6          NaN                  NaN                NaN                NaN
 ```
 :::
+
 
 ## `aorsf` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5147,7 +5607,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5159,7 +5621,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5179,7 +5643,7 @@ rand_forest_fit
 #>                  N trees: 500
 #>       N predictors total: 2
 #>    N predictors per node: 2
-#>  Average leaves per tree: 24.376
+#>  Average leaves per tree: 24.076
 #> Min observations in leaf: 5
 #>           OOB stat value: 0.87
 #>            OOB stat type: AUC-ROC
@@ -5189,7 +5653,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5208,18 +5674,20 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.172       0.828 
-#> 2        0.884       0.116 
-#> 3        0.344       0.656 
-#> 4        0.974       0.0259
-#> 5        0.937       0.0629
-#> 6        0.900       0.100
+#> 1        0.188       0.812 
+#> 2        0.870       0.130 
+#> 3        0.346       0.654 
+#> 4        0.979       0.0206
+#> 5        0.940       0.0599
+#> 6        0.899       0.101
 ```
 :::
+
 
 ## `grf` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5231,7 +5699,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5252,7 +5722,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5290,9 +5762,11 @@ predict(rand_forest_fit, type = "conf_int", new_data = bin_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5301,7 +5775,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5313,7 +5789,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5329,10 +5807,10 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2OBinomialModel: drf
-#> Model ID:  DRF_model_R_0_0 
+#> Model ID:  DRF_model_R_1788361685496_4689 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               90000        13
+#> 1              50                       50               92546        13
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1        20   16.82000        119        170   142.84000
 #> 
@@ -5381,7 +5859,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5409,9 +5889,11 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5420,7 +5902,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5432,7 +5916,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5443,6 +5929,7 @@ rand_forest_fit <- rand_forest_spec |>
   fit(class ~ ., data = bin_train)
 ```
 :::
+
 
 The print method has a lot of output: 
 
@@ -5559,6 +6046,7 @@ capture.output(print(rand_forest_fit))[1:100] |> cat(sep = "\n")
 
 The holdout data can be predicted:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -5581,13 +6069,15 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 #> 3        0.284       0.716 
 #> 4        0.963       0.0365
 #> 5        0.892       0.108 
-#> 6        0.922       0.0785
+#> 6        0.922       0.0784
 ```
 :::
+
 
 ## `randomForest` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5599,7 +6089,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5626,7 +6118,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5654,9 +6148,11 @@ predict(rand_forest_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5667,7 +6163,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5681,11 +6179,13 @@ rand_forest_fit
 #> 
 #> Formula: Class ~ .
 #> 
-#> RandomForestClassificationModel: uid=random_forest__00000000_0000_0000_0000_000000000000, numTrees=20, numClasses=2, numFeatures=2
+#> RandomForestClassificationModel: uid=random_forest__f6412b77_bad6_4d48_ab32_5f2ec0d80c5b, numTrees=20, numClasses=2, numFeatures=2
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5717,6 +6217,7 @@ predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
 ```
 :::
 
+
 :::
 
 ### Rule Fit (`rule_fit()`)
@@ -5727,6 +6228,7 @@ predict(rand_forest_fit, type = "prob", new_data = tbl_bin$test)
 
 This engine requires the rules extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -5734,7 +6236,9 @@ library(rules)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5746,7 +6250,9 @@ rule_fit_spec <- rule_fit() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5766,7 +6272,9 @@ rule_fit_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5794,9 +6302,11 @@ predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5805,7 +6315,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5817,7 +6329,9 @@ rule_fit_spec <- rule_fit() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5833,7 +6347,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2OBinomialModel: rulefit
-#> Model ID:  RuleFit_model_R_0_0 
+#> Model ID:  RuleFit_model_R_1788361685496_4740 
 #> Rulefit Model Summary: 
 #>     family  link            regularization number_of_predictors_total
 #> 1 binomial logit Lasso (lambda = 0.03081 )                       2328
@@ -5887,7 +6401,9 @@ rule_fit_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5915,6 +6431,7 @@ predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Support Vector Machine (Linear Kernel) (`svm_linear()`)
@@ -5924,6 +6441,7 @@ predict(rule_fit_fit, type = "prob", new_data = bin_test)
 ## `kernlab`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5935,7 +6453,9 @@ svm_linear_spec <- svm_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5960,7 +6480,9 @@ svm_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -5988,9 +6510,11 @@ predict(svm_linear_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 ## `LiblineaR` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6002,7 +6526,9 @@ svm_linear_spec <- svm_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6037,7 +6563,9 @@ svm_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6055,6 +6583,7 @@ predict(svm_linear_fit, type = "class", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Support Vector Machine (Polynomial Kernel) (`svm_poly()`)
@@ -6064,6 +6593,7 @@ predict(svm_linear_fit, type = "class", new_data = bin_test)
 ## `kernlab`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6075,7 +6605,9 @@ svm_poly_spec <- svm_poly() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6102,7 +6634,9 @@ svm_poly_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6130,6 +6664,7 @@ predict(svm_poly_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 ### Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`)
@@ -6139,6 +6674,7 @@ predict(svm_poly_fit, type = "prob", new_data = bin_test)
 ## `kernlab`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6150,7 +6686,9 @@ svm_rbf_spec <- svm_rbf() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6176,7 +6714,9 @@ svm_rbf_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6204,6 +6744,7 @@ predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 ```
 :::
 
+
 :::
 
 # Regression Models
@@ -6211,6 +6752,7 @@ predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 ## Example data
 
 To demonstrate regression, we'll subset some data, make a training/test split, and standardize the predictors: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -6235,7 +6777,9 @@ reg_test <- bake(reg_rec, new_data = testing(reg_split))
 ```
 :::
 
+
 We also have models that are specifically designed for integer count outcomes. The data for these are:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6259,7 +6803,9 @@ count_test <- bake(count_rec, new_data = testing(count_split))
 ```
 :::
 
+
 Finally, we have some models that handle hierarchical data, where some rows are statistically correlated with other rows. For these examples, we'll use a data set that models body weights as a function of time for several "subjects" (rats, actually). We'll split these data in a way where all rows for a specific subject are either in the training or the test set: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -6277,9 +6823,11 @@ reg_group_test <- testing(reg_group_split)
 ```
 :::
 
+
 There are 12 subjects in the training set and 4 in the test set. 
 
 If using the **Apache Spark** engine, we will need to identify the data source, and then use it to create the splits. For this article, we will copy the `concrete` data set into the Spark session.
+
 
 ::: {.cell layout-align="center"}
 
@@ -6294,6 +6842,7 @@ tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 1
 ```
 :::
 
+
 ## Models
 
 ### Bagged MARS (`bag_mars()`)
@@ -6304,6 +6853,7 @@ tbl_reg <- sdf_random_split(tbl_concrete, training = 0.95, test = 0.05, seed = 1
 
 This engine requires the baguette extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -6311,7 +6861,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6323,7 +6875,9 @@ bag_mars_spec <- bag_mars() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6347,7 +6901,9 @@ bag_mars_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6367,6 +6923,7 @@ predict(bag_mars_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Bagged Neural Networks (`bag_mlp()`)
@@ -6377,6 +6934,7 @@ predict(bag_mars_fit, new_data = reg_test)
 
 This engine requires the baguette extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -6384,7 +6942,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6396,7 +6956,9 @@ bag_mlp_spec <- bag_mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6415,12 +6977,14 @@ bag_mlp_fit
 #> # A tibble: 2 × 4
 #>   term   value std.error  used
 #>   <chr>  <dbl>     <dbl> <int>
-#> 1 age     55.9      2.98    11
-#> 2 cement  44.1      2.98    11
+#> 1 age     55.9      2.96    11
+#> 2 cement  44.1      2.96    11
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6429,16 +6993,17 @@ predict(bag_mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  20.0
-#> 2  39.4
-#> 3  28.4
-#> 4  68.6
-#> 5  44.3
-#> 6  36.4
-#> 7  40.7
-#> 8  38.5
+#> 1  19.9
+#> 2  39.1
+#> 3  28.3
+#> 4  68.8
+#> 5  44.1
+#> 6  36.3
+#> 7  40.8
+#> 8  37.0
 ```
 :::
+
 
 :::
 
@@ -6450,6 +7015,7 @@ predict(bag_mlp_fit, new_data = reg_test)
 
 This engine requires the baguette extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -6457,7 +7023,9 @@ library(baguette)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6469,7 +7037,9 @@ bag_tree_spec <- bag_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6493,7 +7063,9 @@ bag_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6513,6 +7085,7 @@ predict(bag_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Bayesian Additive Regression Trees (`bart()`)
@@ -6522,6 +7095,7 @@ predict(bag_tree_fit, new_data = reg_test)
 ## `dbarts`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6533,7 +7107,9 @@ bart_spec <- bart() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6551,7 +7127,9 @@ bart_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6595,6 +7173,7 @@ predict(bart_fit, type = "pred_int", new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Boosted Decision Trees (`boost_tree()`)
@@ -6604,6 +7183,7 @@ predict(bart_fit, type = "pred_int", new_data = reg_test)
 ## `xgboost`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6615,7 +7195,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6648,7 +7230,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6668,9 +7252,11 @@ predict(boost_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `catboost` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6679,7 +7265,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6691,7 +7279,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6701,21 +7291,41 @@ set.seed(557)
 boost_tree_fit <- boost_tree_spec |>
   fit(strength ~ ., data = reg_train)
 boost_tree_fit
+#> parsnip model object
+#> 
+#> CatBoost model (1000 trees)
+#> Loss function: RMSE
+#> Fit to 2 feature(s)
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(boost_tree_fit, new_data = reg_test)
+#> # A tibble: 8 × 1
+#>   .pred
+#>   <dbl>
+#> 1  26.6
+#> 2  33.9
+#> 3  27.8
+#> 4  60.6
+#> 5  34.7
+#> 6  36.3
+#> 7  43.6
+#> 8  29.3
 ```
 :::
+
 
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6724,7 +7334,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6736,7 +7348,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6752,10 +7366,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_0_0 
+#> Model ID:  GBM_model_R_1788361685496_4896 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               20000         6
+#> 1              50                       50               20473         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         14         43    27.92000
 #> 
@@ -6771,7 +7385,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6791,9 +7407,11 @@ predict(boost_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `h2o_gbm` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6802,7 +7420,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6814,7 +7434,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6830,10 +7452,10 @@ boost_tree_fit
 #> ==============
 #> 
 #> H2ORegressionModel: gbm
-#> Model ID:  GBM_model_R_0_0 
+#> Model ID:  GBM_model_R_1788361685496_4897 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               20000         6
+#> 1              50                       50               20472         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1         6    6.00000         14         43    27.92000
 #> 
@@ -6849,7 +7471,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6869,9 +7493,11 @@ predict(boost_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `lightgbm` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6880,7 +7506,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6892,7 +7520,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6910,7 +7540,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6930,9 +7562,11 @@ predict(boost_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6943,7 +7577,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6957,11 +7593,13 @@ boost_tree_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> GBTRegressionModel: uid=gradient_boosted_trees__00000000_0000_0000_0000_000000000000, numTrees=20, numFeatures=8
+#> GBTRegressionModel: uid=gradient_boosted_trees__17eba325_adc9_4f94_87b8_1b85f2266efb, numTrees=20, numFeatures=8
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -6985,6 +7623,7 @@ predict(boost_tree_fit, new_data = tbl_reg$test)
 ```
 :::
 
+
 :::
 
 ### Cubist Rules (`cubist_rules()`)
@@ -6995,6 +7634,7 @@ predict(boost_tree_fit, new_data = tbl_reg$test)
 
 This engine requires the rules extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -7002,7 +7642,9 @@ library(rules)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7013,7 +7655,9 @@ cubist_rules_spec <- cubist_rules()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7037,7 +7681,9 @@ cubist_rules_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7057,6 +7703,7 @@ predict(cubist_rules_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Decision Tree (`decision_tree()`)
@@ -7066,6 +7713,7 @@ predict(cubist_rules_fit, new_data = reg_test)
 ## `rpart`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7077,7 +7725,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7108,7 +7758,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7128,9 +7780,11 @@ predict(decision_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7139,7 +7793,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7151,7 +7807,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7183,7 +7841,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7203,9 +7863,11 @@ predict(decision_tree_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7216,7 +7878,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7228,11 +7892,13 @@ decision_tree_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> DecisionTreeRegressionModel: uid=decision_tree_regressor__00000000_0000_0000_0000_000000000000, depth=5, numNodes=63, numFeatures=8
+#> DecisionTreeRegressionModel: uid=decision_tree_regressor__ceac857b_f525_4c48_a91b_b6c25a6ffc96, depth=5, numNodes=63, numFeatures=8
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7256,6 +7922,7 @@ predict(decision_tree_fit, new_data = tbl_reg$test)
 ```
 :::
 
+
 :::
 
 ### Generalized Additive Models (`gen_additive_mod()`)
@@ -7265,6 +7932,7 @@ predict(decision_tree_fit, new_data = tbl_reg$test)
 ## `mgcv`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7276,7 +7944,9 @@ gen_additive_mod_spec <- gen_additive_mod() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7301,7 +7971,9 @@ gen_additive_mod_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7333,6 +8005,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Linear Reg (`linear_reg()`)
@@ -7343,6 +8016,7 @@ predict(gen_additive_mod_fit, type = "conf_int", new_data = reg_test)
 
 We create a model specification via:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -7352,7 +8026,9 @@ linear_reg_spec <- linear_reg()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7372,7 +8048,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7416,9 +8094,11 @@ predict(linear_reg_fit, type = "pred_int", new_data = reg_test)
 ```
 :::
 
+
 ## `brulee` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7429,7 +8109,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7447,13 +8129,15 @@ linear_reg_fit
 #>   Learning Rate: 1
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 3
-#>   scaled validation loss after 1 epoch: 235
+#>   scaled validation loss after 2 epochs: 235
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7473,9 +8157,11 @@ predict(linear_reg_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7484,7 +8170,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7495,7 +8183,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7546,7 +8236,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7569,9 +8261,11 @@ predict(linear_reg_fit, new_data = reg_group_test)
 ```
 :::
 
+
 ## `glm` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7582,7 +8276,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7606,7 +8302,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7638,9 +8336,11 @@ predict(linear_reg_fit, type = "conf_int", new_data = reg_test)
 ```
 :::
 
+
 ## `glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7649,7 +8349,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7660,7 +8362,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7689,7 +8393,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7712,9 +8418,11 @@ predict(linear_reg_fit, new_data = reg_group_test)
 ```
 :::
 
+
 ## `glmnet` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7725,7 +8433,9 @@ linear_reg_spec <- linear_reg(penalty = 0.01) |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7798,7 +8508,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7818,9 +8530,11 @@ predict(linear_reg_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `gls` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7829,7 +8543,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7842,7 +8558,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7871,7 +8589,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7894,9 +8614,11 @@ predict(linear_reg_fit, new_data = reg_group_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7905,7 +8627,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7916,7 +8640,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7930,7 +8656,7 @@ linear_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_0_0 
+#> Model ID:  GLM_model_R_1788361685496_4898 
 #> GLM Model: summary
 #>     family     link                               regularization
 #> 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )
@@ -7962,7 +8688,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7982,9 +8710,11 @@ predict(linear_reg_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `keras` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -7995,7 +8725,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8007,6 +8739,8 @@ linear_reg_fit <- linear_reg_spec |>
 linear_reg_fit
 ```
 :::
+
+
 
 ::: {.cell layout-align="center"}
 
@@ -8029,13 +8763,15 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 12ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8050,9 +8786,11 @@ predict(linear_reg_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `lme` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8061,7 +8799,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8074,7 +8814,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8104,7 +8846,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8127,9 +8871,11 @@ predict(linear_reg_fit, new_data = reg_group_test)
 ```
 :::
 
+
 ## `lmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8138,7 +8884,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8149,7 +8897,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8175,7 +8925,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8198,9 +8950,11 @@ predict(linear_reg_fit, new_data = reg_group_test)
 ```
 :::
 
+
 ## `stan` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8211,7 +8965,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8245,7 +9001,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8298,9 +9056,11 @@ predict(linear_reg_fit, type = "pred_int", new_data = reg_group_test)
 ```
 :::
 
+
 ## `stan_glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8309,7 +9069,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8320,7 +9082,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8339,9 +9103,9 @@ linear_reg_fit
 #>  observations: 132
 #> ------
 #>             Median MAD_SD
-#> (Intercept) 245.6    6.7 
-#> Diet2       185.7   11.2 
-#> Diet3       259.3   11.1 
+#> (Intercept) 245.8    6.8 
+#> Diet2       185.5   11.3 
+#> Diet3       258.8   11.2 
 #> Time          0.5    0.0 
 #> 
 #> Auxiliary parameter(s):
@@ -8350,7 +9114,7 @@ linear_reg_fit
 #> 
 #> Error terms:
 #>  Groups   Name        Std.Dev.
-#>  Rat      (Intercept) 16.8    
+#>  Rat      (Intercept) 17.1    
 #>  Residual              8.2    
 #> Num. levels: Rat 12 
 #> 
@@ -8360,7 +9124,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8384,23 +9150,25 @@ predict(linear_reg_fit, type = "pred_int", new_data = reg_group_test)
 #> # A tibble: 44 × 2
 #>    .pred_lower .pred_upper
 #>          <dbl>       <dbl>
-#>  1        206.        286.
-#>  2        209.        290.
-#>  3        214.        293.
-#>  4        218.        297.
-#>  5        221.        302.
+#>  1        207.        285.
+#>  2        209.        289.
+#>  3        213.        293.
+#>  4        217.        297.
+#>  5        222.        300.
 #>  6        226.        305.
-#>  7        229.        309.
-#>  8        230.        309.
-#>  9        234.        313.
-#> 10        237.        318.
+#>  7        229.        308.
+#>  8        229.        309.
+#>  9        232.        313.
+#> 10        238.        316.
 #> # ℹ 34 more rows
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8410,7 +9178,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8432,7 +9202,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8456,6 +9228,7 @@ predict(linear_reg_fit, new_data = tbl_reg$test)
 ```
 :::
 
+
 :::
 
 ### Multivariate Adaptive Regression Splines (`mars()`)
@@ -8465,6 +9238,7 @@ predict(linear_reg_fit, new_data = tbl_reg$test)
 ## `earth`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8476,7 +9250,9 @@ mars_spec <- mars() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8494,7 +9270,9 @@ mars_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8514,6 +9292,7 @@ predict(mars_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Neural Networks (`mlp()`)
@@ -8523,6 +9302,7 @@ predict(mars_fit, new_data = reg_test)
 ## `nnet`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8534,7 +9314,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8553,7 +9335,9 @@ mlp_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8562,20 +9346,22 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  14.9
-#> 2  39.1
-#> 3  32.2
-#> 4  66.0
-#> 5  44.6
-#> 6  42.3
-#> 7  42.0
-#> 8  34.3
+#> 1  14.8
+#> 2  38.5
+#> 3  32.0
+#> 4  63.6
+#> 5  43.5
+#> 6  42.7
+#> 7  42.3
+#> 8  33.1
 ```
 :::
+
 
 ## `brulee` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8587,7 +9373,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8609,13 +9397,15 @@ mlp_fit
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
 #>   Optimizer: "LBFGS"
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 13
-#>   scaled validation loss after 3 epochs: 0.477
+#>   scaled validation loss after 3 epochs: 0.465
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8624,20 +9414,22 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  32.1
+#> 1  32.2
 #> 2  33.9
-#> 3  27.1
-#> 4  44.8
+#> 3  27.3
+#> 4  44.7
 #> 5  37.0
-#> 6  35.2
+#> 6  35.3
 #> 7  35.8
 #> 8  41.7
 ```
 :::
 
+
 ## `brulee_two_layer` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8649,7 +9441,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8671,13 +9465,15 @@ mlp_fit
 #>   % Validation: 0.1
 #>   Penalty: 0.001, 0% L1
 #>   Optimizer: "LBFGS"
-#>   Device: "cpu"
+#>   Device: "mps"
 #>   # Parameters: 25
-#>   scaled validation loss after 25 epochs: 0.228
+#>   scaled validation loss after 18 epochs: 0.226
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8686,20 +9482,22 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  26.1
-#> 2  42.4
-#> 3  22.3
-#> 4  55.9
-#> 5  35.2
-#> 6  38.3
-#> 7  39.4
-#> 8  42.1
+#> 1  26.5
+#> 2  42.9
+#> 3  22.8
+#> 4  55.0
+#> 5  35.5
+#> 6  38.7
+#> 7  39.7
+#> 8  42.4
 ```
 :::
+
 
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8708,7 +9506,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8720,7 +9520,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8736,7 +9538,7 @@ mlp_fit
 #> ==============
 #> 
 #> H2ORegressionModel: deeplearning
-#> Model ID:  DeepLearning_model_R_0_0 
+#> Model ID:  DeepLearning_model_R_1788361685496_4899 
 #> Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1
 #>   layer units      type dropout       l1       l2 mean_rate rate_rms momentum
 #> 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA
@@ -8760,7 +9562,9 @@ mlp_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8780,9 +9584,11 @@ predict(mlp_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `keras` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8794,7 +9600,9 @@ mlp_spec <- mlp() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8805,6 +9613,8 @@ mlp_fit <- mlp_spec |>
   fit(strength ~ ., data = reg_train)
 ```
 :::
+
+
 
 ::: {.cell layout-align="center"}
 
@@ -8824,13 +9634,15 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 13ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8845,6 +9657,7 @@ predict(mlp_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### K-Nearest Neighbors (`nearest_neighbor()`)
@@ -8854,6 +9667,7 @@ predict(mlp_fit, new_data = reg_test)
 ## `kknn`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8865,7 +9679,9 @@ nearest_neighbor_spec <- nearest_neighbor() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8880,14 +9696,16 @@ nearest_neighbor_fit
 #> kknn::train.kknn(formula = strength ~ ., data = data, ks = min_rows(5,     data, 5))
 #> 
 #> Type of response variable: continuous
-#> minimal mean absolute error: 8.270248
-#> Minimal mean squared error: 115.9175
+#> minimal mean absolute error: 8.257735
+#> Minimal mean squared error: 115.8737
 #> Best kernel: optimal
 #> Best k: 5
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8907,11 +9725,13 @@ predict(nearest_neighbor_fit, new_data = reg_test)
 ```
 :::
 
+
 ### Null Model (`null_model()`)
 
 ## `parsnip`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8923,7 +9743,9 @@ null_model_spec <- null_model() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8938,7 +9760,9 @@ null_model_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8958,6 +9782,7 @@ predict(null_model_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Partial Least Squares (`pls()`)
@@ -8968,6 +9793,7 @@ predict(null_model_fit, new_data = reg_test)
 
 This engine requires the plsmod extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -8975,7 +9801,9 @@ library(plsmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -8987,7 +9815,9 @@ pls_spec <- pls() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9024,7 +9854,9 @@ pls_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9044,6 +9876,7 @@ predict(pls_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Poisson Reg (`poisson_reg()`)
@@ -9054,6 +9887,7 @@ predict(pls_fit, new_data = reg_test)
 
 This engine requires the poissonreg extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -9061,7 +9895,9 @@ library(poissonreg)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9072,7 +9908,9 @@ poisson_reg_spec <- poisson_reg()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9096,7 +9934,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9117,9 +9957,11 @@ predict(poisson_reg_fit, new_data = count_test)
 ```
 :::
 
+
 ## `gee` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9128,7 +9970,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9139,7 +9983,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9190,7 +10036,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9200,9 +10048,11 @@ The holdout data can be predicted:
 ```
 :::
 
+
 ## `glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9211,7 +10061,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9222,7 +10074,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9257,7 +10111,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9280,9 +10136,11 @@ predict(poisson_reg_fit, new_data = reg_group_test)
 ```
 :::
 
+
 ## `glmnet` 
 
 This engine requires the poissonreg extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9291,7 +10149,9 @@ library(poissonreg)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9302,7 +10162,9 @@ poisson_reg_spec <- poisson_reg(penalty = 0.01) |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9371,7 +10233,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9392,9 +10256,11 @@ predict(poisson_reg_fit, new_data = count_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9403,7 +10269,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9414,7 +10282,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9428,7 +10298,7 @@ poisson_reg_fit
 #> ==============
 #> 
 #> H2ORegressionModel: glm
-#> Model ID:  GLM_model_R_0_0 
+#> Model ID:  GLM_model_R_1788361685496_4900 
 #> GLM Model: summary
 #>    family link                               regularization
 #> 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )
@@ -9460,7 +10330,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9481,9 +10353,11 @@ predict(poisson_reg_fit, new_data = count_test)
 ```
 :::
 
+
 ## `hurdle` 
 
 This engine requires the poissonreg extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9492,7 +10366,9 @@ library(poissonreg)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9503,7 +10379,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9527,7 +10405,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9548,9 +10428,11 @@ predict(poisson_reg_fit, new_data = count_test)
 ```
 :::
 
+
 ## `stan` 
 
 This engine requires the poissonreg extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9559,7 +10441,9 @@ library(poissonreg)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9570,7 +10454,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9601,7 +10487,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9654,9 +10542,11 @@ predict(poisson_reg_fit, type = "pred_int", new_data = reg_group_test)
 ```
 :::
 
+
 ## `stan_glmer` 
 
 This engine requires the multilevelmod extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9665,7 +10555,9 @@ library(multilevelmod)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9676,7 +10568,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9686,6 +10580,10 @@ set.seed(690)
 poisson_reg_fit <- 
   poisson_reg_spec |> 
   fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
+#> Warning: There were 1 divergent transitions after warmup. See
+#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+#> to find out why this is a problem and how to eliminate them.
+#> Warning: Examine the pairs() plot to diagnose sampling problems
 poisson_reg_fit
 #> parsnip model object
 #> 
@@ -9702,7 +10600,7 @@ poisson_reg_fit
 #> 
 #> Error terms:
 #>  Groups Name        Std.Dev.
-#>  Rat    (Intercept) 0.054   
+#>  Rat    (Intercept) 0.055   
 #> Num. levels: Rat 12 
 #> 
 #> ------
@@ -9711,7 +10609,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9720,38 +10620,40 @@ predict(poisson_reg_fit, new_data = reg_group_test)
 #> # A tibble: 44 × 1
 #>    .pred
 #>    <dbl>
-#>  1  253.
-#>  2  255.
+#>  1  252.
+#>  2  254.
 #>  3  257.
-#>  4  260.
+#>  4  259.
 #>  5  262.
 #>  6  265.
-#>  7  268.
-#>  8  268.
-#>  9  271.
+#>  7  267.
+#>  8  267.
+#>  9  270.
 #> 10  273.
 #> # ℹ 34 more rows
 predict(poisson_reg_fit, type = "pred_int", new_data = reg_group_test)
 #> # A tibble: 44 × 2
 #>    .pred_lower .pred_upper
 #>          <dbl>       <dbl>
-#>  1        210         298 
-#>  2        213         299 
-#>  3        217.        303.
-#>  4        217         306 
-#>  5        221         309 
-#>  6        222         313 
-#>  7        225         314 
-#>  8        227         316 
-#>  9        225         319 
-#> 10        229         323 
+#>  1         209        296 
+#>  2         212        299 
+#>  3         213        302 
+#>  4         217        305 
+#>  5         219        308 
+#>  6         224        311 
+#>  7         224        312 
+#>  8         225        314.
+#>  9         228        317 
+#> 10         230        321 
 #> # ℹ 34 more rows
 ```
 :::
 
+
 ## `zeroinfl` 
 
 This engine requires the poissonreg extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9760,7 +10662,9 @@ library(poissonreg)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9771,7 +10675,9 @@ poisson_reg_spec <- poisson_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9796,7 +10702,9 @@ poisson_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9817,6 +10725,7 @@ predict(poisson_reg_fit, new_data = count_test)
 ```
 :::
 
+
 :::
 
 ### Random Forests (`rand_forest()`)
@@ -9826,6 +10735,7 @@ predict(poisson_reg_fit, new_data = count_test)
 ## `ranger`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9840,7 +10750,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9865,12 +10777,14 @@ rand_forest_fit
 #> Target node size:                 5 
 #> Variable importance mode:         none 
 #> Splitrule:                        variance 
-#> OOB prediction error (MSE):       92.87944 
-#> R squared (OOB):                  0.6818328
+#> OOB prediction error (MSE):       92.94531 
+#> R squared (OOB):                  0.6816071
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9879,34 +10793,36 @@ predict(rand_forest_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  23.5
+#> 1  23.6
 #> 2  36.9
-#> 3  28.6
-#> 4  56.2
-#> 5  38.7
-#> 6  35.1
-#> 7  38.5
-#> 8  34.3
+#> 3  28.4
+#> 4  56.5
+#> 5  38.6
+#> 6  36.5
+#> 7  38.7
+#> 8  34.4
 predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 #> Warning in rInfJack(pred = result$predictions, inbag = inbag.counts, used.trees
 #> = 1:num.trees): Sample size <=20, no calibration performed.
 #> # A tibble: 8 × 2
 #>   .pred_lower .pred_upper
 #>         <dbl>       <dbl>
-#> 1        18.7        28.3
-#> 2        30.9        43.0
-#> 3        23.6        33.7
-#> 4        44.1        68.2
-#> 5        34.1        43.4
-#> 6        31.1        39.1
-#> 7        33.2        43.8
-#> 8        27.1        41.5
+#> 1        18.1        29.1
+#> 2        32.6        41.1
+#> 3        24.0        32.9
+#> 4        45.4        67.7
+#> 5        33.0        44.3
+#> 6        32.0        41.0
+#> 7        35.1        42.3
+#> 8        28.4        40.3
 ```
 :::
+
 
 ## `aorsf` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9915,7 +10831,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9927,7 +10845,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9946,9 +10866,9 @@ rand_forest_fit
 #>                  N trees: 500
 #>       N predictors total: 2
 #>    N predictors per node: 2
-#>  Average leaves per tree: 14.092
+#>  Average leaves per tree: 13.994
 #> Min observations in leaf: 5
-#>           OOB stat value: 0.61
+#>           OOB stat value: 0.59
 #>            OOB stat type: RSQ
 #>      Variable importance: anova
 #> 
@@ -9956,7 +10876,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9965,20 +10887,22 @@ predict(rand_forest_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  25.4
-#> 2  36.8
-#> 3  30.4
-#> 4  56.2
-#> 5  42.1
-#> 6  38.0
-#> 7  40.3
-#> 8  53.1
+#> 1  25.2
+#> 2  36.4
+#> 3  29.7
+#> 4  55.5
+#> 5  42.3
+#> 6  38.5
+#> 7  40.7
+#> 8  52.7
 ```
 :::
+
 
 ## `grf` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -9990,7 +10914,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10011,7 +10937,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10043,9 +10971,11 @@ predict(rand_forest_fit, type = "conf_int", new_data = reg_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10054,7 +10984,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10066,7 +10998,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10082,10 +11016,10 @@ rand_forest_fit
 #> ==============
 #> 
 #> H2ORegressionModel: drf
-#> Model ID:  DRF_model_R_0_0 
+#> Model ID:  DRF_model_R_1788361685496_4901 
 #> Model Summary: 
 #>   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
-#> 1              50                       50               20000         6
+#> 1              50                       50               22988         6
 #>   max_depth mean_depth min_leaves max_leaves mean_leaves
 #> 1        13    8.84000         19         48    31.90000
 #> 
@@ -10102,7 +11036,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10122,9 +11058,11 @@ predict(rand_forest_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `partykit` 
 
 This engine requires the bonsai extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10133,7 +11071,9 @@ library(bonsai)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10145,7 +11085,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10156,6 +11098,7 @@ rand_forest_fit <- rand_forest_spec |>
   fit(strength ~ ., data = reg_train)
 ```
 :::
+
 
 The print method has a lot of output: 
 
@@ -10272,6 +11215,7 @@ capture.output(print(rand_forest_fit))[1:100] |> cat(sep = "\n")
 
 The holdout data can be predicted:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -10290,9 +11234,11 @@ predict(rand_forest_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `randomForest` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10304,7 +11250,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10323,12 +11271,14 @@ rand_forest_fit
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 1
 #> 
-#>           Mean of squared residuals: 90.19249
-#>                     % Var explained: 68.76
+#>           Mean of squared residuals: 90.38475
+#>                     % Var explained: 68.7
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10342,15 +11292,17 @@ predict(rand_forest_fit, new_data = reg_test)
 #> 3  28.6
 #> 4  58.0
 #> 5  38.3
-#> 6  35.0
+#> 6  35.4
 #> 7  38.1
 #> 8  33.7
 ```
 :::
 
+
 ## `spark` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10361,7 +11313,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10375,11 +11329,13 @@ rand_forest_fit
 #> 
 #> Formula: compressive_strength ~ .
 #> 
-#> RandomForestRegressionModel: uid=random_forest__00000000_0000_0000_0000_000000000000, numTrees=20, numFeatures=8
+#> RandomForestRegressionModel: uid=random_forest__1a3f020f_8999_4025_803f_39335f9c9a6f, numTrees=20, numFeatures=8
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10403,6 +11359,7 @@ predict(rand_forest_fit, new_data = tbl_reg$test)
 ```
 :::
 
+
 :::
 
 ### Rule Fit (`rule_fit()`)
@@ -10413,6 +11370,7 @@ predict(rand_forest_fit, new_data = tbl_reg$test)
 
 This engine requires the rules extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -10420,7 +11378,9 @@ library(rules)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10432,7 +11392,9 @@ rule_fit_spec <- rule_fit() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10452,7 +11414,9 @@ rule_fit_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10472,9 +11436,11 @@ predict(rule_fit_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `h2o` 
 
 This engine requires the agua extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10483,7 +11449,9 @@ library(agua)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10495,7 +11463,9 @@ rule_fit_spec <- rule_fit() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10511,7 +11481,7 @@ rule_fit_fit
 #> ==============
 #> 
 #> H2ORegressionModel: rulefit
-#> Model ID:  RuleFit_model_R_0_0 
+#> Model ID:  RuleFit_model_R_1788361685496_4902 
 #> Rulefit Model Summary: 
 #>     family     link           regularization number_of_predictors_total
 #> 1 gaussian identity Lasso (lambda = 0.9516 )                       1801
@@ -10534,7 +11504,9 @@ rule_fit_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10554,6 +11526,7 @@ predict(rule_fit_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Support Vector Machine (Linear Kernel) (`svm_linear()`)
@@ -10563,6 +11536,7 @@ predict(rule_fit_fit, new_data = reg_test)
 ## `kernlab`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10574,7 +11548,9 @@ svm_linear_spec <- svm_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10598,7 +11574,9 @@ svm_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10618,9 +11596,11 @@ predict(svm_linear_fit, new_data = reg_test)
 ```
 :::
 
+
 ## `LiblineaR` 
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10632,7 +11612,9 @@ svm_linear_spec <- svm_linear() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10663,7 +11645,9 @@ svm_linear_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10683,6 +11667,7 @@ predict(svm_linear_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Support Vector Machine (Polynomial Kernel) (`svm_poly()`)
@@ -10692,6 +11677,7 @@ predict(svm_linear_fit, new_data = reg_test)
 ## `kernlab`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10703,7 +11689,9 @@ svm_poly_spec <- svm_poly() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10729,7 +11717,9 @@ svm_poly_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10749,6 +11739,7 @@ predict(svm_poly_fit, new_data = reg_test)
 ```
 :::
 
+
 :::
 
 ### Support Vector Machine (Radial Basis Function Kernel) (`svm_rbf()`)
@@ -10758,6 +11749,7 @@ predict(svm_poly_fit, new_data = reg_test)
 ## `kernlab`
 
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10769,7 +11761,9 @@ svm_rbf_spec <- svm_rbf() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10785,16 +11779,18 @@ svm_rbf_fit
 #>  parameter : epsilon = 0.1  cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.850174270140176 
+#>  Hyperparameter : sigma =  0.850174270140177 
 #> 
 #> Number of Support Vectors : 79 
 #> 
 #> Objective Function Value : -33.0277 
-#> Training error : 0.28361
+#> Training error : 0.283618
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10814,6 +11810,8 @@ predict(svm_rbf_fit, new_data = reg_test)
 ```
 :::
 
+
+
 :::
 
 # Censored Regression Models
@@ -10821,6 +11819,7 @@ predict(svm_rbf_fit, new_data = reg_test)
 ## Example data
 
 Let's simulate a data set using the prodlim and survival packages: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -10848,7 +11847,9 @@ cns_test <- testing(cns_split)
 ```
 :::
 
+
 For some types of predictions, we need the _evaluation time(s)_ for the predictions. We'll use these three times to demonstrate: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -10856,6 +11857,7 @@ For some types of predictions, we need the _evaluation time(s)_ for the predicti
 eval_times <- c(1, 3, 5)
 ```
 :::
+
 
 ## Models
 
@@ -10867,6 +11869,7 @@ eval_times <- c(1, 3, 5)
 
 This engine requires the censored extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -10874,7 +11877,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10886,7 +11891,9 @@ bag_tree_spec <- bag_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10904,7 +11911,9 @@ bag_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10930,7 +11939,9 @@ predict(bag_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_t
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -10949,6 +11960,7 @@ bag_tree_fit |>
 ```
 :::
 
+
 :::
 
 ### Boosted Decision Trees (`boost_tree()`)
@@ -10959,6 +11971,7 @@ bag_tree_fit |>
 
 This engine requires the censored extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -10966,7 +11979,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -10977,7 +11992,9 @@ boost_tree_spec <- boost_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11007,7 +12024,9 @@ boost_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11042,7 +12061,9 @@ predict(boost_tree_fit, type = "linear_pred", new_data = cns_test)
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11061,6 +12082,7 @@ boost_tree_fit |>
 ```
 :::
 
+
 :::
 
 ### Decision Tree (`decision_tree()`)
@@ -11071,6 +12093,7 @@ boost_tree_fit |>
 
 This engine requires the censored extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -11078,7 +12101,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11090,7 +12115,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11122,7 +12149,7 @@ decision_tree_fit
 #> 
 #> Call: prodlim::prodlim(formula = form, data = data)
 #> Stratified Kaplan-Meier estimator for the conditional event time survival function
-#> Discrete predictor variable: rpartFactor (0.154174164904031, 0.565650228981438, 0.733631734872791, 1.25726850344687, 2.50720371146533, 6.39341334321542)
+#> Discrete predictor variable: rpartFactor (0.154174164904031, 0.565650228981439, 0.733631734872791, 1.25726850344687, 2.50720371146533, 6.39341334321542)
 #> 
 #> Right-censored response of a survival model
 #> 
@@ -11134,7 +12161,7 @@ decision_tree_fit
 #>  right.censored 84  
 #> 
 #> $levels
-#> [1] "0.154174164904031" "0.565650228981438" "0.733631734872791"
+#> [1] "0.154174164904031" "0.565650228981439" "0.733631734872791"
 #> [4] "1.25726850344687"  "2.50720371146533"  "6.39341334321542" 
 #> 
 #> attr(,"class")
@@ -11142,7 +12169,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11168,7 +12197,9 @@ predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = e
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11187,9 +12218,11 @@ decision_tree_fit |>
 ```
 :::
 
+
 ## `partykit` 
 
 This engine requires the censored extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11198,7 +12231,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11210,7 +12245,9 @@ decision_tree_spec <- decision_tree() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11240,7 +12277,9 @@ decision_tree_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11266,7 +12305,9 @@ predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = e
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11285,6 +12326,7 @@ decision_tree_fit |>
 ```
 :::
 
+
 :::
 
 ### Proportional Hazards (`proportional_hazards()`)
@@ -11295,6 +12337,7 @@ decision_tree_fit |>
 
 This engine requires the censored extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -11302,7 +12345,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11313,7 +12358,9 @@ proportional_hazards_spec <- proportional_hazards()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11336,7 +12383,9 @@ proportional_hazards_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11371,7 +12420,9 @@ predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11390,9 +12441,11 @@ proportional_hazards_fit |>
 ```
 :::
 
+
 ## `glmnet` 
 
 This engine requires the censored extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11401,7 +12454,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11412,7 +12467,9 @@ proportional_hazards_spec <- proportional_hazards(penalty = 0.01) |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11476,7 +12533,9 @@ proportional_hazards_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11511,7 +12570,9 @@ predict(proportional_hazards_fit, type = "linear_pred", new_data = cns_test)
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11530,6 +12591,7 @@ proportional_hazards_fit |>
 ```
 :::
 
+
 :::
 
 ### Random Forests (`rand_forest()`)
@@ -11540,6 +12602,7 @@ proportional_hazards_fit |>
 
 This engine requires the censored extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -11547,7 +12610,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11559,7 +12624,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11579,10 +12646,10 @@ rand_forest_fit
 #>                  N trees: 500
 #>       N predictors total: 2
 #>    N predictors per node: 2
-#>  Average leaves per tree: 12.722
+#>  Average leaves per tree: 12.85
 #> Min observations in leaf: 5
 #>       Min events in leaf: 1
-#>           OOB stat value: 0.71
+#>           OOB stat value: 0.70
 #>            OOB stat type: Harrell's C-index
 #>      Variable importance: anova
 #> 
@@ -11590,7 +12657,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11599,11 +12668,11 @@ predict(rand_forest_fit, type = "time", new_data = cns_test)
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       6.02
-#> 2       3.88
-#> 3       4.36
-#> 4       5.49
-#> 5       4.25
+#> 1       5.93
+#> 2       3.85
+#> 3       4.41
+#> 4       5.43
+#> 5       4.34
 predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 #> # A tibble: 5 × 1
 #>   .pred           
@@ -11616,7 +12685,9 @@ predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eva
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11630,14 +12701,16 @@ rand_forest_fit |>
 #>   .eval_time .pred_survival
 #>        <dbl>          <dbl>
 #> 1          1          0.999
-#> 2          3          0.878
-#> 3          5          0.630
+#> 2          3          0.873
+#> 3          5          0.627
 ```
 :::
+
 
 ## `partykit` 
 
 This engine requires the censored extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11646,7 +12719,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11658,7 +12733,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11669,6 +12746,7 @@ rand_forest_fit <- rand_forest_spec |>
   fit(event_time ~ ., data = cns_train)
 ```
 :::
+
 
 The print method has a lot of output: 
 
@@ -11785,6 +12863,7 @@ capture.output(print(rand_forest_fit))[1:100] |> cat(sep = "\n")
 
 The holdout data can be predicted:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -11809,7 +12888,9 @@ predict(rand_forest_fit, type = "survival", new_data = cns_test, eval_time = eva
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11828,6 +12909,7 @@ rand_forest_fit |>
 ```
 :::
 
+
 :::
 
 ### Parametric Survival Models (`survival_reg()`)
@@ -11838,6 +12920,7 @@ rand_forest_fit |>
 
 This engine requires the censored extension package, so let's load this first:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -11845,7 +12928,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11856,7 +12941,9 @@ survival_reg_spec <- survival_reg()
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11881,7 +12968,9 @@ survival_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11934,7 +13023,9 @@ predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -11953,9 +13044,11 @@ survival_reg_fit |>
 ```
 :::
 
+
 ## `flexsurv` 
 
 This engine requires the censored extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11964,7 +13057,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -11975,7 +13070,9 @@ survival_reg_spec <- survival_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12008,7 +13105,9 @@ survival_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12061,7 +13160,9 @@ predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -12080,9 +13181,11 @@ survival_reg_fit |>
 ```
 :::
 
+
 ## `flexsurvspline` 
 
 This engine requires the censored extension package, so let's load this first:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12091,7 +13194,9 @@ library(censored)
 ```
 :::
 
+
 We create a model specification via:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12102,7 +13207,9 @@ survival_reg_spec <- survival_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12134,7 +13241,9 @@ survival_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12187,7 +13296,9 @@ predict(survival_reg_fit, type = "quantile", new_data = cns_test)
 ```
 :::
 
+
 Each row of the survival predictions has results for each evaluation time: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -12206,6 +13317,7 @@ survival_reg_fit |>
 ```
 :::
 
+
 :::
 
 # Quantile Regression Models
@@ -12213,6 +13325,7 @@ survival_reg_fit |>
 ## Example data
 
 To demonstrate quantile regression, let's make a larger version of our regression data: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -12237,7 +13350,9 @@ qnt_test <- bake(qnt_rec, new_data = testing(qnt_split))
 ```
 :::
 
+
 We'll also predict these quantile levels: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -12245,6 +13360,7 @@ We'll also predict these quantile levels:
 qnt_lvls <- (1:3) / 4
 ```
 :::
+
 
 ## Models
 
@@ -12256,6 +13372,7 @@ qnt_lvls <- (1:3) / 4
 
 We create a model specification via:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -12265,7 +13382,9 @@ linear_reg_spec <- linear_reg() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12288,7 +13407,9 @@ linear_reg_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12308,7 +13429,9 @@ predict(linear_reg_fit, type = "quantile", new_data = qnt_test)
 ```
 :::
 
+
 Each row of predictions has a special vector class containing all of the quantile predictions: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -12328,6 +13451,7 @@ linear_reg_fit |>
 ```
 :::
 
+
 :::
 
 ### Random Forests (`rand_forest()`)
@@ -12338,6 +13462,7 @@ linear_reg_fit |>
 
 We create a model specification via:
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -12347,7 +13472,9 @@ rand_forest_spec <- rand_forest() |>
 ```
 :::
 
+
 Now we create the model fit object:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12368,7 +13495,9 @@ rand_forest_fit
 ```
 :::
 
+
 The holdout data can be predicted:
+
 
 ::: {.cell layout-align="center"}
 
@@ -12388,7 +13517,9 @@ predict(rand_forest_fit, type = "quantile", new_data = qnt_test)
 ```
 :::
 
+
 Each row of predictions has a special vector class containing all of the quantile predictions: 
+
 
 ::: {.cell layout-align="center"}
 
@@ -12408,9 +13539,15 @@ rand_forest_fit |>
 ```
 :::
 
+
 :::
 
+
+
+
+
 ## Session information {#session-info}
+
 
 ::: {.cell layout-align="center"}
 
@@ -12418,8 +13555,8 @@ rand_forest_fit |>
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  pandoc   3.10
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version    date (UTC)
@@ -12433,11 +13570,11 @@ rand_forest_fit |>
 #>  censored        0.3.4      2026-04-04
 #>  coin            1.4-4      2026-06-30
 #>  Cubist          0.6.0      2026-03-02
-#>  dbarts          0.9-33     2026-03-20
+#>  dbarts          0.9-34     2026-08-21
 #>  dials           1.4.4      2026-06-22
 #>  discrim         1.1.0      2025-12-02
 #>  dplyr           1.2.1      2026-04-03
-#>  earth           5.3.5      2026-01-11
+#>  earth           5.3.6      2026-08-21
 #>  flexsurv        2.3.2      2024-08-17
 #>  gee             4.13-29    2024-12-11
 #>  ggplot2         4.0.3      2026-04-22
@@ -12451,15 +13588,15 @@ rand_forest_fit |>
 #>  kknn            1.4.1      2025-05-19
 #>  klaR            1.7-4      2026-02-23
 #>  LiblineaR       2.10-24    2024-09-13
-#>  lightgbm        4.6.0      2025-02-13
-#>  lme4            2.0-1      2026-03-05
+#>  lightgbm        4.7.0      2026-07-18
+#>  lme4            2.0-6      2026-07-16
 #>  mboost          2.9-11     2024-08-22
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
+#>  mixOmics        6.36.0     2026-04-28 Bioconduc~
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
-#>  partykit        1.2-27     2026-03-13
+#>  partykit        1.3-0      2026-08-22
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06
 #>  poissonreg      1.0.2      2026-04-20
@@ -12469,7 +13606,7 @@ rand_forest_fit |>
 #>  quantreg        6.1        2025-03-10
 #>  randomForest    4.7-1.2    2024-09-22
 #>  ranger          0.18.0     2026-01-16
-#>  recipes         1.3.3      2026-05-30
+#>  recipes         1.4.0      2026-08-24
 #>  rlang           1.3.0      2026-07-05
 #>  rsample         1.3.2      2026-01-30
 #>  rstanarm        2.32.2     2025-09-30
@@ -12477,7 +13614,7 @@ rand_forest_fit |>
 #>  sda             1.3.9      2025-04-08
 #>  sparklyr        1.9.5      2026-06-20
 #>  sparsediscrim   0.3.0      2021-07-01
-#>  survival        3.8-6      2026-01-16
+#>  survival        3.8-11     2026-08-21
 #>  tibble          3.3.1      2026-01-11
 #>  tidymodels      1.5.0      2026-04-23
 #>  tune            2.1.0      2026-04-17
@@ -12487,13 +13624,13 @@ rand_forest_fit |>
 #>  yardstick       1.4.0      2026-04-07
 #> 
 #> ─ Python configuration ─────────────────────────────────────────────
-#>  python:         /home/runner/.virtualenvs/r-keras/bin/python
-#>  libpython:      /opt/hostedtoolcache/Python/3.11.15/x64/lib/libpython3.11.so
-#>  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
-#>  version:        3.11.15 (main, Jun 16 2026, 21:41:52) [GCC 13.3.0]
-#>  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
+#>  python:         /Users/emilhvitfeldt/.virtualenvs/r-keras/bin/python
+#>  libpython:      /Users/emilhvitfeldt/.pyenv/versions/3.11.11/lib/libpython3.11.dylib
+#>  pythonhome:     /Users/emilhvitfeldt/.virtualenvs/r-keras:/Users/emilhvitfeldt/.virtualenvs/r-keras
+#>  version:        3.11.11 (main, Jan  6 2025, 14:46:31) [Clang 16.0.0 (clang-1600.0.26.6)]
+#>  numpy:          /Users/emilhvitfeldt/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
 #>  numpy_version:  1.26.4
-#>  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
+#>  keras:          /Users/emilhvitfeldt/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
 #>  
 #>  NOTE: Python version was forced by use_python() function
 #> 

@@ -216,9 +216,9 @@ This kind of output can be used to generate a dot-and-whisker plot of our regres
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tidy(lm_fit) |> 
-  dwplot(dot_args = list(size = 2, color = "black"),
-         whisker_args = list(color = "black"),
+tidy(lm_fit) |>
+  dwplot(dot_args = list(size = 2, color = "#7C7C7C"),
+         whisker_args = list(color = "#7C7C7C"),
          vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2))
 ```
 
@@ -341,16 +341,16 @@ print(bayes_fit, digits = 5)
 #>  predictors:   6
 #> ------
 #>                                Median   MAD_SD  
-#> (Intercept)                     0.03307  0.00968
-#> initial_volume                  0.00156  0.00041
-#> food_regimeLow                  0.02004  0.01347
-#> food_regimeHigh                 0.02167  0.01473
-#> initial_volume:food_regimeLow  -0.00127  0.00053
-#> initial_volume:food_regimeHigh  0.00052  0.00072
+#> (Intercept)                     0.03299  0.00968
+#> initial_volume                  0.00156  0.00040
+#> food_regimeLow                  0.01934  0.01286
+#> food_regimeHigh                 0.02206  0.01417
+#> initial_volume:food_regimeLow  -0.00125  0.00051
+#> initial_volume:food_regimeHigh  0.00051  0.00069
 #> 
 #> Auxiliary parameter(s):
 #>       Median  MAD_SD 
-#> sigma 0.02132 0.00188
+#> sigma 0.02117 0.00190
 #> 
 #> ------
 #> * For help interpreting the printed output see ?print.stanreg
@@ -369,12 +369,12 @@ tidy(bayes_fit, conf.int = TRUE)
 #> # A tibble: 6 × 5
 #>   term                            estimate std.error  conf.low conf.high
 #>   <chr>                              <dbl>     <dbl>     <dbl>     <dbl>
-#> 1 (Intercept)                     0.0331    0.00968   0.0175    0.0495  
-#> 2 initial_volume                  0.00156   0.000413  0.000880  0.00222 
-#> 3 food_regimeLow                  0.0200    0.0135   -0.00271   0.0412  
-#> 4 food_regimeHigh                 0.0217    0.0147   -0.00391   0.0452  
-#> 5 initial_volume:food_regimeLow  -0.00127   0.000529 -0.00212  -0.000373
-#> 6 initial_volume:food_regimeHigh  0.000521  0.000717 -0.000665  0.00174
+#> 1 (Intercept)                     0.0330    0.00968   0.0169    0.0489  
+#> 2 initial_volume                  0.00156   0.000397  0.000892  0.00223 
+#> 3 food_regimeLow                  0.0193    0.0129   -0.00143   0.0415  
+#> 4 food_regimeHigh                 0.0221    0.0142   -0.00270   0.0448  
+#> 5 initial_volume:food_regimeLow  -0.00125   0.000512 -0.00212  -0.000419
+#> 6 initial_volume:food_regimeHigh  0.000507  0.000694 -0.000617  0.00168
 ```
 :::
 
@@ -460,8 +460,8 @@ ggplot(urchins,
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  pandoc   3.10
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -476,7 +476,7 @@ ggplot(urchins,
 #>  parsnip       1.6.0   2026-05-14
 #>  purrr         1.2.2   2026-04-10
 #>  readr         2.2.0   2026-02-19
-#>  recipes       1.3.3   2026-05-30
+#>  recipes       1.4.0   2026-08-24
 #>  rlang         1.3.0   2026-07-05
 #>  rsample       1.3.2   2026-01-30
 #>  rstanarm      2.32.2  2025-09-30
