@@ -17,10 +17,7 @@ r-packages:
 include-after-body: ../../../html/resources.html
 ---
 
-
   
-
-
 
 ## Introduction
 
@@ -30,10 +27,7 @@ We can create classification models with the tidymodels package [parsnip](https:
 
 ## Fitting a neural network
 
-
 Let's fit a model to a small, two predictor classification data set. The data are in the modeldata package (part of tidymodels) and have been split into training, validation, and test data sets. In this analysis, the test set is left untouched; this article tries to emulate a good data usage methodology where the test set would only be evaluated once at the end after a variety of models have been considered. 
-
-
 
 ::: {.cell layout-align="center"}
 
@@ -47,9 +41,7 @@ cls_test  <- quadBoundaryFunc( 500) |> select(A = X1, B = X2, class)
 ```
 :::
 
-
 A plot of the data shows two right-skewed predictors: 
-
 
 ::: {.cell layout-align="center"}
 
@@ -64,9 +56,7 @@ ggplot(cls_train, aes(x = A, y = B, col = class)) +
 :::
 :::
 
-
 Let's use a single hidden layer neural network to predict the outcome. To do this, we transform the predictor columns to be more symmetric (via the `step_BoxCox()` function) and on a common scale (using `step_normalize()`). We can use [recipes](https://recipes.tidymodels.org/) to do so:
-
 
 ::: {.cell layout-align="center"}
 
@@ -77,11 +67,9 @@ biv_rec <-
 ```
 :::
 
-
 This recipe is not directly executed; the steps will be estimated when the model is fit. 
 
 We can use the brulee package to fit a model with 10 hidden units and a 10% dropout rate, to regularize the model:
-
 
 ::: {.cell layout-align="center"}
 
@@ -108,17 +96,15 @@ nnet_fit |> extract_fit_engine()
 #>   Stopping iterations: 5
 #>   Penalty: 0.01, 0% L1
 #>   Optimizer: "LBFGS"
-#>   Device: "mps"
+#>   Device: "cpu"
 #>   # Parameters: 52
-#>   training set loss after 17 epochs: 0.371
+#>   training set loss after 23 epochs: 0.371
 ```
 :::
-
 
 ## Model performance
 
 In parsnip, the `predict()` function can be used to characterize performance on the validation set. Since parsnip always produces tibble outputs, these can just be column bound to the original data: 
-
 
 ::: {.cell layout-align="center"}
 
@@ -131,11 +117,11 @@ val_results <-
   )
 val_results |> slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
-#> 1 0.7632082 -0.04012164 Class2      Class2   0.06293429   0.93706566
-#> 2 0.9823745 -0.16911637 Class2      Class2   0.05620646   0.94379354
-#> 3 1.0558147  0.52817699 Class2      Class2   0.08694574   0.91305423
-#> 4 1.2424507  1.10902951 Class2      Class2   0.32447532   0.67552465
-#> 5 1.5889815  2.71047720 Class1      Class1   0.98520535   0.01479467
+#> 1 0.7632082 -0.04012164 Class2      Class2   0.06376461   0.93623537
+#> 2 0.9823745 -0.16911637 Class2      Class2   0.05803119   0.94196880
+#> 3 1.0558147  0.52817699 Class2      Class2   0.08680119   0.91319883
+#> 4 1.2424507  1.10902951 Class2      Class2   0.32360590   0.67639410
+#> 5 1.5889815  2.71047720 Class1      Class1   0.98543501   0.01456501
 
 val_results |> roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
@@ -157,9 +143,7 @@ val_results |> conf_mat(truth = class, .pred_class)
 ```
 :::
 
-
 Let's also create a grid to get a visual sense of the class boundary for the test set.
-
 
 ::: {.cell layout-align="center"}
 
@@ -169,7 +153,6 @@ b_rng <- range(cls_train$B)
 x_grid <-
   expand.grid(A = seq(a_rng[1], a_rng[2], length.out = 100),
               B = seq(b_rng[1], b_rng[2], length.out = 100))
-
 
 # Make predictions using the transformed predictors but 
 # attach them to the predictors in the original units: 
@@ -188,11 +171,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 :::
 :::
 
-
-
-
 ## Session information {#session-info}
-
 
 ::: {.cell layout-align="center"}
 
@@ -200,14 +179,14 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.10
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package                     version date (UTC)
 #>  AppliedPredictiveModeling   1.2.0   2026-07-06
 #>  broom                       1.0.13  2026-05-14
-#>  brulee                      1.1.0   2026-07-02
+#>  brulee                      1.2.0   2026-09-02
 #>  dials                       1.4.4   2026-06-22
 #>  dplyr                       1.2.1   2026-04-03
 #>  ggplot2                     4.0.3   2026-04-22

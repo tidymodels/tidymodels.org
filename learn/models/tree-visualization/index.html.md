@@ -340,8 +340,8 @@ Each visualization approach emphasizes different aspects of the model.
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.10
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -358,7 +358,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  recipes       1.4.0   2026-08-24
 #>  rlang         1.3.0   2026-07-05
 #>  rpart         4.1.27  2026-03-27
-#>  rpart.plot    3.1.4   2026-01-08
+#>  rpart.plot    3.1.5   2026-08-21
 #>  rsample       1.3.2   2026-01-30
 #>  sessioninfo   1.2.4   2026-06-04
 #>  tibble        3.3.1   2026-01-11

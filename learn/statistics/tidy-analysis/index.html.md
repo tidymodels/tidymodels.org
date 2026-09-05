@@ -394,8 +394,8 @@ In each of these cases, we can easily filter, facet, or distinguish based on the
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.10
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)

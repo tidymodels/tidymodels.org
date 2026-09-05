@@ -62,7 +62,7 @@ where `base` is some constant and `x` is the number of days. To make sure that w
 
 ```{.r .cell-code}
 difftime("2016-01-01", min(Chicago$date))
-#> Time difference of 5457.333 days
+#> Time difference of 5457 days
 ```
 :::
 
@@ -258,8 +258,8 @@ lm_fit
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.10
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)

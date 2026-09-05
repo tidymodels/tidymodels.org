@@ -589,8 +589,8 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.10
-#>  quarto   1.9.35
+#>  pandoc   3.1.3
+#>  quarto   1.10.18
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version  date (UTC)
@@ -600,7 +600,7 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  ggplot2        4.0.3    2026-04-22
 #>  here           1.0.2    2025-09-15
 #>  infer          1.1.0    2025-12-18
-#>  kableExtra     1.4.0    2024-01-24
+#>  kableExtra     1.4.1    2026-07-08
 #>  lubridate      1.9.5    2026-02-04
 #>  nycflights13   1.0.2    2021-04-12
 #>  parsnip        1.6.0    2026-05-14
