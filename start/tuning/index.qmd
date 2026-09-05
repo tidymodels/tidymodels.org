@@ -45,7 +45,7 @@ library(kableExtra)
 library(vip)
 library(future)
 
-theme_set(theme_bw())
+theme_set(theme_tidymodels_transparent())
 
 plan(multisession, workers = parallel::detectCores())
 
@@ -260,9 +260,10 @@ final_fit |>
   collect_metrics()
 
 final_fit |>
-  collect_predictions() |> 
-  roc_curve(class, .pred_PS) |> 
-  autoplot()
+  collect_predictions() |>
+  roc_curve(class, .pred_PS) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 The performance metrics from the test set indicate that we did not overfit during our tuning procedure.
@@ -281,6 +282,7 @@ We can create a visualization of the decision tree using another helper function
 #| label: "rpart-plot"
 #| fig-width:  8
 #| fig-height:  5
+par_transparent()
 final_tree |>
   extract_fit_engine() |>
   rpart.plot(roundint = FALSE)

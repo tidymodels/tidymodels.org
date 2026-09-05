@@ -168,11 +168,12 @@ In our articles so far, we've relied on 10-fold cross-validation as the primary 
 
 For this case study, rather than using multiple iterations of resampling, let's use the *validation set* as a single iteration of resampling.
 
-::: {.cell layout-align="center"}
-::: {.cell-output-display}
-![](img/validation-split.svg){fig-align='center' width=50%}
-:::
-:::
+```{=html}
+<div style="text-align: center;">
+<img class="light-content" src="img/validation-split.svg" alt="" style="width: 50%;">
+<img class="dark-content" src="img/validation-split-dark.svg" alt="" style="width: 50%;">
+</div>
+```
 
 The `validation_set()` function bundles the training and validation portions of our split into an object that emulates a single resample, so we can use it with the same tuning interface we'd use for cross-validation. Our model performance metrics will be computed on a single set of 7,499 hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
 
@@ -701,10 +702,11 @@ Let's generate our last ROC curve to visualize. Since the event we are predictin
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-last_rf_fit |> 
-  collect_predictions() |> 
-  roc_curve(children, .pred_children) |> 
-  autoplot()
+last_rf_fit |>
+  collect_predictions() |>
+  roc_curve(children, .pred_children) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 ::: {.cell-output-display}
@@ -763,7 +765,7 @@ Here are some more ideas for where to go next:
 #>  tibble       3.3.1      2026-01-11
 #>  tidymodels   1.5.0      2026-04-23
 #>  tune         2.1.0      2026-04-17
-#>  vip          0.5.0.9000 2026-08-18
+#>  vip          0.5.0.9000 2026-09-04
 #>  workflows    1.3.0      2025-08-27
 #>  yardstick    1.4.0      2026-04-07
 #> 

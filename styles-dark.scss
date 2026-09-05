@@ -1,0 +1,214 @@
+/*-- scss:defaults --*/
+
+// Dark theme overrides. The shared cranberry ramp is defined in _cranberry.scss
+// (layered ahead of this file). Surface derives from the existing tidymodels
+// ink (#1A162D) so the color family stays intact. Contrast ratios are against
+// that dark surface. See Tidymodels-ColorGuidance-Accessibility-2025.
+
+$body-bg:         $surface-dark;      // #1A162D
+$body-color:      $ink-inverse;       // #DDDDDD, 12.92:1 AAA
+$link-color:      $cranberry-light-3; // #CB6585, 4.80:1 AA
+$link-hover-color:$cranberry-light-2; // #DB96AC, 7.50:1 AAA
+$code-color:      $theme-blue-dark;   // #919BCD, 6.50:1 AA (default blue fails at 2.72:1)
+$navbar-bg:       $surface-dark;
+$footer-fg:       $cranberry-light-2; // #DB96AC, 6.40:1 AA (default $cranberry-dark-1 fails at 1.75:1)
+
+/*-- scss:rules --*/
+
+// Overrides for surfaces hardcoded to light in styles.scss / styles-frontpage.scss.
+// Scoped under .quarto-dark so they win on specificity regardless of source order.
+.quarto-dark {
+
+  h2 {
+    color: $ink-inverse;
+  }
+
+  // listing category title/subtitle — styles.scss uses the base cranberry
+  // (3.14:1 solid, 2.14:1 at the subtitle's 0.7 alpha) which was tuned for
+  // the white surface. Re-point to the lighter ramp step (4.80:1 AA solid).
+  .quarto-listing-category-title,
+  .quarto-listing-category-subtitle {
+    color: $cranberry-light-3;
+  }
+
+  .quarto-listing-category .category:hover {
+    color: rgba($cranberry-light-3, 0.8);
+  }
+
+  .quarto-listing-category .category.active {
+    color: $cranberry-light-3;
+  }
+
+  // page-header categories (.quarto-title .quarto-categories .quarto-category)
+  // — styles.scss sets an explicit light-surface alpha color here (see that
+  // file for why opacity was dropped); re-point it to the dark ramp.
+  .quarto-title .quarto-categories .quarto-category {
+    color: rgba($ink-inverse, 0.8);
+    border-color: rgba($ink-inverse, 0.8);
+  }
+
+  // <details>/<summary> — quarto hardcodes the same #6c757d (3.74:1 on the
+  // dark surface) used for the listing-category pills above.
+  details > summary {
+    color: rgba($ink-inverse, 0.8);
+  }
+
+  // active tabset tab — the --bs-nav-tabs-link-active-color custom property
+  // falls back to bootstrap's near-black default, rendering as plain black
+  // text on the dark surface (effectively invisible).
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link {
+    color: $ink-inverse;
+  }
+
+  // DT widgets — the DT package ships its own patch CSS
+  // (jquery.dataTables.extra.css) hardcoding `div.datatables { color: #333 }`
+  // as a light-theme fallback (see rstudio/DT#447). Almost everything inside
+  // (paginate buttons, filter/info text, table cells) uses color:inherit, so
+  // this one rule was making the whole widget nearly invisible (1.39:1) on
+  // the dark surface. The "disabled" pager state uses `!important`, so match it.
+  div.datatables {
+    color: $ink-inverse;
+
+    .paginate_button.disabled {
+      color: rgba($ink-inverse, 0.4) !important;
+    }
+  }
+
+  // code chunks + inline code — dark translucent tint instead of the light grey
+  div.sourceCode,
+  p code:not(.sourceCode),
+  li code:not(.sourceCode),
+  td code:not(.sourceCode) {
+    background-color: rgba($cranberry-light-1, 0.08);
+    border-color: rgba($cranberry-light-1, 0.12);
+  }
+
+  // bare `<pre><code>` blocks (no .sourceCode class, e.g. hand-typed ASCII
+  // trees) aren't touched by the highlighting theme and default to plain
+  // black text, invisible on the dark surface. No background tint here
+  // (unlike the inline-code selectors above) — plain pre/code stays transparent.
+  pre code:not(.sourceCode) {
+    color: $ink-inverse;
+    background-color: transparent;
+  }
+
+  // #session-info uses an ID selector (styles.scss), which otherwise beats
+  // the class-scoped rule above regardless of dark-mode nesting: text is
+  // #5E5E5E on the light $theme-code-bg tint, 1.10:1 once blended over the
+  // dark surface.
+  #session-info div pre code {
+    color: $ink-inverse;
+    background-color: rgba($cranberry-light-1, 0.08);
+    border-color: rgba($cranberry-light-1, 0.12);
+  }
+
+  // callouts — quarto hardcodes the non-accent border sides to #dee2e6
+  // (bootstrap-c129b319c92200c1a2b571473e67f09d.min.css .callout-style-default /
+  // .callout-style-simple), which reads as a white outline on the dark surface.
+  // Leave border-left-color alone: it carries the per-type accent (note/tip/etc).
+  .callout {
+    border-right-color: rgba($ink-inverse, 0.2);
+    border-top-color: rgba($ink-inverse, 0.2);
+    border-bottom-color: rgba($ink-inverse, 0.2);
+  }
+
+  // listing category pills — quarto hardcodes color:#6c757d (3.74:1) and
+  // border-color:#dee2e6 (13.48:1), the same "designed for a light surface"
+  // hardcoding as the callout borders above. The base rule needs the fully
+  // qualified selector: quarto's own `.quarto-grid-item .listing-categories
+  // .listing-category` (3 classes) otherwise outranks a plain `.listing-category`.
+  .listing-category,
+  .quarto-grid-item .listing-categories .listing-category,
+  div.quarto-post .listing-categories .listing-category {
+    color: rgba($ink-inverse, 0.8); // 8.61:1, matches the #8 sidebar bump
+    border-color: rgba($ink-inverse, 0.2);
+  }
+
+  .quarto-grid-item .listing-categories .listing-category:hover {
+    border-color: rgba($cranberry-light-3, 0.5);
+    color: $cranberry-light-3;
+  }
+
+  // output tables — flip the odd (white) rows and bottom border to dark surface
+  .cell-output-display table {
+    thead {
+      background-color: rgba($cranberry-base, 0.25);
+    }
+
+    tbody {
+      tr:nth-of-type(even) > * {
+        background-color: rgba($cranberry-light-1, 0.08);
+        --bs-table-accent-bg: rgba($cranberry-light-1, 0.08);
+      }
+
+      tr:nth-of-type(odd) > * {
+        background-color: $surface-dark;
+        --bs-table-accent-bg: $surface-dark;
+      }
+
+      tr:last-of-type {
+        border-bottom-color: rgba($ink-inverse, 0.2);
+      }
+    }
+  }
+
+  // sidebar resource stickies
+  .section.resources .event a {
+    color: $ink-inverse;
+
+    &:hover {
+      color: $cranberry-light-3;
+    }
+  }
+
+  // Front page — bands and the event card hardcode light surfaces in
+  // styles-frontpage.scss. Override them here, swapping the decorative
+  // tidy-back-*.svg backgrounds (light-canvas illustrations with white
+  // strokes that clashed on the dark surface) for -dark variants with the
+  // cranberry accents lightened to $cranberry-light-3 and the white strokes
+  // softened to a translucent $ink-inverse.
+  #FrontPage {
+
+    .event {
+      background-color: rgba($cranberry-light-1, 0.06);
+      border-color: rgba($cranberry-light-1, 0.15);
+      color: $ink-inverse;
+    }
+
+    .band.first .bandContent {
+      background-color: transparent;
+      background-image: url(images/tidy-back-01-dark.svg);
+    }
+
+    .band.third .bandContent {
+      background-color: transparent;
+      background-image: url(images/tidy-back-03-dark.svg);
+    }
+
+    .band.second {
+      background-color: $surface-dark;
+      border-top-color: rgba($ink-inverse, 0.15);
+      border-bottom-color: rgba($ink-inverse, 0.15);
+
+      .bandContent {
+        background-color: transparent;
+        background-image: url(images/tidy-back-02-dark.svg);
+        color: $ink-inverse;
+      }
+    }
+
+    .band.first,
+    .band.third {
+      background-color: $surface-dark;
+    }
+
+    // The light-mode flagger has a ground shadow baked into the artwork, which
+    // is invisible against the dark surface. The .dark-content variant ships
+    // without it and gets a soft cranberry glow instead, so the character still
+    // separates from the background.
+    .bee1 {
+      filter: drop-shadow(0 3px 8px rgba($cranberry-base, 0.3));
+    }
+  }
+}

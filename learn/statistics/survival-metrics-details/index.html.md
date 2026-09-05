@@ -252,7 +252,7 @@ dyn_val_pred |>
   geom_step(aes(.eval_time, num_usable)) +
   labs(x = "time", y = "number of usable observations") +
   lims(y = c(0, nrow(sim_val))) +
-  theme_bw()
+  theme_tidymodels_transparent()
 ```
 
 ::: {.cell-output-display}

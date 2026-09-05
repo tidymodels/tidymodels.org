@@ -41,7 +41,7 @@ The data are in the modeldata package:
 ```{.r .cell-code}
 library(tidymodels)
 tidymodels_prefer()
-theme_set(theme_bw())
+theme_set(theme_tidymodels_transparent())
 
 data(Chicago)
 

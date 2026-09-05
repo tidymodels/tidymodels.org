@@ -324,3 +324,22 @@ The styling of this website is happening in a number of different places. Some o
 The front page includes a number of detailed styling, these are all located in [styles-frontpage.scss](styles-frontpage.scss). They are all wrapped in `#FrontPage` ID so they shouldn't affect anything not located in the front page.
 
 The sidebar for the [Get Started](start/) section has a unique style, and that is specified in the [start/styles.css](start/styles.css) file, that is loaded into each of these pages with either `css: styles.css` or `css: ../styles.css`.
+
+### Color palette
+
+The site uses an accessible cranberry color family (base `#BA355F`) documented by the Posit creative team against WCAG 2.2 AA. The full seven-step ramp (three light tints, the base, three dark shades) plus shared surfaces, inks, and code colors live in [`_cranberry.scss`](_cranberry.scss) as SCSS variables (`$cranberry-light-1` … `$cranberry-dark-3`, `$surface-light`/`$surface-dark`, `$ink`/`$ink-inverse`, `$theme-blue`/`$theme-blue-dark`). Both the light and dark themes layer this partial so the ramp is defined once.
+
+**Sass layering gotcha:** Quarto emits `scss:defaults` from *later-listed* theme files first, so `_cranberry.scss` must come **after** the files that consume its variables (it is listed last in each theme list). Conversely, `scss:rules` cascade in listing order.
+
+### Light and dark themes
+
+The `theme:` key (under `format: html:` in [_quarto.yml](_quarto.yml) — the light/dark mapping form is only honored there, not at the top level) defines both a light and a dark theme, so Quarto injects a light/dark toggle in the navbar. `respect-user-color-scheme: true` makes the initial choice follow the reader's OS/browser preference, falling back to light.
+
+- **Light** layers `[cosmo, styles.scss, styles-frontpage.scss, _cranberry.scss]`.
+- **Dark** layers `[cosmo, styles-dark.scss, styles.scss, styles-frontpage.scss, _cranberry.scss]`. The dark surface derives from the existing tidymodels ink (`#1A162D`).
+
+Dark-specific overrides live in [`styles-dark.scss`](styles-dark.scss). Note the ordering: `styles-dark.scss` is listed *before* `styles.scss` so its `scss:defaults` (Bootstrap variables like `$body-bg`, `$link-color`, `$code-color`) win; its `scss:rules` are scoped under `.quarto-dark` so they win on specificity rather than source order. The default code blue (`#4758AB`) fails contrast on the dark surface, so dark mode uses `#919BCD` instead.
+
+Plain CSS files that aren't run through Sass ([`find/listing-cards.css`](find/listing-cards.css) and [`start/styles.css`](start/styles.css)) carry their own `.quarto-dark { … }` override blocks with the ramp values inlined as literals.
+
+**Page-level theme overrides** must also use the mapping form. For example `learn/models/parsnip-predictions/index.qmd` sets `theme: {light: [style.scss], dark: [style.scss]}`; a bare list there fails to merge with the site's light/dark themes.

@@ -65,7 +65,7 @@ Whether you are just starting out today or have years of experience with modelin
 :::: {.band .third}
 :::: {.bandContent}
 
-<div class="hideOnMobile"><picture><source srcset="images/parsnip-flagger.webp" type="image/webp"><img class="bee1" src="images/parsnip-flagger.jpg" alt="" width="220" height="203"></picture></div>
+<div class="hideOnMobile"><picture class="light-content"><source srcset="images/parsnip-flagger.webp" type="image/webp"><img class="bee1" src="images/parsnip-flagger.png" alt="" width="220" height="203"></picture><picture class="dark-content"><source srcset="images/parsnip-flagger-dark.webp" type="image/webp"><img class="bee1" src="images/parsnip-flagger-dark.png" alt="" width="220" height="203"></picture></div>
 
 ::: {.blurb}
 [STAY UP TO DATE]{.tagline}

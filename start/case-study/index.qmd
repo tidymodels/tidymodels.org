@@ -43,7 +43,7 @@ library(readr)
 library(vip)
 library(tidymodels)
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 ## Introduction {#intro}
@@ -140,12 +140,11 @@ In our articles so far, we've relied on 10-fold cross-validation as the primary 
 
 For this case study, rather than using multiple iterations of resampling, let's use the *validation set* as a single iteration of resampling.
 
-```{r}
-#| label: "validation-fig"
-#| echo: false
-#| fig-align: center
-#| out-width: "50%"
-knitr::include_graphics("img/validation-split.svg")
+```{=html}
+<div style="text-align: center;">
+<img class="light-content" src="img/validation-split.svg" alt="" style="width: 50%;">
+<img class="dark-content" src="img/validation-split-dark.svg" alt="" style="width: 50%;">
+</div>
 ```
 
 The `validation_set()` function bundles the training and validation portions of our split into an object that emulates a single resample, so we can use it with the same tuning interface we'd use for cross-validation. Our model performance metrics will be computed on a single set of `r format(nrow(hotel_val), big.mark = ",")` hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
@@ -548,10 +547,11 @@ Let's generate our last ROC curve to visualize. Since the event we are predictin
 
 ```{r}
 #| label: "test-set-roc-curve"
-last_rf_fit |> 
-  collect_predictions() |> 
-  roc_curve(children, .pred_children) |> 
-  autoplot()
+last_rf_fit |>
+  collect_predictions() |>
+  roc_curve(children, .pred_children) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 Based on these results, the validation set and test set performance statistics are very close, so we would have pretty high confidence that our random forest model with the selected hyperparameters would perform well when predicting new data.

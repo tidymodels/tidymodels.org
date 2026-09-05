@@ -13,7 +13,10 @@ toc: true
 toc-depth: 3
 format:
   html:
-    theme: ["style.scss"]
+    # Mapping shape (not a bare list) so it merges into the site's light/dark themes.
+    theme:
+      light: ["style.scss"]
+      dark: ["style.scss"]
 r-packages:
   - tidymodels
   - agua
@@ -216,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 8 months and 13 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 8 months and 15 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -276,7 +279,7 @@ To get started, let's load the tidymodels package:
 
 ```{.r .cell-code}
 library(tidymodels)
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 :::
 
@@ -962,6 +965,11 @@ set.seed(644)
 boost_tree_fit <- boost_tree_spec |>
   fit(class ~ ., data = bin_train)
 boost_tree_fit
+#> parsnip model object
+#> 
+#> CatBoost model (1000 trees)
+#> Loss function: Logloss
+#> Fit to 2 feature(s)
 ```
 :::
 
@@ -971,7 +979,25 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(boost_tree_fit, type = "class", new_data = bin_test)
+#> # A tibble: 6 × 1
+#>   .pred_class
+#>   <fct>      
+#> 1 Class2     
+#> 2 Class1     
+#> 3 Class2     
+#> 4 Class1     
+#> 5 Class1     
+#> 6 Class1
 predict(boost_tree_fit, type = "prob", new_data = bin_test)
+#> # A tibble: 6 × 2
+#>   .pred_Class1 .pred_Class2
+#>          <dbl>        <dbl>
+#> 1        0.291      0.709  
+#> 2        0.836      0.164  
+#> 3        0.344      0.656  
+#> 4        0.998      0.00245
+#> 5        0.864      0.136  
+#> 6        0.902      0.0983
 ```
 :::
 
@@ -3069,7 +3095,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3930,7 +3956,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3941,7 +3967,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4389,7 +4415,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -6701,6 +6727,11 @@ set.seed(557)
 boost_tree_fit <- boost_tree_spec |>
   fit(strength ~ ., data = reg_train)
 boost_tree_fit
+#> parsnip model object
+#> 
+#> CatBoost model (1000 trees)
+#> Loss function: RMSE
+#> Fit to 2 feature(s)
 ```
 :::
 
@@ -6710,6 +6741,17 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(boost_tree_fit, new_data = reg_test)
+#> # A tibble: 8 × 1
+#>   .pred
+#>   <dbl>
+#> 1  26.6
+#> 2  33.9
+#> 3  27.8
+#> 4  60.6
+#> 5  34.7
+#> 6  36.3
+#> 7  43.6
+#> 8  29.3
 ```
 :::
 
@@ -8035,7 +8077,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8830,7 +8872,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>

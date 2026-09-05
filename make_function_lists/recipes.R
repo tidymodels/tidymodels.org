@@ -37,9 +37,13 @@ recipe_functions <-
   ) %>%
   sort_out_urls() %>%
   dplyr::rename(func = functions) %>%
-  dplyr::select(title, func, url, package)
+  dplyr::select(title, func, topic, url, package)
 
 recipe_functions[is.na(recipe_functions)] <- ""
+
+# make_function_lists/sparse.R depends on this file to identify which
+# recipe steps support sparse data.
+readr::write_csv(recipe_functions, here::here("find/recipes/recipe_functions.csv"))
 
 items <- lapply(seq_len(nrow(recipe_functions)), function(i) {
   list(

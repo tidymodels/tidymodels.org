@@ -62,7 +62,7 @@ To illustrate the transformation with the `carbon` variable, note the training s
 
 ```{.r .cell-code}
 library(ggplot2)
-theme_set(theme_bw())
+theme_set(theme_tidymodels_transparent())
 ggplot(biomass_tr, aes(x = carbon)) +
   geom_histogram(binwidth = 5, col = "blue", fill = "blue", alpha = .5) +
   geom_vline(xintercept = biomass_te$carbon[1], lty = 2)

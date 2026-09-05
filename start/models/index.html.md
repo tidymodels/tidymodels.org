@@ -216,9 +216,9 @@ This kind of output can be used to generate a dot-and-whisker plot of our regres
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-tidy(lm_fit) |> 
-  dwplot(dot_args = list(size = 2, color = "black"),
-         whisker_args = list(color = "black"),
+tidy(lm_fit) |>
+  dwplot(dot_args = list(size = 2, color = "#7C7C7C"),
+         whisker_args = list(color = "#7C7C7C"),
          vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2))
 ```
 

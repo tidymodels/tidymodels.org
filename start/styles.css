@@ -14,12 +14,23 @@
 }
 
 div.sidebar-item-container {
-  color: rgba(26, 22, 45, 0.6);
+  color: rgba(26, 22, 45, 0.8); /* 9.27:1 on white */
 }
 
 .sidebar-item:not(:first-child)::before {
   counter-increment: section;
   content: counter(section, decimal) "";
   padding-right: 0.5em;
-  color:  #CA225E; /* $theme-cranberry */
+  color:  #BA355F; /* $theme-cranberry */
+}
+
+/* Dark theme — plain CSS, so cranberry ramp values are inlined as literals. */
+.quarto-dark .sidebar-menu-container {
+  border-right-color: rgba(221, 221, 221, 0.2);
+}
+.quarto-dark div.sidebar-item-container {
+  color: rgba(221, 221, 221, 0.8); /* 8.61:1 on #1A162D */
+}
+.quarto-dark .sidebar-item:not(:first-child)::before {
+  color: #CB6585; /* cranberry-light-3, 4.80:1 on dark */
 }

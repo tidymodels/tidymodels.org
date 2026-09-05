@@ -38,7 +38,7 @@ library(leaflet)
 library(htmlwidgets)
 setWidgetIdSeed(1234)
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 ## Introduction
@@ -120,6 +120,7 @@ First, let's pull out the training data and have a brief look at the response us
 
 complaints_train <- training(complaints_split)
 
+par_transparent()
 survfit(disposition_surv ~ 1, data = complaints_train) |> plot()
 ```
 

@@ -44,7 +44,7 @@ library(kableExtra)
 library(skimr)
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 ## Introduction {#intro}
@@ -398,9 +398,10 @@ To generate a ROC curve, we need the predicted class probabilities for `late` an
 
 ```{r}
 #| label: "roc-plot"
-flights_aug |> 
-  roc_curve(truth = arr_delay, .pred_late) |> 
-  autoplot()
+flights_aug |>
+  roc_curve(truth = arr_delay, .pred_late) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 Similarly, `roc_auc()` estimates the area under the curve:

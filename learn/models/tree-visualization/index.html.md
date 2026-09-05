@@ -95,6 +95,7 @@ The default plotting functions in rpart provide a quick way to inspect the struc
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 par(mar = c(2, 2, 2, 2))
 
 plot(tree_obj, uniform = TRUE, margin = 0.1)
@@ -117,6 +118,7 @@ The partykit package provides cleaner default tree visualizations and more flexi
 ```{.r .cell-code}
 party_obj <- as.party(tree_obj)
 
+par_transparent()
 plot(party_obj)
 ```
 
@@ -134,6 +136,7 @@ The appearance of the plot can also be adjusted with additional plotting argumen
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 plot(
   party_obj,
   ip_args = list(abbreviate = FALSE),
@@ -162,6 +165,7 @@ The rpart.plot package is designed specifically for decision tree visualization 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 rpart.plot(
   tree_obj,
   roundint = FALSE
@@ -178,6 +182,7 @@ The appearance can also be customized with additional arguments.
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 rpart.plot(
   tree_obj,
   type = 4,
@@ -247,6 +252,7 @@ The `fancyRpartPlot()` function from the rattle package creates a more stylized 
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
+par_transparent()
 fancyRpartPlot(
   tree_obj,
   sub = ""
@@ -296,6 +302,7 @@ reg_fit <-
 
 reg_tree <- extract_fit_engine(reg_fit)
 
+par_transparent()
 rpart.plot(
   reg_tree,
   roundint = FALSE

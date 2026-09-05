@@ -113,6 +113,7 @@ First, let's pull out the training data and have a brief look at the response us
 ```{.r .cell-code}
 complaints_train <- training(complaints_split)
 
+par_transparent()
 survfit(disposition_surv ~ 1, data = complaints_train) |> plot()
 ```
 

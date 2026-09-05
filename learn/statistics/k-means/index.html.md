@@ -60,14 +60,6 @@ ggplot(labelled_points, aes(x1, x2, color = cluster)) +
 
 This is an ideal case for k-means clustering. 
 
-## How does K-means work?
-
-Rather than using equations, this short animation using the [artwork](https://github.com/allisonhorst/stats-illustrations) of Allison Horst explains the clustering process:
-
-::: {.cell layout-align="center"}
-![](kmeans.gif){fig-align='center'}
-:::
-
 ## Clustering in R
 
 We'll use the built-in `kmeans()` function, which accepts a data frame with all numeric columns as it's primary argument.

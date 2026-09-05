@@ -31,7 +31,7 @@ source(here::here("R/common.R"))
 library(tidymodels)
 pkgs <- unlist(rmarkdown::metadata[["r-packages"]])
 
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 
@@ -139,7 +139,7 @@ x_grid <-
 
 ggplot(x_grid, aes(x = A, y = B)) + 
   geom_point(data = cls_test, aes(col = class), alpha = 1 / 2, cex = 3) +
-  geom_contour(aes(z = .pred_Class1), breaks = .5, col = "black", linewidth = 1) + 
+  geom_contour(aes(z = .pred_Class1), breaks = .5, col = "#7C7C7C", linewidth = 1) +
   coord_fixed()
 ```
 

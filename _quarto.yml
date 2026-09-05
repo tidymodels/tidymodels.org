@@ -10,6 +10,7 @@ project:
     - "start/case-study/hotels.csv"
     - "start/models/urchins.csv"
     - "images/*.webp"
+    - "images/*.svg"
     - "fonts/*.woff2"
     - "about/surveys/**/index.html"
     - "about/surveys/**/*.png"
@@ -84,7 +85,7 @@ website:
   page-footer:
     left: |
       Proudly supported by
-      [![](/images/Posit-Logos-2024_horiz-full-color.svg){fig-alt="Posit" width=65px}](https://posit.co)
+      <a href="https://posit.co"><img class="light-content" src="/images/Posit-Logos-2024_horiz-full-color.svg" alt="Posit" width="65px"><img class="dark-content" src="/images/Posit-Logos-2024_horiz-full-color-dark.svg" alt="Posit" width="65px"></a>
     right: |
       <a onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" role="button" aria-label="Back to top">
          <!-- icon: fa-chevron-up (Font Awesome Free 6 Solid) — inlined SVG instead of the Quarto fa shortcode so we don't pull in FA's CSS / 154 KB woff2 -->
@@ -102,10 +103,26 @@ format:
     include-after-body: html/plausible.html
     code-link: true
     css: fonts/fonts.css
+    respect-user-color-scheme: true
+    highlight-style:
+      light: arrow
+      dark: catppuccin-mocha.theme
     grid:
       body-width: 840px
-
-theme:
-  - cosmo
-  - styles.scss
-  - styles-frontpage.scss
+    # _cranberry.scss defines the shared color ramp. Quarto emits `scss:defaults`
+    # from later-listed files first, so it must come after the files that use it.
+    theme:
+      light:
+        - cosmo
+        - styles.scss
+        - styles-frontpage.scss
+        - _cranberry.scss
+      dark:
+        # styles-dark.scss is listed before styles.scss so its `scss:defaults`
+        # overrides win; its `scss:rules` are scoped under `.quarto-dark` so they
+        # win on specificity rather than source order.
+        - cosmo
+        - styles-dark.scss
+        - styles.scss
+        - styles-frontpage.scss
+        - _cranberry.scss

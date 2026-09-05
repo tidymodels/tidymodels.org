@@ -13,7 +13,10 @@ toc: true
 toc-depth: 3
 format:
   html:
-    theme: ["style.scss"]
+    # Mapping shape (not a bare list) so it merges into the site's light/dark themes.
+    theme:
+      light: ["style.scss"]
+      dark: ["style.scss"]
 r-packages:
   - tidymodels
   - agua
@@ -284,7 +287,7 @@ To get started, let's load the tidymodels package:
 ```{r}
 #| label: load-tm
 library(tidymodels)
-theme_set(theme_bw() + theme(legend.position = "top"))
+theme_set(theme_tidymodels_transparent() + theme(legend.position = "top"))
 ```
 
 # Classification Models
