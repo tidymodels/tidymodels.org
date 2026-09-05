@@ -123,9 +123,13 @@ parsnip_models <-
     url = sub(".*href='([^']+)'.*", "\\1", topic)
   ) %>%
   dplyr::arrange(model, engine) %>%
-  dplyr::select(title, model, engine, url, mode, package)
+  dplyr::select(title, model, engine, url, topic, mode, package)
 
 parsnip_models[is.na(parsnip_models)] <- ""
+
+# make_function_lists/sparse.R depends on this file to look up
+# model/engine/topic combinations that support sparse data.
+readr::write_csv(parsnip_models, here::here("find/parsnip/parsnip_models.csv"))
 
 items <- lapply(seq_len(nrow(parsnip_models)), function(i) {
   list(
