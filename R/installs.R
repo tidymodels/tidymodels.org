@@ -1,7 +1,7 @@
 packages <- c(
   "abind",
   "quarto",
-  "revdepcheck",
+  "r-lib/revdepcheck",
   "desc",
   "urlchecker",
   "extrasteps",
