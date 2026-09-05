@@ -1,6 +1,11 @@
 packages <- c(
   "abind",
   "quarto",
+  "revdepcheck",
+  "desc",
+  "urlchecker",
+  "extrasteps",
+  "readr",
   "AmesHousing",
   "aorsf",
   "AppliedPredictiveModeling",
