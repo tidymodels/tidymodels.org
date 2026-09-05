@@ -64,9 +64,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../../site_libs/clipboard/clipboard.min.js"></script><script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../../site_libs/quarto-search/fuse.min.js"></script><script src="../../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../../">
 <link href="../../../images/favicons/favicon.ico" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../../site_libs/quarto-html/popper.min.js"></script><script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../../site_libs/quarto-html/anchor.min.js"></script><link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-712a858a7335f8c7f74f41a4769ee845.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-712a858a7335f8c7f74f41a4769ee845.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-09b8f9f333713663b5394c824c73408d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-712a858a7335f8c7f74f41a4769ee845.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-83cbc27d438a5e7e2cbe3fb45cbd3db2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-1014e2ba99acd9ac8824ca35a60ce9c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-0bb65c6dbfbfd1f7c8efcb3ad8b80288.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-1014e2ba99acd9ac8824ca35a60ce9c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -96,8 +100,178 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script><link rel="stylesheet" href="../../../fonts/fonts.css">
 </head>
 <body class="nav-sidebar floating nav-fixed quarto-light">
-
-<div id="quarto-search-results"></div>
+<script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script><div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
@@ -145,6 +319,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
@@ -690,7 +865,7 @@ h2o installation instructions
 <span><span class="fu"><a href="https://agua.tidymodels.org/reference/h2o-server.html">h2o_start</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: JAVA not found, H2O may take minutes trying to connect.</span></span>
 <span><span class="co">#&gt; Warning in h2o.clusterInfo(): </span></span>
-<span><span class="co">#&gt; Your H2O cluster version is (2 years, 8 months and 13 days) old. There may be a newer version available.</span></span>
+<span><span class="co">#&gt; Your H2O cluster version is (2 years, 8 months and 15 days) old. There may be a newer version available.</span></span>
 <span><span class="co">#&gt; Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
@@ -735,7 +910,7 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu">theme_tidymodels_transparent</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1399,7 +1574,12 @@ Torch installation instructions
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">644</span><span class="op">)</span></span>
 <span><span class="va">boost_tree_fit</span> <span class="op">&lt;-</span> <span class="va">boost_tree_spec</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">bin_train</span><span class="op">)</span></span>
-<span><span class="va">boost_tree_fit</span></span></code></pre></div>
+<span><span class="va">boost_tree_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; CatBoost model (1000 trees)</span></span>
+<span><span class="co">#&gt; Loss function: Logloss</span></span>
+<span><span class="co">#&gt; Fit to 2 feature(s)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1408,7 +1588,25 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">boost_tree_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">boost_tree_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
+<span><span class="co">#&gt;   .pred_class</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
+<span><span class="co">#&gt; 1 Class2     </span></span>
+<span><span class="co">#&gt; 2 Class1     </span></span>
+<span><span class="co">#&gt; 3 Class2     </span></span>
+<span><span class="co">#&gt; 4 Class1     </span></span>
+<span><span class="co">#&gt; 5 Class1     </span></span>
+<span><span class="co">#&gt; 6 Class1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">boost_tree_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
+<span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1        0.291      0.709  </span></span>
+<span><span class="co">#&gt; 2        0.836      0.164  </span></span>
+<span><span class="co">#&gt; 3        0.344      0.656  </span></span>
+<span><span class="co">#&gt; 4        0.998      0.00245</span></span>
+<span><span class="co">#&gt; 5        0.864      0.136  </span></span>
+<span><span class="co">#&gt; 6        0.902      0.0983</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -1448,7 +1646,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1788450685492_1 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1788584436919_1 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
 <span><span class="co">#&gt; 1              50                       50               25380         6</span></span>
@@ -1562,7 +1760,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1788450685492_53 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1788584436919_53 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
 <span><span class="co">#&gt; 1              50                       50               25378         6</span></span>
@@ -1730,7 +1928,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__60ca6792_b741_4c7a_b578_578162e5208f, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTClassificationModel: uid = gradient_boosted_trees__40f43db8_c26c_4754_98a3_2194d0796c66, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -2089,7 +2287,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__450d732a_ba26_400b_8710_8f12e11eabf6, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeClassificationModel: uid=decision_tree_classifier__53a72213_d54a_47ae_b3a6_4691afbe9061, depth=5, numNodes=43, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -3311,7 +3509,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1788450685492_105 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1788584436919_105 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family  link                                regularization</span></span>
 <span><span class="co">#&gt; 1 binomial logit Elastic Net (alpha = 0.5, lambda = 6.162E-4 )</span></span>
@@ -3447,7 +3645,7 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logistic_reg_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 36ms/step</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
 <span><span class="co">#&gt;   .pred_class</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
@@ -4152,7 +4350,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1788450685492_107 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1788584436919_107 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, 2-class classification, bernoulli distribution, CrossEntropy loss, 1,002 weights/biases, 16.9 KB, 7,850 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -4284,7 +4482,7 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 36ms/step</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
 <span><span class="co">#&gt;   .pred_class</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
@@ -4295,7 +4493,7 @@ Torch installation instructions
 <span><span class="co">#&gt; 5 Class2     </span></span>
 <span><span class="co">#&gt; 6 Class2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, type <span class="op">=</span> <span class="st">"prob"</span>, new_data <span class="op">=</span> <span class="va">bin_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 21ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 22ms/step</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span><span class="co">#&gt;   .pred_Class1 .pred_Class2</span></span>
 <span><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
@@ -4602,7 +4800,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OMultinomialModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1788450685492_119 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1788584436919_119 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;        family        link                                regularization</span></span>
 <span><span class="co">#&gt; 1 multinomial multinomial Elastic Net (alpha = 0.5, lambda = 4.372E-4 )</span></span>
@@ -4735,7 +4933,7 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">multinom_reg_fit</span>, type <span class="op">=</span> <span class="st">"class"</span>, new_data <span class="op">=</span> <span class="va">mtl_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 35ms/step</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;   .pred_class</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;      </span></span>
@@ -4868,7 +5066,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: naivebayes</span></span>
-<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1788450685492_120 </span></span>
+<span><span class="co">#&gt; Model ID:  NaiveBayes_model_R_1788584436919_120 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_response_levels min_apriori_probability max_apriori_probability</span></span>
 <span><span class="co">#&gt; 1                         2                 0.44713                 0.55287</span></span>
@@ -5654,10 +5852,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1788450685492_122 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1788584436919_122 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               92542        13</span></span>
+<span><span class="co">#&gt; 1              50                       50               92548        13</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        20   16.82000        119        170   142.84000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -5991,7 +6189,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: Class ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__f4290e61_aa74_4e4d_b3fe_138ad1fb66cd, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestClassificationModel: uid=random_forest__c4097f36_300f_4b0f_b8ee_b739b2522bde, numTrees=20, numClasses=2, numFeatures=2</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6139,7 +6337,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2OBinomialModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1788450685492_173 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1788584436919_173 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family  link            regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 binomial logit Lasso (lambda = 0.03081 )                       2328</span></span>
@@ -6982,7 +7180,12 @@ Torch installation instructions
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">557</span><span class="op">)</span></span>
 <span><span class="va">boost_tree_fit</span> <span class="op">&lt;-</span> <span class="va">boost_tree_spec</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">strength</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">reg_train</span><span class="op">)</span></span>
-<span><span class="va">boost_tree_fit</span></span></code></pre></div>
+<span><span class="va">boost_tree_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; CatBoost model (1000 trees)</span></span>
+<span><span class="co">#&gt; Loss function: RMSE</span></span>
+<span><span class="co">#&gt; Fit to 2 feature(s)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6990,7 +7193,18 @@ Torch installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb282"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">boost_tree_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">boost_tree_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
+<span><span class="co">#&gt;   .pred</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  26.6</span></span>
+<span><span class="co">#&gt; 2  33.9</span></span>
+<span><span class="co">#&gt; 3  27.8</span></span>
+<span><span class="co">#&gt; 4  60.6</span></span>
+<span><span class="co">#&gt; 5  34.7</span></span>
+<span><span class="co">#&gt; 6  36.3</span></span>
+<span><span class="co">#&gt; 7  43.6</span></span>
+<span><span class="co">#&gt; 8  29.3</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7030,10 +7244,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1788450685492_329 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1788584436919_329 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20474         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20475         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -7104,10 +7318,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: gbm</span></span>
-<span><span class="co">#&gt; Model ID:  GBM_model_R_1788450685492_330 </span></span>
+<span><span class="co">#&gt; Model ID:  GBM_model_R_1788584436919_330 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               20470         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               20473         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1         6    6.00000         14         43    27.92000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -7224,7 +7438,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__83c006b5_658d_43eb_a587_3fa333e622ef, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; GBTRegressionModel: uid=gradient_boosted_trees__2ac2240a_8c9c_4751_a6a3_0071f9d833f5, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -7487,7 +7701,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__08843955_58c0_44d5_a604_29d079b1aa25, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; DecisionTreeRegressionModel: uid=decision_tree_regressor__bac26431_5d4e_4e81_b8c9_cb4146a562fc, depth=5, numNodes=63, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -8175,7 +8389,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1788450685492_331 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1788584436919_331 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;     family     link                               regularization</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Elastic Net (alpha = 0.5, lambda = 0.01903 )</span></span>
@@ -8276,7 +8490,7 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb346"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">linear_reg_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 34ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 36ms/step</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;     .pred</span></span>
 <span><span class="co">#&gt;     &lt;dbl&gt;</span></span>
@@ -8952,7 +9166,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: deeplearning</span></span>
-<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1788450685492_332 </span></span>
+<span><span class="co">#&gt; Model ID:  DeepLearning_model_R_1788584436919_332 </span></span>
 <span><span class="co">#&gt; Status of Neuron Layers: predicting .outcome, regression, gaussian distribution, Quadratic loss, 801 weights/biases, 14.5 KB, 920 training samples, mini-batch size 1</span></span>
 <span><span class="co">#&gt;   layer units      type dropout       l1       l2 mean_rate rate_rms momentum</span></span>
 <span><span class="co">#&gt; 1     1     2     Input  0.00 %       NA       NA        NA       NA       NA</span></span>
@@ -9042,7 +9256,7 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb384"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mlp_fit</span>, new_data <span class="op">=</span> <span class="va">reg_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 35ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 37ms/step</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 1</span></span>
 <span><span class="co">#&gt;     .pred</span></span>
 <span><span class="co">#&gt;     &lt;dbl&gt;</span></span>
@@ -9627,7 +9841,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: glm</span></span>
-<span><span class="co">#&gt; Model ID:  GLM_model_R_1788450685492_333 </span></span>
+<span><span class="co">#&gt; Model ID:  GLM_model_R_1788584436919_333 </span></span>
 <span><span class="co">#&gt; GLM Model: summary</span></span>
 <span><span class="co">#&gt;    family link                               regularization</span></span>
 <span><span class="co">#&gt; 1 poisson  log Elastic Net (alpha = 0.5, lambda = 0.01194 )</span></span>
@@ -10260,10 +10474,10 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: drf</span></span>
-<span><span class="co">#&gt; Model ID:  DRF_model_R_1788450685492_334 </span></span>
+<span><span class="co">#&gt; Model ID:  DRF_model_R_1788584436919_334 </span></span>
 <span><span class="co">#&gt; Model Summary: </span></span>
 <span><span class="co">#&gt;   number_of_trees number_of_internal_trees model_size_in_bytes min_depth</span></span>
-<span><span class="co">#&gt; 1              50                       50               22987         6</span></span>
+<span><span class="co">#&gt; 1              50                       50               22988         6</span></span>
 <span><span class="co">#&gt;   max_depth mean_depth min_leaves max_leaves mean_leaves</span></span>
 <span><span class="co">#&gt; 1        13    8.84000         19         48    31.90000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -10538,7 +10752,7 @@ Torch installation instructions
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Formula: compressive_strength ~ .</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__481fc759_5973_41d0_b803_79885e557e95, numTrees=20, numFeatures=8</span></span></code></pre></div>
+<span><span class="co">#&gt; RandomForestRegressionModel: uid=random_forest__df6a6bff_0688_442f_a342_1e834216e210, numTrees=20, numFeatures=8</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -10670,7 +10884,7 @@ Torch installation instructions
 <span><span class="co">#&gt; ==============</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; H2ORegressionModel: rulefit</span></span>
-<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1788450685492_335 </span></span>
+<span><span class="co">#&gt; Model ID:  RuleFit_model_R_1788584436919_335 </span></span>
 <span><span class="co">#&gt; Rulefit Model Summary: </span></span>
 <span><span class="co">#&gt;     family     link           regularization number_of_predictors_total</span></span>
 <span><span class="co">#&gt; 1 gaussian identity Lasso (lambda = 0.9516 )                       1801</span></span>
@@ -12634,6 +12848,19 @@ Torch installation instructions
   sidebar.appendChild(resources);
 </script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -13035,7 +13262,7 @@ Torch installation instructions
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
-<p>Proudly supported by <a href="https://posit.co"><img src="../../../images/Posit-Logos-2024_horiz-full-color.svg" class="img-fluid" alt="Posit" width="65"></a></p>
+<p>Proudly supported by <a href="https://posit.co"><img class="light-content" src="../../../images/Posit-Logos-2024_horiz-full-color.svg" alt="Posit" width="65px"><img class="dark-content" src="../../../images/Posit-Logos-2024_horiz-full-color-dark.svg" alt="Posit" width="65px"></a></p>
 </div>   
     <div class="nav-footer-center">
        
