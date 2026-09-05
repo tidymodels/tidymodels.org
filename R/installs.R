@@ -78,7 +78,9 @@ packages <- c(
   "timetk",
   "torch",
   "tune",
-  "vip",
+  # vip was archived from CRAN on 2026-07-08, so install it from GitHub
+  # temporarily until it returns to CRAN (see also R/install_packages.R).
+  "bgreenwell/vip",
   "zoo",
   "DT",
   "mars",
