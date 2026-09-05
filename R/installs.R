@@ -1,5 +1,6 @@
 packages <- c(
   "abind",
+  "quarto",
   "AmesHousing",
   "aorsf",
   "AppliedPredictiveModeling",
