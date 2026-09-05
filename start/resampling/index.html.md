@@ -243,7 +243,7 @@ rf_fit
 #> Target node size:                 10 
 #> Variable importance mode:         none 
 #> Splitrule:                        gini 
-#> OOB prediction error (Brier s.):  0.1187479
+#> OOB prediction error (Brier s.):  0.1189338
 ```
 :::
 
@@ -291,7 +291,7 @@ rf_training_pred |>                # training set predictions
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.990
+#> 1 accuracy binary         0.991
 ```
 :::
 
@@ -321,7 +321,7 @@ rf_testing_pred |>                   # test set predictions
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.814
+#> 1 accuracy binary         0.816
 ```
 :::
 
@@ -339,11 +339,12 @@ To understand that second point better, think about an analogy from teaching. Su
 
 Resampling methods, such as cross-validation and the bootstrap, are empirical simulation systems. They create a series of data sets similar to the training/testing split discussed previously; a subset of the data are used for creating the model and a different subset is used to measure performance. Resampling is always used with the *training set*. This schematic from [Kuhn and Johnson (2019)](https://bookdown.org/max/FES/resampling.html) illustrates data usage for resampling methods:
 
-::: {.cell layout-align="center"}
-::: {.cell-output-display}
-![](img/resampling.svg){fig-align='center' width=85%}
-:::
-:::
+```{=html}
+<div style="text-align: center;">
+<img class="light-content" src="img/resampling.svg" alt="" style="width: 85%;">
+<img class="dark-content" src="img/resampling-dark.svg" alt="" style="width: 85%;">
+</div>
+```
 
 In the first level of this diagram, you see what happens when you use `rsample::initial_split()`, which splits the original data into training and test sets. Then, the training set is chosen for resampling, and the test set is held out.
 
@@ -371,71 +372,71 @@ The final resampling estimates for the model are the **averages** of the perform
   <tr>
    <td style="text-align:left;"> Fold01 </td>
    <td style="text-align:right;"> 0.8289474 </td>
-   <td style="text-align:right;"> 0.8915511 </td>
-   <td style="text-align:right;"> 0.1318143 </td>
+   <td style="text-align:right;"> 0.8917312 </td>
+   <td style="text-align:right;"> 0.1312982 </td>
    <td style="text-align:right;"> 152 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold02 </td>
-   <td style="text-align:right;"> 0.7631579 </td>
-   <td style="text-align:right;"> 0.8730574 </td>
-   <td style="text-align:right;"> 0.1446245 </td>
+   <td style="text-align:right;"> 0.7828947 </td>
+   <td style="text-align:right;"> 0.8758512 </td>
+   <td style="text-align:right;"> 0.1436384 </td>
    <td style="text-align:right;"> 152 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold03 </td>
-   <td style="text-align:right;"> 0.8486842 </td>
-   <td style="text-align:right;"> 0.9058435 </td>
-   <td style="text-align:right;"> 0.1172227 </td>
+   <td style="text-align:right;"> 0.8552632 </td>
+   <td style="text-align:right;"> 0.9015725 </td>
+   <td style="text-align:right;"> 0.1187854 </td>
    <td style="text-align:right;"> 152 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold04 </td>
    <td style="text-align:right;"> 0.8421053 </td>
-   <td style="text-align:right;"> 0.8918169 </td>
-   <td style="text-align:right;"> 0.1195464 </td>
+   <td style="text-align:right;"> 0.8904300 </td>
+   <td style="text-align:right;"> 0.1191713 </td>
    <td style="text-align:right;"> 152 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold05 </td>
    <td style="text-align:right;"> 0.7947020 </td>
-   <td style="text-align:right;"> 0.8833524 </td>
-   <td style="text-align:right;"> 0.1339253 </td>
+   <td style="text-align:right;"> 0.8816342 </td>
+   <td style="text-align:right;"> 0.1331069 </td>
    <td style="text-align:right;"> 151 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold06 </td>
-   <td style="text-align:right;"> 0.8476821 </td>
-   <td style="text-align:right;"> 0.9256729 </td>
-   <td style="text-align:right;"> 0.1089129 </td>
+   <td style="text-align:right;"> 0.8609272 </td>
+   <td style="text-align:right;"> 0.9244306 </td>
+   <td style="text-align:right;"> 0.1087740 </td>
    <td style="text-align:right;"> 151 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold07 </td>
    <td style="text-align:right;"> 0.8211921 </td>
-   <td style="text-align:right;"> 0.8977667 </td>
-   <td style="text-align:right;"> 0.1239223 </td>
+   <td style="text-align:right;"> 0.8989218 </td>
+   <td style="text-align:right;"> 0.1237457 </td>
    <td style="text-align:right;"> 151 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold08 </td>
    <td style="text-align:right;"> 0.8609272 </td>
-   <td style="text-align:right;"> 0.9273504 </td>
-   <td style="text-align:right;"> 0.1075464 </td>
+   <td style="text-align:right;"> 0.9279332 </td>
+   <td style="text-align:right;"> 0.1070934 </td>
    <td style="text-align:right;"> 151 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold09 </td>
-   <td style="text-align:right;"> 0.8476821 </td>
-   <td style="text-align:right;"> 0.9215210 </td>
-   <td style="text-align:right;"> 0.1051810 </td>
+   <td style="text-align:right;"> 0.8543046 </td>
+   <td style="text-align:right;"> 0.9259709 </td>
+   <td style="text-align:right;"> 0.1030006 </td>
    <td style="text-align:right;"> 151 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Fold10 </td>
-   <td style="text-align:right;"> 0.8543046 </td>
-   <td style="text-align:right;"> 0.9251880 </td>
-   <td style="text-align:right;"> 0.1113001 </td>
+   <td style="text-align:right;"> 0.8609272 </td>
+   <td style="text-align:right;"> 0.9281955 </td>
+   <td style="text-align:right;"> 0.1099595 </td>
    <td style="text-align:right;"> 151 </td>
   </tr>
 </tbody>
@@ -444,7 +445,7 @@ The final resampling estimates for the model are the **averages** of the perform
 `````
 :::
 
-From these resampling statistics, the final estimate of performance for this random forest model would be 0.904 for the area under the ROC curve and 0.831 for accuracy.
+From these resampling statistics, the final estimate of performance for this random forest model would be 0.905 for the area under the ROC curve and 0.836 for accuracy.
 
 These resampling statistics are an effective method for measuring model performance *without* predicting the training set directly as a whole.
 
@@ -531,9 +532,9 @@ collect_metrics(rf_fit_rs)
 #> # A tibble: 3 × 6
 #>   .metric     .estimator  mean     n std_err .config        
 #>   <chr>       <chr>      <dbl> <int>   <dbl> <chr>          
-#> 1 accuracy    binary     0.831    10 0.00969 pre0_mod0_post0
-#> 2 brier_class binary     0.120    10 0.00413 pre0_mod0_post0
-#> 3 roc_auc     binary     0.904    10 0.00624 pre0_mod0_post0
+#> 1 accuracy    binary     0.836    10 0.00907 pre0_mod0_post0
+#> 2 brier_class binary     0.120    10 0.00416 pre0_mod0_post0
+#> 3 roc_auc     binary     0.905    10 0.00642 pre0_mod0_post0
 ```
 :::
 
@@ -553,7 +554,7 @@ rf_testing_pred |>                   # test set predictions
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.814
+#> 1 accuracy binary         0.816
 ```
 :::
 
@@ -567,8 +568,8 @@ The performance metrics from the test set are much closer to the performance met
 #> ─ Session info ─────────────────────────────────────────────────────
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
-#>  pandoc   3.1.3
-#>  quarto   1.9.38
+#>  pandoc   3.10
+#>  quarto   1.9.35
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -582,7 +583,7 @@ The performance metrics from the test set are much closer to the performance met
 #>  parsnip      1.6.0   2026-05-14
 #>  purrr        1.2.2   2026-04-10
 #>  ranger       0.18.0  2026-01-16
-#>  recipes      1.3.3   2026-05-30
+#>  recipes      1.4.0   2026-08-24
 #>  rlang        1.3.0   2026-07-05
 #>  rsample      1.3.2   2026-01-30
 #>  tibble       3.3.1   2026-01-11

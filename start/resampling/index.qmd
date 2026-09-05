@@ -254,12 +254,11 @@ To understand that second point better, think about an analogy from teaching. Su
 
 Resampling methods, such as cross-validation and the bootstrap, are empirical simulation systems. They create a series of data sets similar to the training/testing split discussed previously; a subset of the data are used for creating the model and a different subset is used to measure performance. Resampling is always used with the *training set*. This schematic from [Kuhn and Johnson (2019)](https://bookdown.org/max/FES/resampling.html) illustrates data usage for resampling methods:
 
-```{r}
-#| label: "resampling-fig"
-#| echo: false
-#| fig-align: center
-#| out-width: "85%"
-knitr::include_graphics("img/resampling.svg")
+```{=html}
+<div style="text-align: center;">
+<img class="light-content" src="img/resampling.svg" alt="" style="width: 85%;">
+<img class="dark-content" src="img/resampling-dark.svg" alt="" style="width: 85%;">
+</div>
 ```
 
 In the first level of this diagram, you see what happens when you use `rsample::initial_split()`, which splits the original data into training and test sets. Then, the training set is chosen for resampling, and the test set is held out.

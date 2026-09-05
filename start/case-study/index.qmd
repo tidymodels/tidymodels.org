@@ -140,12 +140,11 @@ In our articles so far, we've relied on 10-fold cross-validation as the primary 
 
 For this case study, rather than using multiple iterations of resampling, let's use the *validation set* as a single iteration of resampling.
 
-```{r}
-#| label: "validation-fig"
-#| echo: false
-#| fig-align: center
-#| out-width: "50%"
-knitr::include_graphics("img/validation-split.svg")
+```{=html}
+<div style="text-align: center;">
+<img class="light-content" src="img/validation-split.svg" alt="" style="width: 50%;">
+<img class="dark-content" src="img/validation-split-dark.svg" alt="" style="width: 50%;">
+</div>
 ```
 
 The `validation_set()` function bundles the training and validation portions of our split into an object that emulates a single resample, so we can use it with the same tuning interface we'd use for cross-validation. Our model performance metrics will be computed on a single set of `r format(nrow(hotel_val), big.mark = ",")` hotel stays. This is fairly large, so the amount of data should provide enough precision to be a reliable indicator for how well each model predicts the outcome with a single iteration of resampling.
