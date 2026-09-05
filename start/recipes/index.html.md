@@ -554,9 +554,10 @@ To generate a ROC curve, we need the predicted class probabilities for `late` an
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-flights_aug |> 
-  roc_curve(truth = arr_delay, .pred_late) |> 
-  autoplot()
+flights_aug |>
+  roc_curve(truth = arr_delay, .pred_late) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 ::: {.cell-output-display}

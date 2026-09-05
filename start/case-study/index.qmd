@@ -547,10 +547,11 @@ Let's generate our last ROC curve to visualize. Since the event we are predictin
 
 ```{r}
 #| label: "test-set-roc-curve"
-last_rf_fit |> 
-  collect_predictions() |> 
-  roc_curve(children, .pred_children) |> 
-  autoplot()
+last_rf_fit |>
+  collect_predictions() |>
+  roc_curve(children, .pred_children) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 Based on these results, the validation set and test set performance statistics are very close, so we would have pretty high confidence that our random forest model with the selected hyperparameters would perform well when predicting new data.

@@ -702,10 +702,11 @@ Let's generate our last ROC curve to visualize. Since the event we are predictin
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
-last_rf_fit |> 
-  collect_predictions() |> 
-  roc_curve(children, .pred_children) |> 
-  autoplot()
+last_rf_fit |>
+  collect_predictions() |>
+  roc_curve(children, .pred_children) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 ::: {.cell-output-display}

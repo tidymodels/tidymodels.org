@@ -260,9 +260,10 @@ final_fit |>
   collect_metrics()
 
 final_fit |>
-  collect_predictions() |> 
-  roc_curve(class, .pred_PS) |> 
-  autoplot()
+  collect_predictions() |>
+  roc_curve(class, .pred_PS) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 The performance metrics from the test set indicate that we did not overfit during our tuning procedure.

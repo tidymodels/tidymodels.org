@@ -373,9 +373,10 @@ final_fit |>
 #> 3 brier_class binary         0.148 pre0_mod0_post0
 
 final_fit |>
-  collect_predictions() |> 
-  roc_curve(class, .pred_PS) |> 
-  autoplot()
+  collect_predictions() |>
+  roc_curve(class, .pred_PS) |>
+  autoplot() +
+  theme_tidymodels_transparent()
 ```
 
 ::: {.cell-output-display}
