@@ -404,7 +404,7 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
 #>  broom          1.0.13  2026-05-14
-#>  censored       0.3.4   2026-04-04
+#>  censored       0.3.5   2026-09-08
 #>  dials          1.4.4   2026-06-22
 #>  dplyr          1.2.1   2026-04-03
 #>  future         1.75.0  2026-07-20

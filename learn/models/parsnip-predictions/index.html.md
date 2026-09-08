@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 38ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 38ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 38ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 41ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12433,7 +12433,7 @@ rand_forest_fit |>
 #>  broom           1.0.13     2026-05-14
 #>  brulee          1.2.0      2026-09-02
 #>  C50             0.2.0      2025-04-03
-#>  censored        0.3.4      2026-04-04
+#>  censored        0.3.5      2026-09-08
 #>  coin            1.4-5      2026-07-10
 #>  Cubist          0.6.0      2026-03-02
 #>  dbarts          0.9-34     2026-08-21
@@ -12458,7 +12458,7 @@ rand_forest_fit |>
 #>  lme4            2.0-6      2026-07-16
 #>  mboost          2.9-14     2026-09-06
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
+#>  mixOmics        6.36.0     2026-04-28 Bioconduc~
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
