@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 8 months and 18 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 8 months and 20 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12458,7 +12458,7 @@ rand_forest_fit |>
 #>  lme4            2.0-6      2026-07-16
 #>  mboost          2.9-14     2026-09-06
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.36.0     2026-04-28 Bioconduc~
+#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.0      2026-05-14
@@ -12480,7 +12480,7 @@ rand_forest_fit |>
 #>  sda             1.3.9      2025-04-08
 #>  sparklyr        1.9.5      2026-06-20
 #>  sparsediscrim   0.3.0      2021-07-01
-#>  survival        3.8-11     2026-08-21
+#>  survival        3.8-12     2026-09-09
 #>  tibble          3.3.1      2026-01-11
 #>  tidymodels      1.5.0      2026-04-23
 #>  tune            2.1.0      2026-04-17
