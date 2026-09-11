@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 8 months and 20 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 8 months and 21 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 37ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -6023,7 +6023,7 @@ svm_linear_fit
 #> 
 #> $W
 #>              A          B      Bias
-#> [1,] 0.3641766 -0.9648797 0.1182725
+#> [1,] 0.3643611 -0.9656571 0.1180392
 #> 
 #> $Bias
 #> [1] 1
@@ -6124,12 +6124,12 @@ predict(svm_poly_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.399       0.601 
-#> 2        0.861       0.139 
-#> 3        0.538       0.462 
-#> 4        0.976       0.0237
-#> 5        0.908       0.0917
-#> 6        0.853       0.147
+#> 1        0.408       0.592 
+#> 2        0.862       0.138 
+#> 3        0.546       0.454 
+#> 4        0.976       0.0243
+#> 5        0.908       0.0918
+#> 6        0.854       0.146
 ```
 :::
 
@@ -6169,12 +6169,12 @@ svm_rbf_fit
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  1.9107071282545 
+#>  Hyperparameter : sigma =  2.08996915258349 
 #> 
 #> Number of Support Vectors : 335 
 #> 
-#> Objective Function Value : -296.4885 
-#> Training error : 0.173248 
+#> Objective Function Value : -295.2432 
+#> Training error : 0.174522 
 #> Probability model included.
 ```
 :::
@@ -6198,12 +6198,12 @@ predict(svm_rbf_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.547        0.453
-#> 2        0.871        0.129
-#> 3        0.260        0.740
-#> 4        0.861        0.139
-#> 5        0.863        0.137
-#> 6        0.863        0.137
+#> 1        0.539        0.461
+#> 2        0.879        0.121
+#> 3        0.252        0.748
+#> 4        0.870        0.130
+#> 5        0.872        0.128
+#> 6        0.869        0.131
 ```
 :::
 
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -10652,8 +10652,8 @@ svm_linear_fit
 #> [1] 11
 #> 
 #> $W
-#>        cement      age     Bias
-#> [1,] 8.665447 5.486263 33.34299
+#>        cement     age     Bias
+#> [1,] 8.760012 5.43503 33.39868
 #> 
 #> $Bias
 #> [1] 1
@@ -10675,14 +10675,14 @@ predict(svm_linear_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  31.9
+#> 1  32.0
 #> 2  30.1
 #> 3  21.5
-#> 4  50.9
-#> 5  39.9
-#> 6  35.0
-#> 7  36.0
-#> 8  48.3
+#> 4  51.2
+#> 5  40.1
+#> 6  35.1
+#> 7  36.1
+#> 8  48.6
 ```
 :::
 
@@ -12453,7 +12453,7 @@ rand_forest_fit |>
 #>  kernlab         0.9-33     2024-08-13
 #>  kknn            1.4.1      2025-05-19
 #>  klaR            1.7-4      2026-02-23
-#>  LiblineaR       2.10-24    2024-09-13
+#>  LiblineaR       2.10-25    2026-09-11
 #>  lightgbm        4.7.0      2026-07-18
 #>  lme4            2.0-6      2026-07-16
 #>  mboost          2.9-14     2026-09-06
