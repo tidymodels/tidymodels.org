@@ -502,7 +502,7 @@ For more information on survival analysis with tidymodels see the [`survival ana
 #>  dials          1.4.4   2026-06-22
 #>  dplyr          1.2.1   2026-04-03
 #>  ggplot2        4.0.3   2026-04-22
-#>  glmnet         5.0     2026-05-04
+#>  glmnet         5.1     2026-09-24
 #>  htmlwidgets    1.6.4   2023-12-06
 #>  infer          1.1.0   2025-12-18
 #>  leaflet        2.2.3   2025-09-04

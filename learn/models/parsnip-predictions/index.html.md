@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 8 months and 21 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 9 months and 4 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 20ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3329,14 +3329,14 @@ logistic_reg_fit |> print(digits = 3)
 #>  observations: 1433
 #> ------
 #>                            Median MAD_SD
-#> (Intercept)                -0.602  0.568
-#> treatmentterbinafine       -0.705  0.850
-#> visit                      -0.829  0.104
-#> treatmentterbinafine:visit -0.020  0.145
+#> (Intercept)                -0.609  0.578
+#> treatmentterbinafine       -0.698  0.786
+#> visit                      -0.829  0.105
+#> treatmentterbinafine:visit -0.019  0.136
 #> 
 #> Error terms:
 #>  Groups    Name        Std.Dev.
-#>  patientID (Intercept) 4.362   
+#>  patientID (Intercept) 4.351   
 #> Num. levels: patientID 219 
 #> 
 #> ------
@@ -3369,31 +3369,31 @@ predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 #> # A tibble: 475 × 2
 #>    `.pred_none or mild` `.pred_moderate or severe`
 #>                   <dbl>                      <dbl>
-#>  1                0.686                     0.314 
-#>  2                0.749                     0.251 
-#>  3                0.800                     0.200 
-#>  4                0.848                     0.152 
-#>  5                0.889                     0.111 
-#>  6                0.910                     0.0898
-#>  7                0.938                     0.0625
-#>  8                0.622                     0.378 
+#>  1                0.682                     0.318 
+#>  2                0.753                     0.247 
+#>  3                0.801                     0.199 
+#>  4                0.844                     0.156 
+#>  5                0.884                     0.116 
+#>  6                0.924                     0.0762
+#>  7                0.939                     0.061 
+#>  8                0.640                     0.360 
 #>  9                0.694                     0.306 
-#> 10                0.750                     0.250 
+#> 10                0.759                     0.241 
 #> # ℹ 465 more rows
 predict(logistic_reg_fit, type = "conf_int", new_data = cls_group_test)
 #> # A tibble: 475 × 4
 #>    `.pred_lower_none or mild` `.pred_upper_none or mild` .pred_lower_moderate …¹
 #>                         <dbl>                      <dbl>                   <dbl>
-#>  1                   0.00143                       1.000             0.0000238  
-#>  2                   0.00346                       1.000             0.0000103  
-#>  3                   0.00812                       1.000             0.00000400 
-#>  4                   0.0188                        1.000             0.00000177 
-#>  5                   0.0427                        1.000             0.000000782
-#>  6                   0.0970                        1.000             0.000000330
-#>  7                   0.196                         1.000             0.000000137
-#>  8                   0.000720                      1.000             0.0000465  
-#>  9                   0.00176                       1.000             0.0000197  
-#> 10                   0.00422                       1.000             0.00000865 
+#>  1                   0.00178                       1.000             0.0000225  
+#>  2                   0.00419                       1.000             0.00000966 
+#>  3                   0.00931                       1.000             0.00000408 
+#>  4                   0.0214                        1.000             0.00000166 
+#>  5                   0.0488                        1.000             0.000000736
+#>  6                   0.110                         1.000             0.000000328
+#>  7                   0.223                         1.000             0.000000141
+#>  8                   0.000867                      1.000             0.0000481  
+#>  9                   0.00193                       1.000             0.0000210  
+#> 10                   0.00433                       1.000             0.00000932 
 #> # ℹ 465 more rows
 #> # ℹ abbreviated name: ¹​`.pred_lower_moderate or severe`
 #> # ℹ 1 more variable: `.pred_upper_moderate or severe` <dbl>
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 34ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 20ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12444,7 +12444,7 @@ rand_forest_fit |>
 #>  flexsurv        2.3.2      2024-08-17
 #>  gee             4.13-30    2026-08-03
 #>  ggplot2         4.0.3      2026-04-22
-#>  glmnet          5.0        2026-05-04
+#>  glmnet          5.1        2026-09-24
 #>  grf             2.6.1      2026-03-04
 #>  h2o             3.44.0.3   2024-01-11
 #>  HSAUR3          1.0-15     2024-08-17

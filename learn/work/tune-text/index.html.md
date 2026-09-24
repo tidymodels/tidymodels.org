@@ -704,7 +704,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  broom         1.0.13  2026-05-14
 #>  dials         1.4.4   2026-06-22
 #>  dplyr         1.2.1   2026-04-03
-#>  future        1.75.0  2026-07-20
+#>  future        1.76.0  2026-09-24
 #>  ggplot2       4.0.3   2026-04-22
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.0   2026-05-14

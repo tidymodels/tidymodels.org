@@ -489,7 +489,7 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  broom        1.0.13     2026-05-14
 #>  dials        1.4.4      2026-06-22
 #>  dplyr        1.2.1      2026-04-03
-#>  future       1.75.0     2026-07-20
+#>  future       1.76.0     2026-09-24
 #>  ggplot2      4.0.3      2026-04-22
 #>  here         1.0.2      2025-09-15
 #>  infer        1.1.0      2025-12-18
@@ -504,7 +504,7 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  tibble       3.3.1      2026-01-11
 #>  tidymodels   1.5.0      2026-04-23
 #>  tune         2.1.0      2026-04-17
-#>  vip          0.5.0.9000 2026-09-04
+#>  vip          0.5.0.9000 2026-09-24
 #>  workflows    1.3.0      2025-08-27
 #>  yardstick    1.4.0      2026-04-07
 #> 

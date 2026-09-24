@@ -479,7 +479,7 @@ If you are interested and would like to learn more, try these resources:
 #>  broom            1.0.13  2026-05-14
 #>  dials            1.4.4   2026-06-22
 #>  dplyr            1.2.1   2026-04-03
-#>  future           1.75.0  2026-07-20
+#>  future           1.76.0  2026-09-24
 #>  ggplot2          4.0.3   2026-04-22
 #>  infer            1.1.0   2025-12-18
 #>  nnet             7.3-21  2026-08-03
