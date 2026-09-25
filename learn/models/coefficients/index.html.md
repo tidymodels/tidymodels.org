@@ -652,7 +652,7 @@ Notice a couple of things:
 #>  dials        1.4.4   2026-06-22
 #>  dplyr        1.2.1   2026-04-03
 #>  ggplot2      4.0.3   2026-04-22
-#>  glmnet       5.0     2026-05-04
+#>  glmnet       5.1     2026-09-24
 #>  infer        1.1.0   2025-12-18
 #>  Matrix       1.7-6   2026-07-25
 #>  parsnip      1.6.0   2026-05-14
