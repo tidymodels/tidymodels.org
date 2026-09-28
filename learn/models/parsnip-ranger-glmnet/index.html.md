@@ -161,7 +161,7 @@ rand_forest(mode = "regression", mtry = 3, trees = 1000) |>
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~3,      x), num.trees = ~1000, num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~3,      x), num.trees = 1000, num.threads = 1, verbose = FALSE, seed = sample.int(10^5,      1)) 
 #> 
 #> Type:                             Regression 
 #> Number of trees:                  1000 
@@ -192,7 +192,7 @@ rand_forest(mode = "regression", mtry = 3, trees = 1000) |>
 #> 
 #> 
 #> Call:
-#>  randomForest(x = maybe_data_frame(x), y = y, ntree = ~1000, mtry = min_cols(~3,      x)) 
+#>  randomForest(x = maybe_data_frame(x), y = y, ntree = 1000, mtry = min_cols(~3,      x)) 
 #>                Type of random forest: regression
 #>                      Number of trees: 1000
 #> No. of variables tried at each split: 3
@@ -231,7 +231,7 @@ rand_forest(mode = "regression", mtry = .preds(), trees = 1000) |>
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~.preds(),      x), num.trees = ~1000, num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~.preds(),      x), num.trees = 1000, num.threads = 1, verbose = FALSE, seed = sample.int(10^5,      1)) 
 #> 
 #> Type:                             Regression 
 #> Number of trees:                  1000 
@@ -278,7 +278,7 @@ glmn_fit
 #> parsnip model object
 #> 
 #> 
-#> Call:  glmnet::glmnet(x = maybe_matrix(x), y = y, family = "gaussian",      alpha = ~0.5) 
+#> Call:  glmnet::glmnet(x = maybe_matrix(x), y = y, family = "gaussian",      alpha = 0.5) 
 #> 
 #>    Df  %Dev   Lambda
 #> 1   0  0.00 0.138300
@@ -425,7 +425,7 @@ This final plot compares the performance of the random forest and regularized re
 #>  ggplot2        4.0.3   2026-04-22
 #>  glmnet         5.1     2026-09-24
 #>  infer          1.1.0   2025-12-18
-#>  parsnip        1.6.0   2026-05-14
+#>  parsnip        1.6.1   2026-09-27
 #>  purrr          1.2.2   2026-04-10
 #>  randomForest   4.7-1.2 2024-09-22
 #>  ranger         0.18.0  2026-01-16

@@ -415,7 +415,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  klaR         1.7-4   2026-02-23
-#>  parsnip      1.6.0   2026-05-14
+#>  parsnip      1.6.1   2026-09-27
 #>  probably     1.2.0   2025-10-16
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.4.0   2026-08-24

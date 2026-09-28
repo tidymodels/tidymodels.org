@@ -359,7 +359,7 @@ We see the same result that the model doesn't generalize to the other months. Th
 #>  ggplot2        4.0.3   2026-04-22
 #>  infer          1.1.0   2025-12-18
 #>  nycflights13   1.0.2   2021-04-12
-#>  parsnip        1.6.0   2026-05-14
+#>  parsnip        1.6.1   2026-09-27
 #>  purrr          1.2.2   2026-04-10
 #>  recipes        1.4.0   2026-08-24
 #>  rlang          1.3.0   2026-07-05

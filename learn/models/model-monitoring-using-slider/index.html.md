@@ -409,7 +409,7 @@ While our example focused on a single model, the same approach can be extended t
 #>  dplyr         1.2.1   2026-04-03
 #>  ggplot2       4.0.3   2026-04-22
 #>  infer         1.1.0   2025-12-18
-#>  parsnip       1.6.0   2026-05-14
+#>  parsnip       1.6.1   2026-09-27
 #>  purrr         1.2.2   2026-04-10
 #>  recipes       1.4.0   2026-08-24
 #>  rlang         1.3.0   2026-07-05

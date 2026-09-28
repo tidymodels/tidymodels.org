@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 9 months and 5 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 9 months and 8 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -763,12 +763,12 @@ predict(bart_fit, type = "conf_int", new_data = bin_test)
 #> # A tibble: 6 × 4
 #>   .pred_lower_Class1 .pred_lower_Class2 .pred_upper_Class1 .pred_upper_Class2
 #>                <dbl>              <dbl>              <dbl>              <dbl>
-#> 1              0.815            0.00280              0.997              0.185
-#> 2              0.781            0.0223               0.978              0.219
-#> 3              0.558            0.0702               0.930              0.442
-#> 4              0.540            0.105                0.895              0.460
-#> 5              0.239            0.345                0.655              0.761
-#> 6              0.195            0.469                0.531              0.805
+#> 1              0.239            0.345                0.655              0.761
+#> 2              0.540            0.105                0.895              0.460
+#> 3              0.195            0.469                0.531              0.805
+#> 4              0.781            0.00280              0.997              0.219
+#> 5              0.815            0.0223               0.978              0.185
+#> 6              0.558            0.0702               0.930              0.442
 predict(bart_fit, type = "pred_int", new_data = bin_test)
 #> # A tibble: 6 × 4
 #>   .pred_lower_Class1 .pred_lower_Class2 .pred_upper_Class1 .pred_upper_Class2
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3655,7 +3655,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 17
-#>   validation loss after 9 epochs: 0.449
+#>   validation loss after 10 epochs: 0.449
 ```
 :::
 
@@ -3678,12 +3678,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.398       0.602 
-#> 2        0.851       0.149 
-#> 3        0.468       0.532 
-#> 4        0.976       0.0243
-#> 5        0.946       0.0537
-#> 6        0.824       0.176
+#> 1        0.400       0.600 
+#> 2        0.859       0.141 
+#> 3        0.471       0.529 
+#> 4        0.976       0.0240
+#> 5        0.948       0.0518
+#> 6        0.836       0.164
 ```
 :::
 
@@ -3726,7 +3726,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 29
-#>   validation loss after 11 epochs: 0.427
+#>   validation loss after 11 epochs: 0.424
 ```
 :::
 
@@ -3749,12 +3749,12 @@ predict(mlp_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.378       0.622 
-#> 2        0.902       0.0985
-#> 3        0.521       0.479 
-#> 4        0.932       0.0683
-#> 5        0.917       0.0834
-#> 6        0.898       0.102
+#> 1        0.394       0.606 
+#> 2        0.903       0.0972
+#> 3        0.520       0.480 
+#> 4        0.942       0.0583
+#> 5        0.934       0.0662
+#> 6        0.896       0.104
 ```
 :::
 
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 41ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4067,7 +4067,7 @@ multinom_reg_fit
 #>   Penalty: 0.001, 0% L1
 #>   Device: "cpu"
 #>   # Parameters: 9
-#>   validation loss after 3 epochs: 0.954
+#>   validation loss after 2 epochs: 0.954
 ```
 :::
 
@@ -4093,11 +4093,11 @@ predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
 #> 1   0.133     0.190        0.677 
-#> 2   0.304     0.174        0.521 
+#> 2   0.304     0.175        0.521 
 #> 3   0.359     0.193        0.448 
 #> 4   0.983     0.00134      0.0161
 #> 5   0.946     0.00293      0.0506
-#> 6   0.00369   0.792        0.204 
+#> 6   0.00368   0.792        0.204 
 #> 7   0.0627    0.419        0.519 
 #> 8   0.442     0.0399       0.518
 ```
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 39ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -4913,7 +4913,7 @@ null_model_fit <- null_model_spec |>
 null_model_fit
 #> parsnip model object
 #> 
-#> Null Regression Model
+#> Null Classification Model
 #> Predicted Value: Class1
 ```
 :::
@@ -5082,7 +5082,7 @@ rand_forest_fit
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = ~TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
 #> 
 #> Type:                             Probability estimation 
 #> Number of trees:                  500 
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 39ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8614,7 +8614,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 13
-#>   scaled validation loss after 3 epochs: 0.465
+#>   scaled validation loss after 3 epochs: 0.477
 ```
 :::
 
@@ -8627,12 +8627,12 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  32.2
+#> 1  32.1
 #> 2  33.9
-#> 3  27.3
-#> 4  44.7
+#> 3  27.1
+#> 4  44.8
 #> 5  37.0
-#> 6  35.3
+#> 6  35.2
 #> 7  35.8
 #> 8  41.7
 ```
@@ -8676,7 +8676,7 @@ mlp_fit
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 25
-#>   scaled validation loss after 29 epochs: 0.206
+#>   scaled validation loss after 25 epochs: 0.228
 ```
 :::
 
@@ -8689,14 +8689,14 @@ predict(mlp_fit, new_data = reg_test)
 #> # A tibble: 8 × 1
 #>   .pred
 #>   <dbl>
-#> 1  25.7
-#> 2  42.0
-#> 3  24.3
-#> 4  57.8
-#> 5  34.9
-#> 6  39.8
-#> 7  40.9
-#> 8  41.5
+#> 1  26.1
+#> 2  42.4
+#> 3  22.3
+#> 4  55.9
+#> 5  35.2
+#> 6  38.3
+#> 7  39.4
+#> 8  42.1
 ```
 :::
 
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8936,7 +8936,7 @@ null_model_fit <- null_model_spec |>
 null_model_fit
 #> parsnip model object
 #> 
-#> Null Classification Model
+#> Null Regression Model
 #> Predicted Value: 33.57728
 ```
 :::
@@ -9858,7 +9858,7 @@ rand_forest_fit
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = ~TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1)) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1)) 
 #> 
 #> Type:                             Regression 
 #> Number of trees:                  500 
@@ -10902,8 +10902,8 @@ bag_tree_fit
 #> 
 #> Bagging survival trees with 25 bootstrap replications 
 #> 
-#> Call: bagging.data.frame(formula = event_time ~ ., data = data, cp = ~0, 
-#>     minsplit = ~2)
+#> Call: bagging.data.frame(formula = event_time ~ ., data = data, cp = 0, 
+#>     minsplit = 2)
 ```
 :::
 
@@ -12461,7 +12461,7 @@ rand_forest_fit |>
 #>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
-#>  parsnip         1.6.0      2026-05-14
+#>  parsnip         1.6.1      2026-09-27
 #>  partykit        1.3-0      2026-08-22
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06

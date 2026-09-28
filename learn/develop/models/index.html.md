@@ -411,7 +411,7 @@ mda_fit
 #> parsnip model object
 #> 
 #> Call:
-#> mda::mda(formula = Class ~ ., data = data, subclasses = ~2)
+#> mda::mda(formula = Class ~ ., data = data, subclasses = 2)
 #> 
 #> Dimension: 2 
 #> 
@@ -853,7 +853,7 @@ There could be. If you have a suggestion, please add a [GitHub issue](https://gi
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  mda          0.5-5   2024-11-07
-#>  parsnip      1.6.0   2026-05-14
+#>  parsnip      1.6.1   2026-09-27
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.4.0   2026-08-24
 #>  rlang        1.3.0   2026-07-05

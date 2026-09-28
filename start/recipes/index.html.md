@@ -603,7 +603,7 @@ Not too bad! We leave it to the reader to test out this workflow [*without*](htt
 #>  kableExtra     1.4.1    2026-07-08
 #>  lubridate      1.9.5    2026-02-04
 #>  nycflights13   1.0.2    2021-04-12
-#>  parsnip        1.6.0    2026-05-14
+#>  parsnip        1.6.1    2026-09-27
 #>  purrr          1.2.2    2026-04-10
 #>  recipes        1.4.0    2026-08-24
 #>  rlang          1.3.0    2026-07-05
