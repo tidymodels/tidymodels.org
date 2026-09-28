@@ -318,7 +318,7 @@ glmnet_fit
 #> 
 #> ── Model ─────────────────────────────────────────────────────────────
 #> 
-#> Call:  glmnet::glmnet(x = maybe_matrix(x), y = y, family = "gaussian",      alpha = ~0.95) 
+#> Call:  glmnet::glmnet(x = maybe_matrix(x), y = y, family = "gaussian",      alpha = 0.95) 
 #> 
 #>    Df  %Dev Lambda
 #> 1   0  0.00 6.1040
@@ -655,7 +655,7 @@ Notice a couple of things:
 #>  glmnet       5.1     2026-09-24
 #>  infer        1.1.0   2025-12-18
 #>  Matrix       1.7-6   2026-07-25
-#>  parsnip      1.6.0   2026-05-14
+#>  parsnip      1.6.1   2026-09-27
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.4.0   2026-08-24
 #>  rlang        1.3.0   2026-07-05

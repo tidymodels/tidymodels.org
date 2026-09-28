@@ -233,7 +233,7 @@ rf_fit
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~1000,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = 1000,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
 #> 
 #> Type:                             Probability estimation 
 #> Number of trees:                  1000 
@@ -580,7 +580,7 @@ The performance metrics from the test set are much closer to the performance met
 #>  here         1.0.2   2025-09-15
 #>  infer        1.1.0   2025-12-18
 #>  kableExtra   1.4.1   2026-07-08
-#>  parsnip      1.6.0   2026-05-14
+#>  parsnip      1.6.1   2026-09-27
 #>  purrr        1.2.2   2026-04-10
 #>  ranger       0.18.0  2026-01-16
 #>  recipes      1.4.0   2026-08-24
