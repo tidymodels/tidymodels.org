@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 9 months and 5 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 9 months and 9 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -763,12 +763,12 @@ predict(bart_fit, type = "conf_int", new_data = bin_test)
 #> # A tibble: 6 × 4
 #>   .pred_lower_Class1 .pred_lower_Class2 .pred_upper_Class1 .pred_upper_Class2
 #>                <dbl>              <dbl>              <dbl>              <dbl>
-#> 1              0.815            0.00280              0.997              0.185
-#> 2              0.781            0.0223               0.978              0.219
-#> 3              0.558            0.0702               0.930              0.442
-#> 4              0.540            0.105                0.895              0.460
-#> 5              0.239            0.345                0.655              0.761
-#> 6              0.195            0.469                0.531              0.805
+#> 1              0.239            0.345                0.655              0.761
+#> 2              0.540            0.105                0.895              0.460
+#> 3              0.195            0.469                0.531              0.805
+#> 4              0.781            0.00280              0.997              0.219
+#> 5              0.815            0.0223               0.978              0.185
+#> 6              0.558            0.0702               0.930              0.442
 predict(bart_fit, type = "pred_int", new_data = bin_test)
 #> # A tibble: 6 × 4
 #>   .pred_lower_Class1 .pred_lower_Class2 .pred_upper_Class1 .pred_upper_Class2
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 39ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 24ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 41ms/step
+#> 1/1 - 0s - 42ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 24ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 24ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -4913,7 +4913,7 @@ null_model_fit <- null_model_spec |>
 null_model_fit
 #> parsnip model object
 #> 
-#> Null Regression Model
+#> Null Classification Model
 #> Predicted Value: Class1
 ```
 :::
@@ -5082,7 +5082,7 @@ rand_forest_fit
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = ~TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
 #> 
 #> Type:                             Probability estimation 
 #> Number of trees:                  500 
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 39ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8936,7 +8936,7 @@ null_model_fit <- null_model_spec |>
 null_model_fit
 #> parsnip model object
 #> 
-#> Null Classification Model
+#> Null Regression Model
 #> Predicted Value: 33.57728
 ```
 :::
@@ -9858,7 +9858,7 @@ rand_forest_fit
 #> Ranger result
 #> 
 #> Call:
-#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = ~TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1)) 
+#>  ranger::ranger(x = maybe_data_frame(x), y = y, keep.inbag = TRUE,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1)) 
 #> 
 #> Type:                             Regression 
 #> Number of trees:                  500 
@@ -10902,8 +10902,8 @@ bag_tree_fit
 #> 
 #> Bagging survival trees with 25 bootstrap replications 
 #> 
-#> Call: bagging.data.frame(formula = event_time ~ ., data = data, cp = ~0, 
-#>     minsplit = ~2)
+#> Call: bagging.data.frame(formula = event_time ~ ., data = data, cp = 0, 
+#>     minsplit = 2)
 ```
 :::
 
@@ -12447,7 +12447,7 @@ rand_forest_fit |>
 #>  glmnet          5.1        2026-09-24
 #>  grf             2.6.1      2026-03-04
 #>  h2o             3.44.0.3   2024-01-11
-#>  HSAUR3          1.0-15     2024-08-17
+#>  HSAUR3          1.0-16     2026-09-29
 #>  infer           1.1.0      2025-12-18
 #>  keras3          1.5.1      2026-02-13
 #>  kernlab         0.9-33     2024-08-13
@@ -12461,7 +12461,7 @@ rand_forest_fit |>
 #>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
-#>  parsnip         1.6.0      2026-05-14
+#>  parsnip         1.6.1      2026-09-27
 #>  partykit        1.3-0      2026-08-22
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06

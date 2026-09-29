@@ -225,7 +225,7 @@ collect_metrics(logit_val)
 #> 1 brier_class uncalibrated binary     0.202    10 0.0101  config 
 #> 2 roc_auc     uncalibrated binary     0.853    10 0.00929 config 
 #> 3 brier_class calibrated   binary     0.155    10 0.00603 config 
-#> 4 roc_auc     calibrated   binary     0.852    10 0.00947 config
+#> 4 roc_auc     calibrated   binary     0.852    10 0.00941 config
 
 collect_predictions(logit_val) |>
   filter(.type == "calibrated") |>
@@ -415,7 +415,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  klaR         1.7-4   2026-02-23
-#>  parsnip      1.6.0   2026-05-14
+#>  parsnip      1.6.1   2026-09-27
 #>  probably     1.2.0   2025-10-16
 #>  purrr        1.2.2   2026-04-10
 #>  recipes      1.4.0   2026-08-24
