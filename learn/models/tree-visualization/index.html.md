@@ -350,7 +350,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  dplyr         1.2.1   2026-04-03
 #>  ggplot2       4.0.3   2026-04-22
 #>  infer         1.1.0   2025-12-18
-#>  parsnip       1.6.0   2026-05-14
+#>  parsnip       1.6.1   2026-09-27
 #>  parttree      0.1.3   2026-03-31
 #>  partykit      1.3-0   2026-08-22
 #>  purrr         1.2.2   2026-04-10

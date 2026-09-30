@@ -84,9 +84,6 @@ Below is all the model engine combinations that support sparse data. It is known
 <li>
 <a href="https://parsnip.tidymodels.org/reference/details_rand_forest_ranger.html">ranger</a>
 </li>
-<li>
-<a href="https://parsnip.tidymodels.org/reference/details_rand_forest_ordinalForest.html">ordinalForest</a>
-</li>
 </ul>
 <li>
 <code>svm_linear</code>
