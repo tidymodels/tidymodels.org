@@ -98,7 +98,7 @@ nnet_fit |> extract_fit_engine()
 #>   Optimizer: "LBFGS"
 #>   Device: "cpu"
 #>   # Parameters: 52
-#>   training set loss after 24 epochs: 0.371
+#>   training set loss after 23 epochs: 0.371
 ```
 :::
 
@@ -117,11 +117,11 @@ val_results <-
   )
 val_results |> slice(1:5)
 #>           A           B  class .pred_class .pred_Class1 .pred_Class2
-#> 1 0.7632082 -0.04012164 Class2      Class2   0.06361707   0.93638295
-#> 2 0.9823745 -0.16911637 Class2      Class2   0.05734403   0.94265598
-#> 3 1.0558147  0.52817699 Class2      Class2   0.08626220   0.91373777
-#> 4 1.2424507  1.10902951 Class2      Class2   0.32210109   0.67789894
-#> 5 1.5889815  2.71047720 Class1      Class1   0.98568487   0.01431517
+#> 1 0.7632082 -0.04012164 Class2      Class2   0.06376461   0.93623537
+#> 2 0.9823745 -0.16911637 Class2      Class2   0.05803119   0.94196880
+#> 3 1.0558147  0.52817699 Class2      Class2   0.08680119   0.91319883
+#> 4 1.2424507  1.10902951 Class2      Class2   0.32360590   0.67639410
+#> 5 1.5889815  2.71047720 Class1      Class1   0.98543501   0.01456501
 
 val_results |> roc_auc(truth = class, .pred_Class1)
 #> # A tibble: 1 × 3
@@ -133,13 +133,13 @@ val_results |> accuracy(truth = class, .pred_class)
 #> # A tibble: 1 × 3
 #>   .metric  .estimator .estimate
 #>   <chr>    <chr>          <dbl>
-#> 1 accuracy binary         0.906
+#> 1 accuracy binary         0.908
 
 val_results |> conf_mat(truth = class, .pred_class)
 #>           Truth
 #> Prediction Class1 Class2
-#>     Class1    171     16
-#>     Class2     31    282
+#>     Class1    172     16
+#>     Class2     30    282
 ```
 :::
 
@@ -180,7 +180,7 @@ ggplot(x_grid, aes(x = A, y = B)) +
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.18
+#>  quarto   1.10.19
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package                     version date (UTC)
