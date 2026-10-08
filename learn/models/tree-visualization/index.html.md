@@ -341,7 +341,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  version  R version 4.6.1 (2026-06-24)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.18
+#>  quarto   1.10.19
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)

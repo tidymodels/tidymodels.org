@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 9 months and 16 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 9 months and 18 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 36ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 22ms/step
+#> 1/1 - 0s - 21ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 35ms/step
+#> 1/1 - 0s - 38ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 21ms/step
+#> 1/1 - 0s - 22ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 36ms/step
+#> 1/1 - 0s - 38ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 35ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -12491,9 +12491,9 @@ rand_forest_fit |>
 #> 
 #> ─ Python configuration ─────────────────────────────────────────────
 #>  python:         /home/runner/.virtualenvs/r-keras/bin/python
-#>  libpython:      /opt/hostedtoolcache/Python/3.11.16/x64/lib/libpython3.11.so
+#>  libpython:      /opt/hostedtoolcache/Python/3.11.17/x64/lib/libpython3.11.so
 #>  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
-#>  version:        3.11.16 (main, Aug 13 2026, 02:46:14) [GCC 13.3.0]
+#>  version:        3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]
 #>  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
 #>  numpy_version:  2.4.6
 #>  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
