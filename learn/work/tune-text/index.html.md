@@ -15,6 +15,7 @@ toc-depth: 2
 r-packages:
   - tidymodels
   - textrecipes
+  - glmnet
   - stopwords
   - text2vec
   - future
@@ -23,7 +24,7 @@ include-after-body: ../../../html/resources.html
 
 ## Introduction
 
-To use code in this article,  you will need to install the following packages: future, stopwords, text2vec, textrecipes, and tidymodels.
+To use code in this article,  you will need to install the following packages: future, glmnet, stopwords, text2vec, textrecipes, and tidymodels.
 
 This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.
 
@@ -704,8 +705,9 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  broom         1.0.13  2026-05-14
 #>  dials         1.4.4   2026-06-22
 #>  dplyr         1.2.1   2026-04-03
-#>  future        1.76.0  2026-09-24
+#>  future        1.80.0  2026-10-16
 #>  ggplot2       4.0.3   2026-04-22
+#>  glmnet        5.1     2026-09-24
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.1   2026-09-27
 #>  purrr         1.2.2   2026-04-10
