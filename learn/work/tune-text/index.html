@@ -68,9 +68,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-051c65ecc3cf905bf78b1cfe215c7957.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-ad60bf5f67a9df7c069594d77196a5af.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-09039babaea9a888838946105818a14c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-21be62738d694b39fbeb1ca1fd68cf00.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-09039babaea9a888838946105818a14c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-d1444399851aba9a222ae85836bc0c9a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-efab75078d781344d98154d74fe7818a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-d1444399851aba9a222ae85836bc0c9a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -649,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>To use code in this article, you will need to install the following packages: future, stopwords, text2vec, textrecipes, and tidymodels.</p>
+<p>To use code in this article, you will need to install the following packages: future, glmnet, stopwords, text2vec, textrecipes, and tidymodels.</p>
 <p>This article demonstrates an advanced example for training and tuning models for text data. Text data must be processed and transformed to a numeric representation to be ready for computation in modeling; in tidymodels, we use a recipe for this preprocessing. This article also shows how to extract information from each model fit during tuning to use later on.</p>
 </section><section id="text-as-data" class="level2"><h2 class="anchored" data-anchor-id="text-as-data">Text as data</h2>
 <p>The text data we’ll use in this article are from Amazon:</p>
@@ -1323,8 +1323,9 @@ Note
 #&gt;  broom         1.0.13  2026-05-14
 #&gt;  dials         1.4.4   2026-06-22
 #&gt;  dplyr         1.2.1   2026-04-03
-#&gt;  future        1.76.0  2026-09-24
+#&gt;  future        1.80.0  2026-10-16
 #&gt;  ggplot2       4.0.3   2026-04-22
+#&gt;  glmnet        5.1     2026-09-24
 #&gt;  infer         1.1.0   2025-12-18
 #&gt;  parsnip       1.6.1   2026-09-27
 #&gt;  purrr         1.2.2   2026-04-10

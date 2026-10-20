@@ -68,9 +68,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-051c65ecc3cf905bf78b1cfe215c7957.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-ad60bf5f67a9df7c069594d77196a5af.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-a2180a0e997792427e584213594cbd37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-28a1c7ebae22fc0ca41518579d5f14f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-a2180a0e997792427e584213594cbd37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-d07fdd2abfa1f693d0058dca2262df73.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-3daeacfc0b5da8a1738df581119e90e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-d07fdd2abfa1f693d0058dca2262df73.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -824,7 +824,7 @@ Apache Spark installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html">spark_install</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">spark_install</span><span class="op">(</span>version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -833,7 +833,7 @@ Apache Spark installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -851,7 +851,7 @@ h2o installation instructions
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
-<p>After installation is complete, you can start a local server via <code><a href="https://rdrr.io/pkg/h2o/man/h2o.init.html">h2o::h2o.init()</a></code>.</p>
+<p>After installation is complete, you can start a local server via <code>h2o::h2o.init()</code>.</p>
 <p>The tidymodels <a href="https://agua.tidymodels.org/">agua</a> package contains some helpers and will also need to be installed. You can use its function to start a server too:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
@@ -862,7 +862,7 @@ h2o installation instructions
 <span><span class="co">#&gt; The following object is masked from 'package:workflowsets':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     rank_results</span></span>
-<span><span class="fu"><a href="https://agua.tidymodels.org/reference/h2o-server.html">h2o_start</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">h2o_start</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: JAVA not found, H2O may take minutes trying to connect.</span></span>
 <span><span class="co">#&gt; Warning in h2o.clusterInfo(): </span></span>
 <span><span class="co">#&gt; Your H2O cluster version is (2 years, 9 months and 18 days) old. There may be a newer version available.</span></span>
@@ -884,7 +884,7 @@ Tensorflow and Keras installation instructions
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">keras3</span><span class="fu">::</span><span class="fu"><a href="https://keras3.posit.co/reference/install_keras.html">install_keras</a></span><span class="op">(</span>backend <span class="op">=</span> <span class="st">"tensorflow"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">keras3</span><span class="fu">::</span><span class="fu">install_keras</span><span class="op">(</span>backend <span class="op">=</span> <span class="st">"tensorflow"</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -893,8 +893,8 @@ Tensorflow and Keras installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assumes you are going to use a virtual environment called </span></span>
-<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"keras|tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/virtualenv-tools.html">virtualenv_list</a></span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pve</span><span class="op">)</span><span class="op">)</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/use_python.html">use_virtualenv</a></span><span class="op">(</span><span class="va">pve</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"keras|tensorflow"</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">virtualenv_list</span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pve</span><span class="op">)</span><span class="op">)</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu">use_virtualenv</span><span class="op">(</span><span class="va">pve</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -969,7 +969,7 @@ Torch installation instructions
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">72</span><span class="op">)</span></span>
 <span><span class="va">cls_group_split</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">HSAUR3</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/HSAUR3/man/toenail.html">toenail</a></span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">HSAUR3</span><span class="fu">::</span><span class="va">toenail</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">group_initial_split</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">patientID</span><span class="op">)</span></span>
 <span><span class="va">cls_group_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">cls_group_split</span><span class="op">)</span></span>
 <span><span class="va">cls_group_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">cls_group_split</span><span class="op">)</span></span></code></pre></div>
@@ -982,16 +982,16 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Re-using existing Spark connection to local</span></span>
 <span></span>
 <span><span class="va">tbl_two_class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/two_class_dat.html">two_class_dat</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_two_class</span>, training <span class="op">=</span> <span class="fl">0.994</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.994</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">tbl_bin</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_two_class</span>, training <span class="op">=</span> <span class="fl">0.994</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.994</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tbl_sim_mtl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="va">mtl_data</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_mtl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_sim_mtl</span>, training <span class="op">=</span> <span class="fl">0.967</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.967</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tbl_mtl</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_sim_mtl</span>, training <span class="op">=</span> <span class="fl">0.967</span>, test <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="fl">0.967</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
@@ -6753,12 +6753,12 @@ Torch installation instructions
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb260"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.posit.co/">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
+<span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span><span class="st">"local"</span>, version <span class="op">=</span> <span class="st">"3.5"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Re-using existing Spark connection to local</span></span>
 <span></span>
 <span><span class="va">tbl_concrete</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">modeldata</span><span class="fu">::</span><span class="va"><a href="https://modeldata.tidymodels.org/reference/concrete.html">concrete</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/sdf_random_split.html">sdf_random_split</a></span><span class="op">(</span><span class="va">tbl_concrete</span>, training <span class="op">=</span> <span class="fl">0.95</span>, test <span class="op">=</span> <span class="fl">0.05</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tbl_reg</span> <span class="op">&lt;-</span> <span class="fu">sdf_random_split</span><span class="op">(</span><span class="va">tbl_concrete</span>, training <span class="op">=</span> <span class="fl">0.95</span>, test <span class="op">=</span> <span class="fl">0.05</span>, seed <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
