@@ -352,7 +352,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.1   2026-09-27
 #>  parttree      0.1.3   2026-03-31
-#>  partykit      1.3-0   2026-08-22
+#>  partykit      1.3-1   2026-10-22
 #>  purrr         1.2.2   2026-04-10
 #>  rattle        5.6.2   2026-02-08
 #>  recipes       1.4.0   2026-08-24
