@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 10 months and 3 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 10 months and 6 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -2722,16 +2722,16 @@ logistic_reg_fit
 #> Formula: outcome ~ treatment * visit + (1 | patientID)
 #>    Data: data
 #>       AIC       BIC    logLik -2*log(L)  df.resid 
-#>  863.8271  890.1647 -426.9135  853.8271      1428 
+#>  863.7545  890.0922 -426.8773  853.7545      1428 
 #> Random effects:
 #>  Groups    Name        Std.Dev.
-#>  patientID (Intercept) 8.35    
+#>  patientID (Intercept) 8.409   
 #> Number of obs: 1433, groups:  patientID, 219
 #> Fixed Effects:
 #>                (Intercept)        treatmentterbinafine  
-#>                  -4.574209                   -0.511919  
+#>                 -4.6037401                  -0.5084207  
 #>                      visit  treatmentterbinafine:visit  
-#>                  -0.987246                   -0.001121
+#>                 -0.9896652                  -0.0005888
 ```
 :::
 
@@ -2759,16 +2759,16 @@ predict(logistic_reg_fit, type = "prob", new_data = cls_group_test)
 #> # A tibble: 475 × 2
 #>    `.pred_none or mild` `.pred_moderate or severe`
 #>                   <dbl>                      <dbl>
-#>  1                0.998                 0.00230   
-#>  2                0.999                 0.000856  
-#>  3                1.000                 0.000319  
-#>  4                1.000                 0.000119  
-#>  5                1.000                 0.0000441 
-#>  6                1.000                 0.0000164 
-#>  7                1.000                 0.00000612
-#>  8                0.996                 0.00383   
-#>  9                0.999                 0.00143   
-#> 10                0.999                 0.000533  
+#>  1                0.998                 0.00223   
+#>  2                0.999                 0.000830  
+#>  3                1.000                 0.000309  
+#>  4                1.000                 0.000115  
+#>  5                1.000                 0.0000426 
+#>  6                1.000                 0.0000158 
+#>  7                1.000                 0.00000588
+#>  8                0.996                 0.00371   
+#>  9                0.999                 0.00138   
+#> 10                0.999                 0.000514  
 #> # ℹ 465 more rows
 ```
 :::
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 24ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 15ms/step
+#> 1/1 - 0s - 18ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 15ms/step
+#> 1/1 - 0s - 18ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 26ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 17ms/step
+#> 1/1 - 0s - 18ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 26ms/step
+#> 1/1 - 0s - 32ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 26ms/step
+#> 1/1 - 0s - 34ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -9235,7 +9235,7 @@ set.seed(826)
 poisson_reg_fit <- 
   poisson_reg_spec |> 
   fit(weight ~ Diet + Time + (1|Rat), data = reg_group_train)
-#> Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model failed to converge with max|grad| = 0.00394285 (tol = 0.002, component 1)
+#> Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model failed to converge with max|grad| = 0.0039481 (tol = 0.002, component 1)
 #>   See ?lme4::convergence and ?lme4::troubleshooting.
 #> Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model is nearly unidentifiable: very large eigenvalue
 #>  - Rescale variables?
@@ -12455,7 +12455,7 @@ rand_forest_fit |>
 #>  klaR            1.7-4      2026-02-23
 #>  LiblineaR       2.10-26    2026-09-24
 #>  lightgbm        4.7.0      2026-07-18
-#>  lme4            2.0-6      2026-07-16
+#>  lme4            2.1-0      2026-10-23
 #>  mboost          2.9-14     2026-09-06
 #>  mda             0.5-5      2024-11-07
 #>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
