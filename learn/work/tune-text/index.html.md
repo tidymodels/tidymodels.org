@@ -707,7 +707,7 @@ These results might help guide the choice of the `penalty` range if more optimiz
 #>  dplyr         1.2.1   2026-04-03
 #>  future        1.80.0  2026-10-16
 #>  ggplot2       4.0.3   2026-04-22
-#>  glmnet        5.1     2026-09-24
+#>  glmnet        5.2     2026-10-28
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.1   2026-09-27
 #>  purrr         1.2.2   2026-04-10
