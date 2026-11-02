@@ -225,7 +225,7 @@ collect_metrics(logit_val)
 #> 1 brier_class uncalibrated binary     0.202    10 0.0101  config 
 #> 2 roc_auc     uncalibrated binary     0.853    10 0.00929 config 
 #> 3 brier_class calibrated   binary     0.155    10 0.00603 config 
-#> 4 roc_auc     calibrated   binary     0.852    10 0.00947 config
+#> 4 roc_auc     calibrated   binary     0.852    10 0.00941 config
 
 collect_predictions(logit_val) |>
   filter(.type == "calibrated") |>
@@ -399,10 +399,10 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version date (UTC)
@@ -411,7 +411,7 @@ For regression models, there is `cal_plot_regression()` and `cal_*_linear()`. Th
 #>  dials        1.4.4   2026-06-22
 #>  discrim      1.1.0   2025-12-02
 #>  dplyr        1.2.1   2026-04-03
-#>  future       1.80.0  2026-10-16
+#>  future       1.82.0  2026-11-02
 #>  ggplot2      4.0.3   2026-04-22
 #>  infer        1.1.0   2025-12-18
 #>  klaR         1.7-4   2026-02-23
