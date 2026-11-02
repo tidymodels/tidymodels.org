@@ -479,17 +479,17 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package      version    date (UTC)
 #>  broom        1.0.13     2026-05-14
 #>  dials        1.4.4      2026-06-22
 #>  dplyr        1.2.1      2026-04-03
-#>  future       1.80.0     2026-10-16
+#>  future       1.82.0     2026-11-02
 #>  ggplot2      4.0.3      2026-04-22
 #>  here         1.0.2      2025-09-15
 #>  infer        1.1.0      2025-12-18
@@ -504,7 +504,7 @@ You could tune the other hyperparameter we didn't use here, `min_n`, which sets 
 #>  tibble       3.3.1      2026-01-11
 #>  tidymodels   1.5.0      2026-04-23
 #>  tune         2.1.0      2026-04-17
-#>  vip          0.5.0.9000 2026-10-20
+#>  vip          0.5.0.9000 2026-11-02
 #>  workflows    1.3.0      2025-08-27
 #>  yardstick    1.4.0      2026-04-07
 #> 

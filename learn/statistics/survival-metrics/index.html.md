@@ -396,10 +396,10 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
@@ -407,7 +407,7 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  censored       0.3.5   2026-09-08
 #>  dials          1.4.4   2026-06-22
 #>  dplyr          1.2.1   2026-04-03
-#>  future         1.80.0  2026-10-16
+#>  future         1.82.0  2026-11-02
 #>  ggplot2        4.0.3   2026-04-22
 #>  infer          1.1.0   2025-12-18
 #>  modeldatatoo   0.3.0   2024-03-29

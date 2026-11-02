@@ -245,10 +245,10 @@ predict(wf_fit, reviews)
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -262,7 +262,7 @@ predict(wf_fit, reviews)
 #>  recipes       1.4.0   2026-08-24
 #>  rlang         1.3.0   2026-07-05
 #>  rsample       1.3.2   2026-01-30
-#>  sparsevctrs   0.3.6   2026-01-27
+#>  sparsevctrs   0.4.0   2026-11-02
 #>  tibble        3.3.1   2026-01-11
 #>  tidymodels    1.5.0   2026-04-23
 #>  tune          2.1.0   2026-04-17
