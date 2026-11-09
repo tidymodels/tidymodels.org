@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 10 months and 8 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 10 months and 20 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 31ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3126,8 +3126,8 @@ logistic_reg_fit
 #> [1] 0
 #> 
 #> $W
-#>             A        B      Bias
-#> [1,] 1.014233 -2.65166 0.3363362
+#>             A         B     Bias
+#> [1,] 1.010995 -2.644659 0.338123
 #> 
 #> $Bias
 #> [1] 1
@@ -3163,12 +3163,12 @@ predict(logistic_reg_fit, type = "prob", new_data = bin_test)
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
-#> 1        0.397       0.603 
+#> 1        0.398       0.602 
 #> 2        0.847       0.153 
 #> 3        0.539       0.461 
-#> 4        0.973       0.0267
-#> 5        0.903       0.0974
-#> 6        0.837       0.163
+#> 4        0.973       0.0268
+#> 5        0.902       0.0977
+#> 6        0.836       0.164
 ```
 :::
 
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 31ms/step
+#> 1/1 - 0s - 32ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 19ms/step
+#> 1/1 - 0s - 20ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 37ms/step
+#> 1/1 - 0s - 31ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 31ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -10652,8 +10652,8 @@ svm_linear_fit
 #> [1] 11
 #> 
 #> $W
-#>        cement     age     Bias
-#> [1,] 8.760012 5.43503 33.39868
+#>        cement      age     Bias
+#> [1,] 8.760162 5.434938 33.39809
 #> 
 #> $Bias
 #> [1] 1
@@ -12419,10 +12419,10 @@ rand_forest_fit |>
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package         version    date (UTC)
@@ -12453,16 +12453,16 @@ rand_forest_fit |>
 #>  kernlab         0.9-33     2024-08-13
 #>  kknn            1.4.1      2025-05-19
 #>  klaR            1.7-4      2026-02-23
-#>  LiblineaR       2.10-26    2026-09-24
+#>  LiblineaR       2.50-2     2026-11-09
 #>  lightgbm        4.7.0      2026-07-18
 #>  lme4            2.1-0      2026-10-23
 #>  mboost          2.9-14     2026-09-06
 #>  mda             0.5-5      2024-11-07
-#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.1)
+#>  mixOmics        6.36.0     2026-04-28 Bioconductor 3.23 (R 4.6.2)
 #>  multilevelmod   1.0.0      2022-06-17
 #>  naivebayes      1.0.0      2024-03-16
 #>  parsnip         1.6.1      2026-09-27
-#>  partykit        1.3-1      2026-10-22
+#>  partykit        1.3-2      2026-11-07
 #>  pec             2025.06.24 2025-07-24
 #>  plsmod          1.0.0      2022-09-06
 #>  poissonreg      1.0.2      2026-04-20
@@ -12491,9 +12491,9 @@ rand_forest_fit |>
 #> 
 #> ─ Python configuration ─────────────────────────────────────────────
 #>  python:         /home/runner/.virtualenvs/r-keras/bin/python
-#>  libpython:      /opt/hostedtoolcache/Python/3.11.17/x64/lib/libpython3.11.so
+#>  libpython:      /opt/hostedtoolcache/Python/3.11.18/x64/lib/libpython3.11.so
 #>  pythonhome:     /home/runner/.virtualenvs/r-keras:/home/runner/.virtualenvs/r-keras
-#>  version:        3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]
+#>  version:        3.11.18 (main, Oct 26 2026, 02:48:34) [GCC 13.3.0]
 #>  numpy:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/numpy
 #>  numpy_version:  2.4.6
 #>  keras:          /home/runner/.virtualenvs/r-keras/lib/python3.11/site-packages/keras
