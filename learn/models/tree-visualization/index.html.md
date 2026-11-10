@@ -338,10 +338,10 @@ Each visualization approach emphasizes different aspects of the model.
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version date (UTC)
@@ -352,7 +352,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.1   2026-09-27
 #>  parttree      0.1.3   2026-03-31
-#>  partykit      1.3-1   2026-10-22
+#>  partykit      1.3-2   2026-11-07
 #>  purrr         1.2.2   2026-04-10
 #>  rattle        5.6.2   2026-02-08
 #>  recipes       1.4.0   2026-08-24
