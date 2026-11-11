@@ -412,15 +412,15 @@ This final plot compares the performance of the random forest and regularized re
 
 ```
 #> ─ Session info ─────────────────────────────────────────────────────
-#>  version  R version 4.6.1 (2026-06-24)
+#>  version  R version 4.6.2 (2026-10-29)
 #>  language (EN)
 #>  pandoc   3.1.3
-#>  quarto   1.10.19
+#>  quarto   1.11.9
 #> 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
 #>  broom          1.0.13  2026-05-14
-#>  dials          1.4.4   2026-06-22
+#>  dials          1.4.5   2026-11-11
 #>  dplyr          1.2.1   2026-04-03
 #>  ggplot2        4.0.3   2026-04-22
 #>  glmnet         5.2     2026-10-28
