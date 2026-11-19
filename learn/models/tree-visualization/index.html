@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="generator" content="quarto-1.11.9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="Visualize decision trees using different R packages and approaches.">
@@ -68,9 +67,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-7fb871b7ec1e5418fbf56993a59670ae.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-00e69191a930b42b155058873613fefc.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-68daa7bb5294a509740e3dc24db16f8b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-926566371222ac3c14c3df18003e1733.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-68daa7bb5294a509740e3dc24db16f8b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-face5b0e89cb2ec33626e335e7c635f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ea1af111026a7820bfc37484b375955a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-face5b0e89cb2ec33626e335e7c635f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -779,7 +778,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">par_transparent</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span></span>
+<span><span class="fu">rpart.plot</span><span class="op">(</span></span>
 <span>  <span class="va">tree_obj</span>,</span>
 <span>  roundint <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -797,7 +796,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">par_transparent</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span></span>
+<span><span class="fu">rpart.plot</span><span class="op">(</span></span>
 <span>  <span class="va">tree_obj</span>,</span>
 <span>  type <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  extra <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -825,7 +824,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>faclen = 0</code> keeps class names from being shortened, so labels like <code>"versicolor"</code> remain fully visible.</li>
 <li>
-<code>roundint = FALSE</code> suppresses warnings that can appear when plotting tidymodels-based trees with <code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot()</a></code>.</li>
+<code>roundint = FALSE</code> suppresses warnings that can appear when plotting tidymodels-based trees with <code>rpart.plot()</code>.</li>
 </ul>
 <p>These options mostly affect how the tree is displayed and labeled. Different settings may be more useful depending on the complexity of the tree.</p>
 </section><section id="geom-parttree" class="level2"><h2 class="anchored" data-anchor-id="geom-parttree"><code>geom_parttree()</code></h2>
@@ -898,7 +897,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Compared to the default rpart plots, this style is much more visually distinct and easier to follow at a glance. The use of color also makes the predicted classes easier to identify.</p>
 <p>One limitation is that the styling can become crowded for larger trees with many nodes or long labels. However, for smaller and medium-sized trees, the additional formatting can improve readability.</p>
 </section><section id="regression-tree-example" class="level2"><h2 class="anchored" data-anchor-id="regression-tree-example">Regression tree example</h2>
-<p>Although this article has focused on classification trees, many visualization methods also support regression trees. In regression trees, terminal nodes display predicted numeric values instead of class labels or class probabilities. Below is an example using <code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot()</a></code> to visualize a regression tree.</p>
+<p>Although this article has focused on classification trees, many visualization methods also support regression trees. In regression trees, terminal nodes display predicted numeric values instead of class labels or class probabilities. Below is an example using <code>rpart.plot()</code> to visualize a regression tree.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -912,7 +911,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">reg_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">par_transparent</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span></span>
+<span><span class="fu">rpart.plot</span><span class="op">(</span></span>
 <span>  <span class="va">reg_tree</span>,</span>
 <span>  roundint <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -957,7 +956,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Yes</td>
 </tr>
 <tr class="odd">
-<td><code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot()</a></code></td>
+<td><code>rpart.plot()</code></td>
 <td>rpart.plot</td>
 <td>Readable and detailed tree summaries</td>
 <td>Yes</td>

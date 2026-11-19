@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="generator" content="quarto-1.11.9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="Releases of language models are often soon followed up with detectors, claiming to detect whether text was written by a human or a given language model. A 2023 study argues that GPT detectors disproportionately classify real writing from non-native English writers as AI-generated.">
@@ -87,9 +86,9 @@ div.csl-indent {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-7fb871b7ec1e5418fbf56993a59670ae.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-00e69191a930b42b155058873613fefc.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-68daa7bb5294a509740e3dc24db16f8b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-926566371222ac3c14c3df18003e1733.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-68daa7bb5294a509740e3dc24db16f8b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-face5b0e89cb2ec33626e335e7c635f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ea1af111026a7820bfc37484b375955a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-face5b0e89cb2ec33626e335e7c635f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -771,7 +770,7 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">native</span>, fill <span class="op">=</span> <span class="va">.pred_class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Native English Writer"</span>, fill <span class="op">=</span> <span class="st">"Predicted Class"</span><span class="op">)</span></span></code></pre></div>
@@ -789,7 +788,7 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>native <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
 <span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -811,7 +810,7 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>native <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span><span class="va">native</span> <span class="op">==</span> <span class="st">"Yes"</span> <span class="op">~</span> <span class="st">"Native English writer"</span>,</span>
 <span>                            <span class="va">native</span> <span class="op">==</span> <span class="st">"No"</span> <span class="op">~</span> <span class="st">"Non-native English writer"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">.pred_AI</span>, fill <span class="op">=</span> <span class="va">native</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -922,7 +921,7 @@ Note
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">detectors</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
 <span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
@@ -972,7 +971,7 @@ Important
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">detectors</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span>, <span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">performant_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span>, <span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">performant_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
 <span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
@@ -995,7 +994,7 @@ Important
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">equal_opportunity_detectors</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">detectors</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">kind</span> <span class="op">==</span> <span class="st">"Human"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">equal_opportunity_by_native</span><span class="op">(</span></span>
 <span>    truth <span class="op">=</span> <span class="va">kind</span>, </span>
@@ -1006,7 +1005,7 @@ Important
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">detectors</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">equal_opportunity_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">detector</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">equal_opportunity_detectors</span><span class="op">$</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">detector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://yardstick.tidymodels.org/reference/roc_auc.html">roc_auc</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="va">kind</span>, <span class="va">.pred_AI</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">.estimate</span><span class="op">)</span><span class="op">)</span></span>

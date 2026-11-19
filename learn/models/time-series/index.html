@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="generator" content="quarto-1.11.9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="Calculate performance estimates for time series forecasts using resampling.">
@@ -68,9 +67,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-7fb871b7ec1e5418fbf56993a59670ae.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-00e69191a930b42b155058873613fefc.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-68daa7bb5294a509740e3dc24db16f8b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-926566371222ac3c14c3df18003e1733.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-68daa7bb5294a509740e3dc24db16f8b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-face5b0e89cb2ec33626e335e7c635f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ea1af111026a7820bfc37484b375955a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-face5b0e89cb2ec33626e335e7c635f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -734,7 +733,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="co"># Since the first day changes over resamples, adjust the start</span></span>
 <span>  <span class="co"># based on the first date value in the data frame</span></span>
 <span>  <span class="va">dat</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.yearmon</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    <span class="fu">tk_ts</span><span class="op">(</span>start <span class="op">=</span> <span class="fu">as.yearmon</span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">date</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>          frequency <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>          silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">auto.arima</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
