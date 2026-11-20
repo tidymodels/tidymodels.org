@@ -510,7 +510,7 @@ The [alexpghayes/modeltests](https://github.com/alexpghayes/modeltests) package 
 #>  dplyr         1.2.1   2026-04-03
 #>  DT            0.34.0  2025-09-02
 #>  generics      0.1.4   2025-05-09
-#>  ggplot2       4.0.3   2026-04-22
+#>  ggplot2       4.0.4   2026-11-14
 #>  htmlwidgets   1.6.4   2023-12-06
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.1   2026-09-27
@@ -523,7 +523,7 @@ The [alexpghayes/modeltests](https://github.com/alexpghayes/modeltests) package 
 #>  tidyverse     2.0.0   2023-02-22
 #>  tune          2.1.0   2026-04-17
 #>  workflows     1.3.0   2025-08-27
-#>  yardstick     1.4.0   2026-04-07
+#>  yardstick     1.5.0   2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

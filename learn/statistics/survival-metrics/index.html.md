@@ -404,11 +404,11 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package        version date (UTC)
 #>  broom          1.0.13  2026-05-14
-#>  censored       0.3.5   2026-09-08
+#>  censored       0.4.0   2026-11-13
 #>  dials          1.4.5   2026-11-11
 #>  dplyr          1.2.1   2026-04-03
 #>  future         1.82.0  2026-11-02
-#>  ggplot2        4.0.3   2026-04-22
+#>  ggplot2        4.0.4   2026-11-14
 #>  infer          1.1.0   2025-12-18
 #>  modeldatatoo   0.3.0   2024-03-29
 #>  parsnip        1.6.1   2026-09-27
@@ -423,7 +423,7 @@ tidymodels has two time-dependent metrics for characterizing the performance of 
 #>  tidymodels     1.5.0   2026-04-23
 #>  tune           2.1.0   2026-04-17
 #>  workflows      1.3.0   2025-08-27
-#>  yardstick      1.4.0   2026-04-07
+#>  yardstick      1.5.0   2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

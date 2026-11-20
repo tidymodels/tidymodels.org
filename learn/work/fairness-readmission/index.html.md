@@ -650,7 +650,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  dials           1.4.5   2026-11-11
 #>  dplyr           1.2.1   2026-04-03
 #>  GGally          2.5.0   2026-11-09
-#>  ggplot2         4.0.3   2026-04-22
+#>  ggplot2         4.0.4   2026-11-14
 #>  infer           1.1.0   2025-12-18
 #>  parsnip         1.6.1   2026-09-27
 #>  purrr           1.2.2   2026-04-10
@@ -662,7 +662,7 @@ Machine learning models can both have significant positive impacts on our lives 
 #>  tidymodels      1.5.0   2026-04-23
 #>  tune            2.1.0   2026-04-17
 #>  workflows       1.3.0   2025-08-27
-#>  yardstick       1.4.0   2026-04-07
+#>  yardstick       1.5.0   2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

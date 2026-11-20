@@ -292,7 +292,7 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #>  dials        1.4.5   2026-11-11
 #>  dplyr        1.2.1   2026-04-03
 #>  earth        5.3.6   2026-08-21
-#>  ggplot2      4.0.3   2026-04-22
+#>  ggplot2      4.0.4   2026-11-14
 #>  infer        1.1.0   2025-12-18
 #>  parsnip      1.6.1   2026-09-27
 #>  purrr        1.2.2   2026-04-10
@@ -303,7 +303,7 @@ So, to sum up the main idea: If you're not getting multiple estimates of your pe
 #>  tidymodels   1.5.0   2026-04-23
 #>  tune         2.1.0   2026-04-17
 #>  workflows    1.3.0   2025-08-27
-#>  yardstick    1.4.0   2026-04-07
+#>  yardstick    1.5.0   2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

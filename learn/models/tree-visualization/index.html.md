@@ -348,7 +348,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  broom         1.0.13  2026-05-14
 #>  dials         1.4.5   2026-11-11
 #>  dplyr         1.2.1   2026-04-03
-#>  ggplot2       4.0.3   2026-04-22
+#>  ggplot2       4.0.4   2026-11-14
 #>  infer         1.1.0   2025-12-18
 #>  parsnip       1.6.1   2026-09-27
 #>  parttree      0.1.3   2026-03-31
@@ -365,7 +365,7 @@ Each visualization approach emphasizes different aspects of the model.
 #>  tidymodels    1.5.0   2026-04-23
 #>  tune          2.1.0   2026-04-17
 #>  workflows     1.3.0   2025-08-27
-#>  yardstick     1.4.0   2026-04-07
+#>  yardstick     1.5.0   2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

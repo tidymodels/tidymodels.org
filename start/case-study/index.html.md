@@ -750,7 +750,7 @@ Here are some more ideas for where to go next:
 #>  broom        1.0.13     2026-05-14
 #>  dials        1.4.5      2026-11-11
 #>  dplyr        1.2.1      2026-04-03
-#>  ggplot2      4.0.3      2026-04-22
+#>  ggplot2      4.0.4      2026-11-14
 #>  glmnet       5.2        2026-10-28
 #>  here         1.0.2      2025-09-15
 #>  infer        1.1.0      2025-12-18
@@ -767,7 +767,7 @@ Here are some more ideas for where to go next:
 #>  tune         2.1.0      2026-04-17
 #>  vip          0.5.0.9000 2026-11-02
 #>  workflows    1.3.0      2025-08-27
-#>  yardstick    1.4.0      2026-04-07
+#>  yardstick    1.5.0      2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```

@@ -219,7 +219,7 @@ library(agua)
 h2o_start()
 #> Warning: JAVA not found, H2O may take minutes trying to connect.
 #> Warning in h2o.clusterInfo(): 
-#> Your H2O cluster version is (2 years, 10 months and 22 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years and 11 months) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 ```
 :::
@@ -3072,7 +3072,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(logistic_reg_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 46ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3083,7 +3083,7 @@ predict(logistic_reg_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(logistic_reg_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 25ms/step
+#> 1/1 - 0s - 19ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -3933,7 +3933,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, type = "class", new_data = bin_test)
-#> 1/1 - 0s - 41ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 6 × 1
 #>   .pred_class
 #>   <fct>      
@@ -3944,7 +3944,7 @@ predict(mlp_fit, type = "class", new_data = bin_test)
 #> 5 Class2     
 #> 6 Class2
 predict(mlp_fit, type = "prob", new_data = bin_test)
-#> 1/1 - 0s - 26ms/step
+#> 1/1 - 0s - 19ms/step
 #> # A tibble: 6 × 2
 #>   .pred_Class1 .pred_Class2
 #>          <dbl>        <dbl>
@@ -4392,7 +4392,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(multinom_reg_fit, type = "class", new_data = mtl_test)
-#> 1/1 - 0s - 40ms/step
+#> 1/1 - 0s - 123ms/step
 #> # A tibble: 8 × 1
 #>   .pred_class
 #>   <fct>      
@@ -4405,7 +4405,7 @@ predict(multinom_reg_fit, type = "class", new_data = mtl_test)
 #> 7 three      
 #> 8 three
 predict(multinom_reg_fit, type = "prob", new_data = mtl_test)
-#> 1/1 - 0s - 24ms/step
+#> 1/1 - 0s - 19ms/step
 #> # A tibble: 8 × 3
 #>   .pred_one .pred_two .pred_three
 #>       <dbl>     <dbl>       <dbl>
@@ -8038,7 +8038,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(linear_reg_fit, new_data = reg_test)
-#> 1/1 - 0s - 42ms/step
+#> 1/1 - 0s - 29ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -8833,7 +8833,7 @@ The holdout data can be predicted:
 
 ```{.r .cell-code}
 predict(mlp_fit, new_data = reg_test)
-#> 1/1 - 0s - 59ms/step
+#> 1/1 - 0s - 30ms/step
 #> # A tibble: 8 × 1
 #>     .pred
 #>     <dbl>
@@ -10902,8 +10902,7 @@ bag_tree_fit
 #> 
 #> Bagging survival trees with 25 bootstrap replications 
 #> 
-#> Call: bagging.data.frame(formula = event_time ~ ., data = data, cp = 0, 
-#>     minsplit = 2)
+#> Call: bagging.data.frame(formula = formula, data = data, control = control)
 ```
 :::
 
@@ -10916,11 +10915,11 @@ predict(bag_tree_fit, type = "time", new_data = cns_test)
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       5.65
-#> 2       4.12
-#> 3       5.03
-#> 4       5.58
-#> 5       4.88
+#> 1       5.22
+#> 2       3.99
+#> 3       3.87
+#> 4       4.82
+#> 5       3.12
 predict(bag_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 #> # A tibble: 5 × 1
 #>   .pred           
@@ -10946,9 +10945,9 @@ bag_tree_fit |>
 #> # A tibble: 3 × 2
 #>   .eval_time .pred_survival
 #>        <dbl>          <dbl>
-#> 1          1          0.993
-#> 2          3          0.864
-#> 3          5          0.638
+#> 1          1          1    
+#> 2          3          1    
+#> 3          5          0.796
 ```
 :::
 
@@ -11154,11 +11153,11 @@ predict(decision_tree_fit, type = "time", new_data = cns_test)
 #> # A tibble: 5 × 1
 #>   .pred_time
 #>        <dbl>
-#> 1       1.26
-#> 2       2.51
-#> 3       1.26
-#> 4       1.26
-#> 5       1.26
+#> 1       5.87
+#> 2       3.99
+#> 3       5.87
+#> 4       5.87
+#> 5       5.87
 predict(decision_tree_fit, type = "survival", new_data = cns_test, eval_time = eval_times)
 #> # A tibble: 5 × 1
 #>   .pred           
@@ -12432,10 +12431,10 @@ rand_forest_fit |>
 #>  bonsai          0.4.1      2026-05-21
 #>  broom           1.0.13     2026-05-14
 #>  brulee          1.2.0      2026-09-02
-#>  C50             0.2.0      2025-04-03
-#>  censored        0.3.5      2026-09-08
+#>  C50             1.0.0      2026-11-20
+#>  censored        0.4.0      2026-11-13
 #>  coin            1.4-6      2026-09-30
-#>  Cubist          0.6.0      2026-03-02
+#>  Cubist          1.0.0      2026-11-19
 #>  dbarts          0.9-34     2026-08-21
 #>  dials           1.4.5      2026-11-11
 #>  discrim         1.1.0      2025-12-02
@@ -12443,7 +12442,7 @@ rand_forest_fit |>
 #>  earth           5.3.6      2026-08-21
 #>  flexsurv        2.3.2      2024-08-17
 #>  gee             4.13-30    2026-08-03
-#>  ggplot2         4.0.3      2026-04-22
+#>  ggplot2         4.0.4      2026-11-14
 #>  glmnet          5.2        2026-10-28
 #>  grf             2.6.1      2026-03-04
 #>  h2o             3.44.0.3   2024-01-11
@@ -12487,7 +12486,7 @@ rand_forest_fit |>
 #>  workflows       1.3.0      2025-08-27
 #>  xgboost         3.2.1.1    2026-03-18
 #>  xrf             0.3.1      2025-12-17
-#>  yardstick       1.4.0      2026-04-07
+#>  yardstick       1.5.0      2026-11-18
 #> 
 #> ─ Python configuration ─────────────────────────────────────────────
 #>  python:         /home/runner/.virtualenvs/r-keras/bin/python

@@ -75,7 +75,7 @@ bag_tree_fit
 #> 
 #> Bagging survival trees with 25 bootstrap replications 
 #> 
-#> Call: bagging.data.frame(formula = event_time ~ ., data = data)
+#> Call: bagging.data.frame(formula = formula, data = data, control = control)
 ```
 :::
 
@@ -91,16 +91,16 @@ val_pred
 #> # A tibble: 500 × 5
 #>    .pred             .pred_time event_time    X1      X2
 #>    <list>                 <dbl>     <Surv> <dbl>   <dbl>
-#>  1 <tibble [85 × 5]>       6.66  4.831957      1 -0.630 
-#>  2 <tibble [85 × 5]>       6.66  6.110031      1 -0.606 
-#>  3 <tibble [85 × 5]>       7.47  6.597774+     1 -1.03  
-#>  4 <tibble [85 × 5]>       3.29  2.717484      1  0.811 
-#>  5 <tibble [85 × 5]>       5.10  4.727042+     1 -0.376 
-#>  6 <tibble [85 × 5]>       4.99  8.699061      0  1.18  
-#>  7 <tibble [85 × 5]>       7.23 10.818670      1 -0.851 
-#>  8 <tibble [85 × 5]>       6.46  6.886378      0  0.493 
-#>  9 <tibble [85 × 5]>       4.75  2.451893+     1  0.0207
-#> 10 <tibble [85 × 5]>      13.4   8.231911+     0 -1.52  
+#>  1 <tibble [85 × 5]>       6.25  4.831957      1 -0.630 
+#>  2 <tibble [85 × 5]>       8.84  6.110031      1 -0.606 
+#>  3 <tibble [85 × 5]>       5.98  6.597774+     1 -1.03  
+#>  4 <tibble [85 × 5]>       3.12  2.717484      1  0.811 
+#>  5 <tibble [85 × 5]>       5.55  4.727042+     1 -0.376 
+#>  6 <tibble [85 × 5]>       3.47  8.699061      0  1.18  
+#>  7 <tibble [85 × 5]>      NA    10.818670      1 -0.851 
+#>  8 <tibble [85 × 5]>       8.58  6.886378      0  0.493 
+#>  9 <tibble [85 × 5]>       8.08  2.451893+     1  0.0207
+#> 10 <tibble [85 × 5]>      NA     8.231911+     0 -1.52  
 #> # ℹ 490 more rows
 ```
 :::
@@ -114,16 +114,16 @@ val_pred$.pred[[1]]
 #> # A tibble: 85 × 5
 #>    .eval_time .pred_survival .weight_time .pred_censored .weight_censored
 #>         <dbl>          <dbl>        <dbl>          <dbl>            <dbl>
-#>  1       0             1            0              1                 1   
-#>  2       0.25          1            0.250          0.999             1.00
-#>  3       0.5           0.999        0.500          0.996             1.00
-#>  4       0.75          0.992        0.750          0.993             1.01
-#>  5       1             0.988        1.000          0.991             1.01
-#>  6       1.25          0.980        1.25           0.987             1.01
-#>  7       1.5           0.972        1.50           0.981             1.02
-#>  8       1.75          0.959        1.75           0.971             1.03
-#>  9       2             0.938        2.00           0.966             1.04
-#> 10       2.25          0.925        2.25           0.959             1.04
+#>  1       0                 1        0              1                 1   
+#>  2       0.25              1        0.250          0.999             1.00
+#>  3       0.5               1        0.500          0.996             1.00
+#>  4       0.75              1        0.750          0.993             1.01
+#>  5       1                 1        1.000          0.991             1.01
+#>  6       1.25              1        1.25           0.987             1.01
+#>  7       1.5               1        1.50           0.981             1.02
+#>  8       1.75              1        1.75           0.971             1.03
+#>  9       2                 1        2.00           0.966             1.04
+#> 10       2.25              1        2.25           0.959             1.04
 #> # ℹ 75 more rows
 ```
 :::
@@ -301,12 +301,12 @@ binary_encoding |>
            case_weights = .weight_censored)
 #>            Truth
 #> Prediction      event non-event
-#>   event     112.98854  54.36531
-#>   non-event  56.14133 252.41039
+#>   event     103.70532  76.37032
+#>   non-event  65.42455 230.40538
 ```
 :::
 
-Now we have fewer total observations to consider (391 instead of 492 usable values) and more events (154 this time). Performance is fairly good; the sensitivity is 66.8% and the specificty is 82.3%.
+Now we have fewer total observations to consider (391 instead of 492 usable values) and more events (154 this time). Performance is fairly good; the sensitivity is 61.3% and the specificty is 75.1%.
 
 What happends when the evaluation time is 17?
 
@@ -319,9 +319,9 @@ binary_encoding |>
            estimate = pred_class,
            case_weights = .weight_censored)
 #>            Truth
-#> Prediction     event non-event
-#>   event     429.9920  123.4458
-#>   non-event   0.0000    0.0000
+#> Prediction      event non-event
+#>   event     348.41809  98.75661
+#>   non-event  81.57389  24.68915
 ```
 :::
 
@@ -352,10 +352,10 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #> ─ Packages ─────────────────────────────────────────────────────────
 #>  package       version    date (UTC)
 #>  broom         1.0.13     2026-05-14
-#>  censored      0.3.5      2026-09-08
+#>  censored      0.4.0      2026-11-13
 #>  dials         1.4.5      2026-11-11
 #>  dplyr         1.2.1      2026-04-03
-#>  ggplot2       4.0.3      2026-04-22
+#>  ggplot2       4.0.4      2026-11-14
 #>  infer         1.1.0      2025-12-18
 #>  parsnip       1.6.1      2026-09-27
 #>  prodlim       2026.03.11 2026-03-11
@@ -368,7 +368,7 @@ When accounting for censoring in dynamic performance metrics, the main points to
 #>  tidymodels    1.5.0      2026-04-23
 #>  tune          2.1.0      2026-04-17
 #>  workflows     1.3.0      2025-08-27
-#>  yardstick     1.4.0      2026-04-07
+#>  yardstick     1.5.0      2026-11-18
 #> 
 #> ────────────────────────────────────────────────────────────────────
 ```
